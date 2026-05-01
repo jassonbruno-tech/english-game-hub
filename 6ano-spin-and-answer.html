@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Spin and Answer - 6º Ano</title>
+  <style>
+    :root{
+      --blue:#2563eb; --cyan:#06b6d4; --pink:#e11d48; --orange:#f97316;
+      --green:#16a34a; --purple:#7c3aed; --yellow:#facc15; --dark:#172033;
+      --muted:#657084; --light:#f8fafc; --line:#dbe4f0; --danger:#dc2626;
+      --ok:#15803d; --shadow:0 16px 34px rgba(0,0,0,.18);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; min-height:100vh; font-family:Arial, Helvetica, sans-serif;
+      color:var(--dark); background:linear-gradient(135deg,#0f2870,#00a6c8);
+      padding:12px; display:flex; align-items:center; justify-content:center;
+    }
+    .app{
+      width:100%; max-width:1100px; background:rgba(255,255,255,.97);
+      border-radius:28px; box-shadow:var(--shadow); overflow:hidden;
+    }
+    header{
+      color:white; text-align:center; padding:18px 16px 16px;
+      background:radial-gradient(circle at 15% 10%,rgba(255,255,255,.3),transparent 28%),
+      linear-gradient(135deg,#1d4ed8,#e11d48);
+    }
+    .topbar{display:flex;justify-content:space-between;align-items:center;gap:10px;max-width:1000px;margin:0 auto 8px}
+    .back,.pill{
+      color:white;text-decoration:none;background:rgba(255,255,255,.18);
+      border:1px solid rgba(255,255,255,.38);padding:8px 11px;border-radius:999px;
+      font-size:13px;font-weight:800;
+    }
+    h1{margin:6px 0 4px;font-size:clamp(28px,7vw,52px);letter-spacing:-.5px}
+    .subtitle{margin:0 auto;max-width:760px;line-height:1.35;font-size:clamp(14px,3.5vw,18px);opacity:.95}
+    main{padding:16px}
+    .screen{display:none}.screen.active{display:block}
+    .card{
+      background:white;border:1px solid var(--line);border-radius:24px;padding:18px;
+      box-shadow:0 8px 20px rgba(0,0,0,.08);
+    }
+    .start-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:16px;align-items:stretch}
+    .motivation{
+      background:#f8fafc;border:1px solid var(--line);border-radius:20px;padding:15px;
+      line-height:1.45;color:#243047;margin-bottom:14px;
+    }
+    .author{font-weight:900;color:#164aa5;margin-top:8px}
+    label{display:block;font-weight:800;margin:10px 0 5px}
+    input,select{
+      width:100%;padding:13px;border-radius:14px;border:1px solid #cbd5e1;
+      font-size:16px;outline:none;background:white;
+    }
+    input:focus,select:focus{border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,.14)}
+    button{
+      border:none;border-radius:16px;padding:13px 15px;font-weight:900;font-size:16px;
+      cursor:pointer;transition:.18s ease;
+    }
+    button:active{transform:scale(.98)}
+    .primary{background:linear-gradient(135deg,#2563eb,#06b6d4);color:white;width:100%;margin-top:14px}
+    .secondary{background:#e2e8f0;color:#1e293b}
+    .danger{background:#fee2e2;color:#991b1b}
+    .green{background:#dcfce7;color:#166534}
+    .pink{background:linear-gradient(135deg,#e11d48,#fb7185);color:white}
+    .mini-info{
+      display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px
+    }
+    .stat{
+      background:#f8fafc;border:1px solid var(--line);border-radius:18px;padding:10px;text-align:center
+    }
+    .stat b{display:block;font-size:22px;color:#0f4aa3}
+    .stat span{font-size:12px;color:var(--muted);font-weight:700}
+    .game-grid{display:grid;grid-template-columns:.95fr 1.05fr;gap:16px}
+    .wheel-card{text-align:center}
+    .wheel-wrap{
+      width:min(78vw,360px);height:min(78vw,360px);margin:8px auto 14px;position:relative;
+      display:flex;align-items:center;justify-content:center;
+    }
+    .pointer{
+      position:absolute;top:-5px;left:50%;transform:translateX(-50%);
+      width:0;height:0;border-left:18px solid transparent;border-right:18px solid transparent;
+      border-top:34px solid #111827;z-index:3;filter:drop-shadow(0 2px 2px rgba(0,0,0,.3));
+    }
+    .wheel{
+      width:100%;height:100%;border-radius:50%;border:8px solid #fff;box-shadow:0 14px 30px rgba(0,0,0,.18);
+      background:conic-gradient(
+        #2563eb 0deg 45deg,#16a34a 45deg 90deg,#f97316 90deg 135deg,#7c3aed 135deg 180deg,
+        #e11d48 180deg 225deg,#06b6d4 225deg 270deg,#facc15 270deg 315deg,#64748b 315deg 360deg
+      );
+      transition:transform 3.8s cubic-bezier(.12,.74,.22,1);
+      position:relative;overflow:hidden;
+    }
+    .wheel-label{
+      position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+      width:46%;height:46%;border-radius:50%;background:white;display:flex;align-items:center;justify-content:center;
+      text-align:center;font-weight:900;color:#1d4ed8;padding:10px;box-shadow:inset 0 0 0 5px #e2e8f0;
+      z-index:2;font-size:18px;
+    }
+    .legend{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px;text-align:left}
+    .legend span{
+      font-size:12px;font-weight:800;padding:7px 8px;border-radius:999px;background:#f8fafc;border:1px solid var(--line);
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    }
+    .theme-result{
+      font-weight:900;color:#e11d48;background:#fff1f2;border:1px solid #fecdd3;
+      padding:10px;border-radius:16px;margin:10px 0;
+    }
+    .question-box{min-height:390px;display:flex;flex-direction:column}
+    .theme-chip{display:inline-block;background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;border-radius:999px;padding:8px 12px;font-weight:900;margin-bottom:10px}
+    .question{font-size:20px;font-weight:800;line-height:1.35;margin:4px 0 12px}
+    .options{display:grid;gap:10px;margin-top:4px}
+    .option{
+      width:100%;text-align:left;background:#f8fafc;border:2px solid var(--line);color:#1f2937;
+      border-radius:16px;padding:13px;font-weight:800;
+    }
+    .option:hover{background:#eef6ff;border-color:#93c5fd}
+    .option.correct{background:#dcfce7;border-color:#22c55e;color:#14532d}
+    .option.wrong{background:#fee2e2;border-color:#ef4444;color:#7f1d1d}
+    .feedback{
+      margin-top:12px;padding:12px;border-radius:16px;line-height:1.35;font-weight:700;display:none
+    }
+    .feedback.ok{display:block;background:#dcfce7;color:#14532d;border:1px solid #86efac}
+    .feedback.bad{display:block;background:#fee2e2;color:#7f1d1d;border:1px solid #fecaca}
+    .actions{display:flex;gap:10px;margin-top:auto;padding-top:14px}
+    .actions button{flex:1}
+    .rank-table{width:100%;border-collapse:separate;border-spacing:0 8px}
+    .rank-table th{text-align:left;font-size:12px;color:var(--muted);padding:0 8px}
+    .rank-table td{background:#f8fafc;padding:10px 8px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-weight:800}
+    .rank-table td:first-child{border-left:1px solid var(--line);border-radius:14px 0 0 14px}
+    .rank-table td:last-child{border-right:1px solid var(--line);border-radius:0 14px 14px 0}
+    .me td{background:#fff7ed!important;border-color:#fb923c!important;color:#9a3412}
+    .final-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .print-card{
+      border:3px dashed #2563eb;border-radius:24px;padding:18px;background:#eff6ff
+    }
+    .print-card h2{margin:0 0 10px;color:#1d4ed8;font-size:28px}
+    .line{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #bfdbfe;padding:8px 0;font-weight:800}
+    .code{font-size:24px;text-align:center;margin:14px 0 8px;background:white;border-radius:18px;padding:12px;font-weight:900;color:#e11d48}
+    .small{font-size:13px;color:var(--muted);line-height:1.35}
+    .hidden{display:none!important}
+    @media(max-width:860px){
+      body{align-items:flex-start;padding:8px}
+      .app{border-radius:22px}
+      header{padding:15px 10px}
+      .topbar{flex-direction:column;align-items:stretch}.back,.pill{text-align:center}
+      main{padding:10px}
+      .start-grid,.game-grid,.final-grid{grid-template-columns:1fr}
+      .mini-info{grid-template-columns:repeat(2,1fr)}
+      .question-box{min-height:auto}
+      .legend{grid-template-columns:1fr}
+      .wheel-wrap{width:min(86vw,330px);height:min(86vw,330px)}
+      .actions{flex-direction:column}
+      .question{font-size:18px}
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div class="topbar">
+        <a class="back" href="6ano.html">⬅ Voltar ao 6º ano</a>
+        <div class="pill">🎡 6º Ano • 1º Bimestre</div>
+      </div>
+      <h1>Spin and Answer</h1>
+      <p class="subtitle">Gire a roleta, descubra o tema e responda ao desafio. A roleta escolhe o tema. Você mostra que aprendeu!</p>
+    </header>
+
+    <main>
+      <section id="startScreen" class="screen active">
+        <div class="start-grid">
+          <div class="card">
+            <div class="motivation">
+              Aprender inglês pode ser mais divertido quando você aceita o desafio, tenta, erra, aprende e continua jogando.
+              Cada fase vencida mostra que você é capaz de ir mais longe. Acredite em você: você é do tamanho dos seus sonhos!
+              <div class="author">Jogo idealizado pelo professor Jasson Bruno.</div>
+            </div>
+            <label for="studentName">Nome do aluno</label>
+            <input id="studentName" placeholder="Digite seu nome"/>
+            <label for="studentClass">Turma</label>
+            <input id="studentClass" placeholder="Ex.: 601"/>
+            <label for="studentSchool">Escola</label>
+            <input id="studentSchool" placeholder="Ex.: EMEF Delfina de Jesus Amorim"/>
+            <button class="primary" onclick="startGame()">COMEÇAR DESAFIO</button>
+            <p class="small">Ao final, tire print da tela com sua pontuação e código de comprovação.</p>
+          </div>
+          <div class="card">
+            <h2>Como jogar?</h2>
+            <p><b>1.</b> Clique em <b>SPIN</b> para girar a roleta.</p>
+            <p><b>2.</b> Quando ela parar, leia o tema sorteado.</p>
+            <p><b>3.</b> Responda à pergunta e veja a explicação.</p>
+            <p><b>4.</b> Faça pontos, aumente o combo e suba no ranking motivacional.</p>
+            <hr style="border:none;border-top:1px solid #e2e8f0;margin:14px 0">
+            <p><b>Temas:</b> greetings, farewells, spelling names, classroom commands, classroom expressions, personal information, personal pronouns e possessive adjectives.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="gameScreen" class="screen">
+        <div class="mini-info">
+          <div class="stat"><b id="score">0</b><span>PONTOS</span></div>
+          <div class="stat"><b id="corrects">0</b><span>ACERTOS</span></div>
+          <div class="stat"><b id="combo">0</b><span>COMBO</span></div>
+          <div class="stat"><b id="round">1/10</b><span>RODADA</span></div>
+        </div>
+
+        <div class="game-grid">
+          <div class="card wheel-card">
+            <div class="wheel-wrap">
+              <div class="pointer"></div>
+              <div id="wheel" class="wheel"></div>
+              <div id="wheelLabel" class="wheel-label">SPIN</div>
+            </div>
+            <button id="spinBtn" class="pink" onclick="spinWheel()">SPIN</button>
+            <div id="themeResult" class="theme-result">Aguardando a roleta...</div>
+            <div class="legend" id="legend"></div>
+          </div>
+
+          <div class="card question-box">
+            <span id="themeChip" class="theme-chip">Tema</span>
+            <div id="questionText" class="question">Clique em SPIN para iniciar a rodada.</div>
+            <div id="options" class="options"></div>
+            <div id="feedback" class="feedback"></div>
+            <div class="actions">
+              <button id="nextBtn" class="green hidden" onclick="nextRound()">PRÓXIMA RODADA</button>
+              <button class="secondary" onclick="finishGame()">FINALIZAR</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="finalScreen" class="screen">
+        <div class="final-grid">
+          <div class="print-card">
+            <h2>Resultado Final</h2>
+            <div class="line"><span>Aluno:</span><span id="fName"></span></div>
+            <div class="line"><span>Turma:</span><span id="fClass"></span></div>
+            <div class="line"><span>Escola:</span><span id="fSchool"></span></div>
+            <div class="line"><span>Jogo:</span><span>Spin and Answer</span></div>
+            <div class="line"><span>Pontuação:</span><span id="fScore"></span></div>
+            <div class="line"><span>Acertos:</span><span id="fCorrects"></span></div>
+            <div class="line"><span>Maior combo:</span><span id="fCombo"></span></div>
+            <div class="line"><span>Posição:</span><span id="fPosition"></span></div>
+            <div class="line"><span>Data/Hora:</span><span id="fDate"></span></div>
+            <div class="code" id="fCode"></div>
+            <p class="small"><b>Atenção:</b> tire print desta tela e envie ao professor.</p>
+          </div>
+
+          <div class="card">
+            <h2>Ranking do Desafio</h2>
+            <p class="small">Ranking motivacional gerado pelo jogo para acompanhar seu progresso.</p>
+            <table class="rank-table">
+              <thead><tr><th>Pos.</th><th>Aluno</th><th>Escola</th><th>Pontos</th></tr></thead>
+              <tbody id="rankingBody"></tbody>
+            </table>
+            <div class="actions">
+              <button class="primary" onclick="restartGame()">JOGAR NOVAMENTE</button>
+              <button class="secondary" onclick="goHome()">VOLTAR</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+<script>
+const THEMES = [
+  "Greetings","Farewells","Spelling names","Classroom commands",
+  "Classroom expressions","Personal information","Personal pronouns","Possessive adjectives"
+];
+
+const QUESTIONS = [
+{theme:"Greetings",q:"Bob Esponja chegou à escola pela manhã e encontrou a professora. Qual expressão ele pode usar?",o:["Good night","Good morning","Goodbye","See you later"],a:"Good morning",e:"Good morning é usado para cumprimentar alguém pela manhã."},
+{theme:"Greetings",q:"Patrick encontrou um amigo e quer dizer “Olá!” em inglês. Qual opção está correta?",o:["Hello","Bye","Good night","See you"],a:"Hello",e:"Hello significa olá."},
+{theme:"Greetings",q:"Na entrada da sala, a professora diz “Boa tarde”. Como dizemos isso em inglês?",o:["Good afternoon","Good evening","Good night","Goodbye"],a:"Good afternoon",e:"Good afternoon é usado para cumprimentar à tarde."},
+{theme:"Greetings",q:"Cristiano Ronaldo chegou para o treino no começo da noite. Qual saudação combina?",o:["Good evening","Goodbye","See you later","Good night"],a:"Good evening",e:"Good evening é uma saudação usada no início da noite."},
+{theme:"Greetings",q:"Qual palavra em inglês é uma forma curta e informal de dizer “oi”?",o:["Hi","Bye","Night","Later"],a:"Hi",e:"Hi é uma forma simples e informal de dizer oi."},
+{theme:"Greetings",q:"Sonic entrou na sala e disse “Hi, teacher!”. O que ele quis dizer?",o:["Oi, professora!","Tchau, professora!","Boa noite, professora!","Até mais, professora!"],a:"Oi, professora!",e:"Hi significa oi."},
+{theme:"Greetings",q:"Wandinha chegou à escola às 7h da manhã. Qual frase está mais adequada?",o:["Good night, teacher.","Good morning, teacher.","Goodbye, teacher.","See you later, teacher."],a:"Good morning, teacher.",e:"Pela manhã, usamos Good morning."},
+
+{theme:"Farewells",q:"Ao final da aula, Ana quer se despedir dizendo “Tchau”. Qual opção ela pode usar?",o:["Bye","Hello","Good morning","Hi"],a:"Bye",e:"Bye significa tchau."},
+{theme:"Farewells",q:"Qual expressão significa “Até mais tarde”?",o:["See you later","Good morning","Hello","Good afternoon"],a:"See you later",e:"See you later significa até mais tarde."},
+{theme:"Farewells",q:"Depois da aula, Messi disse “Goodbye, friends!”. O que ele quis dizer?",o:["Olá, amigos!","Bom dia, amigos!","Tchau, amigos!","Boa tarde, amigos!"],a:"Tchau, amigos!",e:"Goodbye significa tchau ou adeus."},
+{theme:"Farewells",q:"Qual alternativa é uma despedida em inglês?",o:["Good night","Hello","Hi","Good morning"],a:"Good night",e:"Good night pode ser usado como despedida à noite."},
+{theme:"Farewells",q:"Lula Molusco terminou o expediente e vai embora. Qual expressão combina melhor?",o:["See you later","Good morning","Hi","What is your name?"],a:"See you later",e:"See you later é usado para se despedir dizendo até mais tarde."},
+{theme:"Farewells",q:"Qual alternativa tem apenas despedidas?",o:["Hello / Hi","Goodbye / Bye","Good morning / Hello","Good afternoon / Hi"],a:"Goodbye / Bye",e:"Goodbye e Bye são despedidas."},
+{theme:"Farewells",q:"À noite, antes de dormir, Goku diz “Boa noite”. Como fica em inglês?",o:["Good night","Good morning","Good afternoon","Hi"],a:"Good night",e:"Good night significa boa noite e é usado à noite."},
+
+{theme:"Spelling names",q:"A professora pergunta: “How do you spell your name?”. O que ela quer saber?",o:["Como você soletra seu nome?","Qual é sua idade?","Onde você mora?","Qual é sua escola?"],a:"Como você soletra seu nome?",e:"How do you spell your name? significa Como você soletra seu nome?"},
+{theme:"Spelling names",q:"Qual pergunta usamos para pedir que alguém soletre o nome?",o:["How do you spell your name?","What is your color?","Where is your book?","Are you a teacher?"],a:"How do you spell your name?",e:"Essa é a pergunta usada para pedir a soletração do nome."},
+{theme:"Spelling names",q:"O nome ANA é soletrado em inglês letra por letra. Qual sequência representa isso?",o:["A - N - A","E - N - E","I - M - I","A - M - A"],a:"A - N - A",e:"Para soletrar ANA, usamos as letras A, N, A."},
+{theme:"Spelling names",q:"Qual palavra em inglês significa “nome”?",o:["Name","Book","Teacher","School"],a:"Name",e:"Name significa nome."},
+{theme:"Spelling names",q:"No jogo, aparece a palavra SPELL. O que ela tem relação com o conteúdo?",o:["Soletrar","Correr","Comer","Desenhar"],a:"Soletrar",e:"Spell significa soletrar."},
+{theme:"Spelling names",q:"Qual resposta combina melhor com a pergunta: “How do you spell Bruno?”",o:["B - R - U - N - O","My name is Bruno","I am fine","Goodbye"],a:"B - R - U - N - O",e:"A pergunta pede a soletração do nome Bruno."},
+
+{theme:"Classroom commands",q:"A professora diz: “Open your book.” O que o aluno deve fazer?",o:["Abrir o livro","Fechar o livro","Levantar a mão","Sentar"],a:"Abrir o livro",e:"Open your book significa abra seu livro."},
+{theme:"Classroom commands",q:"Qual comando significa “feche seu livro”?",o:["Close your book","Open your book","Read the text","Listen"],a:"Close your book",e:"Close your book significa feche seu livro."},
+{theme:"Classroom commands",q:"Quando a professora diz “Listen!”, ela quer que os alunos façam o quê?",o:["Escutem","Escrevam","Leiam","Levantem"],a:"Escutem",e:"Listen significa escute ou escutem."},
+{theme:"Classroom commands",q:"Se o professor diz “Repeat, please”, o que a turma deve fazer?",o:["Repetir","Dormir","Sair","Pular"],a:"Repetir",e:"Repeat significa repetir."},
+{theme:"Classroom commands",q:"Qual comando significa “sente-se”?",o:["Sit down","Stand up","Open your book","Raise your hand"],a:"Sit down",e:"Sit down significa sente-se."},
+{theme:"Classroom commands",q:"Qual comando significa “levante-se”?",o:["Stand up","Sit down","Write","Read"],a:"Stand up",e:"Stand up significa levante-se."},
+{theme:"Classroom commands",q:"Homem-Aranha quer responder, mas antes precisa levantar a mão. Qual comando representa isso?",o:["Raise your hand","Close your book","Listen","Read"],a:"Raise your hand",e:"Raise your hand significa levante a mão."},
+{theme:"Classroom commands",q:"Qual alternativa combina melhor com “Write your name”?",o:["Escreva seu nome","Leia seu nome","Soletre seu nome","Feche seu nome"],a:"Escreva seu nome",e:"Write significa escrever."},
+{theme:"Classroom commands",q:"A professora aponta para o texto e diz “Read”. O que ela quer?",o:["Ler","Escrever","Sentar","Ouvir música"],a:"Ler",e:"Read significa ler."},
+
+{theme:"Classroom expressions",q:"O aluno não entendeu e quer pedir ajuda. Qual expressão pode usar?",o:["Can you help me?","Goodbye","I am Neymar","Open your book"],a:"Can you help me?",e:"Can you help me? significa Você pode me ajudar?"},
+{theme:"Classroom expressions",q:"Qual expressão significa “Posso ir ao banheiro?”",o:["May I go to the bathroom?","What is your name?","Good morning","Close your book"],a:"May I go to the bathroom?",e:"Essa expressão é usada para pedir permissão para ir ao banheiro."},
+{theme:"Classroom expressions",q:"Se o aluno quer dizer “Eu não entendi”, qual frase está correta?",o:["I don't understand.","I am teacher.","Goodbye class.","My pencil is he."],a:"I don't understand.",e:"I don't understand significa Eu não entendi."},
+{theme:"Classroom expressions",q:"Qual frase é educada para pedir para repetir?",o:["Can you repeat, please?","Sit down, please.","I am a book.","See you later."],a:"Can you repeat, please?",e:"Can you repeat, please? significa Você pode repetir, por favor?"},
+{theme:"Classroom expressions",q:"Qual palavra em inglês significa “por favor”?",o:["Please","Book","Teacher","Goodbye"],a:"Please",e:"Please significa por favor."},
+{theme:"Classroom expressions",q:"Qual palavra usamos para agradecer em inglês?",o:["Thank you","Good night","Spell","Close"],a:"Thank you",e:"Thank you significa obrigado/obrigada."},
+{theme:"Classroom expressions",q:"Lucas quer perguntar “Como se diz lápis em inglês?”. Qual expressão ajuda?",o:["How do you say lápis in English?","What is your name?","Good night.","I am fine."],a:"How do you say lápis in English?",e:"How do you say... in English? é usada para perguntar como se diz algo em inglês."},
+
+{theme:"Personal information",q:"Qual pergunta significa “Qual é o seu nome?”",o:["What is your name?","How old is your book?","Where is the pencil?","Goodbye, friend."],a:"What is your name?",e:"What is your name? significa Qual é o seu nome?"},
+{theme:"Personal information",q:"Para responder “Meu nome é Ana”, usamos:",o:["My name is Ana.","Your name is Ana.","His name Ana.","Goodbye Ana."],a:"My name is Ana.",e:"My name is... significa Meu nome é..."},
+{theme:"Personal information",q:"A pergunta “How old are you?” quer saber:",o:["Sua idade","Seu nome","Sua escola","Sua cor favorita"],a:"Sua idade",e:"How old are you? pergunta a idade."},
+{theme:"Personal information",q:"Qual resposta combina com “How old are you?”",o:["I am eleven years old.","My name is Carlos.","Good morning.","She is my teacher."],a:"I am eleven years old.",e:"Para idade, usamos I am ... years old."},
+{theme:"Personal information",q:"Qual frase significa “Eu sou estudante”?",o:["I am a student.","You are a teacher.","He is my friend.","Goodbye."],a:"I am a student.",e:"I am a student significa Eu sou estudante."},
+{theme:"Personal information",q:"Neymar quer se apresentar. Qual frase está correta?",o:["My name is Neymar.","Her name is Neymar.","Their name is Neymar.","Goodbye Neymar."],a:"My name is Neymar.",e:"Quando falamos de nós mesmos, usamos My name is..."},
+{theme:"Personal information",q:"Qual alternativa completa: “I am ____ years old.”",o:["twelve","teacher","goodbye","my"],a:"twelve",e:"Para idade, usamos um número, como twelve."},
+
+{theme:"Personal pronouns",q:"Qual pronome em inglês significa “eu”?",o:["I","You","He","She"],a:"I",e:"I significa eu."},
+{theme:"Personal pronouns",q:"Qual pronome substitui “Maria”?",o:["She","He","It","They"],a:"She",e:"She é usado para ela."},
+{theme:"Personal pronouns",q:"Qual pronome substitui “Pedro”?",o:["He","She","We","It"],a:"He",e:"He é usado para ele."},
+{theme:"Personal pronouns",q:"Qual pronome usamos para falar de “eu e meus amigos”?",o:["We","I","He","It"],a:"We",e:"We significa nós."},
+{theme:"Personal pronouns",q:"Qual pronome usamos para falar de “eles/elas”?",o:["They","You","She","He"],a:"They",e:"They significa eles ou elas."},
+{theme:"Personal pronouns",q:"Bob Esponja e Patrick estão juntos. Qual pronome pode substituir os dois?",o:["They","He","She","I"],a:"They",e:"They é usado para mais de uma pessoa."},
+{theme:"Personal pronouns",q:"Qual frase usa o pronome correto para falar de uma menina chamada Sofia?",o:["She is Sofia.","He is Sofia.","They is Sofia.","It is Sofia."],a:"She is Sofia.",e:"Para menina/mulher, usamos She."},
+{theme:"Personal pronouns",q:"Qual alternativa apresenta apenas personal pronouns?",o:["I / You / He / She","My / Your / His / Her","Book / Pen / Pencil","Hello / Goodbye / Bye"],a:"I / You / He / She",e:"I, You, He e She são pronomes pessoais."},
+
+{theme:"Possessive adjectives",q:"Qual palavra significa “meu/minha” em inglês?",o:["My","Your","His","Her"],a:"My",e:"My significa meu ou minha."},
+{theme:"Possessive adjectives",q:"Qual palavra significa “seu/sua” em inglês?",o:["Your","My","His","Her"],a:"Your",e:"Your significa seu ou sua."},
+{theme:"Possessive adjectives",q:"Complete: “This is Ana. ____ book is blue.”",o:["Her","His","My","Their"],a:"Her",e:"Ana é uma menina. Usamos Her para dela."},
+{theme:"Possessive adjectives",q:"Complete: “This is Pedro. ____ pencil is red.”",o:["His","Her","Our","Your"],a:"His",e:"Pedro é menino. Usamos His para dele."},
+{theme:"Possessive adjectives",q:"Qual frase significa “Meu nome é Lucas”?",o:["My name is Lucas.","Your name is Lucas.","His name is Lucas.","Her name is Lucas."],a:"My name is Lucas.",e:"My name is... significa Meu nome é..."},
+{theme:"Possessive adjectives",q:"Qual alternativa completa corretamente: “We are students. ____ teacher is kind.”",o:["Our","His","Her","My"],a:"Our",e:"We combina com Our, que significa nosso/nossa."},
+{theme:"Possessive adjectives",q:"Qual alternativa apresenta apenas possessive adjectives?",o:["My / Your / His / Her","I / You / He / She","Book / Pencil / Pen","Hello / Hi / Bye"],a:"My / Your / His / Her",e:"My, Your, His e Her indicam posse."},
+{theme:"Possessive adjectives",q:"Wandinha fala sobre a própria mochila: “____ backpack is black.” Qual palavra completa?",o:["My","Your","His","Their"],a:"My",e:"Quando falo de algo que é meu, uso My."}
+];
+
+const names = ["Ana Clara","João Pedro","Maria Eduarda","Lucas Gabriel","Sofia Vitória","Pedro Henrique","Laura Sofia","Gabriel Lima","Júlia Beatriz","Matheus Ryan","Lívia Maria","Miguel Arthur","Isabela Cristina","Davi Lucas","Helena Vitória"];
+const schools = [
+  "EMEF Delfina de Jesus Amorim","EMEF Frei Fabiano Merz","EMEF Brigadeiro Eduardo Gomes",
+  "EMEF César Simões Ramalheiro","EMEF Haroldo Veloso","EMEF Pérola do Maicá",
+  "EMEF Deputado Ubaldo Corrêa","EMEF Dr. Everaldo de Sousa Martins",
+  "EMEF Eloína Colares e Silva","EMEF Cel. Mário Fernandes Imbiriba"
+];
+
+let student = {name:"", class:"", school:""};
+let state = {score:0, corrects:0, combo:0, maxCombo:0, round:1, totalRounds:10, answered:false, current:null, rotation:0, used:[]};
+
+function el(id){return document.getElementById(id)}
+function show(id){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active")); el(id).classList.add("active")}
+function shuffle(arr){return [...arr].sort(()=>Math.random()-.5)}
+function pick(arr){return arr[Math.floor(Math.random()*arr.length)]}
+
+function initLegend(){
+  const legend = el("legend");
+  legend.innerHTML = THEMES.map(t=>`<span>${t}</span>`).join("");
+}
+initLegend();
+
+function startGame(){
+  const name = el("studentName").value.trim();
+  const klass = el("studentClass").value.trim();
+  const school = el("studentSchool").value.trim();
+  if(!name || !klass || !school){ alert("Preencha nome, turma e escola para começar."); return; }
+  student = {name, class:klass, school};
+  state = {score:0, corrects:0, combo:0, maxCombo:0, round:1, totalRounds:10, answered:false, current:null, rotation:0, used:[]};
+  updateStats();
+  el("questionText").textContent = "Clique em SPIN para iniciar a rodada.";
+  el("options").innerHTML = "";
+  el("feedback").className = "feedback";
+  el("nextBtn").classList.add("hidden");
+  el("spinBtn").disabled = false;
+  el("themeResult").textContent = "Aguardando a roleta...";
+  el("wheelLabel").textContent = "SPIN";
+  show("gameScreen");
+}
+
+function updateStats(){
+  el("score").textContent = state.score;
+  el("corrects").textContent = state.corrects;
+  el("combo").textContent = state.combo;
+  el("round").textContent = `${state.round}/${state.totalRounds}`;
+}
+
+function spinWheel(){
+  if(state.answered === false && state.current){ return; }
+  el("spinBtn").disabled = true;
+  el("nextBtn").classList.add("hidden");
+  el("feedback").className = "feedback";
+  el("options").innerHTML = "";
+  el("questionText").textContent = "A roleta está girando...";
+  const idx = Math.floor(Math.random()*THEMES.length);
+  const selectedTheme = THEMES[idx];
+  const slice = 360 / THEMES.length;
+  const target = 360 - (idx * slice + slice/2);
+  state.rotation += 1440 + target + Math.floor(Math.random()*25);
+  el("wheel").style.transform = `rotate(${state.rotation}deg)`;
+  setTimeout(()=>loadQuestion(selectedTheme), 3900);
+}
+
+function loadQuestion(theme){
+  el("themeResult").textContent = `Tema sorteado: ${theme}`;
+  el("wheelLabel").textContent = theme.replace(" ","\n");
+  el("themeChip").textContent = theme;
+
+  let pool = QUESTIONS.filter(q=>q.theme===theme && !state.used.includes(q.q));
+  if(pool.length === 0) pool = QUESTIONS.filter(q=>q.theme===theme);
+  const q = pick(pool);
+  state.current = q;
+  state.used.push(q.q);
+  state.answered = false;
+
+  el("questionText").textContent = q.q;
+  const opts = shuffle(q.o);
+  el("options").innerHTML = opts.map(opt=>`<button class="option" onclick="answerQuestion(this, '${encodeURIComponent(opt)}')">${opt}</button>`).join("");
+}
+
+function answerQuestion(btn, enc){
+  if(state.answered) return;
+  const chosen = decodeURIComponent(enc);
+  const q = state.current;
+  state.answered = true;
+  document.querySelectorAll(".option").forEach(b=>{
+    if(b.textContent === q.a) b.classList.add("correct");
+    if(b === btn && chosen !== q.a) b.classList.add("wrong");
+    b.disabled = true;
+  });
+  const feedback = el("feedback");
+  if(chosen === q.a){
+    state.corrects++;
+    state.combo++;
+    state.maxCombo = Math.max(state.maxCombo, state.combo);
+    const bonus = state.combo >= 3 ? 20 : 0;
+    state.score += 100 + bonus;
+    feedback.className = "feedback ok";
+    feedback.innerHTML = `✅ Great job! Você acertou.<br><b>Explicação:</b> ${q.e}${bonus ? "<br>🔥 Bônus de combo: +20 pontos!" : ""}`;
+  }else{
+    state.combo = 0;
+    state.score = Math.max(0, state.score - 20);
+    feedback.className = "feedback bad";
+    feedback.innerHTML = `❌ Quase! A resposta correta é <b>${q.a}</b>.<br><b>Explicação:</b> ${q.e}`;
+  }
+  updateStats();
+  el("nextBtn").classList.remove("hidden");
+}
+
+function nextRound(){
+  if(state.round >= state.totalRounds){ finishGame(); return; }
+  state.round++;
+  state.current = null;
+  state.answered = true;
+  updateStats();
+  el("themeChip").textContent = "Tema";
+  el("questionText").textContent = "Clique em SPIN para a próxima rodada.";
+  el("options").innerHTML = "";
+  el("feedback").className = "feedback";
+  el("nextBtn").classList.add("hidden");
+  el("spinBtn").disabled = false;
+  el("themeResult").textContent = "Aguardando a roleta...";
+}
+
+function getPosition(score){
+  if(score >= 930) return 1;
+  if(score >= 820) return 2;
+  if(score >= 700) return 3;
+  if(score >= 560) return 4;
+  if(score >= 420) return 5;
+  return 6;
+}
+
+function buildRanking(){
+  const pos = getPosition(state.score);
+  const baseScores = [980,890,790,680,560,430,320].map(s=>s + Math.floor(Math.random()*45) - 20);
+  let rows = [];
+  for(let i=0;i<7;i++){
+    rows.push({name:pick(names), school:pick(schools), score:baseScores[i], me:false});
+  }
+  rows.splice(pos-1,0,{name:student.name, school:student.school, score:state.score, me:true});
+  rows = rows.sort((a,b)=>b.score-a.score).slice(0,8);
+  const meIndex = rows.findIndex(r=>r.me);
+  if(meIndex === -1){
+    rows[7] = {name:student.name, school:student.school, score:state.score, me:true};
+  }
+  rows.sort((a,b)=>b.score-a.score);
+  return rows.map((r,i)=>({...r, pos:i+1}));
+}
+
+function finishGame(){
+  const now = new Date();
+  const code = `SPIN-6-${String(state.score).padStart(4,"0")}-${Math.floor(100+Math.random()*900)}`;
+  const ranking = buildRanking();
+  const me = ranking.find(r=>r.me) || {pos:getPosition(state.score)};
+  el("fName").textContent = student.name;
+  el("fClass").textContent = student.class;
+  el("fSchool").textContent = student.school;
+  el("fScore").textContent = state.score;
+  el("fCorrects").textContent = `${state.corrects}/${state.totalRounds}`;
+  el("fCombo").textContent = state.maxCombo;
+  el("fPosition").textContent = `${me.pos}º lugar`;
+  el("fDate").textContent = now.toLocaleString("pt-BR");
+  el("fCode").textContent = code;
+  el("rankingBody").innerHTML = ranking.map(r=>`
+    <tr class="${r.me?'me':''}">
+      <td>${r.pos}º</td><td>${r.name}${r.me?' ⭐':''}</td><td>${r.school}</td><td>${r.score}</td>
+    </tr>`).join("");
+  saveLocalResult(code);
+  show("finalScreen");
+}
+
+function saveLocalResult(code){
+  try{
+    const key = "spin6_results";
+    const list = JSON.parse(localStorage.getItem(key) || "[]");
+    list.push({student, score:state.score, corrects:state.corrects, combo:state.maxCombo, code, date:new Date().toISOString()});
+    localStorage.setItem(key, JSON.stringify(list.slice(-20)));
+  }catch(e){}
+}
+
+function restartGame(){
+  state = {score:0, corrects:0, combo:0, maxCombo:0, round:1, totalRounds:10, answered:false, current:null, rotation:state.rotation || 0, used:[]};
+  updateStats();
+  el("questionText").textContent = "Clique em SPIN para iniciar a rodada.";
+  el("options").innerHTML = "";
+  el("feedback").className = "feedback";
+  el("nextBtn").classList.add("hidden");
+  el("spinBtn").disabled = false;
+  el("themeResult").textContent = "Aguardando a roleta...";
+  show("gameScreen");
+}
+function goHome(){ window.location.href = "6ano.html"; }
+</script>
+</body>
+</html>
