@@ -34,7 +34,6 @@ input{width:100%; padding:13px; border-radius:14px; border:1px solid #cbd5e1; fo
 button{border:none; border-radius:16px; padding:13px 15px; font-weight:900; font-size:16px; cursor:pointer}
 .primary{background:linear-gradient(135deg,#2563eb,#06b6d4); color:white; width:100%; margin-top:14px}
 .secondary{background:#e2e8f0; color:#1e293b}
-.green{background:#dcfce7; color:#166534}
 .pink{background:linear-gradient(135deg,#e11d48,#fb7185); color:white}
 .small{font-size:13px; color:var(--muted); line-height:1.35}
 .mini-info{display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:14px}
@@ -48,17 +47,26 @@ button{border:none; border-radius:16px; padding:13px 15px; font-weight:900; font
   margin:8px auto 14px; position:relative; display:flex; align-items:center; justify-content:center;
 }
 .top-pointer{
-  position:absolute; top:-10px; left:50%; transform:translateX(-50%);
-  width:0; height:0; z-index:10;
+  position:absolute; top:0; left:50%; transform:translateX(-50%); width:60px; height:80px; z-index:10;
+}
+.top-pointer::before{
+  content:""; position:absolute; left:50%; transform:translateX(-50%);
+  top:0; width:14px; height:30px; background:#111111; border-radius:0 0 10px 10px;
+  box-shadow:0 2px 4px rgba(0,0,0,.25);
+}
+.top-pointer::after{
+  content:""; position:absolute; left:50%; transform:translateX(-50%);
+  top:28px; width:0; height:0;
   border-left:22px solid transparent;
   border-right:22px solid transparent;
   border-top:0;
   border-bottom:42px solid #111111;
   filter:drop-shadow(0 4px 4px rgba(0,0,0,.28));
 }
-.top-pointer::after{
-  content:""; position:absolute; left:-8px; top:38px; width:16px; height:16px;
-  border-radius:50%; background:#111111; box-shadow:0 0 0 4px #f8fafc;
+.pointer-dot{
+  position:absolute; top:24px; left:50%; transform:translateX(-50%);
+  width:14px; height:14px; border-radius:50%; background:#f8fafc;
+  box-shadow:0 0 0 5px #111111; z-index:11;
 }
 .wheel-rotator{width:100%; height:100%; position:relative; transition:transform 3.2s cubic-bezier(.16,.78,.21,1)}
 .wheel-svg{width:100%; height:100%; filter:drop-shadow(0 12px 24px rgba(0,0,0,.16))}
@@ -123,7 +131,7 @@ button{border:none; border-radius:16px; padding:13px 15px; font-weight:900; font
       <div class="pill">🎡 6º Ano • 1º Bimestre</div>
     </div>
     <h1>Spin and Answer</h1>
-    <p class="subtitle">Versão corrigida: a agulha preta define o tema de verdade, o nome do meio acompanha exatamente a agulha e os assuntos ficam mais variados.</p>
+    <p class="subtitle">Ponteiro apontando para dentro da roleta e avanço automático para a próxima rodada.</p>
   </header>
 
   <main>
@@ -148,8 +156,8 @@ button{border:none; border-radius:16px; padding:13px 15px; font-weight:900; font
           <h2>Como jogar?</h2>
           <p><b>1.</b> Clique em <b>SPIN</b> para girar a roleta.</p>
           <p><b>2.</b> Observe a <b>agulha preta</b>: o tema válido é o que ela indicar.</p>
-          <p><b>3.</b> O nome no centro será exatamente o mesmo tema apontado.</p>
-          <p><b>4.</b> Os temas saem mais mesclados para evitar repetição seguida.</p>
+          <p><b>3.</b> Responda à pergunta.</p>
+          <p><b>4.</b> O jogo espera um instante e já deixa a próxima rodada pronta, só aguardando você girar novamente.</p>
           <hr style="border:none;border-top:1px solid #e2e8f0;margin:14px 0">
           <p><b>Temas:</b> greetings, farewells, spelling names, classroom commands, classroom expressions, personal information, personal pronouns e possessive adjectives.</p>
         </div>
@@ -168,6 +176,7 @@ button{border:none; border-radius:16px; padding:13px 15px; font-weight:900; font
         <div class="card wheel-card">
           <div class="wheel-wrap">
             <div class="top-pointer"></div>
+            <div class="pointer-dot"></div>
             <div id="wheelRotator" class="wheel-rotator">
               
 <svg viewBox="0 0 440 440" class="wheel-svg" aria-label="Roleta de temas">
@@ -254,7 +263,6 @@ button{border:none; border-radius:16px; padding:13px 15px; font-weight:900; font
           <div id="options" class="options"></div>
           <div id="feedback" class="feedback"></div>
           <div class="actions">
-            <button id="nextBtn" class="green hidden" onclick="nextRound()">PRÓXIMA RODADA</button>
             <button class="secondary" onclick="finishGame()">FINALIZAR</button>
           </div>
         </div>
@@ -359,7 +367,7 @@ let student = {name:"", class:"", school:""};
 let state = {
   score:0, corrects:0, combo:0, maxCombo:0, round:1, totalRounds:10,
   answered:false, current:null, rotation:0, usedQuestions:[], spinning:false,
-  themeBag:[], lastTheme:null
+  themeBag:[], lastTheme:null, autoAdvanceTimer:null
 };
 
 function el(id){return document.getElementById(id)}
@@ -387,6 +395,15 @@ function getNextTheme(){
   return next;
 }
 
+function resetRoundUI(){
+  el("themeChip").textContent = "Tema";
+  el("questionText").textContent = state.round > state.totalRounds ? "Desafio concluído." : "Clique em SPIN para a próxima rodada.";
+  el("options").innerHTML = "";
+  el("feedback").className = "feedback";
+  el("themeResult").textContent = "Aguardando a roleta...";
+  el("wheelLabel").innerHTML = "SPIN";
+}
+
 function startGame(){
   const name = el("studentName").value.trim();
   const klass = el("studentClass").value.trim();
@@ -396,18 +413,12 @@ function startGame(){
   state = {
     score:0, corrects:0, combo:0, maxCombo:0, round:1, totalRounds:10,
     answered:false, current:null, rotation:0, usedQuestions:[], spinning:false,
-    themeBag:[], lastTheme:null
+    themeBag:[], lastTheme:null, autoAdvanceTimer:null
   };
   refillThemeBag();
   updateStats();
-  el("questionText").textContent = "Clique em SPIN para iniciar a rodada.";
-  el("options").innerHTML = "";
-  el("feedback").className = "feedback";
-  el("nextBtn").classList.add("hidden");
   el("spinBtn").disabled = false;
-  el("themeResult").textContent = "Aguardando a roleta...";
-  el("wheelLabel").innerHTML = "SPIN";
-  el("themeChip").textContent = "Tema";
+  resetRoundUI();
   const rotator = el("wheelRotator");
   rotator.style.transition = "transform 0s";
   rotator.style.transform = "rotate(0deg)";
@@ -418,16 +429,17 @@ function updateStats(){
   el("score").textContent = state.score;
   el("corrects").textContent = state.corrects;
   el("combo").textContent = state.combo;
-  el("round").textContent = `${state.round}/${state.totalRounds}`;
+  el("round").textContent = `${Math.min(state.round, state.totalRounds)}/${state.totalRounds}`;
 }
 
 function spinWheel(){
   if(state.spinning) return;
   if(state.answered === false && state.current) return;
+  if(state.round > state.totalRounds) return;
 
   state.spinning = true;
   el("spinBtn").disabled = true;
-  el("nextBtn").classList.add("hidden");
+  clearTimeout(state.autoAdvanceTimer);
   el("feedback").className = "feedback";
   el("options").innerHTML = "";
   el("questionText").textContent = "A roleta está girando...";
@@ -440,7 +452,7 @@ function spinWheel(){
 
   // ponteiro no topo (-90°). Centro do setor = idx*45 + 22.5 - 90
   const centerAtZero = idx * 45 + 22.5 - 90;
-  let target = -90 - centerAtZero; // faz o centro do setor ir para o topo
+  let target = -90 - centerAtZero;
   while(target < 0) target += 360;
 
   const baseStart = state.rotation % 360;
@@ -494,6 +506,22 @@ function loadQuestion(theme){
   el("options").innerHTML = opts.map(opt=>`<button class="option" onclick="answerQuestion(this, '${encodeURIComponent(opt)}')">${opt}</button>`).join("");
 }
 
+function queueNextAfterAnswer(){
+  clearTimeout(state.autoAdvanceTimer);
+  state.autoAdvanceTimer = setTimeout(() => {
+    if(state.round >= state.totalRounds){
+      finishGame();
+      return;
+    }
+    state.round++;
+    state.current = null;
+    state.answered = true;
+    updateStats();
+    resetRoundUI();
+    el("spinBtn").disabled = false;
+  }, 1500);
+}
+
 function answerQuestion(btn, enc){
   if(state.answered) return;
   const chosen = decodeURIComponent(enc);
@@ -522,23 +550,7 @@ function answerQuestion(btn, enc){
     feedback.innerHTML = `❌ Quase! A resposta correta é <b>${q.a}</b>.<br><b>Explicação:</b> ${q.e}`;
   }
   updateStats();
-  el("nextBtn").classList.remove("hidden");
-}
-
-function nextRound(){
-  if(state.round >= state.totalRounds){ finishGame(); return; }
-  state.round++;
-  state.current = null;
-  state.answered = true;
-  updateStats();
-  el("themeChip").textContent = "Tema";
-  el("questionText").textContent = "Clique em SPIN para a próxima rodada.";
-  el("options").innerHTML = "";
-  el("feedback").className = "feedback";
-  el("nextBtn").classList.add("hidden");
-  el("spinBtn").disabled = false;
-  el("themeResult").textContent = "Aguardando a roleta...";
-  el("wheelLabel").innerHTML = "SPIN";
+  queueNextAfterAnswer();
 }
 
 function getPosition(score){
@@ -563,6 +575,7 @@ function buildRanking(){
 }
 
 function finishGame(){
+  clearTimeout(state.autoAdvanceTimer);
   const now = new Date();
   const code = `SPIN-6-${String(state.score).padStart(4,"0")}-${Math.floor(100+Math.random()*900)}`;
   const ranking = buildRanking();
@@ -595,21 +608,16 @@ function finishGame(){
 }
 
 function restartGame(){
+  clearTimeout(state.autoAdvanceTimer);
   state = {
     score:0, corrects:0, combo:0, maxCombo:0, round:1, totalRounds:10,
     answered:false, current:null, rotation:0, usedQuestions:[], spinning:false,
-    themeBag:[], lastTheme:null
+    themeBag:[], lastTheme:null, autoAdvanceTimer:null
   };
   refillThemeBag();
   updateStats();
-  el("questionText").textContent = "Clique em SPIN para iniciar a rodada.";
-  el("options").innerHTML = "";
-  el("feedback").className = "feedback";
-  el("nextBtn").classList.add("hidden");
   el("spinBtn").disabled = false;
-  el("themeResult").textContent = "Aguardando a roleta...";
-  el("wheelLabel").innerHTML = "SPIN";
-  el("themeChip").textContent = "Tema";
+  resetRoundUI();
   const rotator = el("wheelRotator");
   rotator.style.transition = "transform 0s";
   rotator.style.transform = "rotate(0deg)";
