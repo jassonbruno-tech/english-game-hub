@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>English Game Hub - Professor Jasson Bruno</title>
+<title>English Game Hub Mobile - Professor Jasson Bruno</title>
 <style>
 :root{
   --blue:#2563eb;
@@ -509,6 +509,104 @@ svg.road{
   .boardCard{min-height:calc(100dvh - 80px)}
   .controls{margin-top:0}
 }
+
+/* MOBILE EXCLUSIVE VERSION */
+html, body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  touch-action: manipulation;
+}
+body {
+  background: linear-gradient(180deg,#dbeafe 0%,#f8fafc 100%);
+}
+.screen {
+  padding: 8px;
+  min-height: 100dvh;
+}
+.card, .gameCard, .modalCard {
+  max-width: 430px !important;
+}
+.card {
+  border-width: 3px;
+  border-radius: 20px;
+}
+h1 {
+  font-size: 24px;
+}
+.subtitle {
+  font-size: 13px;
+}
+.choice {
+  grid-template-columns: 44px 1fr;
+  padding: 10px;
+}
+.choice .ico {
+  font-size: 28px;
+}
+.choice b {
+  font-size: 15px;
+}
+.choice small {
+  font-size: 11px;
+}
+.btn {
+  min-height: 48px;
+}
+.topBar {
+  max-width: 430px;
+  margin: 0 auto 8px;
+  grid-template-columns: repeat(2,1fr);
+}
+.badge.big {
+  grid-column: 1 / -1;
+}
+.boardLayout {
+  max-width: 430px;
+  margin: 0 auto;
+}
+.boardCard {
+  min-height: 520px;
+}
+.controls {
+  max-width: 430px;
+  margin: 8px auto 0;
+}
+.question {
+  font-size: 18px;
+  min-height: 105px;
+}
+.opt {
+  min-height: 48px;
+  font-size: 15px;
+}
+.rankBox {
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+.mobileRankingActions {
+  display: grid;
+  gap: 8px;
+  margin-top: 10px;
+}
+.mobileRankingActions button {
+  width: 100%;
+}
+@media (min-width: 700px) {
+  body::before {
+    content: "Versão mobile do jogo";
+    position: fixed;
+    top: 8px;
+    right: 8px;
+    background: #0f2a6d;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font: 700 12px Arial;
+    z-index: 999;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -533,6 +631,11 @@ svg.road{
     <label>Escola</label>
     <input id="studentSchool" placeholder="Ex.: Escola Delfina">
 
+    
+    <div class="box">
+      <p><b>📱 Versão para celular:</b> abra pelo Google Chrome para melhor funcionamento do ranking online.</p>
+    </div>
+
     <button class="choice btn" onclick="openGame('missions')">
       <span class="ico">🎯</span>
       <span><b>Missões</b><small>Fases com barra amarela de tempo, combo e vidas.</small></span>
@@ -555,6 +658,11 @@ svg.road{
     <h1>Escolha o próximo desafio</h1>
     <p class="subtitle">Sua pontuação continua acumulando.</p>
     <div class="rankBox" id="sessionPanel"></div>
+    
+    <div class="box">
+      <p><b>📱 Versão para celular:</b> abra pelo Google Chrome para melhor funcionamento do ranking online.</p>
+    </div>
+
     <button class="choice btn" onclick="openGame('missions')">
       <span class="ico">🎯</span>
       <span><b>Missões</b><small>Continue somando pontos nas missões.</small></span>
@@ -775,15 +883,45 @@ function loadOnlineRanking(){
   const box = document.getElementById("onlineRankingBox");
   if(!box) return;
 
-  box.innerHTML = "Carregando ranking online...";
+  box.innerHTML = 'Carregando ranking online...<br><small>Aguarde alguns segundos. No celular pode demorar um pouco.</small>';
 
+  let finished = false;
   const cbName = "rankingCallback_" + Date.now() + "_" + Math.floor(Math.random()*100000);
+  let script = document.createElement("script");
+
+  const failHTML = `
+    <b>⚠️ Ranking online não carregou automaticamente.</b><br>
+    O resultado pode ter sido salvo mesmo assim.<br><br>
+    <div class="mobileRankingActions">
+      <button class="btn blue" onclick="loadOnlineRanking()">🔄 Atualizar ranking online</button>
+      <button class="btn orange" onclick="openRankingDirect()">🌐 Abrir ranking em nova aba</button>
+    </div>
+  `;
+
+  const timer = setTimeout(function(){
+    if(!finished){
+      finished = true;
+      box.innerHTML = failHTML;
+      try{ delete window[cbName]; }catch(e){}
+      if(script && script.parentNode) script.parentNode.removeChild(script);
+    }
+  }, 15000);
+
   window[cbName] = function(data){
+    if(finished) return;
+    finished = true;
+    clearTimeout(timer);
     try{
       if(!data || !data.ok){
-        box.innerHTML = "Não foi possível carregar o ranking online agora.";
+        box.innerHTML = failHTML;
       }else if(!data.ranking || data.ranking.length === 0){
-        box.innerHTML = "Ainda não há resultados salvos no ranking online.";
+        box.innerHTML = `
+          <b>🌐 Ranking Online</b><br>
+          Ainda não há resultados salvos no ranking online.<br><br>
+          <div class="mobileRankingActions">
+            <button class="btn blue" onclick="loadOnlineRanking()">🔄 Atualizar ranking online</button>
+          </div>
+        `;
       }else{
         let html = "<b>🌐 Ranking Online - Top 10</b><br>";
         data.ranking.slice(0,10).forEach(function(r, idx){
@@ -795,19 +933,38 @@ function loadOnlineRanking(){
             " acertos • 🔥 combo " + (r.combo || 0) +
             "<br>Jogo: " + (r.jogo || "-") + " • " + (r.status || "-") + "<br>";
         });
+        html += `
+          <br>
+          <div class="mobileRankingActions">
+            <button class="btn blue" onclick="loadOnlineRanking()">🔄 Atualizar ranking online</button>
+          </div>
+        `;
         box.innerHTML = html;
       }
     }catch(e){
-      box.innerHTML = "Não foi possível carregar o ranking online agora.";
+      box.innerHTML = failHTML;
     }
     try{ delete window[cbName]; }catch(e){}
+    if(script && script.parentNode) script.parentNode.removeChild(script);
   };
 
-  const url = RANKING_URL + "?action=ranking&callback=" + cbName + "&t=" + Date.now();
-  jsonp(url, cbName, function(){
-    box.innerHTML = "Não foi possível carregar o ranking online agora.";
-  });
+  script.onerror = function(){
+    if(finished) return;
+    finished = true;
+    clearTimeout(timer);
+    box.innerHTML = failHTML;
+    try{ delete window[cbName]; }catch(e){}
+    if(script && script.parentNode) script.parentNode.removeChild(script);
+  };
+
+  script.src = RANKING_URL + "?action=ranking&callback=" + cbName + "&t=" + Date.now();
+  document.body.appendChild(script);
 }
+
+function openRankingDirect(){
+  window.open(RANKING_URL + "?action=ranking&t=" + Date.now(), "_blank");
+}
+
 
 
 // -------- SESSION --------
@@ -873,7 +1030,7 @@ function showRankingScreen(title, sub, bodyHTML, completed=true, allowContinue=t
   document.getElementById('rankHeroSub').textContent = sub;
   document.getElementById('rankingBox').innerHTML = bodyHTML + '<div class="rankBox" id="onlineRankingBox" style="margin-top:12px">Carregando ranking online...</div>';
   document.getElementById('continueScoreBtn').style.display = allowContinue ? 'block' : 'none';
-  setTimeout(loadOnlineRanking, 500);
+  setTimeout(loadOnlineRanking, 1200);
 }
 function showFinalRanking(){
   if(!session){
