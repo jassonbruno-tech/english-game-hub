@@ -1,221 +1,275 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>English Game Hub</title>
-  <style>
-    :root{
-      --bg1:#102a63;
-      --bg2:#0f8fbd;
-      --card:#ffffff;
-      --text:#172033;
-      --muted:#5c667a;
-      --blue:#1d4ed8;
-      --green:#16a34a;
-      --orange:#f97316;
-      --purple:#7c3aed;
-      --shadow: 0 14px 30px rgba(0,0,0,.18);
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family: Arial, Helvetica, sans-serif;
-      min-height:100vh;
-      background: linear-gradient(135deg,var(--bg1),var(--bg2));
-      color:var(--text);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:18px;
-    }
-    .app{
-      width:100%;
-      max-width:980px;
-      background:rgba(255,255,255,.95);
-      border-radius:28px;
-      box-shadow:var(--shadow);
-      overflow:hidden;
-    }
-    .hero{
-      padding:26px 22px 20px;
-      text-align:center;
-      background:
-        radial-gradient(circle at 20% 20%, rgba(255,255,255,.45), transparent 25%),
-        linear-gradient(135deg,#2563eb,#06b6d4);
-      color:white;
-    }
-    .badge{
-      display:inline-block;
-      padding:7px 13px;
-      border-radius:999px;
-      background:rgba(255,255,255,.2);
-      border:1px solid rgba(255,255,255,.35);
-      font-weight:700;
-      font-size:13px;
-      margin-bottom:10px;
-    }
-    h1{
-      margin:6px 0 8px;
-      font-size:clamp(32px,7vw,58px);
-      letter-spacing:-1px;
-    }
-    .subtitle{
-      margin:0 auto;
-      max-width:720px;
-      font-size:clamp(15px,3.5vw,20px);
-      line-height:1.35;
-      opacity:.96;
-    }
-    .content{
-      padding:22px;
-    }
-    .motivation{
-      background:#f8fafc;
-      border:1px solid #e2e8f0;
-      border-radius:22px;
-      padding:16px;
-      line-height:1.45;
-      color:#253047;
-      font-size:15px;
-      margin-bottom:18px;
-    }
-    .author{
-      margin-top:10px;
-      font-weight:800;
-      color:#0f4aa3;
-    }
-    .grid{
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:14px;
-    }
-    .grade{
-      text-decoration:none;
-      color:white;
-      min-height:185px;
-      border-radius:24px;
-      padding:18px;
-      display:flex;
-      flex-direction:column;
-      justify-content:space-between;
-      box-shadow:0 10px 22px rgba(0,0,0,.14);
-      transform:translateY(0);
-      transition:.18s ease;
-      position:relative;
-      overflow:hidden;
-    }
-    .grade:hover{transform:translateY(-4px)}
-    .grade::after{
-      content:"";
-      position:absolute;
-      width:130px;
-      height:130px;
-      border-radius:50%;
-      background:rgba(255,255,255,.15);
-      right:-40px;
-      bottom:-45px;
-    }
-    .g6{background:linear-gradient(135deg,#2563eb,#38bdf8)}
-    .g7{background:linear-gradient(135deg,#16a34a,#86efac)}
-    .g8{background:linear-gradient(135deg,#f97316,#facc15)}
-    .g9{background:linear-gradient(135deg,#7c3aed,#c084fc)}
-    .icon{font-size:40px}
-    .grade h2{
-      margin:8px 0 6px;
-      font-size:28px;
-      color:white;
-    }
-    .grade p{
-      margin:0;
-      font-size:14px;
-      line-height:1.35;
-      color:rgba(255,255,255,.95);
-    }
-    .enter{
-      margin-top:12px;
-      background:rgba(255,255,255,.22);
-      border:1px solid rgba(255,255,255,.35);
-      border-radius:14px;
-      padding:9px 10px;
-      font-weight:800;
-      text-align:center;
-      color:white;
-    }
-    .footer{
-      text-align:center;
-      color:var(--muted);
-      font-size:13px;
-      padding:0 22px 22px;
-    }
-    @media(max-width:820px){
-      body{padding:10px; align-items:flex-start}
-      .app{border-radius:22px}
-      .hero{padding:24px 16px 18px}
-      .content{padding:16px}
-      .grid{grid-template-columns:1fr; gap:12px}
-      .grade{min-height:140px}
-      .grade h2{font-size:26px}
-    }
-  </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>English Game Hub</title>
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: Arial, Helvetica, sans-serif;
+  color: white;
+  background:
+    linear-gradient(rgba(0, 20, 50, 0.58), rgba(0, 20, 50, 0.58)),
+    url('fundo-santarem.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+.page {
+  min-height: 100vh;
+  padding: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card {
+  width: 100%;
+  max-width: 1050px;
+  border-radius: 30px;
+  padding: 28px;
+  background: rgba(5, 18, 45, 0.70);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(8px);
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 9px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  font-weight: 900;
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(34px, 8vw, 68px);
+  line-height: 1;
+  letter-spacing: 0.5px;
+  text-shadow: 0 6px 16px rgba(0,0,0,.35);
+}
+
+.subtitle {
+  max-width: 850px;
+  margin: 14px auto 0;
+  font-size: clamp(15px, 3.6vw, 20px);
+  line-height: 1.45;
+  font-weight: 700;
+  color: rgba(255,255,255,.94);
+}
+
+.motivation {
+  margin: 22px auto;
+  max-width: 920px;
+  padding: 16px 18px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.23);
+  line-height: 1.45;
+  font-weight: 800;
+  text-align: center;
+}
+
+.series-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 22px;
+}
+
+.series-card {
+  min-height: 190px;
+  padding: 18px;
+  border-radius: 26px;
+  text-decoration: none;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.26);
+  box-shadow: 0 14px 28px rgba(0,0,0,.22);
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+
+.series-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 34px rgba(0,0,0,.30);
+}
+
+.series-card::before {
+  content: "";
+  position: absolute;
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.20);
+  right: -38px;
+  top: -38px;
+}
+
+.series-card::after {
+  content: "▶";
+  position: absolute;
+  right: 18px;
+  bottom: 14px;
+  font-size: 28px;
+  opacity: .85;
+}
+
+.six {
+  background: linear-gradient(135deg, #2563eb, #06b6d4 48%, #e11d48);
+}
+
+.seven {
+  background: linear-gradient(135deg, #0f766e, #22c55e 48%, #facc15);
+}
+
+.eight {
+  background: linear-gradient(135deg, #312e81, #7c3aed 48%, #06b6d4);
+}
+
+.nine {
+  background: linear-gradient(135deg, #111827, #1e3a8a 48%, #dc2626);
+}
+
+.series-number {
+  font-size: 44px;
+  font-weight: 900;
+  line-height: 1;
+  position: relative;
+  z-index: 2;
+}
+
+.series-title {
+  font-size: 23px;
+  font-weight: 900;
+  margin-top: 6px;
+  position: relative;
+  z-index: 2;
+}
+
+.series-text {
+  font-size: 14px;
+  line-height: 1.35;
+  margin-top: 10px;
+  font-weight: 800;
+  color: rgba(255,255,255,.92);
+  position: relative;
+  z-index: 2;
+}
+
+.footer {
+  margin-top: 22px;
+  text-align: center;
+  font-weight: 900;
+  color: rgba(255,255,255,.95);
+  text-shadow: 0 3px 8px rgba(0,0,0,.3);
+}
+
+@media (max-width: 900px) {
+  body {
+    background-attachment: scroll;
+  }
+
+  .page {
+    align-items: flex-start;
+    padding: 10px;
+  }
+
+  .card {
+    padding: 18px;
+    border-radius: 24px;
+  }
+
+  .series-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .series-card {
+    min-height: 135px;
+  }
+
+  .series-number {
+    font-size: 36px;
+  }
+}
+</style>
 </head>
 <body>
-  <main class="app">
-    <section class="hero">
-      <div class="badge">🎮 Central de Jogos de Inglês</div>
-      <h1>English Game Hub</h1>
-      <p class="subtitle">Escolha sua série e entre nos desafios preparados para revisar os conteúdos de Inglês.</p>
-    </section>
+  <main class="page">
+    <section class="card">
+      <div class="header">
+        <div class="badge">🎮 English Game Hub</div>
+        <h1>English Game Hub</h1>
+        <p class="subtitle">
+          Escolha sua série, entre no desafio e aprenda inglês jogando.
+        </p>
+      </div>
 
-    <section class="content">
       <div class="motivation">
         Aprender inglês pode ser mais divertido quando você aceita o desafio, tenta, erra, aprende e continua jogando.
-        Cada fase vencida mostra que você é capaz de ir mais longe. Acredite em você: você é do tamanho dos seus sonhos!
-        <div class="author">Jogo idealizado pelo professor Jasson Bruno.</div>
+        Cada fase vencida mostra que você é capaz de ir mais longe.
+        Acredite em você: você é do tamanho dos seus sonhos!
       </div>
 
-      <div class="grid">
-        <a class="grade g6" href="6ano.html">
+      <div class="series-grid">
+        <a class="series-card six" href="6ano.html">
           <div>
-            <div class="icon">🎒</div>
-            <h2>6º ANO</h2>
-            <p>Greetings, classroom commands, spelling, pronouns, possessive adjectives e vocabulário básico.</p>
+            <div class="series-number">6º</div>
+            <div class="series-title">6º Ano</div>
+            <div class="series-text">Primeiros desafios, vocabulário básico, comandos, saudações e pronomes.</div>
           </div>
-          <div class="enter">ENTRAR</div>
         </a>
 
-        <a class="grade g7" href="7ano.html">
+        <a class="series-card seven" href="7ano.html">
           <div>
-            <div class="icon">💬</div>
-            <h2>7º ANO</h2>
-            <p>Jogos para preferências, opiniões, frequência, convites e comunicação do dia a dia.</p>
+            <div class="series-number">7º</div>
+            <div class="series-title">7º Ano</div>
+            <div class="series-text">Opiniões, preferências, frequência, convites e comunicação do dia a dia.</div>
           </div>
-          <div class="enter">EM BREVE</div>
         </a>
 
-        <a class="grade g8" href="8ano.html">
+        <a class="series-card eight" href="8ano.html">
           <div>
-            <div class="icon">✈️</div>
-            <h2>8º ANO</h2>
-            <p>Experiências, viagens, lazer, leitura, vocabulário e desafios comunicativos.</p>
+            <div class="series-number">8º</div>
+            <div class="series-title">8º Ano</div>
+            <div class="series-text">Experiências, viagens, lazer e desafios de leitura e interação.</div>
           </div>
-          <div class="enter">EM BREVE</div>
         </a>
 
-        <a class="grade g9" href="9ano.html">
+        <a class="series-card nine" href="9ano.html">
           <div>
-            <div class="icon">🧠</div>
-            <h2>9º ANO</h2>
-            <p>Conectores, formação de palavras, sentimentos, leitura e desafios de interpretação.</p>
+            <div class="series-number">9º</div>
+            <div class="series-title">9º Ano</div>
+            <div class="series-text">Conectores, sentimentos, formação de palavras e desafios mais avançados.</div>
           </div>
-          <div class="enter">EM BREVE</div>
         </a>
+      </div>
+
+      <div class="footer">
+        Jogo idealizado pelo professor Jasson Bruno.
       </div>
     </section>
-
-    <div class="footer">
-      Acesse pelo celular, escolha sua série e comece o desafio.
-    </div>
   </main>
 </body>
 </html>
