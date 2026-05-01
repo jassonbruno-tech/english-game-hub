@@ -73,28 +73,97 @@
     .game-grid{display:grid;grid-template-columns:.95fr 1.05fr;gap:16px}
     .wheel-card{text-align:center}
     .wheel-wrap{
-      width:min(78vw,360px);height:min(78vw,360px);margin:8px auto 14px;position:relative;
+      width:min(82vw,380px);height:min(82vw,380px);margin:8px auto 14px;position:relative;
       display:flex;align-items:center;justify-content:center;
     }
     .pointer{
-      position:absolute;top:-5px;left:50%;transform:translateX(-50%);
-      width:0;height:0;border-left:18px solid transparent;border-right:18px solid transparent;
-      border-top:34px solid #111827;z-index:3;filter:drop-shadow(0 2px 2px rgba(0,0,0,.3));
+      position:absolute;
+      top:-14px;
+      left:50%;
+      transform:translateX(-50%);
+      width:0;height:0;
+      border-left:22px solid transparent;
+      border-right:22px solid transparent;
+      border-top:42px solid #111827;
+      z-index:6;
+      filter:drop-shadow(0 4px 4px rgba(0,0,0,.28));
+    }
+    .pointer::after{
+      content:"";
+      position:absolute;
+      left:-8px;
+      top:-40px;
+      width:16px;
+      height:16px;
+      border-radius:50%;
+      background:#f8fafc;
+      box-shadow:0 0 0 4px #111827;
+    }
+    .wheel-rotator{
+      width:100%;
+      height:100%;
+      position:relative;
+      transition:transform 3.3s cubic-bezier(.12,.74,.22,1);
     }
     .wheel{
       width:100%;height:100%;border-radius:50%;border:8px solid #fff;box-shadow:0 14px 30px rgba(0,0,0,.18);
       background:conic-gradient(
-        #2563eb 0deg 45deg,#16a34a 45deg 90deg,#f97316 90deg 135deg,#7c3aed 135deg 180deg,
-        #e11d48 180deg 225deg,#06b6d4 225deg 270deg,#facc15 270deg 315deg,#64748b 315deg 360deg
+        #2563eb 0deg 45deg,
+        #16a34a 45deg 90deg,
+        #f97316 90deg 135deg,
+        #7c3aed 135deg 180deg,
+        #e11d48 180deg 225deg,
+        #06b6d4 225deg 270deg,
+        #facc15 270deg 315deg,
+        #64748b 315deg 360deg
       );
-      transition:transform 3.8s cubic-bezier(.12,.74,.22,1);
-      position:relative;overflow:hidden;
+      position:absolute;
+      inset:0;
+      overflow:hidden;
     }
-    .wheel-label{
-      position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
-      width:46%;height:46%;border-radius:50%;background:white;display:flex;align-items:center;justify-content:center;
-      text-align:center;font-weight:900;color:#1d4ed8;padding:10px;box-shadow:inset 0 0 0 5px #e2e8f0;
-      z-index:2;font-size:18px;
+    .slice-label{
+      position:absolute;
+      left:50%;
+      top:50%;
+      width:92px;
+      margin-left:-46px;
+      text-align:center;
+      color:white;
+      font-weight:900;
+      font-size:11px;
+      line-height:1.05;
+      text-shadow:0 1px 3px rgba(0,0,0,.45);
+      transform-origin:center center;
+      z-index:3;
+      pointer-events:none;
+    }
+    .slice-label span{
+      display:inline-block;
+      background:rgba(255,255,255,.12);
+      border:1px solid rgba(255,255,255,.22);
+      padding:5px 6px;
+      border-radius:10px;
+      backdrop-filter: blur(1px);
+    }
+    .wheel-center{
+      position:absolute;
+      left:50%;
+      top:50%;
+      transform:translate(-50%,-50%);
+      width:43%;
+      height:43%;
+      border-radius:50%;
+      background:white;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      font-weight:900;
+      color:#1d4ed8;
+      padding:10px;
+      box-shadow:inset 0 0 0 5px #e2e8f0, 0 2px 10px rgba(0,0,0,.08);
+      z-index:4;
+      font-size:18px;
     }
     .legend{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px;text-align:left}
     .legend span{
@@ -148,9 +217,10 @@
       .mini-info{grid-template-columns:repeat(2,1fr)}
       .question-box{min-height:auto}
       .legend{grid-template-columns:1fr}
-      .wheel-wrap{width:min(86vw,330px);height:min(86vw,330px)}
+      .wheel-wrap{width:min(88vw,350px);height:min(88vw,350px)}
       .actions{flex-direction:column}
       .question{font-size:18px}
+      .slice-label{width:82px;margin-left:-41px;font-size:10px}
     }
   </style>
 </head>
@@ -186,7 +256,7 @@
           <div class="card">
             <h2>Como jogar?</h2>
             <p><b>1.</b> Clique em <b>SPIN</b> para girar a roleta.</p>
-            <p><b>2.</b> Quando ela parar, leia o tema sorteado.</p>
+            <p><b>2.</b> Quando ela parar, veja qual tema ficou no ponteiro.</p>
             <p><b>3.</b> Responda à pergunta e veja a explicação.</p>
             <p><b>4.</b> Faça pontos, aumente o combo e suba no ranking motivacional.</p>
             <hr style="border:none;border-top:1px solid #e2e8f0;margin:14px 0">
@@ -207,8 +277,11 @@
           <div class="card wheel-card">
             <div class="wheel-wrap">
               <div class="pointer"></div>
-              <div id="wheel" class="wheel"></div>
-              <div id="wheelLabel" class="wheel-label">SPIN</div>
+              <div id="wheelRotator" class="wheel-rotator">
+                <div class="wheel"></div>
+                <div id="wheelLabels"></div>
+              </div>
+              <div id="wheelLabel" class="wheel-center">SPIN</div>
             </div>
             <button id="spinBtn" class="pink" onclick="spinWheel()">SPIN</button>
             <div id="themeResult" class="theme-result">Aguardando a roleta...</div>
@@ -267,6 +340,17 @@ const THEMES = [
   "Greetings","Farewells","Spelling names","Classroom commands",
   "Classroom expressions","Personal information","Personal pronouns","Possessive adjectives"
 ];
+
+const THEME_LABELS = {
+  "Greetings":"Greetings",
+  "Farewells":"Farewells",
+  "Spelling names":"Spelling\nnames",
+  "Classroom commands":"Classroom\ncommands",
+  "Classroom expressions":"Classroom\nexpressions",
+  "Personal information":"Personal\ninformation",
+  "Personal pronouns":"Personal\npronouns",
+  "Possessive adjectives":"Possessive\nadjectives"
+};
 
 const QUESTIONS = [
 {theme:"Greetings",q:"Bob Esponja chegou à escola pela manhã e encontrou a professora. Qual expressão ele pode usar?",o:["Good night","Good morning","Goodbye","See you later"],a:"Good morning",e:"Good morning é usado para cumprimentar alguém pela manhã."},
@@ -346,7 +430,7 @@ const schools = [
 ];
 
 let student = {name:"", class:"", school:""};
-let state = {score:0, corrects:0, combo:0, maxCombo:0, round:1, totalRounds:10, answered:false, current:null, rotation:0, used:[]};
+let state = {score:0, corrects:0, combo:0, maxCombo:0, round:1, totalRounds:10, answered:false, current:null, rotation:0, used:[], spinning:false};
 
 function el(id){return document.getElementById(id)}
 function show(id){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active")); el(id).classList.add("active")}
@@ -357,7 +441,21 @@ function initLegend(){
   const legend = el("legend");
   legend.innerHTML = THEMES.map(t=>`<span>${t}</span>`).join("");
 }
+function renderWheelLabels(){
+  const box = el("wheelLabels");
+  const slice = 360 / THEMES.length;
+  const radius = 122;
+  box.innerHTML = THEMES.map((theme, i)=>{
+    const angle = i * slice + slice/2;
+    return `
+      <div class="slice-label" style="transform:translate(-50%,-50%) rotate(${angle}deg) translateY(-${radius}px) rotate(90deg);">
+        <span>${THEME_LABELS[theme].replace(/\n/g,"<br>")}</span>
+      </div>
+    `;
+  }).join("");
+}
 initLegend();
+renderWheelLabels();
 
 function startGame(){
   const name = el("studentName").value.trim();
@@ -365,7 +463,7 @@ function startGame(){
   const school = el("studentSchool").value.trim();
   if(!name || !klass || !school){ alert("Preencha nome, turma e escola para começar."); return; }
   student = {name, class:klass, school};
-  state = {score:0, corrects:0, combo:0, maxCombo:0, round:1, totalRounds:10, answered:false, current:null, rotation:0, used:[]};
+  state = {score:0, corrects:0, combo:0, maxCombo:0, round:1, totalRounds:10, answered:false, current:null, rotation:0, used:[], spinning:false};
   updateStats();
   el("questionText").textContent = "Clique em SPIN para iniciar a rodada.";
   el("options").innerHTML = "";
@@ -374,6 +472,10 @@ function startGame(){
   el("spinBtn").disabled = false;
   el("themeResult").textContent = "Aguardando a roleta...";
   el("wheelLabel").textContent = "SPIN";
+  el("themeChip").textContent = "Tema";
+  const rotator = el("wheelRotator");
+  rotator.style.transition = "transform 0s";
+  rotator.style.transform = "rotate(0deg)";
   show("gameScreen");
 }
 
@@ -385,24 +487,61 @@ function updateStats(){
 }
 
 function spinWheel(){
-  if(state.answered === false && state.current){ return; }
+  if(state.spinning) return;
+  if(state.answered === false && state.current) return;
+
+  state.spinning = true;
   el("spinBtn").disabled = true;
   el("nextBtn").classList.add("hidden");
   el("feedback").className = "feedback";
   el("options").innerHTML = "";
   el("questionText").textContent = "A roleta está girando...";
+  el("themeResult").textContent = "Girando...";
+  el("wheelLabel").textContent = "SPIN";
+  el("themeChip").textContent = "Tema";
+
   const idx = Math.floor(Math.random()*THEMES.length);
   const selectedTheme = THEMES[idx];
   const slice = 360 / THEMES.length;
-  const target = 360 - (idx * slice + slice/2);
-  state.rotation += 1440 + target + Math.floor(Math.random()*25);
-  el("wheel").style.transform = `rotate(${state.rotation}deg)`;
-  setTimeout(()=>loadQuestion(selectedTheme), 3900);
+  const centerAngle = idx * slice + slice/2;
+  const finalTarget = 360 - centerAngle;
+  const baseStart = state.rotation;
+  const bigSpin = baseStart + 1440 + finalTarget;
+  const overshoot = bigSpin + 14;
+  const back1 = bigSpin - 8;
+  const forward2 = bigSpin + 4;
+  const finalAngle = bigSpin;
+
+  const rotator = el("wheelRotator");
+
+  rotator.style.transition = "transform 3.15s cubic-bezier(.16,.78,.21,1)";
+  rotator.style.transform = `rotate(${overshoot}deg)`;
+
+  setTimeout(()=>{
+    rotator.style.transition = "transform .28s ease-out";
+    rotator.style.transform = `rotate(${back1}deg)`;
+  }, 3180);
+
+  setTimeout(()=>{
+    rotator.style.transition = "transform .20s ease-in-out";
+    rotator.style.transform = `rotate(${forward2}deg)`;
+  }, 3470);
+
+  setTimeout(()=>{
+    rotator.style.transition = "transform .18s ease-out";
+    rotator.style.transform = `rotate(${finalAngle}deg)`;
+  }, 3690);
+
+  setTimeout(()=>{
+    state.rotation = finalAngle;
+    state.spinning = false;
+    loadQuestion(selectedTheme);
+  }, 3920);
 }
 
 function loadQuestion(theme){
   el("themeResult").textContent = `Tema sorteado: ${theme}`;
-  el("wheelLabel").textContent = theme.replace(" ","\n");
+  el("wheelLabel").innerHTML = THEME_LABELS[theme].replace(/\n/g,"<br>");
   el("themeChip").textContent = theme;
 
   let pool = QUESTIONS.filter(q=>q.theme===theme && !state.used.includes(q.q));
@@ -459,6 +598,7 @@ function nextRound(){
   el("nextBtn").classList.add("hidden");
   el("spinBtn").disabled = false;
   el("themeResult").textContent = "Aguardando a roleta...";
+  el("wheelLabel").textContent = "SPIN";
 }
 
 function getPosition(score){
@@ -519,7 +659,7 @@ function saveLocalResult(code){
 }
 
 function restartGame(){
-  state = {score:0, corrects:0, combo:0, maxCombo:0, round:1, totalRounds:10, answered:false, current:null, rotation:state.rotation || 0, used:[]};
+  state = {score:0, corrects:0, combo:0, maxCombo:0, round:1, totalRounds:10, answered:false, current:null, rotation:0, used:[], spinning:false};
   updateStats();
   el("questionText").textContent = "Clique em SPIN para iniciar a rodada.";
   el("options").innerHTML = "";
@@ -527,6 +667,11 @@ function restartGame(){
   el("nextBtn").classList.add("hidden");
   el("spinBtn").disabled = false;
   el("themeResult").textContent = "Aguardando a roleta...";
+  el("wheelLabel").textContent = "SPIN";
+  el("themeChip").textContent = "Tema";
+  const rotator = el("wheelRotator");
+  rotator.style.transition = "transform 0s";
+  rotator.style.transform = "rotate(0deg)";
   show("gameScreen");
 }
 function goHome(){ window.location.href = "6ano.html"; }
