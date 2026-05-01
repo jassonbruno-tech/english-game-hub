@@ -179,6 +179,42 @@ button:active{transform:scale(.98)}
 .line{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #bfdbfe;padding:8px 0;font-weight:800}
 .code{font-size:24px;text-align:center;margin:14px 0 8px;background:white;border-radius:18px;padding:12px;font-weight:900;color:#e11d48}
 .hidden{display:none!important}
+
+.final-hero{
+  border-radius:24px;
+  padding:18px;
+  margin-bottom:14px;
+  text-align:center;
+  color:white;
+  box-shadow:0 12px 24px rgba(0,0,0,.18);
+}
+.final-hero.victory{
+  background:
+    radial-gradient(circle at 15% 15%, rgba(255,255,255,.28), transparent 22%),
+    linear-gradient(135deg,#2563eb,#7c3aed 45%,#e11d48);
+}
+.final-hero.tryagain{
+  background:
+    radial-gradient(circle at 15% 15%, rgba(255,255,255,.28), transparent 22%),
+    linear-gradient(135deg,#0f766e,#2563eb 55%,#7c3aed);
+}
+.final-hero h2{
+  margin:0;
+  font-size:clamp(28px,6vw,46px);
+  letter-spacing:.5px;
+}
+.final-hero h3{
+  margin:4px 0 8px;
+  font-size:clamp(20px,4.5vw,34px);
+}
+.final-hero p{
+  margin:0 auto;
+  max-width:680px;
+  line-height:1.42;
+  font-size:16px;
+  font-weight:800;
+}
+
 @media(max-width:900px){
   body{align-items:flex-start;padding:8px}
   .app{border-radius:22px}
@@ -231,7 +267,7 @@ button:active{transform:scale(.98)}
           <p><b>1.</b> Leia a dica em português.</p>
           <p><b>2.</b> Clique nas letras para descobrir a palavra em inglês.</p>
           <p><b>3.</b> Cada erro faz o bonequinho aparecer aos poucos.</p>
-          <p><b>4.</b> Complete 10 palavras para finalizar o desafio.</p>
+          <p><b>4.</b> Complete até 30 palavras para finalizar o desafio.</p>
           <hr style="border:none;border-top:1px solid #e2e8f0;margin:14px 0">
           <p><b>Conteúdos:</b> greetings, farewells, spelling, classroom commands, classroom expressions, personal pronouns e possessive adjectives.</p>
         </div>
@@ -244,7 +280,7 @@ button:active{transform:scale(.98)}
         <div class="stat"><b id="wins">0</b><span>PALAVRAS</span></div>
         <div class="stat"><b id="errors">0/6</b><span>ERROS</span></div>
         <div class="stat"><b id="combo">0</b><span>COMBO</span></div>
-        <div class="stat"><b id="round">1/10</b><span>RODADA</span></div>
+        <div class="stat"><b id="round">1/30</b><span>RODADA</span></div>
       </div>
 
       <div class="game-grid">
@@ -282,6 +318,7 @@ button:active{transform:scale(.98)}
     </section>
 
     <section id="finalScreen" class="screen">
+      <div id="finalHero" class="final-hero victory"></div>
       <div class="final-grid">
         <div class="print-card">
           <h2>Resultado Final</h2>
@@ -370,7 +407,7 @@ const schools = [
 let student = {name:"", class:"", school:""};
 let state = {
   score:0, wins:0, errors:0, combo:0, maxCombo:0,
-  round:1, totalRounds:10, current:null, guessed:[], usedWords:[], locked:false
+  round:1, totalRounds:30, current:null, guessed:[], usedWords:[], locked:false
 };
 
 function el(id){return document.getElementById(id)}
@@ -383,7 +420,7 @@ function startGame(){
   const school = el("studentSchool").value.trim();
   if(!name || !klass || !school){ alert("Preencha nome, turma e escola para começar."); return; }
   student = {name, class:klass, school};
-  state = {score:0,wins:0,errors:0,combo:0,maxCombo:0,round:1,totalRounds:10,current:null,guessed:[],usedWords:[],locked:false};
+  state = {score:0,wins:0,errors:0,combo:0,maxCombo:0,round:1,totalRounds:30,current:null,guessed:[],usedWords:[],locked:false};
   show("gameScreen");
   loadWord();
 }
@@ -537,6 +574,33 @@ function finishGame(){
   const ranking = buildRanking();
   const me = ranking.find(r=>r.me) || {pos:getPosition(state.score)};
 
+  const completedAllRounds = state.round >= state.totalRounds;
+  const strongResult = state.wins >= 22 || state.score >= 2600;
+  const hero = el("finalHero");
+
+  if(completedAllRounds && strongResult){
+    hero.className = "final-hero victory";
+    hero.innerHTML = `
+      <h2>CONGRATULATIONS!</h2>
+      <h3>YOU ARE THE ONE! 🏆</h3>
+      <p>Parabéns! Você concluiu o desafio e mostrou que está evoluindo no inglês. Continue jogando, aprendendo e subindo de nível!</p>
+    `;
+  }else if(completedAllRounds){
+    hero.className = "final-hero victory";
+    hero.innerHTML = `
+      <h2>CONGRATULATIONS!</h2>
+      <h3>CHALLENGE COMPLETED! ⭐</h3>
+      <p>Você chegou até o final! Cada palavra descoberta mostra que você está aprendendo. Jogue novamente para melhorar sua pontuação e subir no ranking.</p>
+    `;
+  }else{
+    hero.className = "final-hero tryagain";
+    hero.innerHTML = `
+      <h2>TRY AGAIN!</h2>
+      <h3>VOCÊ CONSEGUE IR MAIS LONGE! 🚀</h3>
+      <p>Não pare agora. Cada tentativa ajuda você a lembrar mais palavras em inglês. Volte ao jogo, tente novamente e supere sua própria pontuação!</p>
+    `;
+  }
+
   el("fName").textContent = student.name;
   el("fClass").textContent = student.class;
   el("fSchool").textContent = student.school;
@@ -564,7 +628,7 @@ function finishGame(){
 }
 
 function restartGame(){
-  state = {score:0,wins:0,errors:0,combo:0,maxCombo:0,round:1,totalRounds:10,current:null,guessed:[],usedWords:[],locked:false};
+  state = {score:0,wins:0,errors:0,combo:0,maxCombo:0,round:1,totalRounds:30,current:null,guessed:[],usedWords:[],locked:false};
   show("gameScreen");
   loadWord();
 }
