@@ -737,8 +737,27 @@ function encodeParam(v){
 
 function saveOnlineScore(gameName, score, hits, combo, status){
   if(!student || !session) return;
-  const url = RANKING_URL +
+
+  const cbName = "saveCallback_" + Date.now() + "_" + Math.floor(Math.random()*9999);
+  let script = document.createElement("script");
+
+  window[cbName] = function(data){
+    try{
+      console.log("Ranking salvo:", data);
+    }catch(e){}
+    delete window[cbName];
+    if(script && script.parentNode) script.parentNode.removeChild(script);
+  };
+
+  script.onerror = function(){
+    console.log("Falha ao enviar ranking online.");
+    delete window[cbName];
+    if(script && script.parentNode) script.parentNode.removeChild(script);
+  };
+
+  script.src = RANKING_URL +
     "?action=save" +
+    "&callback=" + cbName +
     "&nome=" + encodeParam(student.name) +
     "&turma=" + encodeParam(student.turma) +
     "&escola=" + encodeParam(student.school) +
@@ -746,9 +765,10 @@ function saveOnlineScore(gameName, score, hits, combo, status){
     "&pontuacao=" + encodeParam(score) +
     "&acertos=" + encodeParam(hits) +
     "&combo=" + encodeParam(combo) +
-    "&status=" + encodeParam(status);
-  const img = new Image();
-  img.src = url + "&t=" + Date.now();
+    "&status=" + encodeParam(status) +
+    "&t=" + Date.now();
+
+  document.body.appendChild(script);
 }
 
 function loadOnlineRanking(){
