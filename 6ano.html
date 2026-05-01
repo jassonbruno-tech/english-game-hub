@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>6º Ano - English Games</title>
+  <style>
+    :root{
+      --bg1:#0f2870;
+      --bg2:#00a6c8;
+      --card:#ffffff;
+      --text:#162033;
+      --muted:#5b6475;
+      --line:#e2e8f0;
+      --shadow:0 14px 28px rgba(0,0,0,.17);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      min-height:100vh;
+      font-family:Arial, Helvetica, sans-serif;
+      background:linear-gradient(135deg,var(--bg1),var(--bg2));
+      color:var(--text);
+      padding:16px;
+    }
+    .wrap{
+      max-width:1080px;
+      margin:0 auto;
+      background:rgba(255,255,255,.96);
+      border-radius:28px;
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+    header{
+      color:white;
+      text-align:center;
+      padding:24px 18px 22px;
+      background:
+        radial-gradient(circle at top left, rgba(255,255,255,.28), transparent 28%),
+        linear-gradient(135deg,#1d4ed8,#38bdf8);
+    }
+    .topline{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:center;
+      max-width:980px;
+      margin:0 auto 12px;
+    }
+    .back{
+      color:white;
+      text-decoration:none;
+      background:rgba(255,255,255,.18);
+      border:1px solid rgba(255,255,255,.38);
+      padding:9px 12px;
+      border-radius:999px;
+      font-weight:800;
+      font-size:14px;
+    }
+    .tag{
+      color:white;
+      background:rgba(255,255,255,.18);
+      border:1px solid rgba(255,255,255,.38);
+      padding:9px 12px;
+      border-radius:999px;
+      font-weight:800;
+      font-size:14px;
+    }
+    h1{
+      margin:6px 0 8px;
+      font-size:clamp(30px,7vw,54px);
+    }
+    .subtitle{
+      max-width:720px;
+      margin:0 auto;
+      line-height:1.4;
+      font-size:clamp(15px,3.5vw,19px);
+      opacity:.96;
+    }
+    main{padding:20px}
+    .topics{
+      background:#f8fafc;
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding:16px;
+      margin-bottom:18px;
+    }
+    .topics h2{
+      margin:0 0 10px;
+      font-size:20px;
+      color:#0f3f91;
+    }
+    .chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+    .chip{
+      background:white;
+      border:1px solid #dbe4f0;
+      border-radius:999px;
+      padding:8px 11px;
+      font-weight:700;
+      font-size:13px;
+      color:#27405f;
+    }
+    .games{
+      display:grid;
+      grid-template-columns:repeat(5,1fr);
+      gap:14px;
+    }
+    .game{
+      min-height:245px;
+      border-radius:24px;
+      padding:18px;
+      text-decoration:none;
+      color:white;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      box-shadow:0 10px 22px rgba(0,0,0,.14);
+      position:relative;
+      overflow:hidden;
+      transition:.18s ease;
+    }
+    .game:hover{transform:translateY(-4px)}
+    .game::after{
+      content:"";
+      width:130px;
+      height:130px;
+      border-radius:50%;
+      background:rgba(255,255,255,.16);
+      position:absolute;
+      right:-45px;
+      bottom:-45px;
+    }
+    .mission{background:linear-gradient(135deg,#2563eb,#06b6d4)}
+    .board{background:linear-gradient(135deg,#f97316,#facc15)}
+    .smart{background:linear-gradient(135deg,#16a34a,#86efac)}
+    .hangman{background:linear-gradient(135deg,#7c3aed,#c084fc)}
+    .spin{background:linear-gradient(135deg,#e11d48,#fb7185)}
+    .emoji{font-size:38px}
+    .game h3{
+      margin:10px 0 8px;
+      font-size:23px;
+      color:white;
+      line-height:1.05;
+    }
+    .game p{
+      margin:0;
+      font-size:14px;
+      line-height:1.35;
+      color:rgba(255,255,255,.95);
+    }
+    .play{
+      margin-top:12px;
+      padding:10px 12px;
+      border-radius:14px;
+      background:rgba(255,255,255,.22);
+      border:1px solid rgba(255,255,255,.36);
+      color:white;
+      text-align:center;
+      font-weight:900;
+      position:relative;
+      z-index:1;
+    }
+    .note{
+      margin-top:18px;
+      color:var(--muted);
+      text-align:center;
+      font-size:14px;
+      line-height:1.35;
+    }
+    @media(max-width:1000px){
+      .games{grid-template-columns:repeat(2,1fr)}
+    }
+    @media(max-width:620px){
+      body{padding:10px}
+      .wrap{border-radius:22px}
+      header{padding:18px 12px}
+      main{padding:14px}
+      .topline{flex-direction:column; align-items:stretch}
+      .back,.tag{text-align:center}
+      .games{grid-template-columns:1fr}
+      .game{min-height:165px}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="topline">
+        <a class="back" href="index.html">⬅ Voltar para séries</a>
+        <div class="tag">🎒 1º Bimestre</div>
+      </div>
+      <h1>6º Ano — English Games</h1>
+      <p class="subtitle">Escolha um jogo para revisar os conteúdos do 1º bimestre de forma leve, divertida e desafiadora.</p>
+    </header>
+
+    <main>
+      <section class="topics">
+        <h2>Conteúdos desta fase</h2>
+        <div class="chips">
+          <span class="chip">Greetings</span>
+          <span class="chip">Farewells</span>
+          <span class="chip">Spelling names</span>
+          <span class="chip">Classroom commands</span>
+          <span class="chip">Classroom expressions</span>
+          <span class="chip">Personal information</span>
+          <span class="chip">Personal pronouns</span>
+          <span class="chip">Possessive adjectives</span>
+        </div>
+      </section>
+
+      <section class="games">
+        <a class="game mission" href="6ano-mission-game.html">
+          <div>
+            <div class="emoji">🚀</div>
+            <h3>Mission Game</h3>
+            <p>Avance por missões, responda desafios e acumule pontos revisando tudo do bimestre.</p>
+          </div>
+          <div class="play">JOGAR</div>
+        </a>
+
+        <a class="game board" href="6ano-board-game.html">
+          <div>
+            <div class="emoji">🎲</div>
+            <h3>Board Game</h3>
+            <p>Jogo de tabuleiro com dado, casas especiais e perguntas de Inglês.</p>
+          </div>
+          <div class="play">JOGAR</div>
+        </a>
+
+        <a class="game smart" href="6ano-smart-choice.html">
+          <div>
+            <div class="emoji">🧩</div>
+            <h3>Smart Choice</h3>
+            <p>Observe imagens, leia as opções e escolha a palavra correta.</p>
+          </div>
+          <div class="play">JOGAR</div>
+        </a>
+
+        <a class="game hangman" href="6ano-hangman-challenge.html">
+          <div>
+            <div class="emoji">🔤</div>
+            <h3>Hangman Challenge</h3>
+            <p>Descubra a palavra secreta com dicas sobre vocabulário e spelling.</p>
+          </div>
+          <div class="play">JOGAR</div>
+        </a>
+
+        <a class="game spin" href="6ano-spin-and-answer.html">
+          <div>
+            <div class="emoji">🎡</div>
+            <h3>Spin and Answer</h3>
+            <p>Gire a roleta, descubra o tema e responda ao desafio sorteado.</p>
+          </div>
+          <div class="play">JOGAR</div>
+        </a>
+      </section>
+
+      <p class="note">
+        Dica: cada jogo ficará em um arquivo separado para carregar melhor no celular.
+      </p>
+    </main>
+  </div>
+</body>
+</html>
