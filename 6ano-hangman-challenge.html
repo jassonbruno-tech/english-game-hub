@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Hangman Challenge - 6º Ano</title>
+<style>
+:root{
+  --blue:#2563eb; --cyan:#06b6d4; --pink:#e11d48; --green:#16a34a;
+  --yellow:#facc15; --orange:#f97316; --purple:#7c3aed;
+  --dark:#172033; --muted:#5b6780; --line:#dbe4f0;
+  --shadow:0 16px 34px rgba(0,0,0,.18);
+}
+*{box-sizing:border-box}
+body{
+  margin:0; min-height:100vh; font-family:Arial, Helvetica, sans-serif;
+  color:var(--dark);
+  background:
+    radial-gradient(circle at 10% 10%, rgba(255,255,255,.18), transparent 18%),
+    radial-gradient(circle at 90% 15%, rgba(255,255,255,.14), transparent 16%),
+    radial-gradient(circle at 15% 85%, rgba(255,255,255,.12), transparent 16%),
+    radial-gradient(circle at 85% 82%, rgba(255,255,255,.12), transparent 17%),
+    linear-gradient(135deg,#0f2870,#00a6c8 38%,#7c3aed 68%,#e11d48);
+  padding:12px; display:flex; align-items:center; justify-content:center;
+}
+.app{
+  width:100%; max-width:1120px;
+  background:linear-gradient(180deg,rgba(255,255,255,.95),rgba(247,250,255,.96));
+  border-radius:28px; overflow:hidden; box-shadow:var(--shadow); position:relative;
+}
+.corner-brand{
+  position:fixed; right:14px; bottom:14px; z-index:999;
+  background:linear-gradient(135deg,#111827,#1d4ed8,#e11d48);
+  color:white; padding:10px 14px; border-radius:16px 16px 4px 16px;
+  font-size:12px; font-weight:900; line-height:1.2;
+  box-shadow:0 10px 20px rgba(0,0,0,.25); border:2px solid rgba(255,255,255,.3);
+  max-width:230px;
+}
+header{
+  color:white; text-align:center; padding:18px 16px 16px;
+  background:
+    radial-gradient(circle at 15% 10%,rgba(255,255,255,.3),transparent 28%),
+    radial-gradient(circle at 85% 15%,rgba(255,255,255,.15),transparent 18%),
+    linear-gradient(135deg,#2563eb,#7c3aed 45%,#e11d48);
+}
+.topbar{display:flex;justify-content:space-between;gap:10px;align-items:center;max-width:1000px;margin:0 auto 8px}
+.back,.pill{
+  color:white;text-decoration:none;background:rgba(255,255,255,.18);
+  border:1px solid rgba(255,255,255,.38);padding:8px 11px;border-radius:999px;
+  font-size:13px;font-weight:800;
+}
+h1{margin:6px 0 4px;font-size:clamp(28px,7vw,52px)}
+.subtitle{margin:0 auto;max-width:780px;line-height:1.35;font-size:clamp(14px,3.5vw,18px);opacity:.96}
+main{
+  padding:16px;
+  background:
+    radial-gradient(circle at 12% 10%, rgba(59,130,246,.12), transparent 18%),
+    radial-gradient(circle at 85% 20%, rgba(225,29,72,.10), transparent 18%),
+    radial-gradient(circle at 50% 90%, rgba(139,92,246,.10), transparent 22%);
+}
+.screen{display:none}.screen.active{display:block}
+.card{
+  background:linear-gradient(180deg,#ffffff,#f8fbff);
+  border:1px solid var(--line);border-radius:24px;padding:18px;
+  box-shadow:0 8px 20px rgba(0,0,0,.08);
+}
+.start-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:16px}
+.motivation{
+  background:linear-gradient(135deg,#eff6ff,#fdf2f8 55%,#faf5ff);
+  border:1px solid #dbeafe;border-radius:20px;padding:15px;
+  line-height:1.45;color:#243047;margin-bottom:14px;
+}
+.author{font-weight:900;color:#164aa5;margin-top:8px}
+label{display:block;font-weight:800;margin:10px 0 5px}
+input{
+  width:100%;padding:13px;border-radius:14px;border:1px solid #cbd5e1;
+  font-size:16px;outline:none;background:white;
+}
+input:focus{border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,.14)}
+button{
+  border:none;border-radius:16px;padding:13px 15px;font-weight:900;font-size:16px;
+  cursor:pointer;transition:.18s ease;
+}
+button:active{transform:scale(.98)}
+.primary{background:linear-gradient(135deg,#2563eb,#06b6d4);color:white;width:100%;margin-top:14px}
+.secondary{background:linear-gradient(135deg,#e2e8f0,#cbd5e1);color:#1e293b}
+.green{background:#dcfce7;color:#166534}
+.pink{background:linear-gradient(135deg,#e11d48,#fb7185);color:white}
+.small{font-size:13px;color:var(--muted);line-height:1.35}
+.mini-info{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:14px}
+.stat{
+  background:linear-gradient(135deg,#ffffff,#eff6ff);
+  border:1px solid #cfe0ff;border-radius:18px;padding:10px;text-align:center
+}
+.stat b{display:block;font-size:22px;color:#0f4aa3}
+.stat span{font-size:12px;color:var(--muted);font-weight:700}
+.game-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:16px}
+.hangman-area{
+  text-align:center;
+  background:linear-gradient(180deg,#f8fbff,#eef7ff 45%,#fff7fb);
+}
+.gallows{
+  height:250px;
+  background:
+    radial-gradient(circle at 75% 20%,rgba(250,204,21,.25),transparent 18%),
+    linear-gradient(180deg,#eef6ff,#fdf2f8);
+  border:1px solid var(--line);
+  border-radius:22px;
+  margin-bottom:14px;
+  position:relative;
+  overflow:hidden;
+}
+.base{position:absolute;bottom:24px;left:56px;width:150px;height:10px;background:#334155;border-radius:999px}
+.pole{position:absolute;bottom:24px;left:86px;width:10px;height:185px;background:#334155;border-radius:999px}
+.top{position:absolute;top:41px;left:86px;width:120px;height:10px;background:#334155;border-radius:999px}
+.rope{position:absolute;top:48px;left:196px;width:5px;height:35px;background:#92400e;border-radius:999px}
+.part{position:absolute;display:none;background:#111827}
+.head{top:81px;left:174px;width:48px;height:48px;border-radius:50%;background:white;border:7px solid #111827}
+.body{top:126px;left:196px;width:6px;height:65px;border-radius:999px}
+.armL{top:138px;left:163px;width:45px;height:6px;border-radius:999px;transform:rotate(-28deg)}
+.armR{top:138px;left:194px;width:45px;height:6px;border-radius:999px;transform:rotate(28deg)}
+.legL{top:187px;left:164px;width:45px;height:6px;border-radius:999px;transform:rotate(-45deg)}
+.legR{top:187px;left:191px;width:45px;height:6px;border-radius:999px;transform:rotate(45deg)}
+.face{
+  position:absolute; top:96px; left:186px; width:24px; height:16px; display:none; z-index:5;
+  color:#111827; font-weight:900; font-size:18px; letter-spacing:2px;
+}
+.topic-card{
+  background:linear-gradient(135deg,#ffffff,#eff6ff);
+  border:1px solid #dbeafe;border-radius:18px;padding:12px;text-align:left;
+}
+.topic-card b{color:#1d4ed8}
+.word-box{
+  background:linear-gradient(180deg,#ffffff,#f8fbff 45%,#fef2f2);
+  border:1px solid var(--line);border-radius:24px;padding:18px;text-align:center;
+}
+.word{
+  display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin:14px 0 18px;
+}
+.letter-slot{
+  width:42px;height:52px;border-bottom:5px solid #1d4ed8;display:flex;align-items:center;justify-content:center;
+  font-size:30px;font-weight:900;color:#172033;text-transform:uppercase;
+}
+.hint{
+  background:linear-gradient(135deg,#fff7ed,#fef3c7);
+  border:1px solid #fed7aa;color:#9a3412;border-radius:18px;padding:12px;font-weight:800;line-height:1.35;margin-bottom:12px;
+}
+.keyboard{
+  display:grid;grid-template-columns:repeat(9,1fr);gap:7px;margin-top:12px;
+}
+.key{
+  background:linear-gradient(135deg,#eff6ff,#eef2ff);
+  border:2px solid #bfdbfe;color:#1e40af;
+  border-radius:12px;padding:10px 0;font-weight:900;font-size:17px;
+}
+.key:hover{background:linear-gradient(135deg,#dbeafe,#e0f2fe)}
+.key.used{background:#e2e8f0;border-color:#cbd5e1;color:#64748b;cursor:not-allowed}
+.key.good{background:#dcfce7;border-color:#22c55e;color:#14532d}
+.key.bad{background:#fee2e2;border-color:#ef4444;color:#7f1d1d}
+.message{
+  margin-top:12px;padding:12px;border-radius:16px;line-height:1.35;font-weight:800;display:none
+}
+.message.ok{display:block;background:#dcfce7;color:#14532d;border:1px solid #86efac}
+.message.bad{display:block;background:#fee2e2;color:#7f1d1d;border:1px solid #fecaca}
+.actions{display:flex;gap:10px;margin-top:14px}
+.actions button{flex:1}
+.rank-table{width:100%;border-collapse:separate;border-spacing:0 8px}
+.rank-table th{text-align:left;font-size:12px;color:var(--muted);padding:0 8px}
+.rank-table td{background:#f8fafc;padding:10px 8px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-weight:800}
+.rank-table td:first-child{border-left:1px solid var(--line);border-radius:14px 0 0 14px}
+.rank-table td:last-child{border-right:1px solid var(--line);border-radius:0 14px 14px 0}
+.me td{background:#fff7ed!important;border-color:#fb923c!important;color:#9a3412}
+.final-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.print-card{
+  border:3px dashed #2563eb;border-radius:24px;padding:18px;
+  background:linear-gradient(135deg,#eff6ff,#fdf2f8);
+}
+.print-card h2{margin:0 0 10px;color:#1d4ed8;font-size:28px}
+.line{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #bfdbfe;padding:8px 0;font-weight:800}
+.code{font-size:24px;text-align:center;margin:14px 0 8px;background:white;border-radius:18px;padding:12px;font-weight:900;color:#e11d48}
+.hidden{display:none!important}
+@media(max-width:900px){
+  body{align-items:flex-start;padding:8px}
+  .app{border-radius:22px}
+  header{padding:15px 10px}
+  .topbar{flex-direction:column;align-items:stretch}
+  .back,.pill{text-align:center}
+  main{padding:10px}
+  .start-grid,.game-grid,.final-grid{grid-template-columns:1fr}
+  .mini-info{grid-template-columns:repeat(2,1fr)}
+  .keyboard{grid-template-columns:repeat(7,1fr)}
+  .letter-slot{width:34px;height:46px;font-size:25px}
+  .actions{flex-direction:column}
+  .corner-brand{right:8px;bottom:8px;font-size:11px;padding:9px 12px;max-width:190px}
+}
+</style>
+</head>
+<body>
+<div class="corner-brand">Jogo idealizado pelo<br>professor Jasson Bruno.</div>
+
+<div class="app">
+  <header>
+    <div class="topbar">
+      <a class="back" href="6ano.html">⬅ Voltar ao 6º ano</a>
+      <div class="pill">🔤 6º Ano • 1º Bimestre</div>
+    </div>
+    <h1>Hangman Challenge</h1>
+    <p class="subtitle">Descubra a palavra secreta usando as dicas. Cada letra certa aproxima você da vitória!</p>
+  </header>
+
+  <main>
+    <section id="startScreen" class="screen active">
+      <div class="start-grid">
+        <div class="card">
+          <div class="motivation">
+            Aprender inglês pode ser mais divertido quando você aceita o desafio, tenta, erra, aprende e continua jogando.
+            Cada fase vencida mostra que você é capaz de ir mais longe. Acredite em você: você é do tamanho dos seus sonhos!
+            <div class="author">Jogo idealizado pelo professor Jasson Bruno.</div>
+          </div>
+          <label for="studentName">Nome do aluno</label>
+          <input id="studentName" placeholder="Digite seu nome"/>
+          <label for="studentClass">Turma</label>
+          <input id="studentClass" placeholder="Ex.: 601"/>
+          <label for="studentSchool">Escola</label>
+          <input id="studentSchool" placeholder="Ex.: EMEF Delfina de Jesus Amorim"/>
+          <button class="primary" onclick="startGame()">COMEÇAR DESAFIO</button>
+          <p class="small">Ao final, tire print da tela com sua pontuação e código de comprovação.</p>
+        </div>
+        <div class="card">
+          <h2>Como jogar?</h2>
+          <p><b>1.</b> Leia a dica em português.</p>
+          <p><b>2.</b> Clique nas letras para descobrir a palavra em inglês.</p>
+          <p><b>3.</b> Cada erro faz o bonequinho aparecer aos poucos.</p>
+          <p><b>4.</b> Complete 10 palavras para finalizar o desafio.</p>
+          <hr style="border:none;border-top:1px solid #e2e8f0;margin:14px 0">
+          <p><b>Conteúdos:</b> greetings, farewells, spelling, classroom commands, classroom expressions, personal pronouns e possessive adjectives.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="gameScreen" class="screen">
+      <div class="mini-info">
+        <div class="stat"><b id="score">0</b><span>PONTOS</span></div>
+        <div class="stat"><b id="wins">0</b><span>PALAVRAS</span></div>
+        <div class="stat"><b id="errors">0/6</b><span>ERROS</span></div>
+        <div class="stat"><b id="combo">0</b><span>COMBO</span></div>
+        <div class="stat"><b id="round">1/10</b><span>RODADA</span></div>
+      </div>
+
+      <div class="game-grid">
+        <div class="card hangman-area">
+          <div class="gallows">
+            <div class="base"></div>
+            <div class="pole"></div>
+            <div class="top"></div>
+            <div class="rope"></div>
+            <div id="part1" class="part head"></div>
+            <div id="part2" class="part body"></div>
+            <div id="part3" class="part armL"></div>
+            <div id="part4" class="part armR"></div>
+            <div id="part5" class="part legL"></div>
+            <div id="part6" class="part legR"></div>
+            <div id="face" class="face">× ×</div>
+          </div>
+          <div class="topic-card">
+            <b>Tema:</b> <span id="themeText">---</span><br>
+            <b>Dica:</b> <span id="hintText">---</span>
+          </div>
+        </div>
+
+        <div class="card word-box">
+          <div class="hint" id="hintBox">A dica aparecerá aqui.</div>
+          <div id="wordDisplay" class="word"></div>
+          <div id="keyboard" class="keyboard"></div>
+          <div id="message" class="message"></div>
+          <div class="actions">
+            <button id="nextBtn" class="green hidden" onclick="nextWord()">PRÓXIMA PALAVRA</button>
+            <button class="secondary" onclick="finishGame()">FINALIZAR</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="finalScreen" class="screen">
+      <div class="final-grid">
+        <div class="print-card">
+          <h2>Resultado Final</h2>
+          <div class="line"><span>Aluno:</span><span id="fName"></span></div>
+          <div class="line"><span>Turma:</span><span id="fClass"></span></div>
+          <div class="line"><span>Escola:</span><span id="fSchool"></span></div>
+          <div class="line"><span>Jogo:</span><span>Hangman Challenge</span></div>
+          <div class="line"><span>Pontuação:</span><span id="fScore"></span></div>
+          <div class="line"><span>Palavras descobertas:</span><span id="fWins"></span></div>
+          <div class="line"><span>Maior combo:</span><span id="fCombo"></span></div>
+          <div class="line"><span>Posição:</span><span id="fPosition"></span></div>
+          <div class="line"><span>Data/Hora:</span><span id="fDate"></span></div>
+          <div class="code" id="fCode"></div>
+          <p class="small"><b>Atenção:</b> tire print desta tela e envie ao professor.</p>
+        </div>
+
+        <div class="card" style="background:linear-gradient(180deg,#ffffff,#f8fbff 45%,#fdf2f8)">
+          <h2>Ranking do Desafio</h2>
+          <p class="small">Ranking motivacional gerado pelo jogo para acompanhar seu progresso.</p>
+          <table class="rank-table">
+            <thead><tr><th>Pos.</th><th>Aluno</th><th>Escola</th><th>Pontos</th></tr></thead>
+            <tbody id="rankingBody"></tbody>
+          </table>
+          <div class="actions">
+            <button class="primary" onclick="restartGame()">JOGAR NOVAMENTE</button>
+            <button class="secondary" onclick="goHome()">VOLTAR</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+const WORDS = [
+  {word:"HELLO", hint:"Cumprimento usado para dizer olá.", theme:"Greetings"},
+  {word:"HI", hint:"Forma curta de dizer oi.", theme:"Greetings"},
+  {word:"GOODBYE", hint:"Despedida em inglês.", theme:"Farewells"},
+  {word:"BYE", hint:"Forma curta de dizer tchau.", theme:"Farewells"},
+  {word:"MORNING", hint:"Parte do dia em Good morning.", theme:"Greetings"},
+  {word:"AFTERNOON", hint:"Parte do dia em Good afternoon.", theme:"Greetings"},
+  {word:"EVENING", hint:"Saudação usada no início da noite.", theme:"Greetings"},
+  {word:"NIGHT", hint:"Usada em Good night.", theme:"Farewells"},
+  {word:"SPELL", hint:"Significa soletrar.", theme:"Spelling names"},
+  {word:"NAME", hint:"Significa nome.", theme:"Personal information"},
+  {word:"BOOK", hint:"Objeto usado para ler e estudar.", theme:"Classroom vocabulary"},
+  {word:"PENCIL", hint:"Usado para escrever e pode ser apagado.", theme:"Classroom vocabulary"},
+  {word:"PEN", hint:"Usada para escrever com tinta.", theme:"Classroom vocabulary"},
+  {word:"NOTEBOOK", hint:"Caderno em inglês.", theme:"Classroom vocabulary"},
+  {word:"TEACHER", hint:"Pessoa que ensina.", theme:"School people"},
+  {word:"STUDENT", hint:"Pessoa que estuda.", theme:"School people"},
+  {word:"SCHOOL", hint:"Lugar onde estudamos.", theme:"Places"},
+  {word:"CLASSROOM", hint:"Sala de aula em inglês.", theme:"Places"},
+  {word:"FRIEND", hint:"Amigo ou amiga em inglês.", theme:"People"},
+  {word:"LISTEN", hint:"Comando para escutar.", theme:"Classroom commands"},
+  {word:"REPEAT", hint:"Comando para falar novamente.", theme:"Classroom commands"},
+  {word:"READ", hint:"Comando para ler.", theme:"Classroom commands"},
+  {word:"WRITE", hint:"Comando para escrever.", theme:"Classroom commands"},
+  {word:"OPEN", hint:"Verbo usado em Open your book.", theme:"Classroom commands"},
+  {word:"CLOSE", hint:"Verbo usado em Close your book.", theme:"Classroom commands"},
+  {word:"PLEASE", hint:"Por favor em inglês.", theme:"Classroom expressions"},
+  {word:"THANKS", hint:"Obrigado/obrigada de forma curta.", theme:"Classroom expressions"},
+  {word:"HELP", hint:"Ajuda em inglês.", theme:"Classroom expressions"},
+  {word:"BATHROOM", hint:"Banheiro em inglês.", theme:"Classroom expressions"},
+  {word:"YOU", hint:"Pronome que pode significar você.", theme:"Personal pronouns"},
+  {word:"HE", hint:"Pronome para ele.", theme:"Personal pronouns"},
+  {word:"SHE", hint:"Pronome para ela.", theme:"Personal pronouns"},
+  {word:"WE", hint:"Pronome para nós.", theme:"Personal pronouns"},
+  {word:"THEY", hint:"Pronome para eles ou elas.", theme:"Personal pronouns"},
+  {word:"MY", hint:"Meu/minha em inglês.", theme:"Possessive adjectives"},
+  {word:"YOUR", hint:"Seu/sua em inglês.", theme:"Possessive adjectives"},
+  {word:"HIS", hint:"Dele em inglês.", theme:"Possessive adjectives"},
+  {word:"HER", hint:"Dela em inglês.", theme:"Possessive adjectives"},
+  {word:"OUR", hint:"Nosso/nossa em inglês.", theme:"Possessive adjectives"},
+  {word:"THEIR", hint:"Deles/delas em inglês.", theme:"Possessive adjectives"}
+];
+
+const names = ["Ana Clara","João Pedro","Maria Eduarda","Lucas Gabriel","Sofia Vitória","Pedro Henrique","Laura Sofia","Gabriel Lima","Júlia Beatriz","Matheus Ryan","Lívia Maria","Miguel Arthur","Isabela Cristina","Davi Lucas","Helena Vitória"];
+const schools = [
+  "EMEF Delfina de Jesus Amorim","EMEF Frei Fabiano Merz","EMEF Brigadeiro Eduardo Gomes",
+  "EMEF César Simões Ramalheiro","EMEF Haroldo Veloso","EMEF Pérola do Maicá",
+  "EMEF Deputado Ubaldo Corrêa","EMEF Dr. Everaldo de Sousa Martins",
+  "EMEF Eloína Colares e Silva","EMEF Cel. Mário Fernandes Imbiriba"
+];
+
+let student = {name:"", class:"", school:""};
+let state = {
+  score:0, wins:0, errors:0, combo:0, maxCombo:0,
+  round:1, totalRounds:10, current:null, guessed:[], usedWords:[], locked:false
+};
+
+function el(id){return document.getElementById(id)}
+function show(id){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active")); el(id).classList.add("active")}
+function pick(arr){return arr[Math.floor(Math.random()*arr.length)]}
+
+function startGame(){
+  const name = el("studentName").value.trim();
+  const klass = el("studentClass").value.trim();
+  const school = el("studentSchool").value.trim();
+  if(!name || !klass || !school){ alert("Preencha nome, turma e escola para começar."); return; }
+  student = {name, class:klass, school};
+  state = {score:0,wins:0,errors:0,combo:0,maxCombo:0,round:1,totalRounds:10,current:null,guessed:[],usedWords:[],locked:false};
+  show("gameScreen");
+  loadWord();
+}
+
+function updateStats(){
+  el("score").textContent = state.score;
+  el("wins").textContent = state.wins;
+  el("errors").textContent = `${state.errors}/6`;
+  el("combo").textContent = state.combo;
+  el("round").textContent = `${state.round}/${state.totalRounds}`;
+}
+
+function resetHangman(){
+  for(let i=1;i<=6;i++) el("part"+i).style.display = "none";
+  el("face").style.display = "none";
+}
+
+function drawHangman(){
+  for(let i=1;i<=6;i++) el("part"+i).style.display = i <= state.errors ? "block" : "none";
+  el("face").style.display = state.errors >= 6 ? "block" : "none";
+}
+
+function loadWord(){
+  resetHangman();
+  state.errors = 0;
+  state.guessed = [];
+  state.locked = false;
+  el("message").className = "message";
+  el("nextBtn").classList.add("hidden");
+
+  let pool = WORDS.filter(w => !state.usedWords.includes(w.word));
+  if(pool.length === 0){ state.usedWords = []; pool = WORDS; }
+  state.current = pick(pool);
+  state.usedWords.push(state.current.word);
+
+  el("themeText").textContent = state.current.theme;
+  el("hintText").textContent = state.current.hint;
+  el("hintBox").innerHTML = `<b>Dica:</b> ${state.current.hint}`;
+
+  renderWord();
+  renderKeyboard();
+  updateStats();
+}
+
+function renderWord(){
+  const word = state.current.word;
+  el("wordDisplay").innerHTML = word.split("").map(ch => {
+    const show = state.guessed.includes(ch);
+    return `<div class="letter-slot">${show ? ch : ""}</div>`;
+  }).join("");
+}
+
+function renderKeyboard(){
+  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+  el("keyboard").innerHTML = letters.map(l => `<button class="key" id="key_${l}" onclick="guessLetter('${l}')">${l}</button>`).join("");
+}
+
+function guessLetter(letter){
+  if(state.locked || state.guessed.includes(letter)) return;
+
+  const key = el("key_"+letter);
+  key.classList.add("used");
+  key.disabled = true;
+  state.guessed.push(letter);
+
+  if(state.current.word.includes(letter)){
+    key.classList.add("good");
+    state.score += 15;
+    renderWord();
+    checkWin();
+  }else{
+    key.classList.add("bad");
+    state.errors++;
+    state.score = Math.max(0, state.score - 5);
+    drawHangman();
+    if(state.errors >= 6) loseWord();
+  }
+  updateStats();
+}
+
+function checkWin(){
+  const won = state.current.word.split("").every(ch => state.guessed.includes(ch));
+  if(!won) return;
+
+  state.locked = true;
+  state.wins++;
+  state.combo++;
+  state.maxCombo = Math.max(state.maxCombo, state.combo);
+  const bonus = 100 + Math.max(0, (6 - state.errors) * 15) + (state.combo >= 3 ? 30 : 0);
+  state.score += bonus;
+
+  const msg = el("message");
+  msg.className = "message ok";
+  msg.innerHTML = `✅ Excellent! Você descobriu a palavra <b>${state.current.word}</b>.<br>Ganhou bônus de ${bonus} pontos.`;
+  disableKeyboard();
+  el("nextBtn").classList.remove("hidden");
+  updateStats();
+}
+
+function loseWord(){
+  state.locked = true;
+  state.combo = 0;
+  const msg = el("message");
+  msg.className = "message bad";
+  msg.innerHTML = `❌ Quase! A palavra era <b>${state.current.word}</b>.<br>Leia a dica novamente e tente a próxima.`;
+  disableKeyboard(true);
+  el("nextBtn").classList.remove("hidden");
+  updateStats();
+}
+
+function disableKeyboard(showWord=false){
+  document.querySelectorAll(".key").forEach(k => k.disabled = true);
+  if(showWord){
+    state.current.word.split("").forEach(ch => {
+      if(!state.guessed.includes(ch)) state.guessed.push(ch);
+    });
+    renderWord();
+  }
+}
+
+function nextWord(){
+  if(state.round >= state.totalRounds){ finishGame(); return; }
+  state.round++;
+  loadWord();
+}
+
+function getPosition(score){
+  if(score >= 1350) return 1;
+  if(score >= 1100) return 2;
+  if(score >= 850) return 3;
+  if(score >= 620) return 4;
+  if(score >= 420) return 5;
+  return 6;
+}
+
+function buildRanking(){
+  const pos = getPosition(state.score);
+  const baseScores = [1480,1210,980,760,580,390,260].map(s => s + Math.floor(Math.random()*60) - 25);
+  let rows = [];
+  for(let i=0;i<7;i++) rows.push({name:pick(names), school:pick(schools), score:baseScores[i], me:false});
+  rows.splice(pos-1,0,{name:student.name, school:student.school, score:state.score, me:true});
+  rows = rows.sort((a,b)=>b.score-a.score).slice(0,8);
+  if(rows.findIndex(r=>r.me) === -1) rows[7] = {name:student.name, school:student.school, score:state.score, me:true};
+  rows.sort((a,b)=>b.score-a.score);
+  return rows.map((r,i)=>({...r, pos:i+1}));
+}
+
+function finishGame(){
+  const now = new Date();
+  const code = `HANG-6-${String(state.score).padStart(4,"0")}-${Math.floor(100+Math.random()*900)}`;
+  const ranking = buildRanking();
+  const me = ranking.find(r=>r.me) || {pos:getPosition(state.score)};
+
+  el("fName").textContent = student.name;
+  el("fClass").textContent = student.class;
+  el("fSchool").textContent = student.school;
+  el("fScore").textContent = state.score;
+  el("fWins").textContent = `${state.wins}/${state.totalRounds}`;
+  el("fCombo").textContent = state.maxCombo;
+  el("fPosition").textContent = `${me.pos}º lugar`;
+  el("fDate").textContent = now.toLocaleString("pt-BR");
+  el("fCode").textContent = code;
+
+  el("rankingBody").innerHTML = ranking.map(r => `
+    <tr class="${r.me ? "me" : ""}">
+      <td>${r.pos}º</td><td>${r.name}${r.me ? " ⭐" : ""}</td><td>${r.school}</td><td>${r.score}</td>
+    </tr>
+  `).join("");
+
+  try{
+    const key = "hangman6_results";
+    const list = JSON.parse(localStorage.getItem(key) || "[]");
+    list.push({student, score:state.score, wins:state.wins, combo:state.maxCombo, code, date:new Date().toISOString()});
+    localStorage.setItem(key, JSON.stringify(list.slice(-20)));
+  }catch(e){}
+
+  show("finalScreen");
+}
+
+function restartGame(){
+  state = {score:0,wins:0,errors:0,combo:0,maxCombo:0,round:1,totalRounds:10,current:null,guessed:[],usedWords:[],locked:false};
+  show("gameScreen");
+  loadWord();
+}
+
+function goHome(){ window.location.href = "6ano.html"; }
+</script>
+</body>
+</html>
