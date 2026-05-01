@@ -1,0 +1,1538 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>English Game Hub - Professor Jasson Bruno</title>
+<style>
+:root{
+  --blue:#2563eb;
+  --red:#ef4444;
+  --green:#22c55e;
+  --yellow:#fbbf24;
+  --orange:#f97316;
+  --purple:#8b5cf6;
+  --dark:#0f172a;
+  --ink:#1e293b;
+  --light:#f8fafc;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{
+  margin:0;
+  min-height:100%;
+  font-family:Arial, Helvetica, sans-serif;
+  color:var(--ink);
+  background:linear-gradient(180deg,#dbeafe 0%,#eff6ff 45%,#f8fafc 100%);
+  overflow-x:hidden;
+}
+button,input{font-family:inherit}
+.hidden{display:none!important}
+.screen{width:100%;min-height:100dvh;padding:10px}
+.card{
+  width:100%;
+  max-width:540px;
+  margin:0 auto;
+  background:rgba(255,255,255,.98);
+  border:4px solid var(--yellow);
+  border-radius:22px;
+  box-shadow:0 12px 30px rgba(15,23,42,.15);
+  padding:14px;
+}
+h1{
+  font-size:27px;
+  text-align:center;
+  margin:2px 0 6px;
+  color:#0f2a6d;
+  line-height:1.08;
+}
+h2{
+  margin:0;
+  color:#0f2a6d;
+}
+.subtitle{
+  text-align:center;
+  font-size:14px;
+  color:#475569;
+  margin:0 0 10px;
+  line-height:1.35;
+}
+label{
+  display:block;
+  margin:8px 0 4px;
+  font-size:14px;
+  font-weight:900;
+  color:#0f2a6d;
+}
+input{
+  width:100%;
+  border:2px solid #cbd5e1;
+  border-radius:14px;
+  padding:11px 12px;
+  font-size:15px;
+  font-weight:800;
+  background:#fff;
+}
+.box{
+  background:#f8fafc;
+  border:2px solid #dbeafe;
+  border-radius:18px;
+  padding:12px;
+  margin-top:10px;
+}
+.box p{
+  margin:0;
+  font-size:14px;
+  line-height:1.42;
+}
+.heroSimple{
+  border-radius:22px;
+  padding:16px;
+  background:linear-gradient(135deg,#0b2a6f 0 20%,#ffffff 20% 24%,#b91c1c 24% 44%,#ffffff 44% 48%,#0b2a6f 48% 68%,#ffffff 68% 72%,#b91c1c 72% 92%,#ffffff 92% 100%);
+  position:relative;
+  overflow:hidden;
+  box-shadow:inset 0 0 0 4px rgba(255,255,255,.35);
+  margin-bottom:10px;
+}
+.controller{
+  font-size:74px;
+  text-align:center;
+  filter:drop-shadow(0 6px 8px rgba(0,0,0,.3));
+}
+.heroText{
+  background:rgba(255,255,255,.94);
+  border-radius:18px;
+  padding:10px;
+  margin-top:8px;
+  text-align:center;
+  font-weight:1000;
+  color:#0b2a6f;
+}
+.btn{
+  border:none;
+  border-radius:15px;
+  padding:13px 14px;
+  font-size:15px;
+  font-weight:900;
+  cursor:pointer;
+  box-shadow:0 4px 0 rgba(0,0,0,.18);
+}
+.btn:active{transform:translateY(2px); box-shadow:0 2px 0 rgba(0,0,0,.18)}
+.btn.green{background:var(--green);color:white}
+.btn.blue{background:var(--blue);color:white}
+.btn.red{background:var(--red);color:white}
+.btn.orange{background:var(--orange);color:white}
+.btn.purple{background:var(--purple);color:white}
+.fullBtn{width:100%;margin-top:10px}
+.choice{
+  width:100%;
+  display:grid;
+  grid-template-columns:52px 1fr;
+  gap:10px;
+  align-items:center;
+  text-align:left;
+  background:#fff;
+  border:3px solid #dbeafe;
+  color:var(--ink);
+  margin-top:8px;
+}
+.choice .ico{
+  font-size:32px;
+  text-align:center;
+}
+.choice b{
+  display:block;
+  color:#0f2a6d;
+  font-size:16px;
+}
+.choice small{
+  display:block;
+  color:#64748b;
+  font-size:12px;
+  line-height:1.2;
+}
+.rankBox{
+  background:#f8fafc;
+  border:2px solid #e2e8f0;
+  border-radius:16px;
+  padding:10px;
+  margin-top:10px;
+  font-size:14px;
+  font-weight:900;
+  line-height:1.45;
+}
+.topBar{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:6px;
+  margin-bottom:8px;
+}
+.badge{
+  background:white;
+  border:2px solid #e2e8f0;
+  border-radius:14px;
+  padding:7px 8px;
+  text-align:center;
+  font-size:12px;
+  font-weight:900;
+  box-shadow:0 5px 12px rgba(15,23,42,.08);
+}
+.badge.big{
+  grid-column:1/-1;
+  background:#0f2a6d;
+  color:white;
+  border-color:#0f2a6d;
+  font-size:14px;
+}
+.gameCard{
+  background:white;
+  border:3px solid #dbeafe;
+  border-radius:20px;
+  padding:12px;
+  box-shadow:0 10px 24px rgba(15,23,42,.10);
+}
+.progress{
+  height:13px;
+  background:#e2e8f0;
+  border-radius:999px;
+  overflow:hidden;
+  margin:8px 0 6px;
+}
+.fill{
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,#22c55e,#84cc16);
+  transition:.2s;
+}
+.timerWrap{margin:6px 0 8px}
+.timerLabel{
+  font-size:12px;
+  font-weight:1000;
+  color:#92400e;
+  text-align:center;
+  margin-bottom:4px;
+}
+.timerBar{
+  height:12px;
+  background:#fde68a;
+  border-radius:999px;
+  overflow:hidden;
+  border:2px solid #f59e0b;
+}
+.timerFill{
+  height:100%;
+  width:100%;
+  background:linear-gradient(90deg,#facc15,#f59e0b);
+  transition:width .1s linear;
+}
+.question{
+  margin:10px 0 8px;
+  background:#f8fafc;
+  border:2px solid #e2e8f0;
+  border-radius:18px;
+  min-height:120px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:12px;
+  font-weight:900;
+  font-size:20px;
+  line-height:1.3;
+  color:#0f172a;
+}
+.visualIcon{
+  font-size:72px;
+  text-align:center;
+  background:#f8fafc;
+  border:2px solid #e2e8f0;
+  border-radius:20px;
+  padding:12px;
+}
+.options{
+  display:grid;
+  gap:8px;
+}
+.opt{
+  background:white;
+  border:3px solid #e2e8f0;
+  border-radius:16px;
+  padding:12px;
+  font-size:16px;
+  font-weight:900;
+  text-align:center;
+  cursor:pointer;
+}
+.opt.correct{background:#dcfce7;border-color:#22c55e;color:#166534}
+.opt.wrong{background:#fee2e2;border-color:#ef4444;color:#991b1b}
+.feedback{
+  min-height:28px;
+  margin-top:9px;
+  font-size:18px;
+  font-weight:900;
+  text-align:center;
+}
+.feedback.good{color:#166534}
+.feedback.bad{color:#991b1b}
+
+.boardCard{
+  background:linear-gradient(180deg,#dbeafe 0%,#fef3c7 20%,#bbf7d0 100%);
+  border:4px solid white;
+  border-radius:22px;
+  position:relative;
+  overflow:hidden;
+  min-height:500px;
+  box-shadow:0 12px 26px rgba(15,23,42,.14);
+}
+.place{
+  position:absolute;
+  z-index:4;
+  background:rgba(255,255,255,.96);
+  border:2px solid #cbd5e1;
+  border-radius:12px;
+  padding:5px 7px;
+  font-size:11px;
+  font-weight:900;
+  color:#0f2a6d;
+  max-width:44%;
+}
+.place.start{left:8px;bottom:8px;border-color:#7dd3fc}
+.place.end{right:8px;top:8px;border-color:#86efac;text-align:right}
+svg.road{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  z-index:0;
+}
+.track{
+  fill:none;
+  stroke:#64748b;
+  stroke-width:42;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+.trackLine{
+  fill:none;
+  stroke:#f8fafc;
+  stroke-width:3;
+  stroke-linecap:round;
+  stroke-dasharray:9 7;
+}
+.node{
+  position:absolute;
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  border:3px solid white;
+  box-shadow:0 5px 10px rgba(15,23,42,.18);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:900;
+  font-size:13px;
+  color:#0f172a;
+  background:#fefce8;
+  z-index:1;
+}
+.node.start{background:#bae6fd}
+.node.finish{background:#86efac}
+.node.specialForward{background:#dcfce7}
+.node.specialBack{background:#fee2e2}
+.node.specialExtra{background:#ede9fe}
+.node.specialSkip{background:#fde68a}
+.node small{
+  position:absolute;
+  top:-14px;
+  white-space:nowrap;
+  background:white;
+  padding:1px 4px;
+  border-radius:999px;
+  font-size:8px;
+  border:1px solid #cbd5e1;
+}
+.token{
+  position:absolute;
+  width:30px;
+  height:30px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:18px;
+  border:3px solid white;
+  box-shadow:0 5px 10px rgba(15,23,42,.22);
+  z-index:3;
+  transition:left .24s ease, top .24s ease;
+}
+.token.team1{background:var(--red);color:white}
+.token.team2{background:var(--blue);color:white}
+.controls{
+  background:white;
+  border:3px solid #dbeafe;
+  border-radius:20px;
+  padding:10px;
+  box-shadow:0 10px 24px rgba(15,23,42,.10);
+  margin-top:8px;
+}
+.turnCard{
+  background:#eff6ff;
+  border:2px solid #bfdbfe;
+  color:#0f2a6d;
+  border-radius:15px;
+  padding:9px;
+  text-align:center;
+  font-size:18px;
+  font-weight:900;
+}
+.mobileControls{
+  display:grid;
+  grid-template-columns:84px 1fr;
+  gap:8px;
+  margin-top:8px;
+  align-items:center;
+}
+.dice{
+  width:78px;
+  height:78px;
+  border-radius:18px;
+  background:#fff7ed;
+  border:4px solid #fdba74;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:38px;
+  font-weight:900;
+  color:#9a3412;
+}
+.positionLine{
+  margin-top:8px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:6px;
+  font-size:13px;
+  font-weight:900;
+}
+.pos{
+  background:#f8fafc;
+  border:2px solid #e2e8f0;
+  border-radius:12px;
+  padding:6px;
+  text-align:center;
+}
+.bottomButtons{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:6px;
+  margin-top:8px;
+}
+.bottomButtons .btn{
+  padding:10px 6px;
+  font-size:12px;
+}
+
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(15,23,42,.76);
+  z-index:30;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:10px;
+}
+.modal.active{display:flex}
+.modalCard{
+  width:100%;
+  max-width:520px;
+  max-height:94dvh;
+  overflow:auto;
+  background:white;
+  border:4px solid var(--yellow);
+  border-radius:24px;
+  padding:14px;
+  box-shadow:0 18px 48px rgba(15,23,42,.28);
+}
+.modalCard h3{
+  margin:0 0 5px;
+  color:#0f2a6d;
+  font-size:22px;
+  text-align:center;
+}
+.modalCard p{
+  margin:0;
+  font-size:15px;
+  color:#475569;
+  text-align:center;
+}
+.resultGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin:12px 0;
+}
+.result{
+  background:#f8fafc;
+  border:3px solid #e2e8f0;
+  border-radius:16px;
+  padding:10px;
+  text-align:center;
+}
+.result.win{background:#fef3c7;border-color:#fbbf24}
+.result .big{
+  font-size:22px;
+  font-weight:900;
+}
+.hero{
+  text-align:center;
+  border-radius:22px;
+  padding:16px;
+  margin-bottom:10px;
+  background:#fff7ed;
+  border:4px solid #fbbf24;
+}
+.hero .heroIcon{font-size:72px}
+.hero .heroText2{
+  font-size:27px;
+  font-weight:1000;
+  color:#0b2a6f;
+  line-height:1.05;
+}
+@media (orientation:landscape) and (max-height:560px){
+  .screen{padding:6px}
+  #boardScreen .boardLayout{
+    display:grid;
+    grid-template-columns:1fr 250px;
+    gap:8px;
+    align-items:start;
+  }
+  .boardCard{min-height:calc(100dvh - 80px)}
+  .controls{margin-top:0}
+}
+</style>
+</head>
+<body>
+
+<section id="homeScreen" class="screen">
+  <div class="card">
+    <div class="heroSimple">
+      <div class="controller">🎮</div>
+      <div class="heroText">English Game Hub 🇺🇸</div>
+    </div>
+    <p class="subtitle">Aprender inglês pode ser mais divertido quando você aceita o desafio, tenta, erra, aprende e continua jogando. Cada fase vencida mostra que você é capaz de ir mais longe. Acredite em você: você é do tamanho dos seus sonhos!</p>
+    <div class="box">
+      <p><b>Jogo idealizado pelo professor Jasson Bruno.</b></p>
+    </div>
+
+    <label>Nome do aluno</label>
+    <input id="studentName" placeholder="Ex.: Ana Clara">
+
+    <label>Turma</label>
+    <input id="studentClass" placeholder="Ex.: 601">
+
+    <label>Escola</label>
+    <input id="studentSchool" placeholder="Ex.: Escola Delfina">
+
+    <button class="choice btn" onclick="openGame('missions')">
+      <span class="ico">🎯</span>
+      <span><b>Missões</b><small>Fases com barra amarela de tempo, combo e vidas.</small></span>
+    </button>
+
+    <button class="choice btn" onclick="openGame('board')">
+      <span class="ico">🎲</span>
+      <span><b>Tabuleiro</b><small>Cones, dado, trajeto bonito do Parque da Cidade até a Escola Delfina.</small></span>
+    </button>
+
+    <button class="choice btn" onclick="openGame('smart')">
+      <span class="ico">🧠</span>
+      <span><b>Smart Choice</b><small>Imagens, situações e escolhas rápidas com muito vocabulário.</small></span>
+    </button>
+  </div>
+</section>
+
+<section id="hubScreen" class="screen hidden">
+  <div class="card">
+    <h1>Escolha o próximo desafio</h1>
+    <p class="subtitle">Sua pontuação continua acumulando.</p>
+    <div class="rankBox" id="sessionPanel"></div>
+    <button class="choice btn" onclick="openGame('missions')">
+      <span class="ico">🎯</span>
+      <span><b>Missões</b><small>Continue somando pontos nas missões.</small></span>
+    </button>
+    <button class="choice btn" onclick="openGame('board')">
+      <span class="ico">🎲</span>
+      <span><b>Tabuleiro</b><small>Continue jogando o desafio com cones.</small></span>
+    </button>
+    <button class="choice btn" onclick="openGame('smart')">
+      <span class="ico">🧠</span>
+      <span><b>Smart Choice</b><small>Continue treinando com desafios rápidos.</small></span>
+    </button>
+    <button class="btn blue fullBtn" onclick="showFinalRanking()">Finalizar e ver ranking geral</button>
+  </div>
+</section>
+
+<section id="missionsScreen" class="screen hidden">
+  <div class="topBar">
+    <div class="badge big">🎯 Missões</div>
+    <div class="badge">Pontos<br><span id="mScore">0</span></div>
+    <div class="badge">Vidas<br><span id="mLives">❤️❤️❤️</span></div>
+    <div class="badge">Combo<br><span id="mCombo">0</span></div>
+    <div class="badge">Missão<br><span id="mMission">1/4</span></div>
+  </div>
+
+  <div class="gameCard">
+    <div class="rankBox" id="missionInfo">Missão 1 • Pergunta 1/10</div>
+    <div class="progress"><div class="fill" id="missionFill"></div></div>
+
+    <div class="timerWrap">
+      <div class="timerLabel">Tempo para responder</div>
+      <div class="timerBar"><div class="timerFill" id="missionTimer"></div></div>
+    </div>
+
+    <div class="question" id="missionQuestion"></div>
+    <div class="options" id="missionOptions"></div>
+    <div class="feedback" id="missionFeedback"></div>
+
+    <button class="btn blue fullBtn" onclick="backToHub()">Voltar à central</button>
+  </div>
+</section>
+
+<section id="smartScreen" class="screen hidden">
+  <div class="topBar">
+    <div class="badge big">🧠 Smart Choice</div>
+    <div class="badge">Pontos<br><span id="sScore">0</span></div>
+    <div class="badge">Vidas<br><span id="sLives">❤️❤️❤️</span></div>
+    <div class="badge">Combo<br><span id="sCombo">0</span></div>
+    <div class="badge">Desafio<br><span id="sStage">1/24</span></div>
+  </div>
+
+  <div class="gameCard">
+    <div class="rankBox" id="smartInfo">Desafio 1/24</div>
+    <div class="progress"><div class="fill" id="smartFill"></div></div>
+
+    <div class="visualIcon" id="smartIcon">🍎</div>
+    <div class="question" id="smartQuestion"></div>
+    <div class="options" id="smartOptions"></div>
+    <div class="feedback" id="smartFeedback"></div>
+
+    <button class="btn blue fullBtn" onclick="backToHub()">Voltar à central</button>
+  </div>
+</section>
+
+<section id="boardScreen" class="screen hidden">
+  <div class="topBar">
+    <div class="badge big">🎲 English Board Challenge</div>
+    <div class="badge">Seus pontos<br><span id="bScore">0</span></div>
+    <div class="badge">Suas vidas<br><span id="bLives">❤️❤️❤️</span></div>
+    <div class="badge">Seu combo<br><span id="bCombo">0</span></div>
+    <div class="badge">Placar<br><span id="bRoundInfo">0 x 0</span></div>
+  </div>
+
+  <div class="boardLayout">
+    <div class="boardCard" id="board">
+      <div class="place start">🌳 Parque da Cidade</div>
+      <div class="place end">🏫 Escola Delfina</div>
+      <svg class="road" viewBox="0 0 420 680" preserveAspectRatio="none">
+        <path id="roadPath" class="track"></path>
+        <path id="roadLine" class="trackLine"></path>
+      </svg>
+      <div id="nodesLayer"></div>
+      <div class="token team1" id="token1">🔺</div>
+      <div class="token team2" id="token2">🔵</div>
+    </div>
+
+    <div class="controls">
+      <div class="turnCard" id="turnCard">Vez do Jogador 1 🔺</div>
+      <div class="mobileControls">
+        <div class="dice" id="diceFace">🎲</div>
+        <button class="btn orange" id="rollBtn" onclick="rollDice()">JOGAR O DADO</button>
+      </div>
+      <div class="positionLine">
+        <div class="pos">🔺 Casa <span id="pos1">1</span></div>
+        <div class="pos">🔵 Casa <span id="pos2">1</span></div>
+      </div>
+      <div id="skipInfo" style="margin-top:6px;text-align:center;font-size:12px;font-weight:900;color:#92400e"></div>
+      <div class="bottomButtons">
+        <button class="btn blue" onclick="resetBoardRound()">NOVA</button>
+        <button class="btn red" onclick="resetBoardScore()">ZERAR</button>
+        <button class="btn purple" onclick="backToHub()">CENTRAL</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="modal" id="questionModal">
+  <div class="modalCard">
+    <h3>❓ Desafio do Tabuleiro</h3>
+    <p id="questionIntro">Jogador 1, responda:</p>
+    <div class="question" id="questionText"></div>
+    <div class="options" id="questionOptions"></div>
+    <div class="feedback" id="questionFeedback"></div>
+  </div>
+</div>
+
+<div class="modal" id="messageModal">
+  <div class="modalCard">
+    <h3 id="messageTitle">Aviso</h3>
+    <p id="messageText" style="margin-top:10px;font-size:18px;line-height:1.35"></p>
+    <button class="btn green fullBtn" onclick="closeMessage()">CONTINUAR</button>
+  </div>
+</div>
+
+<div class="modal" id="resultModal">
+  <div class="modalCard">
+    <h3 id="resultTitle">🏁 Fim da partida</h3>
+    <p>A corrida terminou!</p>
+    <div class="resultGrid">
+      <div class="result" id="result1">
+        <div style="font-size:34px">🔺</div>
+        <div class="big">Jogador 1</div>
+        <div>Casa <span id="finalPos1"></span></div>
+      </div>
+      <div class="result" id="result2">
+        <div style="font-size:34px">🔵</div>
+        <div class="big">Jogador 2</div>
+        <div>Casa <span id="finalPos2"></span></div>
+      </div>
+    </div>
+    <p id="resultText" style="font-size:19px;font-weight:900;color:#0f172a"></p>
+    <button class="btn green fullBtn" onclick="closeBoardResult()">CONTINUAR</button>
+  </div>
+</div>
+
+<div class="modal" id="missionContinueModal">
+  <div class="modalCard">
+    <h3>🎉 Missão concluída!</h3>
+    <p id="missionContinueText" style="margin-top:10px;font-size:18px;line-height:1.35"></p>
+    <button class="btn green fullBtn" onclick="continueMission()">ACEITAR PRÓXIMA MISSÃO</button>
+  </div>
+</div>
+
+<section id="rankingScreen" class="screen hidden">
+  <div class="card">
+    <div class="hero">
+      <div class="heroIcon" id="rankHeroIcon">🏆</div>
+      <div class="heroText2" id="rankHeroText">CONGRATULATIONS,<br>YOU ARE THE ONE!!!</div>
+      <p class="subtitle" id="rankHeroSub">Resultado da partida.</p>
+    </div>
+
+    <div class="rankBox" id="rankingBox"></div>
+
+    <button class="btn green fullBtn" id="continueScoreBtn" onclick="continueScore()">Continuar pontuação em outro jogo</button>
+    <button class="btn blue fullBtn" onclick="showFinalRanking()">Finalizar e ver ranking geral</button>
+    <button class="btn orange fullBtn" id="restartCurrentBtn" onclick="restartCurrentGame()">Jogar este jogo novamente</button>
+  </div>
+</section>
+
+<script>
+const QUESTION_BANK = [{"q": "Bob Esponja terminou o trabalho no Siri Cascudo e encontrou Patrick indo embora à noite. Qual expressão representa “Boa noite!” como despedida?", "options": ["Good night!", "Good morning!", "Open your book.", "Sit down."], "correct": 0, "theme": "Greetings"}, {"q": "Sonic chegou cedo para treinar com Tails. Qual cumprimento combina com esse momento da manhã?", "options": ["Good morning!", "Goodbye!", "Good night!", "Be quiet!"], "correct": 0, "theme": "Greetings"}, {"q": "Cristiano Ronaldo encerrou a entrevista e foi embora. Qual opção é uma despedida?", "options": ["Goodbye!", "Good afternoon!", "Stand up!", "Spell your name."], "correct": 0, "theme": "Greetings"}, {"q": "Na escola, um colega chega à tarde e fala com você. Qual cumprimento está correto?", "options": ["Good afternoon!", "Good night!", "See you yesterday!", "Good book!"], "correct": 0, "theme": "Greetings"}, {"q": "Na aula, a professora pediu atenção. Qual comando significa “Escutem!”?", "options": ["Listen!", "Write!", "Jump!", "Close door!"], "correct": 0, "theme": "Commands"}, {"q": "Durante a aula de Inglês, o professor quer que os alunos abram o material. Qual comando está correto?", "options": ["Open your book.", "Close your book.", "Good evening.", "My name is book."], "correct": 0, "theme": "Commands"}, {"q": "Na aula de Ciências, o professor quer silêncio para explicar o experimento. Qual comando combina melhor?", "options": ["Be quiet!", "Good night!", "How old are you?", "Blue pencil."], "correct": 0, "theme": "Commands"}, {"q": "O professor quer que você escreva a resposta no caderno. Qual comando representa isso?", "options": ["Write the answer.", "Good afternoon!", "Listen the pencil.", "My name is answer."], "correct": 0, "theme": "Commands"}, {"q": "Messi fez 3 gols no jogo. Qual palavra representa o número 3 em inglês?", "options": ["three", "thirteen", "thirty", "tree"], "correct": 0, "theme": "Numbers"}, {"q": "No placar do videogame apareceu o número 20. Como ele é escrito em inglês?", "options": ["twenty", "twelve", "ten", "two"], "correct": 0, "theme": "Numbers"}, {"q": "Em Matemática, a professora escreveu 15 no quadro. Qual alternativa está correta?", "options": ["fifteen", "fifty", "five", "fourteen"], "correct": 0, "theme": "Numbers"}, {"q": "No ranking do jogo apareceu 152 pontos. Como podemos escrever esse número em inglês?", "options": ["one hundred fifty-two", "one thousand fifty-two", "one hundred twenty-five", "fifteen-two"], "correct": 0, "theme": "Numbers"}, {"q": "A turma fez 1030 pontos. Como esse número pode ser escrito em inglês?", "options": ["one thousand thirty", "one hundred thirty", "three thousand ten", "one thousand three"], "correct": 0, "theme": "Numbers"}, {"q": "Wandinha apareceu em cena e todos falaram sobre ela. Qual pronome substitui “Wandinha”?", "options": ["she", "he", "they", "it"], "correct": 0, "theme": "Pronouns"}, {"q": "Bob Esponja estava sorrindo. Qual pronome substitui “Bob Esponja”?", "options": ["he", "she", "they", "we"], "correct": 0, "theme": "Pronouns"}, {"q": "Messi e Neymar entraram juntos em campo. Qual pronome substitui os dois?", "options": ["they", "he", "she", "it"], "correct": 0, "theme": "Pronouns"}, {"q": "Se a frase fala de “eu e meus amigos”, qual pronome usamos?", "options": ["we", "he", "it", "she"], "correct": 0, "theme": "Pronouns"}, {"q": "Neymar mostrou a chuteira dele depois do treino. Como dizer “a chuteira dele” em inglês?", "options": ["his shoe", "her shoe", "my shoe", "our shoe"], "correct": 0, "theme": "Possessives"}, {"q": "Wandinha pegou a mochila dela. Como dizer “a mochila dela” em inglês?", "options": ["her backpack", "his backpack", "my backpack", "their backpack"], "correct": 0, "theme": "Possessives"}, {"q": "Você quer dizer “meu caderno”. Qual expressão está correta?", "options": ["my notebook", "your notebook", "his notebook", "her notebook"], "correct": 0, "theme": "Possessives"}, {"q": "O professor falou da escola de vocês. Qual expressão representa “a escola de vocês”?", "options": ["your school", "my school", "his school", "her school"], "correct": 0, "theme": "Possessives"}, {"q": "Homem-Aranha se apresentou. Qual frase está correta?", "options": ["I am Spider-Man.", "I is Spider-Man.", "I are Spider-Man.", "I be Spider-Man."], "correct": 0, "theme": "Verb to be"}, {"q": "Wandinha estava sendo descrita como inteligente. Qual frase está correta?", "options": ["She is smart.", "She are smart.", "She am smart.", "She be smart."], "correct": 0, "theme": "Verb to be"}, {"q": "Messi e Cristiano são jogadores famosos. Como dizer isso em inglês?", "options": ["They are famous players.", "They is famous players.", "They am famous players.", "They be famous players."], "correct": 0, "theme": "Verb to be"}, {"q": "Você está pronto para jogar. Qual frase está correta?", "options": ["You are ready.", "You is ready.", "You am ready.", "You be ready."], "correct": 0, "theme": "Verb to be"}, {"q": "Lula Molusco disse que Bob Esponja não era o chefe dele. Qual frase está correta?", "options": ["He is not my boss.", "He not is my boss.", "He are not my boss.", "He am not my boss."], "correct": 0, "theme": "Verb to be"}, {"q": "O jogo não é fácil. Qual alternativa está correta?", "options": ["The game is not easy.", "The game are not easy.", "The game not is easy.", "The game am not easy."], "correct": 0, "theme": "Verb to be"}, {"q": "Na aula, os alunos não estão atrasados. Qual frase está correta?", "options": ["They are not late.", "They is not late.", "They not are late.", "They am not late."], "correct": 0, "theme": "Verb to be"}, {"q": "Eu não estou cansado. Qual frase está correta?", "options": ["I am not tired.", "I is not tired.", "I are not tired.", "I not am tired."], "correct": 0, "theme": "Verb to be"}, {"q": "Sandy viu Bob Esponja animado e perguntou: “Ele está feliz?” Qual pergunta está correta?", "options": ["Is he happy?", "He is happy?", "Are he happy?", "Am he happy?"], "correct": 0, "theme": "Verb to be"}, {"q": "Em perguntas com verb to be, o verbo vem antes do sujeito. Como fica “Eles estão prontos?”", "options": ["Are they ready?", "They are ready?", "Is they ready?", "Am they ready?"], "correct": 0, "theme": "Verb to be"}, {"q": "Você quer perguntar “Você é um estudante?”. Qual frase está correta?", "options": ["Are you a student?", "You are a student?", "Is you a student?", "Am you a student?"], "correct": 0, "theme": "Verb to be"}, {"q": "Como perguntar “Ela está na escola?”", "options": ["Is she at school?", "She is at school?", "Are she at school?", "Am she at school?"], "correct": 0, "theme": "Verb to be"}, {"q": "Na cantina, um aluno pediu hambúrguer. Qual palavra representa esse alimento em inglês?", "options": ["hamburger", "window", "yellow", "rabbit"], "correct": 0, "theme": "Vocabulary"}, {"q": "Na aula de Arte, a professora pediu para usar a cor azul. Qual palavra representa “azul”?", "options": ["blue", "red", "brown", "green"], "correct": 0, "theme": "Vocabulary"}, {"q": "Em Ciências, apareceu a imagem de um cachorro. Qual palavra representa esse animal?", "options": ["dog", "duck", "frog", "bear"], "correct": 0, "theme": "Vocabulary"}, {"q": "João foi ao Parque da Cidade no domingo. Qual palavra representa “park”?", "options": ["park", "school", "hospital", "store"], "correct": 0, "theme": "Vocabulary"}, {"q": "Na sala, a aluna pegou um lápis. Qual palavra representa “lápis”?", "options": ["pencil", "chair", "door", "teacher"], "correct": 0, "theme": "Vocabulary"}, {"q": "Na merenda, havia milk e juice. Qual palavra representa “leite”?", "options": ["milk", "juice", "water", "bread"], "correct": 0, "theme": "Vocabulary"}, {"q": "Na mochila do aluno havia um caderno. Qual palavra representa “caderno”?", "options": ["notebook", "backpack", "ruler", "eraser"], "correct": 0, "theme": "Vocabulary"}, {"q": "No passeio da escola, os alunos chegaram à praia. Qual palavra representa “praia”?", "options": ["beach", "hospital", "restaurant", "window"], "correct": 0, "theme": "Vocabulary"}, {"q": "Goku se apresentou antes da luta e disse: “Meu nome é Goku”. Qual frase está correta?", "options": ["My name is Goku.", "My name are Goku.", "I name is Goku.", "Name my is Goku."], "correct": 0, "theme": "Personal information"}, {"q": "Ao conhecer alguém, uma pergunta comum é “Qual é o seu nome?”. Como fica em inglês?", "options": ["What is your name?", "How old name you?", "Where your name?", "What your age is name?"], "correct": 0, "theme": "Personal information"}, {"q": "Para perguntar a idade de um colega, qual frase está correta?", "options": ["How old are you?", "How are old you?", "What old are you?", "Are you how old?"], "correct": 0, "theme": "Personal information"}, {"q": "Em uma atividade de soletração, o aluno precisa dizer as letras do nome. Qual verbo representa “soletrar”?", "options": ["spell", "play", "listen", "draw"], "correct": 0, "theme": "Personal information"}, {"q": "No celular, o botão “Start” aparece antes de iniciar um jogo. Essa palavra significa:", "options": ["começar", "pausar", "fechar", "voltar"], "correct": 0, "theme": "Daily life"}, {"q": "No YouTube, o botão “Play” aparece para iniciar um vídeo. O que ele significa?", "options": ["reproduzir/tocar", "escrever", "silêncio", "quadro"], "correct": 0, "theme": "Daily life"}, {"q": "Na aula de Matemática, um aluno disse que a atividade era difícil. Qual palavra em inglês significa “difícil”?", "options": ["difficult", "easy", "cool", "fun"], "correct": 0, "theme": "Daily life"}, {"q": "Na aula de Educação Física, um aluno falou que o jogo foi divertido. Qual palavra em inglês significa “divertido”?", "options": ["fun", "boring", "late", "orange"], "correct": 0, "theme": "Daily life"}, {"q": "Se você quer dizer “Eu concordo”, qual expressão está correta?", "options": ["I agree.", "I don’t agree.", "I am agree.", "Agree I don’t."], "correct": 0, "theme": "Daily life"}, {"q": "Se você quer dizer “Eu não concordo”, qual expressão está correta?", "options": ["I don’t agree.", "I agree.", "I am not agree.", "I no agree."], "correct": 0, "theme": "Daily life"}, {"q": "No desafio apareceu o número 7. Qual alternativa representa esse número em inglês?", "options": ["seven", "eight", "six", "fifteen"], "correct": 0, "theme": "Numbers"}, {"q": "No desafio apareceu o número 8. Qual alternativa representa esse número em inglês?", "options": ["eight", "nine", "seven", "fifteen"], "correct": 0, "theme": "Numbers"}, {"q": "No desafio apareceu o número 9. Qual alternativa representa esse número em inglês?", "options": ["nine", "ten", "eight", "fifteen"], "correct": 0, "theme": "Numbers"}, {"q": "No desafio apareceu o número 11. Qual alternativa representa esse número em inglês?", "options": ["eleven", "twelve", "ten", "fifteen"], "correct": 0, "theme": "Numbers"}, {"q": "No desafio apareceu o número 14. Qual alternativa representa esse número em inglês?", "options": ["fourteen", "fifteen", "thirteen", "fifty"], "correct": 0, "theme": "Numbers"}, {"q": "No desafio apareceu o número 17. Qual alternativa representa esse número em inglês?", "options": ["seventeen", "eighteen", "sixteen", "fifteen"], "correct": 0, "theme": "Numbers"}, {"q": "No desafio apareceu o número 21. Qual alternativa representa esse número em inglês?", "options": ["twenty-one", "twenty-two", "twenty", "fifteen"], "correct": 0, "theme": "Numbers"}, {"q": "No desafio apareceu o número 24. Qual alternativa representa esse número em inglês?", "options": ["twenty-four", "twenty-five", "twenty-three", "fifteen"], "correct": 0, "theme": "Numbers"}, {"q": "No desafio apareceu o número 36. Qual alternativa representa esse número em inglês?", "options": ["thirty-six", "thirty-seven", "thirty-five", "fifteen"], "correct": 0, "theme": "Numbers"}, {"q": "No desafio apareceu o número 42. Qual alternativa representa esse número em inglês?", "options": ["forty-two", "forty-three", "forty-one", "fifteen"], "correct": 0, "theme": "Numbers"}, {"q": "No desafio apareceu o número 58. Qual alternativa representa esse número em inglês?", "options": ["fifty-eight", "fifty-nine", "fifty-seven", "fifteen"], "correct": 0, "theme": "Numbers"}, {"q": "No desafio apareceu o número 67. Qual alternativa representa esse número em inglês?", "options": ["sixty-seven", "sixty-eight", "sixty-six", "fifteen"], "correct": 0, "theme": "Numbers"}, {"q": "No desafio apareceu o número 73. Qual alternativa representa esse número em inglês?", "options": ["seventy-three", "seventy-four", "seventy-two", "fifteen"], "correct": 0, "theme": "Numbers"}, {"q": "No desafio apareceu o número 88. Qual alternativa representa esse número em inglês?", "options": ["eighty-eight", "eighty-nine", "eighty-seven", "fifteen"], "correct": 0, "theme": "Numbers"}, {"q": "No desafio apareceu o número 91. Qual alternativa representa esse número em inglês?", "options": ["ninety-one", "ninety-two", "ninety", "fifteen"], "correct": 0, "theme": "Numbers"}, {"q": "No desafio apareceu o número 100. Qual alternativa representa esse número em inglês?", "options": ["one hundred", "one hundred one", "ninety-nine", "fifteen"], "correct": 0, "theme": "Numbers"}, {"q": "No desafio apareceu o número 125. Qual alternativa representa esse número em inglês?", "options": ["one hundred twenty-five", "one hundred twenty-six", "one hundred twenty-four", "fifteen"], "correct": 0, "theme": "Numbers"}, {"q": "No desafio apareceu o número 152. Qual alternativa representa esse número em inglês?", "options": ["one hundred fifty-two", "one hundred fifty-three", "one hundred fifty-one", "fifteen"], "correct": 0, "theme": "Numbers"}, {"q": "No desafio apareceu o número 304. Qual alternativa representa esse número em inglês?", "options": ["three hundred four", "three hundred five", "three hundred three", "fifteen"], "correct": 0, "theme": "Numbers"}, {"q": "No desafio apareceu o número 487. Qual alternativa representa esse número em inglês?", "options": ["four hundred eighty-seven", "four hundred eighty-eight", "four hundred eighty-six", "fifteen"], "correct": 0, "theme": "Numbers"}, {"q": "No desafio apareceu o número 999. Qual alternativa representa esse número em inglês?", "options": ["nine hundred ninety-nine", "one thousand", "nine hundred ninety-eight", "fifteen"], "correct": 0, "theme": "Numbers"}, {"q": "No desafio apareceu o número 1030. Qual alternativa representa esse número em inglês?", "options": ["one thousand thirty", "one thousand thirty-one", "one thousand twenty-nine", "fifteen"], "correct": 0, "theme": "Numbers"}];
+const VISUAL_BANK = [{"icon": "🍎", "prompt": "Qual palavra combina com a imagem?", "options": ["apple", "dog", "blue"], "correct": 0, "theme": "Vocabulary"}, {"icon": "🎒", "prompt": "Qual palavra combina com a imagem?", "options": ["backpack", "window", "teacher"], "correct": 0, "theme": "Vocabulary"}, {"icon": "🐶", "prompt": "Qual palavra combina com a imagem?", "options": ["dog", "cat", "park"], "correct": 0, "theme": "Vocabulary"}, {"icon": "🔵", "prompt": "Qual palavra combina com a imagem?", "options": ["blue", "red", "green"], "correct": 0, "theme": "Vocabulary"}, {"icon": "🏫", "prompt": "Qual palavra combina com a imagem?", "options": ["school", "beach", "store"], "correct": 0, "theme": "Vocabulary"}, {"icon": "📚", "prompt": "Qual palavra combina com a imagem?", "options": ["book", "juice", "chair"], "correct": 0, "theme": "Vocabulary"}, {"icon": "🏖️", "prompt": "Qual palavra combina com a imagem?", "options": ["beach", "park", "bread"], "correct": 0, "theme": "Vocabulary"}, {"icon": "🥛", "prompt": "Qual palavra combina com a imagem?", "options": ["milk", "water", "bread"], "correct": 0, "theme": "Vocabulary"}, {"icon": "🐵", "prompt": "Qual palavra combina com a imagem?", "options": ["monkey", "lion", "duck"], "correct": 0, "theme": "Vocabulary"}, {"icon": "✏️", "prompt": "Qual palavra combina com a imagem?", "options": ["pencil", "eraser", "phone"], "correct": 0, "theme": "Vocabulary"}, {"icon": "3️⃣", "prompt": "Qual número em inglês combina com a imagem?", "options": ["three", "thirteen", "thirty"], "correct": 0, "theme": "Numbers"}, {"icon": "2️⃣0️⃣", "prompt": "Qual número em inglês combina com a imagem?", "options": ["twenty", "twelve", "two"], "correct": 0, "theme": "Numbers"}, {"icon": "🕷️", "prompt": "Complete corretamente: I ___ Spider-Man.", "options": ["am", "is", "are"], "correct": 0, "theme": "Verb to be"}, {"icon": "👧", "prompt": "Complete corretamente: She ___ smart.", "options": ["is", "am", "are"], "correct": 0, "theme": "Verb to be"}, {"icon": "👦👦", "prompt": "Complete corretamente: They ___ friends.", "options": ["are", "is", "am"], "correct": 0, "theme": "Verb to be"}, {"icon": "❓👦😊", "prompt": "Complete a pergunta: ___ he happy?", "options": ["Is", "Are", "Am"], "correct": 0, "theme": "Verb to be"}, {"icon": "👋", "prompt": "Qual expressão é uma saudação?", "options": ["Good morning!", "Close your book.", "My backpack."], "correct": 0, "theme": "Greetings"}, {"icon": "🌙", "prompt": "Qual expressão combina com a noite?", "options": ["Good night!", "Good afternoon!", "Spell your name."], "correct": 0, "theme": "Greetings"}, {"icon": "👂", "prompt": "Qual comando significa “escute”?", "options": ["Listen!", "Write!", "Open!"], "correct": 0, "theme": "Commands"}, {"icon": "✍️", "prompt": "Qual comando significa “escreva”?", "options": ["Write!", "Read!", "Jump!"], "correct": 0, "theme": "Commands"}, {"icon": "🙋", "prompt": "Como perguntar “Qual é o seu nome?”", "options": ["What is your name?", "How old are you?", "Where are you?"], "correct": 0, "theme": "Personal information"}, {"icon": "🎂", "prompt": "Como perguntar a idade de alguém?", "options": ["How old are you?", "What is your age name?", "Are you old how?"], "correct": 0, "theme": "Personal information"}, {"icon": "🧠", "prompt": "Qual expressão significa “Eu concordo”?", "options": ["I agree.", "I don’t agree.", "I am agree."], "correct": 0, "theme": "Daily life"}, {"icon": "🚫👍", "prompt": "Qual expressão significa “Eu não concordo”?", "options": ["I don’t agree.", "I agree.", "I be agree."], "correct": 0, "theme": "Daily life"}];
+
+// -------- SESSION --------
+let student = null;
+let session = null;
+let currentGame = null;
+let gameForRestart = null;
+
+function requireStudent(){
+  if(session) return true;
+  const name = document.getElementById('studentName').value.trim();
+  const turma = document.getElementById('studentClass').value.trim();
+  const school = document.getElementById('studentSchool').value.trim();
+  if(!name || !turma || !school){
+    alert('Preencha nome, turma e escola.');
+    return false;
+  }
+  student = {name, turma, school};
+  session = {
+    totalScore:0,
+    totalHits:0,
+    bestCombo:0,
+    gamesCompleted:0,
+    history:[]
+  };
+  return true;
+}
+function updateSessionPanel(){
+  document.getElementById('sessionPanel').innerHTML =
+    '<b>Aluno:</b> ' + student.name +
+    '<br><b>Turma:</b> ' + student.turma +
+    '<br><b>Escola:</b> ' + student.school +
+    '<br><b>Pontuação acumulada:</b> ' + session.totalScore +
+    '<br><b>Acertos totais:</b> ' + session.totalHits +
+    '<br><b>Maior sequência:</b> ' + session.bestCombo +
+    '<br><b>Jogos concluídos:</b> ' + session.gamesCompleted + '/3';
+}
+function hideAllScreens(){
+  ['homeScreen','hubScreen','missionsScreen','boardScreen','smartScreen','rankingScreen'].forEach(id=>{
+    document.getElementById(id).classList.add('hidden');
+  });
+}
+function continueScore(){
+  updateSessionPanel();
+  hideAllScreens();
+  document.getElementById('hubScreen').classList.remove('hidden');
+}
+function backToHub(){
+  stopMissionTimer();
+  updateSessionPanel();
+  hideAllScreens();
+  document.getElementById('hubScreen').classList.remove('hidden');
+}
+function codeForPrint(){
+  return (student.school.slice(0,3)+'-'+student.turma+'-'+student.name.slice(0,5)+'-'+session.totalScore+'-'+session.totalHits)
+    .toUpperCase().replace(/[^A-Z0-9-]/g,'');
+}
+function showRankingScreen(title, sub, bodyHTML, completed=true, allowContinue=true){
+  hideAllScreens();
+  document.getElementById('rankingScreen').classList.remove('hidden');
+  document.getElementById('rankHeroIcon').textContent = completed ? '🏆' : '🎮';
+  document.getElementById('rankHeroText').innerHTML = title;
+  document.getElementById('rankHeroSub').textContent = sub;
+  document.getElementById('rankingBox').innerHTML = bodyHTML;
+  document.getElementById('continueScoreBtn').style.display = allowContinue ? 'block' : 'none';
+}
+function showFinalRanking(){
+  if(!session){
+    if(!requireStudent()) return;
+  }
+  const bodyHTML = `
+    <b>🏆 Ranking Final</b><br>
+    Aluno: ${student.name}<br>
+    Turma: ${student.turma}<br>
+    Escola: ${student.school}<br>
+    Pontuação acumulada: ${session.totalScore}<br>
+    Acertos totais: ${session.totalHits}<br>
+    Maior sequência: ${session.bestCombo}<br>
+    Jogos concluídos: ${session.gamesCompleted}/3<br><br>
+    <b>Código para print:</b><br>${codeForPrint()}<br><br>
+    Tire print desta tela e envie ao professor.
+  `;
+  showRankingScreen('RANKING FINAL', 'Resultado geral da sessão.', bodyHTML, true, false);
+}
+
+// --------- GENERIC HELPERS ----------
+function shuffle(arr){
+  const a = [...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+function cloneQuestion(q){
+  const zipped = q.options.map((text,i)=>({text, ok:i===q.correct}));
+  const shuffled = shuffle(zipped);
+  return {
+    q:q.q,
+    options:shuffled.map(x=>x.text),
+    correct:shuffled.findIndex(x=>x.ok),
+    theme:q.theme || ''
+  };
+}
+function beep(freq=440, dur=.1, type='square', vol=.03){
+  try{
+    if(!window.__ac) window.__ac = new (window.AudioContext||window.webkitAudioContext)();
+    const ac = window.__ac;
+    const o = ac.createOscillator();
+    const g = ac.createGain();
+    o.type = type;
+    o.frequency.value = freq;
+    g.gain.value = vol;
+    o.connect(g); g.connect(ac.destination);
+    o.start();
+    g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + dur);
+    o.stop(ac.currentTime + dur);
+  }catch(e){}
+}
+function addScoreToSession(gameName, score, hits, bestCombo, completed){
+  session.totalScore += score;
+  session.totalHits += hits;
+  session.bestCombo = Math.max(session.bestCombo, bestCombo);
+  if(completed) session.gamesCompleted++;
+  session.history.push({game:gameName, score, hits, bestCombo, completed});
+}
+
+// --------- MISSIONS ----------
+let missionState = null;
+let missionTimerInterval = null;
+function openGame(which){
+  if(!requireStudent()) return;
+  currentGame = which;
+  gameForRestart = which;
+  if(which === 'missions') startMissions();
+  if(which === 'board') startBoard();
+  if(which === 'smart') startSmart();
+}
+function startMissions(){
+  stopMissionTimer();
+  hideAllScreens();
+  document.getElementById('missionsScreen').classList.remove('hidden');
+  missionState = {
+    mission:1,
+    totalMissions:4,
+    perMission:10,
+    index:0,
+    score:0,
+    lives:3,
+    combo:0,
+    bestCombo:0,
+    hits:0,
+    bank:shuffle(QUESTION_BANK).slice(0,40),
+    answered:false
+  };
+  renderMissionQuestion();
+}
+function renderMissionHeader(){
+  document.getElementById('mScore').textContent = missionState.score;
+  document.getElementById('mLives').textContent = '❤️'.repeat(missionState.lives) + '🖤'.repeat(Math.max(0,5-missionState.lives));
+  document.getElementById('mCombo').textContent = missionState.combo;
+  document.getElementById('mMission').textContent = missionState.mission + '/' + missionState.totalMissions;
+  const localIndex = (missionState.index % missionState.perMission) + 1;
+  document.getElementById('missionInfo').innerHTML = `Missão ${missionState.mission} • Pergunta ${localIndex}/${missionState.perMission}`;
+  const progress = ((missionState.index)/(missionState.totalMissions*missionState.perMission))*100;
+  document.getElementById('missionFill').style.width = progress + '%';
+}
+function startMissionTimer(seconds=7){
+  stopMissionTimer();
+  let ticks = seconds*10;
+  const fill = document.getElementById('missionTimer');
+  fill.style.width = '100%';
+  missionTimerInterval = setInterval(()=>{
+    ticks--;
+    const pct = Math.max(0,(ticks/(seconds*10))*100);
+    fill.style.width = pct + '%';
+    if(ticks<=0){
+      stopMissionTimer();
+      if(!missionState.answered){
+        missionState.answered = true;
+        missionState.combo = 0;
+        missionState.lives--;
+        beep(180,.18,'sawtooth',.05);
+        document.getElementById('missionFeedback').className = 'feedback bad';
+        document.getElementById('missionFeedback').textContent = '⏰ Tempo esgotado! Você perdeu 1 vida.';
+        [...document.querySelectorAll('#missionOptions .opt')].forEach(b=>b.disabled=true);
+        setTimeout(nextMissionStep, 900);
+      }
+    }
+  },100);
+}
+function stopMissionTimer(){
+  if(missionTimerInterval){
+    clearInterval(missionTimerInterval);
+    missionTimerInterval = null;
+  }
+}
+function renderMissionQuestion(){
+  renderMissionHeader();
+  missionState.answered = false;
+  const q = cloneQuestion(missionState.bank[missionState.index]);
+  missionState.current = q;
+  document.getElementById('missionQuestion').textContent = q.q;
+  document.getElementById('missionFeedback').textContent = '';
+  document.getElementById('missionFeedback').className = 'feedback';
+  const box = document.getElementById('missionOptions');
+  box.innerHTML = '';
+  q.options.forEach((opt,i)=>{
+    const btn = document.createElement('button');
+    btn.className = 'opt';
+    btn.textContent = opt;
+    btn.onclick = ()=>answerMission(i, btn);
+    box.appendChild(btn);
+  });
+  startMissionTimer(7);
+}
+function answerMission(i, btn){
+  if(missionState.answered) return;
+  missionState.answered = true;
+  stopMissionTimer();
+  const q = missionState.current;
+  const opts = [...document.querySelectorAll('#missionOptions .opt')];
+  opts.forEach((b,idx)=>{
+    b.disabled = true;
+    if(idx === q.correct) b.classList.add('correct');
+  });
+  const feedback = document.getElementById('missionFeedback');
+  if(i === q.correct){
+    if(i !== q.correct) btn.classList.add('wrong');
+    missionState.score += 100;
+    missionState.hits++;
+    missionState.combo++;
+    missionState.bestCombo = Math.max(missionState.bestCombo, missionState.combo);
+    if(missionState.combo % 5 === 0){
+      missionState.lives = Math.min(5, missionState.lives + 1);
+      feedback.textContent = '🔥 Combo 5! Você ganhou 1 vida extra!';
+    }else{
+      feedback.textContent = '✅ Correct!';
+    }
+    feedback.className = 'feedback good';
+    beep(760,.12,'square',.04);
+  }else{
+    btn.classList.add('wrong');
+    missionState.combo = 0;
+    missionState.lives--;
+    feedback.textContent = '❌ Errou! Você perdeu 1 vida.';
+    feedback.className = 'feedback bad';
+    beep(180,.18,'sawtooth',.05);
+  }
+  renderMissionHeader();
+  setTimeout(nextMissionStep, 850);
+}
+function nextMissionStep(){
+  if(missionState.lives <= 0){
+    addScoreToSession('Missões', missionState.score, missionState.hits, missionState.bestCombo, false);
+    const bodyHTML = `
+      <b>🏆 Ranking da Partida</b><br>
+      Aluno: ${student.name}<br>
+      Jogo: Missões<br>
+      Status: Game Over<br>
+      Pontos nesta partida: ${missionState.score}<br>
+      Acertos nesta partida: ${missionState.hits}<br>
+      Maior sequência: ${missionState.bestCombo}<br>
+      Missão alcançada: ${missionState.mission}/${missionState.totalMissions}<br><br>
+      <b>Pontuação acumulada:</b> ${session.totalScore}<br>
+      <b>Código para print:</b><br>${codeForPrint()}<br><br>
+      Tire print desta tela e envie ao professor.
+    `;
+    showRankingScreen('GAME OVER', 'Você pode tentar novamente e ir mais longe.', bodyHTML, false, false);
+    return;
+  }
+  missionState.index++;
+  if(missionState.index >= missionState.totalMissions * missionState.perMission){
+    addScoreToSession('Missões', missionState.score, missionState.hits, missionState.bestCombo, true);
+    const bodyHTML = `
+      <b>🏆 Ranking da Partida</b><br>
+      Aluno: ${student.name}<br>
+      Jogo: Missões<br>
+      Status: Concluído<br>
+      Pontos nesta partida: ${missionState.score}<br>
+      Acertos nesta partida: ${missionState.hits}<br>
+      Maior sequência: ${missionState.bestCombo}<br>
+      Missões concluídas: ${missionState.totalMissions}/${missionState.totalMissions}<br><br>
+      <b>Pontuação acumulada:</b> ${session.totalScore}<br>
+      <b>Código para print:</b><br>${codeForPrint()}<br><br>
+      Tire print desta tela e envie ao professor.
+    `;
+    showRankingScreen('CONGRATULATIONS,<br>YOU ARE THE ONE!!!', 'Você venceu o desafio das missões.', bodyHTML, true, true);
+    return;
+  }
+  const newMission = Math.floor(missionState.index / missionState.perMission) + 1;
+  if(newMission !== missionState.mission){
+    missionState.mission = newMission;
+    document.getElementById('missionContinueText').textContent = `Parabéns! Você concluiu a missão ${newMission-1}. Será que consegue vencer a missão ${newMission}?`;
+    document.getElementById('missionContinueModal').classList.add('active');
+    return;
+  }
+  renderMissionQuestion();
+}
+function continueMission(){
+  document.getElementById('missionContinueModal').classList.remove('active');
+  renderMissionQuestion();
+}
+
+// --------- SMART CHOICE ----------
+let smartState = null;
+function startSmart(){
+  hideAllScreens();
+  document.getElementById('smartScreen').classList.remove('hidden');
+  smartState = {
+    index:0,
+    total:24,
+    score:0,
+    lives:3,
+    combo:0,
+    bestCombo:0,
+    hits:0,
+    bank:shuffle(VISUAL_BANK).slice(0,24),
+    answered:false
+  };
+  renderSmart();
+}
+function renderSmartHeader(){
+  document.getElementById('sScore').textContent = smartState.score;
+  document.getElementById('sLives').textContent = '❤️'.repeat(smartState.lives) + '🖤'.repeat(Math.max(0,5-smartState.lives));
+  document.getElementById('sCombo').textContent = smartState.combo;
+  document.getElementById('sStage').textContent = (smartState.index+1) + '/' + smartState.total;
+  document.getElementById('smartInfo').innerHTML = `Desafio ${smartState.index+1}/${smartState.total} • Tema: ${smartState.bank[smartState.index].theme}`;
+  document.getElementById('smartFill').style.width = ((smartState.index)/smartState.total)*100 + '%';
+}
+function renderSmart(){
+  smartState.answered = false;
+  renderSmartHeader();
+  const item = smartState.bank[smartState.index];
+  document.getElementById('smartIcon').textContent = item.icon;
+  document.getElementById('smartQuestion').textContent = item.prompt;
+  document.getElementById('smartFeedback').textContent = '';
+  document.getElementById('smartFeedback').className = 'feedback';
+  const box = document.getElementById('smartOptions');
+  box.innerHTML = '';
+  item.options.forEach((opt,i)=>{
+    const btn = document.createElement('button');
+    btn.className = 'opt';
+    btn.textContent = opt;
+    btn.onclick = ()=>answerSmart(i, btn);
+    box.appendChild(btn);
+  });
+}
+function answerSmart(i, btn){
+  if(smartState.answered) return;
+  smartState.answered = true;
+  const item = smartState.bank[smartState.index];
+  const opts = [...document.querySelectorAll('#smartOptions .opt')];
+  opts.forEach((b,idx)=>{
+    b.disabled = true;
+    if(idx === item.correct) b.classList.add('correct');
+  });
+  const feedback = document.getElementById('smartFeedback');
+  if(i === item.correct){
+    smartState.score += 100;
+    smartState.hits++;
+    smartState.combo++;
+    smartState.bestCombo = Math.max(smartState.bestCombo, smartState.combo);
+    if(smartState.combo % 5 === 0){
+      smartState.lives = Math.min(5, smartState.lives + 1);
+      feedback.textContent = '🔥 Combo 5! Você ganhou 1 vida extra!';
+    }else{
+      feedback.textContent = '✅ Correct!';
+    }
+    feedback.className = 'feedback good';
+    beep(760,.12,'square',.04);
+  }else{
+    btn.classList.add('wrong');
+    smartState.combo = 0;
+    smartState.lives--;
+    feedback.textContent = '❌ Errou! Você perdeu 1 vida.';
+    feedback.className = 'feedback bad';
+    beep(180,.18,'sawtooth',.05);
+  }
+  renderSmartHeader();
+  setTimeout(nextSmartStep, 850);
+}
+function nextSmartStep(){
+  if(smartState.lives <= 0){
+    addScoreToSession('Smart Choice', smartState.score, smartState.hits, smartState.bestCombo, false);
+    const bodyHTML = `
+      <b>🏆 Ranking da Partida</b><br>
+      Aluno: ${student.name}<br>
+      Jogo: Smart Choice<br>
+      Status: Game Over<br>
+      Pontos nesta partida: ${smartState.score}<br>
+      Acertos nesta partida: ${smartState.hits}<br>
+      Maior sequência: ${smartState.bestCombo}<br>
+      Desafio alcançado: ${smartState.index+1}/${smartState.total}<br><br>
+      <b>Pontuação acumulada:</b> ${session.totalScore}<br>
+      <b>Código para print:</b><br>${codeForPrint()}<br><br>
+      Tire print desta tela e envie ao professor.
+    `;
+    showRankingScreen('GAME OVER', 'Você pode tentar novamente e ir mais longe.', bodyHTML, false, false);
+    return;
+  }
+  smartState.index++;
+  if(smartState.index >= smartState.total){
+    addScoreToSession('Smart Choice', smartState.score, smartState.hits, smartState.bestCombo, true);
+    const bodyHTML = `
+      <b>🏆 Ranking da Partida</b><br>
+      Aluno: ${student.name}<br>
+      Jogo: Smart Choice<br>
+      Status: Concluído<br>
+      Pontos nesta partida: ${smartState.score}<br>
+      Acertos nesta partida: ${smartState.hits}<br>
+      Maior sequência: ${smartState.bestCombo}<br>
+      Desafios concluídos: ${smartState.total}/${smartState.total}<br><br>
+      <b>Pontuação acumulada:</b> ${session.totalScore}<br>
+      <b>Código para print:</b><br>${codeForPrint()}<br><br>
+      Tire print desta tela e envie ao professor.
+    `;
+    showRankingScreen('CONGRATULATIONS,<br>YOU ARE THE ONE!!!', 'Você venceu o Smart Choice.', bodyHTML, true, true);
+    return;
+  }
+  renderSmart();
+}
+
+// --------- BOARD GAME ----------
+const viewW = 420, viewH = 680;
+const totalHouses = 30;
+const nodes = [];
+const specialMap = {
+  3:{type:"forward",amount:1},
+  6:{type:"back",amount:1},
+  9:{type:"extra",amount:0},
+  12:{type:"forward",amount:2},
+  15:{type:"back",amount:2},
+  18:{type:"skip",amount:0},
+  21:{type:"forward",amount:1},
+  24:{type:"extra",amount:0},
+  27:{type:"back",amount:1}
+};
+let boardState = null;
+let currentQuestion = null;
+let pendingSpecial = null;
+let afterMessageAction = null;
+function startBoard(){
+  hideAllScreens();
+  document.getElementById('boardScreen').classList.remove('hidden');
+  buildBoard();
+  boardState = {
+    playerScore:0,
+    playerLives:3,
+    playerCombo:0,
+    playerBestCombo:0,
+    playerHits:0,
+    wins1:0,
+    wins2:0,
+    positions:{1:0,2:0},
+    currentTeam:1,
+    rolling:false,
+    skipTurn:{1:false,2:false},
+    extraTurn:false,
+    bank:shuffle(QUESTION_BANK)
+  };
+  renderBoardHUD();
+  resetBoardRound(false);
+}
+function renderBoardHUD(){
+  document.getElementById('bScore').textContent = boardState.playerScore;
+  document.getElementById('bLives').textContent = '❤️'.repeat(boardState.playerLives) + '🖤'.repeat(Math.max(0,5-boardState.playerLives));
+  document.getElementById('bCombo').textContent = boardState.playerCombo;
+  document.getElementById('bRoundInfo').textContent = boardState.wins1 + ' x ' + boardState.wins2;
+}
+function buildBoard(){
+  if(nodes.length){
+    renderTokens();
+    return;
+  }
+  const layer = document.getElementById("nodesLayer");
+  layer.innerHTML = "";
+
+  const cols = 4;
+  const rows = Math.ceil(totalHouses/cols);
+  const marginX = 54;
+  const marginTop = 70;
+  const marginBottom = 54;
+  const dx = (viewW - marginX*2)/(cols-1);
+  const dy = (viewH - marginTop - marginBottom)/(rows-1);
+
+  for(let row=0; row<rows; row++){
+    for(let col=0; col<cols; col++){
+      const idx = row*cols + col;
+      if(idx >= totalHouses) break;
+      const actualCol = row % 2 === 0 ? col : (cols-1-col);
+      const x = marginX + actualCol*dx;
+      const y = viewH - marginBottom - row*dy;
+      nodes.push({x,y});
+    }
+  }
+  const d = nodes.map((n,i)=>`${i===0?'M':'L'} ${n.x} ${n.y}`).join(" ");
+  document.getElementById("roadPath").setAttribute("d", d);
+  document.getElementById("roadLine").setAttribute("d", d);
+
+  nodes.forEach((n,i)=>{
+    const node = document.createElement("div");
+    node.className = "node";
+    if(i===0) node.classList.add("start");
+    if(i===nodes.length-1) node.classList.add("finish");
+
+    if(specialMap[i] && i!==0 && i!==nodes.length-1){
+      const sp = specialMap[i];
+      if(sp.type==="forward") node.classList.add("specialForward");
+      if(sp.type==="back") node.classList.add("specialBack");
+      if(sp.type==="extra") node.classList.add("specialExtra");
+      if(sp.type==="skip") node.classList.add("specialSkip");
+      const lab = document.createElement("small");
+      lab.textContent = sp.type==="forward" ? `+${sp.amount}` : sp.type==="back" ? `-${sp.amount}` : sp.type==="extra" ? `+vez` : `pausa`;
+      node.appendChild(lab);
+    }
+
+    node.style.left = `calc(${(n.x/viewW)*100}% - 19px)`;
+    node.style.top = `calc(${(n.y/viewH)*100}% - 19px)`;
+    node.appendChild(document.createTextNode(i+1));
+    layer.appendChild(node);
+  });
+}
+function renderTokens(){
+  placeToken(document.getElementById("token1"), boardState.positions[1], -9, -9);
+  placeToken(document.getElementById("token2"), boardState.positions[2], 9, 9);
+  document.getElementById("pos1").textContent = boardState.positions[1]+1;
+  document.getElementById("pos2").textContent = boardState.positions[2]+1;
+  const info = [];
+  if(boardState.skipTurn[1]) info.push("🔺 Jogador 1 perderá a próxima vez");
+  if(boardState.skipTurn[2]) info.push("🔵 Jogador 2 perderá a próxima vez");
+  document.getElementById("skipInfo").innerHTML = info.join("<br>");
+}
+function placeToken(el, index, offX, offY){
+  const n = nodes[index];
+  el.style.left = `calc(${(n.x/viewW)*100}% - 15px + ${offX}px)`;
+  el.style.top = `calc(${(n.y/viewH)*100}% - 15px + ${offY}px)`;
+}
+function resetBoardRound(updateMessage=true){
+  if(!boardState) return;
+  boardState.positions = {1:0,2:0};
+  boardState.currentTeam = 1;
+  boardState.rolling = false;
+  boardState.skipTurn = {1:false,2:false};
+  boardState.extraTurn = false;
+  pendingSpecial = null;
+  document.getElementById("diceFace").textContent = "🎲";
+  document.getElementById("rollBtn").disabled = false;
+  document.getElementById("turnCard").textContent = "Vez do Jogador 1 🔺";
+  renderTokens();
+  renderBoardHUD();
+}
+function resetBoardScore(){
+  if(!boardState) return;
+  boardState.wins1 = 0;
+  boardState.wins2 = 0;
+  boardState.playerScore = 0;
+  boardState.playerLives = 3;
+  boardState.playerCombo = 0;
+  boardState.playerBestCombo = 0;
+  boardState.playerHits = 0;
+  renderBoardHUD();
+  resetBoardRound();
+}
+function rollDice(){
+  if(boardState.rolling) return;
+  if(boardState.skipTurn[boardState.currentTeam]){
+    boardState.skipTurn[boardState.currentTeam] = false;
+    showMessage("⏸️ Vez perdida", `O Jogador ${boardState.currentTeam} perdeu esta rodada. Agora é a vez do outro jogador.`);
+    switchTurn();
+    renderTokens();
+    return;
+  }
+  boardState.rolling = true;
+  document.getElementById("rollBtn").disabled = true;
+  let count = 0;
+  const interval = setInterval(()=>{
+    document.getElementById("diceFace").textContent = 1 + Math.floor(Math.random()*6);
+    count++;
+    if(count>=9){
+      clearInterval(interval);
+      const value = 1 + Math.floor(Math.random()*6);
+      document.getElementById("diceFace").textContent = value;
+      moveTeam(boardState.currentTeam, value, ()=>afterLanding(boardState.currentTeam));
+    }
+  }, 85);
+}
+function moveTeam(team, steps, callback){
+  let remaining = steps;
+  function step(){
+    if(remaining<=0){
+      renderTokens();
+      if(callback) callback();
+      return;
+    }
+    boardState.positions[team] = Math.min(totalHouses-1, boardState.positions[team]+1);
+    renderTokens();
+    remaining--;
+    setTimeout(step, 220);
+  }
+  step();
+}
+function moveBackward(team, steps, callback){
+  let remaining = steps;
+  function step(){
+    if(remaining<=0){
+      renderTokens();
+      if(callback) callback();
+      return;
+    }
+    boardState.positions[team] = Math.max(0, boardState.positions[team]-1);
+    renderTokens();
+    remaining--;
+    setTimeout(step, 220);
+  }
+  step();
+}
+function afterLanding(team){
+  pendingSpecial = specialMap[boardState.positions[team]] || null;
+  if(boardState.positions[team] >= totalHouses-1){
+    endBoardRound(team);
+    return;
+  }
+  askBoardQuestion(team);
+}
+function askBoardQuestion(team){
+  if(boardState.bank.length === 0) boardState.bank = shuffle(QUESTION_BANK);
+  currentQuestion = cloneQuestion(boardState.bank.pop());
+  document.getElementById("questionIntro").textContent = `Jogador ${team}, responda:`;
+  document.getElementById("questionText").textContent = currentQuestion.q;
+  document.getElementById("questionFeedback").textContent = "";
+  document.getElementById("questionFeedback").className = "feedback";
+  const box = document.getElementById("questionOptions");
+  box.innerHTML = "";
+  currentQuestion.options.forEach((opt,i)=>{
+    const btn = document.createElement("button");
+    btn.className = "opt";
+    btn.textContent = opt;
+    btn.onclick = ()=>answerBoardQuestion(i, btn);
+    box.appendChild(btn);
+  });
+  document.getElementById("questionModal").classList.add("active");
+}
+function answerBoardQuestion(index, button){
+  const opts = [...document.querySelectorAll("#questionOptions .opt")];
+  opts.forEach(b=>b.disabled=true);
+  opts.forEach((b,i)=>{
+    if(i === currentQuestion.correct) b.classList.add('correct');
+    if(i === index && i !== currentQuestion.correct) b.classList.add('wrong');
+  });
+  const feed = document.getElementById("questionFeedback");
+
+  const playerTeam = 1; // student = jogador 1
+  const good = index === currentQuestion.correct;
+  if(good){
+    feed.className = "feedback good";
+    feed.textContent = "✅ Acertou! Avança +1 casa.";
+    if(boardState.currentTeam === playerTeam){
+      boardState.playerScore += 100;
+      boardState.playerHits++;
+      boardState.playerCombo++;
+      boardState.playerBestCombo = Math.max(boardState.playerBestCombo, boardState.playerCombo);
+      if(boardState.playerCombo % 5 === 0){
+        boardState.playerLives = Math.min(5, boardState.playerLives + 1);
+        feed.textContent = "🔥 Combo 5! Você ganhou 1 vida extra e ainda avança +1 casa.";
+      }
+    }
+    beep(760,.12,'square',.04);
+    setTimeout(()=>{
+      document.getElementById("questionModal").classList.remove("active");
+      moveTeam(boardState.currentTeam,1,()=>applySpecialThenContinue());
+    }, 1050);
+  }else{
+    feed.className = "feedback bad";
+    feed.textContent = "❌ Errou! Volta 1 casa.";
+    if(boardState.currentTeam === playerTeam){
+      boardState.playerCombo = 0;
+      boardState.playerLives--;
+    }
+    beep(180,.18,'sawtooth',.05);
+    setTimeout(()=>{
+      document.getElementById("questionModal").classList.remove("active");
+      moveBackward(boardState.currentTeam,1,()=>applySpecialThenContinue());
+    }, 1050);
+  }
+  renderBoardHUD();
+}
+function applySpecialThenContinue(){
+  if(boardState.positions[boardState.currentTeam] >= totalHouses-1){
+    endBoardRound(boardState.currentTeam);
+    return;
+  }
+  if(boardState.currentTeam === 1 && boardState.playerLives <= 0){
+    finishBoardGame(false, 'GAME OVER', 'Você perdeu todas as vidas no tabuleiro.');
+    return;
+  }
+  if(!pendingSpecial){
+    finalizeBoardTurn();
+    return;
+  }
+  const sp = pendingSpecial;
+  pendingSpecial = null;
+  if(sp.type === "forward"){
+    showMessage("🌟 Casa especial", `Jogador ${boardState.currentTeam}: avance ${sp.amount} casa(s)!`);
+    queueAfterMessage(()=>moveTeam(boardState.currentTeam, sp.amount, finalizeTurnAfterSpecial));
+  }else if(sp.type === "back"){
+    showMessage("⚠️ Casa especial", `Jogador ${boardState.currentTeam}: volte ${sp.amount} casa(s)!`);
+    queueAfterMessage(()=>moveBackward(boardState.currentTeam, sp.amount, finalizeTurnAfterSpecial));
+  }else if(sp.type === "extra"){
+    boardState.extraTurn = true;
+    showMessage("🎉 Casa especial", `Jogador ${boardState.currentTeam}: jogue novamente!`);
+    queueAfterMessage(()=>finalizeTurnAfterSpecial());
+  }else if(sp.type === "skip"){
+    boardState.skipTurn[getOtherTeam()] = true;
+    showMessage("⏸️ Casa especial", `O outro jogador perderá a próxima vez!`);
+    queueAfterMessage(()=>finalizeTurnAfterSpecial());
+  }else{
+    finalizeBoardTurn();
+  }
+}
+function finalizeTurnAfterSpecial(){
+  if(boardState.positions[boardState.currentTeam] >= totalHouses-1){
+    endBoardRound(boardState.currentTeam);
+  }else if(boardState.currentTeam === 1 && boardState.playerLives <= 0){
+    finishBoardGame(false, 'GAME OVER', 'Você perdeu todas as vidas no tabuleiro.');
+  }else{
+    finalizeBoardTurn();
+  }
+}
+function finalizeBoardTurn(){
+  boardState.rolling = false;
+  document.getElementById("rollBtn").disabled = false;
+  renderBoardHUD();
+  if(boardState.extraTurn){
+    boardState.extraTurn = false;
+    document.getElementById("turnCard").textContent = `Jogador ${boardState.currentTeam} joga novamente! ${boardState.currentTeam===1?'🔺':'🔵'}`;
+    return;
+  }
+  switchTurn();
+}
+function switchTurn(){
+  boardState.currentTeam = boardState.currentTeam === 1 ? 2 : 1;
+  document.getElementById("turnCard").textContent = `Vez do Jogador ${boardState.currentTeam} ${boardState.currentTeam===1?'🔺':'🔵'}`;
+  boardState.rolling = false;
+  document.getElementById("rollBtn").disabled = false;
+}
+function getOtherTeam(){ return boardState.currentTeam === 1 ? 2 : 1; }
+function endBoardRound(team){
+  if(team===1) boardState.wins1++;
+  if(team===2) boardState.wins2++;
+  document.getElementById("finalPos1").textContent = boardState.positions[1]+1;
+  document.getElementById("finalPos2").textContent = boardState.positions[2]+1;
+  document.getElementById("result1").classList.toggle("win", team===1);
+  document.getElementById("result2").classList.toggle("win", team===2);
+  document.getElementById("resultTitle").textContent = `🏁 Vitória do Jogador ${team}!`;
+  document.getElementById("resultText").innerHTML = `O Jogador ${team} chegou primeiro à Escola Delfina!`;
+  document.getElementById("resultModal").classList.add("active");
+  document.getElementById("rollBtn").disabled = true;
+  renderBoardHUD();
+}
+function closeBoardResult(){
+  document.getElementById("resultModal").classList.remove("active");
+  // If player 1 won, count as completed board game; if lost by rival still end as game over-like ranking
+  if(boardState.wins1 > 0 || boardState.wins2 > 0){
+    const playerWon = boardState.positions[1] >= boardState.positions[2];
+    finishBoardGame(playerWon, playerWon ? 'CONGRATULATIONS,<br>YOU ARE THE ONE!!!' : 'GAME OVER',
+      playerWon ? 'Você venceu a corrida do tabuleiro!' : 'O outro jogador chegou primeiro ao final.');
+  }
+}
+function finishBoardGame(completed, title, subtitle){
+  addScoreToSession('Tabuleiro', boardState.playerScore, boardState.playerHits, boardState.playerBestCombo, completed);
+  const bodyHTML = `
+    <b>🏆 Ranking da Partida</b><br>
+    Aluno: ${student.name}<br>
+    Jogo: Tabuleiro<br>
+    Status: ${completed ? 'Concluído' : 'Game Over'}<br>
+    Seus pontos nesta partida: ${boardState.playerScore}<br>
+    Seus acertos nesta partida: ${boardState.playerHits}<br>
+    Sua maior sequência: ${boardState.playerBestCombo}<br>
+    Placar do tabuleiro: Jogador 1 ${boardState.wins1} x ${boardState.wins2} Jogador 2<br>
+    Posição final: Jogador 1 casa ${boardState.positions[1]+1} • Jogador 2 casa ${boardState.positions[2]+1}<br><br>
+    <b>Pontuação acumulada:</b> ${session.totalScore}<br>
+    <b>Código para print:</b><br>${codeForPrint()}<br><br>
+    Tire print desta tela e envie ao professor.
+  `;
+  showRankingScreen(title, subtitle, bodyHTML, completed, completed);
+}
+function queueAfterMessage(fn){ afterMessageAction = fn; }
+function closeMessage(){
+  document.getElementById("messageModal").classList.remove("active");
+  const fn = afterMessageAction;
+  afterMessageAction = null;
+  if(fn) fn();
+}
+function showMessage(title,text){
+  document.getElementById("messageTitle").innerHTML = title;
+  document.getElementById("messageText").innerHTML = text;
+  document.getElementById("messageModal").classList.add("active");
+}
+
+// --------- RESTART ----------
+function restartCurrentGame(){
+  if(!gameForRestart) return;
+  if(gameForRestart === 'missions') startMissions();
+  if(gameForRestart === 'board') startBoard();
+  if(gameForRestart === 'smart') startSmart();
+}
+</script>
+</body>
+</html>
