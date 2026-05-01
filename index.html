@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>English Game Hub Online - Professor Jasson Bruno</title>
+<title>English Game Hub - Professor Jasson Bruno</title>
 <style>
 :root{
   --blue:#2563eb;
@@ -735,27 +735,27 @@ function encodeParam(v){
   return encodeURIComponent(v == null ? "" : String(v));
 }
 
+function jsonp(url, callbackName, onError){
+  const script = document.createElement("script");
+  script.src = url;
+  script.onerror = function(){
+    if(onError) onError();
+    try{ delete window[callbackName]; }catch(e){}
+    if(script.parentNode) script.parentNode.removeChild(script);
+  };
+  document.body.appendChild(script);
+}
+
 function saveOnlineScore(gameName, score, hits, combo, status){
   if(!student || !session) return;
 
-  const cbName = "saveCallback_" + Date.now() + "_" + Math.floor(Math.random()*9999);
-  let script = document.createElement("script");
-
+  const cbName = "saveCallback_" + Date.now() + "_" + Math.floor(Math.random()*100000);
   window[cbName] = function(data){
-    try{
-      console.log("Ranking salvo:", data);
-    }catch(e){}
-    delete window[cbName];
-    if(script && script.parentNode) script.parentNode.removeChild(script);
+    try{ console.log("Resultado enviado para o ranking:", data); }catch(e){}
+    try{ delete window[cbName]; }catch(e){}
   };
 
-  script.onerror = function(){
-    console.log("Falha ao enviar ranking online.");
-    delete window[cbName];
-    if(script && script.parentNode) script.parentNode.removeChild(script);
-  };
-
-  script.src = RANKING_URL +
+  const url = RANKING_URL +
     "?action=save" +
     "&callback=" + cbName +
     "&nome=" + encodeParam(student.name) +
@@ -768,45 +768,47 @@ function saveOnlineScore(gameName, score, hits, combo, status){
     "&status=" + encodeParam(status) +
     "&t=" + Date.now();
 
-  document.body.appendChild(script);
+  jsonp(url, cbName, function(){ console.log("Falha ao salvar ranking."); });
 }
 
 function loadOnlineRanking(){
   const box = document.getElementById("onlineRankingBox");
   if(!box) return;
+
   box.innerHTML = "Carregando ranking online...";
-  const cbName = "rankingCallback_" + Date.now();
-  let script = document.createElement("script");
+
+  const cbName = "rankingCallback_" + Date.now() + "_" + Math.floor(Math.random()*100000);
   window[cbName] = function(data){
     try{
-      if(!data || !data.ok || !data.ranking || data.ranking.length === 0){
+      if(!data || !data.ok){
+        box.innerHTML = "Não foi possível carregar o ranking online agora.";
+      }else if(!data.ranking || data.ranking.length === 0){
         box.innerHTML = "Ainda não há resultados salvos no ranking online.";
       }else{
         let html = "<b>🌐 Ranking Online - Top 10</b><br>";
-        data.ranking.slice(0,10).forEach((r,idx)=>{
-          html += (idx+1) + "º - " + (r.nome || "Aluno") +
-            " • " + (r.turma || "-") +
-            " • " + (r.escola || "-") +
+        data.ranking.slice(0,10).forEach(function(r, idx){
+          html += "<br><b>" + (idx+1) + "º</b> - " + (r.nome || "Aluno") +
+            " • Turma " + (r.turma || "-") +
+            "<br>Escola: " + (r.escola || "-") +
             "<br>🏆 " + (r.pontuacao || 0) +
             " pts • ✅ " + (r.acertos || 0) +
-            " • 🔥 " + (r.combo || 0) +
-            " • " + (r.jogo || "-") + "<br>";
+            " acertos • 🔥 combo " + (r.combo || 0) +
+            "<br>Jogo: " + (r.jogo || "-") + " • " + (r.status || "-") + "<br>";
         });
         box.innerHTML = html;
       }
     }catch(e){
       box.innerHTML = "Não foi possível carregar o ranking online agora.";
     }
-    delete window[cbName];
-    if(script && script.parentNode) script.parentNode.removeChild(script);
+    try{ delete window[cbName]; }catch(e){}
   };
-  script.src = RANKING_URL + "?action=ranking&callback=" + cbName + "&t=" + Date.now();
-  script.onerror = function(){
+
+  const url = RANKING_URL + "?action=ranking&callback=" + cbName + "&t=" + Date.now();
+  jsonp(url, cbName, function(){
     box.innerHTML = "Não foi possível carregar o ranking online agora.";
-    delete window[cbName];
-  };
-  document.body.appendChild(script);
+  });
 }
+
 
 // -------- SESSION --------
 let student = null;
@@ -871,7 +873,7 @@ function showRankingScreen(title, sub, bodyHTML, completed=true, allowContinue=t
   document.getElementById('rankHeroSub').textContent = sub;
   document.getElementById('rankingBox').innerHTML = bodyHTML + '<div class="rankBox" id="onlineRankingBox" style="margin-top:12px">Carregando ranking online...</div>';
   document.getElementById('continueScoreBtn').style.display = allowContinue ? 'block' : 'none';
-  setTimeout(loadOnlineRanking, 250);
+  setTimeout(loadOnlineRanking, 500);
 }
 function showFinalRanking(){
   if(!session){
