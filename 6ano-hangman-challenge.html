@@ -5,794 +5,447 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Hangman Challenge - 6º Ano</title>
 <style>
-:root{
-  --blue:#2563eb; --cyan:#06b6d4; --pink:#e11d48; --green:#16a34a;
-  --yellow:#facc15; --orange:#f97316; --purple:#7c3aed;
-  --dark:#172033; --muted:#657084; --line:#dbe4f0;
-  --shadow:0 16px 34px rgba(0,0,0,.18);
-}
 *{box-sizing:border-box}
+:root{--blue:#2563eb;--cyan:#06b6d4;--pink:#e11d48;--dark:#172033;--gold:#f8d36b}
+html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;color:var(--dark)}
 body{
-  margin:0; min-height:100vh; font-family:Arial, Helvetica, sans-serif;
-  color:var(--dark); background:linear-gradient(135deg,#0f2870,#00a6c8);
-  padding:12px; display:flex; align-items:center; justify-content:center;
+  min-height:100vh;
+  background:linear-gradient(135deg,#2563eb,#06b6d4 48%,#e11d48);
+  display:flex;align-items:center;justify-content:center;padding:10px;
 }
 .app{
-  width:100%; max-width:1120px; background:rgba(255,255,255,.97);
-  border-radius:28px; overflow:hidden; box-shadow:var(--shadow);
+  width:min(100%,1050px);
+  min-height:min(760px,96vh);
+  background:rgba(255,255,255,.94);
+  border-radius:26px;
+  overflow:hidden;
+  box-shadow:0 24px 50px rgba(0,0,0,.2);
 }
 header{
-  color:white; text-align:center; padding:18px 16px 16px;
-  background:radial-gradient(circle at 15% 10%,rgba(255,255,255,.3),transparent 28%),
-  linear-gradient(135deg,#7c3aed,#2563eb);
+  background:linear-gradient(135deg,#4361ee,#8b5cf6 45%,#e11d48);
+  color:white;padding:14px 18px;text-align:center;
 }
-.topbar{display:flex;justify-content:space-between;gap:10px;align-items:center;max-width:1000px;margin:0 auto 8px}
-.back,.pill{
-  color:white;text-decoration:none;background:rgba(255,255,255,.18);
-  border:1px solid rgba(255,255,255,.38);padding:8px 11px;border-radius:999px;
-  font-size:13px;font-weight:800;
-}
-h1{margin:6px 0 4px;font-size:clamp(28px,7vw,52px)}
-.subtitle{margin:0 auto;max-width:780px;line-height:1.35;font-size:clamp(14px,3.5vw,18px);opacity:.96}
-main{padding:16px}
-.screen{display:none}.screen.active{display:block}
-.card{
-  background:white;border:1px solid var(--line);border-radius:24px;padding:18px;
-  box-shadow:0 8px 20px rgba(0,0,0,.08);
-}
-.start-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:16px}
-.motivation{
-  background:#f8fafc;border:1px solid var(--line);border-radius:20px;padding:15px;
-  line-height:1.45;color:#243047;margin-bottom:14px;
-}
-.author{font-weight:900;color:#164aa5;margin-top:8px}
-label{display:block;font-weight:800;margin:10px 0 5px}
-input{
-  width:100%;padding:13px;border-radius:14px;border:1px solid #cbd5e1;
-  font-size:16px;outline:none;background:white;
-}
-input:focus{border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,.14)}
-button{
-  border:none;border-radius:16px;padding:13px 15px;font-weight:900;font-size:16px;
-  cursor:pointer;transition:.18s ease;
-}
-button:active{transform:scale(.98)}
-.primary{background:linear-gradient(135deg,#2563eb,#06b6d4);color:white;width:100%;margin-top:14px}
-.secondary{background:#e2e8f0;color:#1e293b}
-.green{background:#dcfce7;color:#166534}
-.pink{background:linear-gradient(135deg,#e11d48,#fb7185);color:white}
-.small{font-size:13px;color:var(--muted);line-height:1.35}
-.mini-info{
-  display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:14px
-}
-.stat{
-  background:#f8fafc;border:1px solid var(--line);border-radius:18px;padding:10px;text-align:center
-}
-.stat b{display:block;font-size:22px;color:#0f4aa3}
-.stat span{font-size:12px;color:var(--muted);font-weight:700}
-.game-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:16px}
-.hangman-area{text-align:center}
-.gallows{
-  height:250px;
-  background:linear-gradient(180deg,#f8fafc,#eef6ff);
-  border:1px solid var(--line);
-  border-radius:22px;
-  margin-bottom:14px;
-  position:relative;
-  overflow:hidden;
-}
-.base{position:absolute;bottom:24px;left:56px;width:150px;height:10px;background:#334155;border-radius:999px}
-.pole{position:absolute;bottom:24px;left:86px;width:10px;height:185px;background:#334155;border-radius:999px}
-.top{position:absolute;top:41px;left:86px;width:120px;height:10px;background:#334155;border-radius:999px}
-.rope{position:absolute;top:48px;left:196px;width:5px;height:35px;background:#92400e;border-radius:999px}
-.part{position:absolute;display:none;background:#111827}
-.head{top:81px;left:174px;width:48px;height:48px;border-radius:50%;background:white;border:7px solid #111827}
-.body{top:126px;left:196px;width:6px;height:65px;border-radius:999px}
-.armL{top:138px;left:163px;width:45px;height:6px;border-radius:999px;transform:rotate(-28deg)}
-.armR{top:138px;left:194px;width:45px;height:6px;border-radius:999px;transform:rotate(28deg)}
-.legL{top:187px;left:164px;width:45px;height:6px;border-radius:999px;transform:rotate(-45deg)}
-.legR{top:187px;left:191px;width:45px;height:6px;border-radius:999px;transform:rotate(45deg)}
-.face{
-  position:absolute; top:96px; left:186px; width:24px; height:16px; display:none; z-index:5;
-  color:#111827; font-weight:900; font-size:18px; letter-spacing:2px;
-}
-.topic-card{
-  background:#f8fafc;border:1px solid var(--line);border-radius:18px;padding:12px;text-align:left;
-}
-.topic-card b{color:#1d4ed8}
-.word-box{
-  background:#ffffff;border:1px solid var(--line);border-radius:24px;padding:18px;text-align:center;
-}
-.word{
-  display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin:14px 0 18px;
-}
-.letter-slot{
-  width:42px;height:52px;border-bottom:5px solid #1d4ed8;display:flex;align-items:center;justify-content:center;
-  font-size:30px;font-weight:900;color:#172033;text-transform:uppercase;
-}
-.hint{
-  background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;border-radius:18px;padding:12px;font-weight:800;line-height:1.35;margin-bottom:12px;
-}
-.keyboard{
-  display:grid;grid-template-columns:repeat(9,1fr);gap:7px;margin-top:12px;
-}
-.key{
-  background:#eff6ff;border:2px solid #bfdbfe;color:#1e40af;
-  border-radius:12px;padding:10px 0;font-weight:900;font-size:17px;
-}
-.key:hover{background:#dbeafe}
-.key.used{background:#e2e8f0;border-color:#cbd5e1;color:#64748b;cursor:not-allowed}
-.key.good{background:#dcfce7;border-color:#22c55e;color:#14532d}
-.key.bad{background:#fee2e2;border-color:#ef4444;color:#7f1d1d}
-.message{
-  margin-top:12px;padding:12px;border-radius:16px;line-height:1.35;font-weight:800;display:none
-}
-.message.ok{display:block;background:#dcfce7;color:#14532d;border:1px solid #86efac}
-.message.bad{display:block;background:#fee2e2;color:#7f1d1d;border:1px solid #fecaca}
-.actions{display:flex;gap:10px;margin-top:14px}
-.actions button{flex:1}
-.rank-table{width:100%;border-collapse:separate;border-spacing:0 8px}
-.rank-table th{text-align:left;font-size:12px;color:var(--muted);padding:0 8px}
-.rank-table td{background:#f8fafc;padding:10px 8px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-weight:800}
-.rank-table td:first-child{border-left:1px solid var(--line);border-radius:14px 0 0 14px}
-.rank-table td:last-child{border-right:1px solid var(--line);border-radius:0 14px 14px 0}
-.me td{background:#fff7ed!important;border-color:#fb923c!important;color:#9a3412}
-.final-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.print-card{border:3px dashed #2563eb;border-radius:24px;padding:18px;background:#eff6ff}
-.print-card h2{margin:0 0 10px;color:#1d4ed8;font-size:28px}
-.line{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #bfdbfe;padding:8px 0;font-weight:800}
-.code{font-size:24px;text-align:center;margin:14px 0 8px;background:white;border-radius:18px;padding:12px;font-weight:900;color:#e11d48}
-.hidden{display:none!important}
-@media(max-width:900px){
-  body{align-items:flex-start;padding:8px}
-  .app{border-radius:22px}
-  header{padding:15px 10px}
-  .topbar{flex-direction:column;align-items:stretch}
-  .back,.pill{text-align:center}
-  main{padding:10px}
-  .start-grid,.game-grid,.final-grid{grid-template-columns:1fr}
-  .mini-info{grid-template-columns:repeat(2,1fr)}
-  .keyboard{grid-template-columns:repeat(7,1fr)}
-  .letter-slot{width:34px;height:46px;font-size:25px}
-  .actions{flex-direction:column}
-}
+.topbar{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:6px}
+.back,.pill{color:white;text-decoration:none;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:7px 11px;font-weight:900;font-size:12px}
+h1{font-size:clamp(30px,6vw,52px);line-height:1;margin:0;text-shadow:0 3px 10px rgba(0,0,0,.18)}
+.subtitle{margin:6px 0 0;font-weight:800}
+main{padding:14px}
+.screen{display:none} .screen.active{display:block}
+.card{background:linear-gradient(180deg,#fff,#f8fafc);border:1px solid #dbeafe;border-radius:22px;padding:16px;box-shadow:0 10px 22px rgba(15,23,42,.08)}
+.start-card{max-width:560px;margin:0 auto;text-align:center}
+.start-card h2{font-size:34px;color:#1d4ed8;margin:0 0 8px}
+.start-text{font-weight:900;line-height:1.35;color:#334155}
+.player-form{display:grid;gap:6px;margin:12px 0;text-align:left}
+.player-form label{font-weight:900;color:#1e3a8a;font-size:13px}
+.player-form input{width:100%;border:2px solid #bfdbfe;border-radius:14px;padding:11px 12px;font-size:15px;font-weight:800;outline:none;background:white}
+.player-form input:focus{border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,.15)}
+.btn{border:0;border-radius:14px;padding:12px 22px;background:linear-gradient(135deg,#2563eb,#06b6d4 50%,#e11d48);color:white;font-weight:900;font-size:15px;cursor:pointer;box-shadow:0 8px 18px rgba(37,99,235,.25)}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.brand-start,.brand{margin-top:12px;font-weight:900;color:#334155;text-align:center}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:9px}
+.stat{background:white;border:1px solid #dbeafe;border-radius:16px;padding:8px;text-align:center;box-shadow:0 6px 16px rgba(15,23,42,.06)}
+.stat b{display:block;font-size:24px;color:#0b4db3;line-height:1} .stat span{font-size:10px;font-weight:900;color:#475569;text-transform:uppercase}
+.lives-card{background:#fff1f2;border:1px solid #fecdd3;border-radius:15px;padding:7px;text-align:center;font-weight:900;margin-bottom:9px}
+.heart{font-size:24px;color:#e11d48;margin:0 2px;line-height:1} .heart.lost{display:none}
+.game-grid{display:grid;grid-template-columns:.95fr 1.05fr;gap:12px;align-items:stretch}
+.hang-area{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;min-height:390px}
+.hang-emoji{font-size:82px;filter:drop-shadow(0 10px 14px rgba(0,0,0,.16))}
+.word{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;min-height:58px}
+.letter-box{width:34px;height:42px;border-radius:10px;border:2px solid #bfdbfe;background:white;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;color:#1d4ed8}
+.space-box{width:18px}
+.theme-chip{display:inline-block;background:#dbeafe;color:#1d4ed8;border:1px solid #bfdbfe;border-radius:999px;padding:7px 12px;font-weight:900;margin-bottom:8px}
+.hint{font-size:20px;line-height:1.25;font-weight:900;margin:0 0 10px;color:#111827}
+.keyboard{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:10px}
+.key{border:2px solid #dbeafe;background:#f8fafc;border-radius:10px;padding:9px 0;font-weight:900;font-size:15px;cursor:pointer}
+.key.correct{background:#dcfce7;border-color:#22c55e;color:#14532d}
+.key.wrong{background:#fee2e2;border-color:#ef4444;color:#7f1d1d}
+.key:disabled{opacity:.75;cursor:not-allowed}
+.feedback{display:none;margin-top:10px;border-radius:14px;padding:10px;font-weight:900;line-height:1.25}
+.feedback.ok{display:block;background:#dcfce7;border:1px solid #86efac;color:#14532d}
+.feedback.bad{display:block;background:#fee2e2;border:1px solid #fca5a5;color:#7f1d1d}
+.word-submit{display:grid;grid-template-columns:1fr auto;gap:7px;margin-top:10px}
+.word-submit input{border:2px solid #bfdbfe;border-radius:12px;padding:10px;font-weight:900;font-size:14px;outline:none}
+.final-ranking h2{margin:0 0 8px;text-align:center;font-size:28px;color:#1d4ed8}
+.final-message{background:linear-gradient(135deg,#fff7ed,#dbeafe);border:2px solid var(--gold);color:#172033;border-radius:16px;padding:10px;font-weight:900;line-height:1.25;text-align:center;margin:8px 0;font-size:12.5px}
+.player-summary{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin:8px 0}
+.summary-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:13px;padding:8px 5px;text-align:center;font-weight:900}
+.summary-box span{display:block;color:#64748b;font-size:9px;text-transform:uppercase}
+.summary-box b{display:block;color:#e11d48;font-size:17px;margin-top:2px}
+.ranking-title{text-align:center;margin:9px 0 6px;font-size:17px;color:#1d4ed8}
+.rank-list{display:grid;gap:5px;margin:5px 0}
+.rank-row{display:grid;grid-template-columns:29px 1fr auto;gap:6px;align-items:center;padding:5px;border-radius:11px;background:#f8fafc;border:1px solid #e2e8f0;box-shadow:0 3px 8px rgba(15,23,42,.04)}
+.rank-row.player{background:linear-gradient(135deg,#fff7ed,#dbeafe);border:2px solid var(--gold);box-shadow:0 6px 12px rgba(245,158,11,.16)}
+.rank-pos{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;background:#dbeafe;color:#1d4ed8;font-size:10px}
+.rank-row.player .rank-pos{background:var(--gold);color:#172033}
+.rank-name{font-weight:900;color:#172033;line-height:1.05;font-size:10.8px}
+.rank-school{font-size:8.2px;font-weight:800;color:#64748b;margin-top:1px}
+.rank-score{font-weight:900;color:#e11d48;text-align:right;font-size:10.5px}
+.rank-note{text-align:center;font-size:9px;color:#475569;font-weight:800;line-height:1.15;margin-top:5px}
+.rank-actions{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}
+.final-ranking .btn{padding:9px 8px;font-size:11px;width:100%}
 
-/* ===========================
-   HANGMAN MOBILE GAME MODE - CORRIGIDO
-   =========================== */
-@media(max-width:860px){
-  body.playing{
-    height:100dvh;
-    min-height:100dvh;
-    overflow:hidden;
-    padding:6px;
-    align-items:flex-start;
-  }
-
-  body.playing .corner-brand{
-    display:none;
-  }
-
-  body.playing .app{
-    height:calc(100dvh - 12px);
-    max-height:calc(100dvh - 12px);
-    display:flex;
-    flex-direction:column;
-    border-radius:18px;
-    overflow:hidden;
-  }
-
-  body.playing header{
-    flex:0 0 auto;
-    padding:7px 8px 6px;
-  }
-
-  body.playing .topbar{
-    flex-direction:row;
-    gap:6px;
-    margin-bottom:2px;
-  }
-
-  body.playing .back,
-  body.playing .pill{
-    padding:5px 7px;
-    font-size:10px;
-    line-height:1.05;
-  }
-
-  body.playing h1{
-    font-size:23px;
-    line-height:1;
-    margin:2px 0 0;
-  }
-
-  body.playing .subtitle{
-    display:none;
-  }
-
-  body.playing main{
-    flex:1 1 auto;
-    min-height:0;
-    padding:5px;
-    overflow:hidden;
-  }
-
-  body.playing #gameScreen.active{
-    height:100%;
-    min-height:0;
-    display:flex;
-    flex-direction:column;
-    overflow:hidden;
-  }
-
-  body.playing .mini-info,
-  body.playing .stats{
-    flex:0 0 auto;
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:4px;
-    margin-bottom:5px;
-  }
-
-  body.playing .stat{
-    border-radius:10px;
-    padding:4px 2px;
-  }
-
-  body.playing .stat b{
-    font-size:15px;
-    line-height:1;
-  }
-
-  body.playing .stat span{
-    font-size:8px;
-    line-height:1;
-  }
-
-  body.playing .game-grid,
-  body.playing .grid{
-    flex:1 1 auto;
-    min-height:0;
-    display:grid;
-    grid-template-columns:1fr;
-    grid-template-rows:auto 1fr;
-    gap:5px;
-    overflow:hidden;
-  }
-
-  body.playing .card{
-    border-radius:14px;
-    padding:7px;
-  }
-
-  body.playing .word-box,
-  body.playing .word-display,
-  body.playing #wordDisplay{
-    font-size:clamp(24px, 8vw, 34px);
-    letter-spacing:4px;
-    line-height:1.05;
-    margin:5px 0;
-    word-break:break-word;
-    text-align:center;
-  }
-
-  body.playing .hint,
-  body.playing #hintBox,
-  body.playing .theme-chip{
-    font-size:11px;
-    line-height:1.15;
-    padding:5px 7px;
-    border-radius:10px;
-    margin:3px 0;
-  }
-
-  body.playing .hangman-drawing,
-  body.playing #hangmanDrawing,
-  body.playing .draw-box{
-    height:92px;
-    max-height:92px;
-    overflow:hidden;
-    margin:2px auto 4px;
-  }
-
-  body.playing svg{
-    max-height:92px;
-  }
-
-  body.playing .keyboard,
-  body.playing #keyboard{
-    flex:1 1 auto;
-    min-height:0;
-    display:grid;
-    grid-template-columns:repeat(7,1fr);
-    gap:4px;
-    overflow:hidden;
-    align-content:center;
-  }
-
-  body.playing .key,
-  body.playing .letter-btn,
-  body.playing #keyboard button{
-    min-height:31px;
-    padding:4px 2px;
-    border-radius:8px;
-    font-size:13px;
-    font-weight:900;
-    line-height:1;
-  }
-
-  body.playing .feedback{
-    flex:0 0 auto;
-    margin-top:4px;
-    padding:6px;
-    border-radius:10px;
-    font-size:11px;
-    line-height:1.15;
-    max-height:44px;
-    overflow:hidden;
-  }
-
-  body.playing .actions,
-  body.playing .legend,
-  body.playing .bag-info{
-    display:none;
-  }
-}
-
-@media(max-width:860px) and (min-height:760px){
-  body.playing .hangman-drawing,
-  body.playing #hangmanDrawing,
-  body.playing .draw-box{
-    height:120px;
-    max-height:120px;
-  }
-
-  body.playing svg{
-    max-height:120px;
-  }
-
-  body.playing .word-box,
-  body.playing .word-display,
-  body.playing #wordDisplay{
-    font-size:clamp(30px, 9vw, 40px);
-  }
-
-  body.playing .key,
-  body.playing .letter-btn,
-  body.playing #keyboard button{
-    min-height:36px;
-    font-size:14px;
-  }
-}
-
-@media(max-width:860px) and (max-height:670px){
-  body.playing h1{
-    font-size:20px;
-  }
-
-  body.playing .topbar{
-    display:none;
-  }
-
-  body.playing header{
-    padding:5px;
-  }
-
-  body.playing .hangman-drawing,
-  body.playing #hangmanDrawing,
-  body.playing .draw-box{
-    height:72px;
-    max-height:72px;
-  }
-
-  body.playing svg{
-    max-height:72px;
-  }
-
-  body.playing .word-box,
-  body.playing .word-display,
-  body.playing #wordDisplay{
-    font-size:22px;
-    letter-spacing:3px;
-  }
-
-  body.playing .key,
-  body.playing .letter-btn,
-  body.playing #keyboard button{
-    min-height:27px;
-    font-size:12px;
-  }
-
-  body.playing .feedback{
-    display:none;
-  }
-}
-
+body.playing{height:100dvh;min-height:100dvh;overflow:hidden;padding:5px;align-items:flex-start}
+body.playing .app{height:calc(100dvh - 10px);min-height:0;border-radius:16px;display:flex;flex-direction:column}
+body.playing header{padding:5px 7px;flex:0 0 auto}
+body.playing .topbar{margin-bottom:2px}
+body.playing .back,body.playing .pill{font-size:9px;padding:4px 7px}
+body.playing h1{font-size:22px}
+body.playing .subtitle{display:none}
+body.playing main{padding:5px;flex:1 1 auto;min-height:0;overflow:hidden}
+body.playing #gameScreen.active{height:100%;display:flex;flex-direction:column;min-height:0;overflow:hidden}
+body.playing .stats{grid-template-columns:repeat(4,1fr);gap:4px;margin-bottom:4px;flex:0 0 auto}
+body.playing .stat{padding:4px 2px;border-radius:10px} body.playing .stat b{font-size:14px} body.playing .stat span{font-size:7px}
+body.playing .lives-card{font-size:10px;padding:4px;margin-bottom:4px;border-radius:10px;flex:0 0 auto} body.playing .heart{font-size:17px}
+body.playing .game-grid{grid-template-columns:1fr;grid-template-rows:auto 1fr;gap:5px;min-height:0;flex:1 1 auto;overflow:hidden}
+body.playing .card{padding:6px;border-radius:13px}
+body.playing .hang-area{min-height:154px;gap:5px}
+body.playing .hang-emoji{font-size:52px}
+body.playing .word{gap:4px;min-height:35px}
+body.playing .letter-box{width:22px;height:29px;border-radius:7px;font-size:15px}
+body.playing .space-box{width:10px}
+body.playing .theme-chip{font-size:10px;padding:5px 8px;margin-bottom:5px}
+body.playing .hint{font-size:13px;line-height:1.15;margin-bottom:5px;max-height:48px;overflow:hidden}
+body.playing .keyboard{grid-template-columns:repeat(7,1fr);gap:4px;margin-top:5px}
+body.playing .key{font-size:11px;padding:5px 0;border-radius:7px;border-width:1.5px}
+body.playing .word-submit{gap:4px;margin-top:5px}
+body.playing .word-submit input{font-size:11px;padding:6px;border-radius:8px}
+body.playing .word-submit .btn{font-size:10px;padding:6px 8px;border-radius:8px}
+body.playing .feedback{font-size:10.5px;padding:5px;max-height:42px;overflow:hidden;margin-top:5px}
+#finalScreen.active{height:100%;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.final-ranking{width:100%;max-width:680px;max-height:100%;overflow:hidden;padding:7px}
+@media(max-width:380px){body.playing .hang-area{min-height:135px} body.playing .hang-emoji{font-size:45px} body.playing .key{font-size:10px;padding:4px 0} .rank-actions{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <div class="app">
-  <header>
-    <div class="topbar">
-      <a class="back" href="6ano.html">⬅ Voltar ao 6º ano</a>
-      <div class="pill">🔤 6º Ano • 1º Bimestre</div>
+<header>
+  <div class="topbar"><a class="back" href="6ano.html">← Voltar ao 6º ano</a><div class="pill">🪢 6º Ano • 1º Bimestre</div></div>
+  <h1>Hangman Challenge</h1>
+  <p class="subtitle">Descubra a palavra em inglês antes de perder as vidas.</p>
+</header>
+<main>
+<section id="startScreen" class="screen active">
+  <div class="card start-card">
+    <h2>🪢 Hangman Challenge</h2>
+    <p class="start-text">Digite seus dados para jogar e aparecer no ranking motivacional do desafio.</p>
+    <div class="player-form">
+      <label>Seu nome</label>
+      <input id="playerName" type="text" placeholder="Digite seu nome" maxlength="28">
+      <label>Turma</label>
+      <input id="playerClass" type="text" placeholder="Ex.: 601" maxlength="12">
+      <label>Escola</label>
+      <input id="playerSchool" type="text" placeholder="Digite o nome da escola" maxlength="40">
     </div>
-    <h1>Hangman Challenge</h1>
-    <p class="subtitle">Descubra a palavra secreta usando as dicas. Cada letra certa aproxima você da vitória!</p>
-  </header>
+    <button class="btn" onclick="restart()">Começar jogo</button>
+    <div class="brand-start">Jogo idealizado pelo professor Jasson Bruno.</div>
+  </div>
+</section>
 
-  <main>
-    <section id="startScreen" class="screen active">
-      <div class="start-grid">
-        <div class="card">
-          <div class="motivation">
-            Aprender inglês pode ser mais divertido quando você aceita o desafio, tenta, erra, aprende e continua jogando.
-            Cada fase vencida mostra que você é capaz de ir mais longe. Acredite em você: você é do tamanho dos seus sonhos!
-            <div class="author">Jogo idealizado pelo professor Jasson Bruno.</div>
-          </div>
-          <label for="studentName">Nome do aluno</label>
-          <input id="studentName" placeholder="Digite seu nome"/>
-          <label for="studentClass">Turma</label>
-          <input id="studentClass" placeholder="Ex.: 601"/>
-          <label for="studentSchool">Escola</label>
-          <input id="studentSchool" placeholder="Ex.: EMEF Delfina de Jesus Amorim"/>
-          <button class="primary" onclick="startGame()">COMEÇAR DESAFIO</button>
-          <p class="small">Ao final, tire print da tela com sua pontuação e código de comprovação.</p>
-        </div>
-        <div class="card">
-          <h2>Como jogar?</h2>
-          <p><b>1.</b> Leia a dica em português.</p>
-          <p><b>2.</b> Clique nas letras para descobrir a palavra em inglês.</p>
-          <p><b>3.</b> Cada erro faz o bonequinho aparecer aos poucos.</p>
-          <p><b>4.</b> Complete 10 palavras para finalizar o desafio.</p>
-          <hr style="border:none;border-top:1px solid #e2e8f0;margin:14px 0">
-          <p><b>Conteúdos:</b> greetings, farewells, spelling, classroom commands, classroom expressions, personal pronouns e possessive adjectives.</p>
-        </div>
+<section id="gameScreen" class="screen">
+  <div class="stats">
+    <div class="stat"><b id="score">0</b><span>Pontos</span></div>
+    <div class="stat"><b id="corrects">0</b><span>Acertos</span></div>
+    <div class="stat"><b id="combo">0</b><span>Combo</span></div>
+    <div class="stat"><b id="round">1/30</b><span>Desafio</span></div>
+  </div>
+  <div class="lives-card"><b>Vidas:</b> <span id="lives"></span></div>
+  <div class="game-grid">
+    <div class="card hang-area">
+      <div id="hangEmoji" class="hang-emoji">🙂</div>
+      <div id="word" class="word"></div>
+    </div>
+    <div class="card question-card">
+      <div id="theme" class="theme-chip">Tema</div>
+      <div id="hint" class="hint">Dica</div>
+      <div id="keyboard" class="keyboard"></div>
+      <div class="word-submit">
+        <input id="guessInput" type="text" placeholder="Tentar palavra completa">
+        <button class="btn" onclick="guessWord()">OK</button>
       </div>
-    </section>
+      <div id="feedback" class="feedback"></div>
+    </div>
+  </div>
+</section>
 
-    <section id="gameScreen" class="screen">
-      <div class="mini-info">
-        <div class="stat"><b id="score">0</b><span>PONTOS</span></div>
-        <div class="stat"><b id="wins">0</b><span>PALAVRAS</span></div>
-        <div class="stat"><b id="errors">0/6</b><span>ERROS</span></div>
-        <div class="stat"><b id="combo">0</b><span>COMBO</span></div>
-        <div class="stat"><b id="round">1/30</b><span>RODADA</span></div>
-      </div>
-
-      <div class="game-grid">
-        <div class="card hangman-area">
-          <div class="gallows">
-            <div class="base"></div>
-            <div class="pole"></div>
-            <div class="top"></div>
-            <div class="rope"></div>
-            <div id="part1" class="part head"></div>
-            <div id="part2" class="part body"></div>
-            <div id="part3" class="part armL"></div>
-            <div id="part4" class="part armR"></div>
-            <div id="part5" class="part legL"></div>
-            <div id="part6" class="part legR"></div>
-            <div id="face" class="face">× ×</div>
-          </div>
-          <div class="topic-card">
-            <b>Tema:</b> <span id="themeText">---</span><br>
-            <b>Dica:</b> <span id="hintText">---</span>
-          </div>
-        </div>
-
-        <div class="card word-box">
-          <div class="hint" id="hintBox">A dica aparecerá aqui.</div>
-          <div id="wordDisplay" class="word"></div>
-          <div id="keyboard" class="keyboard"></div>
-          <div id="message" class="message"></div>
-          <div class="actions">
-            <button id="nextBtn" class="green hidden" onclick="nextWord()">PRÓXIMA PALAVRA</button>
-            <button class="secondary" onclick="finishGame()">FINALIZAR</button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="finalScreen" class="screen">
-      <div class="final-grid">
-        <div class="print-card">
-          <h2>Resultado Final</h2>
-          <div class="line"><span>Aluno:</span><span id="fName"></span></div>
-          <div class="line"><span>Turma:</span><span id="fClass"></span></div>
-          <div class="line"><span>Escola:</span><span id="fSchool"></span></div>
-          <div class="line"><span>Jogo:</span><span>Hangman Challenge</span></div>
-          <div class="line"><span>Pontuação:</span><span id="fScore"></span></div>
-          <div class="line"><span>Palavras descobertas:</span><span id="fWins"></span></div>
-          <div class="line"><span>Maior combo:</span><span id="fCombo"></span></div>
-          <div class="line"><span>Posição:</span><span id="fPosition"></span></div>
-          <div class="line"><span>Data/Hora:</span><span id="fDate"></span></div>
-          <div class="code" id="fCode"></div>
-          <p class="small"><b>Atenção:</b> tire print desta tela e envie ao professor.</p>
-        </div>
-
-        <div class="card">
-          <h2>Ranking do Desafio</h2>
-          <p class="small">Ranking motivacional gerado pelo jogo para acompanhar seu progresso.</p>
-          <table class="rank-table">
-            <thead><tr><th>Pos.</th><th>Aluno</th><th>Escola</th><th>Pontos</th></tr></thead>
-            <tbody id="rankingBody"></tbody>
-          </table>
-          <div class="actions">
-            <button class="primary" onclick="restartGame()">JOGAR NOVAMENTE</button>
-            <button class="secondary" onclick="goHome()">VOLTAR</button>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
+<section id="finalScreen" class="screen">
+  <div class="card final final-ranking">
+    <h2 id="finalTitle">💪 TRY AGAIN!</h2>
+    <div id="finalMsg" class="final-message"></div>
+    <div class="player-summary">
+      <div class="summary-box"><span>Pontuação</span><b id="fScore">0</b></div>
+      <div class="summary-box"><span>Acertos</span><b id="fCorrects">0/30</b></div>
+      <div class="summary-box"><span>Combo</span><b id="fCombo">0</b></div>
+      <div class="summary-box"><span>Vidas</span><b id="fLives">0/5</b></div>
+    </div>
+    <h3 class="ranking-title">🏆 Ranking do Desafio — Hangman Challenge</h3>
+    <div id="rankList" class="rank-list"></div>
+    <div class="rank-note">Ranking motivacional interno do jogo. Faça um print da sua pontuação e tente jogar novamente para subir no ranking.</div>
+    <div class="rank-actions">
+      <button class="btn" onclick="restart()">Jogar novamente</button>
+      <button class="btn" onclick="location.href='6ano.html'">Voltar ao 6º ano</button>
+    </div>
+  </div>
+</section>
+</main>
 </div>
 
 <script>
-const WORDS = [
-  {word:"HELLO", hint:"Cumprimento usado para dizer olá.", theme:"Greetings"},
-  {word:"HI", hint:"Forma curta de dizer oi.", theme:"Greetings"},
-  {word:"GOODBYE", hint:"Despedida em inglês.", theme:"Farewells"},
-  {word:"BYE", hint:"Forma curta de dizer tchau.", theme:"Farewells"},
-  {word:"MORNING", hint:"Parte do dia em Good morning.", theme:"Greetings"},
-  {word:"AFTERNOON", hint:"Parte do dia em Good afternoon.", theme:"Greetings"},
-  {word:"EVENING", hint:"Saudação usada no início da noite.", theme:"Greetings"},
-  {word:"NIGHT", hint:"Usada em Good night.", theme:"Farewells"},
-  {word:"SPELL", hint:"Significa soletrar.", theme:"Spelling names"},
-  {word:"NAME", hint:"Significa nome.", theme:"Personal information"},
-  {word:"BOOK", hint:"Objeto usado para ler e estudar.", theme:"Classroom vocabulary"},
-  {word:"PENCIL", hint:"Usado para escrever e pode ser apagado.", theme:"Classroom vocabulary"},
-  {word:"PEN", hint:"Usada para escrever com tinta.", theme:"Classroom vocabulary"},
-  {word:"NOTEBOOK", hint:"Caderno em inglês.", theme:"Classroom vocabulary"},
-  {word:"TEACHER", hint:"Pessoa que ensina.", theme:"School people"},
-  {word:"STUDENT", hint:"Pessoa que estuda.", theme:"School people"},
-  {word:"SCHOOL", hint:"Lugar onde estudamos.", theme:"Places"},
-  {word:"CLASSROOM", hint:"Sala de aula em inglês.", theme:"Places"},
-  {word:"FRIEND", hint:"Amigo ou amiga em inglês.", theme:"People"},
-  {word:"LISTEN", hint:"Comando para escutar.", theme:"Classroom commands"},
-  {word:"REPEAT", hint:"Comando para falar novamente.", theme:"Classroom commands"},
-  {word:"READ", hint:"Comando para ler.", theme:"Classroom commands"},
-  {word:"WRITE", hint:"Comando para escrever.", theme:"Classroom commands"},
-  {word:"OPEN", hint:"Verbo usado em Open your book.", theme:"Classroom commands"},
-  {word:"CLOSE", hint:"Verbo usado em Close your book.", theme:"Classroom commands"},
-  {word:"PLEASE", hint:"Por favor em inglês.", theme:"Classroom expressions"},
-  {word:"THANKS", hint:"Obrigado/obrigada de forma curta.", theme:"Classroom expressions"},
-  {word:"HELP", hint:"Ajuda em inglês.", theme:"Classroom expressions"},
-  {word:"BATHROOM", hint:"Banheiro em inglês.", theme:"Classroom expressions"},
-  {word:"YOU", hint:"Pronome que pode significar você.", theme:"Personal pronouns"},
-  {word:"HE", hint:"Pronome para ele.", theme:"Personal pronouns"},
-  {word:"SHE", hint:"Pronome para ela.", theme:"Personal pronouns"},
-  {word:"WE", hint:"Pronome para nós.", theme:"Personal pronouns"},
-  {word:"THEY", hint:"Pronome para eles ou elas.", theme:"Personal pronouns"},
-  {word:"MY", hint:"Meu/minha em inglês.", theme:"Possessive adjectives"},
-  {word:"YOUR", hint:"Seu/sua em inglês.", theme:"Possessive adjectives"},
-  {word:"HIS", hint:"Dele em inglês.", theme:"Possessive adjectives"},
-  {word:"HER", hint:"Dela em inglês.", theme:"Possessive adjectives"},
-  {word:"OUR", hint:"Nosso/nossa em inglês.", theme:"Possessive adjectives"},
-  {word:"THEIR", hint:"Deles/delas em inglês.", theme:"Possessive adjectives"}
+const TOTAL_ROUNDS = 30;
+const MAX_LIVES = 5;
+const CHALLENGES = [{"theme": "Greetings", "word": "HELLO", "hint": "Cumprimento em inglês que significa Olá/Oi.", "answer": "Hello"}, {"theme": "Greetings", "word": "HI", "hint": "Forma curta de dizer Oi em inglês.", "answer": "Hi"}, {"theme": "Greetings", "word": "GOOD MORNING", "hint": "Cumprimento usado pela manhã.", "answer": "Good morning"}, {"theme": "Greetings", "word": "GOOD AFTERNOON", "hint": "Cumprimento usado à tarde.", "answer": "Good afternoon"}, {"theme": "Greetings", "word": "HOW ARE YOU", "hint": "Pergunta usada para saber como a pessoa está.", "answer": "How are you?"}, {"theme": "Farewells", "word": "GOODBYE", "hint": "Despedida que significa Tchau.", "answer": "Goodbye"}, {"theme": "Farewells", "word": "BYE", "hint": "Forma curta de dizer Tchau.", "answer": "Bye"}, {"theme": "Farewells", "word": "SEE YOU", "hint": "Despedida que significa Até mais.", "answer": "See you"}, {"theme": "Farewells", "word": "GOOD NIGHT", "hint": "Despedida usada à noite.", "answer": "Good night"}, {"theme": "Spelling names", "word": "SPELL", "hint": "Verbo que significa soletrar.", "answer": "Spell"}, {"theme": "Spelling names", "word": "NAME", "hint": "Palavra que significa nome.", "answer": "Name"}, {"theme": "Spelling names", "word": "LETTER", "hint": "Palavra que significa letra.", "answer": "Letter"}, {"theme": "Classroom commands", "word": "READ", "hint": "Comando que significa ler.", "answer": "Read"}, {"theme": "Classroom commands", "word": "LISTEN", "hint": "Comando que significa ouvir/escutar.", "answer": "Listen"}, {"theme": "Classroom commands", "word": "REPEAT", "hint": "Comando que significa repetir.", "answer": "Repeat"}, {"theme": "Classroom commands", "word": "SIT DOWN", "hint": "Comando que significa sente-se.", "answer": "Sit down"}, {"theme": "Classroom commands", "word": "STAND UP", "hint": "Comando que significa levante-se.", "answer": "Stand up"}, {"theme": "Classroom commands", "word": "OPEN YOUR BOOK", "hint": "Comando que significa abra seu livro.", "answer": "Open your book"}, {"theme": "Classroom expressions", "word": "SORRY", "hint": "Palavra usada para pedir desculpas.", "answer": "Sorry"}, {"theme": "Classroom expressions", "word": "I DONT KNOW", "hint": "Frase que significa Eu não sei.", "answer": "I don't know"}, {"theme": "Classroom expressions", "word": "CAN I TRY", "hint": "Frase que significa Posso tentar?", "answer": "Can I try?"}, {"theme": "Classroom expressions", "word": "HELP ME", "hint": "Expressão usada para pedir ajuda.", "answer": "Help me"}, {"theme": "Personal information", "word": "MY NAME IS", "hint": "Estrutura usada para dizer Meu nome é...", "answer": "My name is"}, {"theme": "Personal information", "word": "I AM FROM", "hint": "Estrutura usada para dizer Eu sou de...", "answer": "I am from"}, {"theme": "Personal information", "word": "YEARS OLD", "hint": "Expressão usada para falar idade.", "answer": "Years old"}, {"theme": "Personal pronouns", "word": "I", "hint": "Pronome pessoal que significa eu.", "answer": "I"}, {"theme": "Personal pronouns", "word": "YOU", "hint": "Pronome pessoal que significa você.", "answer": "You"}, {"theme": "Personal pronouns", "word": "HE", "hint": "Pronome pessoal que significa ele.", "answer": "He"}, {"theme": "Personal pronouns", "word": "SHE", "hint": "Pronome pessoal que significa ela.", "answer": "She"}, {"theme": "Personal pronouns", "word": "THEY", "hint": "Pronome pessoal que significa eles/elas.", "answer": "They"}, {"theme": "Possessive adjectives", "word": "MY", "hint": "Adjetivo possessivo que significa meu/minha.", "answer": "My"}, {"theme": "Possessive adjectives", "word": "YOUR", "hint": "Adjetivo possessivo que significa seu/sua.", "answer": "Your"}, {"theme": "Possessive adjectives", "word": "HIS", "hint": "Adjetivo possessivo que significa dele.", "answer": "His"}, {"theme": "Possessive adjectives", "word": "HER", "hint": "Adjetivo possessivo que significa dela.", "answer": "Her"}];
+const KEYBOARD = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+const HANG_EMOJIS = ["🙂","😐","😟","😰","😵","💀"];
+
+const FAKE_RANKING_NAMES = [
+  ["Ana Clara", "Escola Municipal Frei Fabiano Merz — 602"],
+  ["Miguel Santos", "Escola Municipal Fluminense — 601"],
+  ["Lívia Beatriz", "Escola Municipal Maria Amália Queiroz de Sousa — 603"],
+  ["Gabriel Silva", "Escola Municipal Rotary — 601"],
+  ["Mariana Costa", "Escola Municipal Ubaldo Corrêa — 602"],
+  ["João Pedro", "Escola Municipal Haroldo Veloso — 601"],
+  ["Sofia Martins", "Escola Municipal São José Operário — 603"],
+  ["Lucas Henrique", "Escola Municipal Irmã Leodgard Gausepohl — 602"],
+  ["Isabela Rocha", "Escola Municipal Princesa Izabel — 601"],
+  ["Rafael Lima", "Escola Municipal Brigadeiro Eduardo Gomes — 601"]
 ];
 
-const names = ["Ana Clara","João Pedro","Maria Eduarda","Lucas Gabriel","Sofia Vitória","Pedro Henrique","Laura Sofia","Gabriel Lima","Júlia Beatriz","Matheus Ryan","Lívia Maria","Miguel Arthur","Isabela Cristina","Davi Lucas","Helena Vitória"];
-const schools = [
-  "EMEF Delfina de Jesus Amorim","EMEF Frei Fabiano Merz","EMEF Brigadeiro Eduardo Gomes",
-  "EMEF César Simões Ramalheiro","EMEF Haroldo Veloso","EMEF Pérola do Maicá",
-  "EMEF Deputado Ubaldo Corrêa","EMEF Dr. Everaldo de Sousa Martins",
-  "EMEF Eloína Colares e Silva","EMEF Cel. Mário Fernandes Imbiriba"
-];
-
-let student = {name:"", class:"", school:""};
-let state = {
-  score:0, wins:0, errors:0, combo:0, maxCombo:0,
-  round:1, totalRounds:30, current:null, guessed:[], usedWords:[], locked:false
-};
+let state = {};
 
 function el(id){return document.getElementById(id)}
-function show(id){
-  document.querySelectorAll(".screen").forEach(function(s){
-    s.classList.remove("active");
-  });
-  const target = document.getElementById(id);
-  if(target){
-    target.classList.add("active");
-  }
-  document.body.classList.toggle("playing", id === "gameScreen");
+function normalizeText(value){
+  return String(value || "")
+    .toUpperCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g,"")
+    .replace(/[^A-Z0-9 ]/g,"")
+    .replace(/\s+/g," ")
+    .trim();
 }
-function shuffle(arr){return [...arr].sort(()=>Math.random()-.5)}
-function pick(arr){return arr[Math.floor(Math.random()*arr.length)]}
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function show(id){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));el(id).classList.add("active");document.body.classList.toggle("playing", id==="gameScreen")}
 
-function startGame(){
-  const name = el("studentName").value.trim();
-  const klass = el("studentClass").value.trim();
-  const school = el("studentSchool").value.trim();
-  if(!name || !klass || !school){ alert("Preencha nome, turma e escola para começar."); return; }
-  student = {name, class:klass, school};
-  state = {score:0,wins:0,errors:0,combo:0,maxCombo:0,round:1,totalRounds:30,current:null,guessed:[],usedWords:[],locked:false};
+function makeBag(){
+  const bag = shuffle(CHALLENGES);
+  while(bag.length < TOTAL_ROUNDS) bag.push(...shuffle(CHALLENGES));
+  return bag.slice(0,TOTAL_ROUNDS);
+}
+
+function restart(){
+  state = {
+    score:0, corrects:0, combo:0, maxCombo:0, round:1, lives:MAX_LIVES,
+    bag:makeBag(), current:null, guessed:new Set(), roundMistakes:0, finishedRound:false
+  };
   show("gameScreen");
-  loadWord();
+  loadChallenge();
 }
 
 function updateStats(){
   el("score").textContent = state.score;
-  el("wins").textContent = state.wins;
-  el("errors").textContent = `${state.errors}/6`;
+  el("corrects").textContent = state.corrects;
   el("combo").textContent = state.combo;
-  el("round").textContent = `${state.round}/${state.totalRounds}`;
+  el("round").textContent = `${state.round}/${TOTAL_ROUNDS}`;
+  el("lives").innerHTML = Array.from({length:MAX_LIVES}, (_,i)=>`<span class="heart ${i>=state.lives ? 'lost' : ''}">♥</span>`).join("");
+  el("hangEmoji").textContent = HANG_EMOJIS[Math.min(state.roundMistakes, HANG_EMOJIS.length-1)];
 }
 
-function resetHangman(){
-  for(let i=1;i<=6;i++) el("part"+i).style.display = "none";
-  el("face").style.display = "none";
-}
-
-function drawHangman(){
-  for(let i=1;i<=6;i++) el("part"+i).style.display = i <= state.errors ? "block" : "none";
-  el("face").style.display = state.errors >= 6 ? "block" : "none";
-}
-
-function loadWord(){
-  resetHangman();
-  state.errors = 0;
-  state.guessed = [];
-  state.locked = false;
-  el("message").className = "message";
-  el("nextBtn").classList.add("hidden");
-
-  let pool = WORDS.filter(w => !state.usedWords.includes(w.word));
-  if(pool.length === 0){ state.usedWords = []; pool = WORDS; }
-  state.current = pick(pool);
-  state.usedWords.push(state.current.word);
-
-  el("themeText").textContent = state.current.theme;
-  el("hintText").textContent = state.current.hint;
-  el("hintBox").innerHTML = `<b>Dica:</b> ${state.current.hint}`;
-
+function loadChallenge(){
+  state.current = state.bag[state.round-1];
+  state.guessed = new Set();
+  state.roundMistakes = 0;
+  state.finishedRound = false;
+  el("theme").textContent = state.current.theme;
+  el("hint").textContent = state.current.hint;
+  el("guessInput").value = "";
+  el("feedback").className = "feedback";
+  el("feedback").innerHTML = "";
   renderWord();
   renderKeyboard();
   updateStats();
 }
 
 function renderWord(){
-  const word = state.current.word;
-  el("wordDisplay").innerHTML = word.split("").map(ch => {
-    const show = state.guessed.includes(ch);
-    return `<div class="letter-slot">${show ? ch : ""}</div>`;
-  }).join("");
+  const wordBox = el("word");
+  wordBox.innerHTML = "";
+  const word = normalizeText(state.current.word);
+  for(const ch of word){
+    if(ch === " "){
+      const space = document.createElement("div");
+      space.className = "space-box";
+      wordBox.appendChild(space);
+    } else {
+      const box = document.createElement("div");
+      box.className = "letter-box";
+      box.textContent = state.guessed.has(ch) ? ch : "";
+      wordBox.appendChild(box);
+    }
+  }
 }
 
 function renderKeyboard(){
-  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-  el("keyboard").innerHTML = letters.map(l => `<button class="key" id="key_${l}" onclick="guessLetter('${l}')">${l}</button>`).join("");
+  const box = el("keyboard");
+  box.innerHTML = "";
+  KEYBOARD.forEach(letter => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "key";
+    btn.textContent = letter;
+    btn.addEventListener("click", () => chooseLetter(btn, letter));
+    box.appendChild(btn);
+  });
 }
 
-function guessLetter(letter){
-  if(state.locked || state.guessed.includes(letter)) return;
+function chooseLetter(btn, letter){
+  if(state.finishedRound) return;
+  if(state.guessed.has(letter)) return;
 
-  const key = el("key_"+letter);
-  key.classList.add("used");
-  key.disabled = true;
-  state.guessed.push(letter);
+  state.guessed.add(letter);
+  const word = normalizeText(state.current.word);
+  const fb = el("feedback");
 
-  if(state.current.word.includes(letter)){
-    key.classList.add("good");
-    state.score += 15;
+  if(word.includes(letter)){
+    btn.classList.add("correct");
+    fb.className = "feedback ok";
+    fb.innerHTML = `✅ Boa! A letra <b>${letter}</b> aparece na palavra.`;
     renderWord();
-    checkWin();
-  }else{
-    key.classList.add("bad");
-    state.errors++;
-    state.score = Math.max(0, state.score - 5);
-    drawHangman();
-    if(state.errors >= 6) loseWord();
+    if(isWordComplete()) completeRound(true);
+  } else {
+    btn.classList.add("wrong");
+    state.roundMistakes++;
+    state.lives = Math.max(0, state.lives - 1);
+    state.combo = 0;
+    fb.className = "feedback bad";
+    fb.innerHTML = `❌ A letra <b>${letter}</b> não aparece. Você perdeu uma vida.`;
+    if(state.lives <= 0){
+      updateStats();
+      setTimeout(()=>finishGame(false), 750);
+      return;
+    }
   }
+  btn.disabled = true;
   updateStats();
 }
 
-function checkWin(){
-  const won = state.current.word.split("").every(ch => state.guessed.includes(ch));
-  if(!won) return;
+function isWordComplete(){
+  const word = normalizeText(state.current.word).replace(/ /g,"");
+  for(const ch of word){
+    if(!state.guessed.has(ch)) return false;
+  }
+  return true;
+}
 
-  state.locked = true;
-  state.wins++;
+function guessWord(){
+  if(state.finishedRound) return;
+  const guess = normalizeText(el("guessInput").value);
+  const answer = normalizeText(state.current.word);
+  const accepted = normalizeText(state.current.answer);
+
+  if(!guess){
+    el("feedback").className = "feedback bad";
+    el("feedback").innerHTML = "Digite uma tentativa antes de clicar em OK.";
+    return;
+  }
+
+  if(guess === answer || guess === accepted){
+    for(const ch of answer.replace(/ /g,"")) state.guessed.add(ch);
+    renderWord();
+    completeRound(true);
+  } else {
+    state.roundMistakes++;
+    state.lives = Math.max(0, state.lives - 1);
+    state.combo = 0;
+    el("feedback").className = "feedback bad";
+    el("feedback").innerHTML = `❌ Ainda não. Você perdeu uma vida.`;
+    updateStats();
+    if(state.lives <= 0) setTimeout(()=>finishGame(false), 750);
+  }
+}
+
+function completeRound(success){
+  if(state.finishedRound) return;
+  state.finishedRound = true;
+  document.querySelectorAll(".key").forEach(k=>k.disabled=true);
+  state.corrects++;
   state.combo++;
   state.maxCombo = Math.max(state.maxCombo, state.combo);
-  const bonus = 100 + Math.max(0, (6 - state.errors) * 15) + (state.combo >= 3 ? 30 : 0);
-  state.score += bonus;
-
-  const msg = el("message");
-  msg.className = "message ok";
-  msg.innerHTML = `✅ Excellent! Você descobriu a palavra <b>${state.current.word}</b>.<br>Ganhou bônus de ${bonus} pontos.`;
-  disableKeyboard();
-  el("nextBtn").classList.remove("hidden");
+  state.score += 120 + (state.combo >= 3 ? 20 : 0);
+  el("feedback").className = "feedback ok";
+  el("feedback").innerHTML = `✅ Great job! A resposta era <b>${state.current.answer}</b>. Você venceu este desafio!`;
   updateStats();
-}
 
-function loseWord(){
-  state.locked = true;
-  state.combo = 0;
-  const msg = el("message");
-  msg.className = "message bad";
-  msg.innerHTML = `❌ Quase! A palavra era <b>${state.current.word}</b>.<br>Leia a dica novamente e tente a próxima.`;
-  disableKeyboard(true);
-  el("nextBtn").classList.remove("hidden");
-  updateStats();
-}
-
-function disableKeyboard(showWord=false){
-  document.querySelectorAll(".key").forEach(k => k.disabled = true);
-  if(showWord){
-    state.current.word.split("").forEach(ch => {
-      if(!state.guessed.includes(ch)) state.guessed.push(ch);
-    });
-    renderWord();
+  if(state.round >= TOTAL_ROUNDS){
+    setTimeout(()=>finishGame(true), 950);
+    return;
   }
+
+  setTimeout(()=>{
+    state.round++;
+    loadChallenge();
+  }, 1050);
 }
 
-function nextWord(){
-  if(state.round >= state.totalRounds){ finishGame(); return; }
-  state.round++;
-  loadWord();
+function getPlayerInfo(){
+  const name = (el("playerName").value || "Aluno(a)").trim() || "Aluno(a)";
+  const klass = (el("playerClass").value || "6º Ano").trim() || "6º Ano";
+  const school = (el("playerSchool").value || "Minha escola").trim() || "Minha escola";
+  return {name, klass, school};
 }
 
-function getPosition(score){
-  if(score >= 1350) return 1;
-  if(score >= 1100) return 2;
-  if(score >= 850) return 3;
-  if(score >= 620) return 4;
-  if(score >= 420) return 5;
-  return 6;
+function buildMotivationalRanking(){
+  const player = getPlayerInfo();
+  const playerScore = state.score;
+  let playerRank = 6;
+  if(playerScore >= 3000) playerRank = 2;
+  else if(playerScore >= 2300) playerRank = 3;
+  else if(playerScore >= 1500) playerRank = 4;
+  else if(playerScore >= 800) playerRank = 5;
+
+  const shuffledNames = shuffle(FAKE_RANKING_NAMES);
+  const rows = [];
+  let fakeIndex = 0;
+
+  for(let pos = 1; pos <= 10; pos++){
+    if(pos === playerRank){
+      rows.push({name:player.name, school:`${player.school} — ${player.klass}`, score:playerScore, isPlayer:true});
+    } else {
+      let score = pos < playerRank
+        ? playerScore + (playerRank - pos) * 230 + 100
+        : Math.max(0, playerScore - (pos - playerRank) * 130);
+      const fake = shuffledNames[fakeIndex % shuffledNames.length];
+      fakeIndex++;
+      rows.push({name:fake[0], school:fake[1], score, isPlayer:false});
+    }
+  }
+  return rows;
 }
 
-function buildRanking(){
-  const pos = getPosition(state.score);
-  const baseScores = [1480,1210,980,760,580,390,260].map(s => s + Math.floor(Math.random()*60) - 25);
-  let rows = [];
-  for(let i=0;i<7;i++) rows.push({name:pick(names), school:pick(schools), score:baseScores[i], me:false});
-  rows.splice(pos-1,0,{name:student.name, school:student.school, score:state.score, me:true});
-  rows = rows.sort((a,b)=>b.score-a.score).slice(0,8);
-  if(rows.findIndex(r=>r.me) === -1) rows[7] = {name:student.name, school:student.school, score:state.score, me:true};
-  rows.sort((a,b)=>b.score-a.score);
-  return rows.map((r,i)=>({...r, pos:i+1}));
-}
-
-function finishGame(){
-  const now = new Date();
-  const code = `HANG-6-${String(state.score).padStart(4,"0")}-${Math.floor(100+Math.random()*900)}`;
-  const ranking = buildRanking();
-  const me = ranking.find(r=>r.me) || {pos:getPosition(state.score)};
-
-  el("fName").textContent = student.name;
-  el("fClass").textContent = student.class;
-  el("fSchool").textContent = student.school;
-  el("fScore").textContent = state.score;
-  el("fWins").textContent = `${state.wins}/${state.totalRounds}`;
-  el("fCombo").textContent = state.maxCombo;
-  el("fPosition").textContent = `${me.pos}º lugar`;
-  el("fDate").textContent = now.toLocaleString("pt-BR");
-  el("fCode").textContent = code;
-
-  el("rankingBody").innerHTML = ranking.map(r => `
-    <tr class="${r.me ? "me" : ""}">
-      <td>${r.pos}º</td><td>${r.name}${r.me ? " ⭐" : ""}</td><td>${r.school}</td><td>${r.score}</td>
-    </tr>
+function renderRanking(){
+  const rows = buildMotivationalRanking();
+  el("rankList").innerHTML = rows.map((r,i)=>`
+    <div class="rank-row ${r.isPlayer ? "player" : ""}">
+      <div class="rank-pos">${i+1}º</div>
+      <div>
+        <div class="rank-name">${r.isPlayer ? "⭐ " : ""}${r.name}</div>
+        <div class="rank-school">${r.school}</div>
+      </div>
+      <div class="rank-score">${r.score} pts</div>
+    </div>
   `).join("");
+}
 
-  try{
-    const key = "hangman6_results";
-    const list = JSON.parse(localStorage.getItem(key) || "[]");
-    list.push({student, score:state.score, wins:state.wins, combo:state.maxCombo, code, date:new Date().toISOString()});
-    localStorage.setItem(key, JSON.stringify(list.slice(-20)));
-  }catch(e){}
-
+function finishGame(completed){
   show("finalScreen");
+  el("finalTitle").textContent = completed ? "🏆 YOU ARE THE ONE!" : "💪 TRY AGAIN!";
+  el("finalMsg").textContent = completed
+    ? "Parabéns! Você chegou ao final do desafio e mostrou memória, atenção e coragem para aprender inglês. Continue jogando para subir ainda mais no ranking!"
+    : "Você tentou, errou, aprendeu e isso já mostra evolução. Não pare agora! Jogue novamente, melhore sua pontuação e tente subir no ranking.";
+  el("fScore").textContent = state.score;
+  el("fCorrects").textContent = `${state.corrects}/${TOTAL_ROUNDS}`;
+  el("fCombo").textContent = state.maxCombo;
+  el("fLives").textContent = `${state.lives}/${MAX_LIVES}`;
+  renderRanking();
 }
 
-function restartGame(){
-  state = {score:0,wins:0,errors:0,combo:0,maxCombo:0,round:1,totalRounds:30,current:null,guessed:[],usedWords:[],locked:false};
-  show("gameScreen");
-  loadWord();
-}
-
-function goHome(){ window.location.href = "6ano.html"; }
+show("startScreen");
 </script>
 </body>
 </html>
