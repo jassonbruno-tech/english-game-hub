@@ -73,7 +73,7 @@ body {
 .page {
   min-height: 100vh;
   width: 100%;
-  padding: 58px 10px 10px;
+  padding: 52px 10px 8px;
   display: flex;
   align-items: flex-start;
   justify-content: center;
@@ -81,8 +81,8 @@ body {
 
 .panel {
   width: 100%;
-  max-width: 480px;
-  padding: 14px;
+  max-width: 450px;
+  padding: 12px;
   border-radius: 26px;
   background: linear-gradient(rgba(8, 22, 52, 0.13), rgba(8, 22, 52, 0.13));
   border: 1px solid rgba(243, 227, 179, .12);
@@ -101,9 +101,9 @@ body {
   background: rgba(243, 227, 179, .10);
   border: 1px solid rgba(243, 227, 179, .20);
   color: #F3E3B3;
-  font-size: 18px;
+  font-size: 15px;
   font-weight: 900;
-  margin-bottom: 8px;
+  margin-bottom: 7px;
 }
 
 h1 {
@@ -118,7 +118,7 @@ h1 {
 .subtitle {
   margin: 8px auto 0;
   max-width: 350px;
-  font-size: 22px;
+  font-size: 17px;
   line-height: 1.25;
   font-weight: 800;
   color: #F8F1DE;
@@ -143,14 +143,14 @@ h1 {
   display: grid;
   grid-template-columns: 1fr;
   gap: 9px;
-  margin-top: 78px; /* botões ainda mais baixos para valorizar a imagem */
+  margin-top: 42px; /* botões mais baixos sem estourar a tela */
 }
 
 .series-btn {
   text-decoration: none;
   color: #F8F1DE;
   border-radius: 18px;
-  min-height: 124px;
+  min-height: 92px;
   padding: 10px 14px;
   display: flex;
   align-items: center;
@@ -201,7 +201,7 @@ h1 {
 }
 
 .series-name {
-  font-size: 30px;
+  font-size: 24px;
   font-weight: 900;
   color: #F8F1DE;
   text-shadow: 0 3px 8px rgba(0,0,0,.22);
@@ -209,7 +209,7 @@ h1 {
 
 .series-info {
   margin-top: 4px;
-  font-size: 19px;
+  font-size: 15.5px;
   line-height: 1.18;
   font-weight: 800;
   color: #F5EBD7;
@@ -233,10 +233,10 @@ h1 {
 }
 
 .footer {
-  margin-top: 26px;
+  margin-top: 12px;
   text-align: center;
   font-weight: 900;
-  font-size: 20px;
+  font-size: 16px;
   color: #EFD9A7;
   text-shadow: 0 3px 8px rgba(0,0,0,.28);
 }
@@ -264,12 +264,12 @@ h1 {
   }
 
   .series-grid {
-    margin-top: 64px;
+    margin-top: 36px;
     gap: 8px;
   }
 
   .series-btn {
-    min-height: 112px;
+    min-height: 84px;
     padding: 10px 12px;
   }
 
@@ -278,11 +278,11 @@ h1 {
   }
 
   .series-name {
-    font-size: 24px;
+    font-size: 21px;
   }
 
   .series-info {
-    font-size: 15px;
+    font-size: 13px;
   }
 }
 
@@ -322,8 +322,8 @@ h1 {
   }
 
   .subtitle {
-    font-size: 28px;
-    max-width: 860px;
+    font-size: 22px;
+    max-width: 760px;
     line-height: 1.35;
   }
 
@@ -337,11 +337,11 @@ h1 {
   .series-grid {
     grid-template-columns: repeat(4, 1fr);
     gap: 12px;
-    margin-top: 46px;
+    margin-top: 26px;
   }
 
   .series-btn {
-    min-height: 178px;
+    min-height: 120px;
     padding: 15px;
     border-radius: 22px;
   }
@@ -355,12 +355,12 @@ h1 {
   }
 
   .series-name {
-    font-size: 32px;
+    font-size: 26px;
     margin-top: 4px;
   }
 
   .series-info {
-    font-size: 21px;
+    font-size: 16px;
     line-height: 1.25;
     margin-top: 9px;
   }
@@ -388,11 +388,7 @@ h1 {
       <h1>English Game Hub</h1>
       <div class="subtitle">Escolha sua série e entre no desafio.</div>
     </div>
-
-    <div class="motivation">
-      Aprender inglês pode ser mais divertido quando você aceita o desafio, tenta, erra, aprende e continua jogando. Cada fase vencida mostra que você é capaz de ir mais longe. Acredite em você: você é do tamanho dos seus sonhos!
-    </div>
-
+<!-- Frase motivadora foi movida para a tela secundária das séries para a tela inicial caber melhor no celular. -->
     <div class="series-grid">
       <a class="series-btn six" href="6ano.html">
         <div class="series-left">
