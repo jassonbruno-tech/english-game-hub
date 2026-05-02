@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Board Game F1 - 6º Ano</title>
+<style>
+*{box-sizing:border-box}
+:root{--blue:#2563eb;--cyan:#06b6d4;--pink:#e11d48;--gold:#f8d36b;--dark:#172033;}
+html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;color:var(--dark)}
+body{
+  min-height:100vh;
+  background:
+    radial-gradient(circle at 20% 10%, rgba(255,255,255,.30), transparent 26%),
+    linear-gradient(135deg,#0f172a,#1d4ed8 42%,#06b6d4 70%,#e11d48);
+  display:flex;align-items:center;justify-content:center;padding:10px;
+}
+.app{width:min(100%,1180px);min-height:min(780px,96vh);background:rgba(255,255,255,.94);border-radius:26px;overflow:hidden;box-shadow:0 24px 55px rgba(0,0,0,.25)}
+header{background:linear-gradient(135deg,#111827,#2563eb 48%,#e11d48);color:white;padding:14px 18px;text-align:center;position:relative}
+.topbar{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:6px}
+.back,.pill{color:white;text-decoration:none;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:7px 11px;font-weight:900;font-size:12px}
+h1{font-size:clamp(30px,6vw,54px);line-height:1;margin:0;text-shadow:0 3px 10px rgba(0,0,0,.22)}
+.subtitle{margin:6px 0 0;font-weight:800}
+main{padding:14px}
+.screen{display:none} .screen.active{display:block}
+.card{background:linear-gradient(180deg,#fff,#f8fafc);border:1px solid #dbeafe;border-radius:22px;padding:14px;box-shadow:0 10px 22px rgba(15,23,42,.08)}
+.start-card{max-width:620px;margin:0 auto;text-align:center}
+.start-card h2{font-size:34px;color:#1d4ed8;margin:0 0 8px}
+.start-text{font-weight:900;line-height:1.35;color:#334155}
+.player-form{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0;text-align:left}
+.player-form .full{grid-column:1/-1}
+.player-form label{display:block;font-weight:900;color:#1e3a8a;font-size:13px;margin-bottom:4px}
+.player-form input{width:100%;border:2px solid #bfdbfe;border-radius:14px;padding:11px 12px;font-size:15px;font-weight:800;outline:none;background:white}
+.btn{border:0;border-radius:14px;padding:12px 22px;background:linear-gradient(135deg,#2563eb,#06b6d4 50%,#e11d48);color:white;font-weight:900;font-size:15px;cursor:pointer;box-shadow:0 8px 18px rgba(37,99,235,.25)}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.brand{position:fixed;right:12px;bottom:12px;background:linear-gradient(135deg,#1e3a8a,#e11d48);color:white;font-weight:900;border-radius:14px;padding:9px 12px;font-size:12px;box-shadow:0 8px 18px rgba(15,23,42,.25);z-index:30}
+.game-layout{display:grid;grid-template-columns:1.2fr .8fr;gap:12px;align-items:stretch}
+.scorebar{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px}
+.score{background:white;border:1px solid #dbeafe;border-radius:15px;padding:8px;text-align:center;font-weight:900}
+.score b{display:block;color:#e11d48;font-size:22px}
+.track-card{position:relative;overflow:hidden;background:linear-gradient(180deg,#dbeafe,#f8fafc)}
+.track-title{display:flex;justify-content:space-between;align-items:center;font-weight:900;color:#1e3a8a;margin-bottom:8px}
+.track{
+  position:relative;width:100%;height:520px;border-radius:28px;
+  background:
+    radial-gradient(circle at center, #22c55e 0 28%, transparent 29%),
+    linear-gradient(135deg,#334155,#111827);
+  border:8px solid #e5e7eb;box-shadow:inset 0 0 0 10px #475569, inset 0 0 0 18px #f8fafc;
+  overflow:hidden;
+}
+.track::before{
+  content:"";position:absolute;inset:62px;border:16px dashed rgba(255,255,255,.72);border-radius:22px;opacity:.9;
+}
+.finish-line{
+  position:absolute;right:8%;top:48%;width:54px;height:20px;
+  background:repeating-conic-gradient(#111 0 25%,#fff 0 50%) 0/16px 16px;
+  border:2px solid white;border-radius:4px;transform:rotate(90deg);z-index:4;
+}
+.cell{position:absolute;width:30px;height:30px;border-radius:50%;background:#fff;border:3px solid #60a5fa;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;color:#1e3a8a;box-shadow:0 4px 10px rgba(0,0,0,.16);z-index:5}
+.cell.special.bonus{background:#dcfce7;border-color:#22c55e;color:#14532d}
+.cell.special.penalty{background:#fee2e2;border-color:#ef4444;color:#7f1d1d}
+.cell.special.challenge{background:#fef3c7;border-color:#f59e0b;color:#92400e}
+.car{position:absolute;width:44px;height:28px;display:flex;align-items:center;justify-content:center;font-size:31px;z-index:8;transition:left 1.05s cubic-bezier(.19,.86,.28,1), top 1.05s cubic-bezier(.19,.86,.28,1), transform .45s ease;filter:drop-shadow(0 7px 6px rgba(0,0,0,.35))}
+.car.p1{color:#2563eb} .car.p2{color:#e11d48}
+.car.moving{transform:scale(1.15) rotate(-3deg);filter:drop-shadow(0 10px 8px rgba(0,0,0,.42))}
+.legend{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px;font-size:11px;font-weight:900;text-align:center}
+.legend span{padding:5px;border-radius:9px}
+.lbonus{background:#dcfce7;color:#14532d} .lpenalty{background:#fee2e2;color:#7f1d1d} .lchallenge{background:#fef3c7;color:#92400e}
+
+.side{display:grid;gap:10px}
+.turn-box{text-align:center;background:linear-gradient(135deg,#fff7ed,#dbeafe);border:2px solid var(--gold)}
+.turn-box h2{font-size:24px;margin:0;color:#1d4ed8}
+.dice-area{display:flex;align-items:center;justify-content:center;gap:14px;margin:10px 0}
+.dice-scene{width:86px;height:86px;perspective:600px}
+.dice{width:86px;height:86px;position:relative;transform-style:preserve-3d;transition:transform 1s ease;}
+.dice.rolling{animation:rollDice .75s linear infinite}
+.face{position:absolute;width:86px;height:86px;background:#fff;border:4px solid #111827;border-radius:16px;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);padding:9px;box-shadow:inset 0 0 8px rgba(0,0,0,.12)}
+.dot{width:13px;height:13px;background:#111827;border-radius:50%;align-self:center;justify-self:center}
+.f1{transform:rotateY(0deg) translateZ(43px)} .f2{transform:rotateY(180deg) translateZ(43px)} .f3{transform:rotateY(90deg) translateZ(43px)} .f4{transform:rotateY(-90deg) translateZ(43px)} .f5{transform:rotateX(90deg) translateZ(43px)} .f6{transform:rotateX(-90deg) translateZ(43px)}
+@keyframes rollDice{from{transform:rotateX(0) rotateY(0) rotateZ(0)}to{transform:rotateX(360deg) rotateY(540deg) rotateZ(360deg)}}
+.question-box h3{margin:0 0 8px;color:#1d4ed8}
+.theme-chip{display:inline-block;background:#dbeafe;color:#1d4ed8;border:1px solid #bfdbfe;border-radius:999px;padding:6px 10px;font-weight:900;margin-bottom:8px;font-size:12px}
+.prompt{font-size:18px;line-height:1.25;font-weight:900;margin:0 0 10px}
+.options{display:grid;gap:8px}
+.option{border:2px solid #dbeafe;background:#f8fafc;border-radius:13px;padding:10px;text-align:left;font-weight:900;font-size:14px;cursor:pointer;color:#111827}
+.option.correct{background:#dcfce7;border-color:#22c55e;color:#14532d} .option.wrong{background:#fee2e2;border-color:#ef4444;color:#7f1d1d}
+.feedback{display:none;margin-top:8px;border-radius:13px;padding:9px;font-weight:900;line-height:1.25;font-size:13px}
+.feedback.ok{display:block;background:#dcfce7;border:1px solid #86efac;color:#14532d} .feedback.bad{display:block;background:#fee2e2;border:1px solid #fca5a5;color:#7f1d1d}
+.special-msg{display:none;margin-top:8px;border-radius:13px;padding:9px;font-weight:900;background:#fff7ed;border:1px solid #f8d36b;color:#92400e;font-size:13px}
+.final h2{text-align:center;color:#1d4ed8;font-size:34px;margin:0 0 8px} .final p{text-align:center;font-weight:900}
+.final-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0} .final-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:15px;padding:12px;text-align:center;font-weight:900} .final-box b{display:block;color:#e11d48;font-size:24px}
+
+@media(max-width:860px){
+ body.playing{height:100dvh;min-height:100dvh;overflow:hidden;padding:5px;align-items:flex-start}
+ body.playing .app{height:calc(100dvh - 10px);min-height:0;border-radius:16px;display:flex;flex-direction:column}
+ body.playing header{padding:5px 7px;flex:0 0 auto} body.playing h1{font-size:22px} body.playing .subtitle{display:none}
+ body.playing .back,body.playing .pill{font-size:9px;padding:4px 7px}
+ body.playing main{padding:5px;flex:1 1 auto;min-height:0;overflow:hidden}
+ body.playing #gameScreen.active{height:100%;display:flex;flex-direction:column;min-height:0;overflow:hidden}
+ .game-layout{grid-template-columns:1fr;grid-template-rows:auto 1fr;gap:5px;min-height:0;flex:1 1 auto;overflow:hidden}
+ .scorebar{grid-template-columns:repeat(3,1fr);gap:4px;margin-bottom:4px}
+ .score{padding:4px;border-radius:10px;font-size:10px} .score b{font-size:15px}
+ .track-card{padding:5px;border-radius:12px;flex:0 0 auto}
+ .track-title{font-size:10px;margin-bottom:3px}
+ .track{height:286px;border-width:5px;border-radius:18px;box-shadow:inset 0 0 0 6px #475569, inset 0 0 0 11px #f8fafc}
+ .track::before{inset:36px;border-width:9px;border-radius:16px}
+ .cell{width:18px;height:18px;border-width:2px;font-size:7px}
+ .car{width:28px;height:20px;font-size:22px;transition:left .85s cubic-bezier(.19,.86,.28,1), top .85s cubic-bezier(.19,.86,.28,1), transform .35s ease}
+ .finish-line{width:36px;height:14px}
+ .legend{display:none}
+ .side{gap:5px;min-height:0;overflow:hidden}
+ .side .card{padding:6px;border-radius:12px}
+ .turn-box h2{font-size:15px}
+ .dice-area{margin:4px 0;gap:8px}
+ .dice-scene,.dice,.face{width:54px;height:54px} .face{border-width:2px;border-radius:10px;padding:5px} .dot{width:8px;height:8px}
+ .f1{transform:rotateY(0deg) translateZ(27px)} .f2{transform:rotateY(180deg) translateZ(27px)} .f3{transform:rotateY(90deg) translateZ(27px)} .f4{transform:rotateY(-90deg) translateZ(27px)} .f5{transform:rotateX(90deg) translateZ(27px)} .f6{transform:rotateX(-90deg) translateZ(27px)}
+ .btn{font-size:11px;padding:8px 10px;border-radius:10px}
+ .theme-chip{font-size:10px;padding:4px 7px;margin-bottom:4px}
+ .prompt{font-size:12.5px;line-height:1.13;margin-bottom:5px;max-height:45px;overflow:hidden}
+ .options{gap:4px} .option{font-size:11.5px;padding:6px;border-radius:9px;min-height:28px}
+ .feedback,.special-msg{font-size:10.5px;padding:5px;margin-top:4px;max-height:38px;overflow:hidden}
+ .brand{display:none}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+ <div class="topbar"><a class="back" href="6ano.html">← Voltar ao 6º ano</a><div class="pill">🏎️ 6º Ano • 1º Bimestre</div></div>
+ <h1>Formula 1 Board Game</h1>
+ <p class="subtitle">Role o dado, responda desafios de gramática e vocabulário e avance até a casa 40.</p>
+</header>
+<main>
+<section id="startScreen" class="screen active">
+ <div class="card start-card">
+  <h2>🏁 Formula 1 Board Game</h2>
+  <p class="start-text">Corrida com perguntas contextualizadas do 1º bimestre: gramática, vocabulário, comandos e situações reais de sala. Dois jogadores ou duas equipes competem até a casa 40.</p>
+  <div class="player-form">
+    <div><label>Jogador/Equipe 1</label><input id="p1Name" value="Equipe Azul" maxlength="24"></div>
+    <div><label>Jogador/Equipe 2</label><input id="p2Name" value="Equipe Vermelha" maxlength="24"></div>
+    <div class="full"><label>Escola</label><input id="schoolName" placeholder="Digite o nome da escola" maxlength="40"></div>
+  </div>
+  <button class="btn" onclick="startGame()">Começar corrida</button>
+  <div class="brand-start">Jogo idealizado pelo professor Jasson Bruno.</div>
+ </div>
+</section>
+
+<section id="gameScreen" class="screen">
+ <div class="scorebar">
+   <div class="score"><span id="p1Label">Equipe Azul</span><b id="p1Pos">0/40</b></div>
+   <div class="score"><span id="turnLabel">Vez</span><b id="turnNow">P1</b></div>
+   <div class="score"><span id="p2Label">Equipe Vermelha</span><b id="p2Pos">0/40</b></div>
+ </div>
+ <div class="game-layout">
+   <div class="card track-card">
+    <div class="track-title"><span>🏁 Pista de 40 casas</span><span id="raceMsg">Responda certo para avançar!</span></div>
+    <div id="track" class="track">
+      <div class="finish-line"></div>
+      <div id="car1" class="car p1">🏎️</div>
+      <div id="car2" class="car p2">🏎️</div>
+    </div>
+    <div class="legend"><span class="lbonus">Verde: bônus</span><span class="lpenalty">Vermelho: punição</span><span class="lchallenge">Amarelo: desafio</span></div>
+   </div>
+
+   <div class="side">
+    <div class="card turn-box">
+      <h2 id="turnTitle">Vez da Equipe Azul</h2>
+      <div class="dice-area">
+        <div class="dice-scene">
+          <div id="dice" class="dice">
+            <div class="face f1"><span></span><span></span><span></span><span></span><span class="dot"></span><span></span><span></span><span></span><span></span></div>
+            <div class="face f2"><span class="dot"></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span class="dot"></span></div>
+            <div class="face f3"><span class="dot"></span><span></span><span></span><span></span><span class="dot"></span><span></span><span></span><span></span><span class="dot"></span></div>
+            <div class="face f4"><span class="dot"></span><span></span><span class="dot"></span><span></span><span></span><span></span><span class="dot"></span><span></span><span class="dot"></span></div>
+            <div class="face f5"><span class="dot"></span><span></span><span class="dot"></span><span></span><span class="dot"></span><span></span><span class="dot"></span><span></span><span class="dot"></span></div>
+            <div class="face f6"><span class="dot"></span><span></span><span class="dot"></span><span class="dot"></span><span></span><span class="dot"></span><span class="dot"></span><span></span><span class="dot"></span></div>
+          </div>
+        </div>
+        <button id="rollBtn" class="btn" onclick="rollDice()">Girar dado</button>
+      </div>
+    </div>
+
+    <div class="card question-box">
+      <div id="theme" class="theme-chip">Tema</div>
+      <p id="prompt" class="prompt">Gire o dado para receber sua pergunta.</p>
+      <div id="options" class="options"></div>
+      <div id="feedback" class="feedback"></div>
+      <div id="specialMsg" class="special-msg"></div>
+    </div>
+   </div>
+ </div>
+</section>
+
+<section id="finalScreen" class="screen">
+  <div class="card final">
+    <h2 id="finalTitle">🏆 Vitória!</h2>
+    <p id="finalMsg"></p>
+    <div class="final-grid">
+      <div class="final-box"><span id="winnerName">Vencedor</span><b id="winnerScore">40/40</b></div>
+      <div class="final-box"><span>Escola</span><b id="finalSchool">---</b></div>
+    </div>
+    <button class="btn" onclick="startGame()">Jogar novamente</button>
+    <button class="btn" onclick="location.href='6ano.html'">Voltar ao 6º ano</button>
+  </div>
+</section>
+</main>
+<div class="brand">Jogo idealizado pelo professor Jasson Bruno.</div>
+</div>
+
+<script>
+const QUESTIONS = [{"theme": "Verb to be", "q": "Na aula, você aprendeu que em perguntas com o verbo to be o verbo vai para o começo da frase. Se um aluno quer perguntar “Eu sou alto?” em inglês, qual alternativa segue essa regra corretamente?", "a": "Am I tall?", "o": ["Am I tall?", "I am tall?", "Tall am I?", "Are I tall?"], "e": "Em perguntas com I, usamos Am no começo: Am I tall?"}, {"theme": "Verb to be", "q": "Durante uma apresentação, Ana disse: “She is my friend.” Depois a professora pediu para transformar a frase em negativa. Qual opção está correta?", "a": "She is not my friend.", "o": ["She is not my friend.", "She not is my friend.", "She are not my friend.", "Is she not my friend."], "e": "Na negativa, usamos is not depois do sujeito: She is not..."}, {"theme": "Verb to be", "q": "João escreveu no caderno: “They are students.” A professora pediu a forma interrogativa. Lembre: o verbo to be vai para o início. Qual é a resposta correta?", "a": "Are they students?", "o": ["Are they students?", "They are students?", "Is they students?", "Students are they?"], "e": "Com they usamos are. Na pergunta: Are they...?"}, {"theme": "Verb to be", "q": "Em uma atividade sobre colegas da turma, apareceu a frase: “He is happy.” Se a frase virar pergunta, como deve ficar?", "a": "Is he happy?", "o": ["Is he happy?", "He is happy?", "Are he happy?", "Happy is he?"], "e": "Com he usamos is. Na pergunta, o is vem antes: Is he happy?"}, {"theme": "Verb to be", "q": "A professora mostrou a frase “We are ready.” e pediu a forma negativa. Qual alternativa mostra corretamente “Nós não estamos prontos”?", "a": "We are not ready.", "o": ["We are not ready.", "We is not ready.", "Are we not ready.", "We not are ready."], "e": "Com we usamos are. Na negativa: We are not..."}, {"theme": "Verb to be", "q": "Sonic chegou atrasado e disse: “I am sorry.” Se ele quisesse dizer “Eu não estou atrasado”, qual estrutura negativa com I estaria correta?", "a": "I am not late.", "o": ["I am not late.", "I not am late.", "I are not late.", "Am I not late."], "e": "Com I usamos am. Na negativa: I am not..."}, {"theme": "Verb to be", "q": "Na frase “You are my classmate”, a professora pediu para transformar em pergunta. Qual alternativa respeita a regra do verbo to be?", "a": "Are you my classmate?", "o": ["Are you my classmate?", "You are my classmate?", "Is you my classmate?", "My classmate are you?"], "e": "Com you usamos are. Em perguntas: Are you...?"}, {"theme": "Verb to be", "q": "Um aluno escreveu “She are my sister.” A professora disse que há erro de concordância. Qual frase corrige o problema?", "a": "She is my sister.", "o": ["She is my sister.", "She are my sister.", "She am my sister.", "She be my sister."], "e": "Com she usamos is: She is..."}, {"theme": "Personal pronouns", "q": "Na sala, a professora mostrou a frase “Maria is my friend.” Para evitar repetir o nome Maria, qual pronome pessoal substitui Maria corretamente?", "a": "She", "o": ["She", "He", "They", "I"], "e": "Maria é uma menina, então usamos She."}, {"theme": "Personal pronouns", "q": "Em um texto sobre futebol, apareceu: “Neymar is Brazilian.” Para substituir Neymar por um pronome, qual opção é adequada?", "a": "He", "o": ["He", "She", "They", "We"], "e": "Neymar pode ser substituído por He."}, {"theme": "Personal pronouns", "q": "A frase dizia: “Ana and Pedro are students.” Como são duas pessoas, qual pronome pode substituir Ana and Pedro?", "a": "They", "o": ["They", "He", "She", "It"], "e": "They significa eles/elas e substitui mais de uma pessoa."}, {"theme": "Personal pronouns", "q": "O aluno quer falar de si mesmo e dizer “Eu sou estudante.” Qual pronome deve iniciar a frase em inglês?", "a": "I", "o": ["I", "You", "He", "They"], "e": "I significa eu."}, {"theme": "Personal pronouns", "q": "Em uma conversa, a professora olha para o aluno e pergunta diretamente: “Você está pronto?” Qual pronome representa “você” em inglês?", "a": "You", "o": ["You", "I", "She", "We"], "e": "You significa você."}, {"theme": "Possessive adjectives", "q": "Durante uma atividade, João pegou o próprio livro e disse: “Este é meu livro.” Qual possessive adjective completa corretamente: ___ book?", "a": "My", "o": ["My", "Your", "His", "Her"], "e": "My significa meu/minha."}, {"theme": "Possessive adjectives", "q": "A professora aponta para o lápis de Maria e diz: “É o lápis dela.” Como completar em inglês: ___ pencil?", "a": "Her", "o": ["Her", "His", "My", "Your"], "e": "Her indica posse dela."}, {"theme": "Possessive adjectives", "q": "Pedro esqueceu a mochila. A professora disse: “This is ___ backpack”, querendo dizer “a mochila dele”. Qual opção completa corretamente?", "a": "His", "o": ["His", "Her", "My", "Your"], "e": "His indica posse dele."}, {"theme": "Possessive adjectives", "q": "Um aluno pergunta ao colega: “Qual é o seu nome?” Em inglês, a palavra “seu/sua”, falando diretamente com alguém, é:", "a": "Your", "o": ["Your", "My", "His", "Her"], "e": "Your significa seu/sua quando falamos com você."}, {"theme": "Possessive adjectives", "q": "Wandinha tem uma mochila preta. Para dizer “a mochila dela” em inglês, qual expressão está correta?", "a": "Her backpack", "o": ["Her backpack", "His backpack", "My backpack", "Your backpack"], "e": "Como é dela, usamos Her."}, {"theme": "Possessive adjectives", "q": "Messi está com a bola dele. Em inglês, como dizer “a bola dele”?", "a": "His ball", "o": ["His ball", "Her ball", "My ball", "Your ball"], "e": "His significa dele."}, {"theme": "Personal information", "q": "Em uma apresentação oral, o aluno precisa dizer o próprio nome. Qual frase está correta para dizer “Meu nome é Lucas”?", "a": "My name is Lucas.", "o": ["My name is Lucas.", "I name Lucas.", "Name my is Lucas.", "Lucas my name."], "e": "A estrutura correta é My name is..."}, {"theme": "Personal information", "q": "A professora perguntou “How old are you?” no início da aula. Que informação ela está pedindo?", "a": "A idade do aluno.", "o": ["A idade do aluno.", "O nome da escola.", "A cor favorita.", "O nome do professor."], "e": "How old are you? significa Quantos anos você tem?"}, {"theme": "Personal information", "q": "Um aluno tem 11 anos e precisa responder em inglês. Qual frase está correta?", "a": "I am 11 years old.", "o": ["I am 11 years old.", "I have 11 years old.", "My name is 11.", "I are 11 old."], "e": "Para idade, usamos I am ... years old."}, {"theme": "Personal information", "q": "Em um diálogo, alguém pergunta: “Where are you from?” Qual resposta combina com essa pergunta?", "a": "I am from Santarém.", "o": ["I am from Santarém.", "My name is Santarém.", "I am 12 years old.", "Good night."], "e": "Where are you from? pergunta de onde a pessoa é."}, {"theme": "Classroom expressions", "q": "Durante a prova, o aluno não entendeu uma questão e quer pedir ajuda de forma educada. Qual frase em inglês é mais adequada?", "a": "Can you help me?", "o": ["Can you help me?", "Goodbye teacher.", "I am pencil.", "She is my book."], "e": "Can you help me? significa Você pode me ajudar?"}, {"theme": "Classroom expressions", "q": "Na aula, a professora perguntou algo e o aluno realmente não sabia. Como ele pode dizer “Eu não sei” em inglês?", "a": "I don't know.", "o": ["I don't know.", "I am not book.", "She don't is.", "My don't know."], "e": "I don't know significa Eu não sei."}, {"theme": "Classroom expressions", "q": "Um aluno quer tentar responder, mas não tem certeza. Qual frase significa “Posso tentar?”", "a": "Can I try?", "o": ["Can I try?", "Can I book?", "Try I can?", "I try can?"], "e": "Can I try? significa Posso tentar?"}, {"theme": "Classroom expressions", "q": "Se um aluno precisa ir ao banheiro, qual frase é mais adequada em sala de aula?", "a": "May I go to the bathroom?", "o": ["May I go to the bathroom?", "I am bathroom.", "Bathroom is my name.", "Go I bathroom."], "e": "May I go to the bathroom? é uma forma educada de pedir para ir ao banheiro."}, {"theme": "Classroom commands", "q": "A professora aponta para um texto no livro e diz “Read the text.” O que ela quer que os alunos façam?", "a": "Ler o texto.", "o": ["Ler o texto.", "Fechar o livro.", "Levantar da cadeira.", "Soletrar o nome."], "e": "Read significa ler."}, {"theme": "Classroom commands", "q": "Durante uma atividade de áudio, a professora diz “Listen carefully.” Qual ação a turma deve fazer?", "a": "Escutar com atenção.", "o": ["Escutar com atenção.", "Escrever o nome.", "Levantar rápido.", "Fechar a mochila."], "e": "Listen significa ouvir/escutar."}, {"theme": "Classroom commands", "q": "O professor diz “Open your book on page ten.” Qual comando aparece nessa frase?", "a": "Open your book", "o": ["Open your book", "Good night", "My name is", "She is happy"], "e": "Open your book significa abra seu livro."}, {"theme": "Classroom commands", "q": "Em sala, o aluno estava de pé e a professora disse “Sit down, please.” O que ele deve fazer?", "a": "Sentar-se.", "o": ["Sentar-se.", "Levantar-se.", "Ler em voz alta.", "Soletrar o nome."], "e": "Sit down significa sente-se."}, {"theme": "Greetings", "q": "No início da manhã, a turma entra na sala e cumprimenta a professora. Qual expressão combina melhor com esse momento?", "a": "Good morning", "o": ["Good morning", "Good night", "Goodbye", "See you"], "e": "Good morning é usado pela manhã."}, {"theme": "Greetings", "q": "Um aluno encontra um colega no corredor e quer apenas dizer “Oi!”. Qual palavra curta em inglês ele pode usar?", "a": "Hi", "o": ["Hi", "Bye", "His", "Read"], "e": "Hi significa Oi."}, {"theme": "Greetings", "q": "A professora pergunta “How are you?” e o aluno quer responder que está bem. Qual frase combina melhor?", "a": "I am fine.", "o": ["I am fine.", "My name is fine.", "Goodbye.", "Open your book."], "e": "I am fine significa Eu estou bem."}, {"theme": "Farewells", "q": "A aula terminou e o aluno está indo embora. Qual expressão é uma despedida adequada?", "a": "See you", "o": ["See you", "Hello", "Good morning", "Stand up"], "e": "See you significa Até mais."}, {"theme": "Farewells", "q": "À noite, depois de uma conversa, uma pessoa se despede dizendo “Boa noite”. Qual expressão em inglês corresponde a isso?", "a": "Good night", "o": ["Good night", "Good afternoon", "Good morning", "Listen"], "e": "Good night pode ser usado como Boa noite em despedidas."}, {"theme": "Mixed grammar", "q": "Na frase “My name is Ana”, qual palavra mostra ideia de posse, como “meu/minha”?", "a": "My", "o": ["My", "Name", "Is", "Ana"], "e": "My é possessive adjective e significa meu/minha."}, {"theme": "Mixed grammar", "q": "A professora escreveu “He is João” no quadro. Qual parte da frase é o pronome pessoal?", "a": "He", "o": ["He", "Is", "João", "The"], "e": "He é pronome pessoal e significa ele."}, {"theme": "Mixed grammar", "q": "Observe a frase: “Are you a student?” Por que ela começa com Are?", "a": "Porque é uma pergunta com o verbo to be.", "o": ["Porque é uma pergunta com o verbo to be.", "Porque toda frase em inglês começa com Are.", "Porque You sempre fica no final.", "Porque student é verbo."], "e": "Em perguntas com to be, o verbo vem antes do sujeito."}, {"theme": "Mixed grammar", "q": "A frase “She is not my teacher” está na forma:", "a": "Negativa", "o": ["Negativa", "Interrogativa", "Afirmativa simples", "Despedida"], "e": "A presença de not indica forma negativa."}, {"theme": "Mixed grammar", "q": "Em “Is he your brother?”, qual alternativa explica corretamente a estrutura?", "a": "É uma pergunta, por isso o verbo is veio antes de he.", "o": ["É uma pergunta, por isso o verbo is veio antes de he.", "É negativa porque tem he.", "É despedida porque tem brother.", "Está errada porque toda pergunta começa com You."], "e": "No interrogativo com to be: Is + sujeito..."}, {"theme": "Mixed grammar", "q": "Um aluno traduziu “Ela é minha amiga” como “She is my friend.” Qual parte significa “minha/meu”?", "a": "My", "o": ["My", "She", "Is", "Friend"], "e": "My significa meu/minha."}];
+const SPECIALS = {"4": {"type": "bonus", "text": "+1 casa", "move": 1}, "7": {"type": "challenge", "text": "Desafio extra", "move": 0}, "10": {"type": "bonus", "text": "+2 casas", "move": 2}, "13": {"type": "penalty", "text": "Volte 1", "move": -1}, "16": {"type": "bonus", "text": "Jogue novamente", "move": 0, "again": true}, "19": {"type": "penalty", "text": "Pneu furou: -2", "move": -2}, "22": {"type": "bonus", "text": "Turbo +3", "move": 3}, "25": {"type": "challenge", "text": "Pergunta bônus", "move": 0}, "28": {"type": "penalty", "text": "Pit stop: -1", "move": -1}, "31": {"type": "bonus", "text": "DRS +2", "move": 2}, "34": {"type": "penalty", "text": "Curva difícil: -2", "move": -2}, "37": {"type": "bonus", "text": "Reta final +1", "move": 1}};
+const TOTAL_CELLS = 40;
+let state = {};
+let cellPositions = [];
+
+function el(id){return document.getElementById(id)}
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function show(id){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));el(id).classList.add("active");document.body.classList.toggle("playing", id==="gameScreen")}
+
+function makeQuestionsBag(){
+ const bag = shuffle(QUESTIONS);
+ while(bag.length < 100) bag.push(...shuffle(QUESTIONS));
+ return bag;
+}
+
+function startGame(){
+ state = {
+   p1Name: el("p1Name").value.trim() || "Equipe Azul",
+   p2Name: el("p2Name").value.trim() || "Equipe Vermelha",
+   school: el("schoolName").value.trim() || "Minha escola",
+   positions:[0,0], current:0, dice:0, bag:makeQuestionsBag(), waitingAnswer:false, canRoll:true
+ };
+ el("p1Label").textContent = state.p1Name;
+ el("p2Label").textContent = state.p2Name;
+ buildTrack();
+ updateUI();
+ el("prompt").textContent = "Gire o dado para receber sua pergunta.";
+ el("options").innerHTML = "";
+ el("feedback").className = "feedback";
+ el("specialMsg").style.display = "none";
+ show("gameScreen");
+}
+
+function buildTrack(){
+ const track = el("track");
+ track.querySelectorAll(".cell").forEach(c=>c.remove());
+ cellPositions = [];
+
+ const w = track.clientWidth, h = track.clientHeight;
+ const cx = w/2, cy = h/2;
+ const rx = w*0.39, ry = h*0.37;
+
+ for(let i=0;i<TOTAL_CELLS;i++){
+   const angle = -Math.PI/2 + (i/(TOTAL_CELLS))*Math.PI*2;
+   const x = cx + rx*Math.cos(angle);
+   const y = cy + ry*Math.sin(angle);
+   cellPositions.push({x,y});
+
+   const n = i+1;
+   const c = document.createElement("div");
+   c.className = "cell";
+   if(SPECIALS[n]) c.classList.add("special", SPECIALS[n].type);
+   c.textContent = n;
+   c.style.left = (x-15)+"px";
+   c.style.top = (y-15)+"px";
+   track.appendChild(c);
+ }
+ placeCars(true);
+}
+
+window.addEventListener("resize", ()=>{ if(state.positions){ buildTrack(); updateUI(); } });
+
+function placeCars(initial=false){
+ const offsets = [[-12,-13],[10,9]];
+ [0,1].forEach(i=>{
+   const car = el(i===0?"car1":"car2");
+   const pos = Math.max(0, Math.min(TOTAL_CELLS, state.positions?.[i] || 0));
+   const p = pos === 0 ? cellPositions[0] : cellPositions[pos-1];
+   if(!p) return;
+   car.style.left = (p.x + offsets[i][0])+"px";
+   car.style.top = (p.y + offsets[i][1])+"px";
+ });
+}
+
+function updateUI(){
+ el("p1Pos").textContent = `${state.positions[0]}/40`;
+ el("p2Pos").textContent = `${state.positions[1]}/40`;
+ el("turnNow").textContent = state.current===0 ? "P1" : "P2";
+ el("turnTitle").textContent = "Vez de " + (state.current===0 ? state.p1Name : state.p2Name);
+ el("raceMsg").textContent = "Casa atual: " + state.positions[state.current];
+ placeCars();
+}
+
+function diceTransform(n){
+ const map = {
+  1:"rotateX(0deg) rotateY(0deg)",
+  2:"rotateY(180deg)",
+  3:"rotateY(-90deg)",
+  4:"rotateY(90deg)",
+  5:"rotateX(-90deg)",
+  6:"rotateX(90deg)"
+ };
+ return map[n] || map[1];
+}
+
+function rollDice(){
+ if(!state.canRoll || state.waitingAnswer) return;
+ state.canRoll = false;
+ const dice = el("dice");
+ dice.classList.add("rolling");
+ el("rollBtn").disabled = true;
+ el("prompt").textContent = "O dado está girando... prepare-se para responder!";
+ el("options").innerHTML = "";
+ el("feedback").className = "feedback";
+ el("specialMsg").style.display = "none";
+
+ setTimeout(()=>{
+   const n = 1 + Math.floor(Math.random()*6);
+   state.dice = n;
+   dice.classList.remove("rolling");
+   dice.style.transform = diceTransform(n);
+   showQuestion();
+ }, 1400);
+}
+
+function showQuestion(){
+ state.waitingAnswer = true;
+ const q = state.bag.pop();
+ state.currentQuestion = q;
+ el("theme").textContent = q.theme;
+ el("prompt").textContent = `🎲 Dado: ${state.dice}. ${q.q}`;
+ const box = el("options");
+ box.innerHTML = "";
+ shuffle(q.o).forEach(opt=>{
+  const btn = document.createElement("button");
+  btn.className = "option";
+  btn.type = "button";
+  btn.textContent = opt;
+  btn.addEventListener("click",()=>answer(btn,opt));
+  box.appendChild(btn);
+ });
+}
+
+function answer(btn,opt){
+ if(!state.waitingAnswer) return;
+ state.waitingAnswer = false;
+ const q = state.currentQuestion;
+ document.querySelectorAll(".option").forEach(b=>{
+   b.disabled = true;
+   if(String(b.textContent).trim() === String(q.a).trim()) b.classList.add("correct");
+ });
+ const fb = el("feedback");
+ if(String(opt).trim() === String(q.a).trim()){
+   fb.className = "feedback ok";
+   fb.innerHTML = `✅ Great job! Você acertou e vai avançar ${state.dice} casa(s).<br><b>Explicação:</b> ${q.e}`;
+   moveCurrentPlayer(state.dice, true);
+ } else {
+   btn.classList.add("wrong");
+   fb.className = "feedback bad";
+   fb.innerHTML = `❌ Quase! Resposta correta: <b>${q.a}</b>.<br>Você errou e terá punição de corrida.`;
+   const penalty = Math.min(2, state.dice);
+   moveCurrentPlayer(-penalty, false);
+ }
+}
+
+function moveCurrentPlayer(amount, wasCorrect){
+ const idx = state.current;
+ const car = el(idx===0?"car1":"car2");
+ car.classList.add("moving");
+ let target = Math.max(0, Math.min(TOTAL_CELLS, state.positions[idx] + amount));
+ animateMove(idx, target, ()=>{
+   car.classList.remove("moving");
+   if(state.positions[idx] >= TOTAL_CELLS) return finishGame(idx);
+   if(wasCorrect) applySpecialIfNeeded(()=>nextTurn(false));
+   else nextTurn(false);
+ });
+}
+
+function animateMove(idx,target,done){
+ const step = target > state.positions[idx] ? 1 : -1;
+ if(target === state.positions[idx]){ updateUI(); setTimeout(done,500); return; }
+ const interval = setInterval(()=>{
+   if(state.positions[idx] === target){
+     clearInterval(interval); updateUI(); setTimeout(done,450); return;
+   }
+   state.positions[idx] += step;
+   updateUI();
+ }, 430);
+}
+
+function applySpecialIfNeeded(callback){
+ const pos = state.positions[state.current];
+ const sp = SPECIALS[pos];
+ const msg = el("specialMsg");
+ if(!sp){ callback(); return; }
+ msg.style.display = "block";
+ msg.textContent = `🏁 Casa especial ${pos}: ${sp.text}`;
+ if(sp.move){
+   setTimeout(()=>{
+    moveSpecial(sp.move, callback);
+   }, 750);
+ } else if(sp.again){
+   setTimeout(()=>nextTurn(true), 900);
+ } else {
+   callback();
+ }
+}
+
+function moveSpecial(amount, callback){
+ const idx = state.current;
+ const car = el(idx===0?"car1":"car2");
+ car.classList.add("moving");
+ const target = Math.max(0, Math.min(TOTAL_CELLS, state.positions[idx] + amount));
+ animateMove(idx,target,()=>{
+  car.classList.remove("moving");
+  if(state.positions[idx] >= TOTAL_CELLS) return finishGame(idx);
+  callback();
+ });
+}
+
+function nextTurn(playAgain){
+ if(!playAgain) state.current = state.current===0 ? 1 : 0;
+ state.canRoll = true;
+ state.waitingAnswer = false;
+ el("rollBtn").disabled = false;
+ el("prompt").textContent = playAgain ? "Bônus! Você joga novamente. Gire o dado!" : "Próximo jogador: gire o dado para continuar.";
+ el("options").innerHTML = "";
+ updateUI();
+}
+
+function finishGame(winnerIdx){
+ show("finalScreen");
+ const winner = winnerIdx===0 ? state.p1Name : state.p2Name;
+ el("finalTitle").textContent = "🏆 Vitória na Fórmula 1!";
+ el("finalMsg").textContent = `${winner} chegou à casa 40 e venceu a corrida do inglês!`;
+ el("winnerName").textContent = winner;
+ el("winnerScore").textContent = "40/40";
+ el("finalSchool").textContent = state.school;
+}
+</script>
+</body>
+</html>
