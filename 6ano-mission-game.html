@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Mission Game - Santarém Adventure</title>
+<style>
+*{box-sizing:border-box}
+:root{
+  --bg1:#07142b;--bg2:#0f5ea8;--bg3:#2dd4bf;
+  --gold:#f8d36b;--cream:#fff7ed;--ink:#102033;
+  --blue:#2563eb;--green:#22c55e;--red:#ef4444;--purple:#8b5cf6;
+}
+html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;color:var(--ink)}
+body{
+  min-height:100vh;
+  background:
+    radial-gradient(circle at 18% 10%,rgba(255,255,255,.28),transparent 22%),
+    linear-gradient(135deg,var(--bg1),var(--bg2) 48%,var(--bg3));
+  display:flex;align-items:center;justify-content:center;padding:10px;
+}
+.app{
+  width:min(100%,1180px);
+  min-height:min(780px,96vh);
+  background:rgba(255,255,255,.95);
+  border-radius:28px;
+  overflow:hidden;
+  box-shadow:0 25px 60px rgba(0,0,0,.28);
+}
+header{
+  background:linear-gradient(135deg,#0f172a,#1d4ed8 48%,#14b8a6);
+  color:white;
+  text-align:center;
+  padding:14px 18px;
+}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px}
+.back,.pill{color:white;text-decoration:none;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:7px 11px;font-weight:900;font-size:12px}
+h1{font-size:clamp(30px,6vw,54px);line-height:1;margin:0;text-shadow:0 3px 12px rgba(0,0,0,.22)}
+.subtitle{margin:6px 0 0;font-weight:800}
+main{padding:14px}
+.screen{display:none}.screen.active{display:block}
+.card{background:linear-gradient(180deg,#fff,#f8fafc);border:1px solid #dbeafe;border-radius:22px;padding:14px;box-shadow:0 10px 22px rgba(15,23,42,.08)}
+.start-card{max-width:680px;margin:0 auto;text-align:center}
+.start-card h2{font-size:32px;color:#1d4ed8;margin:0 0 8px}
+.start-text{font-weight:900;line-height:1.38;color:#334155}
+.player-form{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0;text-align:left}
+.player-form .full{grid-column:1/-1}
+.player-form label{display:block;font-weight:900;color:#1e3a8a;font-size:13px;margin-bottom:4px}
+.player-form input{width:100%;border:2px solid #bfdbfe;border-radius:14px;padding:11px 12px;font-size:15px;font-weight:800;outline:none;background:white}
+.btn{border:0;border-radius:15px;padding:12px 18px;background:linear-gradient(135deg,#2563eb,#06b6d4 48%,#22c55e);color:white;font-weight:900;font-size:15px;cursor:pointer;box-shadow:0 8px 18px rgba(37,99,235,.25)}
+.btn.secondary{background:linear-gradient(135deg,#64748b,#334155)}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.brand,.brand-start{font-weight:900;color:#1e3a8a;margin-top:10px;font-size:12px}
+.game-wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:12px;align-items:stretch}
+.hud{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px}
+.hud-box{background:white;border:1px solid #dbeafe;border-radius:15px;padding:8px;text-align:center;font-weight:900}
+.hud-box b{display:block;color:#e11d48;font-size:22px}
+.map-card{background:linear-gradient(180deg,#dbeafe,#fef3c7 58%,#dcfce7);position:relative;overflow:hidden}
+.city-map{position:relative;height:540px;border-radius:24px;overflow:hidden;border:5px solid white;background:
+ radial-gradient(circle at 18% 18%,#fde68a 0 6%, transparent 7%),
+ linear-gradient(180deg,#93c5fd 0 30%,#bbf7d0 31% 100%)}
+.road{position:absolute;inset:0;width:100%;height:100%;z-index:1}
+.road-path{fill:none;stroke:#64748b;stroke-width:42;stroke-linecap:round;stroke-linejoin:round}
+.road-line{fill:none;stroke:white;stroke-width:4;stroke-dasharray:10 8;stroke-linecap:round}
+.place{position:absolute;z-index:3;width:58px;height:58px;border-radius:18px;background:rgba(255,255,255,.96);border:3px solid #bfdbfe;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900;font-size:10px;text-align:center;box-shadow:0 8px 14px rgba(15,23,42,.18)}
+.place.done{border-color:#22c55e;background:#dcfce7}
+.place.current{border-color:#f59e0b;background:#fef3c7;animation:pulse 1.2s infinite}
+.place.locked{opacity:.68;filter:grayscale(.35)}
+.place span{font-size:22px;line-height:1}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+.hero{position:absolute;z-index:5;width:42px;height:54px;transition:left 1.1s cubic-bezier(.19,.86,.28,1),top 1.1s cubic-bezier(.19,.86,.28,1),transform .35s ease;filter:drop-shadow(0 8px 8px rgba(0,0,0,.28))}
+.hero.walk{animation:walk .35s infinite alternate}
+@keyframes walk{from{transform:translateY(0) rotate(-2deg)}to{transform:translateY(-4px) rotate(2deg)}}
+.hero-body{position:absolute;left:11px;top:19px;width:20px;height:26px;border-radius:10px 10px 8px 8px;background:linear-gradient(135deg,#2563eb,#06b6d4);border:2px solid white}
+.hero-head{position:absolute;left:9px;top:0;width:24px;height:24px;border-radius:50%;background:#f8d7ad;border:2px solid white}
+.hero-hair{position:absolute;left:8px;top:0;width:26px;height:10px;border-radius:12px;background:#7c2d12}
+.hero-arm{position:absolute;top:24px;width:8px;height:21px;border-radius:6px;background:#f8d7ad;border:1.5px solid white}
+.hero-arm.l{left:3px}.hero-arm.r{right:3px}
+.hero-leg{position:absolute;top:42px;width:8px;height:16px;border-radius:6px;background:#1e3a8a}
+.hero-leg.l{left:12px}.hero-leg.r{right:12px}
+.energy-card{display:grid;gap:8px}
+.energy-label{font-weight:900;display:flex;justify-content:space-between;color:#1e3a8a}
+.energy-bar{height:18px;border-radius:999px;background:#e2e8f0;overflow:hidden;border:2px solid white}
+.energy-fill{height:100%;width:100%;background:linear-gradient(90deg,#22c55e,#f8d36b,#ef4444);transition:width .25s ease}
+.mission-title{font-size:24px;color:#1d4ed8;margin:0 0 4px}
+.mission-goal{font-weight:900;color:#475569;margin:0 0 8px;line-height:1.25}
+.theme-chip{display:inline-block;background:#dbeafe;color:#1d4ed8;border:1px solid #bfdbfe;border-radius:999px;padding:6px 10px;font-weight:900;margin-bottom:8px;font-size:12px}
+.prompt{font-size:18px;line-height:1.28;font-weight:900;margin:0 0 10px}
+.options{display:grid;gap:8px}
+.option{border:2px solid #dbeafe;background:#f8fafc;border-radius:13px;padding:10px;text-align:left;font-weight:900;font-size:14px;cursor:pointer;color:#111827}
+.option.correct{background:#dcfce7;border-color:#22c55e;color:#14532d}
+.option.wrong{background:#fee2e2;border-color:#ef4444;color:#7f1d1d}
+.word-bank{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.tile{border:2px solid #bfdbfe;background:white;border-radius:12px;padding:9px 12px;font-weight:900;cursor:pointer}
+.tile.used{opacity:.35;pointer-events:none}
+.answer-line{min-height:44px;background:#f8fafc;border:2px dashed #bfdbfe;border-radius:14px;padding:8px;font-weight:900;margin:8px 0}
+.feedback{display:none;margin-top:8px;border-radius:13px;padding:9px;font-weight:900;line-height:1.25;font-size:13px}
+.feedback.ok{display:block;background:#dcfce7;border:1px solid #86efac;color:#14532d}
+.feedback.bad{display:block;background:#fee2e2;border:1px solid #fca5a5;color:#7f1d1d}
+.mission-complete{display:none;text-align:center;background:linear-gradient(135deg,#fff7ed,#dcfce7);border:2px solid var(--gold)}
+.mission-complete.active{display:block}
+.badge{font-size:42px;margin:4px 0}
+.progress-list{display:flex;gap:4px;justify-content:center;flex-wrap:wrap;margin-top:8px}
+.dot-mission{width:22px;height:22px;border-radius:50%;background:#e2e8f0;border:2px solid white;font-size:10px;font-weight:900;display:flex;align-items:center;justify-content:center}
+.dot-mission.done{background:#22c55e;color:white}.dot-mission.current{background:#f59e0b;color:white}
+.final h2{text-align:center;color:#1d4ed8;font-size:34px;margin:0 0 8px}
+.final p{text-align:center;font-weight:900}
+.final-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:12px 0}
+.final-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:15px;padding:12px;text-align:center;font-weight:900}
+.final-box b{display:block;color:#e11d48;font-size:22px}
+.ranking{display:grid;gap:6px;margin-top:10px}
+.rank-row{display:grid;grid-template-columns:36px 1fr 70px;gap:8px;align-items:center;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:8px;font-weight:900}
+.rank-row.me{background:#fef3c7;border-color:#f59e0b;color:#92400e}
+@media(max-width:860px){
+ body.playing{height:100dvh;min-height:100dvh;overflow:hidden;padding:5px;align-items:flex-start}
+ body.playing .app{height:calc(100dvh - 10px);min-height:0;border-radius:16px;display:flex;flex-direction:column}
+ body.playing header{padding:5px 7px;flex:0 0 auto} body.playing h1{font-size:21px} body.playing .subtitle{display:none}
+ body.playing .back,body.playing .pill{font-size:9px;padding:4px 7px}
+ body.playing main{padding:5px;flex:1 1 auto;min-height:0;overflow:hidden}
+ body.playing #gameScreen.active{height:100%;display:flex;flex-direction:column;min-height:0;overflow:hidden}
+ .hud{grid-template-columns:repeat(3,1fr);gap:4px;margin-bottom:4px}
+ .hud-box{padding:4px;border-radius:10px;font-size:10px} .hud-box b{font-size:15px}
+ .game-wrap{display:flex;flex-direction:column;gap:5px;flex:1 1 auto;min-height:0;overflow:hidden}
+ .map-card{padding:5px;border-radius:12px;flex:0 0 auto}
+ .city-map{height:245px;border-radius:16px;border-width:3px}
+ .place{width:39px;height:39px;border-radius:12px;border-width:2px;font-size:6.5px}
+ .place span{font-size:15px}
+ .hero{width:29px;height:37px}
+ .hero-body{left:8px;top:14px;width:14px;height:18px;border-width:1.5px}
+ .hero-head{left:7px;width:16px;height:16px;border-width:1.5px}
+ .hero-hair{left:6px;width:18px;height:7px}
+ .hero-arm{top:17px;width:5px;height:15px} .hero-leg{top:30px;width:5px;height:10px} .hero-leg.l{left:9px} .hero-leg.r{right:9px}
+ .energy-card{padding:5px;border-radius:12px;gap:4px;flex:1 1 auto;overflow:hidden}
+ .energy-label{font-size:10px} .energy-bar{height:12px}
+ .mission-title{font-size:15px;margin-bottom:2px}
+ .mission-goal{font-size:10px;margin-bottom:3px;max-height:26px;overflow:hidden}
+ .theme-chip{font-size:9px;padding:4px 7px;margin-bottom:3px}
+ .prompt{font-size:11.2px;line-height:1.1;margin-bottom:4px;max-height:54px;overflow:hidden}
+ .options{gap:3px} .option{font-size:10.8px;padding:5px 6px;border-radius:8px;min-height:27px;line-height:1.08}
+ .word-bank{gap:4px;margin:4px 0} .tile{font-size:10.5px;padding:5px 7px;border-radius:8px}
+ .answer-line{min-height:30px;padding:5px;border-radius:9px;font-size:10.5px;margin:4px 0}
+ .btn{font-size:11px;padding:8px 10px;border-radius:10px}
+ .feedback{font-size:10px;padding:5px;margin-top:3px;max-height:38px;overflow:hidden}
+ .mission-complete{padding:7px;border-radius:12px} .mission-complete h2{font-size:16px;margin:2px 0} .badge{font-size:26px}
+ .brand{display:none}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+ <div class="topbar"><a class="back" href="6ano.html">← Voltar ao 6º ano</a><div class="pill">🧭 6º Ano • Santarém Adventure</div></div>
+ <h1>Mission Game</h1>
+ <p class="subtitle">Saia de casa, passe por pontos reais de Santarém e chegue à Escola Delfina de Jesus Amorim.</p>
+</header>
+<main>
+<section id="startScreen" class="screen active">
+ <div class="card start-card">
+  <h2>🧭 Santarém Adventure</h2>
+  <p class="start-text">Neste jogo, você sai de casa, passa por pontos conhecidos de Santarém e cumpre missões de vocabulário para chegar à Escola Delfina de Jesus Amorim como English Hero.</p>
+  <div class="player-form">
+    <div><label>Nome do aluno</label><input id="playerName" placeholder="Digite seu nome" maxlength="26"></div>
+    <div><label>Turma</label><input id="className" placeholder="Ex.: 601" maxlength="12"></div>
+    <div class="full"><label>Escola</label><input id="schoolName" placeholder="Nome da escola" maxlength="42"></div>
+  </div>
+  <button class="btn" onclick="startGame()">Começar missões</button>
+  <div class="brand-start">Jogo idealizado pelo professor Jasson Bruno.</div>
+ </div>
+</section>
+
+<section id="gameScreen" class="screen">
+ <div class="hud">
+   <div class="hud-box">Missão<b id="missionHud">1/10</b></div>
+   <div class="hud-box">Pontos<b id="scoreHud">0</b></div>
+   <div class="hud-box">Combo<b id="comboHud">0</b></div>
+ </div>
+ <div class="game-wrap">
+  <div class="card map-card">
+   <div id="cityMap" class="city-map">
+    <svg class="road" viewBox="0 0 420 620" preserveAspectRatio="none">
+      <path id="roadPath" class="road-path"></path>
+      <path id="roadLine" class="road-line"></path>
+    </svg>
+    <div id="placesLayer"></div>
+    <div id="hero" class="hero"><div class="hero-hair"></div><div class="hero-head"></div><div class="hero-body"></div><div class="hero-arm l"></div><div class="hero-arm r"></div><div class="hero-leg l"></div><div class="hero-leg r"></div></div>
+   </div>
+   <div id="progressList" class="progress-list"></div>
+  </div>
+
+  <div class="card energy-card" id="missionPanel">
+    <div class="energy-label"><span id="energyText">Energy: 100%</span><span id="taskHud">Desafio 1/6</span></div>
+    <div class="energy-bar"><div id="energyFill" class="energy-fill"></div></div>
+    <h2 id="missionTitle" class="mission-title">Mission</h2>
+    <p id="missionGoal" class="mission-goal">Goal</p>
+    <div id="theme" class="theme-chip">Theme</div>
+    <p id="prompt" class="prompt">Question</p>
+    <div id="arrangeArea" style="display:none">
+      <div id="answerLine" class="answer-line"></div>
+      <div id="wordBank" class="word-bank"></div>
+      <button class="btn" onclick="checkArrange()">Confirmar frase</button>
+      <button class="btn secondary" onclick="clearArrange()">Limpar</button>
+    </div>
+    <div id="options" class="options"></div>
+    <div id="feedback" class="feedback"></div>
+    <div id="completeBox" class="mission-complete">
+      <div class="badge">🏅</div>
+      <h2>Mission Complete!</h2>
+      <p id="completeText"></p>
+      <button class="btn" onclick="nextMission()">Próxima missão</button>
+    </div>
+  </div>
+ </div>
+</section>
+
+<section id="finalScreen" class="screen">
+ <div class="card final">
+  <h2 id="finalTitle">🏆 You are an English Hero!</h2>
+  <p id="finalMsg"></p>
+  <div class="final-grid">
+    <div class="final-box">Pontuação<b id="finalScore">0</b></div>
+    <div class="final-box">Missões<b id="finalMissions">10/10</b></div>
+    <div class="final-box">Maior combo<b id="finalCombo">0</b></div>
+  </div>
+  <h3 style="text-align:center;color:#1d4ed8">Ranking motivacional do desafio</h3>
+  <div id="ranking" class="ranking"></div>
+  <div style="text-align:center;margin-top:12px">
+    <button class="btn" onclick="startGame()">Jogar novamente</button>
+    <button class="btn secondary" onclick="location.href='6ano.html'">Voltar ao 6º ano</button>
+  </div>
+ </div>
+</section>
+</main>
+<div class="brand">Jogo idealizado pelo professor Jasson Bruno.</div>
+</div>
+
+<script>
+const MISSIONS = [{"id": 1, "title": "Saindo de Casa", "place": "Casa", "icon": "🏠", "goal": "Reconhecer palavras básicas antes de sair para estudar.", "badge": "Word Explorer", "tasks": [{"type": "choice", "theme": "Daily Vocabulary", "q": "Antes de sair de casa para a aula, você coloca o material dentro da mochila. Qual palavra em inglês significa “mochila/bolsa”?", "a": "bag", "o": ["chair", "bag", "board", "window"], "tip": "Bag = mochila/bolsa."}, {"type": "choice", "theme": "School Objects", "q": "Você confere se colocou o livro na mochila. Qual palavra significa “livro” em inglês?", "a": "book", "o": ["book", "bus", "food", "door"], "tip": "Book = livro."}, {"type": "choice", "theme": "School Objects", "q": "Para escrever no caderno, você precisa de um lápis. Qual palavra significa “lápis”?", "a": "pencil", "o": ["phone", "park", "people", "pencil"], "tip": "Pencil = lápis."}, {"type": "choice", "theme": "Daily Vocabulary", "q": "Você olha o horário no celular antes de sair. Qual palavra significa “celular/telefone”?", "a": "phone", "o": ["car", "house", "pencil", "phone"], "tip": "Phone = telefone/celular."}, {"type": "choice", "theme": "Daily Vocabulary", "q": "Antes de sair, você toma água. Qual palavra significa “água”?", "a": "water", "o": ["game", "window", "water", "teacher"], "tip": "Water = água."}, {"type": "complete", "theme": "School Objects", "q": "Complete a frase: I have a ___. / Eu tenho um caderno.", "sentence": "I have a ___.", "a": "notebook", "o": ["tree", "friend", "notebook", "street"], "tip": "Notebook = caderno."}]}, {"id": 2, "title": "Parque da Cidade", "place": "Parque da Cidade", "icon": "🌳", "goal": "Ampliar vocabulário de lugares, natureza e movimento.", "badge": "Park Explorer", "tasks": [{"type": "choice", "theme": "Places", "q": "No caminho, você passa pelo Parque da Cidade. Qual palavra em inglês significa “parque”?", "a": "park", "o": ["book", "park", "board", "teacher"], "tip": "Park = parque."}, {"type": "choice", "theme": "Nature Vocabulary", "q": "No parque há muitas árvores. Qual palavra significa “árvore”?", "a": "tree", "o": ["pencil", "student", "street", "tree"], "tip": "Tree = árvore."}, {"type": "choice", "theme": "Actions", "q": "As pessoas caminham no parque. Qual palavra significa “caminhar”?", "a": "walk", "o": ["write", "walk", "repeat", "read"], "tip": "Walk = caminhar."}, {"type": "choice", "theme": "Actions", "q": "Alguns jovens correm no parque. Qual palavra significa “correr”?", "a": "run", "o": ["run", "listen", "open", "close"], "tip": "Run = correr."}, {"type": "choice", "theme": "People", "q": "Você vê uma família passeando. Qual palavra significa “família”?", "a": "family", "o": ["family", "window", "friend", "school"], "tip": "Family = família."}, {"type": "complete", "theme": "Places", "q": "Complete: I am in the ___. / Eu estou no parque.", "sentence": "I am in the ___.", "a": "park", "o": ["park", "pencil", "phone", "water"], "tip": "Park = parque."}]}, {"id": 3, "title": "Praça Tiradentes", "place": "Praça Tiradentes", "icon": "👥", "goal": "Usar pronomes pessoais para falar sobre pessoas.", "badge": "Pronoun Ranger", "tasks": [{"type": "choice", "theme": "Personal Pronouns", "q": "Na Praça Tiradentes, você vê Maria conversando. Para substituir “Maria” em inglês, usamos:", "a": "she", "o": ["we", "they", "she", "he"], "tip": "She = ela."}, {"type": "choice", "theme": "Personal Pronouns", "q": "Você vê João esperando um amigo. Para substituir “João”, usamos:", "a": "he", "o": ["I", "he", "she", "we"], "tip": "He = ele."}, {"type": "choice", "theme": "Personal Pronouns", "q": "Ana e Pedro estão passando pela praça. Para substituir duas pessoas, usamos:", "a": "they", "o": ["she", "they", "he", "you"], "tip": "They = eles/elas."}, {"type": "choice", "theme": "Personal Pronouns", "q": "Quando você fala de si mesmo e quer dizer “eu”, qual pronome usa?", "a": "I", "o": ["they", "I", "you", "he"], "tip": "I = eu."}, {"type": "choice", "theme": "People", "q": "Na praça, você encontra um colega. Qual palavra significa “amigo/amiga”?", "a": "friend", "o": ["father", "teacher", "friend", "mother"], "tip": "Friend = amigo/amiga."}, {"type": "choice", "theme": "Personal Pronouns", "q": "Você está falando diretamente com um colega: “você”. Qual pronome representa isso em inglês?", "a": "you", "o": ["she", "I", "they", "you"], "tip": "You = você."}]}, {"id": 4, "title": "Orla de Santarém", "place": "Orla de Santarém", "icon": "🌅", "goal": "Usar saudações e despedidas em situações reais.", "badge": "Greeting Traveler", "tasks": [{"type": "choice", "theme": "Greetings", "q": "Na Orla de Santarém, você encontra um colega pela manhã. Qual saudação combina melhor?", "a": "Good morning!", "o": ["See you!", "Goodbye!", "Good night!", "Good morning!"], "tip": "Good morning = Bom dia."}, {"type": "choice", "theme": "Greetings", "q": "Você quer dizer apenas “Oi!” para um amigo na orla. Qual palavra pode usar?", "a": "Hi!", "o": ["His", "Bye!", "Read", "Hi!"], "tip": "Hi = Oi."}, {"type": "choice", "theme": "Small Talk", "q": "Seu amigo pergunta “How are you?” Qual resposta combina?", "a": "I am fine.", "o": ["Open your book.", "Goodbye.", "I am fine.", "My name is fine."], "tip": "I am fine = Eu estou bem."}, {"type": "choice", "theme": "Farewells", "q": "Depois de conversar, você vai embora. Qual expressão significa “Até mais”?", "a": "See you!", "o": ["Read!", "See you!", "Good morning!", "Hello!"], "tip": "See you = Até mais."}, {"type": "choice", "theme": "Farewells", "q": "À noite, ao se despedir na orla, você pode dizer:", "a": "Good night!", "o": ["Good afternoon!", "Good morning!", "Good night!", "Listen!"], "tip": "Good night = Boa noite."}, {"type": "arrange", "theme": "Dialogue", "q": "Organize uma resposta simples: “Eu estou bem.”", "words": ["I", "am", "fine"], "a": "I am fine", "tip": "I am fine = Estou bem."}]}, {"id": 5, "title": "Praça do Pescador", "place": "Praça do Pescador", "icon": "🐟", "goal": "Reconhecer vocabulário do cotidiano e da cidade.", "badge": "City Words", "tasks": [{"type": "choice", "theme": "City Vocabulary", "q": "Na Praça do Pescador, você lembra do rio e dos barcos. Qual palavra significa “barco”?", "a": "boat", "o": ["book", "boat", "bag", "board"], "tip": "Boat = barco."}, {"type": "choice", "theme": "City Vocabulary", "q": "O nome da praça lembra pescaria. Qual palavra significa “peixe”?", "a": "fish", "o": ["friend", "family", "food", "fish"], "tip": "Fish = peixe."}, {"type": "choice", "theme": "Daily Vocabulary", "q": "Perto da praça, alguém compra comida. Qual palavra significa “comida”?", "a": "food", "o": ["father", "phone", "food", "fine"], "tip": "Food = comida."}, {"type": "choice", "theme": "City Vocabulary", "q": "Muitas pessoas passam pela praça. Qual palavra significa “pessoas”?", "a": "people", "o": ["pen", "people", "pencil", "park"], "tip": "People = pessoas."}, {"type": "choice", "theme": "Places", "q": "Quando há compra e venda de alimentos, podemos chamar de mercado. Qual palavra em inglês significa “mercado”?", "a": "market", "o": ["mother", "morning", "my", "market"], "tip": "Market = mercado."}, {"type": "complete", "theme": "City Vocabulary", "q": "Complete: I see a ___. / Eu vejo um barco.", "sentence": "I see a ___.", "a": "boat", "o": ["book", "boat", "teacher", "chair"], "tip": "Boat = barco."}]}, {"id": 6, "title": "Praça Barão de Santarém", "place": "Praça Barão de Santarém", "icon": "🏛️", "goal": "Usar informações pessoais em inglês.", "badge": "Profile Speaker", "tasks": [{"type": "choice", "theme": "Personal Information", "q": "Na Praça Barão de Santarém, você se apresenta para um visitante. Qual frase diz “Meu nome é Ana”?", "a": "My name is Ana.", "o": ["Name my is Ana.", "I name Ana.", "Ana my name.", "My name is Ana."], "tip": "My name is... = Meu nome é..."}, {"type": "choice", "theme": "Personal Information", "q": "A pergunta “How old are you?” pede qual informação?", "a": "idade", "o": ["material escolar", "idade", "cidade", "nome"], "tip": "How old are you? = Quantos anos você tem?"}, {"type": "choice", "theme": "Personal Information", "q": "Como responder “Eu tenho 11 anos” em inglês?", "a": "I am 11 years old.", "o": ["I are 11 old.", "I have 11 years old.", "I am 11 years old.", "My name is 11."], "tip": "Para idade, usamos I am ... years old."}, {"type": "choice", "theme": "Personal Information", "q": "Qual frase significa “Eu sou de Santarém”?", "a": "I am from Santarém.", "o": ["I am from Santarém.", "Goodbye Santarém.", "My name is Santarém.", "I have Santarém."], "tip": "I am from... = Eu sou de..."}, {"type": "arrange", "theme": "Personal Information", "q": "Organize: “Meu nome é Pedro.”", "words": ["My", "name", "is", "Pedro"], "a": "My name is Pedro", "tip": "Estrutura: My name is + nome."}, {"type": "arrange", "theme": "Personal Information", "q": "Organize: “Eu sou estudante.”", "words": ["I", "am", "a", "student"], "a": "I am a student", "tip": "I am a student = Eu sou estudante."}]}, {"id": 7, "title": "Museu João Fona", "place": "Museu João Fona", "icon": "🏺", "goal": "Usar my, your, his e her para indicar posse.", "badge": "Possessive Master", "tasks": [{"type": "choice", "theme": "Possessive Adjectives", "q": "No Museu João Fona, você segura seu caderno de anotações. Como dizer “meu caderno”?", "a": "my notebook", "o": ["his notebook", "my notebook", "her notebook", "your notebook"], "tip": "My = meu/minha."}, {"type": "choice", "theme": "Possessive Adjectives", "q": "Você pergunta ao colega sobre o lápis dele/dela: “seu lápis”. Qual expressão em inglês representa isso?", "a": "your pencil", "o": ["his pencil", "my pencil", "her pencil", "your pencil"], "tip": "Your = seu/sua quando falamos com alguém."}, {"type": "complete", "theme": "Possessive Adjectives", "q": "João está com uma mochila. Complete: It is ___ bag.", "sentence": "It is ___ bag.", "a": "his", "o": ["his", "my", "your", "her"], "tip": "His = dele."}, {"type": "complete", "theme": "Possessive Adjectives", "q": "Ana está com um celular. Complete: It is ___ phone.", "sentence": "It is ___ phone.", "a": "her", "o": ["her", "my", "his", "your"], "tip": "Her = dela."}, {"type": "choice", "theme": "Possessive Adjectives", "q": "A professora mostra o livro dela. Como dizer “o livro dela”?", "a": "her book", "o": ["her book", "your book", "my book", "his book"], "tip": "Her = dela."}, {"type": "choice", "theme": "Possessive Adjectives", "q": "Um aluno mostra a bola dele. Como dizer “a bola dele”?", "a": "his ball", "o": ["your ball", "my ball", "her ball", "his ball"], "tip": "His = dele."}]}, {"id": 8, "title": "Praça Fortaleza do Tapajós", "place": "Praça Fortaleza do Tapajós", "icon": "🌊", "goal": "Montar frases afirmativas e negativas com o verbo to be.", "badge": "Be Builder", "tasks": [{"type": "arrange", "theme": "Verb to be", "q": "Organize as palavras para formar: “Eu sou estudante.”", "words": ["I", "am", "a", "student"], "a": "I am a student", "tip": "Com I, usamos am."}, {"type": "arrange", "theme": "Verb to be", "q": "Organize: “Ela é minha amiga.”", "words": ["She", "is", "my", "friend"], "a": "She is my friend", "tip": "Com she, usamos is."}, {"type": "choice", "theme": "Verb to be", "q": "Qual frase está correta para dizer “Ele é estudante”?", "a": "He is a student.", "o": ["He are a student.", "He am a student.", "He student is.", "He is a student."], "tip": "He combina com is."}, {"type": "choice", "theme": "Verb to be negative", "q": "A frase “She is happy.” virou negativa. Qual opção está correta?", "a": "She is not happy.", "o": ["She is not happy.", "She not is happy.", "Is she not happy.", "She are not happy."], "tip": "Na negativa, colocamos not depois do verbo to be."}, {"type": "choice", "theme": "Verb to be negative", "q": "Como dizer “Eu não estou pronto” em inglês?", "a": "I am not ready.", "o": ["I not am ready.", "I am not ready.", "Am I not ready.", "I are not ready."], "tip": "Com I: I am not..."}, {"type": "complete", "theme": "Verb to be negative", "q": "Complete: We ___ not students.", "sentence": "We ___ not students.", "a": "are", "o": ["is", "am", "my", "are"], "tip": "We combina com are."}]}, {"id": 9, "title": "Mirante do Saubal", "place": "Mirante do Saubal", "icon": "🌄", "goal": "Formar perguntas com o verbo to be.", "badge": "Question Hero", "tasks": [{"type": "choice", "theme": "Verb to be questions", "q": "No Mirante do Saubal, um colega pergunta se você está pronto. Como dizer “Você está pronto?”", "a": "Are you ready?", "o": ["Ready are you?", "Are you ready?", "Is you ready?", "You are ready?"], "tip": "Com you, a pergunta começa com Are."}, {"type": "choice", "theme": "Verb to be questions", "q": "Qual pergunta significa “Ela é sua amiga?”", "a": "Is she your friend?", "o": ["Are she your friend?", "Your friend is she?", "Is she your friend?", "She is your friend?"], "tip": "Com she, usamos Is no começo."}, {"type": "arrange", "theme": "Verb to be questions", "q": "Organize para formar a pergunta: “Eles são estudantes?”", "words": ["Are", "they", "students"], "a": "Are they students", "tip": "Pergunta: Are + they + complemento."}, {"type": "choice", "theme": "Verb to be questions", "q": "Como perguntar “Eu sou alto?”", "a": "Am I tall?", "o": ["I am tall?", "Tall am I?", "Am I tall?", "Are I tall?"], "tip": "Com I, a pergunta começa com Am."}, {"type": "choice", "theme": "Grammar rule", "q": "Por que a frase “Is he your brother?” começa com Is?", "a": "Porque é uma pergunta com o verbo to be.", "o": ["Porque he sempre vem no fim.", "Porque brother é verbo.", "Porque é uma pergunta com o verbo to be.", "Porque toda frase começa com Is."], "tip": "Na interrogativa, o verbo to be vem antes do sujeito."}, {"type": "complete", "theme": "Verb to be questions", "q": "Complete: ___ she a teacher?", "sentence": "___ she a teacher?", "a": "Is", "o": ["Are", "Is", "Am", "My"], "tip": "She combina com is."}]}, {"id": 10, "title": "Escola Delfina de Jesus Amorim", "place": "Escola Delfina de Jesus Amorim", "icon": "🏫", "goal": "Usar comandos de sala e revisar tudo para chegar como English Hero.", "badge": "English Hero", "tasks": [{"type": "choice", "theme": "Classroom Commands", "q": "Você chegou à Escola Delfina de Jesus Amorim e a aula começou. A professora quer que a turma leia o texto. Qual comando ela usa?", "a": "Read the text.", "o": ["Read the text.", "Close the door.", "Goodbye.", "Stand up."], "tip": "Read = ler."}, {"type": "choice", "theme": "Classroom Commands", "q": "Durante uma atividade de áudio, qual comando significa “Escute”?", "a": "Listen.", "o": ["Sit down.", "Listen.", "Write.", "See you."], "tip": "Listen = ouvir/escutar."}, {"type": "choice", "theme": "Classroom Expressions", "q": "Você não entendeu a questão e quer pedir ajuda. Qual frase é melhor?", "a": "Can you help me?", "o": ["Can you help me?", "Good night.", "I am pencil.", "She are book."], "tip": "Can you help me? = Você pode me ajudar?"}, {"type": "choice", "theme": "Classroom Expressions", "q": "Se você realmente não sabe a resposta, pode dizer:", "a": "I don't know.", "o": ["I am book.", "My don't know.", "I don't know.", "She don't is."], "tip": "I don't know = Eu não sei."}, {"type": "choice", "theme": "Mixed Review", "q": "Na frase “She is my friend”, qual palavra significa “minha/meu”?", "a": "my", "o": ["is", "she", "friend", "my"], "tip": "My = meu/minha."}, {"type": "choice", "theme": "Mixed Review", "q": "A frase “Are you ready?” está na forma:", "a": "interrogativa", "o": ["vocabulário de objeto", "interrogativa", "despedida", "negativa"], "tip": "A pergunta começa com Are."}, {"type": "choice", "theme": "Mixed Review", "q": "Qual frase está correta para dizer “Eles não são estudantes”?", "a": "They are not students.", "o": ["They is not students.", "They are not students.", "Are they not students.", "They not are students."], "tip": "They combina com are."}, {"type": "choice", "theme": "Mixed Review", "q": "Qual comando significa “Repita”?", "a": "Repeat.", "o": ["Repeat.", "Goodbye.", "My.", "Happy."], "tip": "Repeat = repita."}]}];
+const CITY_POINTS = [
+  {x:55,y:548},{x:148,y:506},{x:320,y:530},{x:356,y:438},{x:210,y:380},
+  {x:70,y:330},{x:115,y:235},{x:300,y:240},{x:350,y:135},{x:190,y:72}
+];
+let state = {};
+let currentTask = null;
+let arranged = [];
+
+function el(id){return document.getElementById(id)}
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function show(id){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));el(id).classList.add("active");document.body.classList.toggle("playing", id==="gameScreen")}
+
+function startGame(){
+ state = {
+  name: el("playerName").value.trim() || "English Hero",
+  turma: el("className").value.trim() || "6º ano",
+  school: el("schoolName").value.trim() || "Escola Municipal",
+  missionIndex:0, taskIndex:0, score:0, combo:0, maxCombo:0, energy:100,
+  completed:0
+ };
+ buildMap();
+ updateHero(false);
+ loadTask();
+ show("gameScreen");
+}
+
+function buildMap(){
+ const d = CITY_POINTS.map((p,i)=>`${i===0?"M":"L"} ${p.x} ${p.y}`).join(" ");
+ el("roadPath").setAttribute("d",d);
+ el("roadLine").setAttribute("d",d);
+ const layer = el("placesLayer");
+ layer.innerHTML = "";
+ MISSIONS.forEach((m,i)=>{
+   const p = CITY_POINTS[i];
+   const div = document.createElement("div");
+   div.className = "place " + (i===state.missionIndex ? "current" : i<state.missionIndex ? "done" : "locked");
+   div.style.left = `calc(${(p.x/420)*100}% - 29px)`;
+   div.style.top = `calc(${(p.y/620)*100}% - 29px)`;
+   div.innerHTML = `<span>${m.icon}</span><small>${i+1}</small>`;
+   layer.appendChild(div);
+ });
+ buildProgress();
+}
+
+function buildProgress(){
+ const box = el("progressList");
+ box.innerHTML = "";
+ MISSIONS.forEach((m,i)=>{
+  const d = document.createElement("div");
+  d.className = "dot-mission " + (i<state.missionIndex?"done":i===state.missionIndex?"current":"");
+  d.textContent = i+1;
+  box.appendChild(d);
+ });
+}
+
+function updateHero(animated=true){
+ const hero = el("hero");
+ const p = CITY_POINTS[state.missionIndex] || CITY_POINTS[CITY_POINTS.length-1];
+ if(animated) hero.classList.add("walk");
+ hero.style.left = `calc(${(p.x/420)*100}% - 21px)`;
+ hero.style.top = `calc(${(p.y/620)*100}% - 42px)`;
+ setTimeout(()=>hero.classList.remove("walk"),1200);
+}
+
+function updateHUD(){
+ el("missionHud").textContent = `${state.missionIndex+1}/10`;
+ el("scoreHud").textContent = state.score;
+ el("comboHud").textContent = state.combo;
+ el("energyText").textContent = `Energy: ${state.energy}%`;
+ el("energyFill").style.width = state.energy + "%";
+ const mission = MISSIONS[state.missionIndex];
+ el("taskHud").textContent = `Desafio ${state.taskIndex+1}/${mission.tasks.length}`;
+}
+
+function loadTask(){
+ buildMap();
+ updateHero();
+ updateHUD();
+ const mission = MISSIONS[state.missionIndex];
+ currentTask = mission.tasks[state.taskIndex];
+ arranged = [];
+ el("missionTitle").textContent = `${mission.icon} Missão ${mission.id} — ${mission.title}`;
+ el("missionGoal").textContent = mission.goal;
+ el("theme").textContent = currentTask.theme;
+ el("prompt").textContent = currentTask.q;
+ el("feedback").className = "feedback";
+ el("feedback").textContent = "";
+ el("completeBox").classList.remove("active");
+ el("options").style.display = "grid";
+ el("options").innerHTML = "";
+ el("arrangeArea").style.display = "none";
+ el("answerLine").textContent = "";
+ el("wordBank").innerHTML = "";
+
+ if(currentTask.type === "arrange"){
+   el("options").style.display = "none";
+   el("arrangeArea").style.display = "block";
+   shuffle(currentTask.words).forEach(word=>{
+    const b = document.createElement("button");
+    b.className = "tile";
+    b.textContent = word;
+    b.onclick = () => selectTile(b, word);
+    el("wordBank").appendChild(b);
+   });
+ } else {
+   shuffle(currentTask.o).forEach(opt=>{
+    const b = document.createElement("button");
+    b.className = "option";
+    b.type = "button";
+    b.textContent = opt;
+    b.onclick = () => answerChoice(b,opt);
+    el("options").appendChild(b);
+   });
+ }
+}
+
+function selectTile(btn,word){
+ btn.classList.add("used");
+ arranged.push(word);
+ el("answerLine").textContent = arranged.join(" ");
+}
+
+function clearArrange(){
+ arranged = [];
+ el("answerLine").textContent = "";
+ document.querySelectorAll(".tile").forEach(t=>t.classList.remove("used"));
+}
+
+function normalize(s){
+ return String(s).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[?.!]/g,"").replace(/\s+/g," ").trim();
+}
+
+function answerChoice(btn,opt){
+ document.querySelectorAll(".option").forEach(b=>b.disabled=true);
+ const correct = normalize(opt) === normalize(currentTask.a);
+ if(correct){
+  btn.classList.add("correct");
+  handleCorrect();
+ } else {
+  btn.classList.add("wrong");
+  document.querySelectorAll(".option").forEach(b=>{ if(normalize(b.textContent)===normalize(currentTask.a)) b.classList.add("correct"); });
+  handleWrong();
+ }
+}
+
+function checkArrange(){
+ const resp = arranged.join(" ");
+ const correct = normalize(resp) === normalize(currentTask.a);
+ if(correct) handleCorrect();
+ else handleWrong();
+}
+
+function handleCorrect(){
+ state.score += 10 + Math.min(state.combo,5);
+ state.combo += 1;
+ state.maxCombo = Math.max(state.maxCombo,state.combo);
+ if(state.combo>0 && state.combo%5===0) state.energy = Math.min(100,state.energy+10);
+ el("feedback").className = "feedback ok";
+ el("feedback").innerHTML = `✅ Great job! Você acertou.<br><b>Dica:</b> ${currentTask.tip}`;
+ setTimeout(nextTask,900);
+ updateHUD();
+}
+
+function handleWrong(){
+ state.combo = 0;
+ state.energy = Math.max(0,state.energy-12);
+ el("feedback").className = "feedback bad";
+ el("feedback").innerHTML = `❌ Quase! Resposta correta: <b>${currentTask.a}</b>.<br><b>Dica:</b> ${currentTask.tip}`;
+ updateHUD();
+ if(state.energy <= 0){
+   setTimeout(()=>finishGame(false),1200);
+ } else {
+   setTimeout(nextTask,1300);
+ }
+}
+
+function nextTask(){
+ const mission = MISSIONS[state.missionIndex];
+ state.taskIndex += 1;
+ if(state.taskIndex >= mission.tasks.length){
+   state.completed += 1;
+   el("completeText").innerHTML = `Você conquistou a medalha <b>${mission.badge}</b> e deixou seu vocabulário mais forte.`;
+   el("completeBox").classList.add("active");
+   el("options").innerHTML = "";
+   el("arrangeArea").style.display = "none";
+   updateHUD();
+   return;
+ }
+ loadTask();
+}
+
+function nextMission(){
+ state.missionIndex += 1;
+ state.taskIndex = 0;
+ if(state.missionIndex >= MISSIONS.length){
+   finishGame(true);
+   return;
+ }
+ loadTask();
+}
+
+function finishGame(victory){
+ show("finalScreen");
+ el("finalTitle").textContent = victory ? "🏆 You are an English Hero!" : "💪 Try again, English Hero!";
+ el("finalMsg").textContent = victory
+  ? `${state.name}, você saiu de casa, passou por Santarém e chegou à Escola Delfina de Jesus Amorim mostrando evolução no vocabulário e nas frases em inglês!`
+  : `${state.name}, você avançou bastante. Tente novamente para recuperar energia e subir no ranking!`;
+ el("finalScore").textContent = state.score;
+ el("finalMissions").textContent = `${state.completed}/10`;
+ el("finalCombo").textContent = state.maxCombo;
+ buildRanking();
+}
+
+function buildRanking(){
+ const names = [
+  ["Ana Clara","E.M. Frei Gilberto Wood"],["Pedro Lucas","E.M. Maria Amália Queiroz"],["Mariana Silva","E.M. Rotary"],
+  ["João Miguel","E.M. Irmã Dorothy Mae Stang"],["Lívia Santos","E.M. Ubaldo Corrêa"],["Gabriel Costa","E.M. Princesa Izabel"],
+  ["Sofia Martins","E.M. Dom Anselmo Pietrulla"],["Arthur Lima","E.M. São Francisco de Assis"],["Beatriz Rocha","E.M. Haroldo Veloso"]
+ ];
+ const base = shuffle(names).slice(0,5).map((n,i)=>({name:n[0],school:n[1],score:Math.max(60,state.score + (5-i)*18 + Math.floor(Math.random()*12))}));
+ base.push({name:state.name,school:state.school,score:state.score,me:true});
+ base.sort((a,b)=>b.score-a.score);
+ const box = el("ranking");
+ box.innerHTML = "";
+ base.slice(0,7).forEach((r,i)=>{
+  const div = document.createElement("div");
+  div.className = "rank-row " + (r.me?"me":"");
+  div.innerHTML = `<span>${r.me?"⭐":i+1+"º"}</span><span>${r.name}<br><small>${r.school}</small></span><b>${r.score}</b>`;
+  box.appendChild(div);
+ });
+}
+</script>
+</body>
+</html>
