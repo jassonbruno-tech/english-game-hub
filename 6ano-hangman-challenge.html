@@ -114,6 +114,114 @@ body.playing .feedback{font-size:10.5px;padding:5px;max-height:42px;overflow:hid
 #finalScreen.active{height:100%;display:flex;align-items:center;justify-content:center;overflow:hidden}
 .final-ranking{width:100%;max-width:680px;max-height:100%;overflow:hidden;padding:7px}
 @media(max-width:380px){body.playing .hang-area{min-height:135px} body.playing .hang-emoji{font-size:45px} body.playing .key{font-size:10px;padding:4px 0} .rank-actions{grid-template-columns:1fr}}
+
+.hangman-box{
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+#hangSvg{
+  width:min(78vw,320px);
+  max-width:320px;
+  height:auto;
+}
+.gallow{
+  stroke:#1e3a8a;
+  stroke-width:8;
+  stroke-linecap:round;
+}
+.body-part{
+  opacity:0;
+  transition:opacity .25s ease;
+}
+.body-part.show{
+  opacity:1;
+}
+@media(max-width:860px){
+  body.playing .hang-area{
+    min-height:230px;
+    gap:6px;
+  }
+  body.playing #hangSvg{
+    width:165px;
+  }
+  body.playing .word{
+    gap:5px;
+    min-height:42px;
+  }
+  body.playing .letter-box{
+    width:29px;
+    height:36px;
+    border-radius:8px;
+    font-size:20px;
+    border-width:2px;
+  }
+  body.playing .space-box{
+    width:15px;
+  }
+  body.playing .theme-chip{
+    font-size:13px;
+    padding:7px 10px;
+  }
+  body.playing .hint{
+    font-size:18px;
+    line-height:1.16;
+    margin-bottom:7px;
+    max-height:64px;
+  }
+  body.playing .keyboard{
+    grid-template-columns:repeat(7,1fr);
+    gap:6px;
+    margin-top:7px;
+  }
+  body.playing .key{
+    font-size:16px;
+    padding:8px 0;
+    border-radius:9px;
+    border-width:2px;
+  }
+  body.playing .word-submit{
+    gap:6px;
+    margin-top:7px;
+  }
+  body.playing .word-submit input{
+    font-size:14px;
+    padding:9px;
+    border-radius:10px;
+  }
+  body.playing .word-submit .btn{
+    font-size:12px;
+    padding:9px 10px;
+    border-radius:10px;
+  }
+  body.playing .feedback{
+    font-size:12.5px;
+    padding:7px;
+    max-height:50px;
+  }
+}
+@media(max-width:380px){
+  body.playing .hang-area{
+    min-height:205px;
+  }
+  body.playing #hangSvg{
+    width:140px;
+  }
+  body.playing .letter-box{
+    width:26px;
+    height:33px;
+    font-size:18px;
+  }
+  body.playing .key{
+    font-size:15px;
+    padding:7px 0;
+  }
+  body.playing .hint{
+    font-size:16px;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -151,7 +259,61 @@ body.playing .feedback{font-size:10.5px;padding:5px;max-height:42px;overflow:hid
   <div class="lives-card"><b>Vidas:</b> <span id="lives"></span></div>
   <div class="game-grid">
     <div class="card hang-area">
-      <div id="hangEmoji" class="hang-emoji">🙂</div>
+      <div class="hangman-box">
+        
+<svg id="hangSvg" viewBox="0 0 220 220" aria-label="Forca com espantalho">
+  <!-- Forca -->
+  <line x1="35" y1="200" x2="175" y2="200" class="gallow"/>
+  <line x1="65" y1="200" x2="65" y2="25" class="gallow"/>
+  <line x1="65" y1="25" x2="155" y2="25" class="gallow"/>
+  <line x1="155" y1="25" x2="155" y2="45" class="gallow"/>
+
+  <!-- Parte 1: cabeça do espantalho -->
+  <g id="partHead" class="body-part">
+    <circle cx="155" cy="66" r="17" fill="#f7d9a8" stroke="#8b5a2b" stroke-width="4"/>
+    <circle cx="149" cy="62" r="2.3" fill="#172033"/>
+    <circle cx="161" cy="62" r="2.3" fill="#172033"/>
+    <path d="M148 72 Q155 78 162 72" fill="none" stroke="#b45309" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M143 81 L147 77 M149 83 L153 79 M157 83 L161 79 M165 81 L169 77" stroke="#d97706" stroke-width="2" stroke-linecap="round"/>
+    <polygon points="137,52 173,52 165,43 145,43" fill="#8b5a2b" stroke="#6b3f15" stroke-width="3"/>
+    <rect x="142" y="39" width="23" height="8" rx="2" fill="#a16207" stroke="#6b3f15" stroke-width="2"/>
+  </g>
+
+  <!-- Parte 2: corpo / camisa remendada -->
+  <g id="partBody" class="body-part">
+    <line x1="155" y1="83" x2="155" y2="92" stroke="#8b5a2b" stroke-width="4" stroke-linecap="round"/>
+    <polygon points="132,93 178,93 170,132 140,132" fill="#60a5fa" stroke="#1d4ed8" stroke-width="4" stroke-linejoin="round"/>
+    <rect x="149" y="105" width="12" height="11" fill="#fde68a" stroke="#a16207" stroke-width="2" transform="rotate(-8 155 110)"/>
+    <line x1="137" y1="132" x2="173" y2="132" stroke="#8b5a2b" stroke-width="4" stroke-linecap="round"/>
+    <path d="M142 133 L138 138 M148 133 L144 140 M154 133 L150 140 M160 133 L156 140 M166 133 L162 138" stroke="#d97706" stroke-width="2" stroke-linecap="round"/>
+  </g>
+
+  <!-- Parte 3: braço esquerdo -->
+  <g id="partArmL" class="body-part">
+    <line x1="132" y1="102" x2="103" y2="114" stroke="#8b5a2b" stroke-width="5" stroke-linecap="round"/>
+    <path d="M100 114 L95 110 M100 114 L94 116 M100 114 L96 120" stroke="#d97706" stroke-width="2.2" stroke-linecap="round"/>
+  </g>
+
+  <!-- Parte 4: braço direito -->
+  <g id="partArmR" class="body-part">
+    <line x1="178" y1="102" x2="207" y2="114" stroke="#8b5a2b" stroke-width="5" stroke-linecap="round"/>
+    <path d="M210 114 L215 110 M210 114 L216 116 M210 114 L214 120" stroke="#d97706" stroke-width="2.2" stroke-linecap="round"/>
+  </g>
+
+  <!-- Parte 5: perna esquerda -->
+  <g id="partLegL" class="body-part">
+    <line x1="146" y1="132" x2="136" y2="171" stroke="#8b5a2b" stroke-width="5" stroke-linecap="round"/>
+    <path d="M136 171 L132 176 M136 171 L136 178 M136 171 L140 176" stroke="#d97706" stroke-width="2.2" stroke-linecap="round"/>
+  </g>
+
+  <!-- Parte 6: perna direita -->
+  <g id="partLegR" class="body-part">
+    <line x1="164" y1="132" x2="174" y2="171" stroke="#8b5a2b" stroke-width="5" stroke-linecap="round"/>
+    <path d="M174 171 L170 176 M174 171 L174 178 M174 171 L178 176" stroke="#d97706" stroke-width="2.2" stroke-linecap="round"/>
+  </g>
+</svg>
+
+      </div>
       <div id="word" class="word"></div>
     </div>
     <div class="card question-card">
@@ -245,7 +407,11 @@ function updateStats(){
   el("combo").textContent = state.combo;
   el("round").textContent = `${state.round}/${TOTAL_ROUNDS}`;
   el("lives").innerHTML = Array.from({length:MAX_LIVES}, (_,i)=>`<span class="heart ${i>=state.lives ? 'lost' : ''}">♥</span>`).join("");
-  el("hangEmoji").textContent = HANG_EMOJIS[Math.min(state.roundMistakes, HANG_EMOJIS.length-1)];
+  const parts = ["partHead","partBody","partArmL","partArmR","partLegL","partLegR"];
+  parts.forEach((id, index) => {
+    const p = el(id);
+    if(p) p.classList.toggle("show", index < state.roundMistakes);
+  });
 }
 
 function loadChallenge(){
