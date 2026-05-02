@@ -93,77 +93,125 @@ svg.road{
 .cell.special.challenge{background:#fef3c7;border-color:#f59e0b;color:#92400e}
 .car{
   position:absolute;
-  width:44px;
-  height:28px;
+  width:56px;
+  height:32px;
   z-index:7;
   transition:left .95s cubic-bezier(.19,.86,.28,1), top .95s cubic-bezier(.19,.86,.28,1), transform .55s ease;
-  filter:drop-shadow(0 7px 6px rgba(0,0,0,.35));
+  filter:drop-shadow(0 8px 8px rgba(0,0,0,.38));
   transform-origin:center center;
 }
-.car.p1{color:#2563eb}
-.car.p2{color:#e11d48}
-.car.moving{filter:drop-shadow(0 10px 8px rgba(0,0,0,.45))}
+.car.p1{--carMain:#2563eb;--carLight:#60a5fa;--carDark:#1d4ed8;}
+.car.p2{--carMain:#e11d48;--carLight:#fb7185;--carDark:#be123c;}
+.car.moving{
+  filter:drop-shadow(0 11px 10px rgba(0,0,0,.46));
+  transform-origin:center center;
+}
 .f1car{
   position:relative;
-  width:44px;
-  height:22px;
-  color:inherit;
+  width:56px;
+  height:32px;
 }
-.f1car::before{
+.f1car .body{
+  position:absolute;
+  left:12px;
+  top:10px;
+  width:28px;
+  height:12px;
+  border-radius:12px 15px 15px 12px;
+  background:linear-gradient(135deg,var(--carLight),var(--carMain) 55%,var(--carDark));
+  border:2px solid #ffffff;
+  box-shadow:inset 0 -2px 0 rgba(255,255,255,.24), inset 0 2px 0 rgba(0,0,0,.10);
+}
+.f1car .body::after{
   content:"";
   position:absolute;
-  left:7px;
-  top:6px;
-  width:28px;
-  height:10px;
-  background:currentColor;
-  border-radius:10px 14px 14px 10px;
-  border:2px solid white;
+  left:5px;
+  right:5px;
+  top:4px;
+  height:2px;
+  border-radius:999px;
+  background:rgba(255,255,255,.58);
 }
 .f1car .nose{
   position:absolute;
-  right:1px;
-  top:8px;
-  width:16px;
-  height:6px;
-  background:currentColor;
+  right:4px;
+  top:12px;
+  width:17px;
+  height:8px;
+  background:linear-gradient(135deg,var(--carLight),var(--carMain) 55%,var(--carDark));
   border-radius:0 12px 12px 0;
-  border-right:2px solid white;
+  border:2px solid #ffffff;
+  border-left:none;
+  box-shadow:inset 0 -1px 0 rgba(255,255,255,.22);
 }
 .f1car .wing{
   position:absolute;
-  left:0;
-  top:4px;
-  width:9px;
-  height:14px;
-  background:currentColor;
-  border-radius:4px;
-  border:2px solid white;
+  left:1px;
+  top:8px;
+  width:11px;
+  height:16px;
+  background:linear-gradient(135deg,var(--carDark),var(--carMain));
+  border:2px solid #ffffff;
+  border-radius:4px 5px 5px 4px;
+}
+.f1car .frontWing{
+  position:absolute;
+  right:1px;
+  top:10px;
+  width:5px;
+  height:12px;
+  background:linear-gradient(135deg,var(--carDark),var(--carMain));
+  border-radius:0 3px 3px 0;
+  border:1.5px solid #ffffff;
+  border-left:none;
 }
 .f1car .cockpit{
   position:absolute;
-  left:19px;
-  top:4px;
-  width:9px;
-  height:9px;
-  border-radius:50%;
-  background:#111827;
-  border:2px solid white;
-  z-index:2;
+  left:23px;
+  top:8px;
+  width:10px;
+  height:10px;
+  border-radius:50% 50% 45% 45%;
+  background:linear-gradient(135deg,#0f172a,#334155);
+  border:2px solid #ffffff;
+  z-index:3;
+}
+.f1car .halo{
+  position:absolute;
+  left:25px;
+  top:6px;
+  width:6px;
+  height:5px;
+  border:2px solid #ffffff;
+  border-bottom:none;
+  border-radius:5px 5px 0 0;
+  z-index:4;
+}
+.f1car .stripe{
+  position:absolute;
+  left:18px;
+  top:14px;
+  width:23px;
+  height:2px;
+  background:#f8fafc;
+  border-radius:999px;
+  opacity:.9;
+  z-index:4;
 }
 .f1car .wheel{
   position:absolute;
-  width:8px;
-  height:8px;
-  background:#111827;
-  border:1px solid white;
+  width:9px;
+  height:9px;
+  background:radial-gradient(circle at 35% 35%, #475569 0 20%, #111827 21% 100%);
+  border:1.5px solid #ffffff;
   border-radius:50%;
-  z-index:3;
+  z-index:5;
+  box-shadow:0 0 0 1px rgba(0,0,0,.18);
 }
-.f1car .w1{left:7px;top:0}
-.f1car .w2{left:7px;bottom:0}
-.f1car .w3{right:8px;top:0}
-.f1car .w4{right:8px;bottom:0}
+.f1car .w1{left:10px;top:4px}
+.f1car .w2{left:10px;bottom:4px}
+.f1car .w3{right:11px;top:4px}
+.f1car .w4{right:11px;bottom:4px}
 .legend{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px;font-size:11px;font-weight:900;text-align:center}
 .legend span{padding:5px;border-radius:9px}
 .lbonus{background:#dcfce7;color:#14532d} .lpenalty{background:#fee2e2;color:#7f1d1d} .lchallenge{background:#fef3c7;color:#92400e}
@@ -262,8 +310,8 @@ svg.road{
         <path id="roadLine" class="track-line"></path>
       </svg>
       <div id="nodesLayer"></div>
-      <div id="car1" class="car p1"><div class="f1car"><span class="wing"></span><span class="cockpit"></span><span class="nose"></span><span class="wheel w1"></span><span class="wheel w2"></span><span class="wheel w3"></span><span class="wheel w4"></span></div></div>
-      <div id="car2" class="car p2"><div class="f1car"><span class="wing"></span><span class="cockpit"></span><span class="nose"></span><span class="wheel w1"></span><span class="wheel w2"></span><span class="wheel w3"></span><span class="wheel w4"></span></div></div>
+      <div id="car1" class="car p1"><div class="f1car"><span class="wing"></span><span class="body"></span><span class="cockpit"></span><span class="halo"></span><span class="stripe"></span><span class="nose"></span><span class="frontWing"></span><span class="wheel w1"></span><span class="wheel w2"></span><span class="wheel w3"></span><span class="wheel w4"></span></div></div>
+      <div id="car2" class="car p2"><div class="f1car"><span class="wing"></span><span class="body"></span><span class="cockpit"></span><span class="halo"></span><span class="stripe"></span><span class="nose"></span><span class="frontWing"></span><span class="wheel w1"></span><span class="wheel w2"></span><span class="wheel w3"></span><span class="wheel w4"></span></div></div>
     </div>
     <div class="legend"><span class="lbonus">Verde: bônus</span><span class="lpenalty">Vermelho: punição</span><span class="lchallenge">Amarelo: desafio</span></div>
    </div>
