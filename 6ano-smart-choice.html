@@ -216,8 +216,83 @@ let state={round:1,score:0,corrects:0,combo:0,maxCombo:0,lives:MAX_LIVES,bag:[],
 function el(id){return document.getElementById(id)} function shuffle(arr){const a=[...arr]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]} return a} function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); el(id).classList.add('active'); document.body.classList.toggle('playing',id==='gameScreen')}
 function makeBag(){const themes=[...new Set(CARDS.map(c=>c.theme))], by={}; themes.forEach(t=>by[t]=shuffle(CARDS.filter(c=>c.theme===t))); const bag=[]; let last=null; while(bag.length<TOTAL_ROUNDS){let av=themes.filter(t=>by[t].length>0&&t!==last); if(av.length===0){themes.forEach(t=>by[t]=shuffle(CARDS.filter(c=>c.theme===t))); av=themes.filter(t=>t!==last)} const theme=av[Math.floor(Math.random()*av.length)], q=by[theme].pop(); bag.push(q); last=theme} return bag}
 function renderLives(){document.querySelectorAll('#lives .heart').forEach((h,i)=>h.classList.toggle('lost',i>=state.lives))} function updateStats(){el('round').textContent=state.round; el('score').textContent=state.score; el('corrects').textContent=state.corrects; el('combo').textContent=state.combo; el('left').textContent=Math.max(0,TOTAL_ROUNDS-state.round+1); renderLives()}
-function startGame(){state={round:1,score:0,corrects:0,combo:0,maxCombo:0,lives:MAX_LIVES,bag:makeBag(),current:null,answered:false}; show('gameScreen'); loadQuestion()} function loadQuestion(){state.answered=false; state.current=state.bag[state.round-1]; const q=state.current; el('theme').textContent=q.theme; el('visual').textContent=VISUALS[Math.floor(Math.random()*VISUALS.length)]; el('prompt').textContent=q.prompt; el('feedback').className='feedback'; el('feedback').innerHTML=''; el('options').innerHTML=shuffle(q.options).map(opt=>`<button class="option" onclick='answer(this, ${JSON.stringify(opt)})'>${opt}</button>`).join(''); updateStats()}
-function answer(btn, selected){if(state.answered)return; state.answered=true; const q=state.current; document.querySelectorAll('.option').forEach(b=>{b.disabled=true; if(b.textContent===q.answer)b.classList.add('correct')}); const fb=el('feedback'); if(selected===q.answer){state.corrects++; state.combo++; state.maxCombo=Math.max(state.maxCombo,state.combo); state.score+=100+(state.combo*5); fb.className='feedback good'; fb.innerHTML=`✅ Great! ${q.explanation}`}else{state.combo=0; state.lives=Math.max(0,state.lives-1); btn.classList.add('wrong'); fb.className='feedback bad'; fb.innerHTML=`❌ Você perdeu uma vida. Resposta correta: <b>${q.answer}</b>. ${q.explanation}`} updateStats(); if(state.lives<=0){setTimeout(()=>finishGame(false),850);return} if(state.round>=TOTAL_ROUNDS){setTimeout(()=>finishGame(true),850);return} setTimeout(()=>{state.round++; loadQuestion()},1050)}
+function startGame(){
+  state={round:1,score:0,corrects:0,combo:0,maxCombo:0,lives:MAX_LIVES,bag:makeBag(),current:null,answered:false};
+  show('gameScreen');
+  loadQuestion();
+}
+
+function loadQuestion(){
+  state.answered=false;
+  state.current=state.bag[state.round-1];
+
+  const q=state.current;
+  el('theme').textContent=q.theme;
+  el('visual').textContent=VISUALS[Math.floor(Math.random()*VISUALS.length)];
+  el('prompt').textContent=q.prompt;
+  el('feedback').className='feedback';
+  el('feedback').innerHTML='';
+
+  const optionsBox = el('options');
+  optionsBox.innerHTML = '';
+
+  shuffle(q.options).forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'option';
+    btn.type = 'button';
+    btn.textContent = opt;
+    btn.addEventListener('click', () => answer(btn, opt));
+    optionsBox.appendChild(btn);
+  });
+
+  updateStats();
+}
+
+function answer(btn, selected){
+  if(state.answered)return;
+
+  state.answered=true;
+  const q=state.current;
+
+  document.querySelectorAll('.option').forEach(b=>{
+    b.disabled=true;
+    if(b.textContent.trim()===q.answer.trim()) b.classList.add('correct');
+  });
+
+  const fb=el('feedback');
+
+  if(String(selected).trim()===String(q.answer).trim()){
+    state.corrects++;
+    state.combo++;
+    state.maxCombo=Math.max(state.maxCombo,state.combo);
+    state.score+=100+(state.combo*5);
+    fb.className='feedback good';
+    fb.innerHTML=`✅ Great! ${q.explanation}`;
+  }else{
+    state.combo=0;
+    state.lives=Math.max(0,state.lives-1);
+    btn.classList.add('wrong');
+    fb.className='feedback bad';
+    fb.innerHTML=`❌ Você perdeu uma vida. Resposta correta: <b>${q.answer}</b>. ${q.explanation}`;
+  }
+
+  updateStats();
+
+  if(state.lives<=0){
+    setTimeout(()=>finishGame(false),850);
+    return;
+  }
+
+  if(state.round>=TOTAL_ROUNDS){
+    setTimeout(()=>finishGame(true),850);
+    return;
+  }
+
+  setTimeout(()=>{
+    state.round++;
+    loadQuestion();
+  },1050);
+}
 
 const FAKE_RANKING_NAMES = [
   ["Ana Clara", "Escola Municipal Frei Fabiano Merz — 602"],
