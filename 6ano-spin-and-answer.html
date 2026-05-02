@@ -512,6 +512,15 @@ button{border:none; border-radius:16px; padding:13px 15px; font-weight:900; font
   }
 }
 
+
+.lives.life-lost{
+  animation: lifePulse .35s ease;
+}
+@keyframes lifePulse{
+  0%{transform:scale(1)}
+  45%{transform:scale(1.18)}
+  100%{transform:scale(1)}
+}
 </style>
 </head>
 <body>
@@ -811,6 +820,7 @@ function startGame(){
   };
   refillThemeBag();
   updateStats();
+  if(state.lives<=0){ state.timer=setTimeout(()=>finishGame(false,true),900); return; }
   el("spinBtn").disabled = false;
   resetRoundUI();
   const rotator = el("wheelRotator");
@@ -822,9 +832,11 @@ function startGame(){
 function renderLives(){
   const livesEl = document.getElementById("lives");
   if(!livesEl) return;
-  const full = "❤️".repeat(Math.max(0,state.lives || 0));
-  const empty = "🖤".repeat(Math.max(0,5-(state.lives || 0)));
-  livesEl.textContent = full + empty;
+  const lives = Math.max(0, Math.min(5, Number(state.lives)));
+  livesEl.textContent = "❤️".repeat(lives) + "🖤".repeat(5 - lives);
+  livesEl.classList.remove("life-lost");
+  void livesEl.offsetWidth;
+  livesEl.classList.add("life-lost");
 }
 
 function updateStats(){
