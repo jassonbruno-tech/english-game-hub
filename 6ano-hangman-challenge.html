@@ -457,7 +457,7 @@ button:active{transform:scale(.98)}
         <div class="stat"><b id="wins">0</b><span>PALAVRAS</span></div>
         <div class="stat"><b id="errors">0/6</b><span>ERROS</span></div>
         <div class="stat"><b id="combo">0</b><span>COMBO</span></div>
-        <div class="stat"><b id="round">1/10</b><span>RODADA</span></div>
+        <div class="stat"><b id="round">1/30</b><span>RODADA</span></div>
       </div>
 
       <div class="game-grid">
@@ -583,7 +583,7 @@ const schools = [
 let student = {name:"", class:"", school:""};
 let state = {
   score:0, wins:0, errors:0, combo:0, maxCombo:0,
-  round:1, totalRounds:10, current:null, guessed:[], usedWords:[], locked:false
+  round:1, totalRounds:30, current:null, guessed:[], usedWords:[], locked:false
 };
 
 function el(id){return document.getElementById(id)}
@@ -606,7 +606,7 @@ function startGame(){
   const school = el("studentSchool").value.trim();
   if(!name || !klass || !school){ alert("Preencha nome, turma e escola para começar."); return; }
   student = {name, class:klass, school};
-  state = {score:0,wins:0,errors:0,combo:0,maxCombo:0,round:1,totalRounds:10,current:null,guessed:[],usedWords:[],locked:false};
+  state = {score:0,wins:0,errors:0,combo:0,maxCombo:0,round:1,totalRounds:30,current:null,guessed:[],usedWords:[],locked:false};
   show("gameScreen");
   loadWord();
 }
@@ -787,7 +787,7 @@ function finishGame(){
 }
 
 function restartGame(){
-  state = {score:0,wins:0,errors:0,combo:0,maxCombo:0,round:1,totalRounds:10,current:null,guessed:[],usedWords:[],locked:false};
+  state = {score:0,wins:0,errors:0,combo:0,maxCombo:0,round:1,totalRounds:30,current:null,guessed:[],usedWords:[],locked:false};
   show("gameScreen");
   loadWord();
 }
