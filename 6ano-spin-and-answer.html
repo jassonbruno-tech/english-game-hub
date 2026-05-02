@@ -513,14 +513,74 @@ button{border:none; border-radius:16px; padding:13px 15px; font-weight:900; font
 }
 
 
-.lives.life-lost{
-  animation: lifePulse .35s ease;
+/* VIDAS COM CORAÇÕES - CORRIGIDO */
+.lives-card{
+  background:linear-gradient(135deg,rgba(255,255,255,.96),rgba(255,241,242,.96));
+  border:1px solid #fecdd3;
+  color:#172033;
+  border-radius:18px;
+  padding:8px 12px;
+  margin:0 0 10px;
+  text-align:center;
+  font-weight:900;
+  box-shadow:0 8px 18px rgba(0,0,0,.08);
 }
-@keyframes lifePulse{
+.lives{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  margin-left:6px;
+  vertical-align:middle;
+}
+.heart{
+  font-size:28px;
+  line-height:1;
+  font-family:Arial, Helvetica, sans-serif;
+  transition:transform .2s ease, color .2s ease, opacity .2s ease;
+}
+.heart.alive{
+  color:#e11d48;
+  text-shadow:0 2px 4px rgba(225,29,72,.18);
+}
+.heart.lost{
+  color:#111827;
+  opacity:.95;
+}
+.heart.life-lost{
+  animation: heartPulse .35s ease;
+}
+@keyframes heartPulse{
   0%{transform:scale(1)}
-  45%{transform:scale(1.18)}
+  45%{transform:scale(1.22)}
   100%{transform:scale(1)}
 }
+@media(max-width:860px){
+  body.playing .lives-card{
+    flex:0 0 auto;
+    margin:0 0 5px;
+    padding:5px 8px;
+    border-radius:11px;
+    font-size:11px;
+    line-height:1;
+  }
+  body.playing .heart{
+    font-size:20px;
+  }
+  body.playing .lives{
+    gap:2px;
+  }
+}
+@media(max-width:860px) and (max-height:670px){
+  body.playing .lives-card{
+    padding:4px 6px;
+    margin-bottom:4px;
+    font-size:10px;
+  }
+  body.playing .heart{
+    font-size:17px;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -574,7 +634,16 @@ button{border:none; border-radius:16px; padding:13px 15px; font-weight:900; font
         <div class="stat"><b id="round">1/10</b><span>RODADA</span></div>
       </div>
 
-      <div class="lives-card"><b>Vidas:</b> <span id="lives" class="lives">❤️❤️❤️❤️❤️</span></div>
+      <div class="lives-card">
+  <b>Vidas:</b>
+  <span id="lives" class="lives" aria-label="5 vidas">
+    <span class="heart alive">♥</span>
+    <span class="heart alive">♥</span>
+    <span class="heart alive">♥</span>
+    <span class="heart alive">♥</span>
+    <span class="heart alive">♥</span>
+  </span>
+</div>
  <div class="game-grid">
         <div class="card wheel-card">
           <div class="wheel-wrap">
@@ -820,7 +889,6 @@ function startGame(){
   };
   refillThemeBag();
   updateStats();
-  if(state.lives<=0){ state.timer=setTimeout(()=>finishGame(false,true),900); return; }
   el("spinBtn").disabled = false;
   resetRoundUI();
   const rotator = el("wheelRotator");
@@ -829,14 +897,29 @@ function startGame(){
   show("gameScreen");
 }
 
+
+
+
 function renderLives(){
-  const livesEl = document.getElementById("lives");
-  if(!livesEl) return;
-  const lives = Math.max(0, Math.min(5, Number(state.lives)));
-  livesEl.textContent = "❤️".repeat(lives) + "🖤".repeat(5 - lives);
-  livesEl.classList.remove("life-lost");
-  void livesEl.offsetWidth;
-  livesEl.classList.add("life-lost");
+  const hearts = Array.from(document.querySelectorAll("#lives .heart"));
+  const lives = Math.max(0, Math.min(5, Number(state.lives ?? 5)));
+  hearts.forEach((heart, index) => {
+    const isAlive = index < lives;
+    heart.classList.toggle("alive", isAlive);
+    heart.classList.toggle("lost", !isAlive);
+    heart.classList.remove("life-lost");
+    heart.textContent = "♥";
+  });
+}
+
+function loseLife(){
+  state.lives = Math.max(0, Number(state.lives ?? 5) - 1);
+  renderLives();
+  const hearts = Array.from(document.querySelectorAll("#lives .heart"));
+  const lostHeart = hearts[state.lives];
+  if(lostHeart){
+    lostHeart.classList.add("life-lost");
+  }
 }
 
 function updateStats(){
@@ -950,6 +1033,7 @@ function answerQuestion(btn, enc){
     feedback.innerHTML = `❌ Quase! Você perdeu 1 vida. A resposta correta é <b>${q.a}</b>.<br><b>Explicação:</b> ${q.e}`;
   }
   updateStats();
+  if(state.lives<=0){ state.timer=setTimeout(()=>finishGame(false,true),900); return; }
   queueNextAfterAnswer();
 }
 
