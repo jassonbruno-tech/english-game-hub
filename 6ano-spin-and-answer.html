@@ -996,7 +996,7 @@ function loadQuestion(theme){
 
   el("questionText").textContent = q.q;
   const opts = shuffle(q.o);
-  el("options").innerHTML = opts.map(opt=>`<button class="option" onclick="answerQuestion(this, '${encodeURIComponent(opt)}')">${opt}</button>`).join("");
+  renderOptionsSafe(q);
 }
 
 function queueNextAfterAnswer(){
@@ -1012,6 +1012,24 @@ function queueNextAfterAnswer(){
   }, 1500);
 }
 
+
+function renderOptionsSafe(q){
+  const box = document.getElementById("options");
+  if(!box) return;
+
+  box.innerHTML = "";
+  const opts = shuffle(q.options || q.o || []);
+
+  opts.forEach(opt => {
+    const btn = document.createElement("button");
+    btn.className = "option";
+    btn.type = "button";
+    btn.textContent = opt;
+    btn.addEventListener("click", () => answer(btn, opt));
+    box.appendChild(btn);
+  });
+}
+
 function answerQuestion(btn, enc){
   if(state.answered) return;
   const chosen = decodeURIComponent(enc);
@@ -1019,7 +1037,7 @@ function answerQuestion(btn, enc){
   state.answered = true;
 
   document.querySelectorAll(".option").forEach(b=>{
-    if(b.textContent === q.a) b.classList.add("correct");
+    if(b.textContent.trim()===String(q.a || q.answer).trim()) b.classList.add("correct");
     if(b === btn && chosen !== q.a) b.classList.add("wrong");
     b.disabled = true;
   });
