@@ -251,14 +251,14 @@ main{padding:14px}
   font-size:11px;
 }
 .wheel.spinning{
-  filter:drop-shadow(0 0 14px rgba(255,255,255,.75)) drop-shadow(0 0 22px rgba(225,29,72,.35));
+  filter:drop-shadow(0 0 16px rgba(255,255,255,.85)) drop-shadow(0 0 28px rgba(225,29,72,.45));
 }
 .suspense{
   animation:suspensePulse .6s ease-in-out infinite alternate;
 }
 @keyframes suspensePulse{
-  from{transform:scale(1)}
-  to{transform:scale(1.035)}
+  from{transform:scale(1); filter:brightness(1)}
+  to{transform:scale(1.045); filter:brightness(1.08)}
 }
 @media(max-width:860px){
   #startScreen.active{
@@ -462,40 +462,59 @@ function spinWheel(){
   el("wheel").dataset.theme = "SPIN";
   el("wheel").classList.add("spinning");
   el("sorted").classList.add("suspense");
-  el("sorted").textContent = "Girando...";
+  el("sorted").textContent = "Girando rápido...";
 
-  // O segmento sorteado precisa parar exatamente no ponteiro superior.
-  // Mais voltas + pequena oscilação visual antes do resultado aumentam o suspense.
-  const center = themeIndex * SEGMENT + SEGMENT/2;
+  // Centro do tema que precisa parar no ponteiro superior.
+  const center = themeIndex * SEGMENT + SEGMENT / 2;
   const target = 360 - center;
-  const extraTurns = 8 + Math.floor(Math.random()*4);
-  const overshoot = (Math.random() > .5 ? 1 : -1) * (8 + Math.random()*8);
 
-  const firstStop = extraTurns*360 + target + overshoot;
+  // Nunca deixa a roleta dar giro curto:
+  // calcula quanto falta até o alvo a partir da rotação atual e SOMA muitas voltas completas.
+  const currentNorm = ((state.rotation % 360) + 360) % 360;
+  const deltaToTarget = ((target - currentNorm) + 360) % 360;
+
+  // Todos os giros terão no mínimo 10 voltas completas e até 14 voltas.
+  const fullTurns = 10 + Math.floor(Math.random() * 5);
+
+  // Passa um pouco do ponto e volta suavemente, criando suspense.
+  const overshoot = 12 + Math.random() * 18;
+
+  const direction = Math.random() > 0.5 ? 1 : -1;
+  const suspenseOffset = overshoot * direction;
+
+  const firstStop = state.rotation + (fullTurns * 360) + deltaToTarget + suspenseOffset;
+  const finalStop = state.rotation + (fullTurns * 360) + deltaToTarget;
+
+  // Etapa 1: giro longo, acelerado e emocionante.
+  el("wheel").style.transition = "transform 6.2s cubic-bezier(.06,.88,.08,1)";
   state.rotation = firstStop;
-
-  el("wheel").style.transition = "transform 5.4s cubic-bezier(.08,.82,.12,1)";
   el("wheel").style.transform = `rotate(${state.rotation}deg)`;
 
   setTimeout(()=>{
-    el("sorted").textContent = "Quase parando...";
-  }, 2500);
+    el("sorted").textContent = "Atenção... quase parando!";
+    el("prompt").textContent = "Quase parando... qual tema será?";
+  }, 2700);
 
   setTimeout(()=>{
-    el("wheel").style.transition = "transform .75s cubic-bezier(.18,.9,.22,1)";
-    state.rotation = extraTurns*360 + target;
+    el("sorted").textContent = "Será que vai passar?";
+  }, 4300);
+
+  // Etapa 2: pequeno ajuste final, como se a roleta balançasse antes de parar.
+  setTimeout(()=>{
+    el("wheel").style.transition = "transform .9s cubic-bezier(.2,.95,.18,1)";
+    state.rotation = finalStop;
     el("wheel").style.transform = `rotate(${state.rotation}deg)`;
-  }, 5450);
+  }, 6250);
 
   setTimeout(()=>{
     state.spinning = false;
     el("wheel").classList.remove("spinning");
     el("sorted").classList.remove("suspense");
-    el("wheel").style.transition = "transform 5.4s cubic-bezier(.08,.82,.12,1)";
+    el("wheel").style.transition = "transform 6.2s cubic-bezier(.06,.88,.08,1)";
     el("wheel").dataset.theme = q.theme;
     el("sorted").textContent = `Tema sorteado: ${q.theme}`;
     renderQuestion(q);
-  }, 6350);
+  }, 7350);
 }
 
 function renderQuestion(q){
