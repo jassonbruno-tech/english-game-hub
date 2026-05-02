@@ -183,6 +183,292 @@ button{border:none; border-radius:16px; padding:13px 15px; font-weight:900; font
   .question{font-size:18px}
   .corner-brand{right:8px; bottom:8px; font-size:11px; padding:9px 12px; max-width:190px}
 }
+
+/* ===========================
+   MOBILE GAME MODE - SEM ROLAGEM
+   =========================== */
+@media(max-width:860px){
+  body.playing{
+    height:100dvh;
+    min-height:100dvh;
+    overflow:hidden;
+    padding:6px;
+    align-items:flex-start;
+  }
+
+  body.playing .corner-brand{
+    display:none;
+  }
+
+  body.playing .app{
+    height:calc(100dvh - 12px);
+    max-height:calc(100dvh - 12px);
+    display:flex;
+    flex-direction:column;
+    border-radius:18px;
+    overflow:hidden;
+  }
+
+  body.playing header{
+    flex:0 0 auto;
+    padding:7px 8px 6px;
+  }
+
+  body.playing .topbar{
+    flex-direction:row;
+    gap:6px;
+    margin-bottom:2px;
+  }
+
+  body.playing .back,
+  body.playing .pill{
+    padding:5px 7px;
+    font-size:10px;
+    line-height:1.05;
+  }
+
+  body.playing h1{
+    font-size:24px;
+    line-height:1;
+    margin:2px 0 0;
+  }
+
+  body.playing .subtitle{
+    display:none;
+  }
+
+  body.playing main{
+    flex:1 1 auto;
+    min-height:0;
+    padding:5px;
+    overflow:hidden;
+  }
+
+  body.playing #gameScreen.active{
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    min-height:0;
+    overflow:hidden;
+  }
+
+  body.playing .mini-info{
+    flex:0 0 auto;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:4px;
+    margin-bottom:5px;
+  }
+
+  body.playing .stat{
+    border-radius:10px;
+    padding:4px 2px;
+  }
+
+  body.playing .stat b{
+    font-size:15px;
+    line-height:1;
+  }
+
+  body.playing .stat span{
+    font-size:8px;
+    line-height:1;
+  }
+
+  body.playing .game-grid{
+    flex:1 1 auto;
+    min-height:0;
+    display:grid;
+    grid-template-columns:1fr;
+    grid-template-rows:auto 1fr;
+    gap:5px;
+    overflow:hidden;
+  }
+
+  body.playing .card{
+    border-radius:14px;
+    padding:6px;
+  }
+
+  body.playing .wheel-card{
+    min-height:0;
+    padding:5px;
+  }
+
+  body.playing .wheel-wrap{
+    width:min(55vw, 210px);
+    height:min(55vw, 210px);
+    max-width:210px;
+    max-height:210px;
+    margin:0 auto 4px;
+    border-radius:16px;
+  }
+
+  body.playing .top-pointer{
+    width:42px;
+    height:52px;
+  }
+
+  body.playing .top-pointer::before{
+    width:10px;
+    height:19px;
+  }
+
+  body.playing .top-pointer::after{
+    top:18px;
+    border-left:15px solid transparent;
+    border-right:15px solid transparent;
+    border-bottom:28px solid #111;
+  }
+
+  body.playing .pointer-dot{
+    top:15px;
+    width:9px;
+    height:9px;
+    box-shadow:0 0 0 4px #111;
+  }
+
+  body.playing .center-label{
+    font-size:12px;
+    padding:5px;
+    box-shadow:inset 0 0 0 4px #dbe4f0, 0 2px 8px rgba(0,0,0,.08);
+  }
+
+  body.playing .wheel-svg text{
+    font-size:13px;
+  }
+
+  body.playing #spinBtn{
+    padding:8px 10px;
+    border-radius:12px;
+    font-size:13px;
+    margin-top:0;
+    width:100%;
+  }
+
+  body.playing .theme-result{
+    font-size:11px;
+    padding:5px;
+    border-radius:10px;
+    margin:4px 0 0;
+    line-height:1.1;
+  }
+
+  body.playing .bag-info,
+  body.playing .legend{
+    display:none;
+  }
+
+  body.playing .question-box{
+    min-height:0;
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+    padding:7px;
+  }
+
+  body.playing .theme-chip{
+    flex:0 0 auto;
+    align-self:flex-start;
+    font-size:11px;
+    padding:5px 8px;
+    margin-bottom:5px;
+  }
+
+  body.playing .question{
+    flex:0 0 auto;
+    font-size:14px;
+    line-height:1.18;
+    margin:0 0 5px;
+    max-height:58px;
+    overflow:hidden;
+  }
+
+  body.playing .options{
+    flex:1 1 auto;
+    min-height:0;
+    display:grid;
+    grid-template-columns:1fr;
+    gap:4px;
+    margin-top:0;
+    overflow:hidden;
+  }
+
+  body.playing .option{
+    padding:7px 8px;
+    border-radius:11px;
+    font-size:12.5px;
+    line-height:1.12;
+    border-width:1.5px;
+    min-height:34px;
+  }
+
+  body.playing .feedback{
+    flex:0 0 auto;
+    margin-top:4px;
+    padding:6px;
+    border-radius:10px;
+    font-size:11px;
+    line-height:1.15;
+    max-height:54px;
+    overflow:hidden;
+  }
+
+  body.playing .actions{
+    display:none;
+  }
+}
+
+/* Celulares mais altos: dá um pouco mais de presença para a roleta */
+@media(max-width:860px) and (min-height:760px){
+  body.playing .wheel-wrap{
+    width:min(62vw, 250px);
+    height:min(62vw, 250px);
+    max-width:250px;
+    max-height:250px;
+  }
+  body.playing .question{
+    font-size:15px;
+    max-height:66px;
+  }
+  body.playing .option{
+    font-size:13px;
+    min-height:38px;
+  }
+}
+
+/* Celulares muito baixos: compacta ainda mais */
+@media(max-width:860px) and (max-height:670px){
+  body.playing h1{
+    font-size:20px;
+  }
+  body.playing .topbar{
+    display:none;
+  }
+  body.playing header{
+    padding:5px;
+  }
+  body.playing .wheel-wrap{
+    width:min(46vw, 170px);
+    height:min(46vw, 170px);
+    max-width:170px;
+    max-height:170px;
+  }
+  body.playing .question{
+    font-size:12.5px;
+    max-height:45px;
+  }
+  body.playing .option{
+    font-size:11.5px;
+    min-height:30px;
+    padding:6px;
+  }
+  body.playing .feedback{
+    display:none;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -435,7 +721,11 @@ let state = {
 };
 
 function el(id){return document.getElementById(id)}
-function show(id){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active")); el(id).classList.add("active")}
+function show(id){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  el(id).classList.add("active");
+  document.body.classList.toggle("playing", id === "gameScreen");
+}
 function shuffle(arr){return [...arr].sort(()=>Math.random()-.5)}
 function pick(arr){return arr[Math.floor(Math.random()*arr.length)]}
 
