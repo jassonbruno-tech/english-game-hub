@@ -34,11 +34,11 @@ main{padding:14px}
 .btn{border:0;border-radius:14px;padding:12px 22px;background:linear-gradient(135deg,#2563eb,#06b6d4 50%,#e11d48);color:white;font-weight:900;font-size:15px;cursor:pointer;box-shadow:0 8px 18px rgba(37,99,235,.25)}
 .btn:disabled{opacity:.55;cursor:not-allowed}
 .brand{position:fixed;right:12px;bottom:12px;background:linear-gradient(135deg,#1e3a8a,#e11d48);color:white;font-weight:900;border-radius:14px;padding:9px 12px;font-size:12px;box-shadow:0 8px 18px rgba(15,23,42,.25);z-index:30}
-.game-layout{display:grid;grid-template-columns:1.2fr .8fr;gap:12px;align-items:stretch}
-.scorebar{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px}
+.game-layout{display:flex;flex-direction:column;gap:10px;align-items:stretch;max-width:820px;margin:0 auto}
+.scorebar{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:8px;max-width:820px;margin-inline:auto}
 .score{background:white;border:1px solid #dbeafe;border-radius:15px;padding:8px;text-align:center;font-weight:900}
 .score b{display:block;color:#e11d48;font-size:22px}
-.track-card{position:relative;overflow:hidden;background:linear-gradient(180deg,#dbeafe,#f8fafc)}
+.track-card{position:relative;overflow:hidden;background:linear-gradient(180deg,#dbeafe,#f8fafc);padding-bottom:8px}
 .track-title{display:flex;justify-content:space-between;align-items:center;font-weight:900;color:#1e3a8a;margin-bottom:8px}
 .track{
   position:relative;
@@ -106,17 +106,18 @@ svg.road{
 .legend span{padding:5px;border-radius:9px}
 .lbonus{background:#dcfce7;color:#14532d} .lpenalty{background:#fee2e2;color:#7f1d1d} .lchallenge{background:#fef3c7;color:#92400e}
 
-.side{display:grid;gap:10px}
-.turn-box{text-align:center;background:linear-gradient(135deg,#fff7ed,#dbeafe);border:2px solid var(--gold)}
+.side{display:grid;gap:8px}
+.turn-box{text-align:center;background:linear-gradient(135deg,#fff7ed,#dbeafe);border:2px solid var(--gold);max-width:420px;margin:0 auto;width:100%}
 .turn-box h2{font-size:24px;margin:0;color:#1d4ed8}
-.dice-area{display:flex;align-items:center;justify-content:center;gap:12px;margin:8px 0}
-.dice-scene{width:80px;height:80px;perspective:600px}
-.dice{width:80px;height:80px;position:relative;transform-style:preserve-3d;transition:transform 1s ease;}
+.dice-area{display:flex;align-items:center;justify-content:center;gap:10px;margin:6px 0}
+.dice-scene{width:72px;height:72px;perspective:600px}
+.dice{width:72px;height:72px;position:relative;transform-style:preserve-3d;transition:transform 1s ease;}
 .dice.rolling{animation:rollDice .75s linear infinite}
-.face{position:absolute;width:80px;height:80px;background:#fff;border:4px solid #111827;border-radius:15px;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);padding:8px;box-shadow:inset 0 0 8px rgba(0,0,0,.12)}
-.dot{width:12px;height:12px;background:#111827;border-radius:50%;align-self:center;justify-self:center}
-.f1{transform:rotateY(0deg) translateZ(40px)} .f2{transform:rotateY(180deg) translateZ(40px)} .f3{transform:rotateY(90deg) translateZ(40px)} .f4{transform:rotateY(-90deg) translateZ(40px)} .f5{transform:rotateX(90deg) translateZ(40px)} .f6{transform:rotateX(-90deg) translateZ(40px)}
+.face{position:absolute;width:72px;height:72px;background:#fff;border:4px solid #111827;border-radius:14px;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);padding:8px;box-shadow:inset 0 0 8px rgba(0,0,0,.12)}
+.dot{width:10px;height:10px;background:#111827;border-radius:50%;align-self:center;justify-self:center}
+.f1{transform:rotateY(0deg) translateZ(36px)} .f2{transform:rotateY(180deg) translateZ(36px)} .f3{transform:rotateY(90deg) translateZ(36px)} .f4{transform:rotateY(-90deg) translateZ(36px)} .f5{transform:rotateX(90deg) translateZ(36px)} .f6{transform:rotateX(-90deg) translateZ(36px)}
 @keyframes rollDice{from{transform:rotateX(0) rotateY(0) rotateZ(0)}to{transform:rotateX(360deg) rotateY(540deg) rotateZ(360deg)}}
+.question-box{max-width:820px;margin:0 auto;width:100%}
 .question-box h3{margin:0 0 8px;color:#1d4ed8}
 .theme-chip{display:inline-block;background:#dbeafe;color:#1d4ed8;border:1px solid #bfdbfe;border-radius:999px;padding:6px 10px;font-weight:900;margin-bottom:8px;font-size:12px}
 .prompt{font-size:18px;line-height:1.25;font-weight:900;margin:0 0 10px}
