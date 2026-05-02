@@ -2,7 +2,134 @@
 *{box-sizing:border-box} html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;color:#172033} body{min-height:100vh;background:linear-gradient(135deg,#dbeafe,#cffafe 48%,#ffe4e6);display:flex;align-items:center;justify-content:center;padding:12px}.app{width:min(100%,980px);min-height:min(760px,96vh);background:rgba(255,255,255,.88);border-radius:28px;box-shadow:0 24px 50px rgba(15,23,42,.18);overflow:hidden}header{padding:18px 20px 14px;background:linear-gradient(135deg,#2563eb,#06b6d4 55%,#e11d48);color:white}.topbar{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:10px;flex-wrap:wrap}.pill,.back{border:1px solid rgba(255,255,255,.32);background:rgba(255,255,255,.16);color:white;text-decoration:none;border-radius:999px;padding:8px 12px;font-weight:900;font-size:13px}.back{cursor:pointer}h1{margin:0;font-size:clamp(32px,6vw,54px);line-height:1;text-shadow:0 4px 12px rgba(0,0,0,.2)}.subtitle{margin:8px 0 0;font-weight:800;font-size:16px;line-height:1.35;max-width:760px}main{padding:18px}.screen{display:none}.screen.active{display:block}.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}.card{background:linear-gradient(180deg,rgba(255,255,255,.96),rgba(248,250,252,.94));border:1px solid rgba(148,163,184,.28);border-radius:24px;padding:18px;box-shadow:0 12px 28px rgba(15,23,42,.08)}.motivation{background:rgba(255,247,237,.92);border:1px solid rgba(251,191,36,.45);color:#1f2937;padding:14px;border-radius:18px;font-weight:900;line-height:1.35;margin:14px 0}.start-btn,.main-btn{width:100%;border:0;border-radius:18px;background:linear-gradient(135deg,#2563eb,#06b6d4 55%,#e11d48);color:white;padding:16px;font-size:18px;font-weight:900;cursor:pointer;box-shadow:0 14px 24px rgba(37,99,235,.22)}.list{display:grid;gap:10px;margin-top:12px}.item{display:flex;gap:10px;align-items:flex-start;font-weight:800;background:#f8fafc;border-radius:16px;padding:12px;border:1px solid #e2e8f0}.item b{color:#2563eb}.brand{margin-top:14px;text-align:center;font-weight:900;color:#334155}.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:10px}.stat{background:white;border:1px solid #e2e8f0;border-radius:16px;padding:8px;text-align:center}.stat b{display:block;font-size:22px;color:#2563eb;line-height:1}.stat span{font-size:11px;font-weight:900;color:#64748b;text-transform:uppercase}.lives-card{background:#fff1f2;border:1px solid #fecdd3;border-radius:16px;padding:8px 10px;text-align:center;font-weight:900;margin-bottom:10px}.lives{display:inline-flex;gap:4px;margin-left:6px}.heart{font-size:24px;color:#e11d48;line-height:1}.heart.lost{display:none}.question-card{min-height:420px;display:flex;flex-direction:column;gap:12px}.theme-chip{align-self:flex-start;background:#dbeafe;color:#1d4ed8;border:1px solid #bfdbfe;border-radius:999px;padding:7px 11px;font-weight:900;font-size:13px}.prompt{font-size:22px;line-height:1.28;font-weight:900;color:#111827;background:white;border:1px solid #e2e8f0;border-radius:18px;padding:16px}.visual{display:flex;align-items:center;justify-content:center;min-height:72px;border-radius:18px;background:linear-gradient(135deg,#eff6ff,#ecfeff);border:1px dashed #93c5fd;font-size:40px}.options{display:grid;gap:9px;grid-template-columns:1fr;flex:1}.option{border:2px solid #dbeafe;background:white;color:#172033;border-radius:16px;padding:13px 14px;text-align:left;font-weight:900;font-size:16px;cursor:pointer}.option.correct{background:#dcfce7;border-color:#22c55e;color:#14532d}.option.wrong{background:#fee2e2;border-color:#ef4444;color:#7f1d1d}.feedback{min-height:48px;border-radius:14px;padding:10px;font-weight:900;line-height:1.25;display:none}.feedback.good{display:block;background:#dcfce7;color:#14532d;border:1px solid #86efac}.feedback.bad{display:block;background:#fee2e2;color:#7f1d1d;border:1px solid #fca5a5}.final{text-align:center}.final h2{font-size:38px;margin:0 0 10px;color:#2563eb}.result-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:18px 0}.result-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:18px;padding:14px;font-weight:900}.result-box b{display:block;font-size:28px;color:#e11d48}
 @media(max-width:860px){body{padding:8px;align-items:flex-start}.app{min-height:calc(100vh - 16px);border-radius:22px}header{padding:12px}.pill,.back{font-size:11px;padding:7px 9px}h1{font-size:34px}.subtitle{font-size:14px}main{padding:10px}.hero{grid-template-columns:1fr;gap:10px}.card{border-radius:20px;padding:12px}.motivation,.item{font-size:13px;padding:10px}}
 body.playing{height:100dvh;min-height:100dvh;overflow:hidden;padding:6px;align-items:flex-start}body.playing .app{height:calc(100dvh - 12px);min-height:0;max-height:calc(100dvh - 12px);display:flex;flex-direction:column;border-radius:18px;overflow:hidden}body.playing header{flex:0 0 auto;padding:7px 8px 6px}body.playing .topbar{gap:6px;margin-bottom:2px}body.playing .pill,body.playing .back{font-size:10px;padding:5px 7px;line-height:1.05}body.playing h1{font-size:22px;margin:0;line-height:1}body.playing .subtitle{display:none}body.playing main{flex:1 1 auto;min-height:0;padding:5px;overflow:hidden}body.playing #gameScreen.active{height:100%;display:flex;flex-direction:column;min-height:0;overflow:hidden}body.playing .stats{grid-template-columns:repeat(5,1fr);gap:4px;margin-bottom:5px;flex:0 0 auto}body.playing .stat{border-radius:10px;padding:4px 2px}body.playing .stat b{font-size:15px}body.playing .stat span{font-size:8px}body.playing .lives-card{flex:0 0 auto;margin-bottom:5px;padding:5px 8px;border-radius:11px;font-size:11px;line-height:1}body.playing .heart{font-size:18px}body.playing .question-card{flex:1 1 auto;min-height:0;height:100%;border-radius:14px;padding:7px;gap:5px;overflow:hidden}body.playing .theme-chip{font-size:10px;padding:5px 8px;margin:0}body.playing .visual{min-height:38px;font-size:25px;border-radius:12px;flex:0 0 auto}body.playing .prompt{font-size:14px;line-height:1.16;padding:8px;border-radius:12px;max-height:76px;overflow:hidden;flex:0 0 auto}body.playing .options{gap:5px;min-height:0;flex:1 1 auto;overflow:hidden}body.playing .option{font-size:12.5px;line-height:1.1;padding:7px 9px;border-radius:11px;min-height:34px;border-width:1.5px}body.playing .feedback{flex:0 0 auto;min-height:0;max-height:46px;padding:6px;font-size:11px;line-height:1.13;border-radius:10px;overflow:hidden}@media(max-height:680px){body.playing .topbar{display:none}body.playing header{padding:5px}body.playing h1{font-size:19px}body.playing .stats{display:none}body.playing .visual{display:none}body.playing .prompt{font-size:12.5px;max-height:54px}body.playing .option{font-size:11.5px;min-height:29px;padding:6px}body.playing .feedback{display:none}}
-</style></head><body><div class="app"><header><div class="topbar"><a class="back" href="6ano.html">← Voltar ao 6º ano</a><div class="pill">🎯 Smart Choice • 6º Ano</div></div><h1>Smart Choice</h1><p class="subtitle">Escolha a melhor resposta, acumule pontos e mostre que você domina o inglês do 1º bimestre.</p></header><main><section id="startScreen" class="screen active"><div class="hero"><div class="card"><h2>⚡ Desafio rápido de inglês</h2><div class="motivation">Aprender inglês pode ser mais divertido quando você aceita o desafio, tenta, erra, aprende e continua jogando. Cada fase vencida mostra que você é capaz de ir mais longe. Acredite em você: você é do tamanho dos seus sonhos!</div><button class="start-btn" onclick="startGame()">Começar desafio</button><div class="brand">Jogo idealizado pelo professor Jasson Bruno.</div></div><div class="card"><h3>Como funciona?</h3><div class="list"><div class="item"><b>1.</b><span>Você terá 50 rodadas rápidas com perguntas mescladas.</span></div><div class="item"><b>2.</b><span>Começa com 5 vidas. A cada erro, um coração some.</span></div><div class="item"><b>3.</b><span>Revisa greetings, commands, pronouns, possessives e personal information.</span></div><div class="item"><b>4.</b><span>Na tela da partida não há rolagem para manter a concentração.</span></div></div></div></div></section><section id="gameScreen" class="screen"><div class="stats"><div class="stat"><b id="round">1</b><span>Rodada</span></div><div class="stat"><b id="score">0</b><span>Pontos</span></div><div class="stat"><b id="corrects">0</b><span>Acertos</span></div><div class="stat"><b id="combo">0</b><span>Combo</span></div><div class="stat"><b id="left">50</b><span>Faltam</span></div></div><div class="lives-card"><b>Vidas:</b><span id="lives" class="lives"><span class="heart">♥</span><span class="heart">♥</span><span class="heart">♥</span><span class="heart">♥</span><span class="heart">♥</span></span></div><div class="card question-card"><div id="theme" class="theme-chip">Tema</div><div class="visual" id="visual">🎮</div><div id="prompt" class="prompt">Pergunta</div><div id="options" class="options"></div><div id="feedback" class="feedback"></div></div></section><section id="finalScreen" class="screen"><div class="card final"><h2 id="finalTitle">Congratulations!</h2><p id="finalMessage">Você concluiu o desafio.</p><div class="result-grid"><div class="result-box">Pontuação <b id="finalScore">0</b></div><div class="result-box">Acertos <b id="finalCorrects">0</b></div><div class="result-box">Combo máximo <b id="finalCombo">0</b></div><div class="result-box">Vidas <b id="finalLives">0</b></div></div><button class="main-btn" onclick="startGame()">Tentar novamente</button><div class="brand">Jogo idealizado pelo professor Jasson Bruno.</div></div></section></main></div><script>
+
+.player-form{
+  display:grid;
+  gap:6px;
+  margin:12px 0;
+}
+.player-form label{
+  font-weight:900;
+  color:#1e3a8a;
+  font-size:13px;
+}
+.player-form input{
+  width:100%;
+  border:2px solid #bfdbfe;
+  border-radius:14px;
+  padding:11px 12px;
+  font-size:15px;
+  font-weight:800;
+  outline:none;
+  background:white;
+}
+.player-form input:focus{
+  border-color:#2563eb;
+  box-shadow:0 0 0 3px rgba(37,99,235,.15);
+}
+.ranking-card{
+  max-width:760px;
+  margin:0 auto;
+}
+.ranking-title{
+  text-align:center;
+  margin:0 0 8px;
+  font-size:34px;
+  color:#1d4ed8;
+}
+.ranking-subtitle{
+  text-align:center;
+  font-weight:900;
+  color:#334155;
+  margin:0 0 12px;
+  line-height:1.3;
+}
+.rank-list{
+  display:grid;
+  gap:8px;
+  margin:12px 0;
+}
+.rank-row{
+  display:grid;
+  grid-template-columns:42px 1fr auto;
+  gap:8px;
+  align-items:center;
+  padding:10px;
+  border-radius:16px;
+  background:#f8fafc;
+  border:1px solid #e2e8f0;
+  box-shadow:0 6px 14px rgba(15,23,42,.05);
+}
+.rank-row.player{
+  background:linear-gradient(135deg,#fff7ed,#dbeafe);
+  border:2px solid #f8d36b;
+  box-shadow:0 10px 22px rgba(245,158,11,.18);
+}
+.rank-pos{
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:900;
+  background:#dbeafe;
+  color:#1d4ed8;
+}
+.rank-row.player .rank-pos{
+  background:#f8d36b;
+  color:#172033;
+}
+.rank-name{
+  font-weight:900;
+  color:#172033;
+  line-height:1.1;
+}
+.rank-school{
+  font-size:11px;
+  font-weight:800;
+  color:#64748b;
+  margin-top:3px;
+}
+.rank-score{
+  font-weight:900;
+  color:#e11d48;
+  text-align:right;
+  font-size:15px;
+}
+.rank-actions{
+  display:grid;
+  gap:8px;
+  margin-top:12px;
+}
+.rank-note{
+  text-align:center;
+  font-size:12px;
+  color:#475569;
+  font-weight:800;
+  line-height:1.25;
+}
+@media(max-width:860px){
+  .ranking-title{font-size:28px}
+  .ranking-subtitle{font-size:13px}
+  .rank-row{grid-template-columns:36px 1fr auto;padding:8px;border-radius:14px}
+  .rank-pos{width:30px;height:30px;font-size:13px}
+  .rank-name{font-size:13px}
+  .rank-school{font-size:10px}
+  .rank-score{font-size:13px}
+}
+
+</style></head><body><div class="app"><header><div class="topbar"><a class="back" href="6ano.html">← Voltar ao 6º ano</a><div class="pill">🎯 Smart Choice • 6º Ano</div></div><h1>Smart Choice</h1><p class="subtitle">Escolha a melhor resposta, acumule pontos e mostre que você domina o inglês do 1º bimestre.</p></header><main><section id="startScreen" class="screen active"><div class="hero"><div class="card"><h2>⚡ Desafio rápido de inglês</h2><div class="motivation">Aprender inglês pode ser mais divertido quando você aceita o desafio, tenta, erra, aprende e continua jogando. Cada fase vencida mostra que você é capaz de ir mais longe. Acredite em você: você é do tamanho dos seus sonhos!</div>
+          <div class="player-form">
+            <label>Seu nome</label>
+            <input id="playerName" type="text" placeholder="Digite seu nome" maxlength="28">
+            <label>Turma</label>
+            <input id="playerClass" type="text" placeholder="Ex.: 601" maxlength="12">
+            <label>Escola</label>
+            <input id="playerSchool" type="text" placeholder="Digite o nome da escola" maxlength="40">
+          </div>
+
+          <button class="start-btn" onclick="startGame()">Começar desafio</button><div class="brand">Jogo idealizado pelo professor Jasson Bruno.</div></div><div class="card"><h3>Como funciona?</h3><div class="list"><div class="item"><b>1.</b><span>Você terá 50 rodadas rápidas com perguntas mescladas.</span></div><div class="item"><b>2.</b><span>Começa com 5 vidas. A cada erro, um coração some.</span></div><div class="item"><b>3.</b><span>Revisa greetings, commands, pronouns, possessives e personal information.</span></div><div class="item"><b>4.</b><span>Na tela da partida não há rolagem para manter a concentração.</span></div></div></div></div></section><section id="gameScreen" class="screen"><div class="stats"><div class="stat"><b id="round">1</b><span>Rodada</span></div><div class="stat"><b id="score">0</b><span>Pontos</span></div><div class="stat"><b id="corrects">0</b><span>Acertos</span></div><div class="stat"><b id="combo">0</b><span>Combo</span></div><div class="stat"><b id="left">50</b><span>Faltam</span></div></div><div class="lives-card"><b>Vidas:</b><span id="lives" class="lives"><span class="heart">♥</span><span class="heart">♥</span><span class="heart">♥</span><span class="heart">♥</span><span class="heart">♥</span></span></div><div class="card question-card"><div id="theme" class="theme-chip">Tema</div><div class="visual" id="visual">🎮</div><div id="prompt" class="prompt">Pergunta</div><div id="options" class="options"></div><div id="feedback" class="feedback"></div></div></section><section id="finalScreen" class="screen"><div class="card final"><h2 id="finalTitle">Congratulations!</h2><p id="finalMessage">Você concluiu o desafio.</p><div class="result-grid"><div class="result-box">Pontuação <b id="finalScore">0</b></div><div class="result-box">Acertos <b id="finalCorrects">0</b></div><div class="result-box">Combo máximo <b id="finalCombo">0</b></div><div class="result-box">Vidas <b id="finalLives">0</b></div></div><button class="main-btn" onclick="startGame()">Tentar novamente</button><div class="brand">Jogo idealizado pelo professor Jasson Bruno.</div></div></section></main></div><script>
 const TOTAL_ROUNDS=50, MAX_LIVES=5; const VISUALS=['🎮','📚','⚽','🧽','🕷️','💬','✏️','🏫','⭐','🎧','🧠','🚀']; const CARDS=[{"theme": "Greetings", "prompt": "Bob Esponja chegou à escola de manhã e quer cumprimentar Patrick. Qual expressão ele deve usar?", "answer": "Good morning!", "options": ["Good morning!", "Good night!", "Goodbye!", "See you!", "Thank you!"], "explanation": "Good morning = Bom dia."}, {"theme": "Greetings", "prompt": "Sonic encontrou um amigo à tarde. Como ele pode dizer \"Boa tarde\" em inglês?", "answer": "Good afternoon!", "options": ["Good afternoon!", "Good night!", "Bye!", "Sit down!", "I am fine."], "explanation": "Good afternoon = Boa tarde."}, {"theme": "Greetings", "prompt": "Wandinha encontrou Enid e disse: \"Oi!\". Qual palavra em inglês representa essa saudação?", "answer": "Hello!", "options": ["Hello!", "Bye!", "Open!", "Listen!", "Book!"], "explanation": "Hello = Olá/Oi."}, {"theme": "Greetings", "prompt": "Quando alguém pergunta \"How are you?\", qual resposta combina melhor?", "answer": "I am fine.", "options": ["I am fine.", "Goodbye.", "Close your book.", "My name is pen.", "Stand up."], "explanation": "I am fine = Eu estou bem."}, {"theme": "Farewells", "prompt": "Ao sair da sala, o aluno quer dizer \"Tchau\". Qual opção escolher?", "answer": "Goodbye!", "options": ["Goodbye!", "Good morning!", "Open your book!", "He is Neymar.", "My pencil."], "explanation": "Goodbye = Tchau."}, {"theme": "Farewells", "prompt": "No final da aula, a professora diz \"Até mais!\". Qual expressão em inglês combina?", "answer": "See you!", "options": ["See you!", "Hello!", "Stand up!", "What is your name?", "His book."], "explanation": "See you = Até mais."}, {"theme": "Farewells", "prompt": "É noite e Goku está indo embora. Qual despedida pode significar \"Boa noite\"?", "answer": "Good night!", "options": ["Good night!", "Good afternoon!", "Good morning!", "Sit down!", "I am 12."], "explanation": "Good night pode ser usado como despedida à noite."}, {"theme": "Classroom Commands", "prompt": "A professora aponta para o livro e diz: \"Abra o livro\". Qual comando em inglês é correto?", "answer": "Open your book.", "options": ["Open your book.", "Close the door.", "Good night.", "My name is João.", "She is my friend."], "explanation": "Open your book = Abra seu livro."}, {"theme": "Classroom Commands", "prompt": "Quando a professora quer silêncio e atenção, ela pode dizer:", "answer": "Listen!", "options": ["Listen!", "Goodbye!", "Pencil!", "They are.", "Her."], "explanation": "Listen = Ouça/Escute."}, {"theme": "Classroom Commands", "prompt": "Se a professora pede para repetir, qual comando em inglês aparece?", "answer": "Repeat, please.", "options": ["Repeat, please.", "See you!", "I am fine.", "His ruler.", "Good afternoon."], "explanation": "Repeat, please = Repita, por favor."}, {"theme": "Classroom Commands", "prompt": "O aluno está em pé e a professora pede para sentar. Qual comando é correto?", "answer": "Sit down.", "options": ["Sit down.", "Stand up.", "Good morning.", "My name is.", "Where are you from?"], "explanation": "Sit down = Sente-se."}, {"theme": "Classroom Commands", "prompt": "A turma precisa levantar. Qual comando em inglês significa \"levantem-se\"?", "answer": "Stand up.", "options": ["Stand up.", "Sit down.", "Close your notebook.", "Bye.", "They are cats."], "explanation": "Stand up = Levante-se."}, {"theme": "Classroom Expressions", "prompt": "O aluno não entendeu e quer pedir ajuda. Qual frase é melhor?", "answer": "Can you help me?", "options": ["Can you help me?", "Goodbye!", "I am a book.", "Her pencil.", "Stand up."], "explanation": "Can you help me? = Você pode me ajudar?"}, {"theme": "Classroom Expressions", "prompt": "Quando o aluno quer pedir para ir ao banheiro, qual frase é adequada?", "answer": "May I go to the bathroom?", "options": ["May I go to the bathroom?", "Open your pencil.", "Good night!", "His name are João.", "They is happy."], "explanation": "May I go to the bathroom? = Posso ir ao banheiro?"}, {"theme": "Classroom Expressions", "prompt": "Se o aluno quer dizer \"Eu não sei\", qual frase em inglês é correta?", "answer": "I don't know.", "options": ["I don't know.", "I am book.", "She are Ana.", "Goodbye morning.", "My is name."], "explanation": "I don't know = Eu não sei."}, {"theme": "Spelling Names", "prompt": "A professora pergunta: \"How do you spell Ana?\". Qual resposta mostra a soletração correta?", "answer": "A-N-A", "options": ["A-N-A", "N-A-A", "A-A-N", "E-N-A", "A-M-A"], "explanation": "Ana se soletra A-N-A."}, {"theme": "Spelling Names", "prompt": "Como soletrar o nome \"Leo\" em inglês?", "answer": "L-E-O", "options": ["L-E-O", "E-L-O", "L-O-E", "A-E-O", "L-I-O"], "explanation": "Leo = L-E-O."}, {"theme": "Spelling Names", "prompt": "A pergunta \"How do you spell your name?\" quer saber:", "answer": "Como se soletra seu nome?", "options": ["Como se soletra seu nome?", "Quantos anos você tem?", "Onde você mora?", "Qual sua cor favorita?", "Você está bem?"], "explanation": "Spell = soletrar."}, {"theme": "Personal Information", "prompt": "Neymar pergunta: \"What is your name?\". Qual resposta é correta?", "answer": "My name is Pedro.", "options": ["My name is Pedro.", "I am 12 years.", "Goodbye!", "Open your book.", "Her name are Ana."], "explanation": "My name is... = Meu nome é..."}, {"theme": "Personal Information", "prompt": "A pergunta \"How old are you?\" pede qual informação?", "answer": "Idade", "options": ["Idade", "Nome", "Cidade", "Cor favorita", "Material escolar"], "explanation": "How old are you? = Quantos anos você tem?"}, {"theme": "Personal Information", "prompt": "Qual frase responde corretamente à pergunta \"How old are you?\"", "answer": "I am 11 years old.", "options": ["I am 11 years old.", "My name is 11.", "I are 11.", "Good morning 11.", "Her 11 years."], "explanation": "I am 11 years old = Eu tenho 11 anos."}, {"theme": "Personal Information", "prompt": "Se alguém pergunta \"Where are you from?\", quer saber:", "answer": "De onde você é.", "options": ["De onde você é.", "Seu nome.", "Sua idade.", "Sua sala.", "Sua mochila."], "explanation": "Where are you from? = De onde você é?"}, {"theme": "Personal Pronouns", "prompt": "Em inglês, qual pronome usamos para falar de \"eu\"?", "answer": "I", "options": ["I", "You", "He", "She", "They"], "explanation": "I = eu."}, {"theme": "Personal Pronouns", "prompt": "Qual pronome substitui \"Maria\"?", "answer": "She", "options": ["She", "He", "They", "We", "It"], "explanation": "She = ela."}, {"theme": "Personal Pronouns", "prompt": "Qual pronome substitui \"João\"?", "answer": "He", "options": ["He", "She", "It", "We", "They"], "explanation": "He = ele."}, {"theme": "Personal Pronouns", "prompt": "Qual pronome usamos para falar de \"você\"?", "answer": "You", "options": ["You", "I", "He", "She", "It"], "explanation": "You = você."}, {"theme": "Personal Pronouns", "prompt": "Qual pronome substitui \"Ana and Pedro\"?", "answer": "They", "options": ["They", "He", "She", "It", "I"], "explanation": "They = eles/elas."}, {"theme": "Personal Pronouns", "prompt": "Qual pronome usamos para \"nós\"?", "answer": "We", "options": ["We", "You", "They", "He", "It"], "explanation": "We = nós."}, {"theme": "Possessive Adjectives", "prompt": "Qual palavra significa \"meu/minha\" em inglês?", "answer": "My", "options": ["My", "Your", "His", "Her", "Their"], "explanation": "My = meu/minha."}, {"theme": "Possessive Adjectives", "prompt": "Qual palavra significa \"seu/sua\" quando falo com você?", "answer": "Your", "options": ["Your", "My", "His", "Her", "Our"], "explanation": "Your = seu/sua."}, {"theme": "Possessive Adjectives", "prompt": "Complete: He is João. ___ book is blue.", "answer": "His", "options": ["His", "Her", "My", "Your", "Their"], "explanation": "His = dele."}, {"theme": "Possessive Adjectives", "prompt": "Complete: She is Ana. ___ pencil is red.", "answer": "Her", "options": ["Her", "His", "My", "Your", "Our"], "explanation": "Her = dela."}, {"theme": "Possessive Adjectives", "prompt": "Complete: I am Lucas. ___ school is big.", "answer": "My", "options": ["My", "Your", "His", "Her", "Their"], "explanation": "My = meu/minha."}, {"theme": "Possessive Adjectives", "prompt": "Messi tem uma bola. Em inglês: ___ ball is white.", "answer": "His", "options": ["His", "Her", "My", "Your", "Our"], "explanation": "His ball = a bola dele."}, {"theme": "School Vocabulary", "prompt": "Qual palavra em inglês significa \"lápis\"?", "answer": "Pencil", "options": ["Pencil", "Book", "Chair", "Door", "Teacher"], "explanation": "Pencil = lápis."}, {"theme": "School Vocabulary", "prompt": "Qual palavra em inglês significa \"livro\"?", "answer": "Book", "options": ["Book", "Pen", "Desk", "Window", "Friend"], "explanation": "Book = livro."}, {"theme": "School Vocabulary", "prompt": "Qual palavra significa \"professor/professora\"?", "answer": "Teacher", "options": ["Teacher", "Student", "Ruler", "Eraser", "School"], "explanation": "Teacher = professor/professora."}, {"theme": "School Vocabulary", "prompt": "Qual palavra em inglês significa \"aluno/aluna\"?", "answer": "Student", "options": ["Student", "Teacher", "Book", "Pencil", "Door"], "explanation": "Student = aluno/aluna."}, {"theme": "School Vocabulary", "prompt": "Qual palavra significa \"borracha\"?", "answer": "Eraser", "options": ["Eraser", "Ruler", "Pen", "Book", "Chair"], "explanation": "Eraser = borracha."}, {"theme": "School Vocabulary", "prompt": "Qual palavra significa \"régua\"?", "answer": "Ruler", "options": ["Ruler", "Pencil", "Eraser", "Bag", "Desk"], "explanation": "Ruler = régua."}];
 let state={round:1,score:0,corrects:0,combo:0,maxCombo:0,lives:MAX_LIVES,bag:[],current:null,answered:false};
 function el(id){return document.getElementById(id)} function shuffle(arr){const a=[...arr]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]} return a} function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); el(id).classList.add('active'); document.body.classList.toggle('playing',id==='gameScreen')}
@@ -10,5 +137,83 @@ function makeBag(){const themes=[...new Set(CARDS.map(c=>c.theme))], by={}; them
 function renderLives(){document.querySelectorAll('#lives .heart').forEach((h,i)=>h.classList.toggle('lost',i>=state.lives))} function updateStats(){el('round').textContent=state.round; el('score').textContent=state.score; el('corrects').textContent=state.corrects; el('combo').textContent=state.combo; el('left').textContent=Math.max(0,TOTAL_ROUNDS-state.round+1); renderLives()}
 function startGame(){state={round:1,score:0,corrects:0,combo:0,maxCombo:0,lives:MAX_LIVES,bag:makeBag(),current:null,answered:false}; show('gameScreen'); loadQuestion()} function loadQuestion(){state.answered=false; state.current=state.bag[state.round-1]; const q=state.current; el('theme').textContent=q.theme; el('visual').textContent=VISUALS[Math.floor(Math.random()*VISUALS.length)]; el('prompt').textContent=q.prompt; el('feedback').className='feedback'; el('feedback').innerHTML=''; el('options').innerHTML=shuffle(q.options).map(opt=>`<button class="option" onclick='answer(this, ${JSON.stringify(opt)})'>${opt}</button>`).join(''); updateStats()}
 function answer(btn, selected){if(state.answered)return; state.answered=true; const q=state.current; document.querySelectorAll('.option').forEach(b=>{b.disabled=true; if(b.textContent===q.answer)b.classList.add('correct')}); const fb=el('feedback'); if(selected===q.answer){state.corrects++; state.combo++; state.maxCombo=Math.max(state.maxCombo,state.combo); state.score+=100+(state.combo*5); fb.className='feedback good'; fb.innerHTML=`✅ Great! ${q.explanation}`}else{state.combo=0; state.lives=Math.max(0,state.lives-1); btn.classList.add('wrong'); fb.className='feedback bad'; fb.innerHTML=`❌ Você perdeu uma vida. Resposta correta: <b>${q.answer}</b>. ${q.explanation}`} updateStats(); if(state.lives<=0){setTimeout(()=>finishGame(false),850);return} if(state.round>=TOTAL_ROUNDS){setTimeout(()=>finishGame(true),850);return} setTimeout(()=>{state.round++; loadQuestion()},1050)}
+
+const FAKE_RANKING_NAMES = [
+  ["Ana Clara", "Escola Municipal Frei Fabiano Merz"],
+  ["Miguel Santos", "Escola Municipal Fluminense"],
+  ["Lívia Beatriz", "Escola Municipal Maria Amália Queiroz de Sousa"],
+  ["Gabriel Silva", "Escola Municipal Rotary"],
+  ["Mariana Costa", "Escola Municipal Ubaldo Corrêa"],
+  ["João Pedro", "Escola Municipal Haroldo Veloso"],
+  ["Sofia Martins", "Escola Municipal São José Operário"],
+  ["Lucas Henrique", "Escola Municipal Irmã Leodgard Gausepohl"],
+  ["Isabela Rocha", "Escola Municipal Princesa Izabel"],
+  ["Rafael Lima", "Escola Municipal Brigadeiro Eduardo Gomes"]
+];
+
+function getPlayerInfo(){
+  const name = (el("playerName")?.value || "Aluno(a)").trim() || "Aluno(a)";
+  const klass = (el("playerClass")?.value || "6º Ano").trim() || "6º Ano";
+  const school = (el("playerSchool")?.value || "Minha escola").trim() || "Minha escola";
+  return {name, klass, school};
+}
+
+function buildMotivationalRanking(){
+  const player = getPlayerInfo();
+  const playerScore = state.score;
+  const baseScores = [
+    playerScore + 760,
+    playerScore + 540,
+    playerScore + 370,
+    playerScore + 220,
+    playerScore + 90,
+    Math.max(0, playerScore - 60),
+    Math.max(0, playerScore - 140),
+    Math.max(0, playerScore - 230),
+    Math.max(0, playerScore - 310)
+  ];
+
+  const shuffledNames = shuffle(FAKE_RANKING_NAMES);
+  const rows = baseScores.map((score, i) => ({
+    name: shuffledNames[i % shuffledNames.length][0],
+    school: shuffledNames[i % shuffledNames.length][1],
+    score,
+    isPlayer:false
+  }));
+
+  let playerPosition = 5;
+  if(playerScore >= 4200) playerPosition = 2;
+  else if(playerScore >= 3200) playerPosition = 3;
+  else if(playerScore >= 2200) playerPosition = 4;
+  else if(playerScore >= 1200) playerPosition = 5;
+  else playerPosition = 6;
+
+  rows.splice(playerPosition - 1, 0, {
+    name: player.name,
+    school: `${player.school} • Turma ${player.klass}`,
+    score: playerScore,
+    isPlayer:true
+  });
+
+  return rows.slice(0, 10);
+}
+
+function showRanking(completed){
+  show("rankingScreen");
+  const list = el("rankList");
+  const rows = buildMotivationalRanking();
+
+  list.innerHTML = rows.map((r, i) => `
+    <div class="rank-row ${r.isPlayer ? "player" : ""}">
+      <div class="rank-pos">${i+1}º</div>
+      <div>
+        <div class="rank-name">${r.isPlayer ? "⭐ " : ""}${r.name}</div>
+        <div class="rank-school">${r.school}</div>
+      </div>
+      <div class="rank-score">${r.score} pts</div>
+    </div>
+  `).join("");
+}
+
 function finishGame(completed){show('finalScreen'); el('finalScore').textContent=state.score; el('finalCorrects').textContent=`${state.corrects}/${TOTAL_ROUNDS}`; el('finalCombo').textContent=state.maxCombo; el('finalLives').textContent=`${state.lives}/${MAX_LIVES}`; if(completed){el('finalTitle').textContent='YOU ARE THE ONE!'; el('finalMessage').textContent='Parabéns! Você chegou ao final do desafio. Continue praticando, porque cada tentativa deixa você mais forte no inglês.'}else{el('finalTitle').textContent='TRY AGAIN!'; el('finalMessage').textContent='Você perdeu as vidas, mas isso faz parte do jogo. Tente de novo, aprenda com os erros e avance mais longe!'}}
 </script></body></html>
