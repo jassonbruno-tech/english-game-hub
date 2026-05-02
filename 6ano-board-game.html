@@ -93,125 +93,15 @@ svg.road{
 .cell.special.challenge{background:#fef3c7;border-color:#f59e0b;color:#92400e}
 .car{
   position:absolute;
-  width:56px;
-  height:32px;
+  width:78px;
+  height:44px;
   z-index:7;
   transition:left .95s cubic-bezier(.19,.86,.28,1), top .95s cubic-bezier(.19,.86,.28,1), transform .55s ease;
   filter:drop-shadow(0 8px 8px rgba(0,0,0,.38));
   transform-origin:center center;
 }
-.car.p1{--carMain:#2563eb;--carLight:#60a5fa;--carDark:#1d4ed8;}
-.car.p2{--carMain:#e11d48;--carLight:#fb7185;--carDark:#be123c;}
-.car.moving{
-  filter:drop-shadow(0 11px 10px rgba(0,0,0,.46));
-  transform-origin:center center;
-}
-.f1car{
-  position:relative;
-  width:56px;
-  height:32px;
-}
-.f1car .body{
-  position:absolute;
-  left:12px;
-  top:10px;
-  width:28px;
-  height:12px;
-  border-radius:12px 15px 15px 12px;
-  background:linear-gradient(135deg,var(--carLight),var(--carMain) 55%,var(--carDark));
-  border:2px solid #ffffff;
-  box-shadow:inset 0 -2px 0 rgba(255,255,255,.24), inset 0 2px 0 rgba(0,0,0,.10);
-}
-.f1car .body::after{
-  content:"";
-  position:absolute;
-  left:5px;
-  right:5px;
-  top:4px;
-  height:2px;
-  border-radius:999px;
-  background:rgba(255,255,255,.58);
-}
-.f1car .nose{
-  position:absolute;
-  right:4px;
-  top:12px;
-  width:17px;
-  height:8px;
-  background:linear-gradient(135deg,var(--carLight),var(--carMain) 55%,var(--carDark));
-  border-radius:0 12px 12px 0;
-  border:2px solid #ffffff;
-  border-left:none;
-  box-shadow:inset 0 -1px 0 rgba(255,255,255,.22);
-}
-.f1car .wing{
-  position:absolute;
-  left:1px;
-  top:8px;
-  width:11px;
-  height:16px;
-  background:linear-gradient(135deg,var(--carDark),var(--carMain));
-  border:2px solid #ffffff;
-  border-radius:4px 5px 5px 4px;
-}
-.f1car .frontWing{
-  position:absolute;
-  right:1px;
-  top:10px;
-  width:5px;
-  height:12px;
-  background:linear-gradient(135deg,var(--carDark),var(--carMain));
-  border-radius:0 3px 3px 0;
-  border:1.5px solid #ffffff;
-  border-left:none;
-}
-.f1car .cockpit{
-  position:absolute;
-  left:23px;
-  top:8px;
-  width:10px;
-  height:10px;
-  border-radius:50% 50% 45% 45%;
-  background:linear-gradient(135deg,#0f172a,#334155);
-  border:2px solid #ffffff;
-  z-index:3;
-}
-.f1car .halo{
-  position:absolute;
-  left:25px;
-  top:6px;
-  width:6px;
-  height:5px;
-  border:2px solid #ffffff;
-  border-bottom:none;
-  border-radius:5px 5px 0 0;
-  z-index:4;
-}
-.f1car .stripe{
-  position:absolute;
-  left:18px;
-  top:14px;
-  width:23px;
-  height:2px;
-  background:#f8fafc;
-  border-radius:999px;
-  opacity:.9;
-  z-index:4;
-}
-.f1car .wheel{
-  position:absolute;
-  width:9px;
-  height:9px;
-  background:radial-gradient(circle at 35% 35%, #475569 0 20%, #111827 21% 100%);
-  border:1.5px solid #ffffff;
-  border-radius:50%;
-  z-index:5;
-  box-shadow:0 0 0 1px rgba(0,0,0,.18);
-}
-.f1car .w1{left:10px;top:4px}
-.f1car .w2{left:10px;bottom:4px}
-.f1car .w3{right:11px;top:4px}
-.f1car .w4{right:11px;bottom:4px}
+.car.moving{filter:drop-shadow(0 11px 10px rgba(0,0,0,.46));}
+.car-svg{width:100%;height:100%;display:block;overflow:visible;}
 .legend{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px;font-size:11px;font-weight:900;text-align:center}
 .legend span{padding:5px;border-radius:9px}
 .lbonus{background:#dcfce7;color:#14532d} .lpenalty{background:#fee2e2;color:#7f1d1d} .lchallenge{background:#fef3c7;color:#92400e}
@@ -219,13 +109,13 @@ svg.road{
 .side{display:grid;gap:10px}
 .turn-box{text-align:center;background:linear-gradient(135deg,#fff7ed,#dbeafe);border:2px solid var(--gold)}
 .turn-box h2{font-size:24px;margin:0;color:#1d4ed8}
-.dice-area{display:flex;align-items:center;justify-content:center;gap:14px;margin:10px 0}
-.dice-scene{width:86px;height:86px;perspective:600px}
-.dice{width:86px;height:86px;position:relative;transform-style:preserve-3d;transition:transform 1s ease;}
+.dice-area{display:flex;align-items:center;justify-content:center;gap:12px;margin:8px 0}
+.dice-scene{width:74px;height:74px;perspective:600px}
+.dice{width:74px;height:74px;position:relative;transform-style:preserve-3d;transition:transform 1s ease;}
 .dice.rolling{animation:rollDice .75s linear infinite}
-.face{position:absolute;width:86px;height:86px;background:#fff;border:4px solid #111827;border-radius:16px;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);padding:9px;box-shadow:inset 0 0 8px rgba(0,0,0,.12)}
-.dot{width:13px;height:13px;background:#111827;border-radius:50%;align-self:center;justify-self:center}
-.f1{transform:rotateY(0deg) translateZ(43px)} .f2{transform:rotateY(180deg) translateZ(43px)} .f3{transform:rotateY(90deg) translateZ(43px)} .f4{transform:rotateY(-90deg) translateZ(43px)} .f5{transform:rotateX(90deg) translateZ(43px)} .f6{transform:rotateX(-90deg) translateZ(43px)}
+.face{position:absolute;width:74px;height:74px;background:#fff;border:4px solid #111827;border-radius:14px;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);padding:8px;box-shadow:inset 0 0 8px rgba(0,0,0,.12)}
+.dot{width:11px;height:11px;background:#111827;border-radius:50%;align-self:center;justify-self:center}
+.f1{transform:rotateY(0deg) translateZ(37px)} .f2{transform:rotateY(180deg) translateZ(37px)} .f3{transform:rotateY(90deg) translateZ(37px)} .f4{transform:rotateY(-90deg) translateZ(37px)} .f5{transform:rotateX(90deg) translateZ(37px)} .f6{transform:rotateX(-90deg) translateZ(37px)}
 @keyframes rollDice{from{transform:rotateX(0) rotateY(0) rotateZ(0)}to{transform:rotateX(360deg) rotateY(540deg) rotateZ(360deg)}}
 .question-box h3{margin:0 0 8px;color:#1d4ed8}
 .theme-chip{display:inline-block;background:#dbeafe;color:#1d4ed8;border:1px solid #bfdbfe;border-radius:999px;padding:6px 10px;font-weight:900;margin-bottom:8px;font-size:12px}
@@ -251,22 +141,21 @@ svg.road{
  .score{padding:4px;border-radius:10px;font-size:10px} .score b{font-size:15px}
  .track-card{padding:5px;border-radius:12px;flex:0 0 auto}
  .track-title{font-size:10px;margin-bottom:3px}
- .track{height:310px;border-width:4px;border-radius:18px}
+ .track{height:300px;border-width:4px;border-radius:18px}
  .cell{width:20px;height:20px;border-width:2px;font-size:7px}
- .car{width:31px;height:21px;transition:left .85s cubic-bezier(.19,.86,.28,1), top .85s cubic-bezier(.19,.86,.28,1), transform .35s ease}
- .f1car{width:31px;height:17px}.f1car::before{left:5px;top:5px;width:20px;height:8px;border-width:1.5px}.f1car .nose{right:0;top:7px;width:11px;height:5px}.f1car .wing{width:7px;height:11px;border-width:1.5px}.f1car .cockpit{left:14px;top:3px;width:7px;height:7px;border-width:1.5px}.f1car .wheel{width:6px;height:6px}.f1car .w1{left:5px}.f1car .w2{left:5px}.f1car .w3{right:6px}.f1car .w4{right:6px}
+ .car{width:48px;height:27px;transition:left .85s cubic-bezier(.19,.86,.28,1), top .85s cubic-bezier(.19,.86,.28,1), transform .35s ease}
  .legend{display:none}
  .side{gap:5px;min-height:0;overflow:hidden}
- .side .card{padding:6px;border-radius:12px}
- .turn-box h2{font-size:15px}
- .dice-area{margin:4px 0;gap:8px}
- .dice-scene,.dice,.face{width:54px;height:54px} .face{border-width:2px;border-radius:10px;padding:5px} .dot{width:8px;height:8px}
- .f1{transform:rotateY(0deg) translateZ(27px)} .f2{transform:rotateY(180deg) translateZ(27px)} .f3{transform:rotateY(90deg) translateZ(27px)} .f4{transform:rotateY(-90deg) translateZ(27px)} .f5{transform:rotateX(90deg) translateZ(27px)} .f6{transform:rotateX(-90deg) translateZ(27px)}
+ .side .card{padding:5px;border-radius:12px}
+ .turn-box h2{font-size:14px}
+ .dice-area{margin:3px 0;gap:6px}
+ .dice-scene,.dice,.face{width:46px;height:46px} .face{border-width:2px;border-radius:9px;padding:4px} .dot{width:6px;height:6px}
+ .f1{transform:rotateY(0deg) translateZ(23px)} .f2{transform:rotateY(180deg) translateZ(23px)} .f3{transform:rotateY(90deg) translateZ(23px)} .f4{transform:rotateY(-90deg) translateZ(23px)} .f5{transform:rotateX(90deg) translateZ(23px)} .f6{transform:rotateX(-90deg) translateZ(23px)}
  .btn{font-size:11px;padding:8px 10px;border-radius:10px}
- .theme-chip{font-size:10px;padding:4px 7px;margin-bottom:4px}
- .prompt{font-size:12.5px;line-height:1.13;margin-bottom:5px;max-height:45px;overflow:hidden}
- .options{gap:4px} .option{font-size:11.5px;padding:6px;border-radius:9px;min-height:28px}
- .feedback,.special-msg{font-size:10.5px;padding:5px;margin-top:4px;max-height:38px;overflow:hidden}
+ .theme-chip{font-size:9.5px;padding:4px 7px;margin-bottom:3px}
+ .prompt{font-size:11.2px;line-height:1.12;margin-bottom:4px;max-height:48px;overflow:hidden}
+ .options{gap:3px} .option{font-size:10.8px;padding:5px 6px;border-radius:8px;min-height:25px;line-height:1.1}
+ .feedback,.special-msg{font-size:10px;padding:5px;margin-top:3px;max-height:36px;overflow:hidden}
  .brand{display:none}
 }
 </style>
@@ -310,8 +199,62 @@ svg.road{
         <path id="roadLine" class="track-line"></path>
       </svg>
       <div id="nodesLayer"></div>
-      <div id="car1" class="car p1"><div class="f1car"><span class="wing"></span><span class="body"></span><span class="cockpit"></span><span class="halo"></span><span class="stripe"></span><span class="nose"></span><span class="frontWing"></span><span class="wheel w1"></span><span class="wheel w2"></span><span class="wheel w3"></span><span class="wheel w4"></span></div></div>
-      <div id="car2" class="car p2"><div class="f1car"><span class="wing"></span><span class="body"></span><span class="cockpit"></span><span class="halo"></span><span class="stripe"></span><span class="nose"></span><span class="frontWing"></span><span class="wheel w1"></span><span class="wheel w2"></span><span class="wheel w3"></span><span class="wheel w4"></span></div></div>
+      <div id="car1" class="car p1"><svg class="car-svg" viewBox="0 0 120 68" aria-label="Carro azul de Fórmula 1">
+  <defs>
+    <linearGradient id="blueBody" x1="0" x2="1">
+      <stop offset="0" stop-color="#93c5fd"/>
+      <stop offset="0.55" stop-color="#2563eb"/>
+      <stop offset="1" stop-color="#1e40af"/>
+    </linearGradient>
+  </defs>
+  <ellipse cx="24" cy="22" rx="13" ry="13" fill="#4b5563" stroke="#111827" stroke-width="3"/>
+  <ellipse cx="24" cy="46" rx="13" ry="13" fill="#4b5563" stroke="#111827" stroke-width="3"/>
+  <ellipse cx="98" cy="19" rx="13" ry="13" fill="#4b5563" stroke="#111827" stroke-width="3"/>
+  <ellipse cx="98" cy="49" rx="13" ry="13" fill="#4b5563" stroke="#111827" stroke-width="3"/>
+  <rect x="18" y="20" width="17" height="28" rx="2" fill="url(#blueBody)" stroke="#ffffff" stroke-width="2"/>
+  <rect x="15" y="18" width="22" height="6" rx="1.5" fill="#1e3a8a" stroke="#fff" stroke-width="1.5"/>
+  <rect x="15" y="44" width="22" height="6" rx="1.5" fill="#1e3a8a" stroke="#fff" stroke-width="1.5"/>
+  <path d="M31 19 L56 10 Q70 8 79 20 L54 21 Z" fill="url(#blueBody)" stroke="#ffffff" stroke-width="2"/>
+  <path d="M31 49 L54 47 L79 48 Q69 60 56 58 L31 50 Z" fill="url(#blueBody)" stroke="#ffffff" stroke-width="2"/>
+  <path d="M48 18 L80 18 Q95 18 105 31 L84 34 L48 31 Z" fill="url(#blueBody)" stroke="#ffffff" stroke-width="2"/>
+  <path d="M48 49 L84 48 L105 37 Q95 50 80 50 L48 51 Z" fill="url(#blueBody)" stroke="#ffffff" stroke-width="2"/>
+  <path d="M76 22 L100 25 L113 31 L100 36 L76 39 Q71 39 69 34 L69 27 Q71 22 76 22 Z" fill="url(#blueBody)" stroke="#ffffff" stroke-width="2"/>
+  <path d="M45 24 Q58 20 72 22 L72 41 Q58 44 45 40 Z" fill="#f8fafc" opacity="0.9"/>
+  <path d="M55 21 Q63 15 72 15 Q79 15 83 20 L84 42 Q79 48 71 48 Q62 48 55 42 Z" fill="#f8fafc" stroke="#111827" stroke-width="2"/>
+  <path d="M61 19 Q67 13 74 13 Q81 13 85 18 L85 24 Q75 26 63 24 Z" fill="#0f172a"/>
+  <path d="M52 34 L63 34 L64 42 L53 42 Z" fill="#ef4444"/>
+  <rect x="58" y="29" width="20" height="2.5" rx="1.25" fill="#ef4444" opacity="0.95"/>
+  <rect x="88" y="27" width="25" height="4" rx="1" fill="#1e3a8a" stroke="#fff" stroke-width="1.3"/>
+  <rect x="88" y="37" width="25" height="4" rx="1" fill="#1e3a8a" stroke="#fff" stroke-width="1.3"/>
+</svg></div></div>
+      <div id="car2" class="car p2"><svg class="car-svg" viewBox="0 0 120 68" aria-label="Carro vermelho de Fórmula 1">
+  <defs>
+    <linearGradient id="redBody" x1="0" x2="1">
+      <stop offset="0" stop-color="#fda4af"/>
+      <stop offset="0.55" stop-color="#ef4444"/>
+      <stop offset="1" stop-color="#b91c1c"/>
+    </linearGradient>
+  </defs>
+  <ellipse cx="24" cy="22" rx="13" ry="13" fill="#4b5563" stroke="#111827" stroke-width="3"/>
+  <ellipse cx="24" cy="46" rx="13" ry="13" fill="#4b5563" stroke="#111827" stroke-width="3"/>
+  <ellipse cx="98" cy="19" rx="13" ry="13" fill="#4b5563" stroke="#111827" stroke-width="3"/>
+  <ellipse cx="98" cy="49" rx="13" ry="13" fill="#4b5563" stroke="#111827" stroke-width="3"/>
+  <rect x="18" y="20" width="17" height="28" rx="2" fill="url(#redBody)" stroke="#ffffff" stroke-width="2"/>
+  <rect x="15" y="18" width="22" height="6" rx="1.5" fill="#991b1b" stroke="#fff" stroke-width="1.5"/>
+  <rect x="15" y="44" width="22" height="6" rx="1.5" fill="#991b1b" stroke="#fff" stroke-width="1.5"/>
+  <path d="M31 19 L56 10 Q70 8 79 20 L54 21 Z" fill="url(#redBody)" stroke="#ffffff" stroke-width="2"/>
+  <path d="M31 49 L54 47 L79 48 Q69 60 56 58 L31 50 Z" fill="url(#redBody)" stroke="#ffffff" stroke-width="2"/>
+  <path d="M48 18 L80 18 Q95 18 105 31 L84 34 L48 31 Z" fill="url(#redBody)" stroke="#ffffff" stroke-width="2"/>
+  <path d="M48 49 L84 48 L105 37 Q95 50 80 50 L48 51 Z" fill="url(#redBody)" stroke="#ffffff" stroke-width="2"/>
+  <path d="M76 22 L100 25 L113 31 L100 36 L76 39 Q71 39 69 34 L69 27 Q71 22 76 22 Z" fill="url(#redBody)" stroke="#ffffff" stroke-width="2"/>
+  <path d="M45 24 Q58 20 72 22 L72 41 Q58 44 45 40 Z" fill="#f8fafc" opacity="0.9"/>
+  <path d="M55 21 Q63 15 72 15 Q79 15 83 20 L84 42 Q79 48 71 48 Q62 48 55 42 Z" fill="#f8fafc" stroke="#111827" stroke-width="2"/>
+  <path d="M61 19 Q67 13 74 13 Q81 13 85 18 L85 24 Q75 26 63 24 Z" fill="#0f172a"/>
+  <path d="M52 34 L63 34 L64 42 L53 42 Z" fill="#ef4444"/>
+  <rect x="58" y="29" width="20" height="2.5" rx="1.25" fill="#ef4444" opacity="0.95"/>
+  <rect x="88" y="27" width="25" height="4" rx="1" fill="#991b1b" stroke="#fff" stroke-width="1.3"/>
+  <rect x="88" y="37" width="25" height="4" rx="1" fill="#991b1b" stroke="#fff" stroke-width="1.3"/>
+</svg></div></div>
     </div>
     <div class="legend"><span class="lbonus">Verde: bônus</span><span class="lpenalty">Vermelho: punição</span><span class="lchallenge">Amarelo: desafio</span></div>
    </div>
@@ -447,7 +390,7 @@ function buildTrack(){
 window.addEventListener("resize", ()=>{ if(state.positions){ buildTrack(); updateUI(); } });
 
 function placeCars(initial=false){
- const offsets = [[-10,-12],[10,9]];
+ const offsets = [[-12,-15],[12,10]];
  [0,1].forEach(i=>{
    const car = el(i===0?"car1":"car2");
    const pos = Math.max(0, Math.min(TOTAL_CELLS, state.positions?.[i] || 0));
@@ -461,8 +404,8 @@ function placeCars(initial=false){
    const to = cellPositions[nextIndex] || cellPositions[prevIndex] || from;
    const angle = Math.atan2((to.y - from.y), (to.x - from.x)) * 180 / Math.PI;
 
-   car.style.left = `calc(${(p.x/420)*100}% - 22px + ${offsets[i][0]}px)`;
-   car.style.top = `calc(${(p.y/680)*100}% - 14px + ${offsets[i][1]}px)`;
+   car.style.left = `calc(${(p.x/420)*100}% - 39px + ${offsets[i][0]}px)`;
+   car.style.top = `calc(${(p.y/680)*100}% - 22px + ${offsets[i][1]}px)`;
    car.style.transform = `rotate(${angle}deg)`;
  });
 }
