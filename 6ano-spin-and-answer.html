@@ -296,10 +296,10 @@ button{border:none; border-radius:16px; padding:13px 15px; font-weight:900; font
   }
 
   body.playing .wheel-wrap{
-    width:min(55vw, 210px);
-    height:min(55vw, 210px);
-    max-width:210px;
-    max-height:210px;
+    width:min(66vw, 252px);
+    height:min(66vw, 252px);
+    max-width:252px;
+    max-height:252px;
     margin:0 auto 4px;
     border-radius:16px;
   }
@@ -335,7 +335,7 @@ button{border:none; border-radius:16px; padding:13px 15px; font-weight:900; font
   }
 
   body.playing .wheel-svg text{
-    font-size:13px;
+    font-size:16px;
   }
 
   body.playing #spinBtn{
@@ -423,10 +423,10 @@ button{border:none; border-radius:16px; padding:13px 15px; font-weight:900; font
 /* Celulares mais altos: dá um pouco mais de presença para a roleta */
 @media(max-width:860px) and (min-height:760px){
   body.playing .wheel-wrap{
-    width:min(62vw, 250px);
-    height:min(62vw, 250px);
-    max-width:250px;
-    max-height:250px;
+    width:min(74vw, 300px);
+    height:min(74vw, 300px);
+    max-width:300px;
+    max-height:300px;
   }
   body.playing .question{
     font-size:15px;
@@ -450,10 +450,10 @@ button{border:none; border-radius:16px; padding:13px 15px; font-weight:900; font
     padding:5px;
   }
   body.playing .wheel-wrap{
-    width:min(46vw, 170px);
-    height:min(46vw, 170px);
-    max-width:170px;
-    max-height:170px;
+    width:min(55vw, 205px);
+    height:min(55vw, 205px);
+    max-width:205px;
+    max-height:205px;
   }
   body.playing .question{
     font-size:12.5px;
@@ -466,6 +466,49 @@ button{border:none; border-radius:16px; padding:13px 15px; font-weight:900; font
   }
   body.playing .feedback{
     display:none;
+  }
+}
+
+
+.lives-card{
+  background:linear-gradient(135deg,rgba(255,255,255,.96),rgba(255,241,242,.96));
+  border:1px solid #fecdd3;
+  color:#172033;
+  border-radius:18px;
+  padding:8px 12px;
+  margin:0 0 10px;
+  text-align:center;
+  font-weight:900;
+  box-shadow:0 8px 18px rgba(0,0,0,.08);
+}
+.lives{
+  color:#e11d48;
+  font-size:24px;
+  letter-spacing:2px;
+  vertical-align:middle;
+}
+@media(max-width:860px){
+  body.playing .lives-card{
+    flex:0 0 auto;
+    margin:0 0 5px;
+    padding:5px 8px;
+    border-radius:11px;
+    font-size:11px;
+    line-height:1;
+  }
+  body.playing .lives{
+    font-size:18px;
+    letter-spacing:1px;
+  }
+}
+@media(max-width:860px) and (max-height:670px){
+  body.playing .lives-card{
+    padding:4px 6px;
+    margin-bottom:4px;
+    font-size:10px;
+  }
+  body.playing .lives{
+    font-size:15px;
   }
 }
 
@@ -522,7 +565,8 @@ button{border:none; border-radius:16px; padding:13px 15px; font-weight:900; font
         <div class="stat"><b id="round">1/10</b><span>RODADA</span></div>
       </div>
 
-      <div class="game-grid">
+      <div class="lives-card"><b>Vidas:</b> <span id="lives" class="lives">❤️❤️❤️❤️❤️</span></div>
+ <div class="game-grid">
         <div class="card wheel-card">
           <div class="wheel-wrap">
             <div class="top-pointer"></div>
@@ -628,7 +672,7 @@ button{border:none; border-radius:16px; padding:13px 15px; font-weight:900; font
           <div class="line"><span>Escola:</span><span id="fSchool"></span></div>
           <div class="line"><span>Jogo:</span><span>Spin and Answer</span></div>
           <div class="line"><span>Pontuação:</span><span id="fScore"></span></div>
-          <div class="line"><span>Acertos:</span><span id="fCorrects"></span></div>
+          <div class="line"><span>Acertos:</span><span id="fCorrects"></span></div><div class="line"><span>Vidas restantes:</span><span id="fLives"></span></div>
           <div class="line"><span>Maior combo:</span><span id="fCombo"></span></div>
           <div class="line"><span>Posição:</span><span id="fPosition"></span></div>
           <div class="line"><span>Data/Hora:</span><span id="fDate"></span></div>
@@ -775,11 +819,20 @@ function startGame(){
   show("gameScreen");
 }
 
+function renderLives(){
+  const livesEl = document.getElementById("lives");
+  if(!livesEl) return;
+  const full = "❤️".repeat(Math.max(0,state.lives || 0));
+  const empty = "🖤".repeat(Math.max(0,5-(state.lives || 0)));
+  livesEl.textContent = full + empty;
+}
+
 function updateStats(){
   el("score").textContent = state.score;
   el("corrects").textContent = state.corrects;
   el("combo").textContent = state.combo;
   el("round").textContent = `${Math.min(state.round, state.totalRounds)}/${state.totalRounds}`;
+  renderLives();
 }
 
 function spinWheel(){
@@ -882,7 +935,7 @@ function answerQuestion(btn, enc){
     state.combo = 0;
     state.score = Math.max(0, state.score - 20);
     feedback.className = "feedback bad";
-    feedback.innerHTML = `❌ Quase! A resposta correta é <b>${q.a}</b>.<br><b>Explicação:</b> ${q.e}`;
+    feedback.innerHTML = `❌ Quase! Você perdeu 1 vida. A resposta correta é <b>${q.a}</b>.<br><b>Explicação:</b> ${q.e}`;
   }
   updateStats();
   queueNextAfterAnswer();
