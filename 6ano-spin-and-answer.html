@@ -543,8 +543,7 @@ button{border:none; border-radius:16px; padding:13px 15px; font-weight:900; font
   text-shadow:0 2px 4px rgba(225,29,72,.18);
 }
 .heart.lost{
-  color:#111827;
-  opacity:.95;
+  display:none;
 }
 .heart.life-lost{
   animation: heartPulse .35s ease;
@@ -631,7 +630,7 @@ button{border:none; border-radius:16px; padding:13px 15px; font-weight:900; font
         <div class="stat"><b id="score">0</b><span>PONTOS</span></div>
         <div class="stat"><b id="corrects">0</b><span>ACERTOS</span></div>
         <div class="stat"><b id="combo">0</b><span>COMBO</span></div>
-        <div class="stat"><b id="round">1/10</b><span>RODADA</span></div>
+        <div class="stat"><b id="round">1/30</b><span>RODADA</span></div>
       </div>
 
       <div class="lives-card">
@@ -837,7 +836,7 @@ const schools = ["EMEF Delfina de Jesus Amorim","EMEF Frei Fabiano Merz","EMEF B
 
 let student = {name:"", class:"", school:""};
 let state = {
-  score:0, corrects:0, combo:0, maxCombo:0, round:1, totalRounds:10,
+  score:0, corrects:0, combo:0, maxCombo:0, round:1, totalRounds:30,
   answered:false, current:null, rotation:0, usedQuestions:[], spinning:false,
   themeBag:[], lastTheme:null, autoAdvanceTimer:null
 };
@@ -883,7 +882,7 @@ function startGame(){
   if(!name || !klass || !school){ alert("Preencha nome, turma e escola para começar."); return; }
   student = {name, class:klass, school};
   state = {
-    score:0, corrects:0, combo:0, maxCombo:0, round:1, totalRounds:10,
+    score:0, corrects:0, combo:0, maxCombo:0, round:1, totalRounds:30,
     answered:false, current:null, rotation:0, usedQuestions:[], spinning:false,
     themeBag:[], lastTheme:null, autoAdvanceTimer:null
   };
@@ -907,19 +906,27 @@ function renderLives(){
     const isAlive = index < lives;
     heart.classList.toggle("alive", isAlive);
     heart.classList.toggle("lost", !isAlive);
-    heart.classList.remove("life-lost");
+    heart.style.display = isAlive ? "inline-block" : "none";
     heart.textContent = "♥";
   });
 }
 
 function loseLife(){
-  state.lives = Math.max(0, Number(state.lives ?? 5) - 1);
-  renderLives();
+  const previousLives = Math.max(0, Math.min(5, Number(state.lives ?? 5)));
   const hearts = Array.from(document.querySelectorAll("#lives .heart"));
-  const lostHeart = hearts[state.lives];
-  if(lostHeart){
-    lostHeart.classList.add("life-lost");
+  const heartToRemove = hearts[previousLives - 1];
+
+  if(heartToRemove){
+    heartToRemove.classList.remove("life-lost");
+    void heartToRemove.offsetWidth;
+    heartToRemove.classList.add("life-lost");
   }
+
+  state.lives = Math.max(0, previousLives - 1);
+
+  setTimeout(() => {
+    renderLives();
+  }, 220);
 }
 
 function updateStats(){
@@ -1027,13 +1034,14 @@ function answerQuestion(btn, enc){
     feedback.className = "feedback ok";
     feedback.innerHTML = `✅ Great job! Você acertou.<br><b>Explicação:</b> ${q.e}${bonus ? "<br>🔥 Bônus de combo: +20 pontos!" : ""}`;
   } else {
+    loseLife();
     state.combo = 0;
     state.score = Math.max(0, state.score - 20);
     feedback.className = "feedback bad";
     feedback.innerHTML = `❌ Quase! Você perdeu 1 vida. A resposta correta é <b>${q.a}</b>.<br><b>Explicação:</b> ${q.e}`;
   }
   updateStats();
-  if(state.lives<=0){ state.timer=setTimeout(()=>finishGame(false,true),900); return; }
+  if(state.lives<=0){ state.timer=setTimeout(()=>finishGame(false,true),700); return; }
   queueNextAfterAnswer();
 }
 
@@ -1070,6 +1078,7 @@ function finishGame(){
   el("fSchool").textContent = student.school;
   el("fScore").textContent = state.score;
   el("fCorrects").textContent = `${state.corrects}/${state.totalRounds}`;
+  if(el("fLives")) el("fLives").textContent = `${state.lives}/5`;
   el("fCombo").textContent = state.maxCombo;
   el("fPosition").textContent = `${me.pos}º lugar`;
   el("fDate").textContent = now.toLocaleString("pt-BR");
@@ -1094,7 +1103,7 @@ function finishGame(){
 function restartGame(){
   clearTimeout(state.autoAdvanceTimer);
   state = {
-    score:0, corrects:0, combo:0, maxCombo:0, round:1, totalRounds:10,
+    score:0, corrects:0, combo:0, maxCombo:0, round:1, totalRounds:30,
     answered:false, current:null, rotation:0, usedQuestions:[], spinning:false,
     themeBag:[], lastTheme:null, autoAdvanceTimer:null
   };
