@@ -222,6 +222,36 @@ body.playing .feedback{font-size:10.5px;padding:5px;max-height:42px;overflow:hid
   }
 }
 
+
+.memory-tip{
+  margin-top:8px;
+  background:linear-gradient(135deg,#fff7ed,#e0f2fe);
+  border:1px solid #f8d36b;
+  color:#1e293b;
+  border-radius:13px;
+  padding:9px;
+  font-weight:900;
+  font-size:13px;
+  line-height:1.25;
+}
+@media(max-width:860px){
+  body.playing .memory-tip{
+    margin-top:5px;
+    padding:6px;
+    border-radius:9px;
+    font-size:11.5px;
+    line-height:1.15;
+    max-height:42px;
+    overflow:hidden;
+  }
+}
+@media(max-width:380px){
+  body.playing .memory-tip{
+    font-size:10.5px;
+    max-height:38px;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -324,6 +354,7 @@ body.playing .feedback{font-size:10.5px;padding:5px;max-height:42px;overflow:hid
         <input id="guessInput" type="text" placeholder="Tentar palavra completa">
         <button class="btn" onclick="guessWord()">OK</button>
       </div>
+      <div id="memoryTip" class="memory-tip">💡 Dica de memória: pense nos assuntos estudados no 1º bimestre.</div>
       <div id="feedback" class="feedback"></div>
     </div>
   </div>
@@ -414,6 +445,21 @@ function updateStats(){
   });
 }
 
+
+function getMemoryTip(theme){
+  const tips = {
+    "Greetings": "💡 Dica de memória: pense em palavras usadas para cumprimentar alguém, como quando você chega à escola.",
+    "Farewells": "💡 Dica de memória: pense em palavras usadas para se despedir no fim da aula ou ao sair de um lugar.",
+    "Spelling names": "💡 Dica de memória: pense em letras, nome e na pergunta “How do you spell...?”.",
+    "Classroom commands": "💡 Dica de memória: pense nos comandos que a professora usa em sala: ler, ouvir, repetir, sentar e abrir o livro.",
+    "Classroom expressions": "💡 Dica de memória: pense nas frases úteis da sala: pedir ajuda, dizer que não sabe ou pedir para tentar.",
+    "Personal information": "💡 Dica de memória: pense em nome, idade e cidade: informações pessoais básicas.",
+    "Personal pronouns": "💡 Dica de memória: pense nos pronomes: I, you, he, she, we e they.",
+    "Possessive adjectives": "💡 Dica de memória: pense em posse: meu/minha, seu/sua, dele e dela."
+  };
+  return tips[theme] || "💡 Dica de memória: pense nos assuntos estudados no 1º bimestre.";
+}
+
 function loadChallenge(){
   state.current = state.bag[state.round-1];
   state.guessed = new Set();
@@ -421,6 +467,7 @@ function loadChallenge(){
   state.finishedRound = false;
   el("theme").textContent = state.current.theme;
   el("hint").textContent = state.current.hint;
+  el("memoryTip").textContent = getMemoryTip(state.current.theme);
   el("guessInput").value = "";
   el("feedback").className = "feedback";
   el("feedback").innerHTML = "";
