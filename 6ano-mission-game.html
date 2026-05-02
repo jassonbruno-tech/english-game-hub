@@ -202,6 +202,12 @@ main{padding:14px}
 .tile{border:2px solid #bfdbfe;background:white;border-radius:12px;padding:9px 12px;font-weight:900;cursor:pointer}
 .tile.used{opacity:.35;pointer-events:none}
 .answer-line{min-height:44px;background:#f8fafc;border:2px dashed #bfdbfe;border-radius:14px;padding:8px;font-weight:900;margin:8px 0}
+
+.lives-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:4px 0 8px}
+.lives-label{font-weight:900;color:#1e3a8a;margin-right:2px}
+.heart{font-size:22px;line-height:1;filter:drop-shadow(0 2px 2px rgba(0,0,0,.12));transition:transform .2s ease, opacity .2s ease, filter .2s ease}
+.heart.lost{opacity:.28;filter:grayscale(1);transform:scale(.9)}
+@media(max-width:860px){.lives-row{gap:4px;margin:2px 0 5px}.lives-label{font-size:10px}.heart{font-size:16px}}
 .feedback{display:none;margin-top:8px;border-radius:13px;padding:9px;font-weight:900;line-height:1.25;font-size:13px}
 .feedback.ok{display:block;background:#dcfce7;border:1px solid #86efac;color:#14532d}
 .feedback.bad{display:block;background:#fee2e2;border:1px solid #fca5a5;color:#7f1d1d}
@@ -498,8 +504,8 @@ main{padding:14px}
   </div>
 
   <div class="card energy-card" id="missionPanel">
-    <div class="energy-label"><span id="energyText">Energy: 100%</span><span id="taskHud">Desafio 1/6</span></div>
-    <div class="energy-bar"><div id="energyFill" class="energy-fill"></div></div>
+    <div class="energy-label"><span id="energyText">Vidas</span><span id="taskHud">Desafio 1/6</span></div>
+    <div id="livesRow" class="lives-row"></div>
     <h2 id="missionTitle" class="mission-title">Mission</h2>
     <p id="missionGoal" class="mission-goal">Goal</p>
     <div id="theme" class="theme-chip">Theme</div>
@@ -580,7 +586,8 @@ function startGame(){
   name: el("playerName").value.trim() || "English Hero",
   turma: el("className").value.trim() || "6º ano",
   school: el("schoolName").value.trim() || "Escola Delfina de Jesus Amorim",
-  missionIndex:0, taskIndex:0, score:0, combo:0, maxCombo:0, energy:100,
+  missionIndex:0, taskIndex:0, score:0, combo:0, maxCombo:0,
+  lives:5, maxLives:5,
   completed:0,
   gender: inferGender(el("playerName").value.trim() || "English Hero")
  };
@@ -631,12 +638,49 @@ function updateHero(animated=true){
  setTimeout(()=>hero.classList.remove("walk"),1200);
 }
 
+
+function playCorrectSound(){
+ try{
+   const AudioCtx = window.AudioContext || window.webkitAudioContext;
+   if(!AudioCtx) return;
+   if(!window._missionGameAudioCtx) window._missionGameAudioCtx = new AudioCtx();
+   const ctx = window._missionGameAudioCtx;
+   if(ctx.state === "suspended") ctx.resume();
+   const now = ctx.currentTime;
+   const freqs = [523.25, 659.25, 783.99];
+   freqs.forEach((f,i)=>{
+     const o = ctx.createOscillator();
+     const g = ctx.createGain();
+     o.type = "triangle";
+     o.frequency.setValueAtTime(f, now + i*0.06);
+     g.gain.setValueAtTime(0.0001, now + i*0.06);
+     g.gain.exponentialRampToValueAtTime(0.09, now + i*0.06 + 0.02);
+     g.gain.exponentialRampToValueAtTime(0.0001, now + i*0.06 + 0.22);
+     o.connect(g); g.connect(ctx.destination);
+     o.start(now + i*0.06);
+     o.stop(now + i*0.06 + 0.24);
+   });
+ }catch(e){}
+}
+
+function renderLives(){
+ const row = el("livesRow");
+ if(!row) return;
+ row.innerHTML = `<span class="lives-label">Vidas:</span>`;
+ for(let i=0;i<state.maxLives;i++) {
+   const span = document.createElement("span");
+   span.className = 'heart' + (i < state.lives ? '' : ' lost');
+   span.textContent = '❤️';
+   row.appendChild(span);
+ }
+}
+
 function updateHUD(){
  el("missionHud").textContent = `${state.missionIndex+1}/10`;
  el("scoreHud").textContent = state.score;
  el("comboHud").textContent = state.combo;
- el("energyText").textContent = `Energy: ${state.energy}%`;
- el("energyFill").style.width = state.energy + "%";
+ el("energyText").textContent = `Vidas restantes`;
+ renderLives();
  const mission = MISSIONS[state.missionIndex];
  el("taskHud").textContent = `Desafio ${state.taskIndex+1}/${mission.tasks.length}`;
 }
@@ -723,7 +767,7 @@ function handleCorrect(){
  state.score += 10 + Math.min(state.combo,5);
  state.combo += 1;
  state.maxCombo = Math.max(state.maxCombo,state.combo);
- if(state.combo>0 && state.combo%5===0) state.energy = Math.min(100,state.energy+10);
+ playCorrectSound();
  el("feedback").className = "feedback ok";
  el("feedback").innerHTML = `✅ Great job! Você acertou.<br><b>Dica:</b> ${currentTask.tip}`;
  setTimeout(nextTask,900);
@@ -732,11 +776,11 @@ function handleCorrect(){
 
 function handleWrong(){
  state.combo = 0;
- state.energy = Math.max(0,state.energy-12);
+ state.lives = Math.max(0,state.lives-1);
  el("feedback").className = "feedback bad";
  el("feedback").innerHTML = `❌ Quase! Resposta correta: <b>${currentTask.a}</b>.<br><b>Dica:</b> ${currentTask.tip}`;
  updateHUD();
- if(state.energy <= 0){
+ if(state.lives <= 0){
    setTimeout(()=>finishGame(false),1200);
  } else {
    setTimeout(nextTask,1300);
@@ -773,7 +817,7 @@ function finishGame(victory){
  el("finalTitle").textContent = victory ? "🏆 You are an English Hero!" : "💪 Try again, English Hero!";
  el("finalMsg").textContent = victory
   ? `${state.name}, você saiu de casa, passou por Santarém e chegou à Escola Delfina de Jesus Amorim mostrando evolução no vocabulário e nas frases em inglês!`
-  : `${state.name}, você avançou bastante. Tente novamente para recuperar energia e subir no ranking!`;
+  : `${state.name}, você avançou bastante. Suas 5 vidas acabaram, mas você pode jogar novamente, melhorar e subir no ranking!`;
  el("finalScore").textContent = state.score;
  el("finalMissions").textContent = `${state.completed}/10`;
  el("finalCombo").textContent = state.maxCombo;
