@@ -158,8 +158,7 @@ button:active{transform:scale(.98)}
 }
 
 /* ===========================
-   HANGMAN MOBILE GAME MODE
-   Sem rolagem durante a partida
+   HANGMAN MOBILE GAME MODE - CORRIGIDO
    =========================== */
 @media(max-width:860px){
   body.playing{
@@ -226,8 +225,8 @@ button:active{transform:scale(.98)}
     overflow:hidden;
   }
 
-  body.playing .stats,
-  body.playing .mini-info{
+  body.playing .mini-info,
+  body.playing .stats{
     flex:0 0 auto;
     display:grid;
     grid-template-columns:repeat(4,1fr);
@@ -264,12 +263,6 @@ button:active{transform:scale(.98)}
   body.playing .card{
     border-radius:14px;
     padding:7px;
-  }
-
-  body.playing .hangman-card,
-  body.playing .visual-card{
-    min-height:0;
-    padding:6px;
   }
 
   body.playing .word-box,
@@ -343,21 +336,6 @@ button:active{transform:scale(.98)}
   body.playing .legend,
   body.playing .bag-info{
     display:none;
-  }
-
-  body.playing .lives-card{
-    flex:0 0 auto;
-    margin:0 0 5px;
-    padding:5px 8px;
-    border-radius:11px;
-    font-size:11px;
-    line-height:1;
-  }
-
-  body.playing .lives,
-  body.playing #lives{
-    font-size:18px;
-    letter-spacing:1px;
   }
 }
 
@@ -610,10 +588,23 @@ let state = {
 
 function el(id){return document.getElementById(id)}
 function show(id){
-  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
-  el(id).classList.add("active");
+  document.querySelectorAll(".screen").forEach(function(s){
+    s.classList.remove("active");
+  });
+  const target = document.getElementById(id);
+  if(target){
+    target.classList.add("active");
+  }
   document.body.classList.toggle("playing", id === "gameScreen");
 }
+function shuffle(arr){return [...arr].sort(()=>Math.random()-.5)}
+function pick(arr){return arr[Math.floor(Math.random()*arr.length)]}
+
+function startGame(){
+  const name = el("studentName").value.trim();
+  const klass = el("studentClass").value.trim();
+  const school = el("studentSchool").value.trim();
+  if(!name || !klass || !school){ alert("Preencha nome, turma e escola para começar."); return; }
   student = {name, class:klass, school};
   state = {score:0,wins:0,errors:0,combo:0,maxCombo:0,round:1,totalRounds:10,current:null,guessed:[],usedWords:[],locked:false};
   show("gameScreen");
