@@ -49,7 +49,7 @@ body {
   padding: 8px 12px;
   border-radius: 999px;
   font-weight: 900;
-  font-size: 13px;
+  font-size: 16px;
   cursor: pointer;
   box-shadow: 0 8px 18px rgba(0,0,0,.18);
   backdrop-filter: blur(2px);
@@ -81,8 +81,8 @@ body {
 
 .panel {
   width: 100%;
-  max-width: 450px;
-  padding: 12px;
+  max-width: 480px;
+  padding: 14px;
   border-radius: 26px;
   background: linear-gradient(rgba(8, 22, 52, 0.13), rgba(8, 22, 52, 0.13));
   border: 1px solid rgba(243, 227, 179, .12);
@@ -101,7 +101,7 @@ body {
   background: rgba(243, 227, 179, .10);
   border: 1px solid rgba(243, 227, 179, .20);
   color: #F3E3B3;
-  font-size: 13px;
+  font-size: 18px;
   font-weight: 900;
   margin-bottom: 8px;
 }
@@ -118,8 +118,8 @@ h1 {
 .subtitle {
   margin: 8px auto 0;
   max-width: 350px;
-  font-size: 16px;
-  line-height: 1.3;
+  font-size: 22px;
+  line-height: 1.25;
   font-weight: 800;
   color: #F8F1DE;
   text-shadow: 0 3px 8px rgba(0,0,0,.24);
@@ -129,28 +129,28 @@ h1 {
   margin: 10px 0 18px;
   padding: 10px;
   border-radius: 18px;
-  background: rgba(243, 227, 179, .07);
-  border: 1px solid rgba(243, 227, 179, .14);
+  background: rgba(248, 241, 222, .78);
+  border: 1px solid rgba(62, 43, 22, .24);
   text-align: center;
-  font-size: 14px;
-  line-height: 1.38;
+  font-size: 19px;
+  line-height: 1.25;
   font-weight: 800;
-  color: #F5EBD7;
-  text-shadow: 0 2px 7px rgba(0,0,0,.22);
+  color: #182033;
+  text-shadow: none;
 }
 
 .series-grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 9px;
-  margin-top: 52px; /* botões mais baixos para valorizar a imagem */
+  margin-top: 78px; /* botões ainda mais baixos para valorizar a imagem */
 }
 
 .series-btn {
   text-decoration: none;
   color: #F8F1DE;
   border-radius: 18px;
-  min-height: 96px;
+  min-height: 124px;
   padding: 10px 14px;
   display: flex;
   align-items: center;
@@ -201,7 +201,7 @@ h1 {
 }
 
 .series-name {
-  font-size: 22px;
+  font-size: 30px;
   font-weight: 900;
   color: #F8F1DE;
   text-shadow: 0 3px 8px rgba(0,0,0,.22);
@@ -209,8 +209,8 @@ h1 {
 
 .series-info {
   margin-top: 4px;
-  font-size: 13.5px;
-  line-height: 1.28;
+  font-size: 19px;
+  line-height: 1.18;
   font-weight: 800;
   color: #F5EBD7;
   text-shadow: 0 2px 6px rgba(0,0,0,.24);
@@ -233,10 +233,10 @@ h1 {
 }
 
 .footer {
-  margin-top: 10px;
+  margin-top: 26px;
   text-align: center;
   font-weight: 900;
-  font-size: 14px;
+  font-size: 20px;
   color: #EFD9A7;
   text-shadow: 0 3px 8px rgba(0,0,0,.28);
 }
@@ -255,21 +255,21 @@ h1 {
   }
 
   .subtitle {
-    font-size: 14px;
+    font-size: 18px;
   }
 
   .motivation {
-    font-size: 12px;
+    font-size: 15px;
     margin-bottom: 16px;
   }
 
   .series-grid {
-    margin-top: 42px;
+    margin-top: 64px;
     gap: 8px;
   }
 
   .series-btn {
-    min-height: 88px;
+    min-height: 112px;
     padding: 10px 12px;
   }
 
@@ -278,11 +278,11 @@ h1 {
   }
 
   .series-name {
-    font-size: 19px;
+    font-size: 24px;
   }
 
   .series-info {
-    font-size: 12px;
+    font-size: 15px;
   }
 }
 
@@ -322,14 +322,14 @@ h1 {
   }
 
   .subtitle {
-    font-size: 22px;
-    max-width: 760px;
+    font-size: 28px;
+    max-width: 860px;
     line-height: 1.35;
   }
 
   .motivation {
-    font-size: 16px;
-    padding: 14px 16px;
+    font-size: 22px;
+    padding: 16px 18px;
     margin: 16px auto 20px;
     max-width: 860px;
   }
@@ -337,11 +337,11 @@ h1 {
   .series-grid {
     grid-template-columns: repeat(4, 1fr);
     gap: 12px;
-    margin-top: 34px;
+    margin-top: 46px;
   }
 
   .series-btn {
-    min-height: 150px;
+    min-height: 178px;
     padding: 15px;
     border-radius: 22px;
   }
@@ -355,13 +355,13 @@ h1 {
   }
 
   .series-name {
-    font-size: 24px;
+    font-size: 32px;
     margin-top: 4px;
   }
 
   .series-info {
-    font-size: 15px;
-    line-height: 1.35;
+    font-size: 21px;
+    line-height: 1.25;
     margin-top: 9px;
   }
 
@@ -390,7 +390,7 @@ h1 {
     </div>
 
     <div class="motivation">
-      Aprender inglês pode ser mais divertido quando você aceita o desafio, tenta, erra, aprende e continua jogando.
+      Aprender inglês pode ser mais divertido quando você aceita o desafio, tenta, erra, aprende e continua jogando. Cada fase vencida mostra que você é capaz de ir mais longe. Acredite em você: você é do tamanho dos seus sonhos!
     </div>
 
     <div class="series-grid">
