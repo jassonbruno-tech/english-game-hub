@@ -110,12 +110,12 @@ svg.road{
 .turn-box{text-align:center;background:linear-gradient(135deg,#fff7ed,#dbeafe);border:2px solid var(--gold)}
 .turn-box h2{font-size:24px;margin:0;color:#1d4ed8}
 .dice-area{display:flex;align-items:center;justify-content:center;gap:12px;margin:8px 0}
-.dice-scene{width:74px;height:74px;perspective:600px}
-.dice{width:74px;height:74px;position:relative;transform-style:preserve-3d;transition:transform 1s ease;}
+.dice-scene{width:80px;height:80px;perspective:600px}
+.dice{width:80px;height:80px;position:relative;transform-style:preserve-3d;transition:transform 1s ease;}
 .dice.rolling{animation:rollDice .75s linear infinite}
-.face{position:absolute;width:74px;height:74px;background:#fff;border:4px solid #111827;border-radius:14px;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);padding:8px;box-shadow:inset 0 0 8px rgba(0,0,0,.12)}
-.dot{width:11px;height:11px;background:#111827;border-radius:50%;align-self:center;justify-self:center}
-.f1{transform:rotateY(0deg) translateZ(37px)} .f2{transform:rotateY(180deg) translateZ(37px)} .f3{transform:rotateY(90deg) translateZ(37px)} .f4{transform:rotateY(-90deg) translateZ(37px)} .f5{transform:rotateX(90deg) translateZ(37px)} .f6{transform:rotateX(-90deg) translateZ(37px)}
+.face{position:absolute;width:80px;height:80px;background:#fff;border:4px solid #111827;border-radius:15px;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);padding:8px;box-shadow:inset 0 0 8px rgba(0,0,0,.12)}
+.dot{width:12px;height:12px;background:#111827;border-radius:50%;align-self:center;justify-self:center}
+.f1{transform:rotateY(0deg) translateZ(40px)} .f2{transform:rotateY(180deg) translateZ(40px)} .f3{transform:rotateY(90deg) translateZ(40px)} .f4{transform:rotateY(-90deg) translateZ(40px)} .f5{transform:rotateX(90deg) translateZ(40px)} .f6{transform:rotateX(-90deg) translateZ(40px)}
 @keyframes rollDice{from{transform:rotateX(0) rotateY(0) rotateZ(0)}to{transform:rotateX(360deg) rotateY(540deg) rotateZ(360deg)}}
 .question-box h3{margin:0 0 8px;color:#1d4ed8}
 .theme-chip{display:inline-block;background:#dbeafe;color:#1d4ed8;border:1px solid #bfdbfe;border-radius:999px;padding:6px 10px;font-weight:900;margin-bottom:8px;font-size:12px}
@@ -139,22 +139,22 @@ svg.road{
  .game-layout{grid-template-columns:1fr;grid-template-rows:auto 1fr;gap:5px;min-height:0;flex:1 1 auto;overflow:hidden}
  .scorebar{grid-template-columns:repeat(3,1fr);gap:4px;margin-bottom:4px}
  .score{padding:4px;border-radius:10px;font-size:10px} .score b{font-size:15px}
- .track-card{padding:5px;border-radius:12px;flex:0 0 auto}
+ .track-card{padding:6px;border-radius:12px;flex:0 0 auto}
  .track-title{font-size:10px;margin-bottom:3px}
- .track{height:300px;border-width:4px;border-radius:18px}
+ .track{height:312px;border-width:4px;border-radius:18px}
  .cell{width:20px;height:20px;border-width:2px;font-size:7px}
- .car{width:48px;height:27px;transition:left .85s cubic-bezier(.19,.86,.28,1), top .85s cubic-bezier(.19,.86,.28,1), transform .35s ease}
+ .car{width:42px;height:24px;transition:left .85s cubic-bezier(.19,.86,.28,1), top .85s cubic-bezier(.19,.86,.28,1), transform .35s ease}
  .legend{display:none}
  .side{gap:5px;min-height:0;overflow:hidden}
  .side .card{padding:5px;border-radius:12px}
  .turn-box h2{font-size:14px}
- .dice-area{margin:3px 0;gap:6px}
- .dice-scene,.dice,.face{width:46px;height:46px} .face{border-width:2px;border-radius:9px;padding:4px} .dot{width:6px;height:6px}
- .f1{transform:rotateY(0deg) translateZ(23px)} .f2{transform:rotateY(180deg) translateZ(23px)} .f3{transform:rotateY(90deg) translateZ(23px)} .f4{transform:rotateY(-90deg) translateZ(23px)} .f5{transform:rotateX(90deg) translateZ(23px)} .f6{transform:rotateX(-90deg) translateZ(23px)}
+ .dice-area{margin:3px 0;gap:7px}
+ .dice-scene,.dice,.face{width:50px;height:50px} .face{border-width:2px;border-radius:9px;padding:4px} .dot{width:7px;height:7px}
+ .f1{transform:rotateY(0deg) translateZ(25px)} .f2{transform:rotateY(180deg) translateZ(25px)} .f3{transform:rotateY(90deg) translateZ(25px)} .f4{transform:rotateY(-90deg) translateZ(25px)} .f5{transform:rotateX(90deg) translateZ(25px)} .f6{transform:rotateX(-90deg) translateZ(25px)}
  .btn{font-size:11px;padding:8px 10px;border-radius:10px}
  .theme-chip{font-size:9.5px;padding:4px 7px;margin-bottom:3px}
- .prompt{font-size:11.2px;line-height:1.12;margin-bottom:4px;max-height:48px;overflow:hidden}
- .options{gap:3px} .option{font-size:10.8px;padding:5px 6px;border-radius:8px;min-height:25px;line-height:1.1}
+ .prompt{font-size:11.2px;line-height:1.1;margin-bottom:3px;max-height:46px;overflow:hidden}
+ .options{gap:3px} .option{font-size:10.8px;padding:4px 6px;border-radius:8px;min-height:24px;line-height:1.08}
  .feedback,.special-msg{font-size:10px;padding:5px;margin-top:3px;max-height:36px;overflow:hidden}
  .brand{display:none}
 }
@@ -390,7 +390,7 @@ function buildTrack(){
 window.addEventListener("resize", ()=>{ if(state.positions){ buildTrack(); updateUI(); } });
 
 function placeCars(initial=false){
- const offsets = [[-12,-15],[12,10]];
+ const offsets = [[-9,-12],[9,8]];
  [0,1].forEach(i=>{
    const car = el(i===0?"car1":"car2");
    const pos = Math.max(0, Math.min(TOTAL_CELLS, state.positions?.[i] || 0));
@@ -404,8 +404,8 @@ function placeCars(initial=false){
    const to = cellPositions[nextIndex] || cellPositions[prevIndex] || from;
    const angle = Math.atan2((to.y - from.y), (to.x - from.x)) * 180 / Math.PI;
 
-   car.style.left = `calc(${(p.x/420)*100}% - 39px + ${offsets[i][0]}px)`;
-   car.style.top = `calc(${(p.y/680)*100}% - 22px + ${offsets[i][1]}px)`;
+   car.style.left = `calc(${(p.x/420)*100}% - 30px + ${offsets[i][0]}px)`;
+   car.style.top = `calc(${(p.y/680)*100}% - 16px + ${offsets[i][1]}px)`;
    car.style.transform = `rotate(${angle}deg)`;
  });
 }
