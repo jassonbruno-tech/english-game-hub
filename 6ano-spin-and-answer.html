@@ -31,7 +31,7 @@ main{padding:14px}
 .wheel-wrap{position:relative;display:flex;flex-direction:column;align-items:center;gap:9px}
 .pointer{position:absolute;top:2px;left:50%;transform:translateX(-50%);z-index:10;width:0;height:0;border-left:17px solid transparent;border-right:17px solid transparent;border-top:42px solid #111827;filter:drop-shadow(0 2px 2px rgba(0,0,0,.35))}
 .pointer::after{content:"";position:absolute;left:-6px;top:-28px;width:12px;height:12px;background:white;border:4px solid #111827;border-radius:50%}
-.wheel{width:min(78vw,390px);height:min(78vw,390px);max-width:390px;max-height:390px;border-radius:50%;background:conic-gradient(#1da1f2 0.0deg 45.0deg, #ef4444 45.0deg 90.0deg, #22c55e 90.0deg 135.0deg, #f97316 135.0deg 180.0deg, #8b5cf6 180.0deg 225.0deg, #06b6d4 225.0deg 270.0deg, #eab308 270.0deg 315.0deg, #64748b 315.0deg 360.0deg);position:relative;border:7px solid white;box-shadow:0 18px 32px rgba(0,0,0,.18);transition:transform 4.2s cubic-bezier(.12,.72,.18,1)}
+.wheel{width:min(78vw,390px);height:min(78vw,390px);max-width:390px;max-height:390px;border-radius:50%;background:conic-gradient(#1da1f2 0.0deg 45.0deg, #ef4444 45.0deg 90.0deg, #22c55e 90.0deg 135.0deg, #f97316 135.0deg 180.0deg, #8b5cf6 180.0deg 225.0deg, #06b6d4 225.0deg 270.0deg, #eab308 270.0deg 315.0deg, #64748b 315.0deg 360.0deg);position:relative;border:7px solid white;box-shadow:0 18px 32px rgba(0,0,0,.18);transition:transform 5.4s cubic-bezier(.08,.82,.12,1)}
 .wheel::after{content:attr(data-theme);position:absolute;inset:31%;border-radius:50%;background:#f8fafc;border:6px solid #e2e8f0;display:flex;align-items:center;justify-content:center;text-align:center;color:#1d4ed8;font-weight:900;font-size:clamp(17px,4vw,25px);line-height:1.05;padding:8px}
 .wheel-label{position:absolute;left:50%;top:50%;width:92px;margin-left:-46px;margin-top:-10px;transform:rotate(var(--r)) translateY(-151px) rotate(calc(-1 * var(--r)));transform-origin:center;font-size:15px;line-height:1.05;color:white;text-shadow:0 2px 4px rgba(0,0,0,.35);font-weight:900;text-align:center;pointer-events:none}
 .spin-btn{border:0;border-radius:14px;padding:12px 42px;background:linear-gradient(135deg,#e11d48,#fb7185);color:white;font-weight:900;font-size:16px;cursor:pointer;box-shadow:0 8px 18px rgba(225,29,72,.25)}
@@ -81,6 +81,222 @@ main{padding:14px}
   body.playing .brand{display:none}
 }
 @media(max-width:380px){body.playing .wheel-card{height:280px;min-height:280px} body.playing .wheel{width:196px;height:196px} body.playing .wheel-label{font-size:8px;transform:rotate(var(--r)) translateY(-75px) rotate(calc(-1 * var(--r)))}}
+
+.start-card{
+  max-width:520px;
+  margin:0 auto;
+  text-align:center;
+}
+.start-card h2{
+  font-size:34px;
+  color:#1d4ed8;
+  margin:0 0 8px;
+}
+.start-text{
+  font-weight:900;
+  line-height:1.35;
+  color:#334155;
+}
+.player-form{
+  display:grid;
+  gap:6px;
+  margin:12px 0;
+  text-align:left;
+}
+.player-form label{
+  font-weight:900;
+  color:#1e3a8a;
+  font-size:13px;
+}
+.player-form input{
+  width:100%;
+  border:2px solid #bfdbfe;
+  border-radius:14px;
+  padding:11px 12px;
+  font-size:15px;
+  font-weight:800;
+  outline:none;
+  background:white;
+}
+.player-form input:focus{
+  border-color:#2563eb;
+  box-shadow:0 0 0 3px rgba(37,99,235,.15);
+}
+.brand-start{
+  margin-top:12px;
+  font-weight:900;
+  color:#334155;
+}
+.final-ranking h2{
+  margin:0 0 8px;
+  text-align:center;
+  font-size:28px;
+  color:#1d4ed8;
+}
+.final-message{
+  background:linear-gradient(135deg,#fff7ed,#dbeafe);
+  border:2px solid #f8d36b;
+  color:#172033;
+  border-radius:16px;
+  padding:10px;
+  font-weight:900;
+  line-height:1.25;
+  text-align:center;
+  margin:8px 0;
+  font-size:12.5px;
+}
+.player-summary{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:6px;
+  margin:8px 0;
+}
+.summary-box{
+  background:#f8fafc;
+  border:1px solid #e2e8f0;
+  border-radius:13px;
+  padding:8px 5px;
+  text-align:center;
+  font-weight:900;
+}
+.summary-box span{
+  display:block;
+  color:#64748b;
+  font-size:9px;
+  text-transform:uppercase;
+}
+.summary-box b{
+  display:block;
+  color:#e11d48;
+  font-size:17px;
+  margin-top:2px;
+}
+.ranking-title{
+  text-align:center;
+  margin:9px 0 6px;
+  font-size:17px;
+  color:#1d4ed8;
+}
+.rank-list{
+  display:grid;
+  gap:5px;
+  margin:5px 0;
+}
+.rank-row{
+  display:grid;
+  grid-template-columns:29px 1fr auto;
+  gap:6px;
+  align-items:center;
+  padding:5px;
+  border-radius:11px;
+  background:#f8fafc;
+  border:1px solid #e2e8f0;
+  box-shadow:0 3px 8px rgba(15,23,42,.04);
+}
+.rank-row.player{
+  background:linear-gradient(135deg,#fff7ed,#dbeafe);
+  border:2px solid #f8d36b;
+  box-shadow:0 6px 12px rgba(245,158,11,.16);
+}
+.rank-pos{
+  width:24px;
+  height:24px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:900;
+  background:#dbeafe;
+  color:#1d4ed8;
+  font-size:10px;
+}
+.rank-row.player .rank-pos{
+  background:#f8d36b;
+  color:#172033;
+}
+.rank-name{
+  font-weight:900;
+  color:#172033;
+  line-height:1.05;
+  font-size:10.8px;
+}
+.rank-school{
+  font-size:8.2px;
+  font-weight:800;
+  color:#64748b;
+  margin-top:1px;
+}
+.rank-score{
+  font-weight:900;
+  color:#e11d48;
+  text-align:right;
+  font-size:10.5px;
+}
+.rank-note{
+  text-align:center;
+  font-size:9px;
+  color:#475569;
+  font-weight:800;
+  line-height:1.15;
+  margin-top:5px;
+}
+.rank-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:6px;
+  margin-top:8px;
+}
+.final-ranking .spin-btn{
+  padding:9px 8px;
+  font-size:11px;
+}
+.wheel.spinning{
+  filter:drop-shadow(0 0 14px rgba(255,255,255,.75)) drop-shadow(0 0 22px rgba(225,29,72,.35));
+}
+.suspense{
+  animation:suspensePulse .6s ease-in-out infinite alternate;
+}
+@keyframes suspensePulse{
+  from{transform:scale(1)}
+  to{transform:scale(1.035)}
+}
+@media(max-width:860px){
+  #startScreen.active{
+    display:flex;
+    height:100%;
+    align-items:center;
+    justify-content:center;
+  }
+  .start-card{
+    padding:14px;
+  }
+  .start-card h2{
+    font-size:28px;
+  }
+  .start-text{
+    font-size:13px;
+  }
+  #finalScreen.active{
+    height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+  }
+  .final-ranking{
+    width:100%;
+    max-height:100%;
+    overflow:hidden;
+    padding:7px;
+  }
+  .final-ranking h2{
+    font-size:23px;
+  }
+  .rank-actions{
+    grid-template-columns:1fr;
+  }
+}
+
 </style>
 </head>
 <body class="playing">
@@ -91,7 +307,25 @@ main{padding:14px}
   <p class="subtitle">Gire a roleta, descubra o tema e responda ao desafio.</p>
 </header>
 <main>
-<section id="gameScreen" class="screen active">
+
+<section id="startScreen" class="screen active">
+  <div class="card start-card">
+    <h2>🎡 Spin and Answer</h2>
+    <p class="start-text">Digite seus dados para jogar e aparecer no ranking motivacional do desafio.</p>
+    <div class="player-form">
+      <label>Seu nome</label>
+      <input id="playerName" type="text" placeholder="Digite seu nome" maxlength="28">
+      <label>Turma</label>
+      <input id="playerClass" type="text" placeholder="Ex.: 601" maxlength="12">
+      <label>Escola</label>
+      <input id="playerSchool" type="text" placeholder="Digite o nome da escola" maxlength="40">
+    </div>
+    <button class="spin-btn" onclick="restart()">Começar jogo</button>
+    <div class="brand-start">Jogo idealizado pelo professor Jasson Bruno.</div>
+  </div>
+</section>
+
+<section id="gameScreen" class="screen">
   <div class="stats">
     <div class="stat"><b id="score">0</b><span>Pontos</span></div>
     <div class="stat"><b id="corrects">0</b><span>Acertos</span></div>
@@ -126,19 +360,33 @@ main{padding:14px}
     </div>
   </div>
 </section>
+
 <section id="finalScreen" class="screen">
-  <div class="card final">
-    <h2 id="finalTitle">Resultado</h2>
-    <p id="finalMsg"></p>
-    <div class="final-grid">
-      <div class="box">Pontuação <b id="fScore">0</b></div>
-      <div class="box">Acertos <b id="fCorrects">0/30</b></div>
-      <div class="box">Combo máximo <b id="fCombo">0</b></div>
-      <div class="box">Vidas <b id="fLives">0/5</b></div>
+  <div class="card final final-ranking">
+    <h2 id="finalTitle">💪 TRY AGAIN!</h2>
+    <div id="finalMsg" class="final-message"></div>
+
+    <div class="player-summary">
+      <div class="summary-box"><span>Pontuação</span><b id="fScore">0</b></div>
+      <div class="summary-box"><span>Acertos</span><b id="fCorrects">0/30</b></div>
+      <div class="summary-box"><span>Combo</span><b id="fCombo">0</b></div>
+      <div class="summary-box"><span>Vidas</span><b id="fLives">0/5</b></div>
     </div>
-    <button class="spin-btn" onclick="restart()">Jogar novamente</button>
+
+    <h3 class="ranking-title">🏆 Ranking do Desafio — Spin and Answer</h3>
+    <div id="rankList" class="rank-list"></div>
+
+    <div class="rank-note">
+      Ranking motivacional interno do jogo. Faça um print da sua pontuação e tente jogar novamente para subir no ranking.
+    </div>
+
+    <div class="rank-actions">
+      <button class="spin-btn" onclick="restart()">Jogar novamente</button>
+      <button class="spin-btn" onclick="location.href='6ano.html'">Voltar ao 6º ano</button>
+    </div>
   </div>
 </section>
+
 </main>
 <div class="brand">Jogo idealizado pelo professor Jasson Bruno.</div>
 </div>
@@ -199,31 +447,55 @@ function updateStats(){
 function spinWheel(){
   if(state.spinning || state.answered) return;
   if(state.round > TOTAL_ROUNDS) return finishGame(true);
+
   state.current = state.bag[state.round-1];
   const q = state.current;
   const themeIndex = THEMES.indexOf(q.theme);
+
   state.spinning = true;
   el("spinBtn").disabled = true;
   el("options").innerHTML = "";
   el("feedback").className = "feedback";
   el("feedback").innerHTML = "";
-  el("prompt").textContent = "A roleta está girando... prepare-se!";
+  el("prompt").textContent = "A roleta está girando... espere o tema parar!";
   el("theme").textContent = "Girando...";
   el("wheel").dataset.theme = "SPIN";
+  el("wheel").classList.add("spinning");
+  el("sorted").classList.add("suspense");
+  el("sorted").textContent = "Girando...";
 
-  // segmento escolhido deve parar no ponteiro superior. Centro do segmento em CSS: themeIndex*SEGMENT + SEGMENT/2.
+  // O segmento sorteado precisa parar exatamente no ponteiro superior.
+  // Mais voltas + pequena oscilação visual antes do resultado aumentam o suspense.
   const center = themeIndex * SEGMENT + SEGMENT/2;
   const target = 360 - center;
-  const extraTurns = 5 + Math.floor(Math.random()*3);
-  state.rotation = extraTurns*360 + target;
+  const extraTurns = 8 + Math.floor(Math.random()*4);
+  const overshoot = (Math.random() > .5 ? 1 : -1) * (8 + Math.random()*8);
+
+  const firstStop = extraTurns*360 + target + overshoot;
+  state.rotation = firstStop;
+
+  el("wheel").style.transition = "transform 5.4s cubic-bezier(.08,.82,.12,1)";
   el("wheel").style.transform = `rotate(${state.rotation}deg)`;
 
   setTimeout(()=>{
+    el("sorted").textContent = "Quase parando...";
+  }, 2500);
+
+  setTimeout(()=>{
+    el("wheel").style.transition = "transform .75s cubic-bezier(.18,.9,.22,1)";
+    state.rotation = extraTurns*360 + target;
+    el("wheel").style.transform = `rotate(${state.rotation}deg)`;
+  }, 5450);
+
+  setTimeout(()=>{
     state.spinning = false;
+    el("wheel").classList.remove("spinning");
+    el("sorted").classList.remove("suspense");
+    el("wheel").style.transition = "transform 5.4s cubic-bezier(.08,.82,.12,1)";
     el("wheel").dataset.theme = q.theme;
     el("sorted").textContent = `Tema sorteado: ${q.theme}`;
     renderQuestion(q);
-  }, 4300);
+  }, 6350);
 }
 
 function renderQuestion(q){
@@ -285,19 +557,109 @@ function answer(btn, selected){
   }, 1200);
 }
 
-function finishGame(completed){
-  show("finalScreen");
-  el("finalTitle").textContent = completed ? "🏆 YOU ARE THE ONE!" : "💪 TRY AGAIN!";
-  el("finalMsg").textContent = completed 
-    ? "Parabéns! Você chegou ao final do desafio. Cada rodada vencida mostra que você está avançando no inglês."
-    : "Você tentou, errou, aprendeu e pode voltar mais forte. Jogue novamente e tente chegar mais longe!";
-  el("fScore").textContent = state.score;
-  el("fCorrects").textContent = `${state.corrects}/${TOTAL_ROUNDS}`;
-  el("fCombo").textContent = state.maxCombo;
-  el("fLives").textContent = `${state.lives}/${MAX_LIVES}`;
+
+const FAKE_RANKING_NAMES = [
+  ["Ana Clara", "Escola Municipal Frei Fabiano Merz — 602"],
+  ["Miguel Santos", "Escola Municipal Fluminense — 601"],
+  ["Lívia Beatriz", "Escola Municipal Maria Amália Queiroz de Sousa — 603"],
+  ["Gabriel Silva", "Escola Municipal Rotary — 601"],
+  ["Mariana Costa", "Escola Municipal Ubaldo Corrêa — 602"],
+  ["João Pedro", "Escola Municipal Haroldo Veloso — 601"],
+  ["Sofia Martins", "Escola Municipal São José Operário — 603"],
+  ["Lucas Henrique", "Escola Municipal Irmã Leodgard Gausepohl — 602"],
+  ["Isabela Rocha", "Escola Municipal Princesa Izabel — 601"],
+  ["Rafael Lima", "Escola Municipal Brigadeiro Eduardo Gomes — 601"]
+];
+
+function getPlayerInfo(){
+  const nameInput = document.getElementById("playerName");
+  const classInput = document.getElementById("playerClass");
+  const schoolInput = document.getElementById("playerSchool");
+  const name = (nameInput && nameInput.value ? nameInput.value : "Aluno(a)").trim() || "Aluno(a)";
+  const klass = (classInput && classInput.value ? classInput.value : "6º Ano").trim() || "6º Ano";
+  const school = (schoolInput && schoolInput.value ? schoolInput.value : "Minha escola").trim() || "Minha escola";
+  return {name, klass, school};
 }
 
-restart();
+function buildMotivationalRanking(){
+  const player = getPlayerInfo();
+  const playerScore = state.score;
+
+  let playerRank = 6;
+  if(playerScore >= 2800) playerRank = 2;
+  else if(playerScore >= 2100) playerRank = 3;
+  else if(playerScore >= 1400) playerRank = 4;
+  else if(playerScore >= 800) playerRank = 5;
+
+  const shuffledNames = shuffle(FAKE_RANKING_NAMES);
+  const rows = [];
+  let fakeIndex = 0;
+
+  for(let pos = 1; pos <= 10; pos++){
+    if(pos === playerRank){
+      rows.push({
+        name: player.name,
+        school: `${player.school} — ${player.klass}`,
+        score: playerScore,
+        isPlayer: true
+      });
+    } else {
+      let score;
+      if(pos < playerRank){
+        score = playerScore + (playerRank - pos) * 210 + 90;
+      } else {
+        score = Math.max(0, playerScore - (pos - playerRank) * 120);
+      }
+
+      const fake = shuffledNames[fakeIndex % shuffledNames.length];
+      fakeIndex++;
+
+      rows.push({
+        name: fake[0],
+        school: fake[1],
+        score,
+        isPlayer: false
+      });
+    }
+  }
+
+  return rows;
+}
+
+function renderRanking(){
+  const list = document.getElementById("rankList");
+  if(!list) return;
+
+  const rows = buildMotivationalRanking();
+  list.innerHTML = rows.map((r, i) => `
+    <div class="rank-row ${r.isPlayer ? "player" : ""}">
+      <div class="rank-pos">${i + 1}º</div>
+      <div>
+        <div class="rank-name">${r.isPlayer ? "⭐ " : ""}${r.name}</div>
+        <div class="rank-school">${r.school}</div>
+      </div>
+      <div class="rank-score">${r.score} pts</div>
+    </div>
+  `).join("");
+}
+
+function finishGame(completed){
+  show("finalScreen");
+
+  document.getElementById("finalTitle").textContent = completed ? "🏆 YOU ARE THE ONE!" : "💪 TRY AGAIN!";
+  document.getElementById("finalMsg").textContent = completed 
+    ? "Parabéns! Você chegou ao final do desafio e mostrou atenção, coragem e persistência. Continue jogando para subir ainda mais no ranking!"
+    : "Você tentou, errou, aprendeu e isso já mostra evolução. Não pare agora! Jogue novamente, melhore sua pontuação e tente subir no ranking.";
+
+  document.getElementById("fScore").textContent = state.score;
+  document.getElementById("fCorrects").textContent = `${state.corrects}/${TOTAL_ROUNDS}`;
+  document.getElementById("fCombo").textContent = state.maxCombo;
+  document.getElementById("fLives").textContent = `${state.lives}/${MAX_LIVES}`;
+
+  renderRanking();
+}
+
+show('startScreen');
 </script>
 </body>
 </html>
