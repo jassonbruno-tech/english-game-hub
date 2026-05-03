@@ -290,6 +290,72 @@ body.playing .feedback{font-size:10.5px;padding:5px;max-height:42px;overflow:hid
 @media(max-width:860px){
   .lives-info, #lives{font-size:10px;padding:4px 6px;margin:3px 0;}
 }
+
+/* ===== Yellow Level / Neon game screen refinement ===== */
+body.playing{
+  background:
+    radial-gradient(circle at 18% 14%, rgba(255,230,109,.18) 0 8%, transparent 9%),
+    radial-gradient(circle at 82% 12%, rgba(56,189,248,.22) 0 9%, transparent 10%),
+    radial-gradient(circle, rgba(255,255,255,.9) 0 1.3px, transparent 1.5px) 0 0/82px 82px,
+    radial-gradient(circle, rgba(255,230,109,.72) 0 1px, transparent 1.2px) 20px 36px/120px 120px,
+    linear-gradient(180deg,#050621 0%,#090b32 48%,#160638 100%);
+}
+body.playing .app{
+  background:linear-gradient(180deg,rgba(6,8,36,.96),rgba(11,8,45,.96));
+  border:1.5px solid rgba(255,230,109,.25);
+  box-shadow:0 0 26px rgba(255,230,109,.14),0 18px 46px rgba(0,0,0,.42);
+}
+body.playing header{
+  background:linear-gradient(135deg,#1d4ed8 0%,#7c3aed 46%,#e11d48 100%);
+}
+body.playing .stats{gap:5px;margin-bottom:5px}
+body.playing .stat{
+  border:1.5px solid rgba(255,230,109,.25);
+  background:linear-gradient(180deg,rgba(13,20,72,.96),rgba(13,10,50,.96));
+}
+body.playing .lives-card{
+  background:linear-gradient(90deg,rgba(255,230,109,.15),rgba(56,189,248,.1),rgba(225,29,72,.15));
+  border:1.6px solid rgba(255,230,109,.38);
+  color:#fff3b0;
+  box-shadow:0 0 16px rgba(255,230,109,.08);
+}
+body.playing .game-grid{gap:7px}
+body.playing .hang-area, body.playing .question-card{
+  background:linear-gradient(180deg,rgba(7,13,51,.96),rgba(10,8,40,.94));
+  border:1.5px solid rgba(96,165,250,.34);
+  box-shadow:0 0 18px rgba(37,99,235,.16), inset 0 0 18px rgba(255,255,255,.03);
+}
+body.playing .hangman-box{
+  background:radial-gradient(circle at center, rgba(255,230,109,.12), rgba(59,130,246,.08) 48%, transparent 70%);
+  border-radius:18px;
+  padding:4px;
+}
+body.playing .letter-box{
+  background:linear-gradient(180deg,#fffef3,#dbeafe);
+  border-color:#ffe66d;
+  color:#0b4edb;
+  box-shadow:0 0 10px rgba(255,230,109,.14);
+}
+body.playing .theme-chip{
+  background:rgba(255,230,109,.16);
+  color:#ffe66d;
+  border-color:rgba(255,230,109,.42);
+}
+body.playing .key{
+  background:linear-gradient(180deg,#ffffff,#eaf2ff);
+  border-color:rgba(96,165,250,.36);
+  color:#172033;
+  box-shadow:0 2px 8px rgba(0,0,0,.14);
+}
+body.playing .key.correct{background:#dcfce7;border-color:#22c55e;color:#14532d}
+body.playing .key.wrong{background:#fee2e2;border-color:#ef4444;color:#7f1d1d}
+body.playing .memory-tip{
+  background:rgba(255,230,109,.13);
+  border-color:rgba(255,230,109,.36);
+  color:#fff3b0;
+}
+#lives .parts-left{color:#ffe66d;font-weight:1000}
+body.playing .brand{position:absolute;right:10px;bottom:8px;background:linear-gradient(135deg,#1d4ed8,#e11d48);padding:7px 10px;border-radius:999px;color:white;font-size:10px;margin:0}
 </style>
 </head>
 <body>
@@ -327,7 +393,7 @@ body.playing .feedback{font-size:10.5px;padding:5px;max-height:42px;overflow:hid
     <div class="stat"><b id="combo">0</b><span>Combo</span></div>
     <div class="stat"><b id="round">1/30</b><span>Desafio</span></div>
   </div>
-  <div class="lives-card"><b>Chances:</b> <span id="lives">Chances: 6/6 — o espantalho aparece aos poucos na forca.</span></div>
+  <div class="lives-card"><b>Forca do espantalho:</b> <span id="lives">6/6 chances — cada erro coloca uma parte na forca.</span></div>
   <div class="game-grid">
     <div class="card hang-area">
       <div class="hangman-box">
@@ -399,6 +465,7 @@ body.playing .feedback{font-size:10.5px;padding:5px;max-height:42px;overflow:hid
       <div id="feedback" class="feedback"></div>
     </div>
   </div>
+  <div class="brand">Jogo idealizado pelo professor Jasson Bruno.</div>
 </section>
 
 <section id="finalScreen" class="screen">
@@ -428,6 +495,82 @@ const TOTAL_ROUNDS = 30;
 const MAX_LIVES = 6;
 const CHALLENGES = [{"theme": "Greetings", "word": "HELLO", "hint": "Cumprimento em inglês que significa Olá/Oi.", "answer": "Hello"}, {"theme": "Greetings", "word": "HI", "hint": "Forma curta de dizer Oi em inglês.", "answer": "Hi"}, {"theme": "Greetings", "word": "GOOD MORNING", "hint": "Cumprimento usado pela manhã.", "answer": "Good morning"}, {"theme": "Greetings", "word": "GOOD AFTERNOON", "hint": "Cumprimento usado à tarde.", "answer": "Good afternoon"}, {"theme": "Greetings", "word": "HOW ARE YOU", "hint": "Pergunta usada para saber como a pessoa está.", "answer": "How are you?"}, {"theme": "Farewells", "word": "GOODBYE", "hint": "Despedida que significa Tchau.", "answer": "Goodbye"}, {"theme": "Farewells", "word": "BYE", "hint": "Forma curta de dizer Tchau.", "answer": "Bye"}, {"theme": "Farewells", "word": "SEE YOU", "hint": "Despedida que significa Até mais.", "answer": "See you"}, {"theme": "Farewells", "word": "GOOD NIGHT", "hint": "Despedida usada à noite.", "answer": "Good night"}, {"theme": "Spelling names", "word": "SPELL", "hint": "Verbo que significa soletrar.", "answer": "Spell"}, {"theme": "Spelling names", "word": "NAME", "hint": "Palavra que significa nome.", "answer": "Name"}, {"theme": "Spelling names", "word": "LETTER", "hint": "Palavra que significa letra.", "answer": "Letter"}, {"theme": "Classroom commands", "word": "READ", "hint": "Comando que significa ler.", "answer": "Read"}, {"theme": "Classroom commands", "word": "LISTEN", "hint": "Comando que significa ouvir/escutar.", "answer": "Listen"}, {"theme": "Classroom commands", "word": "REPEAT", "hint": "Comando que significa repetir.", "answer": "Repeat"}, {"theme": "Classroom commands", "word": "SIT DOWN", "hint": "Comando que significa sente-se.", "answer": "Sit down"}, {"theme": "Classroom commands", "word": "STAND UP", "hint": "Comando que significa levante-se.", "answer": "Stand up"}, {"theme": "Classroom commands", "word": "OPEN YOUR BOOK", "hint": "Comando que significa abra seu livro.", "answer": "Open your book"}, {"theme": "Classroom expressions", "word": "SORRY", "hint": "Palavra usada para pedir desculpas.", "answer": "Sorry"}, {"theme": "Classroom expressions", "word": "I DONT KNOW", "hint": "Frase que significa Eu não sei.", "answer": "I don't know"}, {"theme": "Classroom expressions", "word": "CAN I TRY", "hint": "Frase que significa Posso tentar?", "answer": "Can I try?"}, {"theme": "Classroom expressions", "word": "HELP ME", "hint": "Expressão usada para pedir ajuda.", "answer": "Help me"}, {"theme": "Personal information", "word": "MY NAME IS", "hint": "Estrutura usada para dizer Meu nome é...", "answer": "My name is"}, {"theme": "Personal information", "word": "I AM FROM", "hint": "Estrutura usada para dizer Eu sou de...", "answer": "I am from"}, {"theme": "Personal information", "word": "YEARS OLD", "hint": "Expressão usada para falar idade.", "answer": "Years old"}, {"theme": "Personal pronouns", "word": "I", "hint": "Pronome pessoal que significa eu.", "answer": "I"}, {"theme": "Personal pronouns", "word": "YOU", "hint": "Pronome pessoal que significa você.", "answer": "You"}, {"theme": "Personal pronouns", "word": "HE", "hint": "Pronome pessoal que significa ele.", "answer": "He"}, {"theme": "Personal pronouns", "word": "SHE", "hint": "Pronome pessoal que significa ela.", "answer": "She"}, {"theme": "Personal pronouns", "word": "THEY", "hint": "Pronome pessoal que significa eles/elas.", "answer": "They"}, {"theme": "Possessive adjectives", "word": "MY", "hint": "Adjetivo possessivo que significa meu/minha.", "answer": "My"}, {"theme": "Possessive adjectives", "word": "YOUR", "hint": "Adjetivo possessivo que significa seu/sua.", "answer": "Your"}, {"theme": "Possessive adjectives", "word": "HIS", "hint": "Adjetivo possessivo que significa dele.", "answer": "His"}, {"theme": "Possessive adjectives", "word": "HER", "hint": "Adjetivo possessivo que significa dela.", "answer": "Her"}];
 const KEYBOARD = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+
+/* ===== Sons internos: não dependem de arquivos externos ===== */
+let audioCtx = null;
+let finalMusicTimer = null;
+function ensureAudio(){
+  try{
+    if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if(audioCtx.state === "suspended") audioCtx.resume();
+  }catch(e){}
+}
+function stopFinalMusic(){
+  if(finalMusicTimer){ clearInterval(finalMusicTimer); finalMusicTimer = null; }
+}
+function tone(freq=440, duration=.16, type="sine", gain=.08, delay=0){
+  ensureAudio();
+  if(!audioCtx) return;
+  const t = audioCtx.currentTime + delay;
+  const osc = audioCtx.createOscillator();
+  const g = audioCtx.createGain();
+  osc.type = type;
+  osc.frequency.setValueAtTime(freq, t);
+  g.gain.setValueAtTime(0.0001, t);
+  g.gain.exponentialRampToValueAtTime(gain, t+.015);
+  g.gain.exponentialRampToValueAtTime(0.0001, t+duration);
+  osc.connect(g).connect(audioCtx.destination);
+  osc.start(t); osc.stop(t+duration+.03);
+}
+function playCorrectSound(){
+  tone(660,.11,"sine",.07,0);
+  tone(880,.13,"sine",.075,.08);
+  tone(1046,.16,"triangle",.055,.17);
+}
+function playScarecrowComplain(){
+  ensureAudio();
+  if(!audioCtx) return;
+  const now = audioCtx.currentTime;
+  const osc = audioCtx.createOscillator();
+  const g = audioCtx.createGain();
+  const filter = audioCtx.createBiquadFilter();
+  osc.type = "sawtooth";
+  filter.type = "bandpass";
+  filter.frequency.setValueAtTime(760, now);
+  filter.Q.setValueAtTime(7, now);
+  osc.frequency.setValueAtTime(520, now);
+  osc.frequency.exponentialRampToValueAtTime(210, now+.34);
+  g.gain.setValueAtTime(.0001, now);
+  g.gain.exponentialRampToValueAtTime(.095, now+.03);
+  g.gain.exponentialRampToValueAtTime(.0001, now+.38);
+  osc.connect(filter).connect(g).connect(audioCtx.destination);
+  osc.start(now); osc.stop(now+.42);
+  tone(160,.18,"square",.035,.2);
+}
+function playVictoryMusic(){
+  stopFinalMusic();
+  const melody = [523,659,784,1046,784,1046,1318,1046];
+  let i=0;
+  finalMusicTimer = setInterval(()=>{
+    const f = melody[i % melody.length];
+    tone(f,.18,"triangle",.055,0);
+    tone(f*1.5,.18,"sine",.03,.02);
+    i++;
+  },210);
+}
+function playTryAgainMusic(){
+  stopFinalMusic();
+  const melody = [392,349,330,349,392,440,392,330];
+  let i=0;
+  finalMusicTimer = setInterval(()=>{
+    tone(melody[i % melody.length],.22,"sine",.045,0);
+    i++;
+  },260);
+}
+function unlockAudio(){ ensureAudio(); document.removeEventListener("click", unlockAudio); document.removeEventListener("touchstart", unlockAudio); }
+document.addEventListener("click", unlockAudio, {passive:true});
+document.addEventListener("touchstart", unlockAudio, {passive:true});
+
 const HANG_EMOJIS = ["🙂","😐","😟","😰","😵","💀"];
 
 const FAKE_RANKING_NAMES = [
@@ -465,6 +608,8 @@ function makeBag(){
 }
 
 function restart(){
+  stopFinalMusic();
+  ensureAudio();
   state = {
     score:0, corrects:0, combo:0, maxCombo:0, round:1, lives:MAX_LIVES,
     bag:makeBag(), current:null, guessed:new Set(), roundMistakes:0, finishedRound:false
@@ -478,7 +623,7 @@ function updateStats(){
   el("corrects").textContent = state.corrects;
   el("combo").textContent = state.combo;
   el("round").textContent = `${state.round}/${TOTAL_ROUNDS}`;
-  el("lives").innerHTML = Array.from({length:MAX_LIVES}, (_,i)=>`<span class="heart ${i>=state.lives ? 'lost' : ''}"></span>`).join("");
+  el("lives").innerHTML = `<span class="parts-left">${state.lives}/${MAX_LIVES}</span> chances — a cada erro, uma parte do espantalho aparece na forca.`;
   const parts = ["partHead","partBody","partArmL","partArmR","partLegL","partLegR"];
   parts.forEach((id, index) => {
     const p = el(id);
@@ -559,12 +704,14 @@ function chooseLetter(btn, letter){
   const fb = el("feedback");
 
   if(word.includes(letter)){
+    playCorrectSound();
     btn.classList.add("correct");
     fb.className = "feedback ok";
     fb.innerHTML = `✅ Boa! A letra <b>${letter}</b> aparece na palavra.`;
     renderWord();
     if(isWordComplete()) completeRound(true);
   } else {
+    playScarecrowComplain();
     btn.classList.add("wrong");
     state.roundMistakes++;
     state.lives = Math.max(0, state.lives - 1);
@@ -602,10 +749,12 @@ function guessWord(){
   }
 
   if(guess === answer || guess === accepted){
+    playCorrectSound();
     for(const ch of answer.replace(/ /g,"")) state.guessed.add(ch);
     renderWord();
     completeRound(true);
   } else {
+    playScarecrowComplain();
     state.roundMistakes++;
     state.lives = Math.max(0, state.lives - 1);
     state.combo = 0;
@@ -690,6 +839,7 @@ function renderRanking(){
 
 function finishGame(completed){
   show("finalScreen");
+  if(completed){ playVictoryMusic(); } else { playTryAgainMusic(); }
   el("finalTitle").textContent = completed ? "🏆 YOU ARE THE ONE!" : "💪 TRY AGAIN!";
   el("finalMsg").textContent = completed
     ? "Parabéns! Você chegou ao final do desafio e mostrou memória, atenção e coragem para aprender inglês. Continue jogando para subir ainda mais no ranking!"
@@ -704,18 +854,15 @@ function finishGame(completed){
 show("startScreen");
 
 function updateScarecrowParts(){
-  const wrongCount = typeof wrong !== "undefined" ? wrong :
-                     typeof errors !== "undefined" ? errors :
-                     typeof mistakes !== "undefined" ? mistakes :
-                     typeof wrongGuesses !== "undefined" ? wrongGuesses : 0;
+  const wrongCount = state && typeof state.roundMistakes === "number" ? state.roundMistakes : 0;
 
   const orderedGroups = [
-    ["head","scareHead","part1"],
-    ["body","torso","scareBody","scareTorso","part2"],
-    ["leftArm","scareLeftArm","part3"],
-    ["rightArm","scareRightArm","part4"],
-    ["leftLeg","scareLeftLeg","part5"],
-    ["rightLeg","scareRightLeg","part6"]
+    ["head","scareHead","part1","partHead"],
+    ["body","torso","scareBody","scareTorso","part2","partBody"],
+    ["leftArm","scareLeftArm","part3","partArmL"],
+    ["rightArm","scareRightArm","part4","partArmR"],
+    ["leftLeg","scareLeftLeg","part5","partLegL"],
+    ["rightLeg","scareRightLeg","part6","partLegR"]
   ];
 
   orderedGroups.flat().forEach(name=>{
