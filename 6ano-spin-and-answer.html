@@ -297,6 +297,97 @@ main{padding:14px}
   }
 }
 
+
+/* ===== Neon colorful update inspired by approved reference ===== */
+body{position:relative;background:
+ radial-gradient(circle at 20% 20%, rgba(236,72,153,.22), transparent 18%),
+ radial-gradient(circle at 80% 15%, rgba(59,130,246,.22), transparent 20%),
+ radial-gradient(circle at 50% 80%, rgba(168,85,247,.18), transparent 20%),
+ linear-gradient(180deg,#060818 0%,#090b28 40%,#12013a 100%);}
+body::before,body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:0}
+body::before{background-image:
+ radial-gradient(circle, rgba(255,255,255,.95) 0 1.2px, transparent 1.4px),
+ radial-gradient(circle, rgba(255,255,255,.7) 0 1px, transparent 1.2px),
+ radial-gradient(circle, rgba(255,214,10,.85) 0 1.2px, transparent 1.4px),
+ radial-gradient(circle, rgba(96,165,250,.8) 0 1.1px, transparent 1.3px);
+background-size:120px 120px, 180px 180px, 220px 220px, 260px 260px;
+background-position:0 0, 40px 70px, 80px 120px, 20px 140px;opacity:.55}
+body::after{background:
+ radial-gradient(ellipse at 50% 120%, rgba(14,165,233,.28), transparent 35%),
+ radial-gradient(ellipse at 50% -10%, rgba(244,63,94,.22), transparent 30%);opacity:.9}
+.app{position:relative;z-index:1;background:linear-gradient(180deg,rgba(9,10,38,.96),rgba(12,7,52,.95));border:1px solid rgba(167,139,250,.42);box-shadow:0 0 0 1px rgba(236,72,153,.14),0 24px 50px rgba(0,0,0,.45);}
+header{background:linear-gradient(135deg,rgba(24,24,80,.72),rgba(35,15,101,.55) 45%,rgba(7,121,198,.35));border-bottom:1px solid rgba(255,255,255,.12)}
+h1{background:linear-gradient(180deg,#fff,#fef08a 60%,#f59e0b 100%);-webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:.5px;text-shadow:0 0 16px rgba(251,191,36,.18)}
+.subtitle{color:#e2e8f0}
+.back,.pill{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.22);box-shadow:0 0 12px rgba(96,165,250,.18)}
+.stat{background:linear-gradient(180deg,rgba(17,24,69,.94),rgba(20,7,55,.9));border:1px solid rgba(96,165,250,.35);box-shadow:0 0 0 1px rgba(236,72,153,.12),0 8px 18px rgba(0,0,0,.28)}
+.stat b{color:#fff}.stat span{color:#cbd5e1}
+.stat:nth-child(1){border-color:#a855f7}.stat:nth-child(1) b{color:#fcd34d}
+.stat:nth-child(2){border-color:#06b6d4}.stat:nth-child(2) b{color:#67e8f9}
+.stat:nth-child(3){border-color:#f59e0b}.stat:nth-child(3) b{color:#fbbf24}
+.stat:nth-child(4){border-color:#ec4899}.stat:nth-child(4) b{color:#f9a8d4}
+.lives-card{background:linear-gradient(180deg,rgba(21,11,62,.94),rgba(30,8,48,.92));border:1px solid rgba(244,63,94,.4);color:#fff;box-shadow:0 0 0 1px rgba(96,165,250,.12),0 10px 18px rgba(0,0,0,.25)}
+.heart{filter:drop-shadow(0 0 6px rgba(255,0,90,.45))}
+.card{background:linear-gradient(180deg,rgba(11,18,62,.88),rgba(15,10,42,.9));border:1px solid rgba(96,165,250,.26);box-shadow:0 0 0 1px rgba(236,72,153,.08),0 10px 24px rgba(0,0,0,.25);color:#fff}
+.wheel-card{background:
+ radial-gradient(circle at 50% 50%, rgba(34,211,238,.08), transparent 35%),
+ radial-gradient(circle at 50% 50%, rgba(236,72,153,.08), transparent 65%),
+ linear-gradient(180deg,rgba(8,16,54,.85),rgba(15,7,47,.92));}
+.wheel-wrap::before{content:"";position:absolute;inset:auto 50% -8px 50%;width:105%;height:72%;transform:translateX(-50%);border:4px solid rgba(236,72,153,.7);border-top:none;border-radius:0 0 220px 220px;filter:drop-shadow(0 0 10px rgba(236,72,153,.4));pointer-events:none}
+.wheel-wrap::after{content:"";position:absolute;inset:auto 50% 10px 50%;width:110%;height:80%;transform:translateX(-50%);border:4px solid rgba(59,130,246,.55);border-top:none;border-radius:0 0 240px 240px;pointer-events:none;opacity:.8}
+.pointer{border-top-color:#050816;filter:drop-shadow(0 0 6px rgba(255,255,255,.22)) drop-shadow(0 3px 4px rgba(0,0,0,.5))}
+.pointer::after{background:#fff;border-color:#050816;box-shadow:0 0 12px rgba(255,255,255,.35)}
+.wheel{width:min(82vw,408px);height:min(82vw,408px);max-width:408px;max-height:408px;border:8px solid #f8fafc;box-shadow:0 0 0 4px rgba(236,72,153,.2),0 16px 34px rgba(0,0,0,.34)}
+.wheel::after{background:linear-gradient(180deg,#f8fafc,#e2e8f0);border-color:#cbd5e1;font-size:clamp(18px,4vw,28px);box-shadow:inset 0 0 12px rgba(255,255,255,.8),0 0 18px rgba(255,255,255,.18)}
+.wheel-label{width:118px;margin-left:-59px;transform:rotate(var(--r)) translateY(-158px) rotate(calc(-1 * var(--r)));font-size:18px;line-height:1.05;font-weight:1000;text-shadow:0 2px 6px rgba(0,0,0,.62),0 0 10px rgba(255,255,255,.12)}
+.spin-btn{background:linear-gradient(135deg,#f43f5e,#ec4899 55%,#fb7185);font-size:19px;letter-spacing:.5px;box-shadow:0 0 0 1px rgba(255,255,255,.14),0 10px 22px rgba(244,63,94,.3)}
+.sorted{background:linear-gradient(180deg,rgba(57,10,70,.72),rgba(41,6,54,.75));border-color:rgba(244,63,94,.45);color:#fef08a;box-shadow:0 0 14px rgba(236,72,153,.14) inset}
+.theme-chip{background:linear-gradient(135deg,rgba(37,99,235,.22),rgba(125,211,252,.18));color:#bfdbfe;border-color:rgba(96,165,250,.5)}
+.prompt{color:#fff;font-size:29px;line-height:1.22;text-shadow:0 2px 10px rgba(0,0,0,.25)}
+.option{position:relative;background:rgba(5,9,34,.76);color:#fff;border:2px solid rgba(96,165,250,.42);padding:14px 15px 14px 56px;box-shadow:0 6px 12px rgba(0,0,0,.18);transition:transform .12s ease, box-shadow .12s ease, border-color .12s ease;font-size:19px;line-height:1.14}
+.option:hover{transform:translateY(-1px);box-shadow:0 8px 18px rgba(0,0,0,.24)}
+.option::before{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:28px;height:28px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-weight:1000;color:#fff;border:1px solid rgba(255,255,255,.18)}
+.options .option:nth-child(1)::before{content:"A";background:linear-gradient(135deg,#22c55e,#16a34a)}
+.options .option:nth-child(2)::before{content:"B";background:linear-gradient(135deg,#3b82f6,#2563eb)}
+.options .option:nth-child(3)::before{content:"C";background:linear-gradient(135deg,#f59e0b,#d97706)}
+.options .option:nth-child(4)::before{content:"D";background:linear-gradient(135deg,#ec4899,#db2777)}
+.option.correct{background:rgba(20,83,45,.35);border-color:#22c55e;color:#dcfce7}.option.wrong{background:rgba(127,29,29,.42);border-color:#ef4444;color:#fee2e2}
+.feedback.ok{background:rgba(22,101,52,.28);border-color:#4ade80;color:#dcfce7}.feedback.bad{background:rgba(127,29,29,.35);border-color:#f87171;color:#fee2e2}
+.final h2{color:#fff}
+.box{background:linear-gradient(180deg,rgba(9,16,54,.9),rgba(15,10,42,.92));border-color:rgba(96,165,250,.28);color:#fff}
+.box b{color:#fbbf24}
+.final-message,.rank-item,.rank-head{color:inherit}
+@media(max-width:860px){
+  body.playing .stat{background:linear-gradient(180deg,rgba(17,24,69,.96),rgba(20,7,55,.95))}
+  body.playing .wheel-card{height:286px;min-height:286px}
+  body.playing .wheel{width:208px;height:208px}
+  body.playing .wheel::after{font-size:14px}
+  body.playing .wheel-label{font-size:9.8px;width:62px;margin-left:-31px;transform:rotate(var(--r)) translateY(-82px) rotate(calc(-1 * var(--r)))}
+  body.playing .sorted{font-size:10.8px;padding:5px 6px}
+  body.playing .question-card{display:flex;flex-direction:column;justify-content:flex-start;min-height:0;overflow:hidden}
+  body.playing .theme-chip{font-size:11.5px;padding:5px 8px;margin-bottom:5px}
+  body.playing .prompt{font-size:16.6px;line-height:1.18;margin-bottom:6px;max-height:none;overflow:visible}
+  body.playing .options{gap:4px}
+  body.playing .option{font-size:13.9px;line-height:1.1;padding:8px 8px 8px 39px;border-radius:10px;min-height:35px}
+  body.playing .option::before{left:8px;width:20px;height:20px;font-size:10.5px}
+  body.playing .feedback{font-size:11.2px;padding:5px 6px;max-height:none;overflow:visible;margin-top:5px;line-height:1.15}
+}
+@media(max-width:380px){
+  body.playing .wheel-card{height:268px;min-height:268px}
+  body.playing .wheel{width:194px;height:194px}
+  body.playing .wheel-label{font-size:8.9px;transform:rotate(var(--r)) translateY(-77px) rotate(calc(-1 * var(--r)))}
+  body.playing .prompt{font-size:15.2px}
+  body.playing .option{font-size:12.9px;min-height:33px;padding:7px 7px 7px 36px}
+}
+
+
+/* Extra sound-event visual feedback */
+body.sound-win .final-card, body.sound-try .final-card{animation:finalGlow 1.6s ease-in-out infinite alternate}
+@keyframes finalGlow{
+  from{box-shadow:0 0 0 1px rgba(255,255,255,.10),0 12px 30px rgba(0,0,0,.25)}
+  to{box-shadow:0 0 26px rgba(251,191,36,.28),0 16px 42px rgba(0,0,0,.35)}
+}
+
 </style>
 </head>
 <body class="playing">
@@ -391,6 +482,128 @@ main{padding:14px}
 <div class="brand">Jogo idealizado pelo professor Jasson Bruno.</div>
 </div>
 <script>
+
+
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+let audioCtx = null;
+let spinMusicTimer = null;
+let spinPulseTimer = null;
+let spinStep = 0;
+
+function ensureAudio(){
+  if(!AudioCtx) return null;
+  if(!audioCtx) audioCtx = new AudioCtx();
+  if(audioCtx.state === 'suspended') audioCtx.resume();
+  return audioCtx;
+}
+
+function playTone(freq=440, duration=.12, type='sine', volume=.03, when=0){
+  const ctx = ensureAudio();
+  if(!ctx) return;
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.type = type;
+  osc.frequency.setValueAtTime(freq, ctx.currentTime + when);
+  gain.gain.setValueAtTime(0.0001, ctx.currentTime + when);
+  gain.gain.exponentialRampToValueAtTime(volume, ctx.currentTime + when + 0.015);
+  gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + when + duration);
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+  osc.start(ctx.currentTime + when);
+  osc.stop(ctx.currentTime + when + duration + 0.03);
+}
+
+function playNoise(duration=.18, volume=.025, when=0){
+  const ctx = ensureAudio();
+  if(!ctx) return;
+  const bufferSize = Math.max(1, Math.floor(ctx.sampleRate * duration));
+  const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+  const data = buffer.getChannelData(0);
+  for(let i=0;i<bufferSize;i++){
+    data[i] = (Math.random() * 2 - 1) * (1 - i / bufferSize);
+  }
+  const src = ctx.createBufferSource();
+  const gain = ctx.createGain();
+  src.buffer = buffer;
+  gain.gain.setValueAtTime(volume, ctx.currentTime + when);
+  gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + when + duration);
+  src.connect(gain);
+  gain.connect(ctx.destination);
+  src.start(ctx.currentTime + when);
+  src.stop(ctx.currentTime + when + duration + 0.02);
+}
+
+function startSpinMusic(){
+  stopSpinMusic();
+  ensureAudio();
+  spinStep = 0;
+  const melody = [
+    392.00, 523.25, 659.25, 783.99,
+    698.46, 659.25, 587.33, 523.25,
+    440.00, 554.37, 659.25, 880.00
+  ];
+  const bass = [196.00, 261.63, 220.00, 293.66];
+
+  spinMusicTimer = setInterval(()=>{
+    const f = melody[spinStep % melody.length];
+    playTone(f, .12, 'square', .028);
+    playTone(f * 1.5, .08, 'triangle', .013, .035);
+    if(spinStep % 2 === 0) playTone(bass[Math.floor(spinStep/2) % bass.length], .16, 'sine', .018, .015);
+    if(spinStep % 4 === 0) playNoise(.06, .012);
+    spinStep++;
+  }, 125);
+
+  spinPulseTimer = setInterval(()=>{
+    const btn = el('spinBtn');
+    const wheel = el('wheel');
+    if(btn) btn.style.transform = `scale(${1 + Math.random()*0.045}) rotate(${(Math.random()-.5)*2}deg)`;
+    if(wheel) wheel.style.filter = `saturate(${1.1 + Math.random()*0.35}) drop-shadow(0 0 ${10 + Math.random()*16}px rgba(236,72,153,.36))`;
+  }, 95);
+}
+
+function stopSpinMusic(){
+  if(spinMusicTimer){ clearInterval(spinMusicTimer); spinMusicTimer = null; }
+  if(spinPulseTimer){ clearInterval(spinPulseTimer); spinPulseTimer = null; }
+  const btn = el('spinBtn');
+  const wheel = el('wheel');
+  if(btn) btn.style.transform = '';
+  if(wheel) wheel.style.filter = '';
+}
+
+function playCorrectSound(){
+  const notes = [523.25, 659.25, 783.99, 1046.50];
+  notes.forEach((f,idx)=>playTone(f,.18,'triangle',.04,idx*0.065));
+  playNoise(.08,.01,.05);
+}
+
+function playErrorSound(){
+  playTone(220,.16,'sawtooth',.035,0);
+  playTone(196,.18,'sawtooth',.03,.12);
+  playTone(164.81,.24,'triangle',.026,.25);
+  playNoise(.18,.018,.03);
+}
+
+function playTryAgainMusic(){
+  const notes = [392, 392, 440, 523.25, 440, 392, 329.63, 392, 440, 523.25, 587.33, 523.25];
+  notes.forEach((f,i)=>{
+    playTone(f,.22,'triangle',.032,i*.18);
+    if(i % 3 === 0) playTone(f/2,.28,'sine',.018,i*.18);
+  });
+}
+
+function playVictoryMusic(){
+  const notes = [
+    523.25,659.25,783.99,1046.50,
+    987.77,1046.50,1174.66,1318.51,
+    1046.50,1318.51,1567.98
+  ];
+  notes.forEach((f,i)=>{
+    playTone(f,.24,'triangle',.04,i*.13);
+    if(i % 2 === 0) playTone(f/2,.28,'sine',.018,i*.13);
+  });
+  setTimeout(()=>playNoise(.22,.018), 360);
+}
+
 const THEMES = ["Greetings", "Farewells", "Spelling names", "Classroom commands", "Classroom expressions", "Personal information", "Personal pronouns", "Possessive adjectives"];
 const QUESTIONS = [{"theme": "Greetings", "q": "Patrick encontrou um amigo e quer dizer “Olá!” em inglês. Qual opção está correta?", "a": "Hello", "o": ["Hello", "Good night", "Bye", "See you"], "e": "Hello significa Olá/Oi."}, {"theme": "Greetings", "q": "Bob Esponja chegou à escola pela manhã. Como ele pode dizer “Bom dia”?", "a": "Good morning", "o": ["Good morning", "Good night", "Goodbye", "Sit down"], "e": "Good morning é usado pela manhã."}, {"theme": "Greetings", "q": "Sonic entrou na sala e disse “Hi, teacher!”. O que ele quis dizer?", "a": "Oi, professora! ", "o": ["Oi, professora! ", "Tchau, professora!", "Boa noite!", "Abra o livro!"], "e": "Hi significa Oi."}, {"theme": "Greetings", "q": "A professora cumprimentou a turma à tarde. Qual expressão combina com “Boa tarde”?", "a": "Good afternoon", "o": ["Good afternoon", "Good morning", "Good night", "Bye"], "e": "Good afternoon = Boa tarde."}, {"theme": "Greetings", "q": "Quando alguém pergunta “How are you?”, qual resposta combina melhor?", "a": "I am fine.", "o": ["I am fine.", "Goodbye.", "Open your book.", "My name is pen."], "e": "I am fine = Eu estou bem."}, {"theme": "Farewells", "q": "Qual alternativa é uma despedida em inglês?", "a": "Goodbye", "o": ["Goodbye", "Hello", "Good morning", "Hi"], "e": "Goodbye significa Tchau."}, {"theme": "Farewells", "q": "Ao sair da aula, o aluno quer dizer “Até mais!”. Qual opção usar?", "a": "See you", "o": ["See you", "How are you?", "Stand up", "My name is Ana"], "e": "See you = Até mais."}, {"theme": "Farewells", "q": "É noite e Goku está indo embora. Qual despedida combina?", "a": "Good night", "o": ["Good night", "Good afternoon", "Good morning", "Listen"], "e": "Good night pode ser usado como despedida à noite."}, {"theme": "Farewells", "q": "Messi terminou o treino e disse “Bye!”. O que significa?", "a": "Tchau", "o": ["Tchau", "Bom dia", "Sente-se", "Eu estou bem"], "e": "Bye = Tchau."}, {"theme": "Farewells", "q": "Qual expressão significa “Até amanhã”?", "a": "See you tomorrow", "o": ["See you tomorrow", "Good morning", "Repeat, please", "What is your name?"], "e": "See you tomorrow = Até amanhã."}, {"theme": "Spelling names", "q": "A professora pergunta: “How do you spell your name?”. O que ela quer saber?", "a": "Como você soletra seu nome?", "o": ["Como você soletra seu nome?", "Qual é sua escola?", "Qual é sua idade?", "Onde você mora?"], "e": "Spell significa soletrar."}, {"theme": "Spelling names", "q": "Como soletrar o nome Ana em inglês?", "a": "A-N-A", "o": ["A-N-A", "N-A-A", "A-A-N", "E-N-A"], "e": "Ana se soletra A-N-A."}, {"theme": "Spelling names", "q": "Como soletrar o nome Leo?", "a": "L-E-O", "o": ["L-E-O", "E-L-O", "L-O-E", "L-I-O"], "e": "Leo = L-E-O."}, {"theme": "Spelling names", "q": "Qual opção mostra uma soletração?", "a": "J-O-H-N", "o": ["J-O-H-N", "Good morning", "Open book", "I am fine"], "e": "Letras separadas indicam soletração."}, {"theme": "Spelling names", "q": "Como soletrar o nome Mia?", "a": "M-I-A", "o": ["M-I-A", "A-I-M", "M-A-I", "M-E-A"], "e": "Mia = M-I-A."}, {"theme": "Classroom commands", "q": "A professora aponta para o texto e diz “Read”. O que ela quer?", "a": "Ler", "o": ["Ler", "Escrever", "Ouvir música", "Sentar"], "e": "Read = ler."}, {"theme": "Classroom commands", "q": "Qual comando significa “Abra seu livro”?", "a": "Open your book", "o": ["Open your book", "Close your book", "Goodbye", "I am fine"], "e": "Open your book = Abra seu livro."}, {"theme": "Classroom commands", "q": "Se a professora diz “Listen!”, ela quer que a turma:", "a": "Escute", "o": ["Escute", "Durma", "Corra", "Escreva o nome"], "e": "Listen = escute/ouça."}, {"theme": "Classroom commands", "q": "Qual comando significa “Sente-se”?", "a": "Sit down", "o": ["Sit down", "Stand up", "Repeat", "Read"], "e": "Sit down = sente-se."}, {"theme": "Classroom commands", "q": "Qual comando significa “Levante-se”?", "a": "Stand up", "o": ["Stand up", "Sit down", "Open your book", "Good night"], "e": "Stand up = levante-se."}, {"theme": "Classroom expressions", "q": "O aluno não entendeu e quer pedir ajuda. Qual frase é melhor?", "a": "Can you help me?", "o": ["Can you help me?", "Goodbye!", "I am a book.", "Her pencil."], "e": "Can you help me? = Você pode me ajudar?"}, {"theme": "Classroom expressions", "q": "Como dizer “Eu não sei” em inglês?", "a": "I don't know.", "o": ["I don't know.", "I am book.", "She are Ana.", "Goodbye morning."], "e": "I don't know = Eu não sei."}, {"theme": "Classroom expressions", "q": "O aluno quer ir ao banheiro. Qual frase é adequada?", "a": "May I go to the bathroom?", "o": ["May I go to the bathroom?", "Open your pencil.", "Good night!", "They is happy."], "e": "May I go to the bathroom? = Posso ir ao banheiro?"}, {"theme": "Classroom expressions", "q": "Para pedir desculpas, qual palavra ajuda?", "a": "Sorry", "o": ["Sorry", "Chair", "He", "Open"], "e": "Sorry = desculpa."}, {"theme": "Classroom expressions", "q": "Qual frase significa “Posso tentar?”", "a": "Can I try?", "o": ["Can I try?", "Good night!", "Close your pencil.", "His she."], "e": "Can I try? = Posso tentar?"}, {"theme": "Personal information", "q": "Neymar pergunta: “What is your name?”. Qual resposta é correta?", "a": "My name is Pedro.", "o": ["My name is Pedro.", "I am 12 years.", "Goodbye!", "Open your book."], "e": "My name is... = Meu nome é..."}, {"theme": "Personal information", "q": "A pergunta “How old are you?” pede qual informação?", "a": "Idade", "o": ["Idade", "Nome", "Cidade", "Cor favorita"], "e": "How old are you? = Quantos anos você tem?"}, {"theme": "Personal information", "q": "Qual frase responde corretamente a “How old are you?”", "a": "I am 11 years old.", "o": ["I am 11 years old.", "My name is 11.", "I are 11.", "Good morning 11."], "e": "I am 11 years old = Eu tenho 11 anos."}, {"theme": "Personal information", "q": "Se alguém pergunta “Where are you from?”, quer saber:", "a": "De onde você é.", "o": ["De onde você é.", "Seu nome.", "Sua idade.", "Sua mochila."], "e": "Where are you from? = De onde você é?"}, {"theme": "Personal information", "q": "Qual resposta combina com “Where are you from?”", "a": "I am from Santarém.", "o": ["I am from Santarém.", "I am fine.", "My name is book.", "Goodbye."], "e": "I am from... = Eu sou de..."}, {"theme": "Personal pronouns", "q": "Em inglês, qual pronome usamos para falar de “eu”?", "a": "I", "o": ["I", "You", "He", "She"], "e": "I = eu."}, {"theme": "Personal pronouns", "q": "Qual pronome substitui Maria?", "a": "She", "o": ["She", "He", "They", "We"], "e": "She = ela."}, {"theme": "Personal pronouns", "q": "Qual pronome substitui João?", "a": "He", "o": ["He", "She", "It", "We"], "e": "He = ele."}, {"theme": "Personal pronouns", "q": "Qual pronome usamos para “você”?", "a": "You", "o": ["You", "I", "He", "She"], "e": "You = você."}, {"theme": "Personal pronouns", "q": "Qual pronome substitui Ana and Pedro?", "a": "They", "o": ["They", "He", "She", "It"], "e": "They = eles/elas."}, {"theme": "Personal pronouns", "q": "Qual pronome usamos para “nós”?", "a": "We", "o": ["We", "You", "They", "He"], "e": "We = nós."}, {"theme": "Possessive adjectives", "q": "Qual palavra significa “meu/minha” em inglês?", "a": "My", "o": ["My", "Your", "His", "Her"], "e": "My = meu/minha."}, {"theme": "Possessive adjectives", "q": "Qual palavra significa “seu/sua” quando falo com você?", "a": "Your", "o": ["Your", "My", "His", "Her"], "e": "Your = seu/sua."}, {"theme": "Possessive adjectives", "q": "Complete: He is João. ___ book is blue.", "a": "His", "o": ["His", "Her", "My", "Your"], "e": "His = dele."}, {"theme": "Possessive adjectives", "q": "Complete: She is Ana. ___ pencil is red.", "a": "Her", "o": ["Her", "His", "My", "Your"], "e": "Her = dela."}, {"theme": "Possessive adjectives", "q": "Messi tem uma bola. Em inglês: ___ ball is white.", "a": "His", "o": ["His", "Her", "My", "Your"], "e": "His ball = a bola dele."}, {"theme": "Possessive adjectives", "q": "Wandinha tem uma mochila. Em inglês: ___ backpack is black.", "a": "Her", "o": ["Her", "His", "My", "Your"], "e": "Her backpack = a mochila dela."}];
 const TOTAL_ROUNDS = 30;
@@ -461,6 +674,7 @@ function spinWheel(){
   el("theme").textContent = "Girando...";
   el("wheel").dataset.theme = "SPIN";
   el("wheel").classList.add("spinning");
+  startSpinMusic();
   el("sorted").classList.add("suspense");
   el("sorted").textContent = "Girando rápido...";
 
@@ -507,6 +721,7 @@ function spinWheel(){
   }, 6250);
 
   setTimeout(()=>{
+    stopSpinMusic();
     state.spinning = false;
     el("wheel").classList.remove("spinning");
     el("sorted").classList.remove("suspense");
@@ -550,12 +765,14 @@ function answer(btn, selected){
     state.maxCombo = Math.max(state.maxCombo, state.combo);
     const bonus = state.combo >= 3 ? 20 : 0;
     state.score += 100 + bonus;
+    playCorrectSound();
     fb.className = "feedback ok";
     fb.innerHTML = `✅ Great job! Você acertou.<br><b>Explicação:</b> ${q.e}${bonus ? "<br>🔥 Bônus de combo: +20 pontos!" : ""}`;
   } else {
     state.combo = 0;
     state.lives = Math.max(0, state.lives - 1);
     btn.classList.add("wrong");
+    playErrorSound();
     fb.className = "feedback bad";
     fb.innerHTML = `❌ Quase! Você perdeu 1 vida. A resposta correta é <b>${q.a}</b>.<br><b>Explicação:</b> ${q.e}`;
   }
@@ -663,7 +880,11 @@ function renderRanking(){
 }
 
 function finishGame(completed){
+  stopSpinMusic();
   show("finalScreen");
+  document.body.classList.remove("sound-win","sound-try");
+  document.body.classList.add(completed ? "sound-win" : "sound-try");
+  setTimeout(()=> completed ? playVictoryMusic() : playTryAgainMusic(), 250);
 
   document.getElementById("finalTitle").textContent = completed ? "🏆 YOU ARE THE ONE!" : "💪 TRY AGAIN!";
   document.getElementById("finalMsg").textContent = completed 
