@@ -188,7 +188,7 @@ main{flex:1;min-height:0;padding:10px;overflow:hidden}
 }
 
 
-/* --- Modo Show do Milhão: suspense, tempo, ajudas e alternativas A-E --- */
+/* --- Modo Show do Milhão: suspense, tempo de 15 segundos, ajudas e alternativas A-E --- */
 .question-card{
   gap:5px !important;
 }
@@ -383,6 +383,79 @@ main{flex:1;min-height:0;padding:10px;overflow:hidden}
   body.playing .timer-text{font-size:10px}
 }
 
+
+/* --- Ajustes Show do Milhão v94: som, tempo de 15 segundos, ajudas e piscas --- */
+.help-btn{
+  font-size:15px !important;
+  padding:12px 10px !important;
+  min-height:52px !important;
+  border-radius:16px !important;
+  letter-spacing:.2px;
+  text-shadow:0 1px 2px rgba(0,0,0,.18);
+}
+.lifelines{
+  gap:9px !important;
+}
+.timer-text{
+  font-size:15px !important;
+}
+.option.correct{
+  animation:correctBlink 0.42s ease-in-out infinite alternate !important;
+}
+.option.wrong{
+  animation:wrongBlink 0.34s ease-in-out 6 alternate, wrongShake .25s ease 2 !important;
+}
+@keyframes correctBlink{
+  from{
+    background:#dcfce7;
+    border-color:#22c55e;
+    box-shadow:0 0 10px rgba(34,197,94,.25);
+    filter:brightness(1);
+  }
+  to{
+    background:#86efac;
+    border-color:#16a34a;
+    box-shadow:0 0 28px rgba(34,197,94,1),0 0 48px rgba(34,197,94,.42);
+    filter:brightness(1.18);
+  }
+}
+@keyframes wrongBlink{
+  from{
+    background:#fee2e2;
+    border-color:#ef4444;
+    box-shadow:0 0 8px rgba(239,68,68,.25);
+  }
+  to{
+    background:#fca5a5;
+    border-color:#b91c1c;
+    box-shadow:0 0 26px rgba(239,68,68,.95),0 0 42px rgba(239,68,68,.35);
+  }
+}
+.gameover-flash{
+  animation:screenRedFlash .42s ease-in-out 5 alternate;
+}
+@keyframes screenRedFlash{
+  from{filter:none}
+  to{filter:drop-shadow(0 0 28px rgba(239,68,68,.95)) brightness(1.18)}
+}
+@media(max-width:860px){
+  .help-btn{
+    font-size:12.5px !important;
+    padding:9px 6px !important;
+    min-height:44px !important;
+  }
+  .timer-text{
+    font-size:12.5px !important;
+  }
+}
+@media(max-height:680px) and (max-width:860px){
+  body.playing .help-btn{
+    font-size:11px !important;
+    padding:7px 5px !important;
+    min-height:36px !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -393,7 +466,7 @@ main{flex:1;min-height:0;padding:10px;overflow:hidden}
     <span class="pill">Alinhado à BNCC</span>
   </div>
   <h1>Smart Choice Show</h1>
-  <p class="subtitle">Quiz show com suspense, tempo, ajudas e missões do Inglês do 6º ano.</p>
+  <p class="subtitle">Quiz show com suspense, tempo de 15 segundos, ajudas e missões do Inglês do 6º ano.</p>
 </header>
 <main>
 <section id="startScreen" class="screen active">
@@ -422,8 +495,8 @@ main{flex:1;min-height:0;padding:10px;overflow:hidden}
       <div class="info-list">
         <div class="info-item"><b>1.</b> São 5 missões com 10 rodadas cada.</div>
         <div class="info-item"><b>2.</b> O conteúdo cobre o Inglês do 6º ano: comunicação, verb to be, números, tempo, escola, lugares, preposições e vocabulário diário.</div>
-        <div class="info-item"><b>3.</b> Ao terminar cada missão, aparece uma mini vitória para celebrar o avanço.</div>
-        <div class="info-item"><b>4.</b> No final, o aluno vê pontuação, acertos, combo e ranking motivacional.</div>
+        <div class="info-item"><b>3.</b> Você tem 15 segundos para responder. Se o tempo acabar, conta como pulo. Depois de 3 pulos, se não responder, é game over.</div>
+        <div class="info-item"><b>4.</b> Use Cartas, Plateia e Pular com estratégia para chegar ao final.</div>
       </div>
     </div>
   </div>
@@ -445,7 +518,7 @@ main{flex:1;min-height:0;padding:10px;overflow:hidden}
     <div id="prompt" class="prompt">Pergunta</div>
     <div>
       <div class="timer-wrap"><div id="timerBar" class="timer-bar"></div></div>
-      <div id="timerText" class="timer-text">Tempo: 10s</div>
+      <div id="timerText" class="timer-text">Tempo: 15s</div>
     </div>
     <div id="options" class="options"></div>
     <div class="lifelines">
@@ -608,7 +681,7 @@ function answer(btn,selected){
     playWrong();
   }
   el("score").textContent=state.score; el("corrects").textContent=state.corrects; el("combo").textContent=state.combo;
-  setTimeout(afterQuestion,1400);
+  setTimeout(afterQuestion,1800);
 }
 
 function afterQuestion(){
@@ -721,20 +794,27 @@ function nextMission(){
   show("gameScreen");
   loadQuestion();
 }
-function finishGame(){
+function finishGame(gameOver=false){
   stopTimer();
   stopMusic();
   show("finalScreen");
-  el("finalTitle").textContent = state.corrects>=40 ? "🏆 YOU ARE THE ONE!" : "💪 TRY AGAIN!";
-  el("finalMessage").textContent = state.corrects>=40
-    ? "Congratulations! Você avançou muito bem nas missões do 6º ano. Continue praticando para ir ainda mais longe!"
-    : "Você chegou até o final, tentou e aprendeu. Jogue novamente para melhorar sua pontuação e fortalecer seu inglês.";
+  if(gameOver){
+    el("finalTitle").textContent = "💥 GAME OVER!";
+    el("finalMessage").textContent = "O tempo acabou e os 3 pulos já foram usados. Não desista: tente novamente e avance mais!";
+    el("finalStatus").textContent="Game Over";
+    playTryAgainMusic();
+  }else{
+    el("finalTitle").textContent = state.corrects>=40 ? "🏆 YOU ARE THE ONE!" : "💪 TRY AGAIN!";
+    el("finalMessage").textContent = state.corrects>=40
+      ? "Congratulations! Você avançou muito bem nas missões do 6º ano. Continue praticando para ir ainda mais longe!"
+      : "Você chegou até o final, tentou e aprendeu. Jogue novamente para melhorar sua pontuação e fortalecer seu inglês.";
+    el("finalStatus").textContent=state.corrects>=40 ? "Top!" : "Continue!";
+    state.corrects>=40 ? playVictoryMusic() : playTryAgainMusic();
+  }
   el("finalScore").textContent=state.score;
   el("finalCorrects").textContent=`${state.corrects}/${TOTAL_ROUNDS}`;
   el("finalCombo").textContent=state.maxCombo;
-  el("finalStatus").textContent=state.corrects>=40 ? "Top!" : "Continue!";
   renderRanking();
-  state.corrects>=40 ? playVictoryMusic() : playTryAgainMusic();
 }
 function renderRanking(){
   const player=getPlayerInfo();
@@ -759,7 +839,7 @@ function stopTimer(){
 }
 function startQuestionTimer(){
   stopTimer();
-  state.timeLeft = 10;
+  state.timeLeft = 15;
   updateTimerVisual();
   state.timer = setInterval(()=>{
     state.timeLeft -= .1;
@@ -774,49 +854,95 @@ function startQuestionTimer(){
   },100);
 }
 function updateTimerVisual(){
-  const pct = Math.max(0,(state.timeLeft/10)*100);
+  const pct = Math.max(0,(state.timeLeft/15)*100);
   if(el("timerBar")) el("timerBar").style.width = pct + "%";
   if(el("timerText")) el("timerText").textContent = "Tempo: " + Math.ceil(state.timeLeft) + "s";
 }
 function playSuspenseMusic(){
   stopMusic();
+  ensureAudio();
   let i=0;
-  const notes=[196,220,247,262,247,220];
+  const notes=[196,220,247,262,247,220,196,175];
+  // volume mais alto para criar clima de show
   musicTimer=setInterval(()=>{
-    tone(notes[i%notes.length],.12,i%2===0?"sine":"triangle",.022);
+    tone(notes[i%notes.length],.16,i%2===0?"sine":"triangle",.060);
+    if(i%2===0) tone(notes[i%notes.length]/2,.18,"sine",.030,.02);
     i++;
-  },260);
+  },230);
 }
 function timeOutQuestion(){
   if(state.answered) return;
-  state.answered = true;
   stopMusic();
+
+  if(state.skips > 0){
+    state.skips--;
+    updateHelpButtons();
+    el("feedback").className="feedback good";
+    el("feedback").innerHTML=`⏰ O tempo acabou. Esta questão contou como pulo. Pulos restantes: <b>${state.skips}</b>.`;
+    setTimeout(()=>{
+      if(state.round>=TOTAL_ROUNDS){finishGame(); return;}
+      state.round++;
+      loadQuestion();
+    },900);
+    return;
+  }
+
+  // Se não há mais pulos, mostra a correta piscando em verde, a tela pisca em vermelho e vai para game over.
+  state.answered = true;
   document.querySelectorAll(".option").forEach(b=>{
     b.disabled=true;
     if(b.dataset.value===state.current.answer) b.classList.add("correct");
   });
-  const q=state.current;
   state.combo=0;
   el("combo").textContent=state.combo;
   el("feedback").className="feedback bad";
-  el("feedback").innerHTML=`⏰ Tempo esgotado! Resposta correta: <b>${q.answer}</b>. ${q.explanation}`;
+  el("feedback").innerHTML=`⏰ Tempo esgotado! Você já usou os 3 pulos. Resposta correta: <b>${state.current.answer}</b>.`;
   playWrong();
-  setTimeout(afterQuestion,1400);
+  const card = document.querySelector(".question-card");
+  if(card) card.classList.add("gameover-flash");
+  setTimeout(()=>{
+    if(card) card.classList.remove("gameover-flash");
+    finishGame(true);
+  },1900);
 }
 
 function playCorrect(){tone(659,.10,"triangle",.05);tone(880,.10,"triangle",.04,.10)}
 function playApplause(){
-  ensureAudio(); if(!audioCtx)return;
-  for(let i=0;i<18;i++){
-    const t=i*.045;
-    tone(900+Math.random()*900,.025,"square",.018,t);
-    tone(180+Math.random()*120,.035,"sawtooth",.010,t+.012);
+  ensureAudio(); 
+  if(!audioCtx) return;
+
+  // Palmas sintéticas: ruído curto em rajadas + estalos graves, para ficar mais parecido com aplausos.
+  for(let i=0;i<26;i++){
+    const start = audioCtx.currentTime + i*0.045 + Math.random()*0.025;
+    const bufferSize = Math.floor(audioCtx.sampleRate * 0.045);
+    const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for(let j=0;j<bufferSize;j++){
+      data[j] = (Math.random()*2-1) * Math.pow(1-j/bufferSize, 2.2);
+    }
+    const noise = audioCtx.createBufferSource();
+    noise.buffer = buffer;
+    const filter = audioCtx.createBiquadFilter();
+    filter.type = "bandpass";
+    filter.frequency.setValueAtTime(1200 + Math.random()*1200, start);
+    filter.Q.setValueAtTime(0.9, start);
+    const gain = audioCtx.createGain();
+    gain.gain.setValueAtTime(0.0001, start);
+    gain.gain.exponentialRampToValueAtTime(0.18, start+0.006);
+    gain.gain.exponentialRampToValueAtTime(0.0001, start+0.055);
+    noise.connect(filter);
+    filter.connect(gain);
+    gain.connect(audioCtx.destination);
+    noise.start(start);
+    noise.stop(start+0.06);
+
+    if(i%3===0) tone(160+Math.random()*80,.035,"square",.025,i*0.045);
   }
 }
 function playCorrectCelebration(){
   playCorrect();
-  setTimeout(()=>{tone(1046,.14,"triangle",.055);tone(1318,.18,"triangle",.05,.12);},120);
-  setTimeout(playApplause,260);
+  setTimeout(()=>{tone(1046,.16,"triangle",.080);tone(1318,.22,"triangle",.070,.12);tone(1568,.22,"sine",.045,.24);},110);
+  setTimeout(playApplause,300);
 }
 function playWrong(){tone(220,.14,"sine",.035);tone(180,.18,"sine",.03,.14)}
 function playMissionMusic(){stopMusic(); [523,659,784,1046,1318].forEach((f,i)=>tone(f,.16,"triangle",.065,i*.14)); let i=0; const melody=[523,659,784,1046,880,1046,1318]; musicTimer=setInterval(()=>{tone(melody[i%melody.length],.14,"triangle",.045); i++;},180)}
