@@ -614,7 +614,7 @@ body.playing .phase-banner{
     <div class="stat"><b id="score">0</b><span>Pontos</span></div>
     <div class="stat"><b id="corrects">0</b><span>Acertos</span></div>
     <div class="stat"><b id="combo">0</b><span>Combo</span></div>
-    <div class="stat"><b id="round">1/30</b><span>Desafio</span></div>
+    <div class="stat"><b id="round">1/10</b><span>Missão</span></div>
   </div>
   <div class="lives-card"><b>Forca do espantalho</b><span id="lives">6 partes restantes do espantalho.</span></div>
   <div class="game-grid">
@@ -691,15 +691,25 @@ body.playing .phase-banner{
   <div class="brand">Jogo idealizado pelo professor Jasson Bruno.</div>
 </section>
 
+<section id="missionWinScreen" class="screen">
+  <div class="card final final-ranking">
+    <h2>🎉 MINI VICTORY!</h2>
+    <div id="missionWinMsg" class="final-message"></div>
+    <div class="rank-actions">
+      <button class="btn" onclick="continueToNextMission()">Next mission 🚀</button>
+    </div>
+  </div>
+</section>
+
 <section id="finalScreen" class="screen">
   <div class="card final final-ranking">
     <h2 id="finalTitle">💪 TRY AGAIN!</h2>
     <div id="finalMsg" class="final-message"></div>
     <div class="player-summary">
       <div class="summary-box"><span>Pontuação</span><b id="fScore">0</b></div>
-      <div class="summary-box"><span>Acertos</span><b id="fCorrects">0/30</b></div>
+      <div class="summary-box"><span>Acertos</span><b id="fCorrects">0/50</b></div>
       <div class="summary-box"><span>Combo</span><b id="fCombo">0</b></div>
-      <div class="summary-box"><span>Vidas</span><b id="fLives">0/5</b></div>
+      <div class="summary-box"><span>Vidas</span><b id="fLives">0/6</b></div>
     </div>
     <h3 class="ranking-title">🏆 Ranking do Desafio — Hangman Challenge</h3>
     <div id="rankList" class="rank-list"></div>
@@ -725,7 +735,7 @@ const PHASES = [
 ];
 
 function getCurrentPhaseIndex(){
-  return Math.min(PHASES.length - 1, Math.floor((state.round - 1) / 5));
+  return Math.min(PHASES.length - 1, Math.floor((state.round - 1) / WORDS_PER_MISSION));
 }
 
 function buildPhaseChallengeList(){
@@ -740,19 +750,21 @@ function buildPhaseChallengeList(){
 
 function showPhaseTransitionIfNeeded(){
   try{
-    if(state.round > 1 && (state.round - 1) % 5 === 0 && state.round <= TOTAL_ROUNDS){
+    if(state.round > 1 && (state.round - 1) % WORDS_PER_MISSION === 0 && state.round <= TOTAL_ROUNDS){
       const phaseIndex = getCurrentPhaseIndex();
       const phase = PHASES[phaseIndex];
       const fb = el("feedback");
       if(fb){
         fb.className = "feedback ok phase-feedback";
-        fb.innerHTML = `🌟 Nova fase liberada: <b>${phase.label}</b>. Agora você terá 5 novas palavras deste bloco!`;
+        fb.innerHTML = `🌟 Nova missão liberada: <b>Mission ${getMissionNumber()}/${TOTAL_MISSIONS}</b>. Tema em destaque: <b>${phase.label}</b>.`;
       }
     }
   }catch(e){}
 }
 
-const TOTAL_ROUNDS = 30;
+const WORDS_PER_MISSION = 5;
+const TOTAL_MISSIONS = 10;
+const TOTAL_ROUNDS = WORDS_PER_MISSION * TOTAL_MISSIONS;
 const MAX_LIVES = 6;
 
 function shuffleArray(arr){
@@ -1842,7 +1854,11 @@ function restart(){
 
 
 function getWordInPhase(){
-  return ((state.round - 1) % 5) + 1;
+  return ((state.round - 1) % WORDS_PER_MISSION) + 1;
+}
+
+function getMissionNumber(){
+  return Math.floor((state.round - 1) / WORDS_PER_MISSION) + 1;
 }
 
 function updatePhaseBanner(){
@@ -1861,7 +1877,7 @@ function updateStats(){
   el("score").textContent = state.score;
   el("corrects").textContent = state.corrects;
   el("combo").textContent = state.combo;
-  el("round").textContent = `${getWordInPhase()}/5`;
+  el("round").textContent = `${getMissionNumber()}/${TOTAL_MISSIONS}`;
   if(el("phaseLabel")) el("phaseLabel").textContent = `${getCurrentPhaseIndex()+1}/6`;
 
   const livesLeft = Math.max(0, Math.min(MAX_LIVES, Number(state.lives ?? MAX_LIVES)));
@@ -2049,10 +2065,28 @@ function completeRound(success){
     return;
   }
 
+  const finishedMission = state.round % WORDS_PER_MISSION === 0;
   setTimeout(()=>{
     state.round++;
+    if(finishedMission){
+      showMissionWinScreen();
+      return;
+    }
     loadChallenge();
   }, 1050);
+}
+
+function showMissionWinScreen(){
+  const justFinished = getMissionNumber() - 1;
+  const nextMission = justFinished + 1;
+  show("missionWinScreen");
+  el("missionWinMsg").innerHTML = `Great job! You completed <b>Mission ${justFinished}/${TOTAL_MISSIONS}</b> with courage and focus. Ready for <b>Mission ${nextMission}/${TOTAL_MISSIONS}</b>?`;
+  playOneFromList(["You are the one.m4a","Very good.m4a","Yeah.m4a"]);
+}
+
+function continueToNextMission(){
+  show("gameScreen");
+  loadChallenge();
 }
 
 function getPlayerInfo(){
@@ -2225,6 +2259,7 @@ function playGameWrongAudio(){
 
 
 function playFinalTryAgainSound(){
+  playOneFromList(["Very good.m4a","Yeah.m4a","Nice.m4a"]);
   try{
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
     const now = ctx.currentTime;
