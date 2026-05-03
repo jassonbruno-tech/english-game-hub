@@ -615,6 +615,64 @@ body.playing .mission-box{
   .mission-box small{font-size:10px;}
 }
 
+
+/* --- Tela de mini vitória entre missões --- */
+#missionVictoryScreen.active{
+  min-height:calc(100dvh - 180px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.mission-victory-card{
+  width:min(100%,680px);
+  text-align:center;
+  background:
+    radial-gradient(circle at top left, rgba(255,230,109,.22), transparent 35%),
+    radial-gradient(circle at bottom right, rgba(59,130,246,.22), transparent 35%),
+    linear-gradient(180deg, rgba(8,14,50,.96), rgba(16,9,55,.96)) !important;
+  border:1.5px solid rgba(255,230,109,.35) !important;
+  box-shadow:0 20px 45px rgba(0,0,0,.35), 0 0 42px rgba(255,230,109,.12) !important;
+  color:#fff;
+}
+.mission-victory-emoji{
+  font-size:56px;
+  margin-bottom:6px;
+  filter:drop-shadow(0 0 16px rgba(255,230,109,.22));
+}
+.mission-victory-card h2{
+  margin:0 0 10px;
+  color:#ffe66d;
+  font-size:clamp(32px,7vw,54px);
+  text-shadow:0 0 18px rgba(255,230,109,.22);
+}
+.mission-victory-msg{
+  margin:10px auto 14px;
+  padding:13px 14px;
+  max-width:560px;
+  border-radius:18px;
+  background:linear-gradient(135deg,#fff7ed,#dbeafe);
+  border:2px solid #f8d36b;
+  color:#172033;
+  font-weight:1000;
+  line-height:1.35;
+  font-size:15px;
+}
+@media(max-width:860px){
+  #missionVictoryScreen.active{
+    min-height:calc(100dvh - 100px);
+  }
+  .mission-victory-card{
+    padding:14px;
+  }
+  .mission-victory-emoji{
+    font-size:46px;
+  }
+  .mission-victory-msg{
+    font-size:13px;
+    padding:11px;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -730,6 +788,19 @@ body.playing .mission-box{
     </div>
   </div>
   <div class="brand">Jogo idealizado pelo professor Jasson Bruno.</div>
+</section>
+
+
+<section id="missionVictoryScreen" class="screen">
+  <div class="card mission-victory-card">
+    <div class="mission-victory-emoji">🌟🏆🌟</div>
+    <h2>MINI VICTORY!</h2>
+    <div id="missionVictoryMsg" class="mission-victory-msg">
+      Você concluiu uma missão!
+    </div>
+    <button class="btn" onclick="goToNextMission()">Avançar para a próxima missão 🚀</button>
+    <div class="brand">Jogo idealizado pelo professor Jasson Bruno.</div>
+  </div>
 </section>
 
 <section id="finalScreen" class="screen">
@@ -1825,6 +1896,23 @@ function playVictoryMusic(){
     i++;
   }, 185);
 }
+
+function playMissionVictoryMusic(){
+  stopFinalMusic();
+  // Música curta e celebrativa da mini vitória entre missões.
+  const melody = [
+    {f:523,d:.14},{f:659,d:.14},{f:784,d:.16},{f:1046,d:.20},
+    {f:880,d:.14},{f:1046,d:.16},{f:1318,d:.24}
+  ];
+  let i = 0;
+  finalMusicTimer = setInterval(()=>{
+    const n = melody[i % melody.length];
+    tone(n.f, n.d, "triangle", .055, 0);
+    if(i % 3 === 2) tone(n.f * 1.25, .11, "sine", .024, .02);
+    i++;
+  }, 170);
+}
+
 function playTryAgainMusic(){
   stopFinalMusic();
   // Música de incentivo: começa suave e termina para cima, chamando o aluno para tentar de novo.
@@ -1962,6 +2050,7 @@ function resetRoundLives(){
 }
 
 function loadChallenge(){
+  stopFinalMusic();
   showPhaseTransitionIfNeeded();
   resetRoundLives();
   state.current = state.bag[state.round-1];
@@ -2106,10 +2195,37 @@ function completeRound(success){
     return;
   }
 
+  const completedMission = getWordInPhase() === 5;
+  if(completedMission){
+    setTimeout(()=>showMissionVictory(), 900);
+    return;
+  }
+
   setTimeout(()=>{
     state.round++;
     loadChallenge();
   }, 1050);
+}
+
+
+function showMissionVictory(){
+  const missionNumber = getCurrentPhaseIndex() + 1;
+  const nextMission = missionNumber + 1;
+  stopFinalMusic();
+  document.body.classList.remove("playing");
+  const msg = el("missionVictoryMsg");
+  if(msg){
+    msg.innerHTML = `Congratulations! Você concluiu a <b>Missão ${missionNumber}/6</b> com sucesso. Prepare-se: a <b>Missão ${nextMission}/6</b> vem aí com novos desafios.`;
+  }
+  show("missionVictoryScreen");
+  playMissionVictoryMusic();
+}
+
+function goToNextMission(){
+  stopFinalMusic();
+  state.round++;
+  show("gameScreen");
+  loadChallenge();
 }
 
 function getPlayerInfo(){
