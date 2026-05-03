@@ -1,402 +1,402 @@
-<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Smart Choice - 6º Ano</title><style>
-*{box-sizing:border-box} html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;color:#172033} body{min-height:100vh;background:linear-gradient(135deg,#dbeafe,#cffafe 48%,#ffe4e6);display:flex;align-items:center;justify-content:center;padding:12px}.app{width:min(100%,980px);min-height:min(760px,96vh);background:rgba(255,255,255,.88);border-radius:28px;box-shadow:0 24px 50px rgba(15,23,42,.18);overflow:hidden}header{padding:18px 20px 14px;background:linear-gradient(135deg,#2563eb,#06b6d4 55%,#e11d48);color:white}.topbar{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:10px;flex-wrap:wrap}.pill,.back{border:1px solid rgba(255,255,255,.32);background:rgba(255,255,255,.16);color:white;text-decoration:none;border-radius:999px;padding:8px 12px;font-weight:900;font-size:13px}.back{cursor:pointer}h1{margin:0;font-size:clamp(32px,6vw,54px);line-height:1;text-shadow:0 4px 12px rgba(0,0,0,.2)}.subtitle{margin:8px 0 0;font-weight:800;font-size:16px;line-height:1.35;max-width:760px}main{padding:18px}.screen{display:none}.screen.active{display:block}.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}.card{background:linear-gradient(180deg,rgba(255,255,255,.96),rgba(248,250,252,.94));border:1px solid rgba(148,163,184,.28);border-radius:24px;padding:18px;box-shadow:0 12px 28px rgba(15,23,42,.08)}.motivation{background:rgba(255,247,237,.92);border:1px solid rgba(251,191,36,.45);color:#1f2937;padding:14px;border-radius:18px;font-weight:900;line-height:1.35;margin:14px 0}.start-btn,.main-btn{width:100%;border:0;border-radius:18px;background:linear-gradient(135deg,#2563eb,#06b6d4 55%,#e11d48);color:white;padding:16px;font-size:18px;font-weight:900;cursor:pointer;box-shadow:0 14px 24px rgba(37,99,235,.22)}.list{display:grid;gap:10px;margin-top:12px}.item{display:flex;gap:10px;align-items:flex-start;font-weight:800;background:#f8fafc;border-radius:16px;padding:12px;border:1px solid #e2e8f0}.item b{color:#2563eb}.brand{margin-top:14px;text-align:center;font-weight:900;color:#334155}.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:10px}.stat{background:white;border:1px solid #e2e8f0;border-radius:16px;padding:8px;text-align:center}.stat b{display:block;font-size:22px;color:#2563eb;line-height:1}.stat span{font-size:11px;font-weight:900;color:#64748b;text-transform:uppercase}.lives-card{background:#fff1f2;border:1px solid #fecdd3;border-radius:16px;padding:8px 10px;text-align:center;font-weight:900;margin-bottom:10px}.lives{display:inline-flex;gap:4px;margin-left:6px}.heart{font-size:24px;color:#e11d48;line-height:1}.heart.lost{display:none}.question-card{min-height:420px;display:flex;flex-direction:column;gap:12px}.theme-chip{align-self:flex-start;background:#dbeafe;color:#1d4ed8;border:1px solid #bfdbfe;border-radius:999px;padding:7px 11px;font-weight:900;font-size:13px}.prompt{font-size:22px;line-height:1.28;font-weight:900;color:#111827;background:white;border:1px solid #e2e8f0;border-radius:18px;padding:16px}.visual{display:flex;align-items:center;justify-content:center;min-height:72px;border-radius:18px;background:linear-gradient(135deg,#eff6ff,#ecfeff);border:1px dashed #93c5fd;font-size:40px}.options{display:grid;gap:9px;grid-template-columns:1fr;flex:1}.option{border:2px solid #dbeafe;background:white;color:#172033;border-radius:16px;padding:13px 14px;text-align:left;font-weight:900;font-size:16px;cursor:pointer}.option.correct{background:#dcfce7;border-color:#22c55e;color:#14532d}.option.wrong{background:#fee2e2;border-color:#ef4444;color:#7f1d1d}.feedback{min-height:48px;border-radius:14px;padding:10px;font-weight:900;line-height:1.25;display:none}.feedback.good{display:block;background:#dcfce7;color:#14532d;border:1px solid #86efac}.feedback.bad{display:block;background:#fee2e2;color:#7f1d1d;border:1px solid #fca5a5}.final{text-align:center}.final h2{font-size:38px;margin:0 0 10px;color:#2563eb}.result-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:18px 0}.result-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:18px;padding:14px;font-weight:900}.result-box b{display:block;font-size:28px;color:#e11d48}
-@media(max-width:860px){body{padding:8px;align-items:flex-start}.app{min-height:calc(100vh - 16px);border-radius:22px}header{padding:12px}.pill,.back{font-size:11px;padding:7px 9px}h1{font-size:34px}.subtitle{font-size:14px}main{padding:10px}.hero{grid-template-columns:1fr;gap:10px}.card{border-radius:20px;padding:12px}.motivation,.item{font-size:13px;padding:10px}}
-body.playing{height:100dvh;min-height:100dvh;overflow:hidden;padding:6px;align-items:flex-start}body.playing .app{height:calc(100dvh - 12px);min-height:0;max-height:calc(100dvh - 12px);display:flex;flex-direction:column;border-radius:18px;overflow:hidden}body.playing header{flex:0 0 auto;padding:7px 8px 6px}body.playing .topbar{gap:6px;margin-bottom:2px}body.playing .pill,body.playing .back{font-size:10px;padding:5px 7px;line-height:1.05}body.playing h1{font-size:22px;margin:0;line-height:1}body.playing .subtitle{display:none}body.playing main{flex:1 1 auto;min-height:0;padding:5px;overflow:hidden}body.playing #gameScreen.active{height:100%;display:flex;flex-direction:column;min-height:0;overflow:hidden}body.playing .stats{grid-template-columns:repeat(5,1fr);gap:4px;margin-bottom:5px;flex:0 0 auto}body.playing .stat{border-radius:10px;padding:4px 2px}body.playing .stat b{font-size:15px}body.playing .stat span{font-size:8px}body.playing .lives-card{flex:0 0 auto;margin-bottom:5px;padding:5px 8px;border-radius:11px;font-size:11px;line-height:1}body.playing .heart{font-size:18px}body.playing .question-card{flex:1 1 auto;min-height:0;height:100%;border-radius:14px;padding:7px;gap:5px;overflow:hidden}body.playing .theme-chip{font-size:10px;padding:5px 8px;margin:0}body.playing .visual{min-height:38px;font-size:25px;border-radius:12px;flex:0 0 auto}body.playing .prompt{font-size:14px;line-height:1.16;padding:8px;border-radius:12px;max-height:76px;overflow:hidden;flex:0 0 auto}body.playing .options{gap:5px;min-height:0;flex:1 1 auto;overflow:hidden}body.playing .option{font-size:12.5px;line-height:1.1;padding:7px 9px;border-radius:11px;min-height:34px;border-width:1.5px}body.playing .feedback{flex:0 0 auto;min-height:0;max-height:46px;padding:6px;font-size:11px;line-height:1.13;border-radius:10px;overflow:hidden}@media(max-height:680px){body.playing .topbar{display:none}body.playing header{padding:5px}body.playing h1{font-size:19px}body.playing .stats{display:none}body.playing .visual{display:none}body.playing .prompt{font-size:12.5px;max-height:54px}body.playing .option{font-size:11.5px;min-height:29px;padding:6px}body.playing .feedback{display:none}}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<title>Smart Choice - 6º Ano</title>
+<style>
+*{box-sizing:border-box}
+:root{
+  --bg1:#06081f;--bg2:#12043b;--panel:rgba(9,13,50,.94);--panel2:rgba(15,20,70,.96);
+  --line:rgba(255,255,255,.16);--gold:#ffe66d;--gold2:#ffb703;--blue:#2563eb;--pink:#e11d48;
+  --green:#22c55e;--red:#ef4444;--text:#f8fafc;--muted:#dbeafe;
+}
+html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;color:var(--text)}
+body{
+  min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:8px;
+  background:
+    radial-gradient(circle at 18% 16%, rgba(56,189,248,.22) 0 9%, transparent 10%),
+    radial-gradient(circle at 82% 15%, rgba(255,230,109,.18) 0 8%, transparent 9%),
+    radial-gradient(circle at 50% 86%, rgba(225,29,72,.14) 0 10%, transparent 11%),
+    radial-gradient(circle, rgba(255,255,255,.82) 0 1.2px, transparent 1.4px) 0 0/94px 94px,
+    linear-gradient(180deg,var(--bg1),var(--bg2));
+}
+.app{
+  width:min(100%,1060px);height:min(770px,calc(100dvh - 16px));
+  background:linear-gradient(180deg,rgba(7,10,40,.96),rgba(11,8,48,.96));
+  border:1px solid rgba(255,230,109,.22);border-radius:22px;overflow:hidden;
+  box-shadow:0 24px 60px rgba(0,0,0,.45),0 0 36px rgba(255,230,109,.08);
+  display:flex;flex-direction:column;
+}
+header{
+  flex:0 0 auto;padding:10px 14px;text-align:center;color:#fff;
+  background:linear-gradient(135deg,#1d4ed8,#7c3aed 50%,#e11d48);
+  border-bottom:1px solid rgba(255,255,255,.16);
+}
+.topbar{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:4px}
+.back,.pill{
+  color:#fff;text-decoration:none;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.28);
+  border-radius:999px;padding:6px 10px;font-weight:900;font-size:12px;
+}
+h1{margin:0;font-size:clamp(26px,5.8vw,48px);line-height:1;text-shadow:0 3px 10px rgba(0,0,0,.2)}
+.subtitle{margin:4px 0 0;font-weight:800;color:#fff7c2;font-size:13px}
+main{flex:1;min-height:0;padding:10px;overflow:hidden}
+.screen{display:none;height:100%;min-height:0}
+.screen.active{display:flex}
+.card{
+  background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);
+  border-radius:18px;padding:12px;box-shadow:0 12px 30px rgba(0,0,0,.25);
+}
+.btn,.start-btn{
+  border:0;border-radius:15px;padding:11px 18px;cursor:pointer;width:100%;
+  background:linear-gradient(135deg,var(--gold),var(--gold2) 35%,#ff4d9e 78%,#7c3aed);
+  color:#172033;font-weight:1000;font-size:14px;box-shadow:0 10px 22px rgba(255,183,3,.22);
+}
+.btn.secondary{background:linear-gradient(135deg,#dbeafe,#a7f3d0);box-shadow:none}
+.brand{font-weight:900;color:#fff3b0;text-align:center;font-size:11px;margin-top:8px}
 
-.player-form{
-  display:grid;
-  gap:6px;
-  margin:12px 0;
+/* Start */
+#startScreen{align-items:center;justify-content:center;overflow:hidden}
+.start-wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:12px;width:100%;height:100%;min-height:0}
+.start-card{overflow:auto}
+.start-card h2,.info-card h3{margin:0 0 8px;color:#fff;font-size:24px}
+.motivation{
+  background:rgba(255,230,109,.12);border:1px solid rgba(255,230,109,.32);color:#fff7c2;
+  padding:10px;border-radius:15px;font-weight:900;line-height:1.32;margin:8px 0;font-size:13px;
 }
-.player-form label{
-  font-weight:900;
-  color:#1e3a8a;
-  font-size:13px;
-}
+.player-form{display:grid;gap:7px;text-align:left;margin:10px 0}
+.player-form label{font-weight:900;color:var(--gold);font-size:13px}
 .player-form input{
-  width:100%;
-  border:2px solid #bfdbfe;
-  border-radius:14px;
-  padding:11px 12px;
-  font-size:15px;
-  font-weight:800;
-  outline:none;
-  background:white;
+  width:100%;border:2px solid rgba(96,165,250,.42);border-radius:13px;padding:10px 12px;
+  font-size:15px;font-weight:800;outline:none;background:rgba(255,255,255,.96);color:#172033;
 }
-.player-form input:focus{
-  border-color:#2563eb;
-  box-shadow:0 0 0 3px rgba(37,99,235,.15);
+.review-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;max-height:245px;overflow:auto;padding-right:3px}
+.review-block{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);border-radius:13px;padding:8px}
+.review-block b{display:block;color:#ffe66d;font-size:12px;margin-bottom:4px}
+.review-block span{display:block;color:#eaf2ff;font-weight:800;font-size:10.8px;line-height:1.25;margin:2px 0}
+.info-list{display:grid;gap:8px}
+.info-item{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);border-radius:14px;padding:10px;font-weight:900;line-height:1.25;color:#eaf2ff}
+.info-item b{color:var(--gold)}
+
+/* Game */
+#gameScreen.active{display:flex;flex-direction:column}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;flex:0 0 auto;margin-bottom:6px}
+.stat{background:linear-gradient(180deg,rgba(13,20,72,.96),rgba(13,10,50,.96));border:1.5px solid rgba(255,230,109,.25);border-radius:13px;padding:6px 3px;text-align:center}
+.stat b{display:block;font-size:18px;color:var(--gold);line-height:1}
+.stat span{font-size:8px;font-weight:900;color:#dbeafe;text-transform:uppercase}
+.progress-card{
+  flex:0 0 auto;text-align:center;padding:7px 10px;margin-bottom:6px;border-radius:13px;
+  background:linear-gradient(90deg,rgba(255,230,109,.14),rgba(56,189,248,.10),rgba(225,29,72,.14));
+  border:1.5px solid rgba(255,230,109,.34);font-weight:900;color:#fff3b0;font-size:13px;
 }
-.final-ranking h2{
-  margin:0 0 8px;
-  text-align:center;
-  font-size:30px;
-  color:#1d4ed8;
+.question-card{flex:1;min-height:0;overflow:hidden;display:grid;grid-template-rows:auto auto auto 1fr auto;gap:8px}
+.mission-box{
+  display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 10px;border-radius:15px;
+  background:linear-gradient(135deg, rgba(255,230,109,.24), rgba(37,99,235,.18), rgba(225,29,72,.12));
+  border:1px solid rgba(255,230,109,.42);color:#fff7c2;font-weight:1000;
 }
-.final-message{
-  background:linear-gradient(135deg,#fff7ed,#dbeafe);
-  border:2px solid #f8d36b;
-  color:#172033;
-  border-radius:16px;
-  padding:11px;
-  font-weight:900;
-  line-height:1.28;
-  text-align:center;
-  margin:8px 0;
-  font-size:13px;
-}
-.player-summary{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:7px;
-  margin:10px 0;
-}
-.summary-box{
-  background:#f8fafc;
-  border:1px solid #e2e8f0;
-  border-radius:14px;
-  padding:9px 6px;
-  text-align:center;
-  font-weight:900;
-}
-.summary-box span{
-  display:block;
-  color:#64748b;
-  font-size:10px;
-  text-transform:uppercase;
-}
-.summary-box b{
-  display:block;
-  color:#e11d48;
-  font-size:19px;
-  margin-top:2px;
-}
-.ranking-title{
-  text-align:center;
-  margin:12px 0 7px;
-  font-size:20px;
-  color:#1d4ed8;
-}
-.rank-list{
-  display:grid;
-  gap:6px;
-  margin:7px 0;
-}
-.rank-row{
-  display:grid;
-  grid-template-columns:34px 1fr auto;
-  gap:7px;
-  align-items:center;
-  padding:7px;
-  border-radius:13px;
-  background:#f8fafc;
-  border:1px solid #e2e8f0;
-  box-shadow:0 4px 9px rgba(15,23,42,.05);
-}
-.rank-row.player{
-  background:linear-gradient(135deg,#fff7ed,#dbeafe);
-  border:2px solid #f8d36b;
-  box-shadow:0 7px 14px rgba(245,158,11,.18);
-}
-.rank-pos{
-  width:28px;
-  height:28px;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:900;
-  background:#dbeafe;
-  color:#1d4ed8;
-  font-size:12px;
-}
-.rank-row.player .rank-pos{
-  background:#f8d36b;
-  color:#172033;
-}
-.rank-name{
-  font-weight:900;
-  color:#172033;
-  line-height:1.05;
-  font-size:12px;
-}
-.rank-school{
-  font-size:9px;
-  font-weight:800;
-  color:#64748b;
-  margin-top:2px;
-}
-.rank-score{
-  font-weight:900;
-  color:#e11d48;
-  text-align:right;
-  font-size:12px;
-}
-.rank-note{
-  text-align:center;
-  font-size:10.5px;
-  color:#475569;
-  font-weight:800;
-  line-height:1.2;
-  margin-top:7px;
-}
-.rank-actions{
-  display:grid;
-  grid-template-columns:1fr;
-  gap:7px;
-  margin-top:10px;
-}
+.mission-box small{color:#eaf2ff;font-weight:900;text-align:right}
+.theme-chip{justify-self:start;background:linear-gradient(135deg,rgba(255,230,109,.22),rgba(255,183,3,.13));color:#fff3b0;border:1px solid rgba(255,230,109,.45);border-radius:999px;padding:6px 10px;font-weight:900;font-size:13px}
+.visual{display:flex;align-items:center;justify-content:center;min-height:66px;border-radius:18px;background:linear-gradient(135deg,rgba(239,246,255,.95),rgba(236,254,255,.92));border:1px dashed #93c5fd;font-size:44px}
+.prompt{font-size:20px;line-height:1.24;font-weight:900;color:#fff;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-left:5px solid var(--gold);padding:11px;border-radius:15px}
+.options{display:grid;grid-template-columns:1fr;gap:7px;min-height:0;overflow:hidden}
+.option{border:2px solid rgba(96,165,250,.32);background:linear-gradient(180deg,#ffffff,#eaf2ff);border-radius:13px;padding:10px 12px;text-align:left;font-weight:1000;font-size:15px;cursor:pointer;color:#172033}
+.option.correct{background:#dcfce7;border-color:#22c55e;color:#14532d}
+.option.wrong{background:#fee2e2;border-color:#ef4444;color:#7f1d1d}
+.feedback{display:none;border-radius:13px;padding:8px;font-weight:900;line-height:1.22;font-size:12px}
+.feedback.good{display:block;background:#dcfce7;border:1px solid #86efac;color:#14532d}
+.feedback.bad{display:block;background:#fee2e2;border:1px solid #fca5a5;color:#7f1d1d}
+
+/* Mission / final */
+#missionWinScreen,#finalScreen{align-items:center;justify-content:center}
+.win-card,.final-card{width:100%;max-width:720px;text-align:center;max-height:100%;overflow:auto}
+.big-title{font-size:34px;color:var(--gold);margin:0 0 8px;text-shadow:0 0 16px rgba(255,230,109,.18)}
+.win-emoji{font-size:54px;margin:4px 0}
+.win-text,.final-message{font-weight:900;line-height:1.35;margin:8px 0 12px;color:#eaf2ff}
+.final-message{background:linear-gradient(135deg,#fff7ed,#dbeafe);border:2px solid var(--gold);color:#172033;border-radius:15px;padding:10px}
+.result-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:10px 0}
+.result-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:8px;text-align:center;font-weight:900}
+.result-box span{display:block;color:#64748b;font-size:9px;text-transform:uppercase}
+.result-box b{display:block;color:#e11d48;font-size:18px;margin-top:2px}
+.rank-list{display:grid;gap:5px;margin:8px 0}
+.rank-row{display:grid;grid-template-columns:30px 1fr auto;gap:6px;align-items:center;padding:6px;border-radius:11px;background:#f8fafc;border:1px solid #e2e8f0}
+.rank-row.player{background:linear-gradient(135deg,#fff7ed,#dbeafe);border:2px solid var(--gold)}
+.rank-pos{width:25px;height:25px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;background:#dbeafe;color:#1d4ed8;font-size:10px}
+.rank-name{font-weight:900;color:#172033;line-height:1.05;font-size:11px;text-align:left}
+.rank-school{font-size:8.5px;font-weight:800;color:#64748b;margin-top:1px;text-align:left}
+.rank-score{font-weight:900;color:#e11d48;text-align:right;font-size:11px}
+.rank-note{text-align:center;font-size:10px;color:#cbd5e1;font-weight:800;line-height:1.15;margin-top:5px}
+.rank-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:9px}
+
 @media(max-width:860px){
-  #finalScreen .card{
-    padding:10px;
-    border-radius:18px;
-  }
-  .final-ranking h2{
-    font-size:25px;
-  }
-  .player-summary{
-    grid-template-columns:repeat(2,1fr);
-    gap:6px;
-  }
-  .rank-row{
-    grid-template-columns:31px 1fr auto;
-    padding:6px;
-  }
-  .rank-pos{
-    width:25px;
-    height:25px;
-    font-size:11px;
-  }
+  body{padding:5px;align-items:flex-start}
+  .app{height:calc(100dvh - 10px);border-radius:16px}
+  header{padding:5px 7px}.topbar{margin-bottom:2px}.back,.pill{font-size:9px;padding:4px 7px}
+  h1{font-size:22px}.subtitle{display:none}main{padding:5px}
+  .start-wrap{grid-template-columns:1fr;height:100%;overflow:auto}
+  .start-card h2,.info-card h3{font-size:19px}
+  .motivation{font-size:11px;padding:8px;margin:6px 0}
+  .player-form{gap:5px;margin:7px 0}.player-form label{font-size:11px}.player-form input{padding:8px 9px;font-size:13px}
+  .review-grid{grid-template-columns:1fr;max-height:170px}.review-block{padding:6px}.review-block span{font-size:10px}
+  .info-card{display:none}
+  .stats{gap:4px;margin-bottom:4px}.stat{padding:4px 2px;border-radius:10px}.stat b{font-size:14px}.stat span{font-size:7px}
+  .progress-card{font-size:10px;padding:5px;margin-bottom:4px;border-radius:10px}
+  .question-card{gap:5px;padding:6px;border-radius:13px}
+  .mission-box{padding:5px 7px;font-size:11px}.mission-box small{font-size:9px}
+  .theme-chip{font-size:10px;padding:4px 8px}
+  .visual{min-height:42px;font-size:27px;border-radius:12px}
+  .prompt{font-size:14px;line-height:1.16;padding:7px 8px;border-radius:12px;max-height:74px;overflow:hidden}
+  .options{gap:5px}
+  .option{font-size:12.5px;line-height:1.1;padding:7px 9px;border-radius:10px;min-height:34px}
+  .feedback{font-size:10.5px;padding:5px;max-height:44px;overflow:hidden}
+  .big-title{font-size:27px}.win-emoji{font-size:44px}.win-text{font-size:13px}
+  .result-grid{grid-template-columns:repeat(2,1fr)}
 }
-
-</style></head><body><div class="app"><header><div class="topbar"><a class="back" href="6ano.html">← Voltar ao 6º ano</a><div class="pill">🎯 Smart Choice • 6º Ano</div></div><h1>Smart Choice</h1><p class="subtitle">Escolha a melhor resposta, acumule pontos e mostre que você domina o inglês do 1º bimestre.</p></header><main><section id="startScreen" class="screen active"><div class="hero"><div class="card"><h2>⚡ Desafio rápido de inglês</h2><div class="motivation">Aprender inglês pode ser mais divertido quando você aceita o desafio, tenta, erra, aprende e continua jogando. Cada fase vencida mostra que você é capaz de ir mais longe. Acredite em você: você é do tamanho dos seus sonhos!</div>
-          <div class="player-form">
-            <label>Seu nome</label>
-            <input id="playerName" type="text" placeholder="Digite seu nome" maxlength="28">
-            <label>Turma</label>
-            <input id="playerClass" type="text" placeholder="Ex.: 601" maxlength="12">
-            <label>Escola</label>
-            <input id="playerSchool" type="text" placeholder="Digite o nome da escola" maxlength="40">
-          </div>
-
-          <button class="start-btn" onclick="startGame()">Começar desafio</button><div class="brand">Jogo idealizado pelo professor Jasson Bruno.</div></div><div class="card"><h3>Como funciona?</h3><div class="list"><div class="item"><b>1.</b><span>Você terá 50 rodadas rápidas com perguntas mescladas.</span></div><div class="item"><b>2.</b><span>Começa com 5 vidas. A cada erro, um coração some.</span></div><div class="item"><b>3.</b><span>Revisa greetings, commands, pronouns, possessives e personal information.</span></div><div class="item"><b>4.</b><span>Na tela da partida não há rolagem para manter a concentração.</span></div></div></div></div></section><section id="gameScreen" class="screen"><div class="stats"><div class="stat"><b id="round">1</b><span>Rodada</span></div><div class="stat"><b id="score">0</b><span>Pontos</span></div><div class="stat"><b id="corrects">0</b><span>Acertos</span></div><div class="stat"><b id="combo">0</b><span>Combo</span></div><div class="stat"><b id="left">50</b><span>Faltam</span></div></div><div class="lives-card"><b>Vidas:</b><span id="lives" class="lives"><span class="heart">♥</span><span class="heart">♥</span><span class="heart">♥</span><span class="heart">♥</span><span class="heart">♥</span></span></div><div class="card question-card"><div id="theme" class="theme-chip">Tema</div><div class="visual" id="visual">🎮</div><div id="prompt" class="prompt">Pergunta</div><div id="options" class="options"></div><div id="feedback" class="feedback"></div></div></section>
-    <section id="finalScreen" class="screen">
-      <div class="card final final-ranking">
-        <h2 id="finalTitle">💪 TRY AGAIN!</h2>
-
-        <div id="finalMessage" class="final-message">
-          Você chegou até aqui, tentou, errou, aprendeu e isso já mostra evolução. Não pare agora! Jogue novamente e tente subir no ranking.
-        </div>
-
-        <div class="player-summary">
-          <div class="summary-box"><span>Pontuação</span><b id="finalScore">0</b></div>
-          <div class="summary-box"><span>Acertos</span><b id="finalCorrects">0/50</b></div>
-          <div class="summary-box"><span>Combo</span><b id="finalCombo">0</b></div>
-          <div class="summary-box"><span>Vidas</span><b id="finalLives">0/5</b></div>
-        </div>
-
-        <h3 class="ranking-title">🏆 Ranking do Desafio — Smart Choice</h3>
-        <div id="rankList" class="rank-list"></div>
-
-        <div class="rank-note">
-          Ranking motivacional interno do jogo. Faça um print da sua pontuação e tente jogar novamente para subir no ranking.
-        </div>
-
-        <div class="rank-actions">
-          <button class="main-btn" onclick="startGame()">Jogar novamente</button>
-          <button class="main-btn" onclick="location.href='6ano.html'">Voltar ao 6º ano</button>
-        </div>
-
-        <div class="brand">Jogo idealizado pelo professor Jasson Bruno.</div>
+@media(max-height:680px) and (max-width:860px){
+  body.playing .topbar{display:none} body.playing header{padding:5px} body.playing h1{font-size:19px}
+  body.playing .stats{display:none} body.playing .visual{display:none}
+  body.playing .prompt{font-size:12.5px;max-height:55px}
+  body.playing .option{font-size:11.5px;min-height:29px;padding:6px}
+  body.playing .feedback{display:none}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+  <div class="topbar">
+    <a class="back" href="6ano.html">← 6º ano</a>
+    <span class="pill">Alinhado à BNCC</span>
+  </div>
+  <h1>Smart Choice</h1>
+  <p class="subtitle">Escolha a melhor resposta e avance pelas missões do Inglês do 6º ano.</p>
+</header>
+<main>
+<section id="startScreen" class="screen active">
+  <div class="start-wrap">
+    <div class="card start-card">
+      <h2>🎯 Smart Choice — 6º Ano</h2>
+      <div class="motivation">Aprender inglês pode ser mais divertido quando você aceita o desafio, tenta, erra, aprende e continua jogando. Cada missão vencida mostra que você é capaz de ir mais longe.</div>
+      <div class="review-grid">
+        <div class="review-block"><b>Basic Communication</b><span>Hello = Olá</span><span>Goodbye = Tchau</span><span>Please = Por favor</span><span>Thank you = Obrigado(a)</span></div>
+        <div class="review-block"><b>Verb To Be</b><span>I am = Eu sou/estou</span><span>He is = Ele é/está</span><span>They are = Eles são/estão</span></div>
+        <div class="review-block"><b>Numbers and Time</b><span>one, two, three</span><span>Monday = segunda-feira</span><span>January = janeiro</span><span>o'clock = hora exata</span></div>
+        <div class="review-block"><b>School and Places</b><span>book = livro</span><span>pencil = lápis</span><span>classroom = sala</span><span>cafeteria = lugar de lanchar</span></div>
+        <div class="review-block"><b>Prepositions</b><span>in = dentro</span><span>on = em cima</span><span>under = embaixo</span><span>next to = ao lado</span></div>
+        <div class="review-block"><b>Daily Vocabulary</b><span>red = vermelho</span><span>apple = maçã</span><span>dog = cachorro</span><span>beach = praia</span></div>
       </div>
-    </section>
-</main></div><script>
-const TOTAL_ROUNDS=50, MAX_LIVES=5; const VISUALS=['🎮','📚','⚽','🧽','🕷️','💬','✏️','🏫','⭐','🎧','🧠','🚀']; const CARDS=[{"theme": "Greetings", "prompt": "Bob Esponja chegou à escola de manhã e quer cumprimentar Patrick. Qual expressão ele deve usar?", "answer": "Good morning!", "options": ["Good morning!", "Good night!", "Goodbye!", "See you!", "Thank you!"], "explanation": "Good morning = Bom dia."}, {"theme": "Greetings", "prompt": "Sonic encontrou um amigo à tarde. Como ele pode dizer \"Boa tarde\" em inglês?", "answer": "Good afternoon!", "options": ["Good afternoon!", "Good night!", "Bye!", "Sit down!", "I am fine."], "explanation": "Good afternoon = Boa tarde."}, {"theme": "Greetings", "prompt": "Wandinha encontrou Enid e disse: \"Oi!\". Qual palavra em inglês representa essa saudação?", "answer": "Hello!", "options": ["Hello!", "Bye!", "Open!", "Listen!", "Book!"], "explanation": "Hello = Olá/Oi."}, {"theme": "Greetings", "prompt": "Quando alguém pergunta \"How are you?\", qual resposta combina melhor?", "answer": "I am fine.", "options": ["I am fine.", "Goodbye.", "Close your book.", "My name is pen.", "Stand up."], "explanation": "I am fine = Eu estou bem."}, {"theme": "Farewells", "prompt": "Ao sair da sala, o aluno quer dizer \"Tchau\". Qual opção escolher?", "answer": "Goodbye!", "options": ["Goodbye!", "Good morning!", "Open your book!", "He is Neymar.", "My pencil."], "explanation": "Goodbye = Tchau."}, {"theme": "Farewells", "prompt": "No final da aula, a professora diz \"Até mais!\". Qual expressão em inglês combina?", "answer": "See you!", "options": ["See you!", "Hello!", "Stand up!", "What is your name?", "His book."], "explanation": "See you = Até mais."}, {"theme": "Farewells", "prompt": "É noite e Goku está indo embora. Qual despedida pode significar \"Boa noite\"?", "answer": "Good night!", "options": ["Good night!", "Good afternoon!", "Good morning!", "Sit down!", "I am 12."], "explanation": "Good night pode ser usado como despedida à noite."}, {"theme": "Classroom Commands", "prompt": "A professora aponta para o livro e diz: \"Abra o livro\". Qual comando em inglês é correto?", "answer": "Open your book.", "options": ["Open your book.", "Close the door.", "Good night.", "My name is João.", "She is my friend."], "explanation": "Open your book = Abra seu livro."}, {"theme": "Classroom Commands", "prompt": "Quando a professora quer silêncio e atenção, ela pode dizer:", "answer": "Listen!", "options": ["Listen!", "Goodbye!", "Pencil!", "They are.", "Her."], "explanation": "Listen = Ouça/Escute."}, {"theme": "Classroom Commands", "prompt": "Se a professora pede para repetir, qual comando em inglês aparece?", "answer": "Repeat, please.", "options": ["Repeat, please.", "See you!", "I am fine.", "His ruler.", "Good afternoon."], "explanation": "Repeat, please = Repita, por favor."}, {"theme": "Classroom Commands", "prompt": "O aluno está em pé e a professora pede para sentar. Qual comando é correto?", "answer": "Sit down.", "options": ["Sit down.", "Stand up.", "Good morning.", "My name is.", "Where are you from?"], "explanation": "Sit down = Sente-se."}, {"theme": "Classroom Commands", "prompt": "A turma precisa levantar. Qual comando em inglês significa \"levantem-se\"?", "answer": "Stand up.", "options": ["Stand up.", "Sit down.", "Close your notebook.", "Bye.", "They are cats."], "explanation": "Stand up = Levante-se."}, {"theme": "Classroom Expressions", "prompt": "O aluno não entendeu e quer pedir ajuda. Qual frase é melhor?", "answer": "Can you help me?", "options": ["Can you help me?", "Goodbye!", "I am a book.", "Her pencil.", "Stand up."], "explanation": "Can you help me? = Você pode me ajudar?"}, {"theme": "Classroom Expressions", "prompt": "Quando o aluno quer pedir para ir ao banheiro, qual frase é adequada?", "answer": "May I go to the bathroom?", "options": ["May I go to the bathroom?", "Open your pencil.", "Good night!", "His name are João.", "They is happy."], "explanation": "May I go to the bathroom? = Posso ir ao banheiro?"}, {"theme": "Classroom Expressions", "prompt": "Se o aluno quer dizer \"Eu não sei\", qual frase em inglês é correta?", "answer": "I don't know.", "options": ["I don't know.", "I am book.", "She are Ana.", "Goodbye morning.", "My is name."], "explanation": "I don't know = Eu não sei."}, {"theme": "Spelling Names", "prompt": "A professora pergunta: \"How do you spell Ana?\". Qual resposta mostra a soletração correta?", "answer": "A-N-A", "options": ["A-N-A", "N-A-A", "A-A-N", "E-N-A", "A-M-A"], "explanation": "Ana se soletra A-N-A."}, {"theme": "Spelling Names", "prompt": "Como soletrar o nome \"Leo\" em inglês?", "answer": "L-E-O", "options": ["L-E-O", "E-L-O", "L-O-E", "A-E-O", "L-I-O"], "explanation": "Leo = L-E-O."}, {"theme": "Spelling Names", "prompt": "A pergunta \"How do you spell your name?\" quer saber:", "answer": "Como se soletra seu nome?", "options": ["Como se soletra seu nome?", "Quantos anos você tem?", "Onde você mora?", "Qual sua cor favorita?", "Você está bem?"], "explanation": "Spell = soletrar."}, {"theme": "Personal Information", "prompt": "Neymar pergunta: \"What is your name?\". Qual resposta é correta?", "answer": "My name is Pedro.", "options": ["My name is Pedro.", "I am 12 years.", "Goodbye!", "Open your book.", "Her name are Ana."], "explanation": "My name is... = Meu nome é..."}, {"theme": "Personal Information", "prompt": "A pergunta \"How old are you?\" pede qual informação?", "answer": "Idade", "options": ["Idade", "Nome", "Cidade", "Cor favorita", "Material escolar"], "explanation": "How old are you? = Quantos anos você tem?"}, {"theme": "Personal Information", "prompt": "Qual frase responde corretamente à pergunta \"How old are you?\"", "answer": "I am 11 years old.", "options": ["I am 11 years old.", "My name is 11.", "I are 11.", "Good morning 11.", "Her 11 years."], "explanation": "I am 11 years old = Eu tenho 11 anos."}, {"theme": "Personal Information", "prompt": "Se alguém pergunta \"Where are you from?\", quer saber:", "answer": "De onde você é.", "options": ["De onde você é.", "Seu nome.", "Sua idade.", "Sua sala.", "Sua mochila."], "explanation": "Where are you from? = De onde você é?"}, {"theme": "Personal Pronouns", "prompt": "Em inglês, qual pronome usamos para falar de \"eu\"?", "answer": "I", "options": ["I", "You", "He", "She", "They"], "explanation": "I = eu."}, {"theme": "Personal Pronouns", "prompt": "Qual pronome substitui \"Maria\"?", "answer": "She", "options": ["She", "He", "They", "We", "It"], "explanation": "She = ela."}, {"theme": "Personal Pronouns", "prompt": "Qual pronome substitui \"João\"?", "answer": "He", "options": ["He", "She", "It", "We", "They"], "explanation": "He = ele."}, {"theme": "Personal Pronouns", "prompt": "Qual pronome usamos para falar de \"você\"?", "answer": "You", "options": ["You", "I", "He", "She", "It"], "explanation": "You = você."}, {"theme": "Personal Pronouns", "prompt": "Qual pronome substitui \"Ana and Pedro\"?", "answer": "They", "options": ["They", "He", "She", "It", "I"], "explanation": "They = eles/elas."}, {"theme": "Personal Pronouns", "prompt": "Qual pronome usamos para \"nós\"?", "answer": "We", "options": ["We", "You", "They", "He", "It"], "explanation": "We = nós."}, {"theme": "Possessive Adjectives", "prompt": "Qual palavra significa \"meu/minha\" em inglês?", "answer": "My", "options": ["My", "Your", "His", "Her", "Their"], "explanation": "My = meu/minha."}, {"theme": "Possessive Adjectives", "prompt": "Qual palavra significa \"seu/sua\" quando falo com você?", "answer": "Your", "options": ["Your", "My", "His", "Her", "Our"], "explanation": "Your = seu/sua."}, {"theme": "Possessive Adjectives", "prompt": "Complete: He is João. ___ book is blue.", "answer": "His", "options": ["His", "Her", "My", "Your", "Their"], "explanation": "His = dele."}, {"theme": "Possessive Adjectives", "prompt": "Complete: She is Ana. ___ pencil is red.", "answer": "Her", "options": ["Her", "His", "My", "Your", "Our"], "explanation": "Her = dela."}, {"theme": "Possessive Adjectives", "prompt": "Complete: I am Lucas. ___ school is big.", "answer": "My", "options": ["My", "Your", "His", "Her", "Their"], "explanation": "My = meu/minha."}, {"theme": "Possessive Adjectives", "prompt": "Messi tem uma bola. Em inglês: ___ ball is white.", "answer": "His", "options": ["His", "Her", "My", "Your", "Our"], "explanation": "His ball = a bola dele."}, {"theme": "School Vocabulary", "prompt": "Qual palavra em inglês significa \"lápis\"?", "answer": "Pencil", "options": ["Pencil", "Book", "Chair", "Door", "Teacher"], "explanation": "Pencil = lápis."}, {"theme": "School Vocabulary", "prompt": "Qual palavra em inglês significa \"livro\"?", "answer": "Book", "options": ["Book", "Pen", "Desk", "Window", "Friend"], "explanation": "Book = livro."}, {"theme": "School Vocabulary", "prompt": "Qual palavra significa \"professor/professora\"?", "answer": "Teacher", "options": ["Teacher", "Student", "Ruler", "Eraser", "School"], "explanation": "Teacher = professor/professora."}, {"theme": "School Vocabulary", "prompt": "Qual palavra em inglês significa \"aluno/aluna\"?", "answer": "Student", "options": ["Student", "Teacher", "Book", "Pencil", "Door"], "explanation": "Student = aluno/aluna."}, {"theme": "School Vocabulary", "prompt": "Qual palavra significa \"borracha\"?", "answer": "Eraser", "options": ["Eraser", "Ruler", "Pen", "Book", "Chair"], "explanation": "Eraser = borracha."}, {"theme": "School Vocabulary", "prompt": "Qual palavra significa \"régua\"?", "answer": "Ruler", "options": ["Ruler", "Pencil", "Eraser", "Bag", "Desk"], "explanation": "Ruler = régua."}];
-let state={round:1,score:0,corrects:0,combo:0,maxCombo:0,lives:MAX_LIVES,bag:[],current:null,answered:false};
-function el(id){return document.getElementById(id)} function shuffle(arr){const a=[...arr]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]} return a} function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); el(id).classList.add('active'); document.body.classList.toggle('playing',id==='gameScreen')}
-function makeBag(){const themes=[...new Set(CARDS.map(c=>c.theme))], by={}; themes.forEach(t=>by[t]=shuffle(CARDS.filter(c=>c.theme===t))); const bag=[]; let last=null; while(bag.length<TOTAL_ROUNDS){let av=themes.filter(t=>by[t].length>0&&t!==last); if(av.length===0){themes.forEach(t=>by[t]=shuffle(CARDS.filter(c=>c.theme===t))); av=themes.filter(t=>t!==last)} const theme=av[Math.floor(Math.random()*av.length)], q=by[theme].pop(); bag.push(q); last=theme} return bag}
-function renderLives(){document.querySelectorAll('#lives .heart').forEach((h,i)=>h.classList.toggle('lost',i>=state.lives))} function updateStats(){el('round').textContent=state.round; el('score').textContent=state.score; el('corrects').textContent=state.corrects; el('combo').textContent=state.combo; el('left').textContent=Math.max(0,TOTAL_ROUNDS-state.round+1); renderLives()}
+      <div class="player-form">
+        <label>Nome do aluno</label><input id="playerName" type="text" placeholder="Digite seu nome" maxlength="28">
+        <label>Turma</label><input id="playerClass" type="text" placeholder="Ex.: 601" maxlength="12">
+        <label>Escola</label><input id="playerSchool" type="text" value="Escola Delfina de Jesus Amorim" maxlength="50">
+      </div>
+      <button class="start-btn" onclick="startGame()">Começar missão</button>
+      <div class="brand">Jogo idealizado pelo professor Jasson Bruno.</div>
+    </div>
+    <div class="card info-card">
+      <h3>Como funciona?</h3>
+      <div class="info-list">
+        <div class="info-item"><b>1.</b> São 5 missões com 10 rodadas cada.</div>
+        <div class="info-item"><b>2.</b> O conteúdo cobre o Inglês do 6º ano: comunicação, verb to be, números, tempo, escola, lugares, preposições e vocabulário diário.</div>
+        <div class="info-item"><b>3.</b> Ao terminar cada missão, aparece uma mini vitória para celebrar o avanço.</div>
+        <div class="info-item"><b>4.</b> No final, o aluno vê pontuação, acertos, combo e ranking motivacional.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="gameScreen" class="screen">
+  <div class="stats">
+    <div class="stat"><b id="missionStat">1/5</b><span>Missão</span></div>
+    <div class="stat"><b id="roundStat">1/10</b><span>Rodada</span></div>
+    <div class="stat"><b id="score">0</b><span>Pontos</span></div>
+    <div class="stat"><b id="corrects">0</b><span>Acertos</span></div>
+    <div class="stat"><b id="combo">0</b><span>Combo</span></div>
+  </div>
+  <div class="progress-card" id="progressText">Missão 1 de 5 • Rodada 1 de 10</div>
+  <div class="card question-card">
+    <div class="mission-box"><span id="missionName">Missão 1 — Basic Communication</span><small id="missionProgress">Rodada 1/10</small></div>
+    <div id="theme" class="theme-chip">Tema</div>
+    <div class="visual" id="visual">🎮</div>
+    <div id="prompt" class="prompt">Pergunta</div>
+    <div id="options" class="options"></div>
+    <div id="feedback" class="feedback"></div>
+  </div>
+</section>
+
+<section id="missionWinScreen" class="screen">
+  <div class="card win-card">
+    <div class="win-emoji">🌟🏆🌟</div>
+    <h2 class="big-title">MISSION COMPLETE!</h2>
+    <p id="missionWinText" class="win-text">Congratulations! Você concluiu uma missão.</p>
+    <button class="btn" onclick="nextMission()">Ir para a próxima missão 🚀</button>
+    <div class="brand">Jogo idealizado pelo professor Jasson Bruno.</div>
+  </div>
+</section>
+
+<section id="finalScreen" class="screen">
+  <div class="card final-card">
+    <h2 class="big-title" id="finalTitle">Resultado</h2>
+    <div id="finalMessage" class="final-message"></div>
+    <div class="result-grid">
+      <div class="result-box"><span>Pontos</span><b id="finalScore">0</b></div>
+      <div class="result-box"><span>Acertos</span><b id="finalCorrects">0/50</b></div>
+      <div class="result-box"><span>Combo</span><b id="finalCombo">0</b></div>
+      <div class="result-box"><span>Status</span><b id="finalStatus">---</b></div>
+    </div>
+    <div class="rank-list" id="rankList"></div>
+    <div class="rank-note">Ranking motivacional interno do jogo. Faça print da tela final para registrar sua pontuação.</div>
+    <div class="rank-actions">
+      <button class="btn secondary" onclick="startGame()">Jogar novamente</button>
+      <button class="btn" onclick="location.href='6ano.html'">Voltar ao 6º ano</button>
+    </div>
+    <div class="brand">Jogo idealizado pelo professor Jasson Bruno.</div>
+  </div>
+</section>
+</main>
+</div>
+
+<script>
+const MISSIONS = [{"title": "Basic Communication", "subtitle": "Greetings, farewells, classroom expressions and spelling", "items": [{"theme": "Greetings", "visual": "👋", "prompt": "Você chegou à escola de manhã. Qual expressão significa “bom dia” em inglês?", "answer": "Good morning!", "options": ["Good morning!", "Good night!", "Goodbye!", "See you!", "Thank you!"], "explanation": "Good morning = bom dia."}, {"theme": "Greetings", "visual": "☀️", "prompt": "Você encontrou um colega depois do almoço. Como dizer “boa tarde” em inglês?", "answer": "Good afternoon!", "options": ["Good afternoon!", "Good morning!", "Good night!", "Bye!", "Please!"], "explanation": "Good afternoon = boa tarde."}, {"theme": "Greetings", "visual": "🙂", "prompt": "Um amigo disse “Oi!”. Qual palavra em inglês combina com essa saudação curta?", "answer": "Hi!", "options": ["Hi!", "Bye!", "Book!", "Stand up!", "Pencil!"], "explanation": "Hi = oi."}, {"theme": "Farewells", "visual": "👋", "prompt": "A aula terminou e você quer dizer “tchau”. Qual opção está correta?", "answer": "Goodbye!", "options": ["Goodbye!", "Hello!", "Good morning!", "Listen!", "Open!"], "explanation": "Goodbye = tchau."}, {"theme": "Farewells", "visual": "🚪", "prompt": "Você vai embora e quer dizer “até logo”. Qual expressão em inglês pode usar?", "answer": "See you!", "options": ["See you!", "Thank you!", "Sit down!", "I am fine.", "My pencil."], "explanation": "See you = até logo / até mais."}, {"theme": "Classroom Expressions", "visual": "🙏", "prompt": "Você quer pedir algo com educação. Qual palavra significa “por favor”?", "answer": "Please", "options": ["Please", "Sorry", "Pencil", "Teacher", "Monday"], "explanation": "Please = por favor."}, {"theme": "Classroom Expressions", "visual": "🤝", "prompt": "Alguém ajudou você. Como agradecer em inglês?", "answer": "Thank you!", "options": ["Thank you!", "Goodbye!", "I don't know.", "Stand up!", "What time is it?"], "explanation": "Thank you = obrigado(a)."}, {"theme": "Classroom Expressions", "visual": "🙋", "prompt": "Você não entendeu a atividade e quer pedir ajuda. Qual frase é melhor?", "answer": "Can you help me?", "options": ["Can you help me?", "Open your book.", "Good night!", "She is Ana.", "I am twelve."], "explanation": "Can you help me? = Você pode me ajudar?"}, {"theme": "Classroom Expressions", "visual": "🤔", "prompt": "A professora perguntou algo, mas você não sabe. Como dizer “eu não sei”?", "answer": "I don't know.", "options": ["I don't know.", "I am a book.", "Good morning.", "Close your book.", "His pencil."], "explanation": "I don't know = eu não sei."}, {"theme": "Spelling", "visual": "🔤", "prompt": "A pergunta “How do you spell your name?” pede para você fazer o quê?", "answer": "Soletrar seu nome", "options": ["Soletrar seu nome", "Dizer sua idade", "Dizer sua cor favorita", "Abrir o livro", "Sentar na cadeira"], "explanation": "Spell = soletrar."}]}, {"title": "Personal Information and Verb To Be", "subtitle": "Name, age, origin, pronouns and am/is/are", "items": [{"theme": "Personal Information", "visual": "🧑", "prompt": "Alguém pergunta “What is your name?”. O que essa pergunta quer saber?", "answer": "Seu nome", "options": ["Seu nome", "Sua idade", "Sua escola", "Sua comida favorita", "Sua cor favorita"], "explanation": "What is your name? = Qual é o seu nome?"}, {"theme": "Personal Information", "visual": "🎂", "prompt": "A pergunta “How old are you?” pede qual informação?", "answer": "Idade", "options": ["Idade", "Nome", "Lugar", "Objeto escolar", "Dia da semana"], "explanation": "How old are you? = Quantos anos você tem?"}, {"theme": "Personal Information", "visual": "🌎", "prompt": "Se alguém pergunta “Where are you from?”, quer saber:", "answer": "De onde você é", "options": ["De onde você é", "Seu nome", "Sua idade", "Sua sala", "Sua mochila"], "explanation": "Where are you from? = De onde você é?"}, {"theme": "Personal Pronouns", "visual": "🙋", "prompt": "Qual pronome em inglês significa “eu”?", "answer": "I", "options": ["I", "You", "He", "She", "They"], "explanation": "I = eu."}, {"theme": "Personal Pronouns", "visual": "👧", "prompt": "Qual pronome substitui “Maria”?", "answer": "She", "options": ["She", "He", "It", "We", "I"], "explanation": "She = ela."}, {"theme": "Personal Pronouns", "visual": "👦", "prompt": "Qual pronome substitui “João”?", "answer": "He", "options": ["He", "She", "It", "They", "We"], "explanation": "He = ele."}, {"theme": "Verb To Be", "visual": "✅", "prompt": "Complete: I ___ a student.", "answer": "am", "options": ["am", "is", "are", "my", "your"], "explanation": "Com I usamos am: I am a student."}, {"theme": "Verb To Be", "visual": "✅", "prompt": "Complete: She ___ my friend.", "answer": "is", "options": ["is", "am", "are", "you", "they"], "explanation": "Com she usamos is."}, {"theme": "Verb To Be", "visual": "✅", "prompt": "Complete: They ___ happy.", "answer": "are", "options": ["are", "is", "am", "his", "her"], "explanation": "Com they usamos are."}, {"theme": "Verb To Be", "visual": "❓", "prompt": "Qual pergunta está correta para dizer “Você é estudante?”", "answer": "Are you a student?", "options": ["Are you a student?", "Is you a student?", "You are a student?", "Am you a student?", "Are he a student?"], "explanation": "Em perguntas com verb to be, usamos o verbo antes: Are you...?"}]}, {"title": "Numbers, Days, Months and Time", "subtitle": "Numbers, calendar and telling time", "items": [{"theme": "Numbers", "visual": "3️⃣", "prompt": "Como escrevemos o número 3 em inglês?", "answer": "three", "options": ["three", "tree", "thirteen", "thirty", "ten"], "explanation": "3 = three."}, {"theme": "Numbers", "visual": "🔟", "prompt": "Como escrevemos o número 10 em inglês?", "answer": "ten", "options": ["ten", "two", "twelve", "twenty", "one"], "explanation": "10 = ten."}, {"theme": "Numbers", "visual": "2️⃣0️⃣", "prompt": "Como escrevemos o número 20 em inglês?", "answer": "twenty", "options": ["twenty", "twelve", "two", "thirty", "ten"], "explanation": "20 = twenty."}, {"theme": "Numbers", "visual": "5️⃣0️⃣", "prompt": "Como escrevemos o número 50 em inglês?", "answer": "fifty", "options": ["fifty", "fifteen", "five", "forty", "sixty"], "explanation": "50 = fifty."}, {"theme": "Numbers", "visual": "💯", "prompt": "Como escrevemos o número 100 em inglês?", "answer": "one hundred", "options": ["one hundred", "one thousand", "ten hundred", "one zero", "hundred one"], "explanation": "100 = one hundred."}, {"theme": "Days of the Week", "visual": "📅", "prompt": "Qual é o primeiro dia da semana escolar em inglês?", "answer": "Monday", "options": ["Monday", "Friday", "Sunday", "March", "January"], "explanation": "Monday = segunda-feira."}, {"theme": "Days of the Week", "visual": "🎉", "prompt": "Qual palavra significa “sexta-feira”?", "answer": "Friday", "options": ["Friday", "Tuesday", "Thursday", "Saturday", "April"], "explanation": "Friday = sexta-feira."}, {"theme": "Months", "visual": "🎆", "prompt": "Qual mês significa “janeiro” em inglês?", "answer": "January", "options": ["January", "June", "July", "Monday", "Friday"], "explanation": "January = janeiro."}, {"theme": "Months", "visual": "🎄", "prompt": "Qual mês significa “dezembro” em inglês?", "answer": "December", "options": ["December", "September", "November", "Sunday", "April"], "explanation": "December = dezembro."}, {"theme": "Time", "visual": "🕒", "prompt": "O relógio marca 3:00. Como dizer isso em inglês?", "answer": "It is three o'clock.", "options": ["It is three o'clock.", "It is thirteen.", "It is Monday.", "It is December.", "It is my book."], "explanation": "3:00 = three o'clock."}]}, {"title": "School, Objects and Places", "subtitle": "School vocabulary, commands and prepositions of place", "items": [{"theme": "School Objects", "visual": "📚", "prompt": "Qual palavra em inglês significa “livro”?", "answer": "book", "options": ["book", "pencil", "chair", "teacher", "door"], "explanation": "Book = livro."}, {"theme": "School Objects", "visual": "✏️", "prompt": "Qual palavra em inglês significa “lápis”?", "answer": "pencil", "options": ["pencil", "book", "ruler", "school", "window"], "explanation": "Pencil = lápis."}, {"theme": "School Objects", "visual": "📏", "prompt": "Qual palavra significa “régua”?", "answer": "ruler", "options": ["ruler", "eraser", "pen", "desk", "student"], "explanation": "Ruler = régua."}, {"theme": "School Objects", "visual": "🧽", "prompt": "Qual palavra significa “borracha”?", "answer": "eraser", "options": ["eraser", "teacher", "pencil", "classroom", "cafeteria"], "explanation": "Eraser = borracha."}, {"theme": "School Places", "visual": "🏫", "prompt": "Lugar onde os alunos estudam. Qual palavra em inglês?", "answer": "school", "options": ["school", "beach", "market", "bedroom", "kitchen"], "explanation": "School = escola."}, {"theme": "School Places", "visual": "👩‍🏫", "prompt": "Lugar da escola onde acontecem as aulas. Como dizer “sala de aula”?", "answer": "classroom", "options": ["classroom", "cafeteria", "bathroom", "library", "park"], "explanation": "Classroom = sala de aula."}, {"theme": "School Places", "visual": "🍽️", "prompt": "Lugar da escola onde os alunos podem comer ou lanchar. Qual palavra em inglês?", "answer": "cafeteria", "options": ["cafeteria", "classroom", "library", "bathroom", "office"], "explanation": "Cafeteria = lugar para comer/lanchar na escola."}, {"theme": "Classroom Commands", "visual": "📖", "prompt": "A professora pede para abrir o livro. Qual comando está correto?", "answer": "Open your book.", "options": ["Open your book.", "Close your book.", "Sit down.", "Goodbye.", "I am fine."], "explanation": "Open your book = abra seu livro."}, {"theme": "Prepositions", "visual": "📦⬇️", "prompt": "A bola está embaixo da mesa. Qual preposição significa “embaixo de”?", "answer": "under", "options": ["under", "on", "in", "next to", "between"], "explanation": "Under = embaixo de."}, {"theme": "Prepositions", "visual": "📘🟦", "prompt": "O livro está em cima da mesa. Qual preposição significa “em cima de”?", "answer": "on", "options": ["on", "under", "behind", "in front of", "between"], "explanation": "On = em cima de."}]}, {"title": "Vocabulary and Daily Situations", "subtitle": "Colors, food, animals, places and real-life situations", "items": [{"theme": "Colors", "visual": "🔴", "prompt": "Qual palavra em inglês significa “vermelho”?", "answer": "red", "options": ["red", "blue", "green", "yellow", "black"], "explanation": "Red = vermelho."}, {"theme": "Colors", "visual": "🔵", "prompt": "Qual palavra em inglês significa “azul”?", "answer": "blue", "options": ["blue", "red", "white", "brown", "pink"], "explanation": "Blue = azul."}, {"theme": "Food", "visual": "🍎", "prompt": "Qual palavra em inglês significa “maçã”?", "answer": "apple", "options": ["apple", "banana", "rice", "water", "bread"], "explanation": "Apple = maçã."}, {"theme": "Food", "visual": "🍞", "prompt": "Qual palavra em inglês significa “pão”?", "answer": "bread", "options": ["bread", "apple", "fish", "juice", "egg"], "explanation": "Bread = pão."}, {"theme": "Animals", "visual": "🐶", "prompt": "Qual palavra em inglês significa “cachorro”?", "answer": "dog", "options": ["dog", "cat", "bird", "fish", "horse"], "explanation": "Dog = cachorro."}, {"theme": "Animals", "visual": "🐱", "prompt": "Qual palavra em inglês significa “gato”?", "answer": "cat", "options": ["cat", "dog", "cow", "duck", "bird"], "explanation": "Cat = gato."}, {"theme": "Places", "visual": "🏖️", "prompt": "Qual palavra em inglês significa “praia”?", "answer": "beach", "options": ["beach", "school", "market", "church", "library"], "explanation": "Beach = praia."}, {"theme": "Places", "visual": "🛒", "prompt": "Lugar onde compramos alimentos e produtos. Qual palavra em inglês?", "answer": "market", "options": ["market", "classroom", "bedroom", "bathroom", "beach"], "explanation": "Market = mercado."}, {"theme": "Daily Situation", "visual": "⚽", "prompt": "Messi fez 2 gols. Como escrevemos o número 2 em inglês?", "answer": "two", "options": ["two", "three", "ten", "twelve", "twenty"], "explanation": "2 = two."}, {"theme": "Daily Situation", "visual": "🎮", "prompt": "No jogo apareceu “Start”. O que essa palavra geralmente significa?", "answer": "começar", "options": ["começar", "fechar", "dormir", "comer", "desenhar"], "explanation": "Start = começar."}]}];
+const CARDS = [{"theme": "Greetings", "visual": "👋", "prompt": "Você chegou à escola de manhã. Qual expressão significa “bom dia” em inglês?", "answer": "Good morning!", "options": ["Good morning!", "Good night!", "Goodbye!", "See you!", "Thank you!"], "explanation": "Good morning = bom dia.", "mission": 1, "missionTitle": "Basic Communication", "roundInMission": 1}, {"theme": "Greetings", "visual": "☀️", "prompt": "Você encontrou um colega depois do almoço. Como dizer “boa tarde” em inglês?", "answer": "Good afternoon!", "options": ["Good afternoon!", "Good morning!", "Good night!", "Bye!", "Please!"], "explanation": "Good afternoon = boa tarde.", "mission": 1, "missionTitle": "Basic Communication", "roundInMission": 2}, {"theme": "Greetings", "visual": "🙂", "prompt": "Um amigo disse “Oi!”. Qual palavra em inglês combina com essa saudação curta?", "answer": "Hi!", "options": ["Hi!", "Bye!", "Book!", "Stand up!", "Pencil!"], "explanation": "Hi = oi.", "mission": 1, "missionTitle": "Basic Communication", "roundInMission": 3}, {"theme": "Farewells", "visual": "👋", "prompt": "A aula terminou e você quer dizer “tchau”. Qual opção está correta?", "answer": "Goodbye!", "options": ["Goodbye!", "Hello!", "Good morning!", "Listen!", "Open!"], "explanation": "Goodbye = tchau.", "mission": 1, "missionTitle": "Basic Communication", "roundInMission": 4}, {"theme": "Farewells", "visual": "🚪", "prompt": "Você vai embora e quer dizer “até logo”. Qual expressão em inglês pode usar?", "answer": "See you!", "options": ["See you!", "Thank you!", "Sit down!", "I am fine.", "My pencil."], "explanation": "See you = até logo / até mais.", "mission": 1, "missionTitle": "Basic Communication", "roundInMission": 5}, {"theme": "Classroom Expressions", "visual": "🙏", "prompt": "Você quer pedir algo com educação. Qual palavra significa “por favor”?", "answer": "Please", "options": ["Please", "Sorry", "Pencil", "Teacher", "Monday"], "explanation": "Please = por favor.", "mission": 1, "missionTitle": "Basic Communication", "roundInMission": 6}, {"theme": "Classroom Expressions", "visual": "🤝", "prompt": "Alguém ajudou você. Como agradecer em inglês?", "answer": "Thank you!", "options": ["Thank you!", "Goodbye!", "I don't know.", "Stand up!", "What time is it?"], "explanation": "Thank you = obrigado(a).", "mission": 1, "missionTitle": "Basic Communication", "roundInMission": 7}, {"theme": "Classroom Expressions", "visual": "🙋", "prompt": "Você não entendeu a atividade e quer pedir ajuda. Qual frase é melhor?", "answer": "Can you help me?", "options": ["Can you help me?", "Open your book.", "Good night!", "She is Ana.", "I am twelve."], "explanation": "Can you help me? = Você pode me ajudar?", "mission": 1, "missionTitle": "Basic Communication", "roundInMission": 8}, {"theme": "Classroom Expressions", "visual": "🤔", "prompt": "A professora perguntou algo, mas você não sabe. Como dizer “eu não sei”?", "answer": "I don't know.", "options": ["I don't know.", "I am a book.", "Good morning.", "Close your book.", "His pencil."], "explanation": "I don't know = eu não sei.", "mission": 1, "missionTitle": "Basic Communication", "roundInMission": 9}, {"theme": "Spelling", "visual": "🔤", "prompt": "A pergunta “How do you spell your name?” pede para você fazer o quê?", "answer": "Soletrar seu nome", "options": ["Soletrar seu nome", "Dizer sua idade", "Dizer sua cor favorita", "Abrir o livro", "Sentar na cadeira"], "explanation": "Spell = soletrar.", "mission": 1, "missionTitle": "Basic Communication", "roundInMission": 10}, {"theme": "Personal Information", "visual": "🧑", "prompt": "Alguém pergunta “What is your name?”. O que essa pergunta quer saber?", "answer": "Seu nome", "options": ["Seu nome", "Sua idade", "Sua escola", "Sua comida favorita", "Sua cor favorita"], "explanation": "What is your name? = Qual é o seu nome?", "mission": 2, "missionTitle": "Personal Information and Verb To Be", "roundInMission": 1}, {"theme": "Personal Information", "visual": "🎂", "prompt": "A pergunta “How old are you?” pede qual informação?", "answer": "Idade", "options": ["Idade", "Nome", "Lugar", "Objeto escolar", "Dia da semana"], "explanation": "How old are you? = Quantos anos você tem?", "mission": 2, "missionTitle": "Personal Information and Verb To Be", "roundInMission": 2}, {"theme": "Personal Information", "visual": "🌎", "prompt": "Se alguém pergunta “Where are you from?”, quer saber:", "answer": "De onde você é", "options": ["De onde você é", "Seu nome", "Sua idade", "Sua sala", "Sua mochila"], "explanation": "Where are you from? = De onde você é?", "mission": 2, "missionTitle": "Personal Information and Verb To Be", "roundInMission": 3}, {"theme": "Personal Pronouns", "visual": "🙋", "prompt": "Qual pronome em inglês significa “eu”?", "answer": "I", "options": ["I", "You", "He", "She", "They"], "explanation": "I = eu.", "mission": 2, "missionTitle": "Personal Information and Verb To Be", "roundInMission": 4}, {"theme": "Personal Pronouns", "visual": "👧", "prompt": "Qual pronome substitui “Maria”?", "answer": "She", "options": ["She", "He", "It", "We", "I"], "explanation": "She = ela.", "mission": 2, "missionTitle": "Personal Information and Verb To Be", "roundInMission": 5}, {"theme": "Personal Pronouns", "visual": "👦", "prompt": "Qual pronome substitui “João”?", "answer": "He", "options": ["He", "She", "It", "They", "We"], "explanation": "He = ele.", "mission": 2, "missionTitle": "Personal Information and Verb To Be", "roundInMission": 6}, {"theme": "Verb To Be", "visual": "✅", "prompt": "Complete: I ___ a student.", "answer": "am", "options": ["am", "is", "are", "my", "your"], "explanation": "Com I usamos am: I am a student.", "mission": 2, "missionTitle": "Personal Information and Verb To Be", "roundInMission": 7}, {"theme": "Verb To Be", "visual": "✅", "prompt": "Complete: She ___ my friend.", "answer": "is", "options": ["is", "am", "are", "you", "they"], "explanation": "Com she usamos is.", "mission": 2, "missionTitle": "Personal Information and Verb To Be", "roundInMission": 8}, {"theme": "Verb To Be", "visual": "✅", "prompt": "Complete: They ___ happy.", "answer": "are", "options": ["are", "is", "am", "his", "her"], "explanation": "Com they usamos are.", "mission": 2, "missionTitle": "Personal Information and Verb To Be", "roundInMission": 9}, {"theme": "Verb To Be", "visual": "❓", "prompt": "Qual pergunta está correta para dizer “Você é estudante?”", "answer": "Are you a student?", "options": ["Are you a student?", "Is you a student?", "You are a student?", "Am you a student?", "Are he a student?"], "explanation": "Em perguntas com verb to be, usamos o verbo antes: Are you...?", "mission": 2, "missionTitle": "Personal Information and Verb To Be", "roundInMission": 10}, {"theme": "Numbers", "visual": "3️⃣", "prompt": "Como escrevemos o número 3 em inglês?", "answer": "three", "options": ["three", "tree", "thirteen", "thirty", "ten"], "explanation": "3 = three.", "mission": 3, "missionTitle": "Numbers, Days, Months and Time", "roundInMission": 1}, {"theme": "Numbers", "visual": "🔟", "prompt": "Como escrevemos o número 10 em inglês?", "answer": "ten", "options": ["ten", "two", "twelve", "twenty", "one"], "explanation": "10 = ten.", "mission": 3, "missionTitle": "Numbers, Days, Months and Time", "roundInMission": 2}, {"theme": "Numbers", "visual": "2️⃣0️⃣", "prompt": "Como escrevemos o número 20 em inglês?", "answer": "twenty", "options": ["twenty", "twelve", "two", "thirty", "ten"], "explanation": "20 = twenty.", "mission": 3, "missionTitle": "Numbers, Days, Months and Time", "roundInMission": 3}, {"theme": "Numbers", "visual": "5️⃣0️⃣", "prompt": "Como escrevemos o número 50 em inglês?", "answer": "fifty", "options": ["fifty", "fifteen", "five", "forty", "sixty"], "explanation": "50 = fifty.", "mission": 3, "missionTitle": "Numbers, Days, Months and Time", "roundInMission": 4}, {"theme": "Numbers", "visual": "💯", "prompt": "Como escrevemos o número 100 em inglês?", "answer": "one hundred", "options": ["one hundred", "one thousand", "ten hundred", "one zero", "hundred one"], "explanation": "100 = one hundred.", "mission": 3, "missionTitle": "Numbers, Days, Months and Time", "roundInMission": 5}, {"theme": "Days of the Week", "visual": "📅", "prompt": "Qual é o primeiro dia da semana escolar em inglês?", "answer": "Monday", "options": ["Monday", "Friday", "Sunday", "March", "January"], "explanation": "Monday = segunda-feira.", "mission": 3, "missionTitle": "Numbers, Days, Months and Time", "roundInMission": 6}, {"theme": "Days of the Week", "visual": "🎉", "prompt": "Qual palavra significa “sexta-feira”?", "answer": "Friday", "options": ["Friday", "Tuesday", "Thursday", "Saturday", "April"], "explanation": "Friday = sexta-feira.", "mission": 3, "missionTitle": "Numbers, Days, Months and Time", "roundInMission": 7}, {"theme": "Months", "visual": "🎆", "prompt": "Qual mês significa “janeiro” em inglês?", "answer": "January", "options": ["January", "June", "July", "Monday", "Friday"], "explanation": "January = janeiro.", "mission": 3, "missionTitle": "Numbers, Days, Months and Time", "roundInMission": 8}, {"theme": "Months", "visual": "🎄", "prompt": "Qual mês significa “dezembro” em inglês?", "answer": "December", "options": ["December", "September", "November", "Sunday", "April"], "explanation": "December = dezembro.", "mission": 3, "missionTitle": "Numbers, Days, Months and Time", "roundInMission": 9}, {"theme": "Time", "visual": "🕒", "prompt": "O relógio marca 3:00. Como dizer isso em inglês?", "answer": "It is three o'clock.", "options": ["It is three o'clock.", "It is thirteen.", "It is Monday.", "It is December.", "It is my book."], "explanation": "3:00 = three o'clock.", "mission": 3, "missionTitle": "Numbers, Days, Months and Time", "roundInMission": 10}, {"theme": "School Objects", "visual": "📚", "prompt": "Qual palavra em inglês significa “livro”?", "answer": "book", "options": ["book", "pencil", "chair", "teacher", "door"], "explanation": "Book = livro.", "mission": 4, "missionTitle": "School, Objects and Places", "roundInMission": 1}, {"theme": "School Objects", "visual": "✏️", "prompt": "Qual palavra em inglês significa “lápis”?", "answer": "pencil", "options": ["pencil", "book", "ruler", "school", "window"], "explanation": "Pencil = lápis.", "mission": 4, "missionTitle": "School, Objects and Places", "roundInMission": 2}, {"theme": "School Objects", "visual": "📏", "prompt": "Qual palavra significa “régua”?", "answer": "ruler", "options": ["ruler", "eraser", "pen", "desk", "student"], "explanation": "Ruler = régua.", "mission": 4, "missionTitle": "School, Objects and Places", "roundInMission": 3}, {"theme": "School Objects", "visual": "🧽", "prompt": "Qual palavra significa “borracha”?", "answer": "eraser", "options": ["eraser", "teacher", "pencil", "classroom", "cafeteria"], "explanation": "Eraser = borracha.", "mission": 4, "missionTitle": "School, Objects and Places", "roundInMission": 4}, {"theme": "School Places", "visual": "🏫", "prompt": "Lugar onde os alunos estudam. Qual palavra em inglês?", "answer": "school", "options": ["school", "beach", "market", "bedroom", "kitchen"], "explanation": "School = escola.", "mission": 4, "missionTitle": "School, Objects and Places", "roundInMission": 5}, {"theme": "School Places", "visual": "👩‍🏫", "prompt": "Lugar da escola onde acontecem as aulas. Como dizer “sala de aula”?", "answer": "classroom", "options": ["classroom", "cafeteria", "bathroom", "library", "park"], "explanation": "Classroom = sala de aula.", "mission": 4, "missionTitle": "School, Objects and Places", "roundInMission": 6}, {"theme": "School Places", "visual": "🍽️", "prompt": "Lugar da escola onde os alunos podem comer ou lanchar. Qual palavra em inglês?", "answer": "cafeteria", "options": ["cafeteria", "classroom", "library", "bathroom", "office"], "explanation": "Cafeteria = lugar para comer/lanchar na escola.", "mission": 4, "missionTitle": "School, Objects and Places", "roundInMission": 7}, {"theme": "Classroom Commands", "visual": "📖", "prompt": "A professora pede para abrir o livro. Qual comando está correto?", "answer": "Open your book.", "options": ["Open your book.", "Close your book.", "Sit down.", "Goodbye.", "I am fine."], "explanation": "Open your book = abra seu livro.", "mission": 4, "missionTitle": "School, Objects and Places", "roundInMission": 8}, {"theme": "Prepositions", "visual": "📦⬇️", "prompt": "A bola está embaixo da mesa. Qual preposição significa “embaixo de”?", "answer": "under", "options": ["under", "on", "in", "next to", "between"], "explanation": "Under = embaixo de.", "mission": 4, "missionTitle": "School, Objects and Places", "roundInMission": 9}, {"theme": "Prepositions", "visual": "📘🟦", "prompt": "O livro está em cima da mesa. Qual preposição significa “em cima de”?", "answer": "on", "options": ["on", "under", "behind", "in front of", "between"], "explanation": "On = em cima de.", "mission": 4, "missionTitle": "School, Objects and Places", "roundInMission": 10}, {"theme": "Colors", "visual": "🔴", "prompt": "Qual palavra em inglês significa “vermelho”?", "answer": "red", "options": ["red", "blue", "green", "yellow", "black"], "explanation": "Red = vermelho.", "mission": 5, "missionTitle": "Vocabulary and Daily Situations", "roundInMission": 1}, {"theme": "Colors", "visual": "🔵", "prompt": "Qual palavra em inglês significa “azul”?", "answer": "blue", "options": ["blue", "red", "white", "brown", "pink"], "explanation": "Blue = azul.", "mission": 5, "missionTitle": "Vocabulary and Daily Situations", "roundInMission": 2}, {"theme": "Food", "visual": "🍎", "prompt": "Qual palavra em inglês significa “maçã”?", "answer": "apple", "options": ["apple", "banana", "rice", "water", "bread"], "explanation": "Apple = maçã.", "mission": 5, "missionTitle": "Vocabulary and Daily Situations", "roundInMission": 3}, {"theme": "Food", "visual": "🍞", "prompt": "Qual palavra em inglês significa “pão”?", "answer": "bread", "options": ["bread", "apple", "fish", "juice", "egg"], "explanation": "Bread = pão.", "mission": 5, "missionTitle": "Vocabulary and Daily Situations", "roundInMission": 4}, {"theme": "Animals", "visual": "🐶", "prompt": "Qual palavra em inglês significa “cachorro”?", "answer": "dog", "options": ["dog", "cat", "bird", "fish", "horse"], "explanation": "Dog = cachorro.", "mission": 5, "missionTitle": "Vocabulary and Daily Situations", "roundInMission": 5}, {"theme": "Animals", "visual": "🐱", "prompt": "Qual palavra em inglês significa “gato”?", "answer": "cat", "options": ["cat", "dog", "cow", "duck", "bird"], "explanation": "Cat = gato.", "mission": 5, "missionTitle": "Vocabulary and Daily Situations", "roundInMission": 6}, {"theme": "Places", "visual": "🏖️", "prompt": "Qual palavra em inglês significa “praia”?", "answer": "beach", "options": ["beach", "school", "market", "church", "library"], "explanation": "Beach = praia.", "mission": 5, "missionTitle": "Vocabulary and Daily Situations", "roundInMission": 7}, {"theme": "Places", "visual": "🛒", "prompt": "Lugar onde compramos alimentos e produtos. Qual palavra em inglês?", "answer": "market", "options": ["market", "classroom", "bedroom", "bathroom", "beach"], "explanation": "Market = mercado.", "mission": 5, "missionTitle": "Vocabulary and Daily Situations", "roundInMission": 8}, {"theme": "Daily Situation", "visual": "⚽", "prompt": "Messi fez 2 gols. Como escrevemos o número 2 em inglês?", "answer": "two", "options": ["two", "three", "ten", "twelve", "twenty"], "explanation": "2 = two.", "mission": 5, "missionTitle": "Vocabulary and Daily Situations", "roundInMission": 9}, {"theme": "Daily Situation", "visual": "🎮", "prompt": "No jogo apareceu “Start”. O que essa palavra geralmente significa?", "answer": "começar", "options": ["começar", "fechar", "dormir", "comer", "desenhar"], "explanation": "Start = começar.", "mission": 5, "missionTitle": "Vocabulary and Daily Situations", "roundInMission": 10}];
+const TOTAL_MISSIONS = 5;
+const ROUNDS_PER_MISSION = 10;
+const TOTAL_ROUNDS = 50;
+let state = {};
+
+function el(id){return document.getElementById(id)}
+function show(id){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));el(id).classList.add("active");document.body.classList.toggle("playing",id==="gameScreen");}
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function getPlayerInfo(){
+  return {
+    name:(el("playerName").value||"Aluno(a)").trim()||"Aluno(a)",
+    klass:(el("playerClass").value||"6º ano").trim()||"6º ano",
+    school:(el("playerSchool").value||"Escola Delfina de Jesus Amorim").trim()||"Escola Delfina de Jesus Amorim"
+  };
+}
+function buildDeck(){
+  const deck=[];
+  for(let m=1;m<=TOTAL_MISSIONS;m++){
+    const items = CARDS.filter(c=>c.mission===m).slice(0,ROUNDS_PER_MISSION);
+    deck.push(...items);
+  }
+  return deck;
+}
 function startGame(){
-  state={round:1,score:0,corrects:0,combo:0,maxCombo:0,lives:MAX_LIVES,bag:makeBag(),current:null,answered:false};
-  show('gameScreen');
+  stopMusic();
+  state={round:1,score:0,corrects:0,combo:0,maxCombo:0,deck:buildDeck(),answered:false,completed:false};
+  show("gameScreen");
   loadQuestion();
 }
-
+function currentMission(){return Math.ceil(state.round/ROUNDS_PER_MISSION)}
+function roundInMission(){return ((state.round-1)%ROUNDS_PER_MISSION)+1}
 function loadQuestion(){
+  stopMusic();
   state.answered=false;
-  state.current=state.bag[state.round-1];
-
-  const q=state.current;
-  el('theme').textContent=q.theme;
-  el('visual').textContent=VISUALS[Math.floor(Math.random()*VISUALS.length)];
-  el('prompt').textContent=q.prompt;
-  el('feedback').className='feedback';
-  el('feedback').innerHTML='';
-
-  const optionsBox = el('options');
-  optionsBox.innerHTML = '';
-
-  shuffle(q.options).forEach(opt => {
-    const btn = document.createElement('button');
-    btn.className = 'option';
-    btn.type = 'button';
-    btn.textContent = opt;
-    btn.addEventListener('click', () => answer(btn, opt));
-    optionsBox.appendChild(btn);
+  const q=state.deck[state.round-1];
+  state.current=q;
+  const m=currentMission(), r=roundInMission();
+  el("missionStat").textContent = m + "/" + TOTAL_MISSIONS;
+  el("roundStat").textContent = r + "/" + ROUNDS_PER_MISSION;
+  el("score").textContent = state.score;
+  el("corrects").textContent = state.corrects;
+  el("combo").textContent = state.combo;
+  el("progressText").textContent = `Missão ${m} de ${TOTAL_MISSIONS} • Rodada ${r} de ${ROUNDS_PER_MISSION}`;
+  el("missionName").textContent = `Missão ${m} — ${MISSIONS[m-1].title}`;
+  el("missionProgress").textContent = `Rodada ${r}/${ROUNDS_PER_MISSION}`;
+  el("theme").textContent = q.theme;
+  el("visual").textContent = q.visual;
+  el("prompt").textContent = q.prompt;
+  el("feedback").className = "feedback";
+  el("feedback").innerHTML = "";
+  const box=el("options");
+  box.innerHTML="";
+  shuffle(q.options).forEach(opt=>{
+    const b=document.createElement("button");
+    b.className="option"; b.type="button"; b.textContent=opt;
+    b.onclick=()=>answer(b,opt);
+    box.appendChild(b);
   });
-
-  updateStats();
 }
-
-function answer(btn, selected){
-  if(state.answered)return;
-
+function answer(btn,selected){
+  if(state.answered) return;
   state.answered=true;
   const q=state.current;
-
-  document.querySelectorAll('.option').forEach(b=>{
+  document.querySelectorAll(".option").forEach(b=>{
     b.disabled=true;
-    if(b.textContent.trim()===q.answer.trim()) b.classList.add('correct');
+    if(b.textContent.trim()===q.answer.trim()) b.classList.add("correct");
   });
-
-  const fb=el('feedback');
-
+  const fb=el("feedback");
   if(String(selected).trim()===String(q.answer).trim()){
-    state.corrects++;
-    state.combo++;
-    state.maxCombo=Math.max(state.maxCombo,state.combo);
-    state.score+=100+(state.combo*5);
-    fb.className='feedback good';
-    fb.innerHTML=`✅ Great! ${q.explanation}`;
+    state.corrects++; state.combo++; state.maxCombo=Math.max(state.maxCombo,state.combo);
+    state.score += 100 + (state.combo*5);
+    fb.className="feedback good";
+    fb.innerHTML=`✅ Muito bem! ${q.explanation}`;
+    playCorrect();
   }else{
     state.combo=0;
-    state.lives=Math.max(0,state.lives-1);
-    btn.classList.add('wrong');
-    fb.className='feedback bad';
-    fb.innerHTML=`❌ Você perdeu uma vida. Resposta correta: <b>${q.answer}</b>. ${q.explanation}`;
+    btn.classList.add("wrong");
+    fb.className="feedback bad";
+    fb.innerHTML=`❌ Resposta correta: <b>${q.answer}</b>. ${q.explanation}`;
+    playWrong();
   }
+  el("score").textContent=state.score; el("corrects").textContent=state.corrects; el("combo").textContent=state.combo;
 
-  updateStats();
-
-  if(state.lives<=0){
-    setTimeout(()=>finishGame(false),850);
-    return;
-  }
-
-  if(state.round>=TOTAL_ROUNDS){
-    setTimeout(()=>finishGame(true),850);
-    return;
-  }
-
-  setTimeout(()=>{
-    state.round++;
-    loadQuestion();
-  },1050);
+  const missionEnded = roundInMission()===ROUNDS_PER_MISSION && state.round<TOTAL_ROUNDS;
+  if(state.round>=TOTAL_ROUNDS){setTimeout(()=>finishGame(),900); return;}
+  if(missionEnded){setTimeout(()=>showMissionWin(),900); return;}
+  setTimeout(()=>{state.round++; loadQuestion();},950);
 }
-
-const FAKE_RANKING_NAMES = [
-  ["Ana Clara", "Escola Municipal Frei Fabiano Merz — 602"],
-  ["Miguel Santos", "Escola Municipal Fluminense — 601"],
-  ["Lívia Beatriz", "Escola Municipal Maria Amália Queiroz de Sousa — 603"],
-  ["Gabriel Silva", "Escola Municipal Rotary — 601"],
-  ["Mariana Costa", "Escola Municipal Ubaldo Corrêa — 602"],
-  ["João Pedro", "Escola Municipal Haroldo Veloso — 601"],
-  ["Sofia Martins", "Escola Municipal São José Operário — 603"],
-  ["Lucas Henrique", "Escola Municipal Irmã Leodgard Gausepohl — 602"],
-  ["Isabela Rocha", "Escola Municipal Princesa Izabel — 601"],
-  ["Rafael Lima", "Escola Municipal Brigadeiro Eduardo Gomes — 601"]
-];
-
-function getPlayerInfo(){
-  const nameInput = document.getElementById("playerName");
-  const classInput = document.getElementById("playerClass");
-  const schoolInput = document.getElementById("playerSchool");
-  const name = (nameInput && nameInput.value ? nameInput.value : "Aluno(a)").trim() || "Aluno(a)";
-  const klass = (classInput && classInput.value ? classInput.value : "6º Ano").trim() || "6º Ano";
-  const school = (schoolInput && schoolInput.value ? schoolInput.value : "Minha escola").trim() || "Minha escola";
-  return {name, klass, school};
+function showMissionWin(){
+  const m=currentMission();
+  el("missionWinText").innerHTML = `Congratulations! Você concluiu a <b>Missão ${m} de ${TOTAL_MISSIONS}</b>. Agora vem a próxima etapa do desafio.`;
+  show("missionWinScreen");
+  playMissionMusic();
 }
-
-function buildMotivationalRanking(){
-  const player = getPlayerInfo();
-  const playerScore = state.score;
-
-  let playerRank = 6;
-  if(playerScore >= 4200) playerRank = 2;
-  else if(playerScore >= 3200) playerRank = 3;
-  else if(playerScore >= 2200) playerRank = 4;
-  else if(playerScore >= 1000) playerRank = 5;
-
-  const shuffledNames = shuffle(FAKE_RANKING_NAMES);
-  const rows = [];
-  let fakeIndex = 0;
-
-  for(let pos = 1; pos <= 10; pos++){
-    if(pos === playerRank){
-      rows.push({
-        name: player.name,
-        school: `${player.school} — ${player.klass}`,
-        score: playerScore,
-        isPlayer: true
-      });
-    } else {
-      let score;
-      if(pos < playerRank){
-        score = playerScore + (playerRank - pos) * 280 + 120;
-      } else {
-        score = Math.max(0, playerScore - (pos - playerRank) * 150);
-      }
-
-      const fake = shuffledNames[fakeIndex % shuffledNames.length];
-      fakeIndex++;
-
-      rows.push({
-        name: fake[0],
-        school: fake[1],
-        score,
-        isPlayer: false
-      });
-    }
-  }
-
-  return rows;
+function nextMission(){
+  stopMusic();
+  state.round++;
+  show("gameScreen");
+  loadQuestion();
 }
-
-function renderRanking(){
-  const list = document.getElementById("rankList");
-  if(!list) return;
-
-  const rows = buildMotivationalRanking();
-  list.innerHTML = rows.map((r, i) => `
-    <div class="rank-row ${r.isPlayer ? "player" : ""}">
-      <div class="rank-pos">${i + 1}º</div>
-      <div>
-        <div class="rank-name">${r.isPlayer ? "⭐ " : ""}${r.name}</div>
-        <div class="rank-school">${r.school}</div>
-      </div>
-      <div class="rank-score">${r.score} pts</div>
-    </div>
-  `).join("");
-}
-
-function finishGame(completed){
+function finishGame(){
+  stopMusic();
   show("finalScreen");
-
-  document.getElementById("finalScore").textContent = state.score;
-  document.getElementById("finalCorrects").textContent = `${state.corrects}/${TOTAL_ROUNDS}`;
-  document.getElementById("finalCombo").textContent = state.maxCombo;
-  document.getElementById("finalLives").textContent = `${state.lives}/${MAX_LIVES}`;
-
-  if(completed){
-    document.getElementById("finalTitle").textContent = "🏆 YOU ARE THE ONE!";
-    document.getElementById("finalMessage").textContent =
-      "Parabéns! Você chegou ao final do desafio e mostrou que consegue avançar no inglês com atenção, coragem e persistência. Continue jogando, porque cada nova tentativa pode levar você ainda mais longe!";
-  } else {
-    document.getElementById("finalTitle").textContent = "💪 TRY AGAIN!";
-    document.getElementById("finalMessage").textContent =
-      "Você chegou até aqui, tentou, errou, aprendeu e isso já mostra evolução. Não pare agora! Volte ao desafio, jogue novamente e tente subir no ranking. Você consegue melhorar sua pontuação!";
-  }
-
+  el("finalTitle").textContent = state.corrects>=40 ? "🏆 YOU ARE THE ONE!" : "💪 TRY AGAIN!";
+  el("finalMessage").textContent = state.corrects>=40
+    ? "Congratulations! Você avançou muito bem nas missões do 6º ano. Continue praticando para ir ainda mais longe!"
+    : "Você chegou até o final, tentou e aprendeu. Jogue novamente para melhorar sua pontuação e fortalecer seu inglês.";
+  el("finalScore").textContent=state.score;
+  el("finalCorrects").textContent=`${state.corrects}/${TOTAL_ROUNDS}`;
+  el("finalCombo").textContent=state.maxCombo;
+  el("finalStatus").textContent=state.corrects>=40 ? "Top!" : "Continue!";
   renderRanking();
+  state.corrects>=40 ? playVictoryMusic() : playTryAgainMusic();
 }
-</script></body></html>
+function renderRanking(){
+  const player=getPlayerInfo();
+  const fake=[
+    ["Ana Clara","Escola Municipal Frei Fabiano Merz — 602",4800],
+    ["Miguel Santos","Escola Municipal Fluminense — 601",4200],
+    ["Lívia Beatriz","Escola Municipal Maria Amália Queiroz de Sousa — 603",3600],
+    ["Gabriel Silva","Escola Municipal Rotary — 601",2800]
+  ];
+  const rows=[...fake, [player.name, `${player.school} — ${player.klass}`, state.score, true]].sort((a,b)=>b[2]-a[2]).slice(0,5);
+  el("rankList").innerHTML = rows.map((r,i)=>`<div class="rank-row ${r[3]?'player':''}"><div class="rank-pos">${i+1}º</div><div><div class="rank-name">${r[3]?'⭐ ':''}${escapeHtml(r[0])}</div><div class="rank-school">${escapeHtml(r[1])}</div></div><div class="rank-score">${r[2]} pts</div></div>`).join("");
+}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+
+let audioCtx=null, musicTimer=null;
+function ensureAudio(){try{if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)(); if(audioCtx.state==="suspended") audioCtx.resume();}catch(e){}}
+function tone(freq=440,dur=.12,type="sine",gain=.055,delay=0){ensureAudio(); if(!audioCtx)return; const t=audioCtx.currentTime+delay; const osc=audioCtx.createOscillator(); const g=audioCtx.createGain(); osc.type=type; osc.frequency.setValueAtTime(freq,t); g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(gain,t+.02); g.gain.exponentialRampToValueAtTime(0.0001,t+dur); osc.connect(g); g.connect(audioCtx.destination); osc.start(t); osc.stop(t+dur+.03);}
+function stopMusic(){if(musicTimer){clearInterval(musicTimer); musicTimer=null;}}
+function playCorrect(){tone(659,.10,"triangle",.05);tone(880,.10,"triangle",.04,.10)}
+function playWrong(){tone(220,.14,"sine",.035);tone(180,.18,"sine",.03,.14)}
+function playMissionMusic(){stopMusic(); [523,659,784,1046,1318].forEach((f,i)=>tone(f,.16,"triangle",.065,i*.14)); let i=0; const melody=[523,659,784,1046,880,1046,1318]; musicTimer=setInterval(()=>{tone(melody[i%melody.length],.14,"triangle",.045); i++;},180)}
+function playVictoryMusic(){stopMusic(); let i=0; const melody=[523,659,784,1046,1174,1318,1568]; musicTimer=setInterval(()=>{tone(melody[i%melody.length],.16,"triangle",.055); i++;},190)}
+function playTryAgainMusic(){stopMusic(); let i=0; const melody=[392,440,523,494,523,659,784]; musicTimer=setInterval(()=>{tone(melody[i%melody.length],.18,"sine",.045); i++;},230)}
+document.addEventListener("click",ensureAudio,{once:true});
+document.addEventListener("touchstart",ensureAudio,{once:true});
+</script>
+</body>
+</html>
