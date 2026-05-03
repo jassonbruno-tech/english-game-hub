@@ -507,6 +507,12 @@ body.playing .brand{
   margin:8px auto 0 !important;
 }
 
+
+/* Garantia visual das 6 chances reais */
+#head,#body,#armL,#armR,#legL,#legR{
+  transition:opacity .16s ease;
+}
+
 </style>
 </head>
 <body>
@@ -707,9 +713,8 @@ function playCartoonWrong(){
 }
 function forceScarecrowRender(){
   try{
-    if(typeof updateScarecrowParts === 'function') updateScarecrowParts();
-    if(typeof drawHangman === 'function') drawHangman();
-    if(typeof renderHangman === 'function') renderHangman();
+    updateScarecrowParts();
+    applyScarecrowPartsByMistakes();
     if(typeof updateStats === 'function') updateStats();
   }catch(e){}
 }
@@ -884,6 +889,7 @@ function chooseLetter(btn, letter){
     state.roundMistakes++;
     state.lives = Math.max(0, state.lives - 1);
     state.combo = 0;
+    updateScarecrowParts();
     playCartoonWrong();
     forceScarecrowRender();
     fb.className = "feedback bad";
@@ -929,6 +935,7 @@ function guessWord(){
     state.roundMistakes++;
     state.lives = Math.max(0, state.lives - 1);
     state.combo = 0;
+    updateScarecrowParts();
     playCartoonWrong();
     forceScarecrowRender();
     el("feedback").className = "feedback bad";
@@ -1026,41 +1033,37 @@ function finishGame(completed){
 
 show("startScreen");
 
-function updateScarecrowParts(){
-  const wrongCount = state && typeof state.roundMistakes === "number" ? state.roundMistakes : 0;
 
-  const orderedGroups = [
-    ["head","scareHead","part1","partHead"],
-    ["body","torso","scareBody","scareTorso","part2","partBody"],
-    ["leftArm","scareLeftArm","part3","partArmL"],
-    ["rightArm","scareRightArm","part4","partArmR"],
-    ["leftLeg","scareLeftLeg","part5","partLegL"],
-    ["rightLeg","scareRightLeg","part6","partLegR"]
-  ];
+function getMistakeCount(){
+  try{
+    const lives = Number(state && state.lives);
+    if(Number.isFinite(lives)) return Math.max(0, Math.min(6, 6 - lives));
+  }catch(e){}
+  return 0;
+}
 
-  orderedGroups.flat().forEach(name=>{
-    document.querySelectorAll("#"+name+", ."+name).forEach(el=>{
-      el.style.visibility = "hidden";
-      el.style.opacity = "0";
-      el.style.display = "";
-    });
+function applyScarecrowPartsByMistakes(){
+  const mistakes = getMistakeCount();
+  const parts = ['head','body','armL','armR','legL','legR'];
+  parts.forEach((id, index)=>{
+    const elPart = document.getElementById(id);
+    if(elPart){
+      elPart.style.display = index < mistakes ? 'block' : 'none';
+      elPart.style.visibility = index < mistakes ? 'visible' : 'hidden';
+      elPart.style.opacity = index < mistakes ? '1' : '0';
+    }
   });
+}
 
-  for(let i=0; i<Math.min(wrongCount, 6); i++){
-    orderedGroups[i].forEach(name=>{
-      document.querySelectorAll("#"+name+", ."+name).forEach(el=>{
-        el.style.visibility = "visible";
-        el.style.opacity = "1";
-        el.style.display = "";
-      });
-    });
-  }
-
-  const livesEl = document.getElementById("lives");
-  if(livesEl){
-    const restam = Math.max(0, 6 - wrongCount);
-    livesEl.textContent = `Chances: ${restam}/6 — cada erro coloca uma parte do espantalho na forca.`;
-  }
+function updateScarecrowParts(){
+  applyScarecrowPartsByMistakes();
+  try{
+    const partsLeft = Math.max(0, Math.min(6, Number(state && state.lives)));
+    const livesEl = document.getElementById('lives');
+    if(livesEl){
+      livesEl.innerHTML = `<span class="parts-left">${partsLeft}</span>/6 partes restantes do espantalho.`;
+    }
+  }catch(e){}
 }
 
 
