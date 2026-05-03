@@ -152,18 +152,20 @@
       backdrop-filter:blur(10px);
     }
     .section h2{
-      margin:0 0 10px;
+      margin:0 0 12px;
       color:#fff;
       font-size:clamp(20px,5vw,30px);
       line-height:1.08;
       font-weight:1000;
+      text-align:center;
     }
     .teacher-note{
       color:#fff;
       font-size:clamp(15px,4vw,18px);
       line-height:1.6;
       font-weight:720;
-      margin:0;
+      margin:0 auto;
+      max-width:920px;
       text-align:justify;
       text-justify:inter-word;
     }
@@ -173,9 +175,10 @@
     .bncc-text{
       color:#dbeafe;
       font-size:15px;
-      line-height:1.55;
+      line-height:1.58;
       font-weight:750;
-      margin:0 0 14px;
+      margin:0 auto 16px;
+      max-width:920px;
       text-align:justify;
       text-justify:inter-word;
     }
@@ -292,8 +295,43 @@
       .game-card p{font-size:13.5px}
     }
   </style>
+
+<style id="twinkling-stars-effect">
+@keyframes twinkleStars{
+  0%,100%{opacity:.54; filter:brightness(.9)}
+  35%{opacity:.92; filter:brightness(1.35)}
+  65%{opacity:.70; filter:brightness(1.1)}
+}
+@keyframes driftStars{
+  0%{transform:translate3d(0,0,0)}
+  100%{transform:translate3d(-28px,18px,0)}
+}
+body::before{
+  animation:twinkleStars 2.8s ease-in-out infinite alternate, driftStars 36s linear infinite alternate !important;
+}
+.star-shine{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:0;
+  background-image:
+    radial-gradient(circle, rgba(255,255,255,.95) 0 1.4px, transparent 1.8px),
+    radial-gradient(circle, rgba(255,230,109,.85) 0 1.15px, transparent 1.55px),
+    radial-gradient(circle, rgba(0,220,255,.78) 0 1.1px, transparent 1.5px);
+  background-size:160px 160px, 230px 230px, 310px 310px;
+  background-position:25px 40px, 90px 130px, 160px 20px;
+  opacity:.38;
+  animation:twinkleStars 1.9s ease-in-out infinite alternate-reverse;
+}
+@media(max-width:620px){
+  .section h2{text-align:center !important}
+  .teacher-note,.bncc-text{text-align:justify !important}
+}
+</style>
+
 </head>
 <body>
+  <div class="star-shine"></div>
   <audio id="bgMusic6ano" src="musica-6ano.mp3.mp3" loop preload="auto"></audio>
 
   <main class="page">
