@@ -2,567 +2,497 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Board Game F1 - 6º Ano</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<title>Board Game Challenge - 6º Ano</title>
 <style>
 *{box-sizing:border-box}
-:root{--blue:#2563eb;--cyan:#06b6d4;--pink:#e11d48;--gold:#f8d36b;--dark:#172033;}
-html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;color:var(--dark)}
+:root{
+  --bg1:#05071f;--bg2:#16053c;--gold:#ffe66d;--gold2:#ffb703;--blue:#2563eb;--red:#ef4444;--pink:#e11d48;--green:#22c55e;--text:#f8fafc;
+}
+html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;color:var(--text)}
 body{
-  min-height:100vh;
+  min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:8px;
   background:
-    radial-gradient(circle at 20% 10%, rgba(255,255,255,.30), transparent 26%),
-    linear-gradient(135deg,#0f172a,#1d4ed8 42%,#06b6d4 70%,#e11d48);
-  display:flex;align-items:center;justify-content:center;padding:10px;
+    radial-gradient(circle at 20% 15%, rgba(56,189,248,.24), transparent 18%),
+    radial-gradient(circle at 78% 18%, rgba(255,230,109,.18), transparent 16%),
+    radial-gradient(circle at 52% 90%, rgba(225,29,72,.18), transparent 20%),
+    linear-gradient(180deg,var(--bg1),var(--bg2));
 }
-.app{width:min(100%,1180px);min-height:min(780px,96vh);background:rgba(255,255,255,.94);border-radius:26px;overflow:hidden;box-shadow:0 24px 55px rgba(0,0,0,.25)}
-header{background:linear-gradient(135deg,#111827,#2563eb 48%,#e11d48);color:white;padding:14px 18px;text-align:center;position:relative}
-.topbar{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:6px}
-.back,.pill{color:white;text-decoration:none;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:7px 11px;font-weight:900;font-size:12px}
-h1{font-size:clamp(30px,6vw,54px);line-height:1;margin:0;text-shadow:0 3px 10px rgba(0,0,0,.22)}
-.subtitle{margin:6px 0 0;font-weight:800}
-main{padding:14px}
-.screen{display:none} .screen.active{display:block}
-.card{background:linear-gradient(180deg,#fff,#f8fafc);border:1px solid #dbeafe;border-radius:22px;padding:14px;box-shadow:0 10px 22px rgba(15,23,42,.08)}
-.start-card{max-width:620px;margin:0 auto;text-align:center}
-.start-card h2{font-size:34px;color:#1d4ed8;margin:0 0 8px}
-.start-text{font-weight:900;line-height:1.35;color:#334155}
-.player-form{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0;text-align:left}
-.player-form .full{grid-column:1/-1}
-.player-form label{display:block;font-weight:900;color:#1e3a8a;font-size:13px;margin-bottom:4px}
-.player-form input{width:100%;border:2px solid #bfdbfe;border-radius:14px;padding:11px 12px;font-size:15px;font-weight:800;outline:none;background:white}
-.btn{border:0;border-radius:14px;padding:12px 22px;background:linear-gradient(135deg,#2563eb,#06b6d4 50%,#e11d48);color:white;font-weight:900;font-size:15px;cursor:pointer;box-shadow:0 8px 18px rgba(37,99,235,.25)}
-.btn:disabled{opacity:.55;cursor:not-allowed}
-.brand{position:fixed;right:12px;bottom:12px;background:linear-gradient(135deg,#1e3a8a,#e11d48);color:white;font-weight:900;border-radius:14px;padding:9px 12px;font-size:12px;box-shadow:0 8px 18px rgba(15,23,42,.25);z-index:30}
-.game-layout{display:flex;flex-direction:column;gap:10px;align-items:stretch;max-width:920px;margin:0 auto}
-.scorebar{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px;max-width:920px;margin-inline:auto}
-.score{background:white;border:1px solid #dbeafe;border-radius:15px;padding:8px;text-align:center;font-weight:900}
-.score b{display:block;color:#e11d48;font-size:22px}
-.track-card{position:relative;overflow:hidden;background:linear-gradient(180deg,#dbeafe,#f8fafc);padding-bottom:10px}
-.track-title{display:flex;justify-content:space-between;align-items:center;font-weight:900;color:#1e3a8a;margin-bottom:8px}
-.track{
-  position:relative;
-  width:100%;
-  height:560px;
-  border-radius:28px;
-  background:
-    radial-gradient(circle at 18% 12%, rgba(255,255,255,.75), transparent 18%),
-    linear-gradient(180deg,#dbeafe 0%,#fef3c7 26%,#bbf7d0 100%);
-  border:7px solid white;
-  box-shadow:0 12px 26px rgba(15,23,42,.14), inset 0 0 0 2px rgba(15,23,42,.06);
-  overflow:hidden;
+.app{
+  width:min(100%,1100px);height:min(780px,calc(100dvh - 16px));
+  border-radius:22px;overflow:hidden;border:1px solid rgba(255,230,109,.25);
+  background:linear-gradient(180deg,rgba(7,10,40,.97),rgba(10,8,48,.97));
+  box-shadow:0 24px 60px rgba(0,0,0,.48),0 0 36px rgba(255,230,109,.08);
+  display:flex;flex-direction:column;
 }
-.place{
-  position:absolute;
-  z-index:8;
-  background:rgba(255,255,255,.96);
-  border:2px solid #cbd5e1;
-  border-radius:12px;
-  padding:5px 7px;
-  font-size:11px;
-  font-weight:900;
-  color:#0f2a6d;
-  box-shadow:0 4px 10px rgba(15,23,42,.12);
+header{
+  flex:0 0 auto;text-align:center;padding:10px 14px;
+  background:linear-gradient(135deg,#1d4ed8,#7c3aed 52%,#e11d48);
+  border-bottom:1px solid rgba(255,255,255,.16);
 }
-.place.start{left:9px;bottom:8px;border-color:#7dd3fc}
-.place.end{right:8px;top:8px;border-color:#86efac;text-align:right}
-svg.road{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  z-index:0;
-}
-.track-road{
-  fill:none;
-  stroke:#64748b;
-  stroke-width:42;
-  stroke-linecap:round;
-  stroke-linejoin:round;
-}
-.track-line{
-  fill:none;
-  stroke:#f8fafc;
-  stroke-width:3;
-  stroke-linecap:round;
-  stroke-dasharray:9 7;
-}
-.cell{position:absolute;width:34px;height:34px;border-radius:50%;background:#fff;border:3px solid white;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:#1e3a8a;box-shadow:0 5px 10px rgba(15,23,42,.20);z-index:2}
-.cell.special.bonus{background:#dcfce7;border-color:#22c55e;color:#14532d}
-.cell.special.penalty{background:#fee2e2;border-color:#ef4444;color:#7f1d1d}
-.cell.special.challenge{background:#fef3c7;border-color:#f59e0b;color:#92400e}
-.car{
-  position:absolute;
-  width:78px;
-  height:44px;
-  z-index:7;
-  transition:left .95s cubic-bezier(.19,.86,.28,1), top .95s cubic-bezier(.19,.86,.28,1), transform .55s ease;
-  filter:drop-shadow(0 8px 8px rgba(0,0,0,.38));
-  transform-origin:center center;
-}
-.car.moving{filter:drop-shadow(0 11px 10px rgba(0,0,0,.46));}
-.car-svg{width:100%;height:100%;display:block;overflow:visible;}
-.legend{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px;font-size:11px;font-weight:900;text-align:center}
-.legend span{padding:5px;border-radius:9px}
-.lbonus{background:#dcfce7;color:#14532d} .lpenalty{background:#fee2e2;color:#7f1d1d} .lchallenge{background:#fef3c7;color:#92400e}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:4px}
+.back,.pill{color:#fff;text-decoration:none;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.28);border-radius:999px;padding:6px 10px;font-weight:1000;font-size:12px}
+h1{margin:0;font-size:clamp(26px,5.3vw,46px);line-height:1;text-shadow:0 3px 10px rgba(0,0,0,.22)}
+.subtitle{margin:4px 0 0;color:#fff7c2;font-weight:900;font-size:13px}
+main{flex:1;min-height:0;padding:10px;overflow:hidden}
+.screen{display:none;height:100%;min-height:0}
+.screen.active{display:flex}
+.card{background:linear-gradient(180deg,rgba(15,20,70,.96),rgba(9,13,50,.96));border:1px solid rgba(255,255,255,.16);border-radius:18px;padding:12px;box-shadow:0 12px 30px rgba(0,0,0,.24)}
+.btn{border:0;border-radius:15px;padding:12px 16px;width:100%;cursor:pointer;background:linear-gradient(135deg,var(--gold),var(--gold2) 35%,#ff4d9e 78%,#7c3aed);color:#172033;font-weight:1000;font-size:15px;box-shadow:0 10px 22px rgba(255,183,3,.22)}
+.brand{font-weight:900;color:#fff3b0;text-align:center;font-size:12px;margin-top:10px}
 
-.side{display:none}
-.turn-box{text-align:center;background:linear-gradient(135deg,#fff7ed,#dbeafe);border:2px solid var(--gold);margin-top:8px}
-.turn-box h2{font-size:24px;margin:0;color:#1d4ed8}
-.dice-area{display:flex;align-items:center;justify-content:center;gap:10px;margin:6px 0 0}
-.dice-scene{width:70px;height:70px;perspective:600px}
-.dice{width:70px;height:70px;position:relative;transform-style:preserve-3d;transition:transform 1s ease;}
-.dice.rolling{animation:rollDice .75s linear infinite}
-.face{position:absolute;width:70px;height:70px;background:#fff;border:4px solid #111827;border-radius:14px;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);padding:7px;box-shadow:inset 0 0 8px rgba(0,0,0,.12)}
-.dot{width:10px;height:10px;background:#111827;border-radius:50%;align-self:center;justify-self:center}
-.f1{transform:rotateY(0deg) translateZ(35px)} .f2{transform:rotateY(180deg) translateZ(35px)} .f3{transform:rotateY(90deg) translateZ(35px)} .f4{transform:rotateY(-90deg) translateZ(35px)} .f5{transform:rotateX(90deg) translateZ(35px)} .f6{transform:rotateX(-90deg) translateZ(35px)}
-@keyframes rollDice{from{transform:rotateX(0) rotateY(0) rotateZ(0)}to{transform:rotateX(360deg) rotateY(540deg) rotateZ(360deg)}}
-.question-box{max-width:920px;margin:0 auto;width:100%}.question-box h3{margin:0 0 8px;color:#1d4ed8}
-.theme-chip{display:inline-block;background:#dbeafe;color:#1d4ed8;border:1px solid #bfdbfe;border-radius:999px;padding:6px 10px;font-weight:900;margin-bottom:8px;font-size:12px}
-.prompt{font-size:18px;line-height:1.25;font-weight:900;margin:0 0 10px}
+/* start */
+#startScreen{align-items:center;justify-content:center}
+.start-wrap{width:100%;height:100%;display:grid;grid-template-columns:1.05fr .95fr;gap:14px;min-height:0}
+.start-card,.info-card{overflow:auto;display:flex;flex-direction:column;justify-content:flex-start}
+.start-card h2,.info-card h3{margin:0 0 10px;font-size:30px;line-height:1.08}
+.motivation{background:rgba(255,230,109,.12);border:1px solid rgba(255,230,109,.32);color:#fff7c2;padding:14px;border-radius:16px;font-weight:900;line-height:1.36;margin:8px 0 12px;font-size:15px}
+.player-form{display:grid;gap:8px;margin-top:8px}
+.player-form label{font-weight:900;color:var(--gold);font-size:15px}
+.player-form input{border:2px solid rgba(96,165,250,.42);border-radius:14px;padding:12px 13px;font-size:16px;font-weight:800;outline:none;background:rgba(255,255,255,.96);color:#172033}
+.info-list{display:grid;gap:10px}
+.info-item{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);border-radius:15px;padding:12px;font-weight:900;line-height:1.32;color:#eaf2ff;font-size:14px}
+.info-item b{color:var(--gold);font-size:16px}
+
+/* game layout */
+#gameScreen.active{flex-direction:column}
+.hud{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;flex:0 0 auto;margin-bottom:7px}
+.hud-card{background:linear-gradient(180deg,rgba(13,20,72,.98),rgba(13,10,50,.98));border:1.5px solid rgba(255,230,109,.28);border-radius:14px;padding:8px 6px;text-align:center;box-shadow:0 6px 14px rgba(0,0,0,.18)}
+.hud-card b{display:block;font-size:19px;color:var(--gold);line-height:1.05}
+.hud-card span{font-size:10px;font-weight:900;color:#dbeafe;text-transform:uppercase;letter-spacing:.3px}
+.board-stage{flex:1;min-height:0;display:grid;grid-template-columns:1fr 190px;gap:8px}
+.board-panel{position:relative;min-height:0;border-radius:22px;overflow:hidden;border:1.5px solid rgba(255,230,109,.30);background:
+  radial-gradient(circle at 15% 15%,rgba(34,197,94,.18),transparent 22%),
+  radial-gradient(circle at 82% 24%,rgba(255,230,109,.16),transparent 20%),
+  linear-gradient(180deg,#0b1746,#08112f 60%,#07102c);
+  box-shadow:inset 0 0 28px rgba(255,255,255,.05),0 12px 28px rgba(0,0,0,.25);
+}
+.board-title{position:absolute;top:8px;left:12px;right:12px;display:flex;justify-content:space-between;align-items:center;z-index:3;font-weight:1000;color:#fff7c2;font-size:13px}
+.track-svg{width:100%;height:100%;display:block}
+.cell{fill:#eaf2ff;stroke:#1d4ed8;stroke-width:2;filter:drop-shadow(0 3px 5px rgba(0,0,0,.22))}
+.cell.special{fill:#ffe66d;stroke:#f97316}
+.cell.penalty{fill:#fecaca;stroke:#ef4444}
+.cell.bonus{fill:#bbf7d0;stroke:#22c55e}
+.cell-text{font-size:12px;font-weight:900;fill:#172033;text-anchor:middle;dominant-baseline:central;pointer-events:none}
+.path-line{fill:none;stroke:rgba(255,255,255,.68);stroke-width:10;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:16 14}
+.path-glow{fill:none;stroke:rgba(255,230,109,.22);stroke-width:20;stroke-linecap:round;stroke-linejoin:round}
+.car{filter:drop-shadow(0 4px 5px rgba(0,0,0,.35));transition:transform .55s ease}
+.car-body{stroke:#fff;stroke-width:1.4}
+.side-panel{display:flex;flex-direction:column;gap:8px;min-height:0}
+.dice-card{text-align:center;flex:0 0 auto}
+.turn-text{font-weight:1000;color:#fff7c2;font-size:14px;margin-bottom:6px}
+.dice{width:74px;height:74px;margin:0 auto 8px;border-radius:17px;background:#fff;color:#111;display:flex;align-items:center;justify-content:center;font-size:36px;font-weight:1000;border:3px solid #dbeafe;box-shadow:0 10px 20px rgba(0,0,0,.28)}
+.dice.rolling{animation:diceRoll .42s linear infinite}
+@keyframes diceRoll{0%{transform:rotate(0) scale(1)}50%{transform:rotate(18deg) scale(1.05)}100%{transform:rotate(-18deg) scale(1)}}
+.log{flex:1;min-height:0;overflow:auto;font-size:12px;line-height:1.25;color:#dbeafe;font-weight:800;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:8px}
+.legend{display:grid;gap:5px;font-size:11px;color:#eaf2ff;font-weight:900}
+.legend div{background:rgba(255,255,255,.06);border-radius:10px;padding:6px}
+
+/* modal question */
+.modal{position:fixed;inset:0;z-index:50;display:none;align-items:center;justify-content:center;background:rgba(2,6,23,.72);backdrop-filter:blur(4px);padding:14px}
+.modal.active{display:flex}
+.q-card{width:min(100%,680px);max-height:calc(100dvh - 24px);overflow:auto;background:linear-gradient(180deg,rgba(15,20,70,.98),rgba(9,13,50,.98));border:1.5px solid rgba(255,230,109,.42);border-radius:22px;padding:16px;box-shadow:0 24px 60px rgba(0,0,0,.48),0 0 36px rgba(255,230,109,.12)}
+.q-top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}
+.theme-chip{background:linear-gradient(135deg,rgba(255,230,109,.25),rgba(255,183,3,.15));border:1px solid rgba(255,230,109,.45);color:#fff3b0;border-radius:999px;padding:7px 12px;font-weight:1000;font-size:13px}
+.dice-info{font-weight:1000;color:#dbeafe;font-size:13px}
+.q-text{font-size:22px;line-height:1.25;font-weight:1000;color:#fff;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-left:5px solid var(--gold);padding:13px;border-radius:15px;margin:8px 0 10px}
 .options{display:grid;gap:8px}
-.option{border:2px solid #dbeafe;background:#f8fafc;border-radius:13px;padding:10px;text-align:left;font-weight:900;font-size:14px;cursor:pointer;color:#111827}
-.option.correct{background:#dcfce7;border-color:#22c55e;color:#14532d} .option.wrong{background:#fee2e2;border-color:#ef4444;color:#7f1d1d}
-.feedback{display:none;margin-top:8px;border-radius:13px;padding:9px;font-weight:900;line-height:1.25;font-size:13px}
-.feedback.ok{display:block;background:#dcfce7;border:1px solid #86efac;color:#14532d} .feedback.bad{display:block;background:#fee2e2;border:1px solid #fca5a5;color:#7f1d1d}
-.special-msg{display:none;margin-top:8px;border-radius:13px;padding:9px;font-weight:900;background:#fff7ed;border:1px solid #f8d36b;color:#92400e;font-size:13px}
-.final h2{text-align:center;color:#1d4ed8;font-size:34px;margin:0 0 8px} .final p{text-align:center;font-weight:900}
-.final-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0} .final-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:15px;padding:12px;text-align:center;font-weight:900} .final-box b{display:block;color:#e11d48;font-size:24px}
+.option{border:2px solid rgba(96,165,250,.32);background:linear-gradient(180deg,#fff,#eaf2ff);border-radius:14px;padding:11px 13px;text-align:left;font-weight:1000;font-size:16px;cursor:pointer;color:#172033;box-shadow:0 4px 10px rgba(0,0,0,.10)}
+.option.correct{background:#bbf7d0;border-color:#22c55e;animation:greenGlow .45s ease-in-out infinite alternate}
+.option.wrong{background:#fecaca;border-color:#ef4444;animation:redBlink .35s ease-in-out 5 alternate}
+@keyframes greenGlow{from{box-shadow:0 0 8px rgba(34,197,94,.25)}to{box-shadow:0 0 28px rgba(34,197,94,.95)}}
+@keyframes redBlink{from{box-shadow:0 0 8px rgba(239,68,68,.25)}to{box-shadow:0 0 28px rgba(239,68,68,.95)}}
+.feedback{display:none;margin-top:10px;border-radius:13px;padding:9px;font-weight:900;line-height:1.25}
+.feedback.good{display:block;background:#dcfce7;border:1px solid #86efac;color:#14532d}
+.feedback.bad{display:block;background:#fee2e2;border:1px solid #fca5a5;color:#7f1d1d}
+
+/* final */
+#finalScreen{align-items:center;justify-content:center}
+.final-card{width:min(100%,720px);text-align:center;overflow:auto;max-height:100%}
+.final-card h2{font-size:36px;color:var(--gold);margin:0 0 8px}
+.result-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:10px 0}
+.result-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:8px;text-align:center;font-weight:900}
+.result-box span{display:block;color:#64748b;font-size:9px;text-transform:uppercase}
+.result-box b{display:block;color:#e11d48;font-size:18px;margin-top:2px}
+.final-msg{background:linear-gradient(135deg,#fff7ed,#dbeafe);border:2px solid var(--gold);color:#172033;border-radius:15px;padding:10px;font-weight:900;line-height:1.35}
 
 @media(max-width:860px){
- body.playing{height:100dvh;min-height:100dvh;overflow:hidden;padding:5px;align-items:flex-start}
- body.playing .app{height:calc(100dvh - 10px);min-height:0;border-radius:16px;display:flex;flex-direction:column}
- body.playing header{padding:5px 7px;flex:0 0 auto} body.playing h1{font-size:22px} body.playing .subtitle{display:none}
- body.playing .back,body.playing .pill{font-size:9px;padding:4px 7px}
- body.playing main{padding:5px;flex:1 1 auto;min-height:0;overflow:hidden}
- body.playing #gameScreen.active{height:100%;display:flex;flex-direction:column;min-height:0;overflow:hidden}
- .game-layout{display:flex;flex-direction:column;gap:5px;min-height:0;flex:1 1 auto;overflow:hidden;max-width:none;margin:0}
- .scorebar{grid-template-columns:repeat(3,1fr);gap:4px;margin-bottom:4px;max-width:none}
- .score{padding:4px;border-radius:10px;font-size:10px} .score b{font-size:15px}
- .track-card{padding:6px;border-radius:12px;flex:0 0 auto}
- .track-title{font-size:10px;margin-bottom:3px}
- .track{height:274px;border-width:4px;border-radius:18px}
- .cell{width:20px;height:20px;border-width:2px;font-size:7px}
- .car{width:42px;height:24px;transition:left .85s cubic-bezier(.19,.86,.28,1), top .85s cubic-bezier(.19,.86,.28,1), transform .35s ease}
- .legend{display:none}
- .turn-box{margin-top:5px;border-radius:10px;padding:5px}
- .turn-box h2{font-size:12px}
- .dice-area{margin:2px 0 0;gap:7px}
- .dice-scene,.dice,.face{width:48px;height:48px} .face{border-width:2px;border-radius:9px;padding:4px} .dot{width:6px;height:6px}
- .f1{transform:rotateY(0deg) translateZ(24px)} .f2{transform:rotateY(180deg) translateZ(24px)} .f3{transform:rotateY(90deg) translateZ(24px)} .f4{transform:rotateY(-90deg) translateZ(24px)} .f5{transform:rotateX(90deg) translateZ(24px)} .f6{transform:rotateX(-90deg) translateZ(24px)}
- .question-box{padding:5px;border-radius:12px;flex:1 1 auto;overflow:hidden;max-width:none;margin:0}
- .btn{font-size:11px;padding:8px 10px;border-radius:10px}
- .theme-chip{font-size:9.5px;padding:4px 7px;margin-bottom:3px}
- .prompt{font-size:11.2px;line-height:1.08;margin-bottom:3px;max-height:42px;overflow:hidden}
- .options{gap:3px} .option{font-size:10.8px;padding:4px 6px;border-radius:8px;min-height:24px;line-height:1.08}
- .feedback,.special-msg{font-size:10px;padding:5px;margin-top:3px;max-height:36px;overflow:hidden}
- .brand{display:none}
+  body{padding:5px;align-items:flex-start}
+  .app{height:calc(100dvh - 10px);border-radius:16px}
+  header{padding:5px 7px}.topbar{margin-bottom:2px}.back,.pill{font-size:9px;padding:4px 7px}
+  h1{font-size:22px}.subtitle{display:none}main{padding:5px}
+  .start-wrap{grid-template-columns:1fr;overflow:auto}.info-card{display:none}.start-card h2{font-size:24px}
+  .motivation{font-size:13px;padding:10px}.player-form label{font-size:13px}.player-form input{font-size:14px;padding:10px}
+  .hud{gap:4px;margin-bottom:4px}.hud-card{padding:5px 3px;border-radius:11px}.hud-card b{font-size:14px}.hud-card span{font-size:7.5px}
+  .board-stage{grid-template-columns:1fr;grid-template-rows:1fr auto;gap:5px}
+  .side-panel{display:grid;grid-template-columns:1fr 1fr;gap:5px;min-height:auto}
+  .dice-card{padding:6px}.turn-text{font-size:11px;margin-bottom:3px}.dice{width:48px;height:48px;font-size:25px;border-radius:12px;margin-bottom:5px}.btn{font-size:12px;padding:8px}
+  .log{display:none}.legend{display:none}
+  .board-title{font-size:10px;top:5px;left:8px;right:8px}
+  .q-card{padding:12px;border-radius:18px}.q-text{font-size:17px;padding:10px}.option{font-size:13.5px;padding:9px 10px}
+  .theme-chip,.dice-info{font-size:11px}.result-grid{grid-template-columns:repeat(2,1fr)}
 }
 </style>
 </head>
 <body>
 <div class="app">
 <header>
- <div class="topbar"><a class="back" href="6ano.html">← Voltar ao 6º ano</a><div class="pill">🏎️ 6º Ano • 1º Bimestre</div></div>
- <h1>Formula 1 Board Game</h1>
- <p class="subtitle">Role o dado, responda desafios de gramática e vocabulário e avance até a casa 40.</p>
+  <div class="topbar"><a class="back" href="6ano.html">← 6º ano</a><span class="pill">Alinhado à BNCC</span></div>
+  <h1>Board Game Challenge</h1>
+  <p class="subtitle">Corrida de equipes com dado, perguntas em tela sobreposta e desafios do Inglês do 6º ano.</p>
 </header>
 <main>
 <section id="startScreen" class="screen active">
- <div class="card start-card">
-  <h2>🏁 Formula 1 Board Game</h2>
-  <p class="start-text">Corrida com perguntas contextualizadas do 1º bimestre: gramática, vocabulário, comandos e situações reais de sala. Dois jogadores ou duas equipes competem até a casa 40.</p>
-  <div class="player-form">
-    <div><label>Jogador/Equipe 1</label><input id="p1Name" value="Equipe Azul" maxlength="24"></div>
-    <div><label>Jogador/Equipe 2</label><input id="p2Name" value="Equipe Vermelha" maxlength="24"></div>
-    <div class="full"><label>Escola</label><input id="schoolName" placeholder="Digite o nome da escola" maxlength="40"></div>
+  <div class="start-wrap">
+    <div class="card start-card">
+      <h2>🏁 English Board Race</h2>
+      <div class="motivation">Aprender inglês pode ser mais divertido quando você joga, tenta, erra, aprende e continua. Gire o dado, responda ao desafio e leve sua equipe até a chegada!</div>
+      <div class="player-form">
+        <label>Nome do aluno</label><input id="playerName" type="text" placeholder="Digite seu nome" maxlength="28">
+        <label>Turma</label><input id="playerClass" type="text" placeholder="Ex.: 601" maxlength="12">
+        <label>Escola</label><input id="playerSchool" type="text" value="Escola Delfina de Jesus Amorim" maxlength="50">
+      </div>
+      <button class="btn" onclick="startGame()">Começar jogo</button>
+      <div class="brand">Jogo idealizado pelo professor Jasson Bruno.</div>
+    </div>
+    <div class="card info-card">
+      <h3>Como funciona?</h3>
+      <div class="info-list">
+        <div class="info-item"><b>1.</b> A tela fica quase toda para a pista. A pergunta só aparece depois que o dado parar.</div>
+        <div class="info-item"><b>2.</b> Acertou: o carrinho anda o número sorteado no dado.</div>
+        <div class="info-item"><b>3.</b> Errou: passa a vez e volta 1 casa.</div>
+        <div class="info-item"><b>4.</b> Casas especiais podem dar bônus ou punições.</div>
+        <div class="info-item"><b>5.</b> Vence quem chegar primeiro ao FINISH.</div>
+      </div>
+    </div>
   </div>
-  <button class="btn" onclick="startGame()">Começar corrida</button>
-  <div class="brand-start">Jogo idealizado pelo professor Jasson Bruno.</div>
- </div>
 </section>
 
 <section id="gameScreen" class="screen">
- <div class="scorebar">
-   <div class="score"><span id="p1Label">Equipe Azul</span><b id="p1Pos">0/40</b></div>
-   <div class="score"><span id="turnLabel">Vez</span><b id="turnNow">P1</b></div>
-   <div class="score"><span id="p2Label">Equipe Vermelha</span><b id="p2Pos">0/40</b></div>
- </div>
- <div class="game-layout">
-   <div class="card track-card">
-    <div class="track-title"><span>🏁 Pista sinuosa de 40 casas</span><span id="raceMsg">Responda certo para avançar!</span></div>
-    <div id="track" class="track">
-      <div class="place start">🏁 START</div>
-      <div class="place end">🏆 FINISH</div>
-      <svg class="road" viewBox="0 0 420 680" preserveAspectRatio="none">
-        <path id="roadPath" class="track-road"></path>
-        <path id="roadLine" class="track-line"></path>
-      </svg>
-      <div id="nodesLayer"></div>
-      <div id="car1" class="car p1"><svg class="car-svg" viewBox="0 0 120 68" aria-label="Carro azul de Fórmula 1">
-  <defs>
-    <linearGradient id="blueBody" x1="0" x2="1"><stop offset="0" stop-color="#93c5fd"/><stop offset="0.55" stop-color="#2563eb"/><stop offset="1" stop-color="#1e40af"/></linearGradient>
-  </defs>
-  <ellipse cx="24" cy="22" rx="13" ry="13" fill="#4b5563" stroke="#111827" stroke-width="3"/>
-  <ellipse cx="24" cy="46" rx="13" ry="13" fill="#4b5563" stroke="#111827" stroke-width="3"/>
-  <ellipse cx="98" cy="19" rx="13" ry="13" fill="#4b5563" stroke="#111827" stroke-width="3"/>
-  <ellipse cx="98" cy="49" rx="13" ry="13" fill="#4b5563" stroke="#111827" stroke-width="3"/>
-  <rect x="18" y="20" width="17" height="28" rx="2" fill="url(#blueBody)" stroke="#ffffff" stroke-width="2"/>
-  <rect x="15" y="18" width="22" height="6" rx="1.5" fill="#1e3a8a" stroke="#fff" stroke-width="1.5"/>
-  <rect x="15" y="44" width="22" height="6" rx="1.5" fill="#1e3a8a" stroke="#fff" stroke-width="1.5"/>
-  <path d="M31 19 L56 10 Q70 8 79 20 L54 21 Z" fill="url(#blueBody)" stroke="#ffffff" stroke-width="2"/>
-  <path d="M31 49 L54 47 L79 48 Q69 60 56 58 L31 50 Z" fill="url(#blueBody)" stroke="#ffffff" stroke-width="2"/>
-  <path d="M48 18 L80 18 Q95 18 105 31 L84 34 L48 31 Z" fill="url(#blueBody)" stroke="#ffffff" stroke-width="2"/>
-  <path d="M48 49 L84 48 L105 37 Q95 50 80 50 L48 51 Z" fill="url(#blueBody)" stroke="#ffffff" stroke-width="2"/>
-  <path d="M76 22 L100 25 L113 31 L100 36 L76 39 Q71 39 69 34 L69 27 Q71 22 76 22 Z" fill="url(#blueBody)" stroke="#ffffff" stroke-width="2"/>
-  <path d="M45 24 Q58 20 72 22 L72 41 Q58 44 45 40 Z" fill="#f8fafc" opacity="0.9"/>
-  <path d="M55 21 Q63 15 72 15 Q79 15 83 20 L84 42 Q79 48 71 48 Q62 48 55 42 Z" fill="#f8fafc" stroke="#111827" stroke-width="2"/>
-  <path d="M61 19 Q67 13 74 13 Q81 13 85 18 L85 24 Q75 26 63 24 Z" fill="#0f172a"/>
-  <path d="M52 34 L63 34 L64 42 L53 42 Z" fill="#ef4444"/>
-  <rect x="58" y="29" width="20" height="2.5" rx="1.25" fill="#ef4444" opacity="0.95"/>
-  <rect x="88" y="27" width="25" height="4" rx="1" fill="#1e3a8a" stroke="#fff" stroke-width="1.3"/>
-  <rect x="88" y="37" width="25" height="4" rx="1" fill="#1e3a8a" stroke="#fff" stroke-width="1.3"/>
-</svg></div>
-      <div id="car2" class="car p2"><svg class="car-svg" viewBox="0 0 120 68" aria-label="Carro vermelho de Fórmula 1">
-  <defs>
-    <linearGradient id="redBody" x1="0" x2="1"><stop offset="0" stop-color="#fda4af"/><stop offset="0.55" stop-color="#ef4444"/><stop offset="1" stop-color="#b91c1c"/></linearGradient>
-  </defs>
-  <ellipse cx="24" cy="22" rx="13" ry="13" fill="#4b5563" stroke="#111827" stroke-width="3"/>
-  <ellipse cx="24" cy="46" rx="13" ry="13" fill="#4b5563" stroke="#111827" stroke-width="3"/>
-  <ellipse cx="98" cy="19" rx="13" ry="13" fill="#4b5563" stroke="#111827" stroke-width="3"/>
-  <ellipse cx="98" cy="49" rx="13" ry="13" fill="#4b5563" stroke="#111827" stroke-width="3"/>
-  <rect x="18" y="20" width="17" height="28" rx="2" fill="url(#redBody)" stroke="#ffffff" stroke-width="2"/>
-  <rect x="15" y="18" width="22" height="6" rx="1.5" fill="#991b1b" stroke="#fff" stroke-width="1.5"/>
-  <rect x="15" y="44" width="22" height="6" rx="1.5" fill="#991b1b" stroke="#fff" stroke-width="1.5"/>
-  <path d="M31 19 L56 10 Q70 8 79 20 L54 21 Z" fill="url(#redBody)" stroke="#ffffff" stroke-width="2"/>
-  <path d="M31 49 L54 47 L79 48 Q69 60 56 58 L31 50 Z" fill="url(#redBody)" stroke="#ffffff" stroke-width="2"/>
-  <path d="M48 18 L80 18 Q95 18 105 31 L84 34 L48 31 Z" fill="url(#redBody)" stroke="#ffffff" stroke-width="2"/>
-  <path d="M48 49 L84 48 L105 37 Q95 50 80 50 L48 51 Z" fill="url(#redBody)" stroke="#ffffff" stroke-width="2"/>
-  <path d="M76 22 L100 25 L113 31 L100 36 L76 39 Q71 39 69 34 L69 27 Q71 22 76 22 Z" fill="url(#redBody)" stroke="#ffffff" stroke-width="2"/>
-  <path d="M45 24 Q58 20 72 22 L72 41 Q58 44 45 40 Z" fill="#f8fafc" opacity="0.9"/>
-  <path d="M55 21 Q63 15 72 15 Q79 15 83 20 L84 42 Q79 48 71 48 Q62 48 55 42 Z" fill="#f8fafc" stroke="#111827" stroke-width="2"/>
-  <path d="M61 19 Q67 13 74 13 Q81 13 85 18 L85 24 Q75 26 63 24 Z" fill="#0f172a"/>
-  <path d="M52 34 L63 34 L64 42 L53 42 Z" fill="#ef4444"/>
-  <rect x="58" y="29" width="20" height="2.5" rx="1.25" fill="#ef4444" opacity="0.95"/>
-  <rect x="88" y="27" width="25" height="4" rx="1" fill="#991b1b" stroke="#fff" stroke-width="1.3"/>
-  <rect x="88" y="37" width="25" height="4" rx="1" fill="#991b1b" stroke="#fff" stroke-width="1.3"/>
-</svg></div>
+  <div class="hud">
+    <div class="hud-card"><b id="blueScore">0/40</b><span>Equipe Azul</span></div>
+    <div class="hud-card"><b id="turnText">Azul</b><span>Vez</span></div>
+    <div class="hud-card"><b id="redScore">0/40</b><span>Equipe Vermelha</span></div>
+    <div class="hud-card"><b id="roundText">1</b><span>Rodada</span></div>
+  </div>
+  <div class="board-stage">
+    <div class="board-panel">
+      <div class="board-title"><span>🏎️ Pista sinuosa de 40 casas</span><span id="statusText">Gire o dado para começar</span></div>
+      <svg id="boardSvg" class="track-svg" viewBox="0 0 820 520" preserveAspectRatio="xMidYMid meet"></svg>
     </div>
-    <div class="legend"><span class="lbonus">Verde: bônus</span><span class="lpenalty">Vermelho: punição</span><span class="lchallenge">Amarelo: desafio</span></div>
-    <div class="turn-box">
-      <h2 id="turnTitle">Vez da Equipe Azul</h2>
-      <div class="dice-area">
-        <div class="dice-scene">
-          <div id="dice" class="dice">
-            <div class="face f1"><span></span><span></span><span></span><span></span><span class="dot"></span><span></span><span></span><span></span><span></span></div>
-            <div class="face f2"><span class="dot"></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span class="dot"></span></div>
-            <div class="face f3"><span class="dot"></span><span></span><span></span><span></span><span class="dot"></span><span></span><span></span><span></span><span class="dot"></span></div>
-            <div class="face f4"><span class="dot"></span><span></span><span class="dot"></span><span></span><span></span><span></span><span class="dot"></span><span></span><span class="dot"></span></div>
-            <div class="face f5"><span class="dot"></span><span></span><span class="dot"></span><span></span><span class="dot"></span><span></span><span class="dot"></span><span></span><span class="dot"></span></div>
-            <div class="face f6"><span class="dot"></span><span></span><span class="dot"></span><span class="dot"></span><span></span><span class="dot"></span><span class="dot"></span><span></span><span class="dot"></span></div>
-          </div>
-        </div>
+    <div class="side-panel">
+      <div class="card dice-card">
+        <div id="turnLabel" class="turn-text">Vez da Equipe Azul</div>
+        <div id="dice" class="dice">🎲</div>
         <button id="rollBtn" class="btn" onclick="rollDice()">Girar dado</button>
+        <div class="brand">Jogo idealizado pelo professor Jasson Bruno.</div>
+      </div>
+      <div class="log" id="log">O jogo começou. Gire o dado para abrir o primeiro desafio.</div>
+      <div class="legend">
+        <div>🟢 Casa bônus: avance 1</div>
+        <div>🔴 Casa punição: volte 1</div>
+        <div>🟡 Casa especial: jogue novamente</div>
       </div>
     </div>
-   </div>
-   <div class="card question-box">
-      <div id="theme" class="theme-chip">Tema</div>
-      <p id="prompt" class="prompt">Gire o dado para receber sua pergunta.</p>
-      <div id="options" class="options"></div>
-      <div id="feedback" class="feedback"></div>
-      <div id="specialMsg" class="special-msg"></div>
-   </div>
- </div>
+  </div>
 </section>
 
 <section id="finalScreen" class="screen">
-  <div class="card final">
+  <div class="card final-card">
     <h2 id="finalTitle">🏆 Vitória!</h2>
-    <p id="finalMsg"></p>
-    <div class="final-grid">
-      <div class="final-box"><span id="winnerName">Vencedor</span><b id="winnerScore">40/40</b></div>
-      <div class="final-box"><span>Escola</span><b id="finalSchool">---</b></div>
+    <div id="finalMsg" class="final-msg"></div>
+    <div class="result-grid">
+      <div class="result-box"><span>Equipe Azul</span><b id="finalBlue">0</b></div>
+      <div class="result-box"><span>Equipe Vermelha</span><b id="finalRed">0</b></div>
+      <div class="result-box"><span>Rodadas</span><b id="finalRounds">0</b></div>
+      <div class="result-box"><span>Vencedor</span><b id="finalWinner">---</b></div>
     </div>
     <button class="btn" onclick="startGame()">Jogar novamente</button>
-    <button class="btn" onclick="location.href='6ano.html'">Voltar ao 6º ano</button>
+    <div class="brand">Jogo idealizado pelo professor Jasson Bruno.</div>
   </div>
 </section>
 </main>
-<div class="brand">Jogo idealizado pelo professor Jasson Bruno.</div>
+</div>
+
+<div id="questionModal" class="modal">
+  <div class="q-card">
+    <div class="q-top">
+      <span id="qTheme" class="theme-chip">Tema</span>
+      <span id="qDiceInfo" class="dice-info">Valendo avanço</span>
+    </div>
+    <div id="qText" class="q-text">Pergunta</div>
+    <div id="qOptions" class="options"></div>
+    <div id="qFeedback" class="feedback"></div>
+  </div>
 </div>
 
 <script>
-const QUESTIONS = [{"theme": "Verb to be", "q": "Na aula, você aprendeu que em perguntas com o verbo to be o verbo vai para o começo da frase. Se um aluno quer perguntar “Eu sou alto?” em inglês, qual alternativa segue essa regra corretamente?", "a": "Am I tall?", "o": ["Am I tall?", "I am tall?", "Tall am I?", "Are I tall?"], "e": "Em perguntas com I, usamos Am no começo: Am I tall?"}, {"theme": "Verb to be", "q": "Durante uma apresentação, Ana disse: “She is my friend.” Depois a professora pediu para transformar a frase em negativa. Qual opção está correta?", "a": "She is not my friend.", "o": ["She is not my friend.", "She not is my friend.", "She are not my friend.", "Is she not my friend."], "e": "Na negativa, usamos is not depois do sujeito: She is not..."}, {"theme": "Verb to be", "q": "João escreveu no caderno: “They are students.” A professora pediu a forma interrogativa. Lembre: o verbo to be vai para o início. Qual é a resposta correta?", "a": "Are they students?", "o": ["Are they students?", "They are students?", "Is they students?", "Students are they?"], "e": "Com they usamos are. Na pergunta: Are they...?"}, {"theme": "Verb to be", "q": "Em uma atividade sobre colegas da turma, apareceu a frase: “He is happy.” Se a frase virar pergunta, como deve ficar?", "a": "Is he happy?", "o": ["Is he happy?", "He is happy?", "Are he happy?", "Happy is he?"], "e": "Com he usamos is. Na pergunta, o is vem antes: Is he happy?"}, {"theme": "Verb to be", "q": "A professora mostrou a frase “We are ready.” e pediu a forma negativa. Qual alternativa mostra corretamente “Nós não estamos prontos”?", "a": "We are not ready.", "o": ["We are not ready.", "We is not ready.", "Are we not ready.", "We not are ready."], "e": "Com we usamos are. Na negativa: We are not..."}, {"theme": "Verb to be", "q": "Sonic chegou atrasado e disse: “I am sorry.” Se ele quisesse dizer “Eu não estou atrasado”, qual estrutura negativa com I estaria correta?", "a": "I am not late.", "o": ["I am not late.", "I not am late.", "I are not late.", "Am I not late."], "e": "Com I usamos am. Na negativa: I am not..."}, {"theme": "Verb to be", "q": "Na frase “You are my classmate”, a professora pediu para transformar em pergunta. Qual alternativa respeita a regra do verbo to be?", "a": "Are you my classmate?", "o": ["Are you my classmate?", "You are my classmate?", "Is you my classmate?", "My classmate are you?"], "e": "Com you usamos are. Em perguntas: Are you...?"}, {"theme": "Verb to be", "q": "Um aluno escreveu “She are my sister.” A professora disse que há erro de concordância. Qual frase corrige o problema?", "a": "She is my sister.", "o": ["She is my sister.", "She are my sister.", "She am my sister.", "She be my sister."], "e": "Com she usamos is: She is..."}, {"theme": "Personal pronouns", "q": "Na sala, a professora mostrou a frase “Maria is my friend.” Para evitar repetir o nome Maria, qual pronome pessoal substitui Maria corretamente?", "a": "She", "o": ["She", "He", "They", "I"], "e": "Maria é uma menina, então usamos She."}, {"theme": "Personal pronouns", "q": "Em um texto sobre futebol, apareceu: “Neymar is Brazilian.” Para substituir Neymar por um pronome, qual opção é adequada?", "a": "He", "o": ["He", "She", "They", "We"], "e": "Neymar pode ser substituído por He."}, {"theme": "Personal pronouns", "q": "A frase dizia: “Ana and Pedro are students.” Como são duas pessoas, qual pronome pode substituir Ana and Pedro?", "a": "They", "o": ["They", "He", "She", "It"], "e": "They significa eles/elas e substitui mais de uma pessoa."}, {"theme": "Personal pronouns", "q": "O aluno quer falar de si mesmo e dizer “Eu sou estudante.” Qual pronome deve iniciar a frase em inglês?", "a": "I", "o": ["I", "You", "He", "They"], "e": "I significa eu."}, {"theme": "Personal pronouns", "q": "Em uma conversa, a professora olha para o aluno e pergunta diretamente: “Você está pronto?” Qual pronome representa “você” em inglês?", "a": "You", "o": ["You", "I", "She", "We"], "e": "You significa você."}, {"theme": "Possessive adjectives", "q": "Durante uma atividade, João pegou o próprio livro e disse: “Este é meu livro.” Qual possessive adjective completa corretamente: ___ book?", "a": "My", "o": ["My", "Your", "His", "Her"], "e": "My significa meu/minha."}, {"theme": "Possessive adjectives", "q": "A professora aponta para o lápis de Maria e diz: “É o lápis dela.” Como completar em inglês: ___ pencil?", "a": "Her", "o": ["Her", "His", "My", "Your"], "e": "Her indica posse dela."}, {"theme": "Possessive adjectives", "q": "Pedro esqueceu a mochila. A professora disse: “This is ___ backpack”, querendo dizer “a mochila dele”. Qual opção completa corretamente?", "a": "His", "o": ["His", "Her", "My", "Your"], "e": "His indica posse dele."}, {"theme": "Possessive adjectives", "q": "Um aluno pergunta ao colega: “Qual é o seu nome?” Em inglês, a palavra “seu/sua”, falando diretamente com alguém, é:", "a": "Your", "o": ["Your", "My", "His", "Her"], "e": "Your significa seu/sua quando falamos com você."}, {"theme": "Possessive adjectives", "q": "Wandinha tem uma mochila preta. Para dizer “a mochila dela” em inglês, qual expressão está correta?", "a": "Her backpack", "o": ["Her backpack", "His backpack", "My backpack", "Your backpack"], "e": "Como é dela, usamos Her."}, {"theme": "Possessive adjectives", "q": "Messi está com a bola dele. Em inglês, como dizer “a bola dele”?", "a": "His ball", "o": ["His ball", "Her ball", "My ball", "Your ball"], "e": "His significa dele."}, {"theme": "Personal information", "q": "Em uma apresentação oral, o aluno precisa dizer o próprio nome. Qual frase está correta para dizer “Meu nome é Lucas”?", "a": "My name is Lucas.", "o": ["My name is Lucas.", "I name Lucas.", "Name my is Lucas.", "Lucas my name."], "e": "A estrutura correta é My name is..."}, {"theme": "Personal information", "q": "A professora perguntou “How old are you?” no início da aula. Que informação ela está pedindo?", "a": "A idade do aluno.", "o": ["A idade do aluno.", "O nome da escola.", "A cor favorita.", "O nome do professor."], "e": "How old are you? significa Quantos anos você tem?"}, {"theme": "Personal information", "q": "Um aluno tem 11 anos e precisa responder em inglês. Qual frase está correta?", "a": "I am 11 years old.", "o": ["I am 11 years old.", "I have 11 years old.", "My name is 11.", "I are 11 old."], "e": "Para idade, usamos I am ... years old."}, {"theme": "Personal information", "q": "Em um diálogo, alguém pergunta: “Where are you from?” Qual resposta combina com essa pergunta?", "a": "I am from Santarém.", "o": ["I am from Santarém.", "My name is Santarém.", "I am 12 years old.", "Good night."], "e": "Where are you from? pergunta de onde a pessoa é."}, {"theme": "Classroom expressions", "q": "Durante a prova, o aluno não entendeu uma questão e quer pedir ajuda de forma educada. Qual frase em inglês é mais adequada?", "a": "Can you help me?", "o": ["Can you help me?", "Goodbye teacher.", "I am pencil.", "She is my book."], "e": "Can you help me? significa Você pode me ajudar?"}, {"theme": "Classroom expressions", "q": "Na aula, a professora perguntou algo e o aluno realmente não sabia. Como ele pode dizer “Eu não sei” em inglês?", "a": "I don't know.", "o": ["I don't know.", "I am not book.", "She don't is.", "My don't know."], "e": "I don't know significa Eu não sei."}, {"theme": "Classroom expressions", "q": "Um aluno quer tentar responder, mas não tem certeza. Qual frase significa “Posso tentar?”", "a": "Can I try?", "o": ["Can I try?", "Can I book?", "Try I can?", "I try can?"], "e": "Can I try? significa Posso tentar?"}, {"theme": "Classroom expressions", "q": "Se um aluno precisa ir ao banheiro, qual frase é mais adequada em sala de aula?", "a": "May I go to the bathroom?", "o": ["May I go to the bathroom?", "I am bathroom.", "Bathroom is my name.", "Go I bathroom."], "e": "May I go to the bathroom? é uma forma educada de pedir para ir ao banheiro."}, {"theme": "Classroom commands", "q": "A professora aponta para um texto no livro e diz “Read the text.” O que ela quer que os alunos façam?", "a": "Ler o texto.", "o": ["Ler o texto.", "Fechar o livro.", "Levantar da cadeira.", "Soletrar o nome."], "e": "Read significa ler."}, {"theme": "Classroom commands", "q": "Durante uma atividade de áudio, a professora diz “Listen carefully.” Qual ação a turma deve fazer?", "a": "Escutar com atenção.", "o": ["Escutar com atenção.", "Escrever o nome.", "Levantar rápido.", "Fechar a mochila."], "e": "Listen significa ouvir/escutar."}, {"theme": "Classroom commands", "q": "O professor diz “Open your book on page ten.” Qual comando aparece nessa frase?", "a": "Open your book", "o": ["Open your book", "Good night", "My name is", "She is happy"], "e": "Open your book significa abra seu livro."}, {"theme": "Classroom commands", "q": "Em sala, o aluno estava de pé e a professora disse “Sit down, please.” O que ele deve fazer?", "a": "Sentar-se.", "o": ["Sentar-se.", "Levantar-se.", "Ler em voz alta.", "Soletrar o nome."], "e": "Sit down significa sente-se."}, {"theme": "Greetings", "q": "No início da manhã, a turma entra na sala e cumprimenta a professora. Qual expressão combina melhor com esse momento?", "a": "Good morning", "o": ["Good morning", "Good night", "Goodbye", "See you"], "e": "Good morning é usado pela manhã."}, {"theme": "Greetings", "q": "Um aluno encontra um colega no corredor e quer apenas dizer “Oi!”. Qual palavra curta em inglês ele pode usar?", "a": "Hi", "o": ["Hi", "Bye", "His", "Read"], "e": "Hi significa Oi."}, {"theme": "Greetings", "q": "A professora pergunta “How are you?” e o aluno quer responder que está bem. Qual frase combina melhor?", "a": "I am fine.", "o": ["I am fine.", "My name is fine.", "Goodbye.", "Open your book."], "e": "I am fine significa Eu estou bem."}, {"theme": "Farewells", "q": "A aula terminou e o aluno está indo embora. Qual expressão é uma despedida adequada?", "a": "See you", "o": ["See you", "Hello", "Good morning", "Stand up"], "e": "See you significa Até mais."}, {"theme": "Farewells", "q": "À noite, depois de uma conversa, uma pessoa se despede dizendo “Boa noite”. Qual expressão em inglês corresponde a isso?", "a": "Good night", "o": ["Good night", "Good afternoon", "Good morning", "Listen"], "e": "Good night pode ser usado como Boa noite em despedidas."}, {"theme": "Mixed grammar", "q": "Na frase “My name is Ana”, qual palavra mostra ideia de posse, como “meu/minha”?", "a": "My", "o": ["My", "Name", "Is", "Ana"], "e": "My é possessive adjective e significa meu/minha."}, {"theme": "Mixed grammar", "q": "A professora escreveu “He is João” no quadro. Qual parte da frase é o pronome pessoal?", "a": "He", "o": ["He", "Is", "João", "The"], "e": "He é pronome pessoal e significa ele."}, {"theme": "Mixed grammar", "q": "Observe a frase: “Are you a student?” Por que ela começa com Are?", "a": "Porque é uma pergunta com o verbo to be.", "o": ["Porque é uma pergunta com o verbo to be.", "Porque toda frase em inglês começa com Are.", "Porque You sempre fica no final.", "Porque student é verbo."], "e": "Em perguntas com to be, o verbo vem antes do sujeito."}, {"theme": "Mixed grammar", "q": "A frase “She is not my teacher” está na forma:", "a": "Negativa", "o": ["Negativa", "Interrogativa", "Afirmativa simples", "Despedida"], "e": "A presença de not indica forma negativa."}, {"theme": "Mixed grammar", "q": "Em “Is he your brother?”, qual alternativa explica corretamente a estrutura?", "a": "É uma pergunta, por isso o verbo is veio antes de he.", "o": ["É uma pergunta, por isso o verbo is veio antes de he.", "É negativa porque tem he.", "É despedida porque tem brother.", "Está errada porque toda pergunta começa com You."], "e": "No interrogativo com to be: Is + sujeito..."}, {"theme": "Mixed grammar", "q": "Um aluno traduziu “Ela é minha amiga” como “She is my friend.” Qual parte significa “minha/meu”?", "a": "My", "o": ["My", "She", "Is", "Friend"], "e": "My significa meu/minha."}];
-const SPECIALS = {"4": {"type": "bonus", "text": "+1 casa", "move": 1}, "7": {"type": "challenge", "text": "Desafio extra", "move": 0}, "10": {"type": "bonus", "text": "+2 casas", "move": 2}, "13": {"type": "penalty", "text": "Volte 1", "move": -1}, "16": {"type": "bonus", "text": "Jogue novamente", "move": 0, "again": true}, "19": {"type": "penalty", "text": "Pneu furou: -2", "move": -2}, "22": {"type": "bonus", "text": "Turbo +3", "move": 3}, "25": {"type": "challenge", "text": "Pergunta bônus", "move": 0}, "28": {"type": "penalty", "text": "Pit stop: -1", "move": -1}, "31": {"type": "bonus", "text": "DRS +2", "move": 2}, "34": {"type": "penalty", "text": "Curva difícil: -2", "move": -2}, "37": {"type": "bonus", "text": "Reta final +1", "move": 1}};
+const QUESTIONS = [{"theme": "Greetings", "q": "Você chegou à escola pela manhã. Como dizer “bom dia” em inglês?", "answer": "Good morning!", "options": ["Good morning!", "Good night!", "Goodbye!", "Thank you!", "Sit down!"], "tip": "Good morning = bom dia."}, {"theme": "Greetings", "q": "Você encontra um colega e quer dizer “oi”. Qual opção está correta?", "answer": "Hi!", "options": ["Hi!", "Bye!", "Book!", "Open!", "Monday!"], "tip": "Hi = oi."}, {"theme": "Farewells", "q": "A aula acabou e você quer se despedir dizendo “tchau”. Qual opção usar?", "answer": "Goodbye!", "options": ["Goodbye!", "Hello!", "Good morning!", "Listen!", "Pencil!"], "tip": "Goodbye = tchau."}, {"theme": "Classroom Commands", "q": "A professora pede para a turma escutar. Qual comando significa “escute”?", "answer": "Listen", "options": ["Listen", "Write", "Read", "Close", "Stand up"], "tip": "Listen = escute."}, {"theme": "Classroom Commands", "q": "A atividade pede para escrever a resposta. Qual comando significa “escreva”?", "answer": "Write", "options": ["Write", "Read", "Listen", "Sit down", "Open"], "tip": "Write = escreva."}, {"theme": "Classroom Expressions", "q": "Você quer pedir ajuda em inglês. Qual frase é melhor?", "answer": "Can you help me?", "options": ["Can you help me?", "I am a book.", "Good night!", "She are happy.", "Open pencil."], "tip": "Can you help me? = Você pode me ajudar?"}, {"theme": "Classroom Expressions", "q": "Você não entendeu a explicação. Qual frase pode usar?", "answer": "I don't understand.", "options": ["I don't understand.", "I am twelve.", "Goodbye!", "This is red.", "They are cats."], "tip": "I don't understand = eu não entendi."}, {"theme": "Personal Information", "q": "A pergunta “What is your name?” quer saber:", "answer": "Seu nome", "options": ["Seu nome", "Sua idade", "Sua cor favorita", "O dia da semana", "Sua comida"], "tip": "What is your name? = Qual é o seu nome?"}, {"theme": "Personal Information", "q": "A pergunta “How old are you?” quer saber:", "answer": "Sua idade", "options": ["Sua idade", "Seu nome", "Seu país", "Sua escola", "Seu lápis"], "tip": "How old are you? = Quantos anos você tem?"}, {"theme": "Pronouns", "q": "Qual pronome em inglês significa “eu”?", "answer": "I", "options": ["I", "You", "He", "She", "They"], "tip": "I = eu."}, {"theme": "Pronouns", "q": "Qual pronome usamos para falar de Maria?", "answer": "She", "options": ["She", "He", "It", "We", "They"], "tip": "She = ela."}, {"theme": "Pronouns", "q": "Qual pronome usamos para falar de João?", "answer": "He", "options": ["He", "She", "It", "We", "I"], "tip": "He = ele."}, {"theme": "Possessives", "q": "Complete: ___ name is Ana. A palavra “meu/minha” em inglês é:", "answer": "My", "options": ["My", "Your", "His", "Her", "Their"], "tip": "My = meu/minha."}, {"theme": "Possessives", "q": "Complete: Pedro is a student. ___ book is blue.", "answer": "His", "options": ["His", "Her", "My", "Our", "Their"], "tip": "His = dele."}, {"theme": "Verb To Be", "q": "Complete: I ___ a student.", "answer": "am", "options": ["am", "is", "are", "my", "your"], "tip": "Com I usamos am."}, {"theme": "Verb To Be", "q": "Complete: She ___ my friend.", "answer": "is", "options": ["is", "am", "are", "you", "they"], "tip": "Com she usamos is."}, {"theme": "Verb To Be", "q": "Complete: They ___ happy.", "answer": "are", "options": ["are", "is", "am", "his", "her"], "tip": "Com they usamos are."}, {"theme": "Verb To Be", "q": "Qual pergunta está correta para dizer “Você é estudante?”", "answer": "Are you a student?", "options": ["Are you a student?", "Is you a student?", "You are a student?", "Am you a student?", "Are he a student?"], "tip": "Na pergunta, o verb to be vem antes: Are you...?"}, {"theme": "Numbers", "q": "Como escrevemos o número 20 em inglês?", "answer": "twenty", "options": ["twenty", "twelve", "two", "ten", "thirty"], "tip": "20 = twenty."}, {"theme": "Numbers", "q": "Como escrevemos o número 50 em inglês?", "answer": "fifty", "options": ["fifty", "fifteen", "five", "forty", "sixty"], "tip": "50 = fifty."}, {"theme": "Days", "q": "Qual palavra significa “segunda-feira”?", "answer": "Monday", "options": ["Monday", "Friday", "Sunday", "January", "March"], "tip": "Monday = segunda-feira."}, {"theme": "Days", "q": "Qual palavra significa “sexta-feira”?", "answer": "Friday", "options": ["Friday", "Tuesday", "Thursday", "Sunday", "April"], "tip": "Friday = sexta-feira."}, {"theme": "Months", "q": "Qual mês significa “janeiro” em inglês?", "answer": "January", "options": ["January", "June", "July", "Monday", "Friday"], "tip": "January = janeiro."}, {"theme": "Months", "q": "Qual mês significa “dezembro” em inglês?", "answer": "December", "options": ["December", "September", "November", "Sunday", "April"], "tip": "December = dezembro."}, {"theme": "Time", "q": "O relógio marca 3:00. Como dizer isso em inglês?", "answer": "It is three o'clock.", "options": ["It is three o'clock.", "It is thirteen.", "It is Monday.", "It is December.", "It is my book."], "tip": "3:00 = three o'clock."}, {"theme": "School Objects", "q": "Qual palavra em inglês significa “livro”?", "answer": "book", "options": ["book", "pencil", "teacher", "door", "school"], "tip": "Book = livro."}, {"theme": "School Objects", "q": "Qual palavra em inglês significa “lápis”?", "answer": "pencil", "options": ["pencil", "book", "ruler", "school", "window"], "tip": "Pencil = lápis."}, {"theme": "School Places", "q": "Lugar onde os alunos podem comer ou lanchar na escola:", "answer": "cafeteria", "options": ["cafeteria", "classroom", "library", "bathroom", "office"], "tip": "Cafeteria = lugar para comer/lanchar."}, {"theme": "School Places", "q": "Lugar onde acontecem as aulas. Como dizer “sala de aula”?", "answer": "classroom", "options": ["classroom", "cafeteria", "library", "market", "beach"], "tip": "Classroom = sala de aula."}, {"theme": "Prepositions", "q": "A bola está embaixo da mesa. Qual preposição significa “embaixo de”?", "answer": "under", "options": ["under", "on", "in", "next to", "between"], "tip": "Under = embaixo de."}, {"theme": "Prepositions", "q": "O livro está em cima da mesa. Qual preposição significa “em cima de”?", "answer": "on", "options": ["on", "under", "behind", "between", "in front of"], "tip": "On = em cima de."}, {"theme": "Colors", "q": "Qual palavra significa “vermelho”?", "answer": "red", "options": ["red", "blue", "green", "yellow", "black"], "tip": "Red = vermelho."}, {"theme": "Colors", "q": "Qual palavra significa “azul”?", "answer": "blue", "options": ["blue", "red", "white", "brown", "pink"], "tip": "Blue = azul."}, {"theme": "Food", "q": "Qual palavra significa “maçã”?", "answer": "apple", "options": ["apple", "banana", "bread", "water", "rice"], "tip": "Apple = maçã."}, {"theme": "Animals", "q": "Qual palavra significa “cachorro”?", "answer": "dog", "options": ["dog", "cat", "bird", "fish", "horse"], "tip": "Dog = cachorro."}, {"theme": "Daily Situations", "q": "No jogo aparece a palavra “Start”. O que ela geralmente significa?", "answer": "começar", "options": ["começar", "fechar", "dormir", "comer", "desenhar"], "tip": "Start = começar."}];
 const TOTAL_CELLS = 40;
+const SPECIALS = {
+  4:"bonus",7:"again",10:"bonus",13:"penalty",16:"bonus",19:"penalty",22:"bonus",25:"again",28:"penalty",31:"bonus",34:"penalty",37:"bonus"
+};
+let cells = [];
 let state = {};
-let cellPositions = [];
 
 function el(id){return document.getElementById(id)}
+function show(id){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));el(id).classList.add("active")}
 function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
-function show(id){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));el(id).classList.add("active");document.body.classList.toggle("playing", id==="gameScreen")}
+function log(msg){el("log").innerHTML = msg + "<br>" + el("log").innerHTML}
 
-function makeQuestionsBag(){
- const bag = shuffle(QUESTIONS);
- while(bag.length < 100) bag.push(...shuffle(QUESTIONS));
- return bag;
+function getPlayerInfo(){
+  return {
+    name:(el("playerName").value||"Aluno(a)").trim(),
+    klass:(el("playerClass").value||"6º ano").trim(),
+    school:(el("playerSchool").value||"Escola Delfina de Jesus Amorim").trim()
+  }
 }
 
 function startGame(){
- state = {
-   p1Name: el("p1Name").value.trim() || "Equipe Azul",
-   p2Name: el("p2Name").value.trim() || "Equipe Vermelha",
-   school: el("schoolName").value.trim() || "Minha escola",
-   positions:[0,0], current:0, dice:0, bag:makeQuestionsBag(), waitingAnswer:false, canRoll:true
- };
- el("p1Label").textContent = state.p1Name;
- el("p2Label").textContent = state.p2Name;
- buildTrack();
- updateUI();
- el("prompt").textContent = "Gire o dado para receber sua pergunta.";
- el("options").innerHTML = "";
- el("feedback").className = "feedback";
- el("specialMsg").style.display = "none";
- show("gameScreen");
+  state = {
+    blue:0, red:0, turn:"blue", round:1, rolling:false, pendingDice:0, currentQuestion:null,
+    deck: shuffle(QUESTIONS), qIndex:0, extraTurn:false
+  };
+  show("gameScreen");
+  buildBoard();
+  updateHud();
+  drawCars();
+  el("log").innerHTML="O jogo começou. Gire o dado para abrir o primeiro desafio.";
 }
 
-function buildTrack(){
- const track = el("track");
- track.querySelectorAll(".cell").forEach(c=>c.remove());
- cellPositions = [];
+function buildBoard(){
+  const svg = el("boardSvg");
+  svg.innerHTML = "";
+  cells = [];
+  const rows = 5, perRow = 8;
+  const startX = 80, startY = 430, gapX = 92, gapY = 84;
+  for(let r=0;r<rows;r++){
+    let y = startY - r*gapY;
+    for(let c=0;c<perRow;c++){
+      let n = r*perRow + c + 1;
+      let col = (r%2===0) ? c : perRow-1-c;
+      let x = startX + col*gapX;
+      // curva leve para não ficar rígido
+      y += Math.sin((n/40)*Math.PI*4)*7;
+      cells[n] = {x,y,n};
+    }
+  }
 
- // Pista sinuosa no estilo do modelo anexado: começa embaixo à esquerda e termina em cima à direita.
- const viewW = 420, viewH = 680;
- const cols = 4;
- const rows = Math.ceil(TOTAL_CELLS / cols);
- const marginX = 54;
- const marginTop = 62;
- const marginBottom = 54;
- const dx = (viewW - marginX*2)/(cols-1);
- const dy = (viewH - marginTop - marginBottom)/(rows-1);
+  let d = "M " + cells[1].x + " " + cells[1].y;
+  for(let i=2;i<=TOTAL_CELLS;i++) d += " L " + cells[i].x + " " + cells[i].y;
+  const glow = document.createElementNS("http://www.w3.org/2000/svg","path");
+  glow.setAttribute("d", d); glow.setAttribute("class","path-glow"); svg.appendChild(glow);
+  const line = document.createElementNS("http://www.w3.org/2000/svg","path");
+  line.setAttribute("d", d); line.setAttribute("class","path-line"); svg.appendChild(line);
 
- for(let row=0; row<rows; row++){
-   for(let col=0; col<cols; col++){
-     const idx = row*cols + col;
-     if(idx >= TOTAL_CELLS) break;
-     const actualCol = row % 2 === 0 ? col : (cols-1-col);
-     const x = marginX + actualCol*dx;
-     const y = viewH - marginBottom - row*dy;
-     cellPositions.push({x, y});
-   }
- }
+  for(let i=1;i<=TOTAL_CELLS;i++){
+    const cell = cells[i];
+    const g = document.createElementNS("http://www.w3.org/2000/svg","g");
+    const circle = document.createElementNS("http://www.w3.org/2000/svg","circle");
+    circle.setAttribute("cx",cell.x); circle.setAttribute("cy",cell.y); circle.setAttribute("r",20);
+    let cls = "cell";
+    if(SPECIALS[i]==="bonus") cls+=" bonus";
+    if(SPECIALS[i]==="penalty") cls+=" penalty";
+    if(SPECIALS[i]==="again") cls+=" special";
+    circle.setAttribute("class",cls);
+    const txt = document.createElementNS("http://www.w3.org/2000/svg","text");
+    txt.setAttribute("x",cell.x); txt.setAttribute("y",cell.y+1); txt.setAttribute("class","cell-text");
+    txt.textContent = i;
+    g.appendChild(circle); g.appendChild(txt); svg.appendChild(g);
+  }
 
- const d = cellPositions.map((p,i)=>`${i===0 ? "M" : "L"} ${p.x} ${p.y}`).join(" ");
- el("roadPath").setAttribute("d", d);
- el("roadLine").setAttribute("d", d);
+  const start = document.createElementNS("http://www.w3.org/2000/svg","text");
+  start.setAttribute("x",cells[1].x-48); start.setAttribute("y",cells[1].y+42); start.setAttribute("fill","#fff3b0"); start.setAttribute("font-size","22"); start.setAttribute("font-weight","900"); start.textContent="START";
+  svg.appendChild(start);
+  const finish = document.createElementNS("http://www.w3.org/2000/svg","text");
+  finish.setAttribute("x",cells[40].x-36); finish.setAttribute("y",cells[40].y-36); finish.setAttribute("fill","#fff3b0"); finish.setAttribute("font-size","22"); finish.setAttribute("font-weight","900"); finish.textContent="FINISH";
+  svg.appendChild(finish);
 
- const layer = el("nodesLayer");
- layer.innerHTML = "";
- cellPositions.forEach((p,i)=>{
-   const n = i + 1;
-   const c = document.createElement("div");
-   c.className = "cell";
-   if(n === 1) c.classList.add("start");
-   if(n === TOTAL_CELLS) c.classList.add("finish");
-   if(SPECIALS[n]) c.classList.add("special", SPECIALS[n].type);
-   c.textContent = n;
-   c.style.left = `calc(${(p.x/viewW)*100}% - 17px)`;
-   c.style.top = `calc(${(p.y/viewH)*100}% - 17px)`;
-   layer.appendChild(c);
- });
-
- placeCars(true);
+  drawCar("blue");
+  drawCar("red");
 }
 
-window.addEventListener("resize", ()=>{ if(state.positions){ buildTrack(); updateUI(); } });
-
-function placeCars(initial=false){
- const offsets = [[-9,-12],[9,8]];
- [0,1].forEach(i=>{
-   const car = el(i===0?"car1":"car2");
-   const pos = Math.max(0, Math.min(TOTAL_CELLS, state.positions?.[i] || 0));
-   const p = pos === 0 ? cellPositions[0] : cellPositions[pos-1];
-   if(!p) return;
-
-   // Direção visual: o carrinho aponta para a próxima casa; no fim, mantém a direção da última etapa.
-   const nextIndex = Math.min(TOTAL_CELLS-1, pos);
-   const prevIndex = Math.max(0, pos-2);
-   const from = cellPositions[Math.max(0, pos-1)] || cellPositions[0];
-   const to = cellPositions[nextIndex] || cellPositions[prevIndex] || from;
-   const angle = Math.atan2((to.y - from.y), (to.x - from.x)) * 180 / Math.PI;
-
-   car.style.left = `calc(${(p.x/420)*100}% - 30px + ${offsets[i][0]}px)`;
-   car.style.top = `calc(${(p.y/680)*100}% - 16px + ${offsets[i][1]}px)`;
-   car.style.transform = `rotate(${angle}deg)`;
- });
+function carSvg(color){
+  const fill = color==="blue" ? "#2563eb" : "#ef4444";
+  const roof = color==="blue" ? "#60a5fa" : "#fca5a5";
+  return `
+  <g id="${color}Car" class="car">
+    <ellipse cx="0" cy="17" rx="26" ry="6" fill="rgba(0,0,0,.25)"></ellipse>
+    <rect class="car-body" x="-26" y="-10" width="52" height="24" rx="10" fill="${fill}"></rect>
+    <path class="car-body" d="M-12 -10 L-3 -23 L14 -23 L25 -10 Z" fill="${roof}"></path>
+    <circle cx="-15" cy="15" r="6" fill="#111827" stroke="#fff" stroke-width="2"></circle>
+    <circle cx="15" cy="15" r="6" fill="#111827" stroke="#fff" stroke-width="2"></circle>
+    <circle cx="-15" cy="15" r="2.5" fill="#e5e7eb"></circle>
+    <circle cx="15" cy="15" r="2.5" fill="#e5e7eb"></circle>
+    <rect x="18" y="-5" width="8" height="5" rx="2" fill="#fde68a"></rect>
+  </g>`;
 }
-
-function updateUI(){
- el("p1Pos").textContent = `${state.positions[0]}/40`;
- el("p2Pos").textContent = `${state.positions[1]}/40`;
- el("turnNow").textContent = state.current===0 ? "P1" : "P2";
- el("turnTitle").textContent = "Vez de " + (state.current===0 ? state.p1Name : state.p2Name);
- el("raceMsg").textContent = "Casa atual: " + state.positions[state.current];
- placeCars();
+function drawCar(color){
+  const svg = el("boardSvg");
+  if(!el(color+"Car")) svg.insertAdjacentHTML("beforeend", carSvg(color));
+  const pos = state[color] || 0;
+  const cell = cells[Math.max(1,pos || 1)];
+  const offset = color==="blue" ? -15 : 15;
+  el(color+"Car").setAttribute("transform",`translate(${cell.x},${cell.y+offset}) scale(.72)`);
 }
+function drawCars(){drawCar("blue");drawCar("red")}
 
-function diceTransform(n){
- const map = {
-  1:"rotateX(0deg) rotateY(0deg)",
-  2:"rotateY(180deg)",
-  3:"rotateY(-90deg)",
-  4:"rotateY(90deg)",
-  5:"rotateX(-90deg)",
-  6:"rotateX(90deg)"
- };
- return map[n] || map[1];
+function updateHud(){
+  el("blueScore").textContent = state.blue + "/40";
+  el("redScore").textContent = state.red + "/40";
+  el("turnText").textContent = state.turn==="blue" ? "Azul" : "Vermelha";
+  el("roundText").textContent = state.round;
+  el("turnLabel").textContent = state.turn==="blue" ? "Vez da Equipe Azul" : "Vez da Equipe Vermelha";
+  el("statusText").textContent = state.turn==="blue" ? "Equipe Azul joga" : "Equipe Vermelha joga";
+  el("rollBtn").disabled = state.rolling;
 }
 
 function rollDice(){
- if(!state.canRoll || state.waitingAnswer) return;
- state.canRoll = false;
- const dice = el("dice");
- dice.classList.add("rolling");
- el("rollBtn").disabled = true;
- el("prompt").textContent = "O dado está girando... prepare-se para responder!";
- el("options").innerHTML = "";
- el("feedback").className = "feedback";
- el("specialMsg").style.display = "none";
-
- setTimeout(()=>{
-   const n = 1 + Math.floor(Math.random()*6);
-   state.dice = n;
-   dice.classList.remove("rolling");
-   dice.style.transform = diceTransform(n);
-   showQuestion();
- }, 1400);
+  if(state.rolling) return;
+  state.rolling = true;
+  updateHud();
+  const dice = el("dice");
+  dice.classList.add("rolling");
+  let ticks=0;
+  const anim = setInterval(()=>{dice.textContent = 1 + Math.floor(Math.random()*6); ticks++;},90);
+  setTimeout(()=>{
+    clearInterval(anim);
+    const value = 1 + Math.floor(Math.random()*6);
+    state.pendingDice = value;
+    dice.textContent = value;
+    dice.classList.remove("rolling");
+    log(`🎲 ${state.turn==="blue"?"Equipe Azul":"Equipe Vermelha"} tirou ${value}. Agora responda ao desafio.`);
+    openQuestion();
+  },900);
 }
 
-function showQuestion(){
- state.waitingAnswer = true;
- const q = state.bag.pop();
- state.currentQuestion = q;
- el("theme").textContent = q.theme;
- el("prompt").textContent = `🎲 Dado: ${state.dice}. ${q.q}`;
- const box = el("options");
- box.innerHTML = "";
- shuffle(q.o).forEach(opt=>{
-  const btn = document.createElement("button");
-  btn.className = "option";
-  btn.type = "button";
-  btn.textContent = opt;
-  btn.addEventListener("click",()=>answer(btn,opt));
-  box.appendChild(btn);
- });
+function nextQuestion(){
+  const q = state.deck[state.qIndex % state.deck.length];
+  state.qIndex++;
+  return q;
 }
 
-function answer(btn,opt){
- if(!state.waitingAnswer) return;
- state.waitingAnswer = false;
- const q = state.currentQuestion;
- document.querySelectorAll(".option").forEach(b=>{
-   b.disabled = true;
-   if(String(b.textContent).trim() === String(q.a).trim()) b.classList.add("correct");
- });
- const fb = el("feedback");
- if(String(opt).trim() === String(q.a).trim()){
-   fb.className = "feedback ok";
-   fb.innerHTML = `✅ Great job! Você acertou e vai avançar ${state.dice} casa(s).<br><b>Explicação:</b> ${q.e}`;
-   moveCurrentPlayer(state.dice, true);
- } else {
-   btn.classList.add("wrong");
-   fb.className = "feedback bad";
-   fb.innerHTML = `❌ Quase! Resposta correta: <b>${q.a}</b>.<br>Você errou e terá punição de corrida.`;
-   const penalty = Math.min(2, state.dice);
-   moveCurrentPlayer(-penalty, false);
- }
+function openQuestion(){
+  state.currentQuestion = nextQuestion();
+  const q = state.currentQuestion;
+  el("qTheme").textContent = q.theme;
+  el("qDiceInfo").textContent = `Valendo avanço de ${state.pendingDice} casa${state.pendingDice>1?"s":""}`;
+  el("qText").textContent = q.q;
+  const box = el("qOptions");
+  box.innerHTML = "";
+  el("qFeedback").className = "feedback";
+  el("qFeedback").innerHTML = "";
+  shuffle(q.options).forEach(opt=>{
+    const btn = document.createElement("button");
+    btn.className = "option";
+    btn.textContent = opt;
+    btn.onclick = () => answerQuestion(btn,opt);
+    box.appendChild(btn);
+  });
+  el("questionModal").classList.add("active");
 }
 
-function moveCurrentPlayer(amount, wasCorrect){
- const idx = state.current;
- const car = el(idx===0?"car1":"car2");
- car.classList.add("moving");
- let target = Math.max(0, Math.min(TOTAL_CELLS, state.positions[idx] + amount));
- animateMove(idx, target, ()=>{
-   car.classList.remove("moving");
-   if(state.positions[idx] >= TOTAL_CELLS) return finishGame(idx);
-   if(wasCorrect) applySpecialIfNeeded(()=>nextTurn(false));
-   else nextTurn(false);
- });
+function answerQuestion(btn,opt){
+  const q = state.currentQuestion;
+  document.querySelectorAll(".option").forEach(b=>{
+    b.disabled = true;
+    if(b.textContent===q.answer) b.classList.add("correct");
+  });
+  if(opt===q.answer){
+    el("qFeedback").className = "feedback good";
+    el("qFeedback").innerHTML = `✅ Correct! ${q.tip} O carrinho vai avançar.`;
+    playCorrect();
+    setTimeout(()=>{
+      el("questionModal").classList.remove("active");
+      moveCurrentTeam(state.pendingDice, true);
+    },950);
+  }else{
+    btn.classList.add("wrong");
+    el("qFeedback").className = "feedback bad";
+    el("qFeedback").innerHTML = `❌ Resposta correta: <b>${q.answer}</b>. ${q.tip} Você volta 1 casa e passa a vez.`;
+    playWrong();
+    setTimeout(()=>{
+      el("questionModal").classList.remove("active");
+      moveCurrentTeam(-1, false);
+    },1200);
+  }
 }
 
-function animateMove(idx,target,done){
- const step = target > state.positions[idx] ? 1 : -1;
- if(target === state.positions[idx]){ updateUI(); setTimeout(done,500); return; }
-
- const car = el(idx===0 ? "car1" : "car2");
- car.classList.add("moving");
-
- const interval = setInterval(()=>{
-   if(state.positions[idx] === target){
-     clearInterval(interval);
-     updateUI();
-     setTimeout(()=>{
-       car.classList.remove("moving");
-       if(done) done();
-     },450);
-     return;
-   }
-   state.positions[idx] += step;
-   updateUI();
- }, 520);
+function moveCurrentTeam(delta, correct){
+  const team = state.turn;
+  const before = state[team];
+  state[team] = Math.max(0, Math.min(TOTAL_CELLS, state[team] + delta));
+  animateMove(team, before, state[team], () => {
+    if(state[team] >= TOTAL_CELLS) return finishGame(team);
+    if(correct) applySpecial(team);
+    endTurn();
+  });
 }
 
-function applySpecialIfNeeded(callback){
- const pos = state.positions[state.current];
- const sp = SPECIALS[pos];
- const msg = el("specialMsg");
- if(!sp){ callback(); return; }
- msg.style.display = "block";
- msg.textContent = `🏁 Casa especial ${pos}: ${sp.text}`;
- if(sp.move){
-   setTimeout(()=>{
-    moveSpecial(sp.move, callback);
-   }, 750);
- } else if(sp.again){
-   setTimeout(()=>nextTurn(true), 900);
- } else {
-   callback();
- }
+function animateMove(team, from, to, cb){
+  const step = from < to ? 1 : -1;
+  if(from === to){drawCar(team); setTimeout(cb,250); return;}
+  let pos = from;
+  const timer = setInterval(()=>{
+    pos += step;
+    state[team] = Math.max(0, Math.min(TOTAL_CELLS,pos));
+    drawCar(team);
+    if(pos===to){clearInterval(timer); setTimeout(cb,250);}
+  },280);
 }
 
-function moveSpecial(amount, callback){
- const idx = state.current;
- const car = el(idx===0?"car1":"car2");
- car.classList.add("moving");
- const target = Math.max(0, Math.min(TOTAL_CELLS, state.positions[idx] + amount));
- animateMove(idx,target,()=>{
-  car.classList.remove("moving");
-  if(state.positions[idx] >= TOTAL_CELLS) return finishGame(idx);
-  callback();
- });
+function applySpecial(team){
+  const pos = state[team];
+  const kind = SPECIALS[pos];
+  if(!kind) return;
+  if(kind==="bonus"){
+    state[team] = Math.min(TOTAL_CELLS, state[team]+1);
+    drawCar(team);
+    log(`🟢 Casa bônus! ${team==="blue"?"Equipe Azul":"Equipe Vermelha"} avançou 1 casa.`);
+  }
+  if(kind==="penalty"){
+    state[team] = Math.max(0, state[team]-1);
+    drawCar(team);
+    log(`🔴 Casa punição! ${team==="blue"?"Equipe Azul":"Equipe Vermelha"} voltou 1 casa.`);
+  }
+  if(kind==="again"){
+    state.extraTurn = true;
+    log(`🟡 Casa especial! ${team==="blue"?"Equipe Azul":"Equipe Vermelha"} joga novamente.`);
+  }
 }
 
-function nextTurn(playAgain){
- if(!playAgain) state.current = state.current===0 ? 1 : 0;
- state.canRoll = true;
- state.waitingAnswer = false;
- el("rollBtn").disabled = false;
- el("prompt").textContent = playAgain ? "Bônus! Você joga novamente. Gire o dado!" : "Próximo jogador: gire o dado para continuar.";
- el("options").innerHTML = "";
- updateUI();
+function endTurn(){
+  state.rolling = false;
+  if(state.extraTurn){
+    state.extraTurn = false;
+  }else{
+    state.turn = state.turn==="blue" ? "red" : "blue";
+  }
+  state.round++;
+  updateHud();
+  drawCars();
 }
 
-function finishGame(winnerIdx){
- show("finalScreen");
- const winner = winnerIdx===0 ? state.p1Name : state.p2Name;
- el("finalTitle").textContent = "🏆 Vitória na Fórmula 1!";
- el("finalMsg").textContent = `${winner} chegou à casa 40 e venceu a corrida do inglês!`;
- el("winnerName").textContent = winner;
- el("winnerScore").textContent = "40/40";
- el("finalSchool").textContent = state.school;
+function finishGame(team){
+  show("finalScreen");
+  const winner = team==="blue" ? "Equipe Azul" : "Equipe Vermelha";
+  el("finalTitle").textContent = "🏆 " + winner + " venceu!";
+  el("finalMsg").textContent = `Congratulations! ${winner} chegou ao FINISH primeiro.`;
+  el("finalBlue").textContent = state.blue;
+  el("finalRed").textContent = state.red;
+  el("finalRounds").textContent = state.round;
+  el("finalWinner").textContent = winner.replace("Equipe ","");
+  playVictory();
 }
+
+let audioCtx=null;
+function ensureAudio(){try{if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)(); if(audioCtx.state==="suspended") audioCtx.resume();}catch(e){}}
+function tone(freq=440,dur=.12,type="sine",gain=.05,delay=0){ensureAudio(); if(!audioCtx)return; const t=audioCtx.currentTime+delay; const osc=audioCtx.createOscillator(); const g=audioCtx.createGain(); osc.type=type; osc.frequency.setValueAtTime(freq,t); g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(gain,t+.02); g.gain.exponentialRampToValueAtTime(.0001,t+dur); osc.connect(g); g.connect(audioCtx.destination); osc.start(t); osc.stop(t+dur+.03)}
+function playCorrect(){tone(659,.12,"triangle",.07);tone(880,.14,"triangle",.06,.12);tone(1046,.16,"sine",.04,.25)}
+function playWrong(){tone(220,.18,"sine",.04);tone(160,.22,"sine",.035,.16)}
+function playVictory(){[523,659,784,1046,1318].forEach((f,i)=>tone(f,.16,"triangle",.065,i*.14))}
+document.addEventListener("click",ensureAudio,{once:true});
+document.addEventListener("touchstart",ensureAudio,{once:true});
 </script>
 </body>
 </html>
