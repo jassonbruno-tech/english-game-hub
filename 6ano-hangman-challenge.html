@@ -673,6 +673,79 @@ body.playing .mission-box{
   }
 }
 
+
+/* --- Revisão rápida na tela inicial --- */
+.quick-review{
+  margin:12px 0;
+  padding:11px;
+  border-radius:18px;
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,230,109,.22);
+  text-align:left;
+}
+.review-title{
+  text-align:center;
+  color:#ffe66d;
+  font-weight:1000;
+  font-size:15px;
+  margin-bottom:2px;
+}
+.review-subtitle{
+  text-align:center;
+  margin:0 0 8px;
+  color:#dbeafe;
+  font-weight:800;
+  font-size:12px;
+}
+.review-grid{
+  display:grid;
+  grid-template-columns:repeat(2, minmax(0,1fr));
+  gap:7px;
+  max-height:235px;
+  overflow:auto;
+  padding-right:3px;
+}
+.review-block{
+  background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.055));
+  border:1px solid rgba(255,255,255,.13);
+  border-radius:14px;
+  padding:8px;
+}
+.review-block b{
+  display:block;
+  color:#fff3b0;
+  font-size:12px;
+  margin-bottom:5px;
+  line-height:1.15;
+}
+.review-block span{
+  display:block;
+  color:#eaf2ff;
+  font-weight:800;
+  font-size:11px;
+  line-height:1.22;
+  margin:2px 0;
+}
+@media(max-width:860px){
+  .start-card{
+    max-height:calc(100dvh - 92px);
+    overflow:auto;
+  }
+  .quick-review{
+    margin:9px 0;
+    padding:9px;
+  }
+  .review-grid{
+    grid-template-columns:1fr;
+    max-height:210px;
+  }
+  .review-title{font-size:13px;}
+  .review-subtitle{font-size:11px;}
+  .review-block{padding:7px;}
+  .review-block b{font-size:11px;}
+  .review-block span{font-size:10.5px;}
+}
+
 </style>
 </head>
 <body>
@@ -690,6 +763,70 @@ body.playing .mission-box{
     <h2>Hangman Challenge</h2>
     <p class="start-text">Use seu vocabulário, observe a dica e tente descobrir a palavra em inglês antes que o espantalho fique completo na forca.</p>
     <div class="start-highlight"><b>Desafio do 6º ano:</b> aqui o aluno fortalece o vocabulário do cotidiano, relembra conteúdos do 1º bimestre e aprende jogando de forma leve, visual e divertida.</div>
+
+    <div class="quick-review">
+      <div class="review-title">📚 Quick Review — Revisão rápida antes do desafio</div>
+      <p class="review-subtitle">Leia rapidinho para lembrar o vocabulário antes de jogar.</p>
+      <div class="review-grid">
+        <div class="review-block">
+          <b>Greetings / Cumprimentos</b>
+          <span>Hello = Olá</span>
+          <span>Hi = Oi</span>
+          <span>Good morning = Bom dia</span>
+          <span>Good afternoon = Boa tarde</span>
+          <span>Good evening = Boa noite ao chegar</span>
+          <span>Good night = Boa noite ao se despedir</span>
+        </div>
+        <div class="review-block">
+          <b>Farewells / Despedidas</b>
+          <span>Goodbye = Tchau</span>
+          <span>Bye = Tchau</span>
+          <span>See you = Até logo</span>
+          <span>See you later = Até mais tarde</span>
+          <span>Take care = Se cuide</span>
+        </div>
+        <div class="review-block">
+          <b>Classroom Commands / Comandos</b>
+          <span>Listen = Escute</span>
+          <span>Repeat = Repita</span>
+          <span>Read = Leia</span>
+          <span>Write = Escreva</span>
+          <span>Open = Abra</span>
+          <span>Close = Feche</span>
+          <span>Sit down = Sente-se</span>
+          <span>Stand up = Levante-se</span>
+        </div>
+        <div class="review-block">
+          <b>Classroom Expressions / Expressões</b>
+          <span>Please = Por favor</span>
+          <span>Thank you = Obrigado(a)</span>
+          <span>Excuse me = Com licença</span>
+          <span>Sorry = Desculpa</span>
+          <span>Help me = Ajude-me</span>
+          <span>I don't understand = Eu não entendi</span>
+        </div>
+        <div class="review-block">
+          <b>Pronouns / Pronomes</b>
+          <span>I = Eu</span>
+          <span>You = Você</span>
+          <span>He = Ele</span>
+          <span>She = Ela</span>
+          <span>It = Ele/Ela para animal, objeto ou coisa</span>
+          <span>We = Nós</span>
+          <span>They = Eles/Elas</span>
+        </div>
+        <div class="review-block">
+          <b>Possessives / Possessivos</b>
+          <span>My = Meu/minha</span>
+          <span>Your = Seu/sua</span>
+          <span>His = Dele</span>
+          <span>Her = Dela</span>
+          <span>Our = Nosso/nossa</span>
+          <span>Their = Deles/delas</span>
+        </div>
+      </div>
+    </div>
+
     <div class="player-form">
       <label>Seu nome</label>
       <input id="playerName" type="text" placeholder="Digite seu nome" maxlength="28">
@@ -2187,17 +2324,18 @@ function completeRound(success){
   state.maxCombo = Math.max(state.maxCombo, state.combo);
   state.score += 120 + (state.combo >= 3 ? 20 : 0);
   el("feedback").className = "feedback ok";
-  el("feedback").innerHTML = `✅ Great job! A resposta era <b>${state.current.answer}</b>. Você venceu este desafio!`;
+  el("feedback").innerHTML = `✅ Great job! A resposta era <b>${state.current.answer || state.current.word}</b>. Você venceu este desafio!`;
   updateStats();
+
+  const missionEnded = state.round % 5 === 0 && state.round < TOTAL_ROUNDS;
 
   if(state.round >= TOTAL_ROUNDS){
     setTimeout(()=>finishGame(true), 950);
     return;
   }
 
-  const completedMission = getWordInPhase() === 5;
-  if(completedMission){
-    setTimeout(()=>showMissionVictory(), 900);
+  if(missionEnded){
+    setTimeout(()=>showMissionVictory(), 950);
     return;
   }
 
@@ -2209,7 +2347,7 @@ function completeRound(success){
 
 
 function showMissionVictory(){
-  const missionNumber = getCurrentPhaseIndex() + 1;
+  const missionNumber = Math.ceil(state.round / 5);
   const nextMission = missionNumber + 1;
   stopFinalMusic();
   document.body.classList.remove("playing");
