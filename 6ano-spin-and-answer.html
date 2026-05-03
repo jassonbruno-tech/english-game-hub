@@ -137,7 +137,7 @@ main{padding:14px}
 .final-message{
   background:linear-gradient(135deg,#fff7ed,#fde68a 22%,#ffffff 100%);
   border:2px solid #f59e0b;
-  color:#1f2937;
+  color:#111827; font-weight:1000;
   text-shadow:none;
   border-radius:16px;
   padding:10px;
@@ -822,6 +822,12 @@ body.sound-win .final-card, body.sound-try .final-card{animation:finalGlow 1.6s 
 <style id="mission-card-responsive">
 @media(max-width:860px){body.playing .mission-card{margin:7px 0 8px;padding:8px 10px;border-radius:15px;gap:8px}body.playing .mission-card b{font-size:14px}body.playing .mission-card span{font-size:11px}}
 @media(min-width:861px){body.playing .mission-card b{font-size:18px}body.playing .mission-card span{font-size:14px}}
+</style>
+
+<style id="final-msg-dark-fix">
+.final-message{color:#111827 !important; background:linear-gradient(135deg,#fff8e1,#fef3c7 38%,#ffffff 100%) !important; border-color:#d97706 !important; text-shadow:none !important; font-weight:1000 !important} 
+.final-message b,strong{color:#111827 !important} 
+@media(max-width:860px){.final-message{font-size:13px !important; line-height:1.28 !important}}
 </style>
 </head>
 <body class="playing">
