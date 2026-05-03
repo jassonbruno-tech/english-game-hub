@@ -483,6 +483,30 @@ body.playing .question-card{
   padding-bottom:8px !important;
 }
 
+
+/* Correção final: dica sem corte e assinatura organizada */
+.memory-tip, body.playing .memory-tip{
+  max-height:none !important;
+  overflow:visible !important;
+  white-space:normal !important;
+  line-height:1.28 !important;
+  padding:7px 8px !important;
+}
+.hint{
+  max-height:none !important;
+  overflow:visible !important;
+}
+.question-card{
+  overflow:visible !important;
+}
+body.playing .brand{
+  position:static !important;
+  display:block !important;
+  width:fit-content !important;
+  max-width:100% !important;
+  margin:8px auto 0 !important;
+}
+
 </style>
 </head>
 <body>
@@ -649,31 +673,49 @@ function tone(freq=440, duration=.16, type="sine", gain=.08, delay=0){
   osc.connect(g).connect(audioCtx.destination);
   osc.start(t); osc.stop(t+duration+.03);
 }
-function playCorrectSound(){
-  tone(660,.11,"sine",.07,0);
-  tone(880,.13,"sine",.075,.08);
-  tone(1046,.16,"triangle",.055,.17);
+
+function speakCartoon(text, lang='en-US', pitch=1.85, rate=1.25){
+  try{
+    if('speechSynthesis' in window){
+      window.speechSynthesis.cancel();
+      const msg = new SpeechSynthesisUtterance(text);
+      msg.lang = lang;
+      msg.pitch = pitch;
+      msg.rate = rate;
+      msg.volume = 1;
+      const voices = window.speechSynthesis.getVoices ? window.speechSynthesis.getVoices() : [];
+      const preferred = voices.find(v => /female|woman|zira|google us english|english|portuguese/i.test(v.name + ' ' + v.lang));
+      if(preferred) msg.voice = preferred;
+      window.speechSynthesis.speak(msg);
+      return true;
+    }
+  }catch(e){}
+  return false;
 }
-function playScarecrowComplain(){
-  ensureAudio();
-  if(!audioCtx) return;
-  const now = audioCtx.currentTime;
-  const osc = audioCtx.createOscillator();
-  const g = audioCtx.createGain();
-  const filter = audioCtx.createBiquadFilter();
-  osc.type = "sawtooth";
-  filter.type = "bandpass";
-  filter.frequency.setValueAtTime(760, now);
-  filter.Q.setValueAtTime(7, now);
-  osc.frequency.setValueAtTime(520, now);
-  osc.frequency.exponentialRampToValueAtTime(210, now+.34);
-  g.gain.setValueAtTime(.0001, now);
-  g.gain.exponentialRampToValueAtTime(.095, now+.03);
-  g.gain.exponentialRampToValueAtTime(.0001, now+.38);
-  osc.connect(filter).connect(g).connect(audioCtx.destination);
-  osc.start(now); osc.stop(now+.42);
-  tone(160,.18,"square",.035,.2);
+function playCartoonCorrect(){
+  const cheers = ['Yeah!', 'Good!', 'Nice!', 'Very good!', 'Great!', 'You got it!'];
+  const text = cheers[Math.floor(Math.random()*cheers.length)];
+  if(speakCartoon(text, 'en-US', 1.75, 1.28)) return;
+  try{ tone(720,.12,'sine',.06,.18); setTimeout(()=>tone(920,.10,'sine',.05,.18),90); }catch(e){}
 }
+function playCartoonWrong(){
+  const cries = ['Ui ui!', 'Oh no!', 'Help me please!', 'Ai ai!', 'No no no!', 'Oops!', 'Eita!'];
+  const text = cries[Math.floor(Math.random()*cries.length)];
+  const lang = /Eita|Ai/.test(text) ? 'pt-BR' : 'en-US';
+  if(speakCartoon(text, lang, 1.95, 1.35)) return;
+  try{ tone(520,.16,'sawtooth',.07,.25); setTimeout(()=>tone(260,.14,'triangle',.05,.25),110); }catch(e){}
+}
+function forceScarecrowRender(){
+  try{
+    if(typeof updateScarecrowParts === 'function') updateScarecrowParts();
+    if(typeof drawHangman === 'function') drawHangman();
+    if(typeof renderHangman === 'function') renderHangman();
+    if(typeof updateStats === 'function') updateStats();
+  }catch(e){}
+}
+
+function playCorrectSound(){ playCartoonCorrect(); }
+function playScarecrowComplain(){ playCartoonWrong(); }
 function playVictoryMusic(){
   stopFinalMusic();
   const melody = [523,659,784,1046,784,1046,1318,1046];
@@ -831,27 +873,30 @@ function chooseLetter(btn, letter){
   const fb = el("feedback");
 
   if(word.includes(letter)){
-    playCorrectSound();
+    playCartoonCorrect();
     btn.classList.add("correct");
     fb.className = "feedback ok";
     fb.innerHTML = `✅ Boa! A letra <b>${letter}</b> aparece na palavra.`;
     renderWord();
     if(isWordComplete()) completeRound(true);
   } else {
-    playScarecrowComplain();
     btn.classList.add("wrong");
     state.roundMistakes++;
     state.lives = Math.max(0, state.lives - 1);
     state.combo = 0;
+    playCartoonWrong();
+    forceScarecrowRender();
     fb.className = "feedback bad";
-    fb.innerHTML = `❌ A letra <b>${letter}</b> não aparece. Você perdeu uma vida.`;
+    fb.innerHTML = `❌ A letra <b>${letter}</b> não aparece. O espantalho perdeu uma parte.`;
     if(state.lives <= 0){
+      forceScarecrowRender();
       updateStats();
       setTimeout(()=>finishGame(false), 750);
       return;
     }
   }
   btn.disabled = true;
+  forceScarecrowRender();
   updateStats();
 }
 
@@ -876,17 +921,18 @@ function guessWord(){
   }
 
   if(guess === answer || guess === accepted){
-    playCorrectSound();
+    playCartoonCorrect();
     for(const ch of answer.replace(/ /g,"")) state.guessed.add(ch);
     renderWord();
     completeRound(true);
   } else {
-    playScarecrowComplain();
     state.roundMistakes++;
     state.lives = Math.max(0, state.lives - 1);
     state.combo = 0;
+    playCartoonWrong();
+    forceScarecrowRender();
     el("feedback").className = "feedback bad";
-    el("feedback").innerHTML = `❌ Ainda não. Você perdeu uma vida.`;
+    el("feedback").innerHTML = `❌ Ainda não. O espantalho perdeu uma parte.`;
     updateStats();
     if(state.lives <= 0) setTimeout(()=>finishGame(false), 750);
   }
@@ -1033,70 +1079,7 @@ function syncScarecrowError(){
 
 
 // --- Voz engraçada/cartoonizada do espantalho no erro ---
-function scarecrowCry(){
-  try{
-    if('speechSynthesis' in window){
-      window.speechSynthesis.cancel();
-
-      const cries = [
-        'Ui ui!',
-        'Oh no!',
-        'Help me please!',
-        'Ai ai!',
-        'No no no!',
-        'Try again!',
-        'Oops!',
-        'Eita!'
-      ];
-
-      const msg = new SpeechSynthesisUtterance(cries[Math.floor(Math.random() * cries.length)]);
-
-      // Voz aguda, rápida e divertida, em estilo cartoon, sem imitar personagem específico.
-      msg.lang = Math.random() > 0.35 ? 'en-US' : 'pt-BR';
-      msg.rate = 1.35;
-      msg.pitch = 1.9;
-      msg.volume = 1;
-
-      const voices = window.speechSynthesis.getVoices ? window.speechSynthesis.getVoices() : [];
-      const preferred = voices.find(v =>
-        /female|woman|zira|google us english|english/i.test(v.name + ' ' + v.lang)
-      );
-      if(preferred) msg.voice = preferred;
-
-      window.speechSynthesis.speak(msg);
-      return;
-    }
-  }catch(e){}
-
-  // Fallback: gritinho eletrônico curto caso a voz do navegador não esteja disponível.
-  try{
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const gain = ctx.createGain();
-    const osc1 = ctx.createOscillator();
-    const osc2 = ctx.createOscillator();
-
-    osc1.type = 'sine';
-    osc2.type = 'triangle';
-
-    osc1.frequency.setValueAtTime(980, ctx.currentTime);
-    osc1.frequency.exponentialRampToValueAtTime(520, ctx.currentTime + .18);
-
-    osc2.frequency.setValueAtTime(1320, ctx.currentTime);
-    osc2.frequency.exponentialRampToValueAtTime(680, ctx.currentTime + .18);
-
-    gain.gain.setValueAtTime(.16, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(.001, ctx.currentTime + .23);
-
-    osc1.connect(gain);
-    osc2.connect(gain);
-    gain.connect(ctx.destination);
-
-    osc1.start();
-    osc2.start();
-    osc1.stop(ctx.currentTime + .24);
-    osc2.stop(ctx.currentTime + .24);
-  }catch(e){}
-}
+function scarecrowCry(){ playCartoonWrong(); }
 
 
 
@@ -1107,6 +1090,14 @@ try{
   }
 }catch(e){}
 
+
+const hangmanKeyRenderFallbackV2 = true;
+document.addEventListener('click', function(e){
+  if(e.target && (e.target.classList.contains('key') || e.target.closest('.key'))){
+    setTimeout(forceScarecrowRender, 0);
+    setTimeout(forceScarecrowRender, 80);
+  }
+}, true);
 </script>
 </body>
 </html>
