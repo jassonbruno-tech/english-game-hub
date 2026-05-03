@@ -641,6 +641,176 @@ body.sound-win .final-card, body.sound-try .final-card{animation:finalGlow 1.6s 
 }
 </style>
 
+
+<style id="mobile-modal-and-desktop-wheel-fix">
+/* ===== Mobile question modal over the wheel ===== */
+.question-modal{
+  display:none;
+}
+@media(max-width:860px){
+  body.playing{
+    overflow:auto !important;
+  }
+  body.playing .question-card{
+    display:none !important;
+  }
+  body.playing .game-grid{
+    grid-template-columns:1fr !important;
+    gap:8px !important;
+  }
+  body.playing .wheel-card{
+    min-height:calc(100dvh - 190px) !important;
+    height:calc(100dvh - 190px) !important;
+    overflow:hidden !important;
+  }
+  body.playing .wheel-wrap{
+    min-height:100% !important;
+    height:100% !important;
+    justify-content:center !important;
+    padding-top:0 !important;
+  }
+  body.playing .wheel{
+    width:min(88vw, 340px) !important;
+    height:min(88vw, 340px) !important;
+    max-width:340px !important;
+    max-height:340px !important;
+  }
+  body.playing .wheel-label{
+    width:76px !important;
+    margin-left:-38px !important;
+    font-size:12px !important;
+    line-height:.96 !important;
+    transform:rotate(var(--r)) translateY(-126px) rotate(calc(-1 * var(--r))) !important;
+  }
+  body.playing .wheel::after{
+    font-size:18px !important;
+  }
+  .question-modal.show{
+    display:flex !important;
+    position:fixed;
+    inset:0;
+    z-index:9999;
+    align-items:center;
+    justify-content:center;
+    padding:18px;
+  }
+  .modal-backdrop{
+    position:absolute;
+    inset:0;
+    background:rgba(3,4,18,.42);
+    backdrop-filter:blur(2px);
+  }
+  .modal-card{
+    position:relative;
+    width:min(94vw, 430px);
+    max-height:88dvh;
+    overflow:auto;
+    border-radius:24px;
+    padding:14px;
+    background:
+      radial-gradient(circle at 20% 0%, rgba(0,212,255,.25), transparent 35%),
+      radial-gradient(circle at 88% 10%, rgba(255,0,153,.25), transparent 35%),
+      linear-gradient(180deg, rgba(5,9,48,.97), rgba(11,5,42,.98));
+    border:2px solid rgba(255,50,200,.55);
+    box-shadow:0 0 0 1px rgba(255,255,255,.08), 0 22px 50px rgba(0,0,0,.55), 0 0 32px rgba(236,72,153,.22);
+  }
+  .modal-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+    margin-bottom:8px;
+  }
+  .modal-mini{
+    color:#fde68a;
+    font-size:11px;
+    font-weight:900;
+    text-align:right;
+  }
+  .modal-card .theme-chip{
+    font-size:13px !important;
+    padding:6px 10px !important;
+    margin-bottom:0 !important;
+  }
+  .modal-prompt{
+    font-size:21px !important;
+    line-height:1.14 !important;
+    margin:10px 0 12px !important;
+    color:#fff !important;
+    text-shadow:0 2px 8px rgba(0,0,0,.22);
+  }
+  .modal-options{
+    gap:9px !important;
+  }
+  .modal-card .option{
+    font-size:17px !important;
+    line-height:1.1 !important;
+    min-height:54px !important;
+    padding:11px 11px 11px 46px !important;
+    border-radius:17px !important;
+    background:rgba(4,10,51,.97) !important;
+  }
+  .modal-card .option::before{
+    left:10px !important;
+    width:27px !important;
+    height:27px !important;
+    font-size:14px !important;
+  }
+  .modal-feedback{
+    font-size:13px !important;
+    line-height:1.18 !important;
+    margin-top:10px !important;
+    max-height:none !important;
+    overflow:visible !important;
+  }
+}
+
+/* ===== Desktop: keep side question, fix wheel labels escaping ===== */
+@media(min-width:861px){
+  body.playing .question-modal{
+    display:none !important;
+  }
+  body.playing .game-grid{
+    grid-template-columns:minmax(420px,.95fr) minmax(420px,1.05fr) !important;
+    align-items:stretch !important;
+  }
+  body.playing .wheel-card{
+    overflow:hidden !important;
+  }
+  body.playing .wheel-wrap{
+    min-height:520px !important;
+    height:auto !important;
+  }
+  body.playing .wheel{
+    width:360px !important;
+    height:360px !important;
+    max-width:360px !important;
+    max-height:360px !important;
+  }
+  body.playing .wheel::after{
+    inset:29% !important;
+    font-size:20px !important;
+  }
+  body.playing .wheel-label{
+    width:74px !important;
+    margin-left:-37px !important;
+    font-size:12.6px !important;
+    line-height:.96 !important;
+    letter-spacing:-.15px !important;
+    transform:rotate(var(--r)) translateY(-142px) rotate(calc(-1 * var(--r))) !important;
+    overflow-wrap:break-word !important;
+    word-break:normal !important;
+  }
+  body.playing .prompt{
+    font-size:25px !important;
+    line-height:1.15 !important;
+  }
+  body.playing .option{
+    font-size:19px !important;
+  }
+}
+</style>
+
 </head>
 <body class="playing">
 <div class="app">
@@ -700,6 +870,19 @@ body.sound-win .final-card, body.sound-try .final-card{animation:finalGlow 1.6s 
       <div id="prompt" class="prompt">Clique em SPIN para sortear o tema e liberar a pergunta.</div>
       <div id="options" class="options"></div>
       <div id="feedback" class="feedback"></div>
+    </div>
+  </div>
+
+  <div id="questionModal" class="question-modal" aria-hidden="true">
+    <div class="modal-backdrop"></div>
+    <div class="modal-card">
+      <div class="modal-top">
+        <span id="modalTheme" class="theme-chip">Tema</span>
+        <span class="modal-mini">Responda para continuar</span>
+      </div>
+      <div id="modalPrompt" class="prompt modal-prompt">Pergunta</div>
+      <div id="modalOptions" class="options modal-options"></div>
+      <div id="modalFeedback" class="feedback modal-feedback"></div>
     </div>
   </div>
 </section>
@@ -894,6 +1077,7 @@ function restart(){
   el("theme").textContent = "Tema";
   el("prompt").textContent = "Clique em SPIN para sortear o tema e liberar a pergunta.";
   el("options").innerHTML = "";
+  el("modalOptions").innerHTML = "";
   el("feedback").className = "feedback";
   el("feedback").innerHTML = "";
   el("spinBtn").disabled = false;
@@ -917,6 +1101,7 @@ function spinWheel(){
   const q = state.current;
   const themeIndex = THEMES.indexOf(q.theme);
 
+  closeQuestionModal();
   state.spinning = true;
   el("spinBtn").disabled = true;
   el("options").innerHTML = "";
@@ -984,33 +1169,112 @@ function spinWheel(){
   }, 7350);
 }
 
+
+function isMobileGame(){
+  return window.innerWidth <= 860;
+}
+
+function openQuestionModal(){
+  const modal = el("questionModal");
+  if(!modal) return;
+  modal.classList.add("show");
+  modal.setAttribute("aria-hidden", "false");
+}
+
+function closeQuestionModal(){
+  const modal = el("questionModal");
+  if(!modal) return;
+  modal.classList.remove("show");
+  modal.setAttribute("aria-hidden", "true");
+}
+
+function makeOptionButton(opt){
+  const btn = document.createElement("button");
+  btn.className = "option";
+  btn.type = "button";
+  btn.textContent = opt;
+  btn.addEventListener("click", () => answer(opt));
+  return btn;
+}
+
 function renderQuestion(q){
   state.answered = false;
+
+  // Desktop/PC question area
   el("theme").textContent = q.theme;
   el("prompt").textContent = q.q;
   const box = el("options");
   box.innerHTML = "";
-  shuffle(q.o).forEach(opt => {
-    const btn = document.createElement("button");
-    btn.className = "option";
-    btn.type = "button";
-    btn.textContent = opt;
-    btn.addEventListener("click", () => answer(btn, opt));
-    box.appendChild(btn);
+
+  // Mobile modal question area
+  el("modalTheme").textContent = q.theme;
+  el("modalPrompt").textContent = q.q;
+  const modalBox = el("modalOptions");
+  modalBox.innerHTML = "";
+
+  const mixedOptions = shuffle([...q.o]);
+  mixedOptions.forEach(opt => {
+    box.appendChild(makeOptionButton(opt));
+    modalBox.appendChild(makeOptionButton(opt));
+  });
+
+  el("feedback").className = "feedback";
+  el("feedback").innerHTML = "";
+  el("modalFeedback").className = "feedback modal-feedback";
+  el("modalFeedback").innerHTML = "";
+
+  if(isMobileGame()){
+    setTimeout(openQuestionModal, 180);
+  }
+}
+
+function markAllOptions(correct, selectedClean){
+  document.querySelectorAll(".option").forEach(b => {
+    b.disabled = true;
+    const txt = String(b.textContent).trim();
+    if(txt === correct) b.classList.add("correct");
+    if(txt === selectedClean && selectedClean !== correct) b.classList.add("wrong");
   });
 }
 
-function answer(btn, selected){
+function setFeedback(ok, htmlText){
+  const fb = el("feedback");
+  const mfb = el("modalFeedback");
+  fb.className = ok ? "feedback ok" : "feedback bad";
+  mfb.className = ok ? "feedback modal-feedback ok" : "feedback modal-feedback bad";
+  fb.innerHTML = htmlText;
+  mfb.innerHTML = htmlText;
+}
+
+function prepareNextRound(){
+  state.round++;
+  state.answered = false;
+  el("spinBtn").disabled = false;
+  el("theme").textContent = "Tema";
+  el("prompt").textContent = "Clique em SPIN para sortear o próximo tema.";
+  el("options").innerHTML = "";
+  el("feedback").className = "feedback";
+  el("feedback").innerHTML = "";
+  el("modalTheme").textContent = "Tema";
+  el("modalPrompt").textContent = "Pergunta";
+  el("modalOptions").innerHTML = "";
+  el("modalFeedback").className = "feedback modal-feedback";
+  el("modalFeedback").innerHTML = "";
+  el("sorted").textContent = "Gire a roleta para continuar.";
+  closeQuestionModal();
+  updateStats();
+}
+
+function answer(selected){
   if(state.answered || state.spinning) return;
   state.answered = true;
+
   const q = state.current;
   const correct = String(q.a).trim();
   const selectedClean = String(selected).trim();
-  document.querySelectorAll(".option").forEach(b => {
-    b.disabled = true;
-    if(String(b.textContent).trim() === correct) b.classList.add("correct");
-  });
-  const fb = el("feedback");
+
+  markAllOptions(correct, selectedClean);
+
   if(selectedClean === correct){
     state.corrects++;
     state.combo++;
@@ -1018,32 +1282,31 @@ function answer(btn, selected){
     const bonus = state.combo >= 3 ? 20 : 0;
     state.score += 100 + bonus;
     playCorrectSound();
-    fb.className = "feedback ok";
-    fb.innerHTML = `✅ Great job! Você acertou.<br><b>Explicação:</b> ${q.e}${bonus ? "<br>🔥 Bônus de combo: +20 pontos!" : ""}`;
+    setFeedback(true, `✅ Great job! Você acertou.<br><b>Explicação:</b> ${q.e}${bonus ? "<br>🔥 Bônus de combo: +20 pontos!" : ""}`);
   } else {
     state.combo = 0;
     state.lives = Math.max(0, state.lives - 1);
-    btn.classList.add("wrong");
     playErrorSound();
-    fb.className = "feedback bad";
-    fb.innerHTML = `❌ Quase! Você perdeu 1 vida. A resposta correta é <b>${q.a}</b>.<br><b>Explicação:</b> ${q.e}`;
+    setFeedback(false, `❌ Quase! Você perdeu 1 vida. A resposta correta é <b>${q.a}</b>.<br><b>Explicação:</b> ${q.e}`);
   }
+
   updateStats();
-  if(state.lives <= 0){ setTimeout(()=>finishGame(false), 900); return; }
-  if(state.round >= TOTAL_ROUNDS){ setTimeout(()=>finishGame(true), 900); return; }
-  setTimeout(()=>{
-    state.round++;
-    state.answered = false;
-    el("spinBtn").disabled = false;
-    el("theme").textContent = "Tema";
-    el("prompt").textContent = "Clique em SPIN para sortear o próximo tema.";
-    el("options").innerHTML = "";
-    el("feedback").className = "feedback";
-    el("feedback").innerHTML = "";
-    el("sorted").textContent = "Gire a roleta para continuar.";
-    updateStats();
-  }, 1200);
+
+  const delay = 1700;
+
+  if(state.lives <= 0){
+    setTimeout(()=>{ closeQuestionModal(); finishGame(false); }, delay);
+    return;
+  }
+
+  if(state.round >= TOTAL_ROUNDS){
+    setTimeout(()=>{ closeQuestionModal(); finishGame(true); }, delay);
+    return;
+  }
+
+  setTimeout(prepareNextRound, delay);
 }
+
 
 
 const FAKE_RANKING_NAMES = [
