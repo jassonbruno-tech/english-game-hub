@@ -135,9 +135,10 @@ main{padding:14px}
   color:#1d4ed8;
 }
 .final-message{
-  background:linear-gradient(135deg,#fff7ed,#dbeafe);
-  border:2px solid #f8d36b;
-  color:#172033;
+  background:linear-gradient(135deg,#fff7ed,#fde68a 22%,#ffffff 100%);
+  border:2px solid #f59e0b;
+  color:#1f2937;
+  text-shadow:none;
   border-radius:16px;
   padding:10px;
   font-weight:900;
@@ -826,7 +827,7 @@ body.sound-win .final-card, body.sound-try .final-card{animation:finalGlow 1.6s 
 <body class="playing">
 <div class="app">
 <header>
-  <div class="topbar"><a class="back" href="6ano.html">← Voltar ao 6º ano</a><div class="pill">🎡 6º Ano • 1º Bimestre</div></div>
+  <div class="topbar"><a class="back" href="6ano.html">← Voltar ao 6º ano</a><div class="pill">📘 Alinhado à BNCC</div></div>
   <h1>Spin and Answer</h1>
   <p class="subtitle">Gire a roleta, descubra o tema e responda ao desafio.</p>
 </header>
@@ -856,7 +857,7 @@ body.sound-win .final-card, body.sound-try .final-card{animation:finalGlow 1.6s 
     <div class="stat"><b id="combo">0</b><span>Combo</span></div>
     <div class="stat"><b id="round">1 de 20</b><span>Rodada</span></div>
   </div>
-  <div class="mission-card"><b id="missionLabel">Missão 1/10 — Greetings</b><span id="roundLabel">Rodada 1 de 20</span></div>
+  <div class="mission-card"><b id="missionLabel">Missão 1/10</b><span id="roundLabel">Rodada 1 de 20</span></div>
   <div class="lives-card"><b>Vidas:</b> <span id="lives"></span></div>
   <div class="game-grid">
     <div class="card wheel-card">
@@ -907,7 +908,7 @@ body.sound-win .final-card, body.sound-try .final-card{animation:finalGlow 1.6s 
 
     <div class="player-summary">
       <div class="summary-box"><span>Pontuação</span><b id="fScore">0</b></div>
-      <div class="summary-box"><span>Acertos</span><b id="fCorrects">0/30</b></div>
+      <div class="summary-box"><span>Acertos</span><b id="fCorrects">0/20</b></div>
       <div class="summary-box"><span>Combo</span><b id="fCombo">0</b></div>
       <div class="summary-box"><span>Vidas</span><b id="fLives">0/5</b></div>
     </div>
@@ -920,7 +921,7 @@ body.sound-win .final-card, body.sound-try .final-card{animation:finalGlow 1.6s 
     </div>
 
     <div class="rank-actions">
-      <button class="spin-btn" onclick="restart()">Jogar novamente</button>
+      <button id="primaryActionBtn" class="spin-btn" onclick="restart()">Jogar novamente</button>
       <button class="spin-btn" onclick="location.href='6ano.html'">Voltar ao 6º ano</button>
     </div>
   </div>
@@ -1082,8 +1083,16 @@ function makeBag(){
   return bag;
 }
 
+function getMission(){ return state.mission || 1; }
+function nextMissionLabel(){ return Math.min(getMission()+1,10); }
+function goToNextMission(){
+  state.mission = Math.min(getMission()+1,10);
+  restart();
+}
+
 function restart(){
-  state = {score:0,corrects:0,errors:0,combo:0,maxCombo:0,round:1,lives:MAX_LIVES,bag:makeBag(),current:null,spinning:false,answered:false,rotation:0};
+  const missionToUse = state.mission || 1;
+  state = {score:0,corrects:0,errors:0,combo:0,maxCombo:0,round:1,lives:MAX_LIVES,bag:makeBag(),current:null,spinning:false,answered:false,rotation:0,mission:missionToUse};
   el("wheel").style.transform = "rotate(0deg)";
   el("wheel").dataset.theme = "SPIN";
   el("sorted").textContent = "Gire a roleta para começar.";
@@ -1104,7 +1113,7 @@ function updateStats(){
   el("combo").textContent = state.combo;
   el("round").textContent = `${state.round} de ${TOTAL_ROUNDS}`;
   if(el("roundLabel")) el("roundLabel").textContent = `Rodada ${state.round} de ${TOTAL_ROUNDS}`;
-  if(el("missionLabel")) el("missionLabel").textContent = `Missão 1/10 — Greetings`;
+  if(el("missionLabel")) el("missionLabel").textContent = `Missão ${getMission()}/10`;
   el("lives").innerHTML = Array.from({length:MAX_LIVES}, (_,i)=>`<span class="heart ${i>=state.lives ? 'lost' : ''}">♥</span>`).join("");
 }
 
@@ -1416,10 +1425,29 @@ function finishGame(completed){
   document.body.classList.add(completed ? "sound-win" : "sound-try");
   setTimeout(()=> completed ? playVictoryMusic() : playTryAgainMusic(), 250);
 
-  document.getElementById("finalTitle").textContent = completed ? "🏆 YOU ARE THE ONE!" : "💪 TRY AGAIN!";
-  document.getElementById("finalMsg").textContent = completed 
-    ? "Parabéns! Você chegou ao final do desafio e mostrou atenção, coragem e persistência. Continue jogando para subir ainda mais no ranking!"
-    : "Você tentou, errou, aprendeu e isso já mostra evolução. Não pare agora! Jogue novamente, melhore sua pontuação e tente subir no ranking.";
+  const mission = getMission();
+  const nextMission = Math.min(mission + 1, 10);
+  const titleEl = document.getElementById("finalTitle");
+  const msgEl = document.getElementById("finalMsg");
+  const primaryBtn = document.getElementById("primaryActionBtn");
+
+  titleEl.textContent = completed ? "🏆 YOU ARE THE ONE!" : "💪 TRY AGAIN!";
+
+  if(completed){
+    if(mission < 10){
+      msgEl.textContent = `Parabéns! Você concluiu a Missão ${mission}/10 com muita atenção, coragem e persistência. Agora aceite o próximo passo e siga para o Desafio ${nextMission}!`;
+      primaryBtn.textContent = `Ir ao desafio ${nextMission}`;
+      primaryBtn.onclick = goToNextMission;
+    } else {
+      msgEl.textContent = "Parabéns! Você concluiu a Missão 10/10 e venceu toda a campanha do Spin and Answer. Seu desempenho foi excelente!";
+      primaryBtn.textContent = "Recomeçar campanha";
+      primaryBtn.onclick = function(){ state.mission = 1; restart(); };
+    }
+  } else {
+    msgEl.textContent = `Você tentou, errou, aprendeu e isso já mostra evolução. Reforce a Missão ${mission}/10 e tente melhorar sua pontuação para seguir em frente!`;
+    primaryBtn.textContent = "Tentar novamente";
+    primaryBtn.onclick = restart;
+  }
 
   document.getElementById("fScore").textContent = state.score;
   document.getElementById("fCorrects").textContent = `${state.corrects}/${TOTAL_ROUNDS}`;
