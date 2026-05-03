@@ -541,6 +541,44 @@ body.playing .stats{
   }
 }
 
+
+/* --- Exibição clara das fases do Hangman --- */
+.phase-banner{
+  width:100%;
+  margin:0 0 8px;
+  padding:8px 10px;
+  border-radius:16px;
+  background:linear-gradient(135deg, rgba(255,230,109,.24), rgba(255,183,3,.12), rgba(37,99,235,.16));
+  border:1px solid rgba(255,230,109,.42);
+  color:#fff7c2;
+  font-weight:1000;
+  text-align:center;
+  box-shadow:0 0 18px rgba(255,230,109,.12);
+}
+.phase-banner .phase-title{
+  display:block;
+  font-size:15px;
+  line-height:1.15;
+}
+.phase-banner .phase-round{
+  display:block;
+  margin-top:3px;
+  font-size:12px;
+  color:#eaf2ff;
+}
+body.playing .phase-banner{
+  padding:6px 8px;
+  margin-bottom:6px;
+}
+@media(max-width:860px){
+  .phase-banner .phase-title{
+    font-size:13px;
+  }
+  .phase-banner .phase-round{
+    font-size:11px;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -708,7 +746,7 @@ function showPhaseTransitionIfNeeded(){
       const fb = el("feedback");
       if(fb){
         fb.className = "feedback ok phase-feedback";
-        fb.innerHTML = `🌟 Muito bem! Você entrou na <b>${phase.label}</b>. Continue descobrindo as palavras do Yellow Level!`;
+        fb.innerHTML = `🌟 Nova fase liberada: <b>${phase.label}</b>. Agora você terá 5 novas palavras deste bloco!`;
       }
     }
   }catch(e){}
@@ -1802,11 +1840,28 @@ function restart(){
   loadChallenge();
 }
 
+
+function getWordInPhase(){
+  return ((state.round - 1) % 5) + 1;
+}
+
+function updatePhaseBanner(){
+  try{
+    const phaseIndex = getCurrentPhaseIndex();
+    const phase = PHASES[phaseIndex];
+    const banner = document.getElementById("phaseBanner");
+    if(banner && phase){
+      banner.innerHTML = `<span class="phase-title">${phase.label}</span><span class="phase-round">Palavra ${getWordInPhase()} de 5</span>`;
+    }
+  }catch(e){}
+}
+
 function updateStats(){
+  updatePhaseBanner();
   el("score").textContent = state.score;
   el("corrects").textContent = state.corrects;
   el("combo").textContent = state.combo;
-  el("round").textContent = `${state.round}/${TOTAL_ROUNDS}`;
+  el("round").textContent = `${getWordInPhase()}/5`;
   if(el("phaseLabel")) el("phaseLabel").textContent = `${getCurrentPhaseIndex()+1}/6`;
 
   const livesLeft = Math.max(0, Math.min(MAX_LIVES, Number(state.lives ?? MAX_LIVES)));
@@ -2168,24 +2223,90 @@ function playGameWrongAudio(){
 }
 
 
+
 function playFinalTryAgainSound(){
   try{
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const notes = [330,392,440,392,330,294,330];
-    notes.forEach((freq, i)=>{
+    const now = ctx.currentTime;
+
+    // Melodia curta motivacional: "caiu, levantou e tenta de novo"
+    const melody = [
+      {f:392, t:0.00, d:0.16},
+      {f:440, t:0.16, d:0.16},
+      {f:523, t:0.32, d:0.20},
+      {f:494, t:0.54, d:0.16},
+      {f:440, t:0.70, d:0.16},
+      {f:523, t:0.88, d:0.20},
+      {f:659, t:1.10, d:0.22},
+      {f:587, t:1.36, d:0.18},
+      {f:523, t:1.56, d:0.18},
+      {f:659, t:1.76, d:0.22},
+      {f:784, t:2.02, d:0.34}
+    ];
+
+    melody.forEach((note, i)=>{
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc.type = i % 3 === 0 ? 'triangle' : 'sine';
+      osc.frequency.setValueAtTime(note.f, now + note.t);
+
+      gain.gain.setValueAtTime(0.0001, now + note.t);
+      gain.gain.exponentialRampToValueAtTime(0.085, now + note.t + 0.025);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + note.t + note.d);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start(now + note.t);
+      osc.stop(now + note.t + note.d + 0.03);
+    });
+
+    // Baixo suave para dar corpo sem ficar triste
+    const bass = [
+      {f:196, t:0.00, d:0.45},
+      {f:220, t:0.52, d:0.45},
+      {f:262, t:1.04, d:0.45},
+      {f:330, t:1.66, d:0.55}
+    ];
+
+    bass.forEach(note=>{
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
       osc.type = 'sine';
-      osc.frequency.setValueAtTime(freq, ctx.currentTime + i*0.13);
-      gain.gain.setValueAtTime(0.0001, ctx.currentTime + i*0.13);
-      gain.gain.exponentialRampToValueAtTime(0.08, ctx.currentTime + i*0.13 + 0.02);
-      gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + i*0.13 + 0.11);
-      osc.connect(gain); gain.connect(ctx.destination);
-      osc.start(ctx.currentTime + i*0.13);
-      osc.stop(ctx.currentTime + i*0.13 + 0.13);
+      osc.frequency.setValueAtTime(note.f, now + note.t);
+      gain.gain.setValueAtTime(0.0001, now + note.t);
+      gain.gain.exponentialRampToValueAtTime(0.035, now + note.t + 0.04);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + note.t + note.d);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now + note.t);
+      osc.stop(now + note.t + note.d + 0.05);
     });
+
+    // Brilho final de incentivo
+    setTimeout(()=>{
+      try{
+        const sparkle = new (window.AudioContext || window.webkitAudioContext)();
+        [880, 1046, 1318].forEach((freq, idx)=>{
+          const osc = sparkle.createOscillator();
+          const gain = sparkle.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, sparkle.currentTime + idx * 0.07);
+          gain.gain.setValueAtTime(0.0001, sparkle.currentTime + idx * 0.07);
+          gain.gain.exponentialRampToValueAtTime(0.045, sparkle.currentTime + idx * 0.07 + 0.02);
+          gain.gain.exponentialRampToValueAtTime(0.0001, sparkle.currentTime + idx * 0.07 + 0.13);
+          osc.connect(gain);
+          gain.connect(sparkle.destination);
+          osc.start(sparkle.currentTime + idx * 0.07);
+          osc.stop(sparkle.currentTime + idx * 0.07 + 0.15);
+        });
+      }catch(e){}
+    }, 2150);
+
   }catch(e){}
 }
+
 
 function playFinalVictorySound(){
   try{
