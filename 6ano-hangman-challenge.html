@@ -835,6 +835,123 @@ body.playing .key{
   }
 }
 
+
+/* --- Ajuste final mobile: espantalho menor e teclado mais alto --- */
+@media(max-width:860px){
+  body.playing .game-grid{
+    grid-template-rows:minmax(168px,auto) minmax(0,1fr) !important;
+    gap:4px !important;
+  }
+  body.playing .hang-area{
+    min-height:172px !important;
+    gap:4px !important;
+    padding:4px !important;
+  }
+  body.playing .hangman-box{
+    padding:2px !important;
+    max-height:118px !important;
+    overflow:hidden !important;
+  }
+  body.playing #hangSvg{
+    width:118px !important;
+    max-width:118px !important;
+  }
+  body.playing .word{
+    min-height:42px !important;
+    padding:5px 6px !important;
+    gap:4px 4px !important;
+  }
+  body.playing .letter-box{
+    width:24px !important;
+    height:30px !important;
+    flex:0 0 24px !important;
+    font-size:16px !important;
+  }
+  body.playing .question-card{
+    padding:5px !important;
+    justify-content:flex-start !important;
+  }
+  body.playing .mission-box{
+    padding:4px 7px !important;
+    margin-bottom:4px !important;
+  }
+  body.playing .theme-chip{
+    padding:4px 8px !important;
+    margin-bottom:4px !important;
+    font-size:11px !important;
+  }
+  body.playing .hint{
+    font-size:14px !important;
+    line-height:1.15 !important;
+    padding:6px 7px !important;
+    margin-bottom:4px !important;
+  }
+  body.playing .keyboard{
+    margin-top:3px !important;
+    gap:4px !important;
+  }
+  body.playing .key{
+    min-height:28px !important;
+    padding:5px 0 !important;
+    font-size:13px !important;
+    border-radius:7px !important;
+  }
+  body.playing .word-submit{
+    margin-top:4px !important;
+  }
+  body.playing .word-submit input{
+    padding:6px !important;
+    font-size:12px !important;
+  }
+  body.playing .word-submit .btn{
+    padding:6px 8px !important;
+    font-size:10px !important;
+  }
+  body.playing .memory-tip{
+    margin-top:4px !important;
+    padding:4px 6px !important;
+    font-size:9.5px !important;
+    line-height:1.12 !important;
+  }
+  body.playing .feedback{
+    margin-top:4px !important;
+    padding:4px 6px !important;
+    font-size:10px !important;
+    max-height:34px !important;
+  }
+}
+
+@media(max-width:380px){
+  body.playing .game-grid{
+    grid-template-rows:minmax(154px,auto) minmax(0,1fr) !important;
+  }
+  body.playing .hang-area{
+    min-height:158px !important;
+  }
+  body.playing .hangman-box{
+    max-height:104px !important;
+  }
+  body.playing #hangSvg{
+    width:104px !important;
+    max-width:104px !important;
+  }
+  body.playing .word{
+    min-height:38px !important;
+    padding:4px 5px !important;
+  }
+  body.playing .letter-box{
+    width:22px !important;
+    height:28px !important;
+    flex:0 0 22px !important;
+    font-size:15px !important;
+  }
+  body.playing .key{
+    min-height:26px !important;
+    font-size:12.5px !important;
+    padding:4px 0 !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -1020,11 +1137,11 @@ body.playing .key{
 <section id="missionVictoryScreen" class="screen">
   <div class="card mission-victory-card">
     <div class="mission-victory-emoji">🌟🏆🌟</div>
-    <h2>MINI VICTORY!</h2>
+    <h2>MISSION COMPLETE!</h2>
     <div id="missionVictoryMsg" class="mission-victory-msg">
       Você concluiu uma missão!
     </div>
-    <button class="btn" onclick="goToNextMission()">Avançar para a próxima missão 🚀</button>
+    <button class="btn" onclick="goToNextMission()">Ir para a próxima missão 🚀</button>
     <div class="brand">Jogo idealizado pelo professor Jasson Bruno.</div>
   </div>
 </section>
@@ -1054,12 +1171,50 @@ body.playing .key{
 <script>
 
 const PHASES = [
-  {name:"Greetings and Farewells", themes:["Greetings","Farewells"], label:"Fase 1/6 — Greetings and Farewells"},
-  {name:"Classroom Commands", themes:["Classroom Commands"], label:"Fase 2/6 — Classroom Commands"},
-  {name:"Classroom Expressions", themes:["Classroom Expressions"], label:"Fase 3/6 — Classroom Expressions"},
-  {name:"School Vocabulary", themes:["School Vocabulary","Personal Information"], label:"Fase 4/6 — School Vocabulary"},
-  {name:"Pronouns and Possessives", themes:["Personal Pronouns","Possessive Adjectives"], label:"Fase 5/6 — Pronouns and Possessives"},
-  {name:"Verb To Be and Daily Life", themes:["Verb To Be","Simple Descriptions","Daily Life"], label:"Fase 6/6 — Verb To Be and Daily Life"}
+  {
+    "name": "Greetings and Farewells",
+    "themes": [
+      "Greetings",
+      "Farewells"
+    ],
+    "label": "Missão 1/6 — Greetings and Farewells"
+  },
+  {
+    "name": "Classroom Commands",
+    "themes": [
+      "Classroom Commands"
+    ],
+    "label": "Missão 2/6 — Classroom Commands"
+  },
+  {
+    "name": "Classroom Expressions",
+    "themes": [
+      "Classroom Expressions"
+    ],
+    "label": "Missão 3/6 — Classroom Expressions"
+  },
+  {
+    "name": "School and Personal Information",
+    "themes": [
+      "School Vocabulary",
+      "Personal Information"
+    ],
+    "label": "Missão 4/6 — School and Personal Information"
+  },
+  {
+    "name": "Pronouns",
+    "themes": [
+      "Personal Pronouns"
+    ],
+    "label": "Missão 5/6 — Personal Pronouns"
+  },
+  {
+    "name": "Possessive Adjectives",
+    "themes": [
+      "Possessive Adjectives"
+    ],
+    "label": "Missão 6/6 — Possessive Adjectives"
+  }
 ];
 
 function getCurrentPhaseIndex(){
@@ -1070,7 +1225,7 @@ function buildPhaseChallengeList(){
   const fullList = [];
   PHASES.forEach(phase => {
     const pool = CHALLENGES.filter(item => phase.themes.includes(item.theme));
-    const selected = shuffleArray([...pool]).slice(0, 5);
+    const selected = pool.slice(0, 5);
     fullList.push(...selected);
   });
   return fullList;
@@ -1117,927 +1272,242 @@ const CHALLENGES = [
   {
     "theme": "Greetings",
     "word": "HELLO",
-    "hint": "Usamos para dizer “olá” quando encontramos alguém."
+    "hint": "Você encontra um colega e quer dizer “olá”. Qual palavra em inglês combina com essa situação?"
   },
   {
     "theme": "Greetings",
-    "word": "HI",
-    "hint": "Forma curta e informal de dizer “oi” em inglês."
+    "word": "GOOD MORNING",
+    "hint": "A aula começa cedo. Como dizemos “bom dia” em inglês?"
   },
   {
     "theme": "Greetings",
-    "word": "HEY",
-    "hint": "Cumprimento informal parecido com “ei” ou “oi”."
-  },
-  {
-    "theme": "Greetings",
-    "word": "WELCOME",
-    "hint": "Palavra usada para receber alguém de forma acolhedora."
-  },
-  {
-    "theme": "Greetings",
-    "word": "MORNING",
-    "hint": "Parte do dia usada em “Good morning”, quando ainda é manhã."
-  },
-  {
-    "theme": "Greetings",
-    "word": "AFTERNOON",
-    "hint": "Parte do dia usada em “Good afternoon”, depois do meio-dia."
-  },
-  {
-    "theme": "Greetings",
-    "word": "EVENING",
-    "hint": "Parte do dia usada em “Good evening”, no começo da noite."
-  },
-  {
-    "theme": "Greetings",
-    "word": "GOODMORNING",
-    "hint": "Cumprimento usado quando encontramos alguém pela manhã."
-  },
-  {
-    "theme": "Greetings",
-    "word": "GOODAFTERNOON",
-    "hint": "Cumprimento usado depois do meio-dia."
-  },
-  {
-    "theme": "Greetings",
-    "word": "GOODEVENING",
-    "hint": "Cumprimento usado no começo da noite."
-  },
-  {
-    "theme": "Greetings",
-    "word": "NICE",
-    "hint": "Aparece em “Nice to meet you”, quando conhecemos alguém."
-  },
-  {
-    "theme": "Greetings",
-    "word": "MEET",
-    "hint": "Verbo que aparece em “Nice to meet you”."
-  },
-  {
-    "theme": "Greetings",
-    "word": "TODAY",
-    "hint": "Palavra usada para falar de “hoje”."
-  },
-  {
-    "theme": "Greetings",
-    "word": "OKAY",
-    "hint": "Palavra usada para dizer que está tudo bem ou combinado."
-  },
-  {
-    "theme": "Greetings",
-    "word": "FINE",
-    "hint": "Resposta comum para “How are you?” quando está tudo bem."
-  },
-  {
-    "theme": "Greetings",
-    "word": "GREAT",
-    "hint": "Resposta positiva que significa muito bom/ótimo."
-  },
-  {
-    "theme": "Greetings",
-    "word": "HOWAREYOU",
-    "hint": "Pergunta usada para saber como a pessoa está."
-  },
-  {
-    "theme": "Greetings",
-    "word": "IMFINE",
-    "hint": "Resposta simples para dizer “Estou bem”."
-  },
-  {
-    "theme": "Greetings",
-    "word": "THANKS",
-    "hint": "Forma curta de agradecer, parecida com “obrigado/obrigada”."
-  },
-  {
-    "theme": "Greetings",
-    "word": "GOOD",
-    "hint": "Palavra usada para dizer “bom/boa” em várias expressões."
+    "word": "GOOD AFTERNOON",
+    "hint": "Você encontra a professora depois do almoço. Como dizemos “boa tarde” em inglês?"
   },
   {
     "theme": "Farewells",
     "word": "GOODBYE",
-    "hint": "Expressão usada para se despedir de alguém."
+    "hint": "A aula terminou e você quer se despedir. Qual palavra em inglês significa “tchau”?"
+  },
+  {
+    "theme": "Farewells",
+    "word": "SEE YOU",
+    "hint": "Você vai embora, mas quer dizer “até logo”. Qual expressão em inglês pode usar?"
+  },
+  {
+    "theme": "Greetings",
+    "word": "HI",
+    "hint": "Você cumprimenta um amigo de forma curta e informal. Qual palavra em inglês significa “oi”?"
   },
   {
     "theme": "Farewells",
     "word": "BYE",
-    "hint": "Forma curta e comum de dizer “tchau”."
+    "hint": "Você está saindo e quer dizer “tchau” de forma curta. Qual palavra em inglês pode usar?"
   },
   {
     "theme": "Farewells",
-    "word": "SEEU",
-    "hint": "Forma curta de “See you”, usada para dizer até logo."
-  },
-  {
-    "theme": "Farewells",
-    "word": "SEEYOU",
-    "hint": "Expressão que passa a ideia de “até logo”."
-  },
-  {
-    "theme": "Farewells",
-    "word": "LATER",
-    "hint": "Aparece em “See you later”, que significa “até mais tarde”."
-  },
-  {
-    "theme": "Farewells",
-    "word": "SOON",
-    "hint": "Aparece em “See you soon”, que significa “até breve”."
-  },
-  {
-    "theme": "Farewells",
-    "word": "NIGHT",
-    "hint": "Aparece em “Good night”, usado à noite ou antes de dormir."
-  },
-  {
-    "theme": "Farewells",
-    "word": "GOODNIGHT",
-    "hint": "Expressão usada à noite ou como despedida antes de dormir."
-  },
-  {
-    "theme": "Farewells",
-    "word": "TAKECARE",
-    "hint": "Expressão de despedida que significa “se cuide”."
-  },
-  {
-    "theme": "Farewells",
-    "word": "HAVEANICEDAY",
-    "hint": "Expressão usada para desejar um bom dia a alguém."
+    "word": "GOOD NIGHT",
+    "hint": "Você se despede à noite. Como dizemos “boa noite” em inglês nesse caso?"
   },
   {
     "theme": "Classroom Commands",
     "word": "LISTEN",
-    "hint": "Comando usado quando o professor quer que os alunos escutem com atenção."
+    "hint": "O professor coloca um áudio e pede para a turma escutar. Qual comando em inglês significa “escute”?"
   },
   {
     "theme": "Classroom Commands",
     "word": "REPEAT",
-    "hint": "Comando usado quando o aluno deve falar novamente uma palavra ou frase."
-  },
-  {
-    "theme": "Classroom Commands",
-    "word": "WRITE",
-    "hint": "Comando usado quando o aluno deve escrever no caderno."
+    "hint": "A professora fala uma palavra e pede para os alunos falarem de novo. Qual comando significa “repita”?"
   },
   {
     "theme": "Classroom Commands",
     "word": "READ",
-    "hint": "Comando usado quando o aluno deve ler uma palavra, frase ou texto."
+    "hint": "A atividade pede para olhar o texto e fazer a leitura. Qual comando em inglês significa “leia”?"
   },
   {
     "theme": "Classroom Commands",
-    "word": "OPEN",
-    "hint": "Comando usado quando o aluno deve abrir algo, como o livro."
+    "word": "WRITE",
+    "hint": "A professora pede para escrever a resposta no caderno. Qual comando em inglês significa “escreva”?"
   },
   {
     "theme": "Classroom Commands",
-    "word": "CLOSE",
-    "hint": "Comando usado quando o aluno deve fechar algo, como o livro."
+    "word": "SIT DOWN",
+    "hint": "A turma está em pé e a professora pede para todos sentarem. Qual comando em inglês ela pode usar?"
   },
   {
     "theme": "Classroom Commands",
-    "word": "LOOK",
-    "hint": "Aparece em “Look at the board”, quando o aluno deve olhar para algo."
+    "word": "STAND UP",
+    "hint": "A professora quer que os alunos fiquem de pé. Qual comando em inglês significa “levante-se”?"
   },
   {
     "theme": "Classroom Commands",
-    "word": "BOARD",
-    "hint": "Quadro da sala de aula. Aparece em “Look at the board”."
+    "word": "OPEN YOUR BOOK",
+    "hint": "Antes da atividade, a professora pede para abrir o livro. Qual comando em inglês representa isso?"
   },
   {
     "theme": "Classroom Commands",
-    "word": "SITDOWN",
-    "hint": "Comando usado quando o aluno deve sentar."
-  },
-  {
-    "theme": "Classroom Commands",
-    "word": "STANDUP",
-    "hint": "Comando usado quando o aluno deve levantar."
-  },
-  {
-    "theme": "Classroom Commands",
-    "word": "QUIET",
-    "hint": "Aparece em “Be quiet”, quando é preciso fazer silêncio."
-  },
-  {
-    "theme": "Classroom Commands",
-    "word": "ATTENTION",
-    "hint": "Aparece em “Pay attention”, quando é preciso prestar atenção."
-  },
-  {
-    "theme": "Classroom Commands",
-    "word": "PAYATTENTION",
-    "hint": "Comando usado para pedir foco durante a explicação."
-  },
-  {
-    "theme": "Classroom Commands",
-    "word": "BEQUIET",
-    "hint": "Comando usado para pedir silêncio."
-  },
-  {
-    "theme": "Classroom Commands",
-    "word": "COMEHERE",
-    "hint": "Comando usado para pedir que alguém venha até perto."
-  },
-  {
-    "theme": "Classroom Commands",
-    "word": "GOBACK",
-    "hint": "Comando usado para pedir que alguém volte."
-  },
-  {
-    "theme": "Classroom Commands",
-    "word": "RAISE",
-    "hint": "Aparece em “Raise your hand”, quando o aluno deve levantar a mão."
-  },
-  {
-    "theme": "Classroom Commands",
-    "word": "HAND",
-    "hint": "Parte do corpo que aparece em “Raise your hand”."
-  },
-  {
-    "theme": "Classroom Commands",
-    "word": "ASK",
-    "hint": "Verbo usado quando o aluno vai fazer uma pergunta."
-  },
-  {
-    "theme": "Classroom Commands",
-    "word": "ANSWER",
-    "hint": "Verbo usado quando o aluno vai responder."
-  },
-  {
-    "theme": "Classroom Commands",
-    "word": "MATCH",
-    "hint": "Comando usado em atividade de ligar/relacionar."
-  },
-  {
-    "theme": "Classroom Commands",
-    "word": "COMPLETE",
-    "hint": "Comando usado quando o aluno deve completar uma frase ou palavra."
-  },
-  {
-    "theme": "Classroom Commands",
-    "word": "CIRCLE",
-    "hint": "Comando usado quando o aluno deve circular uma resposta."
-  },
-  {
-    "theme": "Classroom Commands",
-    "word": "UNDERLINE",
-    "hint": "Comando usado quando o aluno deve sublinhar algo."
-  },
-  {
-    "theme": "Classroom Commands",
-    "word": "COPY",
-    "hint": "Comando usado quando o aluno deve copiar do quadro ou do livro."
-  },
-  {
-    "theme": "Classroom Commands",
-    "word": "CHECK",
-    "hint": "Comando usado para conferir uma resposta."
-  },
-  {
-    "theme": "Classroom Commands",
-    "word": "CHOOSE",
-    "hint": "Comando usado quando o aluno deve escolher uma alternativa."
-  },
-  {
-    "theme": "Classroom Commands",
-    "word": "DRAW",
-    "hint": "Comando usado quando o aluno deve desenhar."
-  },
-  {
-    "theme": "Classroom Commands",
-    "word": "COLOR",
-    "hint": "Comando usado quando o aluno deve colorir."
-  },
-  {
-    "theme": "Classroom Commands",
-    "word": "POINT",
-    "hint": "Comando usado quando o aluno deve apontar para algo."
+    "word": "CLOSE YOUR BOOK",
+    "hint": "A atividade terminou e a professora pede para fechar o livro. Qual comando em inglês representa isso?"
   },
   {
     "theme": "Classroom Expressions",
     "word": "PLEASE",
-    "hint": "Palavra usada para pedir algo com educação: “por favor”."
+    "hint": "Você quer fazer um pedido de forma educada. Qual palavra significa “por favor”?"
   },
   {
     "theme": "Classroom Expressions",
-    "word": "THANKYOU",
-    "hint": "Expressão usada para agradecer."
+    "word": "THANK YOU",
+    "hint": "Alguém ajudou você. Qual expressão em inglês usamos para agradecer?"
   },
   {
     "theme": "Classroom Expressions",
-    "word": "YOUREWELCOME",
-    "hint": "Resposta educada para “Thank you”."
-  },
-  {
-    "theme": "Classroom Expressions",
-    "word": "EXCUSEME",
-    "hint": "Expressão usada para pedir licença ou chamar atenção com educação."
+    "word": "EXCUSE ME",
+    "hint": "Você precisa pedir licença antes de falar ou passar. Qual expressão em inglês pode usar?"
   },
   {
     "theme": "Classroom Expressions",
     "word": "SORRY",
-    "hint": "Palavra usada para pedir desculpa."
+    "hint": "Você cometeu um erro e quer pedir desculpa. Qual palavra em inglês pode usar?"
   },
   {
     "theme": "Classroom Expressions",
-    "word": "BATHROOM",
-    "hint": "Lugar que aparece na pergunta “May I go to the bathroom?”."
+    "word": "HELP ME",
+    "hint": "Você não entendeu a atividade e quer pedir ajuda. Qual expressão em inglês significa “me ajude”?"
   },
   {
     "theme": "Classroom Expressions",
-    "word": "UNDERSTAND",
-    "hint": "Aparece em “I don’t understand”, quando o aluno não entendeu."
+    "word": "I DONT KNOW",
+    "hint": "A professora perguntou algo, mas você não sabe a resposta. Como dizer “eu não sei” em inglês?"
   },
   {
     "theme": "Classroom Expressions",
-    "word": "REPEATPLEASE",
-    "hint": "Expressão usada quando o aluno pede para o professor repetir."
+    "word": "I DONT UNDERSTAND",
+    "hint": "Você quer avisar que não entendeu a explicação. Como dizer isso em inglês?"
   },
   {
     "theme": "Classroom Expressions",
-    "word": "MAYIGO",
-    "hint": "Início de uma pergunta educada para pedir permissão."
-  },
-  {
-    "theme": "Classroom Expressions",
-    "word": "CANIGO",
-    "hint": "Início de uma pergunta para pedir para ir a algum lugar."
-  },
-  {
-    "theme": "Classroom Expressions",
-    "word": "IDONTKNOW",
-    "hint": "Expressão usada para dizer “eu não sei”."
-  },
-  {
-    "theme": "Classroom Expressions",
-    "word": "IDONTUNDERSTAND",
-    "hint": "Expressão usada quando o aluno não entendeu."
-  },
-  {
-    "theme": "Classroom Expressions",
-    "word": "HOWDOYOUSAY",
-    "hint": "Pergunta usada quando queremos saber como dizer algo em inglês."
-  },
-  {
-    "theme": "Classroom Expressions",
-    "word": "WHATISTHIS",
-    "hint": "Pergunta usada para saber o que é alguma coisa."
-  },
-  {
-    "theme": "Classroom Expressions",
-    "word": "CANHELP",
-    "hint": "Ideia de pedir ajuda: “Can you help me?”."
-  },
-  {
-    "theme": "Classroom Expressions",
-    "word": "HELPME",
-    "hint": "Expressão usada para pedir ajuda."
-  },
-  {
-    "theme": "Classroom Expressions",
-    "word": "ONEMORETIME",
-    "hint": "Expressão que significa “mais uma vez”."
-  },
-  {
-    "theme": "Classroom Expressions",
-    "word": "SPEAKSLOWLY",
-    "hint": "Pedido usado quando queremos que alguém fale mais devagar."
-  },
-  {
-    "theme": "Classroom Expressions",
-    "word": "WHATPAGE",
-    "hint": "Pergunta usada para saber a página do livro ou atividade."
-  },
-  {
-    "theme": "Classroom Expressions",
-    "word": "FINISHED",
-    "hint": "Palavra usada quando alguém terminou uma atividade."
-  },
-  {
-    "theme": "Classroom Expressions",
-    "word": "READY",
-    "hint": "Palavra usada quando o aluno está pronto."
-  },
-  {
-    "theme": "Classroom Expressions",
-    "word": "NOTYET",
-    "hint": "Expressão que significa “ainda não”."
-  },
-  {
-    "theme": "Classroom Expressions",
-    "word": "AGAIN",
-    "hint": "Palavra usada quando queremos repetir algo."
-  },
-  {
-    "theme": "Classroom Expressions",
-    "word": "SLOWLY",
-    "hint": "Palavra usada para pedir que alguém fale devagar."
-  },
-  {
-    "theme": "Classroom Expressions",
-    "word": "QUESTION",
-    "hint": "Palavra que significa pergunta."
-  },
-  {
-    "theme": "Classroom Expressions",
-    "word": "CORRECT",
-    "hint": "Palavra usada quando a resposta está certa."
-  },
-  {
-    "theme": "Classroom Expressions",
-    "word": "WRONG",
-    "hint": "Palavra usada quando a resposta está errada."
-  },
-  {
-    "theme": "Classroom Expressions",
-    "word": "TRYAGAIN",
-    "hint": "Expressão usada para incentivar alguém a tentar novamente."
-  },
-  {
-    "theme": "Classroom Expressions",
-    "word": "GOODJOB",
-    "hint": "Expressão usada para elogiar alguém por ter feito um bom trabalho."
+    "word": "MAY I GO OUT",
+    "hint": "Você precisa sair da sala por um momento. Qual pergunta educada em inglês pode fazer?"
   },
   {
     "theme": "School Vocabulary",
     "word": "SCHOOL",
-    "hint": "Lugar onde os alunos estudam."
+    "hint": "Lugar onde os alunos estudam. Qual é essa palavra em inglês?"
   },
   {
     "theme": "School Vocabulary",
     "word": "CLASSROOM",
-    "hint": "Sala onde acontecem as aulas."
-  },
-  {
-    "theme": "School Vocabulary",
-    "word": "TEACHER",
-    "hint": "Pessoa que ensina os alunos."
-  },
-  {
-    "theme": "School Vocabulary",
-    "word": "STUDENT",
-    "hint": "Pessoa que estuda na escola."
-  },
-  {
-    "theme": "School Vocabulary",
-    "word": "CLASSMATE",
-    "hint": "Colega de turma."
-  },
-  {
-    "theme": "School Vocabulary",
-    "word": "BOOK",
-    "hint": "Objeto que o aluno abre para ler e estudar."
-  },
-  {
-    "theme": "School Vocabulary",
-    "word": "NOTEBOOK",
-    "hint": "Caderno usado para escrever as atividades."
-  },
-  {
-    "theme": "School Vocabulary",
-    "word": "PENCIL",
-    "hint": "Objeto usado para escrever ou desenhar."
-  },
-  {
-    "theme": "School Vocabulary",
-    "word": "PEN",
-    "hint": "Objeto usado para escrever com tinta."
-  },
-  {
-    "theme": "School Vocabulary",
-    "word": "ERASER",
-    "hint": "Objeto usado para apagar o que foi escrito a lápis."
-  },
-  {
-    "theme": "School Vocabulary",
-    "word": "RULER",
-    "hint": "Objeto usado para medir ou fazer linhas retas."
-  },
-  {
-    "theme": "School Vocabulary",
-    "word": "BAG",
-    "hint": "Objeto usado para carregar material escolar."
-  },
-  {
-    "theme": "School Vocabulary",
-    "word": "BACKPACK",
-    "hint": "Mochila usada para carregar livros e materiais."
-  },
-  {
-    "theme": "School Vocabulary",
-    "word": "DESK",
-    "hint": "Mesa/carteira usada pelo aluno na sala."
-  },
-  {
-    "theme": "School Vocabulary",
-    "word": "CHAIR",
-    "hint": "Objeto onde o aluno senta."
-  },
-  {
-    "theme": "School Vocabulary",
-    "word": "DOOR",
-    "hint": "Parte da sala usada para entrar ou sair."
-  },
-  {
-    "theme": "School Vocabulary",
-    "word": "WINDOW",
-    "hint": "Parte da sala por onde entra luz e ar."
-  },
-  {
-    "theme": "School Vocabulary",
-    "word": "MAP",
-    "hint": "Objeto usado para mostrar países, cidades e lugares."
-  },
-  {
-    "theme": "School Vocabulary",
-    "word": "COMPUTER",
-    "hint": "Equipamento usado para estudar, pesquisar ou jogar."
-  },
-  {
-    "theme": "School Vocabulary",
-    "word": "PHONE",
-    "hint": "Aparelho usado para ligar, mandar mensagens e acessar aplicativos."
-  },
-  {
-    "theme": "School Vocabulary",
-    "word": "TABLET",
-    "hint": "Aparelho com tela usado para estudar ou jogar."
-  },
-  {
-    "theme": "School Vocabulary",
-    "word": "UNIFORM",
-    "hint": "Roupa usada pelos alunos da escola."
-  },
-  {
-    "theme": "School Vocabulary",
-    "word": "LIBRARY",
-    "hint": "Lugar da escola onde há livros para leitura."
-  },
-  {
-    "theme": "School Vocabulary",
-    "word": "GYM",
-    "hint": "Lugar usado para esportes e atividades físicas."
+    "hint": "Lugar da escola onde acontecem as aulas. Como dizemos “sala de aula” em inglês?"
   },
   {
     "theme": "School Vocabulary",
     "word": "CAFETERIA",
-    "hint": "Lugar onde os alunos podem comer ou lanchar."
+    "hint": "Lugar da escola onde os alunos podem comer ou lanchar. Qual é a palavra em inglês?"
+  },
+  {
+    "theme": "School Vocabulary",
+    "word": "BOOK",
+    "hint": "Objeto usado para ler e estudar. Como dizemos “livro” em inglês?"
+  },
+  {
+    "theme": "School Vocabulary",
+    "word": "PENCIL",
+    "hint": "Objeto usado para escrever ou desenhar. Como dizemos “lápis” em inglês?"
   },
   {
     "theme": "Personal Information",
     "word": "NAME",
-    "hint": "Informação pessoal usada em “What’s your name?”."
+    "hint": "Na pergunta “What is your name?”, qual palavra significa “nome”?"
   },
   {
     "theme": "Personal Information",
     "word": "AGE",
-    "hint": "Informação relacionada à idade de uma pessoa."
+    "hint": "Informação que indica quantos anos uma pessoa tem. Qual palavra em inglês significa “idade”?"
   },
   {
     "theme": "Personal Information",
-    "word": "OLD",
-    "hint": "Aparece em “How old are you?”, pergunta sobre idade."
-  },
-  {
-    "theme": "Personal Information",
-    "word": "FROM",
-    "hint": "Palavra usada para falar de origem: “I am from Santarém”."
-  },
-  {
-    "theme": "Personal Information",
-    "word": "FRIEND",
-    "hint": "Pessoa próxima de quem gostamos; em inglês, amigo ou amiga."
-  },
-  {
-    "theme": "Personal Information",
-    "word": "FAMILY",
-    "hint": "Grupo de pessoas da nossa casa ou parentes."
-  },
-  {
-    "theme": "Personal Information",
-    "word": "BROTHER",
-    "hint": "Palavra usada para irmão."
-  },
-  {
-    "theme": "Personal Information",
-    "word": "SISTER",
-    "hint": "Palavra usada para irmã."
-  },
-  {
-    "theme": "Personal Information",
-    "word": "MOTHER",
-    "hint": "Palavra usada para mãe."
-  },
-  {
-    "theme": "Personal Information",
-    "word": "FATHER",
-    "hint": "Palavra usada para pai."
+    "word": "BRAZIL",
+    "hint": "País onde moramos. Como escrevemos “Brasil” em inglês?"
   },
   {
     "theme": "Personal Pronouns",
     "word": "I",
-    "hint": "Pronome usado para falar de mim mesmo: “eu”."
+    "hint": "Pronome usado para falar “eu”. Qual é em inglês?"
   },
   {
     "theme": "Personal Pronouns",
     "word": "YOU",
-    "hint": "Pronome usado para falar com outra pessoa: “você”."
+    "hint": "Pronome usado para falar “você”. Qual é em inglês?"
   },
   {
     "theme": "Personal Pronouns",
     "word": "HE",
-    "hint": "Pronome usado para menino, homem ou personagem masculino."
+    "hint": "Pronome usado para falar de menino, homem ou personagem masculino. Qual é em inglês?"
   },
   {
     "theme": "Personal Pronouns",
     "word": "SHE",
-    "hint": "Pronome usado para menina, mulher ou personagem feminino."
+    "hint": "Pronome usado para falar de menina, mulher ou personagem feminina. Qual é em inglês?"
   },
   {
     "theme": "Personal Pronouns",
     "word": "IT",
-    "hint": "Pronome usado para animal, objeto ou coisa no singular."
+    "hint": "Pronome usado para animal, objeto, lugar ou coisa. Qual é em inglês?"
   },
   {
     "theme": "Personal Pronouns",
     "word": "WE",
-    "hint": "Pronome usado para “nós”."
+    "hint": "Pronome usado para falar “nós”. Qual é em inglês?"
   },
   {
     "theme": "Personal Pronouns",
     "word": "THEY",
-    "hint": "Pronome usado para “eles” ou “elas”."
+    "hint": "Pronome usado para falar “eles” ou “elas”. Qual é em inglês?"
   },
   {
     "theme": "Personal Pronouns",
-    "word": "ME",
-    "hint": "Pronome usado para se referir a mim como objeto: “me”."
-  },
-  {
-    "theme": "Personal Pronouns",
-    "word": "US",
-    "hint": "Pronome que pode significar “nós” como objeto."
-  },
-  {
-    "theme": "Personal Pronouns",
-    "word": "HIM",
-    "hint": "Pronome usado para se referir a ele como objeto."
-  },
-  {
-    "theme": "Personal Pronouns",
-    "word": "HER",
-    "hint": "Pode ser pronome objeto ou possessivo relacionado a ela."
-  },
-  {
-    "theme": "Personal Pronouns",
-    "word": "THEM",
-    "hint": "Pronome usado para se referir a eles/elas como objeto."
+    "word": "TEACHER",
+    "hint": "Pessoa que ensina os alunos. Como dizemos “professor/professora” em inglês?"
   },
   {
     "theme": "Possessive Adjectives",
     "word": "MY",
-    "hint": "Adjetivo possessivo usado para dizer “meu/minha”."
+    "hint": "Palavra usada para dizer “meu” ou “minha”. Exemplo: ___ name is Ana."
   },
   {
     "theme": "Possessive Adjectives",
     "word": "YOUR",
-    "hint": "Adjetivo possessivo usado para dizer “seu/sua” quando falo com você."
+    "hint": "Palavra usada para dizer “seu” ou “sua” quando estou falando com você. Exemplo: What is ___ name?"
   },
   {
     "theme": "Possessive Adjectives",
     "word": "HIS",
-    "hint": "Adjetivo possessivo usado para algo que pertence a ele."
+    "hint": "Palavra usada para dizer “dele”. Exemplo: Pedro is a student. ___ book is blue."
   },
   {
     "theme": "Possessive Adjectives",
-    "word": "ITS",
-    "hint": "Adjetivo possessivo usado para algo de um animal, objeto ou coisa."
+    "word": "HER",
+    "hint": "Palavra usada para dizer “dela”. Exemplo: Ana is a student. ___ pencil is red."
   },
   {
     "theme": "Possessive Adjectives",
     "word": "OUR",
-    "hint": "Adjetivo possessivo usado para algo que pertence a nós."
+    "hint": "Palavra usada para dizer “nosso” ou “nossa”. Exemplo: ___ school is beautiful."
   },
   {
     "theme": "Possessive Adjectives",
     "word": "THEIR",
-    "hint": "Adjetivo possessivo usado para algo que pertence a eles ou elas."
+    "hint": "Palavra usada para dizer “deles” ou “delas”. Exemplo: The students have books. ___ books are new."
   },
   {
     "theme": "Possessive Adjectives",
-    "word": "MINE",
-    "hint": "Pronome possessivo que significa “meu/minha” sem repetir o objeto."
+    "word": "ITS",
+    "hint": "Palavra usada para posse de animal, objeto ou coisa. Exemplo: The dog has a name. ___ name is Rex."
   },
   {
     "theme": "Possessive Adjectives",
-    "word": "YOURS",
-    "hint": "Pronome possessivo que significa “seu/sua” sem repetir o objeto."
-  },
-  {
-    "theme": "Possessive Adjectives",
-    "word": "OURS",
-    "hint": "Pronome possessivo que significa “nosso/nossa” sem repetir o objeto."
-  },
-  {
-    "theme": "Possessive Adjectives",
-    "word": "THEIRS",
-    "hint": "Pronome possessivo que significa “deles/delas” sem repetir o objeto."
-  },
-  {
-    "theme": "Possessive Adjectives",
-    "word": "MYBOOK",
-    "hint": "Expressão que significa “meu livro”."
-  },
-  {
-    "theme": "Possessive Adjectives",
-    "word": "YOURNAME",
-    "hint": "Expressão que significa “seu nome”."
-  },
-  {
-    "theme": "Possessive Adjectives",
-    "word": "HISBAG",
-    "hint": "Expressão que significa “a mochila dele”."
-  },
-  {
-    "theme": "Possessive Adjectives",
-    "word": "HERPEN",
-    "hint": "Expressão que significa “a caneta dela”."
-  },
-  {
-    "theme": "Possessive Adjectives",
-    "word": "OURCLASS",
-    "hint": "Expressão que significa “nossa turma”."
-  },
-  {
-    "theme": "Possessive Adjectives",
-    "word": "THEIRSCHOOL",
-    "hint": "Expressão que significa “a escola deles/delas”."
-  },
-  {
-    "theme": "Personal Pronouns",
-    "word": "SUBJECT",
-    "hint": "Palavra usada para falar do sujeito da frase."
-  },
-  {
-    "theme": "Verb To Be",
-    "word": "AM",
-    "hint": "Forma do verbo to be usada com I: “I am”."
-  },
-  {
-    "theme": "Verb To Be",
-    "word": "IS",
-    "hint": "Forma do verbo to be usada com he, she ou it."
-  },
-  {
-    "theme": "Verb To Be",
-    "word": "ARE",
-    "hint": "Forma do verbo to be usada com you, we ou they."
-  },
-  {
-    "theme": "Verb To Be",
-    "word": "NOT",
-    "hint": "Palavra usada para formar frases negativas: “is not”, “are not”."
-  },
-  {
-    "theme": "Verb To Be",
-    "word": "ISNOT",
-    "hint": "Forma negativa usada com he, she ou it."
-  },
-  {
-    "theme": "Verb To Be",
-    "word": "ARENOT",
-    "hint": "Forma negativa usada com you, we ou they."
-  },
-  {
-    "theme": "Verb To Be",
-    "word": "IAM",
-    "hint": "Forma afirmativa usada para dizer “eu sou” ou “eu estou”."
-  },
-  {
-    "theme": "Verb To Be",
-    "word": "YOUARE",
-    "hint": "Forma usada para dizer “você é/está” ou “vocês são/estão”."
-  },
-  {
-    "theme": "Verb To Be",
-    "word": "HEIS",
-    "hint": "Forma usada para dizer “ele é/está”."
-  },
-  {
-    "theme": "Verb To Be",
-    "word": "SHEIS",
-    "hint": "Forma usada para dizer “ela é/está”."
-  },
-  {
-    "theme": "Verb To Be",
-    "word": "ITIS",
-    "hint": "Forma usada para dizer “isso é/está”."
-  },
-  {
-    "theme": "Verb To Be",
-    "word": "WEARE",
-    "hint": "Forma usada para dizer “nós somos/estamos”."
-  },
-  {
-    "theme": "Verb To Be",
-    "word": "THEYARE",
-    "hint": "Forma usada para dizer “eles/elas são/estão”."
-  },
-  {
-    "theme": "Verb To Be",
-    "word": "AMNOT",
-    "hint": "Forma negativa usada com I: “I am not”."
-  },
-  {
-    "theme": "Simple Descriptions",
-    "word": "HAPPY",
-    "hint": "Adjetivo usado para dizer que alguém está feliz."
-  },
-  {
-    "theme": "Simple Descriptions",
-    "word": "SAD",
-    "hint": "Adjetivo usado para dizer que alguém está triste."
-  },
-  {
-    "theme": "Simple Descriptions",
-    "word": "TALL",
-    "hint": "Adjetivo usado para dizer que alguém é alto."
-  },
-  {
-    "theme": "Simple Descriptions",
-    "word": "SHORT",
-    "hint": "Adjetivo usado para dizer que alguém é baixo ou curto."
-  },
-  {
-    "theme": "Simple Descriptions",
-    "word": "YOUNG",
-    "hint": "Adjetivo usado para dizer que alguém é jovem."
-  },
-  {
-    "theme": "Simple Descriptions",
-    "word": "SMART",
-    "hint": "Adjetivo usado para dizer que alguém é inteligente."
-  },
-  {
-    "theme": "Simple Descriptions",
-    "word": "KIND",
-    "hint": "Adjetivo usado para dizer que alguém é gentil."
-  },
-  {
-    "theme": "Simple Descriptions",
-    "word": "FUNNY",
-    "hint": "Adjetivo usado para dizer que alguém é engraçado."
-  },
-  {
-    "theme": "Daily Life",
-    "word": "CITY",
-    "hint": "Palavra para cidade. Santarém is a city."
-  },
-  {
-    "theme": "Daily Life",
-    "word": "HOME",
-    "hint": "Lugar onde a pessoa mora: casa/lar."
-  },
-  {
-    "theme": "Daily Life",
-    "word": "PARK",
-    "hint": "Lugar aberto para passear ou brincar. Exemplo: Parque da Cidade."
-  },
-  {
-    "theme": "Daily Life",
-    "word": "MUSEUM",
-    "hint": "Lugar onde podemos ver história, cultura e objetos antigos."
-  },
-  {
-    "theme": "Daily Life",
-    "word": "RIVER",
-    "hint": "Rio. Santarém fica perto de grandes rios."
-  },
-  {
-    "theme": "Daily Life",
-    "word": "STREET",
-    "hint": "Rua por onde as pessoas caminham ou passam."
-  },
-  {
-    "theme": "Daily Life",
-    "word": "HOUSE",
-    "hint": "Casa onde uma pessoa mora."
-  },
-  {
-    "theme": "Daily Life",
-    "word": "MARKET",
-    "hint": "Lugar onde as pessoas compram alimentos e produtos."
-  },
-  {
-    "theme": "Daily Life",
-    "word": "CHURCH",
-    "hint": "Lugar de oração ou celebração religiosa."
-  },
-  {
-    "theme": "Daily Life",
-    "word": "BEACH",
-    "hint": "Lugar com areia e água, como praias de rio em Santarém."
+    "word": "MY NAME IS",
+    "hint": "Frase usada para se apresentar dizendo “meu nome é”. Como fica em inglês?"
   }
 ];
 const KEYBOARD = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
@@ -2126,6 +1596,12 @@ function playVictoryMusic(){
 function playMissionVictoryMusic(){
   stopFinalMusic();
   // Música curta e celebrativa da mini vitória entre missões.
+  tone(523, .16, "triangle", .075, 0.00);
+  tone(659, .16, "triangle", .075, 0.14);
+  tone(784, .18, "triangle", .075, 0.28);
+  tone(1046, .22, "triangle", .080, 0.46);
+  tone(1318, .28, "sine", .055, 0.72);
+
   const melody = [
     {f:523,d:.14},{f:659,d:.14},{f:784,d:.16},{f:1046,d:.20},
     {f:880,d:.14},{f:1046,d:.16},{f:1318,d:.24}
@@ -2250,16 +1726,16 @@ function updateStats(){
 
 function getMemoryTip(theme){
   const tips = {
-    "Greetings": "💡 💡 Dica de memória: pense em palavras usadas para cumprimentar alguém, como quando você chega à escola.",
-    "Farewells": "💡 💡 Dica de memória: pense em palavras usadas para se despedir no fim da aula ou ao sair de um lugar.",
-    "Spelling names": "💡 💡 Dica de memória: pense em letras, nome e na pergunta “How do you spell...?”.",
-    "Classroom commands": "💡 💡 Dica de memória: pense nos comandos que a professora usa em sala: ler, ouvir, repetir, sentar e abrir o livro.",
-    "Classroom expressions": "💡 💡 Dica de memória: pense nas frases úteis da sala: pedir ajuda, dizer que não sabe ou pedir para tentar.",
-    "Personal information": "💡 💡 Dica de memória: pense em nome, idade e cidade: informações pessoais básicas.",
-    "Personal pronouns": "💡 💡 Dica de memória: pense nos pronomes: I, you, he, she, we e they.",
-    "Possessive adjectives": "💡 💡 Dica de memória: pense em posse: meu/minha, seu/sua, dele e dela."
+    "Greetings": "💡 Dica: greeting é cumprimento. Use quando você chega ou encontra alguém.",
+    "Farewells": "💡 Dica: farewell é despedida. Use quando você vai embora.",
+    "Classroom Commands": "💡 Dica: commands são ordens/instruções da aula, como ler, ouvir, repetir e escrever.",
+    "Classroom Expressions": "💡 Dica: expressions são frases úteis para pedir ajuda, agradecer, pedir licença ou dizer que não entendeu.",
+    "School Vocabulary": "💡 Dica: pense em lugares e objetos da escola.",
+    "Personal Information": "💡 Dica: informações pessoais falam sobre nome, idade, país e cidade.",
+    "Personal Pronouns": "💡 Dica: pronomes substituem nomes: I, you, he, she, it, we, they.",
+    "Possessive Adjectives": "💡 Dica: possessivos mostram posse: my, your, his, her, our, their."
   };
-  return tips[theme] || "💡 💡 Dica de memória: pense nos assuntos estudados no 1º bimestre.";
+  return tips[theme] || "💡 Dica: pense no vocabulário estudado em sala.";
 }
 
 
@@ -2444,7 +1920,7 @@ function showMissionVictory(){
   document.body.classList.remove("playing");
   const msg = el("missionVictoryMsg");
   if(msg){
-    msg.innerHTML = `Congratulations! Você concluiu a <b>Missão ${missionNumber}/6</b> com sucesso. Prepare-se: a <b>Missão ${nextMission}/6</b> vem aí com novos desafios.`;
+    msg.innerHTML = `Congratulations! Você concluiu a <b>Missão ${missionNumber}/6</b>. Respire, comemore e clique para continuar. Agora vem a <b>Missão ${nextMission}/6</b>!`;
   }
   show("missionVictoryScreen");
   playMissionVictoryMusic();
