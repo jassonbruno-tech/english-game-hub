@@ -103,12 +103,12 @@ main{flex:1;min-height:0;padding:10px;overflow:hidden}
 .stat{background:linear-gradient(180deg,rgba(13,20,72,.96),rgba(13,10,50,.96));border:1.5px solid rgba(255,230,109,.25);border-radius:13px;padding:6px 3px;text-align:center}
 .stat b{display:block;font-size:18px;color:var(--gold);line-height:1}
 .stat span{font-size:8px;font-weight:900;color:#dbeafe;text-transform:uppercase}
-.lives-card{
-  flex:0 0 auto;text-align:center;padding:6px;margin-bottom:6px;border-radius:13px;
+.chance-bar{
+  flex:0 0 auto;text-align:center;padding:8px 10px;margin-bottom:6px;border-radius:13px;
   background:linear-gradient(90deg,rgba(255,230,109,.14),rgba(56,189,248,.10),rgba(225,29,72,.14));
   border:1.5px solid rgba(255,230,109,.34);font-weight:900;color:#fff3b0;
+  font-size:13px; line-height:1.25;
 }
-.heart{font-size:20px;color:#e11d48;margin:0 2px;line-height:1}.heart.lost{display:none}
 .game-grid{display:grid;grid-template-columns:.95fr 1.05fr;gap:10px;flex:1;min-height:0;overflow:hidden}
 .hang-area,.question-card{min-height:0;overflow:hidden}
 .hang-area{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:8px}
@@ -117,13 +117,13 @@ main{flex:1;min-height:0;padding:10px;overflow:hidden}
 .gallow{stroke:#bfdbfe;stroke-width:8;stroke-linecap:round}
 .body-part{opacity:0;transition:opacity .18s ease}.body-part.show{opacity:1}#scareBase{filter:drop-shadow(0 8px 10px rgba(0,0,0,.18))}
 .word{display:flex;flex-wrap:wrap;gap:5px 6px;justify-content:center;align-content:flex-start;align-items:center;min-height:62px;width:100%;padding:8px;border-radius:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,230,109,.20)}
-.letter-box{width:30px;height:38px;border-radius:9px;border:2px solid var(--gold);background:linear-gradient(180deg,#fffef3,#dbeafe);display:flex;align-items:center;justify-content:center;font-size:21px;font-weight:900;color:#0b4edb;flex:0 0 30px}
+.letter-box{width:34px;height:42px;border-radius:10px;border:2px solid var(--gold);background:linear-gradient(180deg,#fffef3,#dbeafe);display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:900;color:#0b4edb;flex:0 0 34px}
 .space-box{width:15px}
 .theme-chip{display:inline-block;background:linear-gradient(135deg,rgba(255,230,109,.22),rgba(255,183,3,.13));color:#fff3b0;border:1px solid rgba(255,230,109,.45);border-radius:999px;padding:6px 10px;font-weight:900;margin-bottom:7px;font-size:13px}
-.hint{font-size:17px;line-height:1.22;font-weight:900;margin:0 0 8px;color:#fff;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-left:5px solid var(--gold);padding:9px 10px;border-radius:14px}
+.hint{font-size:18px;line-height:1.24;font-weight:900;margin:0 0 8px;color:#fff;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-left:5px solid var(--gold);padding:10px 11px;border-radius:14px}
 .memory-tip{margin-top:7px;background:rgba(255,230,109,.13);border:1px solid rgba(255,230,109,.34);color:#fff7c2;border-radius:12px;padding:7px 8px;font-weight:900;font-size:12px;line-height:1.25}
-.keyboard{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:7px}
-.key{border:2px solid rgba(96,165,250,.32);background:linear-gradient(180deg,#ffffff,#eaf2ff);border-radius:10px;padding:8px 0;font-weight:1000;font-size:16px;cursor:pointer;color:#172033;box-shadow:0 3px 8px rgba(0,0,0,.14)}
+.keyboard{display:grid;grid-template-columns:repeat(7,1fr);gap:7px;margin-top:8px}
+.key{border:2px solid rgba(96,165,250,.32);background:linear-gradient(180deg,#ffffff,#eaf2ff);border-radius:11px;padding:9px 0;font-weight:1000;font-size:18px;cursor:pointer;color:#172033;box-shadow:0 3px 8px rgba(0,0,0,.14)}
 .key.correct{background:#dcfce7;border-color:#22c55e;color:#14532d}.key.wrong{background:#fee2e2;border-color:#ef4444;color:#7f1d1d}.key:disabled{opacity:.75;cursor:not-allowed}
 .word-submit{display:grid;grid-template-columns:1fr auto;gap:6px;margin-top:7px}
 .word-submit input{border:2px solid #bfdbfe;border-radius:11px;padding:9px;font-weight:900;font-size:14px;outline:none}
@@ -156,22 +156,22 @@ main{flex:1;min-height:0;padding:10px;overflow:hidden}
   header{padding:5px 7px}.topbar{margin-bottom:2px}.back,.pill{font-size:9px;padding:4px 7px}
   h1{font-size:22px}.subtitle{display:none}main{padding:5px}
   .stats{gap:4px;margin-bottom:4px}.stat{padding:4px 2px;border-radius:10px}.stat b{font-size:14px}.stat span{font-size:7px}
-  .lives-card{font-size:10px;padding:4px;margin-bottom:4px;border-radius:10px}.heart{font-size:17px}
+  .chance-bar{font-size:10px;padding:5px 6px;margin-bottom:4px;border-radius:10px}
   .game-grid{grid-template-columns:1fr;grid-template-rows:auto 1fr;gap:5px}
   .card{padding:6px;border-radius:13px}.hang-area{min-height:226px;gap:6px}
   #hangSvg{width:138px}.word{gap:4px;min-height:54px;padding:7px}
-  .letter-box{width:25px;height:32px;border-radius:8px;font-size:17px;flex:0 0 25px}.space-box{width:10px}
-  .theme-chip{font-size:11px;padding:5px 8px;margin-bottom:5px}.hint{font-size:14px;line-height:1.18;padding:7px 8px;margin-bottom:5px}
+  .letter-box{width:28px;height:34px;border-radius:8px;font-size:19px;flex:0 0 28px}.space-box{width:10px}
+  .theme-chip{font-size:11px;padding:5px 8px;margin-bottom:5px}.hint{font-size:15px;line-height:1.2;padding:8px 9px;margin-bottom:5px}
   .memory-tip{font-size:10.5px;padding:5px 6px;margin-top:5px}
-  .keyboard{gap:4px;margin-top:5px}.key{font-size:14px;padding:6px 0;border-radius:8px;border-width:1.5px}
+  .keyboard{gap:4px;margin-top:5px}.key{font-size:16px;padding:7px 0;border-radius:9px;border-width:1.5px}
   .word-submit{gap:4px;margin-top:5px}.word-submit input{font-size:12px;padding:7px;border-radius:9px}.word-submit .btn{font-size:10px;padding:7px 8px;border-radius:9px}
   .feedback{font-size:11px;padding:5px;margin-top:5px}.brand{font-size:9px;margin-top:5px}
   .start-card{padding:12px}.start-card h2{font-size:26px}.start-highlight{font-size:12px}.level-badge{font-size:12px}
   .big-title{font-size:28px}.win-emoji{font-size:45px}.win-text{font-size:13px}
 }
 @media(max-width:380px){
-  #hangSvg{width:122px}.hang-area{min-height:206px}.letter-box{width:23px;height:30px;font-size:16px;flex-basis:23px}
-  .key{font-size:13px;padding:5px 0}.hint{font-size:13px}.memory-tip{font-size:10px}
+  #hangSvg{width:124px}.hang-area{min-height:206px}.letter-box{width:25px;height:31px;font-size:17px;flex-basis:25px}
+  .key{font-size:14px;padding:6px 0}.hint{font-size:14px}.memory-tip{font-size:10px}
 }
 </style>
 </head>
@@ -220,38 +220,56 @@ main{flex:1;min-height:0;padding:10px;overflow:hidden}
       <div class="stat"><b id="corrects">0</b><span>Acertos</span></div>
       <div class="stat"><b id="combo">0</b><span>Sequência</span></div>
     </div>
-    <div class="lives-card">
-      <b>Chances</b>
-      <span id="hearts"></span>
-    </div>
+    <div class="chance-bar" id="chanceInfo">Você tem 5 chances. Cada erro monta uma parte do espantalho.</div>
     <div class="game-grid">
       <div class="card hang-area">
         <div class="hangman-box">
-          <svg id="hangSvg" viewBox="0 0 280 230" aria-label="Scarecrow hangman drawing">
-            <line class="gallow" x1="30" y1="210" x2="245" y2="210"/>
-            <line class="gallow" x1="68" y1="210" x2="68" y2="28"/>
-            <line class="gallow" x1="68" y1="28" x2="180" y2="28"/>
-            <line class="gallow" x1="180" y1="28" x2="180" y2="52"/>
+          <svg id="hangSvg" viewBox="0 0 300 240" aria-label="Espantalho cartoon">
+            <defs>
+              <filter id="softGlow" x="-30%" y="-30%" width="160%" height="160%">
+                <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="rgba(0,0,0,.28)"/>
+              </filter>
+            </defs>
+            <line class="gallow" x1="30" y1="220" x2="250" y2="220"/>
+            <line class="gallow" x1="72" y1="220" x2="72" y2="28"/>
+            <line class="gallow" x1="72" y1="28" x2="196" y2="28"/>
+            <line class="gallow" x1="196" y1="28" x2="196" y2="52"/>
 
-            <g id="scareBase">
-              <circle cx="180" cy="74" r="21" fill="#ffe66d" stroke="#fff7c2" stroke-width="4"/>
-              <path d="M155 58 L180 34 L205 58 Z" fill="#8b5a2b" stroke="#fff7c2" stroke-width="3"/>
-              <rect x="150" y="55" width="60" height="8" rx="4" fill="#6b3f1d"/>
-              <circle cx="172" cy="72" r="2.5" fill="#172033"/>
-              <circle cx="188" cy="72" r="2.5" fill="#172033"/>
-              <path d="M171 83 Q180 90 190 83" stroke="#172033" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <g id="part0" class="body-part" filter="url(#softGlow)">
+              <circle cx="196" cy="83" r="24" fill="#ffd966" stroke="#fff7c2" stroke-width="4"/>
+              <path d="M166 67 L196 42 L226 67 Z" fill="#8b5a2b" stroke="#fef3c7" stroke-width="3"/>
+              <rect x="160" y="63" width="72" height="9" rx="4.5" fill="#6f431f"/>
+              <circle cx="186" cy="82" r="3" fill="#172033"/>
+              <circle cx="206" cy="82" r="3" fill="#172033"/>
+              <path d="M186 93 Q196 101 206 93" stroke="#172033" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+              <path d="M173 72 Q196 83 219 72" stroke="#f59e0b" stroke-width="3" fill="none" opacity=".8"/>
             </g>
 
-            <line id="part0" class="body-part" x1="180" y1="97" x2="180" y2="154" stroke="#f97316" stroke-width="18" stroke-linecap="round"/>
-            <line id="part1" class="body-part" x1="180" y1="110" x2="132" y2="132" stroke="#facc15" stroke-width="10" stroke-linecap="round"/>
-            <line id="part2" class="body-part" x1="180" y1="110" x2="228" y2="132" stroke="#facc15" stroke-width="10" stroke-linecap="round"/>
-            <line id="part3" class="body-part" x1="180" y1="154" x2="150" y2="190" stroke="#22c55e" stroke-width="11" stroke-linecap="round"/>
-            <line id="part4" class="body-part" x1="180" y1="154" x2="210" y2="190" stroke="#22c55e" stroke-width="11" stroke-linecap="round"/>
-            <g id="part5" class="body-part">
-              <path d="M132 132 l-18 5 m18 -5 l-14 -12 m110 12 l18 5 m-18 -5 l14 -12" stroke="#fde68a" stroke-width="5" stroke-linecap="round"/>
-              <path d="M151 190 l-12 12 m12 -12 l-1 17 m60 -17 l12 12 m-12 -12 l1 17" stroke="#fde68a" stroke-width="5" stroke-linecap="round"/>
-              <rect x="161" y="101" width="38" height="58" rx="8" fill="rgba(255,255,255,.12)" stroke="#fff7c2" stroke-width="2"/>
-              <path d="M162 127 h36" stroke="#fff7c2" stroke-width="2" opacity=".8"/>
+            <g id="part1" class="body-part" filter="url(#softGlow)">
+              <rect x="170" y="108" width="52" height="68" rx="12" fill="#f97316" stroke="#fff7c2" stroke-width="3"/>
+              <path d="M171 122 H221" stroke="#fb923c" stroke-width="4"/>
+              <path d="M171 140 H221" stroke="#fdba74" stroke-width="4"/>
+              <path d="M171 158 H221" stroke="#fb923c" stroke-width="4"/>
+              <rect x="189" y="111" width="14" height="14" rx="4" fill="#84cc16" stroke="#fef9c3" stroke-width="2"/>
+              <path d="M170 108 L196 98 L222 108" fill="#22c55e" stroke="#fef9c3" stroke-width="3"/>
+              <path d="M182 176 l-8 10 M210 176 l8 10" stroke="#fef3c7" stroke-width="5" stroke-linecap="round"/>
+            </g>
+
+            <g id="part2" class="body-part" filter="url(#softGlow)">
+              <line x1="150" y1="128" x2="242" y2="128" stroke="#facc15" stroke-width="10" stroke-linecap="round"/>
+              <path d="M150 128 l-16 -10 M150 128 l-18 8" stroke="#fef3c7" stroke-width="5" stroke-linecap="round"/>
+              <path d="M242 128 l16 -10 M242 128 l18 8" stroke="#fef3c7" stroke-width="5" stroke-linecap="round"/>
+              <circle cx="196" cy="128" r="7" fill="#84cc16" stroke="#fef3c7" stroke-width="2"/>
+            </g>
+
+            <g id="part3" class="body-part" filter="url(#softGlow)">
+              <line x1="184" y1="176" x2="162" y2="208" stroke="#22c55e" stroke-width="11" stroke-linecap="round"/>
+              <path d="M162 208 l-10 10 M162 208 l1 15" stroke="#fef3c7" stroke-width="5" stroke-linecap="round"/>
+            </g>
+
+            <g id="part4" class="body-part" filter="url(#softGlow)">
+              <line x1="208" y1="176" x2="230" y2="208" stroke="#22c55e" stroke-width="11" stroke-linecap="round"/>
+              <path d="M230 208 l10 10 M230 208 l-1 15" stroke="#fef3c7" stroke-width="5" stroke-linecap="round"/>
             </g>
           </svg>
         </div>
@@ -315,7 +333,7 @@ main{flex:1;min-height:0;padding:10px;overflow:hidden}
 <script>
 const TOTAL_MISSIONS = 10;
 const CHALLENGES_PER_MISSION = 5;
-const MAX_ERRORS = 6;
+const MAX_ERRORS = 5;
 
 const challenges = [
   {theme:"Mission 1 • Greetings", word:"HELLO", hint:"Você encontra um colega no começo da aula. Qual cumprimento em inglês pode ser usado para dizer “Olá”?", tip:"Dica: greeting é uma saudação usada quando encontramos alguém."},
@@ -416,7 +434,7 @@ function loadChallenge(){
   $("hint").textContent = c.hint;
   $("tip").textContent = c.tip;
   updateStats();
-  renderHearts();
+  updateChanceInfo();
   renderHangman();
   renderWord();
   renderKeyboard();
@@ -428,11 +446,10 @@ function updateStats(){
   $("corrects").textContent = state.correct;
   $("combo").textContent = state.combo;
 }
-function renderHearts(){
-  let html = "";
-  for(let i=0;i<MAX_ERRORS;i++){
-    html += `<span class="heart ${i<state.errors?'lost':''}">❤</span>`;
-  }
+function updateChanceInfo(){
+  const restam = MAX_ERRORS - state.errors;
+  $("chanceInfo").textContent = `Você tem ${restam} chance${restam === 1 ? "" : "s"} restante${restam === 1 ? "" : "s"}. O game over acontece quando a última perna aparece.`;
+}
   $("hearts").innerHTML = html;
 }
 function renderHangman(){
@@ -477,7 +494,7 @@ function guessLetter(l){
     playWrongSound();
     setFeedback("bad","Tente novamente! Essa letra não aparece na palavra.");
   }
-  renderHearts(); renderHangman(); renderWord(); renderKeyboard(); updateStats();
+  updateChanceInfo(); renderHangman(); renderWord(); renderKeyboard(); updateStats();
   if(isWordComplete()) completeChallenge(true);
   else if(state.errors >= MAX_ERRORS) failChallenge();
 }
@@ -494,7 +511,7 @@ function guessFullWord(){
     state.combo = 0;
     playWrongSound();
     setFeedback("bad","Ainda não foi dessa vez. Observe a dica e tente pelas letras.");
-    renderHearts(); renderHangman(); updateStats();
+    updateChanceInfo(); renderHangman(); updateStats();
     if(state.errors >= MAX_ERRORS) failChallenge();
   }
 }
@@ -593,38 +610,11 @@ function escapeHtml(s){
   return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 }
 
-/* Áudios interativos do espantalho.
-   Estes são os arquivos .m4a que já estão no GitHub, no mesmo local do jogo. */
+/* Áudios do espantalho apenas durante o jogo. */
 const AUDIO_BANK = {
-  correct: [
-    "Nice.m4a",
-    "Very good.m4a",
-    "Yeah.m4a"
-  ],
-  wrong: [
-    "Oh no.m4a",
-    "Oh oh.m4a"
-  ],
-  tryAgain: [
-    "Help me please.m4a",
-    "Do it better please.m4a",
-    "Oh no.m4a"
-  ],
-  missionVictory: [
-    "You are the one.m4a",
-    "Very good.m4a",
-    "Yeah.m4a"
-  ],
-  finalVictory: [
-    "You are the one.m4a",
-    "Very good.m4a",
-    "Yeah.m4a"
-  ],
-  gameOver: [
-    "Oh no.m4a",
-    "Oh oh.m4a",
-    "Do it better please.m4a"
-  ]
+  correct: ["Nice.m4a","Very good.m4a","Yeah.m4a"],
+  wrong: ["Oh no.m4a","Oh oh.m4a"],
+  tryAgain: ["Help me please.m4a","Do it better please.m4a","Oh no.m4a"]
 };
 
 function pickAudio(kind){
@@ -632,29 +622,29 @@ function pickAudio(kind){
   if(!list.length) return null;
   return list[Math.floor(Math.random() * list.length)];
 }
-
-async function playRepoAudio(kind, fallback){
+async function playRepoAudio(kind){
   try{
     const src = pickAudio(kind);
-    if(src){
-      const audio = new Audio(src);
-      audio.currentTime = 0;
-      audio.volume = .95;
-      await audio.play();
-      return;
-    }
-  }catch(e){}
-  if(typeof fallback === "function") fallback();
+    if(!src) return false;
+    const audio = new Audio(src);
+    audio.currentTime = 0;
+    audio.volume = .95;
+    await audio.play();
+    return true;
+  }catch(e){
+    return false;
+  }
 }
 
-/* Fallback: só toca se o navegador não conseguir carregar algum .m4a. */
+/* Reservas simples apenas se o navegador bloquear ou não carregar o arquivo. */
 function beep(freq=440,dur=.12,type="sine",gain=.06,delay=0){
   try{
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     const ctx = new AudioContext();
     const osc = ctx.createOscillator();
     const g = ctx.createGain();
-    osc.type = type; osc.frequency.setValueAtTime(freq, ctx.currentTime + delay);
+    osc.type = type;
+    osc.frequency.setValueAtTime(freq, ctx.currentTime + delay);
     g.gain.setValueAtTime(0.0001, ctx.currentTime + delay);
     g.gain.exponentialRampToValueAtTime(gain, ctx.currentTime + delay + .02);
     g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + delay + dur);
@@ -665,16 +655,55 @@ function beep(freq=440,dur=.12,type="sine",gain=.06,delay=0){
 function fallbackCorrect(){ beep(659,.10,"triangle",.05); beep(880,.10,"triangle",.04,.10); }
 function fallbackWrong(){ beep(180,.16,"sawtooth",.035); beep(130,.20,"sawtooth",.03,.12); }
 function fallbackTryAgain(){ beep(392,.12,"triangle",.045); beep(330,.12,"triangle",.04,.12); beep(262,.18,"triangle",.035,.25); }
-function fallbackMissionVictory(){ [523,659,784,1046,784,1046,1318].forEach((f,i)=>beep(f,.14,"triangle",.05,i*.13)); }
-function fallbackFinalVictory(){ [523,659,784,1046,1318,1046,1318,1568].forEach((f,i)=>beep(f,.15,"triangle",.055,i*.14)); }
 
-function playCorrectSound(){ playRepoAudio("correct", fallbackCorrect); }
-function playWrongSound(){ playRepoAudio("wrong", fallbackWrong); }
-function playWinSound(){ playRepoAudio("correct", fallbackCorrect); }
-function playTryAgainSound(){ playRepoAudio("tryAgain", fallbackTryAgain); }
-function playMissionVictorySound(){ playRepoAudio("missionVictory", fallbackMissionVictory); }
-function playFinalVictorySound(){ playRepoAudio("finalVictory", fallbackFinalVictory); }
-function playGameOverSound(){ playRepoAudio("gameOver", fallbackTryAgain); }
+/* Música alegre para a tela de vitória */
+function playVictoryMusic(){
+  const melody = [
+    {f:523, t:0.00, d:0.14}, {f:659, t:0.16, d:0.14}, {f:784, t:0.32, d:0.18},
+    {f:1046,t:0.54, d:0.20}, {f:988, t:0.78, d:0.16}, {f:1174,t:0.96, d:0.18},
+    {f:1318,t:1.18, d:0.24}, {f:1568,t:1.48, d:0.34}
+  ];
+  playMelody(melody, "triangle", .05);
+}
+
+/* Música motivadora/encorajadora para a tela de game over */
+function playGameOverMusic(){
+  const melody = [
+    {f:392, t:0.00, d:0.18}, {f:440, t:0.22, d:0.18}, {f:523, t:0.46, d:0.20},
+    {f:494, t:0.72, d:0.18}, {f:523, t:0.94, d:0.18}, {f:659, t:1.18, d:0.22},
+    {f:784, t:1.46, d:0.28}
+  ];
+  playMelody(melody, "sine", .045);
+}
+
+function playMelody(notes, type="triangle", gainValue=.05){
+  try{
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    const ctx = new AudioContext();
+    const now = ctx.currentTime + 0.02;
+    notes.forEach(note => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = type;
+      osc.frequency.setValueAtTime(note.f, now + note.t);
+      gain.gain.setValueAtTime(0.0001, now + note.t);
+      gain.gain.exponentialRampToValueAtTime(gainValue, now + note.t + 0.03);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + note.t + note.d);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now + note.t);
+      osc.stop(now + note.t + note.d + 0.03);
+    });
+  }catch(e){}
+}
+
+async function playCorrectSound(){ if(!(await playRepoAudio("correct"))) fallbackCorrect(); }
+async function playWrongSound(){ if(!(await playRepoAudio("wrong"))) fallbackWrong(); }
+async function playWinSound(){ if(!(await playRepoAudio("correct"))) fallbackCorrect(); }
+async function playTryAgainSound(){ if(!(await playRepoAudio("tryAgain"))) fallbackTryAgain(); }
+function playMissionVictorySound(){ playVictoryMusic(); }
+function playFinalVictorySound(){ playVictoryMusic(); }
+function playGameOverSound(){ playGameOverMusic(); }
 
 </script>
 </body>
