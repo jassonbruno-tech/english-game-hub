@@ -187,6 +187,202 @@ main{flex:1;min-height:0;padding:10px;overflow:hidden}
   }
 }
 
+
+/* --- Modo Show do Milhão: suspense, tempo, ajudas e alternativas A-E --- */
+.question-card{
+  gap:5px !important;
+}
+.timer-wrap{
+  width:100%;
+  height:12px;
+  border-radius:999px;
+  overflow:hidden;
+  background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,230,109,.28);
+  box-shadow:inset 0 2px 8px rgba(0,0,0,.28);
+}
+.timer-bar{
+  width:100%;
+  height:100%;
+  background:linear-gradient(90deg,#22c55e,#ffe66d,#ef4444);
+  transform-origin:left center;
+  transition:width .15s linear;
+}
+.timer-text{
+  text-align:center;
+  font-weight:1000;
+  color:#fff7c2;
+  font-size:13px;
+  margin-top:-1px;
+}
+.options{
+  gap:7px !important;
+}
+.option{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  transform:translateX(26px);
+  opacity:0;
+  animation:slideOption .32s ease forwards;
+}
+.option-letter{
+  flex:0 0 31px;
+  width:31px;
+  height:31px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:1000;
+  background:linear-gradient(135deg,#1d4ed8,#7c3aed);
+  color:#fff;
+  box-shadow:0 4px 10px rgba(0,0,0,.18);
+}
+.option-text{
+  flex:1;
+}
+.option.hide-option{
+  opacity:.18 !important;
+  pointer-events:none !important;
+  filter:grayscale(1);
+  text-decoration:line-through;
+}
+.option.correct{
+  animation:correctGlow .85s ease infinite alternate !important;
+}
+.option.wrong{
+  animation:wrongShake .25s ease 2 !important;
+}
+@keyframes slideOption{
+  from{opacity:0;transform:translateX(26px)}
+  to{opacity:1;transform:translateX(0)}
+}
+@keyframes correctGlow{
+  from{box-shadow:0 0 10px rgba(34,197,94,.25);filter:brightness(1)}
+  to{box-shadow:0 0 26px rgba(34,197,94,.95),0 0 40px rgba(34,197,94,.35);filter:brightness(1.12)}
+}
+@keyframes wrongShake{
+  0%,100%{transform:translateX(0)}
+  25%{transform:translateX(-4px)}
+  75%{transform:translateX(4px)}
+}
+.lifelines{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:7px;
+  margin-top:3px;
+}
+.help-btn{
+  border:1px solid rgba(255,230,109,.36);
+  border-radius:14px;
+  padding:9px 8px;
+  background:linear-gradient(135deg,rgba(255,230,109,.18),rgba(37,99,235,.18),rgba(225,29,72,.12));
+  color:#fff7c2;
+  font-weight:1000;
+  cursor:pointer;
+  box-shadow:0 6px 14px rgba(0,0,0,.18);
+}
+.help-btn:disabled{
+  opacity:.45;
+  cursor:not-allowed;
+  filter:grayscale(.5);
+}
+.modal{
+  position:fixed;
+  inset:0;
+  z-index:40;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  background:rgba(2,6,23,.74);
+  backdrop-filter:blur(4px);
+  padding:15px;
+}
+.modal.active{display:flex}
+.modal-card{
+  width:min(100%,560px);
+  background:linear-gradient(180deg,rgba(15,20,70,.98),rgba(9,13,50,.98));
+  border:1.5px solid rgba(255,230,109,.4);
+  border-radius:22px;
+  padding:16px;
+  box-shadow:0 24px 60px rgba(0,0,0,.48),0 0 36px rgba(255,230,109,.12);
+  text-align:center;
+}
+.modal-card h2{
+  margin:0 0 8px;
+  color:#ffe66d;
+  font-size:28px;
+}
+.cards-row{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin:12px 0;
+}
+.magic-card{
+  min-height:112px;
+  border-radius:18px;
+  border:2px solid rgba(255,230,109,.5);
+  background:linear-gradient(135deg,#1d4ed8,#7c3aed 52%,#e11d48);
+  color:#fff;
+  font-weight:1000;
+  font-size:28px;
+  cursor:pointer;
+  box-shadow:0 12px 24px rgba(0,0,0,.28);
+}
+.magic-card.revealed{
+  background:linear-gradient(135deg,#fff7ed,#dbeafe);
+  color:#172033;
+}
+.audience-list{
+  display:grid;
+  gap:7px;
+  margin:10px 0;
+}
+.audience-row{
+  display:grid;
+  grid-template-columns:38px 1fr 48px;
+  gap:7px;
+  align-items:center;
+  color:#fff;
+  font-weight:900;
+}
+.audience-bar-bg{
+  height:22px;
+  border-radius:999px;
+  background:rgba(255,255,255,.12);
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.14);
+}
+.audience-bar{
+  height:100%;
+  border-radius:999px;
+  background:linear-gradient(90deg,#2563eb,#ffe66d);
+}
+.show-message{
+  font-weight:900;
+  color:#eaf2ff;
+  line-height:1.35;
+}
+@media(max-width:860px){
+  .timer-wrap{height:10px}
+  .timer-text{font-size:11px}
+  .lifelines{gap:5px}
+  .help-btn{font-size:10.5px;padding:7px 5px;border-radius:10px}
+  .option-letter{width:26px;height:26px;flex-basis:26px;font-size:12px}
+  .option{gap:6px}
+  .modal-card{padding:13px;border-radius:18px}
+  .modal-card h2{font-size:23px}
+  .magic-card{min-height:90px;font-size:23px}
+}
+@media(max-height:680px) and (max-width:860px){
+  body.playing .lifelines{gap:4px}
+  body.playing .help-btn{font-size:9.5px;padding:5px 4px}
+  body.playing .timer-wrap{height:8px}
+  body.playing .timer-text{font-size:10px}
+}
+
 </style>
 </head>
 <body>
@@ -196,8 +392,8 @@ main{flex:1;min-height:0;padding:10px;overflow:hidden}
     <a class="back" href="6ano.html">← 6º ano</a>
     <span class="pill">Alinhado à BNCC</span>
   </div>
-  <h1>Smart Choice</h1>
-  <p class="subtitle">Escolha a melhor resposta e avance pelas missões do Inglês do 6º ano.</p>
+  <h1>Smart Choice Show</h1>
+  <p class="subtitle">Quiz show com suspense, tempo, ajudas e missões do Inglês do 6º ano.</p>
 </header>
 <main>
 <section id="startScreen" class="screen active">
@@ -247,7 +443,16 @@ main{flex:1;min-height:0;padding:10px;overflow:hidden}
     <div id="theme" class="theme-chip">Tema</div>
     <div class="visual" id="visual">🎮</div>
     <div id="prompt" class="prompt">Pergunta</div>
+    <div>
+      <div class="timer-wrap"><div id="timerBar" class="timer-bar"></div></div>
+      <div id="timerText" class="timer-text">Tempo: 10s</div>
+    </div>
     <div id="options" class="options"></div>
+    <div class="lifelines">
+      <button id="cardsHelpBtn" class="help-btn" onclick="openCardsHelp()">🃏 Cartas</button>
+      <button id="audienceHelpBtn" class="help-btn" onclick="openAudienceHelp()">👥 Plateia</button>
+      <button id="skipHelpBtn" class="help-btn" onclick="skipQuestion()">⏭️ Pular: 3</button>
+    </div>
     <div id="feedback" class="feedback"></div>
   </div>
 </section>
@@ -281,6 +486,29 @@ main{flex:1;min-height:0;padding:10px;overflow:hidden}
     <div class="brand">Jogo idealizado pelo professor Jasson Bruno.</div>
   </div>
 </section>
+
+<section id="cardsModal" class="modal">
+  <div class="modal-card">
+    <h2>🃏 Ajuda das Cartas</h2>
+    <p class="show-message">Escolha uma carta. Ela vai revelar quantas opções erradas serão eliminadas.</p>
+    <div class="cards-row">
+      <button class="magic-card" onclick="revealCard(this,1)">?</button>
+      <button class="magic-card" onclick="revealCard(this,2)">?</button>
+      <button class="magic-card" onclick="revealCard(this,3)">?</button>
+    </div>
+    <p id="cardsResult" class="show-message"></p>
+  </div>
+</section>
+
+<section id="audienceModal" class="modal">
+  <div class="modal-card">
+    <h2>👥 Ajuda da Plateia</h2>
+    <p class="show-message">A plateia votou. Observe as porcentagens e escolha com atenção.</p>
+    <div id="audienceList" class="audience-list"></div>
+    <button class="btn secondary" onclick="closeAudienceHelp()">Voltar para a pergunta</button>
+  </div>
+</section>
+
 </main>
 </div>
 
@@ -290,6 +518,7 @@ const CARDS = [{"theme": "Greetings", "visual": "👋", "prompt": "Você chegou 
 const TOTAL_MISSIONS = 5;
 const ROUNDS_PER_MISSION = 10;
 const TOTAL_ROUNDS = 50;
+const OPTION_LETTERS = ["A","B","C","D","E"];
 let state = {};
 
 function el(id){return document.getElementById(id)}
@@ -312,15 +541,17 @@ function buildDeck(){
 }
 function startGame(){
   stopMusic();
-  state={round:1,score:0,corrects:0,combo:0,maxCombo:0,deck:buildDeck(),answered:false,completed:false};
+  state={round:1,score:0,corrects:0,combo:0,maxCombo:0,deck:buildDeck(),answered:false,completed:false,cardsHelp:1,audienceHelp:1,skips:3,timer:null,timeLeft:10,currentOptions:[],eliminated:[]};
   show("gameScreen");
   loadQuestion();
 }
 function currentMission(){return Math.ceil(state.round/ROUNDS_PER_MISSION)}
 function roundInMission(){return ((state.round-1)%ROUNDS_PER_MISSION)+1}
 function loadQuestion(){
+  stopTimer();
   stopMusic();
   state.answered=false;
+  state.eliminated=[];
   const q=state.deck[state.round-1];
   state.current=q;
   const m=currentMission(), r=roundInMission();
@@ -337,30 +568,38 @@ function loadQuestion(){
   el("prompt").textContent = q.prompt;
   el("feedback").className = "feedback";
   el("feedback").innerHTML = "";
+  updateHelpButtons();
   const box=el("options");
   box.innerHTML="";
-  shuffle(q.options).forEach(opt=>{
+  state.currentOptions = shuffle(q.options).slice(0,5);
+  state.currentOptions.forEach((opt,idx)=>{
     const b=document.createElement("button");
-    b.className="option"; b.type="button"; b.textContent=opt;
+    b.className="option"; b.type="button"; b.dataset.value=opt;
+    b.style.animationDelay=(idx*.18)+"s";
+    b.innerHTML=`<span class="option-letter">${OPTION_LETTERS[idx]}</span><span class="option-text">${escapeHtml(opt)}</span>`;
     b.onclick=()=>answer(b,opt);
     box.appendChild(b);
   });
+  startQuestionTimer();
+  playSuspenseMusic();
 }
 function answer(btn,selected){
   if(state.answered) return;
   state.answered=true;
+  stopTimer();
+  stopMusic();
   const q=state.current;
   document.querySelectorAll(".option").forEach(b=>{
     b.disabled=true;
-    if(b.textContent.trim()===q.answer.trim()) b.classList.add("correct");
+    if(b.dataset.value===q.answer) b.classList.add("correct");
   });
   const fb=el("feedback");
   if(String(selected).trim()===String(q.answer).trim()){
     state.corrects++; state.combo++; state.maxCombo=Math.max(state.maxCombo,state.combo);
-    state.score += 100 + (state.combo*5);
+    state.score += 100 + (state.combo*5) + Math.ceil(state.timeLeft)*3;
     fb.className="feedback good";
-    fb.innerHTML=`✅ Muito bem! ${q.explanation}`;
-    playCorrect();
+    fb.innerHTML=`✅ Correct answer! ${q.explanation}`;
+    playCorrectCelebration();
   }else{
     state.combo=0;
     btn.classList.add("wrong");
@@ -369,13 +608,108 @@ function answer(btn,selected){
     playWrong();
   }
   el("score").textContent=state.score; el("corrects").textContent=state.corrects; el("combo").textContent=state.combo;
-
-  const missionEnded = roundInMission()===ROUNDS_PER_MISSION && state.round<TOTAL_ROUNDS;
-  if(state.round>=TOTAL_ROUNDS){setTimeout(()=>finishGame(),900); return;}
-  if(missionEnded){setTimeout(()=>showMissionWin(),900); return;}
-  setTimeout(()=>{state.round++; loadQuestion();},950);
+  setTimeout(afterQuestion,1400);
 }
+
+function afterQuestion(){
+  const missionEnded = roundInMission()===ROUNDS_PER_MISSION && state.round<TOTAL_ROUNDS;
+  if(state.round>=TOTAL_ROUNDS){finishGame(); return;}
+  if(missionEnded){showMissionWin(); return;}
+  state.round++;
+  loadQuestion();
+}
+function updateHelpButtons(){
+  if(el("cardsHelpBtn")) el("cardsHelpBtn").disabled = state.cardsHelp <= 0 || state.answered;
+  if(el("audienceHelpBtn")) el("audienceHelpBtn").disabled = state.audienceHelp <= 0 || state.answered;
+  if(el("skipHelpBtn")){
+    el("skipHelpBtn").disabled = state.skips <= 0 || state.answered;
+    el("skipHelpBtn").textContent = "⏭️ Pular: " + state.skips;
+  }
+}
+function openCardsHelp(){
+  if(state.cardsHelp<=0 || state.answered) return;
+  stopTimer();
+  stopMusic();
+  el("cardsResult").textContent="";
+  document.querySelectorAll(".magic-card").forEach(c=>{c.disabled=false;c.classList.remove("revealed");c.textContent="?";});
+  el("cardsModal").classList.add("active");
+}
+function revealCard(card,idx){
+  document.querySelectorAll(".magic-card").forEach(c=>c.disabled=true);
+  const possibilities=[1,2,3];
+  const eliminateCount = possibilities[Math.floor(Math.random()*possibilities.length)];
+  card.classList.add("revealed");
+  card.textContent = "-" + eliminateCount;
+  el("cardsResult").textContent = `A carta eliminou ${eliminateCount} alternativa${eliminateCount>1?"s":""} errada${eliminateCount>1?"s":""}.`;
+  state.cardsHelp--;
+  eliminateWrongOptions(eliminateCount);
+  updateHelpButtons();
+  setTimeout(()=>{
+    el("cardsModal").classList.remove("active");
+    startQuestionTimer();
+    playSuspenseMusic();
+  },1300);
+}
+function eliminateWrongOptions(count){
+  const wrongButtons = Array.from(document.querySelectorAll(".option")).filter(b=>b.dataset.value!==state.current.answer && !b.classList.contains("hide-option"));
+  const chosen = shuffle(wrongButtons).slice(0,count);
+  chosen.forEach(b=>{b.classList.add("hide-option"); b.disabled=true;});
+}
+function openAudienceHelp(){
+  if(state.audienceHelp<=0 || state.answered) return;
+  stopTimer();
+  stopMusic();
+  state.audienceHelp--;
+  updateHelpButtons();
+  const votes = buildAudienceVotes();
+  el("audienceList").innerHTML = votes.map(v=>`
+    <div class="audience-row">
+      <div>${v.letter}</div>
+      <div class="audience-bar-bg"><div class="audience-bar" style="width:${v.percent}%"></div></div>
+      <div>${v.percent}%</div>
+    </div>
+  `).join("");
+  el("audienceModal").classList.add("active");
+}
+function buildAudienceVotes(){
+  const correctIndex = state.currentOptions.findIndex(o=>o===state.current.answer);
+  const correctPct = 42 + Math.floor(Math.random()*24); // 42 a 65
+  let remaining = 100-correctPct;
+  const votes = state.currentOptions.map((opt,idx)=>({letter:OPTION_LETTERS[idx],percent:0,opt}));
+  const wrongIdxs = votes.map((_,i)=>i).filter(i=>i!==correctIndex);
+  wrongIdxs.forEach((idx,i)=>{
+    if(i===wrongIdxs.length-1) votes[idx].percent=remaining;
+    else{
+      const max = Math.max(5, remaining - (wrongIdxs.length-i-1)*5);
+      const val = 5 + Math.floor(Math.random()*Math.max(1, Math.min(18,max)-4));
+      votes[idx].percent=val; remaining-=val;
+    }
+  });
+  if(correctIndex>=0) votes[correctIndex].percent=correctPct;
+  return votes;
+}
+function closeAudienceHelp(){
+  el("audienceModal").classList.remove("active");
+  if(!state.answered){startQuestionTimer(); playSuspenseMusic();}
+}
+function skipQuestion(){
+  if(state.skips<=0 || state.answered) return;
+  stopTimer();
+  stopMusic();
+  state.skips--;
+  updateHelpButtons();
+  el("feedback").className="feedback good";
+  el("feedback").innerHTML="⏭️ Você pulou esta pergunta. Nenhum ponto foi perdido.";
+  setTimeout(()=>{
+    if(state.round>=TOTAL_ROUNDS){finishGame(); return;}
+    state.round++;
+    loadQuestion();
+  },700);
+}
+
 function showMissionWin(){
+  stopTimer();
+  stopMusic();
   const m=currentMission();
   el("missionWinText").innerHTML = `Congratulations! Você concluiu a <b>Missão ${m} de ${TOTAL_MISSIONS}</b>. Agora vem a próxima etapa do desafio.`;
   show("missionWinScreen");
@@ -388,6 +722,7 @@ function nextMission(){
   loadQuestion();
 }
 function finishGame(){
+  stopTimer();
   stopMusic();
   show("finalScreen");
   el("finalTitle").textContent = state.corrects>=40 ? "🏆 YOU ARE THE ONE!" : "💪 TRY AGAIN!";
@@ -418,7 +753,71 @@ let audioCtx=null, musicTimer=null;
 function ensureAudio(){try{if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)(); if(audioCtx.state==="suspended") audioCtx.resume();}catch(e){}}
 function tone(freq=440,dur=.12,type="sine",gain=.055,delay=0){ensureAudio(); if(!audioCtx)return; const t=audioCtx.currentTime+delay; const osc=audioCtx.createOscillator(); const g=audioCtx.createGain(); osc.type=type; osc.frequency.setValueAtTime(freq,t); g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(gain,t+.02); g.gain.exponentialRampToValueAtTime(0.0001,t+dur); osc.connect(g); g.connect(audioCtx.destination); osc.start(t); osc.stop(t+dur+.03);}
 function stopMusic(){if(musicTimer){clearInterval(musicTimer); musicTimer=null;}}
+
+function stopTimer(){
+  if(state.timer){clearInterval(state.timer); state.timer=null;}
+}
+function startQuestionTimer(){
+  stopTimer();
+  state.timeLeft = 10;
+  updateTimerVisual();
+  state.timer = setInterval(()=>{
+    state.timeLeft -= .1;
+    if(state.timeLeft <= 0){
+      state.timeLeft = 0;
+      updateTimerVisual();
+      stopTimer();
+      timeOutQuestion();
+      return;
+    }
+    updateTimerVisual();
+  },100);
+}
+function updateTimerVisual(){
+  const pct = Math.max(0,(state.timeLeft/10)*100);
+  if(el("timerBar")) el("timerBar").style.width = pct + "%";
+  if(el("timerText")) el("timerText").textContent = "Tempo: " + Math.ceil(state.timeLeft) + "s";
+}
+function playSuspenseMusic(){
+  stopMusic();
+  let i=0;
+  const notes=[196,220,247,262,247,220];
+  musicTimer=setInterval(()=>{
+    tone(notes[i%notes.length],.12,i%2===0?"sine":"triangle",.022);
+    i++;
+  },260);
+}
+function timeOutQuestion(){
+  if(state.answered) return;
+  state.answered = true;
+  stopMusic();
+  document.querySelectorAll(".option").forEach(b=>{
+    b.disabled=true;
+    if(b.dataset.value===state.current.answer) b.classList.add("correct");
+  });
+  const q=state.current;
+  state.combo=0;
+  el("combo").textContent=state.combo;
+  el("feedback").className="feedback bad";
+  el("feedback").innerHTML=`⏰ Tempo esgotado! Resposta correta: <b>${q.answer}</b>. ${q.explanation}`;
+  playWrong();
+  setTimeout(afterQuestion,1400);
+}
+
 function playCorrect(){tone(659,.10,"triangle",.05);tone(880,.10,"triangle",.04,.10)}
+function playApplause(){
+  ensureAudio(); if(!audioCtx)return;
+  for(let i=0;i<18;i++){
+    const t=i*.045;
+    tone(900+Math.random()*900,.025,"square",.018,t);
+    tone(180+Math.random()*120,.035,"sawtooth",.010,t+.012);
+  }
+}
+function playCorrectCelebration(){
+  playCorrect();
+  setTimeout(()=>{tone(1046,.14,"triangle",.055);tone(1318,.18,"triangle",.05,.12);},120);
+  setTimeout(playApplause,260);
+}
 function playWrong(){tone(220,.14,"sine",.035);tone(180,.18,"sine",.03,.14)}
 function playMissionMusic(){stopMusic(); [523,659,784,1046,1318].forEach((f,i)=>tone(f,.16,"triangle",.065,i*.14)); let i=0; const melody=[523,659,784,1046,880,1046,1318]; musicTimer=setInterval(()=>{tone(melody[i%melody.length],.14,"triangle",.045); i++;},180)}
 function playVictoryMusic(){stopMusic(); let i=0; const melody=[523,659,784,1046,1174,1318,1568]; musicTimer=setInterval(()=>{tone(melody[i%melody.length],.16,"triangle",.055); i++;},190)}
