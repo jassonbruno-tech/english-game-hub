@@ -579,6 +579,42 @@ body.playing .phase-banner{
   }
 }
 
+
+/* --- Quadro de missão ao lado do desafio --- */
+.mission-box{
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  margin:0 0 8px;
+  padding:8px 10px;
+  border-radius:16px;
+  background:linear-gradient(135deg, rgba(255,230,109,.24), rgba(37,99,235,.18), rgba(225,29,72,.12));
+  border:1px solid rgba(255,230,109,.42);
+  color:#fff7c2;
+  font-weight:1000;
+  box-shadow:0 0 18px rgba(255,230,109,.12);
+}
+.mission-box span{
+  font-size:14px;
+  line-height:1.1;
+}
+.mission-box small{
+  font-size:11px;
+  color:#eaf2ff;
+  font-weight:900;
+  text-align:right;
+}
+body.playing .mission-box{
+  padding:6px 8px;
+  margin-bottom:6px;
+}
+@media(max-width:860px){
+  .mission-box span{font-size:12px;}
+  .mission-box small{font-size:10px;}
+}
+
 </style>
 </head>
 <body>
@@ -614,7 +650,8 @@ body.playing .phase-banner{
     <div class="stat"><b id="score">0</b><span>Pontos</span></div>
     <div class="stat"><b id="corrects">0</b><span>Acertos</span></div>
     <div class="stat"><b id="combo">0</b><span>Combo</span></div>
-    <div class="stat"><b id="round">1/30</b><span>Desafio</span></div>
+    <div class="stat phase-stat"><b id="phaseLabel">1/6</b><span>Missão</span></div>
+    <div class="stat"><b id="round">1/5</b><span>Desafio</span></div>
   </div>
   <div class="lives-card"><b>Forca do espantalho</b><span id="lives">6 partes restantes do espantalho.</span></div>
   <div class="game-grid">
@@ -677,6 +714,10 @@ body.playing .phase-banner{
       <div id="word" class="word"></div>
     </div>
     <div class="card question-card">
+      <div id="missionBox" class="mission-box">
+        <span id="missionName">Missão 1/6</span>
+        <small id="missionProgress">Desafio 1/5</small>
+      </div>
       <div id="theme" class="theme-chip">Tema</div>
       <div id="hint" class="hint">Dica</div>
       <div id="keyboard" class="keyboard"></div>
@@ -1770,23 +1811,35 @@ function playCorrectSound(){ playGameCorrectAudio(); }
 function playScarecrowComplain(){ playGameWrongAudio(); }
 function playVictoryMusic(){
   stopFinalMusic();
-  const melody = [523,659,784,1046,784,1046,1318,1046];
-  let i=0;
+  // Música de vitória: mais brilhante e alegre, para parabenizar a conclusão.
+  const melody = [
+    {f:523,d:.16},{f:659,d:.16},{f:784,d:.18},{f:1046,d:.22},
+    {f:988,d:.16},{f:1174,d:.18},{f:1318,d:.26},{f:1568,d:.34}
+  ];
+  let i = 0;
   finalMusicTimer = setInterval(()=>{
-    const f = melody[i % melody.length];
-    tone(f,.18,"triangle",.055,0);
-    tone(f*1.5,.18,"sine",.03,.02);
+    const n = melody[i % melody.length];
+    tone(n.f, n.d, "triangle", .060, 0);
+    tone(n.f*1.5, n.d*.75, "sine", .026, .025);
+    if(i % 4 === 3) tone(392, .22, "sine", .022, 0);
     i++;
-  },210);
+  }, 185);
 }
 function playTryAgainMusic(){
   stopFinalMusic();
-  const melody = [392,349,330,349,392,440,392,330];
-  let i=0;
+  // Música de incentivo: começa suave e termina para cima, chamando o aluno para tentar de novo.
+  const melody = [
+    {f:392,d:.20},{f:440,d:.20},{f:523,d:.24},{f:494,d:.18},
+    {f:440,d:.18},{f:523,d:.22},{f:659,d:.24},{f:587,d:.18},
+    {f:523,d:.18},{f:659,d:.22},{f:784,d:.32}
+  ];
+  let i = 0;
   finalMusicTimer = setInterval(()=>{
-    tone(melody[i % melody.length],.22,"sine",.045,0);
+    const n = melody[i % melody.length];
+    tone(n.f, n.d, i % 2 === 0 ? "triangle" : "sine", .055, 0);
+    if(i % 4 === 0) tone(n.f/2, .28, "sine", .025, 0);
     i++;
-  },260);
+  }, 230);
 }
 function unlockAudio(){ ensureAudio(); document.removeEventListener("click", unlockAudio); document.removeEventListener("touchstart", unlockAudio); }
 document.addEventListener("click", unlockAudio, {passive:true});
@@ -1861,8 +1914,12 @@ function updateStats(){
   el("score").textContent = state.score;
   el("corrects").textContent = state.corrects;
   el("combo").textContent = state.combo;
-  el("round").textContent = `${getWordInPhase()}/5`;
-  if(el("phaseLabel")) el("phaseLabel").textContent = `${getCurrentPhaseIndex()+1}/6`;
+  const phaseNumber = getCurrentPhaseIndex()+1;
+  const wordNumber = getWordInPhase();
+  el("round").textContent = `${wordNumber}/5`;
+  if(el("phaseLabel")) el("phaseLabel").textContent = `${phaseNumber}/6`;
+  if(el("missionName")) el("missionName").textContent = `Missão ${phaseNumber}/6`;
+  if(el("missionProgress")) el("missionProgress").textContent = `Desafio ${wordNumber}/5`;
 
   const livesLeft = Math.max(0, Math.min(MAX_LIVES, Number(state.lives ?? MAX_LIVES)));
   const mistakes = MAX_LIVES - livesLeft;
@@ -2228,82 +2285,37 @@ function playFinalTryAgainSound(){
   try{
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
     const now = ctx.currentTime;
-
-    // Melodia curta motivacional: "caiu, levantou e tenta de novo"
     const melody = [
-      {f:392, t:0.00, d:0.16},
-      {f:440, t:0.16, d:0.16},
-      {f:523, t:0.32, d:0.20},
-      {f:494, t:0.54, d:0.16},
-      {f:440, t:0.70, d:0.16},
-      {f:523, t:0.88, d:0.20},
-      {f:659, t:1.10, d:0.22},
-      {f:587, t:1.36, d:0.18},
-      {f:523, t:1.56, d:0.18},
-      {f:659, t:1.76, d:0.22},
-      {f:784, t:2.02, d:0.34}
+      {f:392,t:0.00,d:0.18},{f:440,t:0.20,d:0.18},{f:523,t:0.42,d:0.22},
+      {f:494,t:0.68,d:0.18},{f:523,t:0.90,d:0.20},{f:659,t:1.15,d:0.24},
+      {f:587,t:1.43,d:0.18},{f:659,t:1.64,d:0.20},{f:784,t:1.88,d:0.34}
     ];
-
     melody.forEach((note, i)=>{
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
-
-      osc.type = i % 3 === 0 ? 'triangle' : 'sine';
+      osc.type = i % 2 === 0 ? 'triangle' : 'sine';
       osc.frequency.setValueAtTime(note.f, now + note.t);
-
       gain.gain.setValueAtTime(0.0001, now + note.t);
-      gain.gain.exponentialRampToValueAtTime(0.085, now + note.t + 0.025);
+      gain.gain.exponentialRampToValueAtTime(0.075, now + note.t + 0.025);
       gain.gain.exponentialRampToValueAtTime(0.0001, now + note.t + note.d);
-
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-
-      osc.start(now + note.t);
-      osc.stop(now + note.t + note.d + 0.03);
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.start(now + note.t); osc.stop(now + note.t + note.d + 0.04);
     });
-
-    // Baixo suave para dar corpo sem ficar triste
     const bass = [
-      {f:196, t:0.00, d:0.45},
-      {f:220, t:0.52, d:0.45},
-      {f:262, t:1.04, d:0.45},
-      {f:330, t:1.66, d:0.55}
+      {f:196,t:0.00,d:0.45},{f:220,t:0.52,d:0.45},
+      {f:262,t:1.04,d:0.45},{f:330,t:1.58,d:0.55}
     ];
-
     bass.forEach(note=>{
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
       osc.type = 'sine';
       osc.frequency.setValueAtTime(note.f, now + note.t);
       gain.gain.setValueAtTime(0.0001, now + note.t);
-      gain.gain.exponentialRampToValueAtTime(0.035, now + note.t + 0.04);
+      gain.gain.exponentialRampToValueAtTime(0.03, now + note.t + 0.04);
       gain.gain.exponentialRampToValueAtTime(0.0001, now + note.t + note.d);
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.start(now + note.t);
-      osc.stop(now + note.t + note.d + 0.05);
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.start(now + note.t); osc.stop(now + note.t + note.d + 0.05);
     });
-
-    // Brilho final de incentivo
-    setTimeout(()=>{
-      try{
-        const sparkle = new (window.AudioContext || window.webkitAudioContext)();
-        [880, 1046, 1318].forEach((freq, idx)=>{
-          const osc = sparkle.createOscillator();
-          const gain = sparkle.createGain();
-          osc.type = 'triangle';
-          osc.frequency.setValueAtTime(freq, sparkle.currentTime + idx * 0.07);
-          gain.gain.setValueAtTime(0.0001, sparkle.currentTime + idx * 0.07);
-          gain.gain.exponentialRampToValueAtTime(0.045, sparkle.currentTime + idx * 0.07 + 0.02);
-          gain.gain.exponentialRampToValueAtTime(0.0001, sparkle.currentTime + idx * 0.07 + 0.13);
-          osc.connect(gain);
-          gain.connect(sparkle.destination);
-          osc.start(sparkle.currentTime + idx * 0.07);
-          osc.stop(sparkle.currentTime + idx * 0.07 + 0.15);
-        });
-      }catch(e){}
-    }, 2150);
-
   }catch(e){}
 }
 
@@ -2311,18 +2323,33 @@ function playFinalTryAgainSound(){
 function playFinalVictorySound(){
   try{
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const notes = [523,659,784,1046,784,1046,1318];
-    notes.forEach((freq, i)=>{
+    const now = ctx.currentTime;
+    const melody = [
+      {f:523,t:0.00,d:0.14},{f:659,t:0.14,d:0.14},{f:784,t:0.28,d:0.16},
+      {f:1046,t:0.46,d:0.20},{f:1174,t:0.70,d:0.16},{f:1318,t:0.88,d:0.22},
+      {f:1568,t:1.15,d:0.34},{f:1318,t:1.55,d:0.18},{f:1568,t:1.76,d:0.36}
+    ];
+    melody.forEach((note, i)=>{
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
       osc.type = 'triangle';
-      osc.frequency.setValueAtTime(freq, ctx.currentTime + i*0.12);
-      gain.gain.setValueAtTime(0.0001, ctx.currentTime + i*0.12);
-      gain.gain.exponentialRampToValueAtTime(0.09, ctx.currentTime + i*0.12 + 0.02);
-      gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + i*0.12 + 0.11);
+      osc.frequency.setValueAtTime(note.f, now + note.t);
+      gain.gain.setValueAtTime(0.0001, now + note.t);
+      gain.gain.exponentialRampToValueAtTime(0.085, now + note.t + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + note.t + note.d);
       osc.connect(gain); gain.connect(ctx.destination);
-      osc.start(ctx.currentTime + i*0.12);
-      osc.stop(ctx.currentTime + i*0.12 + 0.13);
+      osc.start(now + note.t); osc.stop(now + note.t + note.d + 0.04);
+    });
+    [392,523,659].forEach((freq, idx)=>{
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, now + 0.02 + idx * 0.03);
+      gain.gain.setValueAtTime(0.0001, now + 0.02 + idx * 0.03);
+      gain.gain.exponentialRampToValueAtTime(0.025, now + 0.06 + idx * 0.03);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 1.90);
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.start(now + 0.02 + idx * 0.03); osc.stop(now + 1.95);
     });
   }catch(e){}
 }
