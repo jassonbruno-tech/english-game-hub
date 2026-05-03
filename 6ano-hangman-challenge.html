@@ -715,8 +715,8 @@ function forceScarecrowRender(){
   try{ updateStats(); }catch(e){}
 }
 
-function playCorrectSound(){ playCartoonCorrect(); }
-function playScarecrowComplain(){ playCartoonWrong(); }
+function playCorrectSound(){ playGameCorrectAudio(); }
+function playScarecrowComplain(){ playGameWrongAudio(); }
 function playVictoryMusic(){
   stopFinalMusic();
   const melody = [523,659,784,1046,784,1046,1318,1046];
@@ -893,7 +893,7 @@ function chooseLetter(btn, letter){
   const fb = el("feedback");
 
   if(word.includes(letter)){
-    playCartoonCorrect();
+    playGameCorrectAudio();
     btn.classList.add("correct");
     fb.className = "feedback ok";
     fb.innerHTML = `✅ Boa! A letra <b>${letter}</b> aparece na palavra.`;
@@ -906,7 +906,7 @@ function chooseLetter(btn, letter){
     
     updateStats();state.combo = 0;
     updateScarecrowParts();
-    playCartoonWrong();
+    playGameWrongAudio();
     forceScarecrowRender();
     fb.className = "feedback bad";
     fb.innerHTML = `❌ A letra <b>${letter}</b> não aparece. O espantalho perdeu uma parte.`;
@@ -943,7 +943,7 @@ function guessWord(){
   }
 
   if(guess === answer || guess === accepted){
-    playCartoonCorrect();
+    playGameCorrectAudio();
     for(const ch of answer.replace(/ /g,"")) state.guessed.add(ch);
     renderWord();
     completeRound(true);
@@ -952,7 +952,7 @@ function guessWord(){
     state.lives = Math.max(0, state.lives - 1);
     state.combo = 0;
     updateScarecrowParts();
-    playCartoonWrong();
+    playGameWrongAudio();
     forceScarecrowRender();
     el("feedback").className = "feedback bad";
     el("feedback").innerHTML = `❌ Ainda não. O espantalho perdeu uma parte.`;
@@ -1033,7 +1033,12 @@ function renderRanking(){
   `).join("");
 }
 
-function finishGameOriginalHangmanSound(completed){
+function finishGame(completed){
+  try{
+    if(completed) playFinalVictorySound();
+    else playFinalTryAgainSound();
+  }catch(e){}
+
   show("finalScreen");
   if(completed){ playVictoryMusic(); } else { playTryAgainMusic(); }
   el("finalTitle").textContent = completed ? "🏆 YOU ARE THE ONE!" : "💪 TRY AGAIN!";
@@ -1089,7 +1094,7 @@ function syncScarecrowError(){ forceScarecrowRender(); }
 
 
 // --- Voz engraçada/cartoonizada do espantalho no erro ---
-function scarecrowCry(){ playCartoonWrong(); }
+function scarecrowCry(){ playGameWrongAudio(); }
 
 
 
@@ -1109,89 +1114,81 @@ document.addEventListener('click', function(e){
   }
 }, true);
 
-// --- Pacote de sons cartoon/game sem voz robótica ---
-let soundCtxHangman = null;
-function getHangmanAudioCtx(){
+const REAL_ERROR_AUDIOS = [
+  "Do it better please.m4a",
+  "Help me please.m4a",
+  "Oh no.m4a",
+  "Oh oh.m4a"
+];
+
+const REAL_CORRECT_AUDIOS = [
+  "Nice.m4a",
+  "Very good.m4a",
+  "Yeah.m4a",
+  "You are the one.m4a"
+];
+
+function playOneFromList(list){
   try{
-    if(!soundCtxHangman) soundCtxHangman = new (window.AudioContext || window.webkitAudioContext)();
-    if(soundCtxHangman.state === 'suspended') soundCtxHangman.resume();
-    return soundCtxHangman;
-  }catch(e){ return null; }
+    const file = list[Math.floor(Math.random() * list.length)];
+    const audio = new Audio(encodeURI(file));
+    audio.volume = 1;
+    audio.currentTime = 0;
+    audio.play().catch(() => {});
+    return true;
+  }catch(e){
+    return false;
+  }
 }
-function note(freq, start=0, duration=.16, type='sine', volume=.08){
-  const ctx = getHangmanAudioCtx();
-  if(!ctx) return;
-  const osc = ctx.createOscillator();
-  const gain = ctx.createGain();
-  osc.type = type;
-  osc.frequency.setValueAtTime(freq, ctx.currentTime + start);
-  gain.gain.setValueAtTime(0.0001, ctx.currentTime + start);
-  gain.gain.exponentialRampToValueAtTime(volume, ctx.currentTime + start + .02);
-  gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + start + duration);
-  osc.connect(gain);
-  gain.connect(ctx.destination);
-  osc.start(ctx.currentTime + start);
-  osc.stop(ctx.currentTime + start + duration + .03);
+
+function playGameCorrectAudio(){
+  if(playOneFromList(REAL_CORRECT_AUDIOS)) return;
+  try{ playCartoonCorrect(); }catch(e){}
 }
-function slideNote(from, to, start=0, duration=.26, type='triangle', volume=.1){
-  const ctx = getHangmanAudioCtx();
-  if(!ctx) return;
-  const osc = ctx.createOscillator();
-  const gain = ctx.createGain();
-  osc.type = type;
-  osc.frequency.setValueAtTime(from, ctx.currentTime + start);
-  osc.frequency.exponentialRampToValueAtTime(to, ctx.currentTime + start + duration);
-  gain.gain.setValueAtTime(0.0001, ctx.currentTime + start);
-  gain.gain.exponentialRampToValueAtTime(volume, ctx.currentTime + start + .02);
-  gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + start + duration);
-  osc.connect(gain);
-  gain.connect(ctx.destination);
-  osc.start(ctx.currentTime + start);
-  osc.stop(ctx.currentTime + start + duration + .04);
+
+function playGameWrongAudio(){
+  if(playOneFromList(REAL_ERROR_AUDIOS)) return;
+  try{ playCartoonWrong(); }catch(e){}
 }
-function playCartoonCorrect(){
-  // Som alegre: “ding ding” de acerto
-  note(660, 0, .12, 'sine', .08);
-  note(880, .10, .14, 'sine', .075);
-  note(1175, .21, .16, 'triangle', .06);
-}
-function playCartoonWrong(){
-  // Som engraçado de erro: “boing + queda”, sem voz robotizada
-  slideNote(980, 360, 0, .28, 'sawtooth', .065);
-  note(240, .22, .12, 'triangle', .06);
-  slideNote(520, 180, .30, .18, 'square', .035);
-}
-function playTryAgainMusic(){
-  // Melodia curta motivacional, leve e não triste
-  const seq = [392, 440, 494, 440, 523, 494, 440, 392];
-  seq.forEach((f,i)=>note(f, i*.13, .12, i%2?'triangle':'sine', .055));
-  note(330, 1.08, .22, 'triangle', .045);
-  note(392, 1.22, .25, 'triangle', .045);
-}
-function playVictoryMusic(){
-  // Melodia de conquista mais bonita
-  const seq = [523, 659, 784, 1046, 988, 1046, 1175, 1318];
-  seq.forEach((f,i)=>note(f, i*.12, .14, 'sine', .06));
-  note(1568, 1.02, .28, 'triangle', .06);
-  note(1046, 1.06, .34, 'sine', .04);
-}
-function playScarecrowComplain(){ playCartoonWrong(); }
-function scarecrowCry(){ playCartoonWrong(); }
-function playCorrectSound(){ playCartoonCorrect(); }
-function playWrongSound(){ playCartoonWrong(); }
-function playErrorSound(){ playCartoonWrong(); }
 
 
-function finishGame(won){
+function playFinalTryAgainSound(){
   try{
-    if(won) playVictoryMusic();
-    else playTryAgainMusic();
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const notes = [330,392,440,392,330,294,330];
+    notes.forEach((freq, i)=>{
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, ctx.currentTime + i*0.13);
+      gain.gain.setValueAtTime(0.0001, ctx.currentTime + i*0.13);
+      gain.gain.exponentialRampToValueAtTime(0.08, ctx.currentTime + i*0.13 + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + i*0.13 + 0.11);
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.start(ctx.currentTime + i*0.13);
+      osc.stop(ctx.currentTime + i*0.13 + 0.13);
+    });
   }catch(e){}
-  return finishGameOriginalHangmanSound(won);
 }
 
-
-document.addEventListener('click', ()=>{ try{ getHangmanAudioCtx(); }catch(e){} }, {once:true});
+function playFinalVictorySound(){
+  try{
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const notes = [523,659,784,1046,784,1046,1318];
+    notes.forEach((freq, i)=>{
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(freq, ctx.currentTime + i*0.12);
+      gain.gain.setValueAtTime(0.0001, ctx.currentTime + i*0.12);
+      gain.gain.exponentialRampToValueAtTime(0.09, ctx.currentTime + i*0.12 + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + i*0.12 + 0.11);
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.start(ctx.currentTime + i*0.12);
+      osc.stop(ctx.currentTime + i*0.12 + 0.13);
+    });
+  }catch(e){}
+}
 
 </script>
 </body>
