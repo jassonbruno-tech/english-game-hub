@@ -461,6 +461,28 @@ body.playing .lives-card #lives{font-size:11px}
   }
 }
 
+
+/* --- Correções: dica sem corte e layout com respiro --- */
+.memory-tip,
+body.playing .memory-tip{
+  max-height:none !important;
+  overflow:visible !important;
+  white-space:normal !important;
+  word-break:normal !important;
+  line-height:1.28 !important;
+  padding:7px 8px !important;
+}
+.question-card{
+  overflow:visible !important;
+}
+.hint{
+  max-height:none !important;
+  overflow:visible !important;
+}
+body.playing .question-card{
+  padding-bottom:8px !important;
+}
+
 </style>
 </head>
 <body>
@@ -994,6 +1016,96 @@ function updateScarecrowParts(){
     livesEl.textContent = `Chances: ${restam}/6 — cada erro coloca uma parte do espantalho na forca.`;
   }
 }
+
+
+// --- Som do espantalho reclamando no erro ---
+
+function syncScarecrowError(){
+    syncScarecrowError();
+  try{
+    if(typeof drawHangman === 'function') drawHangman();
+    if(typeof drawScarecrow === 'function') drawScarecrow();
+    if(typeof renderHangman === 'function') renderHangman();
+    if(typeof updateHangman === 'function') updateHangman();
+    if(typeof updateScarecrow === 'function') updateScarecrow();
+  }catch(e){}
+}
+
+
+// --- Voz engraçada/cartoonizada do espantalho no erro ---
+function scarecrowCry(){
+  try{
+    if('speechSynthesis' in window){
+      window.speechSynthesis.cancel();
+
+      const cries = [
+        'Ui ui!',
+        'Oh no!',
+        'Help me please!',
+        'Ai ai!',
+        'No no no!',
+        'Try again!',
+        'Oops!',
+        'Eita!'
+      ];
+
+      const msg = new SpeechSynthesisUtterance(cries[Math.floor(Math.random() * cries.length)]);
+
+      // Voz aguda, rápida e divertida, em estilo cartoon, sem imitar personagem específico.
+      msg.lang = Math.random() > 0.35 ? 'en-US' : 'pt-BR';
+      msg.rate = 1.35;
+      msg.pitch = 1.9;
+      msg.volume = 1;
+
+      const voices = window.speechSynthesis.getVoices ? window.speechSynthesis.getVoices() : [];
+      const preferred = voices.find(v =>
+        /female|woman|zira|google us english|english/i.test(v.name + ' ' + v.lang)
+      );
+      if(preferred) msg.voice = preferred;
+
+      window.speechSynthesis.speak(msg);
+      return;
+    }
+  }catch(e){}
+
+  // Fallback: gritinho eletrônico curto caso a voz do navegador não esteja disponível.
+  try{
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const gain = ctx.createGain();
+    const osc1 = ctx.createOscillator();
+    const osc2 = ctx.createOscillator();
+
+    osc1.type = 'sine';
+    osc2.type = 'triangle';
+
+    osc1.frequency.setValueAtTime(980, ctx.currentTime);
+    osc1.frequency.exponentialRampToValueAtTime(520, ctx.currentTime + .18);
+
+    osc2.frequency.setValueAtTime(1320, ctx.currentTime);
+    osc2.frequency.exponentialRampToValueAtTime(680, ctx.currentTime + .18);
+
+    gain.gain.setValueAtTime(.16, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(.001, ctx.currentTime + .23);
+
+    osc1.connect(gain);
+    osc2.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc1.start();
+    osc2.start();
+    osc1.stop(ctx.currentTime + .24);
+    osc2.stop(ctx.currentTime + .24);
+  }catch(e){}
+}
+
+
+
+try{
+  if('speechSynthesis' in window){
+    window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+    window.speechSynthesis.getVoices();
+  }
+}catch(e){}
 
 </script>
 </body>
