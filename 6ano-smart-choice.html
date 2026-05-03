@@ -491,6 +491,46 @@ main{flex:1;min-height:0;padding:10px;overflow:hidden}
   }
 }
 
+
+/* --- Pontuação estilo Show do Milhão --- */
+.stat b#score{
+  font-size:16px !important;
+}
+.gameover-flash{
+  animation:screenRedFlash .42s ease-in-out 5 alternate;
+}
+@media(max-width:860px){
+  .stat b#score{
+    font-size:11px !important;
+  }
+}
+
+
+/* --- Botão Parar e dinheiro fictício Smart Dollars --- */
+.lifelines{
+  grid-template-columns:repeat(4,1fr) !important;
+}
+.stop-btn{
+  background:linear-gradient(135deg,rgba(34,197,94,.22),rgba(255,230,109,.20),rgba(37,99,235,.14)) !important;
+  border-color:rgba(34,197,94,.46) !important;
+  color:#dcfce7 !important;
+}
+.money-note{
+  display:inline-block;
+  margin-left:6px;
+  padding:2px 7px;
+  border-radius:999px;
+  background:rgba(34,197,94,.16);
+  border:1px solid rgba(34,197,94,.28);
+  color:#dcfce7;
+  font-weight:1000;
+}
+@media(max-width:860px){
+  .lifelines{
+    grid-template-columns:repeat(2,1fr) !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -501,7 +541,7 @@ main{flex:1;min-height:0;padding:10px;overflow:hidden}
     <span class="pill">Alinhado à BNCC</span>
   </div>
   <h1>Smart Choice Show</h1>
-  <p class="subtitle">Quiz show com suspense, tempo de 15 segundos, ajudas e missões do Inglês do 6º ano.</p>
+  <p class="subtitle">Quiz show com suspense, 15 segundos, ajudas e prêmio em Smart Dollars.</p>
 </header>
 <main>
 <section id="startScreen" class="screen active">
@@ -531,7 +571,7 @@ main{flex:1;min-height:0;padding:10px;overflow:hidden}
         <div class="info-item"><b>1.</b> São 5 missões com 10 rodadas cada.</div>
         <div class="info-item"><b>2.</b> O conteúdo cobre o Inglês do 6º ano: comunicação, verb to be, números, tempo, escola, lugares, preposições e vocabulário diário.</div>
         <div class="info-item"><b>3.</b> Você tem 15 segundos para responder. Se o tempo acabar, conta como pulo. Depois de 3 pulos, se não responder, é game over.</div>
-        <div class="info-item"><b>4.</b> Use Cartas, Plateia e Pular com estratégia para chegar ao final.</div>
+        <div class="info-item"><b>4.</b> Errou, acaba! A cada rodada, a premiação aumenta até chegar a S$ 1.000.000.</div>
       </div>
     </div>
   </div>
@@ -541,7 +581,7 @@ main{flex:1;min-height:0;padding:10px;overflow:hidden}
   <div class="stats">
     <div class="stat"><b id="missionStat">1/5</b><span>Missão</span></div>
     <div class="stat"><b id="roundStat">1/10</b><span>Rodada</span></div>
-    <div class="stat"><b id="score">0</b><span>Pontos</span></div>
+    <div class="stat"><b id="score">S$ 0</b><span>Prêmio</span></div>
     <div class="stat"><b id="corrects">0</b><span>Acertos</span></div>
     <div class="stat"><b id="combo">0</b><span>Combo</span></div>
   </div>
@@ -560,6 +600,7 @@ main{flex:1;min-height:0;padding:10px;overflow:hidden}
       <button id="cardsHelpBtn" class="help-btn" onclick="openCardsHelp()">🃏 Cartas</button>
       <button id="audienceHelpBtn" class="help-btn" onclick="openAudienceHelp()">👥 Plateia</button>
       <button id="skipHelpBtn" class="help-btn" onclick="skipQuestion()">⏭️ Pular: 3</button>
+      <button id="stopHelpBtn" class="help-btn stop-btn" onclick="stopWithCurrentPrize()">💰 Parar</button>
     </div>
     <div class="brand gameplay-brand">Jogo idealizado pelo professor Jasson Bruno.</div>
     <div id="feedback" class="feedback"></div>
@@ -581,13 +622,13 @@ main{flex:1;min-height:0;padding:10px;overflow:hidden}
     <h2 class="big-title" id="finalTitle">Resultado</h2>
     <div id="finalMessage" class="final-message"></div>
     <div class="result-grid">
-      <div class="result-box"><span>Pontos</span><b id="finalScore">0</b></div>
+      <div class="result-box"><span>Prêmio</span><b id="finalScore">S$ 0</b></div>
       <div class="result-box"><span>Acertos</span><b id="finalCorrects">0/50</b></div>
       <div class="result-box"><span>Combo</span><b id="finalCombo">0</b></div>
       <div class="result-box"><span>Status</span><b id="finalStatus">---</b></div>
     </div>
     <div class="rank-list" id="rankList"></div>
-    <div class="rank-note">Ranking motivacional interno do jogo. Faça print da tela final para registrar sua pontuação.</div>
+    <div class="rank-note">Ranking motivacional interno do jogo. Faça print da tela final para registrar sua premiação.</div>
     <div class="rank-actions">
       <button class="btn secondary" onclick="startGame()">Jogar novamente</button>
       <button class="btn" onclick="location.href='6ano.html'">Voltar ao 6º ano</button>
@@ -627,10 +668,15 @@ const CARDS = [{"theme": "Greetings", "visual": "👋", "prompt": "Você chegou 
 const TOTAL_MISSIONS = 5;
 const ROUNDS_PER_MISSION = 10;
 const TOTAL_ROUNDS = 50;
+const CURRENCY_NAME = "Smart Dollars";
+const CURRENCY_SYMBOL = "S$";
+const PRIZE_LADDER = [100, 200, 300, 500, 800, 1200, 1800, 2500, 3500, 5000, 7000, 9000, 12000, 16000, 20000, 26000, 32000, 40000, 50000, 65000, 80000, 100000, 125000, 150000, 180000, 220000, 260000, 300000, 350000, 400000, 450000, 500000, 550000, 600000, 650000, 700000, 750000, 800000, 850000, 900000, 920000, 940000, 960000, 970000, 980000, 985000, 990000, 995000, 998000, 1000000];
 const OPTION_LETTERS = ["A","B","C","D","E"];
 let state = {};
 
 function el(id){return document.getElementById(id)}
+function formatPoints(n){return CURRENCY_SYMBOL + " " + Number(n||0).toLocaleString("pt-BR")}
+function currentPrize(){return PRIZE_LADDER[Math.min(state.round-1, PRIZE_LADDER.length-1)] || 0}
 function show(id){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));el(id).classList.add("active");document.body.classList.toggle("playing",id==="gameScreen");}
 function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function getPlayerInfo(){
@@ -666,10 +712,10 @@ function loadQuestion(){
   const m=currentMission(), r=roundInMission();
   el("missionStat").textContent = m + "/" + TOTAL_MISSIONS;
   el("roundStat").textContent = r + "/" + ROUNDS_PER_MISSION;
-  el("score").textContent = state.score;
+  el("score").textContent = formatPoints(state.score);
   el("corrects").textContent = state.corrects;
   el("combo").textContent = state.combo;
-  el("progressText").textContent = `Missão ${m} de ${TOTAL_MISSIONS} • Rodada ${r} de ${ROUNDS_PER_MISSION}`;
+  el("progressText").textContent = `Missão ${m} de ${TOTAL_MISSIONS} • Rodada ${r} de ${ROUNDS_PER_MISSION} • Valendo ${formatPoints(currentPrize())}`;
   el("missionName").textContent = `Missão ${m} — ${MISSIONS[m-1].title}`;
   el("missionProgress").textContent = `Rodada ${r}/${ROUNDS_PER_MISSION}`;
   el("theme").textContent = q.theme;
@@ -704,20 +750,31 @@ function answer(btn,selected){
   });
   const fb=el("feedback");
   if(String(selected).trim()===String(q.answer).trim()){
-    state.corrects++; state.combo++; state.maxCombo=Math.max(state.maxCombo,state.combo);
-    state.score += 100 + (state.combo*5) + Math.ceil(state.timeLeft)*3;
+    state.corrects++;
+    state.combo++;
+    state.maxCombo=Math.max(state.maxCombo,state.combo);
+    state.score = currentPrize();
     fb.className="feedback good";
-    fb.innerHTML=`✅ Correct answer! ${q.explanation}`;
+    fb.innerHTML=`✅ Correct answer! Você garantiu <b>${formatPoints(state.score)}</b>. ${q.explanation}`;
     playCorrectCelebration();
+    el("score").textContent=formatPoints(state.score);
+    el("corrects").textContent=state.corrects;
+    el("combo").textContent=state.combo;
+    setTimeout(afterQuestion,1800);
   }else{
     state.combo=0;
     btn.classList.add("wrong");
     fb.className="feedback bad";
-    fb.innerHTML=`❌ Resposta correta: <b>${q.answer}</b>. ${q.explanation}`;
+    fb.innerHTML=`❌ Resposta errada! A correta era <b>${q.answer}</b>. ${q.explanation}`;
     playWrong();
+    el("combo").textContent=state.combo;
+    const card = document.querySelector(".question-card");
+    if(card) card.classList.add("gameover-flash");
+    setTimeout(()=>{
+      if(card) card.classList.remove("gameover-flash");
+      finishGame(true, "wrong");
+    },2100);
   }
-  el("score").textContent=state.score; el("corrects").textContent=state.corrects; el("combo").textContent=state.combo;
-  setTimeout(afterQuestion,1800);
 }
 
 function afterQuestion(){
@@ -734,7 +791,22 @@ function updateHelpButtons(){
     el("skipHelpBtn").disabled = state.skips <= 0 || state.answered;
     el("skipHelpBtn").textContent = "⏭️ Pular: " + state.skips;
   }
+  if(el("stopHelpBtn")){
+    el("stopHelpBtn").disabled = state.answered || state.score <= 0;
+    el("stopHelpBtn").textContent = state.score > 0 ? "💰 Parar: " + formatPoints(state.score) : "💰 Parar";
+  }
 }
+function stopWithCurrentPrize(){
+  if(state.answered || state.score <= 0) return;
+  stopTimer();
+  stopMusic();
+  state.answered = true;
+  el("feedback").className="feedback good";
+  el("feedback").innerHTML=`💰 Você decidiu parar e garantiu <b>${formatPoints(state.score)}</b> em Smart Dollars. Boa estratégia!`;
+  document.querySelectorAll(".option").forEach(b=>b.disabled=true);
+  setTimeout(()=>finishGame(false, "stop"), 1100);
+}
+
 function openCardsHelp(){
   if(state.cardsHelp<=0 || state.answered) return;
   stopTimer();
@@ -830,24 +902,31 @@ function nextMission(){
   show("gameScreen");
   loadQuestion();
 }
-function finishGame(gameOver=false){
+function finishGame(gameOver=false, reason=""){
   stopTimer();
   stopMusic();
   show("finalScreen");
-  if(gameOver){
+  if(reason==="stop"){
+    el("finalTitle").textContent = "💰 VOCÊ PAROU!";
+    el("finalMessage").textContent = `Estratégia inteligente! Você decidiu não arriscar e saiu com ${formatPoints(state.score)} em Smart Dollars.`;
+    el("finalStatus").textContent="Parou";
+    playVictoryMusic();
+  }else if(gameOver){
     el("finalTitle").textContent = "💥 GAME OVER!";
-    el("finalMessage").textContent = "O tempo acabou e os 3 pulos já foram usados. Não desista: tente novamente e avance mais!";
+    el("finalMessage").textContent = reason==="wrong"
+      ? "No Smart Choice Show, errou, acaba! Mas você já treinou, aprendeu e pode tentar novamente para chegar mais longe."
+      : "O tempo acabou e os 3 pulos já foram usados. Não desista: tente novamente e avance mais!";
     el("finalStatus").textContent="Game Over";
     playTryAgainMusic();
   }else{
     el("finalTitle").textContent = state.corrects>=40 ? "🏆 YOU ARE THE ONE!" : "💪 TRY AGAIN!";
     el("finalMessage").textContent = state.corrects>=40
       ? "Congratulations! Você avançou muito bem nas missões do 6º ano. Continue praticando para ir ainda mais longe!"
-      : "Você chegou até o final, tentou e aprendeu. Jogue novamente para melhorar sua pontuação e fortalecer seu inglês.";
+      : "Você chegou até o final, tentou e aprendeu. Jogue novamente para melhorar seu prêmio e fortalecer seu inglês.";
     el("finalStatus").textContent=state.corrects>=40 ? "Top!" : "Continue!";
     state.corrects>=40 ? playVictoryMusic() : playTryAgainMusic();
   }
-  el("finalScore").textContent=state.score;
+  el("finalScore").textContent=formatPoints(state.score);
   el("finalCorrects").textContent=`${state.corrects}/${TOTAL_ROUNDS}`;
   el("finalCombo").textContent=state.maxCombo;
   renderRanking();
@@ -855,13 +934,13 @@ function finishGame(gameOver=false){
 function renderRanking(){
   const player=getPlayerInfo();
   const fake=[
-    ["Ana Clara","Escola Municipal Frei Fabiano Merz — 602",4800],
-    ["Miguel Santos","Escola Municipal Fluminense — 601",4200],
-    ["Lívia Beatriz","Escola Municipal Maria Amália Queiroz de Sousa — 603",3600],
-    ["Gabriel Silva","Escola Municipal Rotary — 601",2800]
+    ["Ana Clara","Escola Municipal Frei Fabiano Merz — 602",850000],
+    ["Miguel Santos","Escola Municipal Fluminense — 601",500000],
+    ["Lívia Beatriz","Escola Municipal Maria Amália Queiroz de Sousa — 603",180000],
+    ["Gabriel Silva","Escola Municipal Rotary — 601",65000]
   ];
   const rows=[...fake, [player.name, `${player.school} — ${player.klass}`, state.score, true]].sort((a,b)=>b[2]-a[2]).slice(0,5);
-  el("rankList").innerHTML = rows.map((r,i)=>`<div class="rank-row ${r[3]?'player':''}"><div class="rank-pos">${i+1}º</div><div><div class="rank-name">${r[3]?'⭐ ':''}${escapeHtml(r[0])}</div><div class="rank-school">${escapeHtml(r[1])}</div></div><div class="rank-score">${r[2]} pts</div></div>`).join("");
+  el("rankList").innerHTML = rows.map((r,i)=>`<div class="rank-row ${r[3]?'player':''}"><div class="rank-pos">${i+1}º</div><div><div class="rank-name">${r[3]?'⭐ ':''}${escapeHtml(r[0])}</div><div class="rank-school">${escapeHtml(r[1])}</div></div><div class="rank-score">${formatPoints(r[2])}</div></div>`).join("");
 }
 function escapeHtml(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
 
@@ -938,7 +1017,7 @@ function timeOutQuestion(){
   if(card) card.classList.add("gameover-flash");
   setTimeout(()=>{
     if(card) card.classList.remove("gameover-flash");
-    finishGame(true);
+    finishGame(true, "time");
   },1900);
 }
 
