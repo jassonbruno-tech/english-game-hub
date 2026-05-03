@@ -712,11 +712,7 @@ function playCartoonWrong(){
   try{ tone(520,.16,'sawtooth',.07,.25); setTimeout(()=>tone(260,.14,'triangle',.05,.25),110); }catch(e){}
 }
 function forceScarecrowRender(){
-  try{
-    updateScarecrowParts();
-    applyScarecrowPartsByMistakes();
-    if(typeof updateStats === 'function') updateStats();
-  }catch(e){}
+  try{ updateStats(); }catch(e){}
 }
 
 function playCorrectSound(){ playCartoonCorrect(); }
@@ -797,11 +793,16 @@ function updateStats(){
   el("corrects").textContent = state.corrects;
   el("combo").textContent = state.combo;
   el("round").textContent = `${state.round}/${TOTAL_ROUNDS}`;
-  el("lives").innerHTML = `<span class="parts-left">${state.lives}/${MAX_LIVES}</span> chances — a cada erro, uma parte do espantalho aparece na forca.`;
+
+  const livesLeft = Math.max(0, Math.min(MAX_LIVES, Number(state.lives ?? MAX_LIVES)));
+  const mistakes = MAX_LIVES - livesLeft;
+
+  el("lives").innerHTML = `<span class="parts-left">${livesLeft}</span>/6 partes restantes — a cada erro, uma parte do espantalho aparece na forca.`;
+
   const parts = ["partHead","partBody","partArmL","partArmR","partLegL","partLegR"];
   parts.forEach((id, index) => {
     const p = el(id);
-    if(p) p.classList.toggle("show", index < state.roundMistakes);
+    if(p) p.classList.toggle("show", index < mistakes);
   });
 }
 
@@ -820,7 +821,21 @@ function getMemoryTip(theme){
   return tips[theme] || "💡 💡 Dica de memória: pense nos assuntos estudados no 1º bimestre.";
 }
 
+
+function resetRoundLives(){
+  state.lives = MAX_LIVES;
+  state.roundMistakes = 0;
+  try{
+    const parts = ["partHead","partBody","partArmL","partArmR","partLegL","partLegR"];
+    parts.forEach(id => {
+      const p = el(id);
+      if(p) p.classList.remove("show");
+    });
+  }catch(e){}
+}
+
 function loadChallenge(){
+  resetRoundLives();
   state.current = state.bag[state.round-1];
   state.guessed = new Set();
   state.roundMistakes = 0;
@@ -888,7 +903,8 @@ function chooseLetter(btn, letter){
     btn.classList.add("wrong");
     state.roundMistakes++;
     state.lives = Math.max(0, state.lives - 1);
-    state.combo = 0;
+    
+    updateStats();state.combo = 0;
     updateScarecrowParts();
     playCartoonWrong();
     forceScarecrowRender();
@@ -1017,7 +1033,7 @@ function renderRanking(){
   `).join("");
 }
 
-function finishGame(completed){
+function finishGameOriginalHangmanSound(completed){
   show("finalScreen");
   if(completed){ playVictoryMusic(); } else { playTryAgainMusic(); }
   el("finalTitle").textContent = completed ? "🏆 YOU ARE THE ONE!" : "💪 TRY AGAIN!";
@@ -1069,16 +1085,7 @@ function updateScarecrowParts(){
 
 // --- Som do espantalho reclamando no erro ---
 
-function syncScarecrowError(){
-    syncScarecrowError();
-  try{
-    if(typeof drawHangman === 'function') drawHangman();
-    if(typeof drawScarecrow === 'function') drawScarecrow();
-    if(typeof renderHangman === 'function') renderHangman();
-    if(typeof updateHangman === 'function') updateHangman();
-    if(typeof updateScarecrow === 'function') updateScarecrow();
-  }catch(e){}
-}
+function syncScarecrowError(){ forceScarecrowRender(); }
 
 
 // --- Voz engraçada/cartoonizada do espantalho no erro ---
@@ -1101,6 +1108,91 @@ document.addEventListener('click', function(e){
     setTimeout(forceScarecrowRender, 80);
   }
 }, true);
+
+// --- Pacote de sons cartoon/game sem voz robótica ---
+let soundCtxHangman = null;
+function getHangmanAudioCtx(){
+  try{
+    if(!soundCtxHangman) soundCtxHangman = new (window.AudioContext || window.webkitAudioContext)();
+    if(soundCtxHangman.state === 'suspended') soundCtxHangman.resume();
+    return soundCtxHangman;
+  }catch(e){ return null; }
+}
+function note(freq, start=0, duration=.16, type='sine', volume=.08){
+  const ctx = getHangmanAudioCtx();
+  if(!ctx) return;
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.type = type;
+  osc.frequency.setValueAtTime(freq, ctx.currentTime + start);
+  gain.gain.setValueAtTime(0.0001, ctx.currentTime + start);
+  gain.gain.exponentialRampToValueAtTime(volume, ctx.currentTime + start + .02);
+  gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + start + duration);
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+  osc.start(ctx.currentTime + start);
+  osc.stop(ctx.currentTime + start + duration + .03);
+}
+function slideNote(from, to, start=0, duration=.26, type='triangle', volume=.1){
+  const ctx = getHangmanAudioCtx();
+  if(!ctx) return;
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.type = type;
+  osc.frequency.setValueAtTime(from, ctx.currentTime + start);
+  osc.frequency.exponentialRampToValueAtTime(to, ctx.currentTime + start + duration);
+  gain.gain.setValueAtTime(0.0001, ctx.currentTime + start);
+  gain.gain.exponentialRampToValueAtTime(volume, ctx.currentTime + start + .02);
+  gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + start + duration);
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+  osc.start(ctx.currentTime + start);
+  osc.stop(ctx.currentTime + start + duration + .04);
+}
+function playCartoonCorrect(){
+  // Som alegre: “ding ding” de acerto
+  note(660, 0, .12, 'sine', .08);
+  note(880, .10, .14, 'sine', .075);
+  note(1175, .21, .16, 'triangle', .06);
+}
+function playCartoonWrong(){
+  // Som engraçado de erro: “boing + queda”, sem voz robotizada
+  slideNote(980, 360, 0, .28, 'sawtooth', .065);
+  note(240, .22, .12, 'triangle', .06);
+  slideNote(520, 180, .30, .18, 'square', .035);
+}
+function playTryAgainMusic(){
+  // Melodia curta motivacional, leve e não triste
+  const seq = [392, 440, 494, 440, 523, 494, 440, 392];
+  seq.forEach((f,i)=>note(f, i*.13, .12, i%2?'triangle':'sine', .055));
+  note(330, 1.08, .22, 'triangle', .045);
+  note(392, 1.22, .25, 'triangle', .045);
+}
+function playVictoryMusic(){
+  // Melodia de conquista mais bonita
+  const seq = [523, 659, 784, 1046, 988, 1046, 1175, 1318];
+  seq.forEach((f,i)=>note(f, i*.12, .14, 'sine', .06));
+  note(1568, 1.02, .28, 'triangle', .06);
+  note(1046, 1.06, .34, 'sine', .04);
+}
+function playScarecrowComplain(){ playCartoonWrong(); }
+function scarecrowCry(){ playCartoonWrong(); }
+function playCorrectSound(){ playCartoonCorrect(); }
+function playWrongSound(){ playCartoonWrong(); }
+function playErrorSound(){ playCartoonWrong(); }
+
+
+function finishGame(won){
+  try{
+    if(won) playVictoryMusic();
+    else playTryAgainMusic();
+  }catch(e){}
+  return finishGameOriginalHangmanSound(won);
+}
+
+
+document.addEventListener('click', ()=>{ try{ getHangmanAudioCtx(); }catch(e){} }, {once:true});
+
 </script>
 </body>
 </html>
