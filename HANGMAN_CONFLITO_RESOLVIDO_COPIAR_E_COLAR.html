@@ -1820,18 +1820,7 @@ const FAKE_RANKING_NAMES = [
 ];
 
 let state = {
-  score:0,
-  corrects:0,
-  combo:0,
-  maxCombo:0,
-  round:1,
-  lives:MAX_LIVES,
-  bag:[],
-  current:null,
-  guessed:new Set(),
-  roundMistakes:0,
-  finishedRound:false
-};
+    challengeList: buildPhaseChallengeList(),};
 
 function el(id){return document.getElementById(id)}
 function normalizeText(value){
@@ -1847,9 +1836,7 @@ function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Mat
 function show(id){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));el(id).classList.add("active");document.body.classList.toggle("playing", id==="gameScreen")}
 
 function makeBag(){
-  const phaseBag = buildPhaseChallengeList();
-  const source = phaseBag.length ? phaseBag : CHALLENGES;
-  const bag = shuffle(source);
+  const bag = shuffle(CHALLENGES);
   while(bag.length < TOTAL_ROUNDS) bag.push(...shuffle(CHALLENGES));
   return bag.slice(0,TOTAL_ROUNDS);
 }
@@ -2034,7 +2021,7 @@ function guessWord(){
   if(state.finishedRound) return;
   const guess = normalizeText(el("guessInput").value);
   const answer = normalizeText(state.current.word);
-  const accepted = normalizeText(state.current.word);
+  const accepted = normalizeText(state.current.answer);
 
   if(!guess){
     el("feedback").className = "feedback bad";
@@ -2070,7 +2057,7 @@ function completeRound(success){
   state.maxCombo = Math.max(state.maxCombo, state.combo);
   state.score += 120 + (state.combo >= 3 ? 20 : 0);
   el("feedback").className = "feedback ok";
-  el("feedback").innerHTML = `✅ Great job! A resposta era <b>${state.current.word}</b>. Você venceu este desafio!`;
+  el("feedback").innerHTML = `✅ Great job! A resposta era <b>${state.current.answer}</b>. Você venceu este desafio!`;
   updateStats();
 
   if(state.round >= TOTAL_ROUNDS){
