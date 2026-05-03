@@ -60,10 +60,10 @@ main{padding:14px;color:#fff}
 .lives-card{background:rgba(38,6,54,.8);border:1px solid rgba(255,70,133,.32);border-radius:15px;padding:7px;text-align:center;font-weight:900;margin-bottom:9px;color:#fff}
 .heart{font-size:24px;color:#e11d48;margin:0 2px;line-height:1} .heart.lost{display:none}
 .game-grid{display:grid;grid-template-columns:.95fr 1.05fr;gap:12px;align-items:stretch}
-.hang-area{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;min-height:390px}
+.hang-area{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:12px;min-height:390px}
 .hang-emoji{font-size:82px;filter:drop-shadow(0 10px 14px rgba(0,0,0,.16))}
-.word{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;min-height:58px}
-.letter-box{width:34px;height:42px;border-radius:10px;border:2px solid #bfdbfe;background:white;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;color:#1d4ed8}
+.word{display:flex;flex-wrap:wrap;gap:6px 7px;justify-content:center;align-content:flex-start;align-items:center;min-height:72px;width:100%;padding:8px 10px;border-radius:14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,230,109,.18)}
+.letter-box{width:32px;height:40px;border-radius:10px;border:2px solid #bfdbfe;background:white;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;color:#1d4ed8;flex:0 0 32px}
 .space-box{width:18px}
 .theme-chip{display:inline-block;background:rgba(255,230,109,.16);color:#ffe66d;border:1px solid rgba(255,230,109,.35);border-radius:999px;padding:7px 12px;font-weight:900;margin-bottom:8px}
 .hint{font-size:20px;line-height:1.25;font-weight:900;margin:0 0 10px;color:#fff}
@@ -162,35 +162,38 @@ body.playing .feedback{font-size:10.5px;padding:5px;max-height:42px;overflow:hid
 }
 @media(max-width:860px){
   body.playing .hang-area{
-    min-height:230px;
-    gap:6px;
+    min-height:246px;
+    gap:8px;
   }
   body.playing #hangSvg{
-    width:165px;
+    width:148px;
   }
   body.playing .word{
-    gap:5px;
-    min-height:42px;
+    gap:6px 6px;
+    min-height:58px;
+    padding:8px 8px;
   }
   body.playing .letter-box{
-    width:29px;
-    height:36px;
+    width:27px;
+    height:34px;
     border-radius:8px;
-    font-size:20px;
+    font-size:18px;
     border-width:2px;
+    flex:0 0 27px;
   }
   body.playing .space-box{
-    width:15px;
+    width:12px;
   }
   body.playing .theme-chip{
-    font-size:13px;
-    padding:7px 10px;
+    font-size:12px;
+    padding:6px 10px;
+    margin-bottom:6px;
   }
   body.playing .hint{
-    font-size:18px;
-    line-height:1.16;
+    font-size:17px;
+    line-height:1.18;
     margin-bottom:7px;
-    max-height:64px;
+    max-height:none;
   }
   body.playing .keyboard{
     grid-template-columns:repeat(7,1fr);
@@ -225,22 +228,23 @@ body.playing .feedback{font-size:10.5px;padding:5px;max-height:42px;overflow:hid
 }
 @media(max-width:380px){
   body.playing .hang-area{
-    min-height:205px;
+    min-height:220px;
   }
   body.playing #hangSvg{
-    width:140px;
+    width:132px;
   }
   body.playing .letter-box{
-    width:26px;
-    height:33px;
-    font-size:18px;
+    width:24px;
+    height:31px;
+    font-size:17px;
+    flex:0 0 24px;
   }
   body.playing .key{
     font-size:15px;
     padding:7px 0;
   }
   body.playing .hint{
-    font-size:16px;
+    font-size:15px;
   }
 }
 
@@ -259,12 +263,12 @@ body.playing .feedback{font-size:10.5px;padding:5px;max-height:42px;overflow:hid
 @media(max-width:860px){
   body.playing .memory-tip{
     margin-top:5px;
-    padding:6px;
+    padding:6px 7px;
     border-radius:9px;
-    font-size:11.5px;
-    line-height:1.15;
-    max-height:42px;
-    overflow:hidden;
+    font-size:11px;
+    line-height:1.2;
+    max-height:none;
+    overflow:visible;
   }
 }
 @media(max-width:380px){
@@ -276,6 +280,7 @@ body.playing .feedback{font-size:10.5px;padding:5px;max-height:42px;overflow:hid
 
 
 .lives-info, #lives{
+  display:inline-block;
   width:100%;
   text-align:center;
   font-size:12px;
@@ -286,6 +291,7 @@ body.playing .feedback{font-size:10.5px;padding:5px;max-height:42px;overflow:hid
   border-radius:10px;
   padding:5px 8px;
   margin:4px 0;
+  line-height:1.2;
 }
 @media(max-width:860px){
   .lives-info, #lives{font-size:10px;padding:4px 6px;margin:3px 0;}
@@ -355,7 +361,106 @@ body.playing .memory-tip{
   color:#fff3b0;
 }
 #lives .parts-left{color:#ffe66d;font-weight:1000}
-body.playing .brand{position:absolute;right:10px;bottom:8px;background:linear-gradient(135deg,#1d4ed8,#e11d48);padding:7px 10px;border-radius:999px;color:white;font-size:10px;margin:0}
+body.playing .brand{position:static;display:block;width:fit-content;max-width:100%;margin:8px auto 0;background:linear-gradient(135deg,#1d4ed8,#e11d48);padding:7px 10px;border-radius:999px;color:white;font-size:10px;text-align:center}
+
+.question-card{display:flex;flex-direction:column;justify-content:flex-start}
+#feedback{min-height:0}
+body.playing .question-card{min-height:0}
+body.playing .lives-card b{display:block;margin-bottom:2px}
+body.playing .lives-card #lives{font-size:11px}
+@media(max-width:860px){
+  body.playing .brand{font-size:9px;padding:6px 9px;margin-top:6px}
+}
+
+/* --- Ajustes finais: teclado, dica e tela final --- */
+.keys{
+  gap:7px !important;
+}
+.key{
+  min-height:36px !important;
+  font-size:17px !important;
+  border-radius:11px !important;
+  font-weight:1000 !important;
+  box-shadow:0 4px 10px rgba(0,0,0,.14);
+}
+.theme-chip{
+  font-size:13px !important;
+  background:linear-gradient(135deg, rgba(255,230,109,.22), rgba(255,183,3,.16)) !important;
+  color:#fff3b0 !important;
+  border:1px solid rgba(255,230,109,.48) !important;
+  box-shadow:0 0 14px rgba(255,230,109,.12);
+}
+.hint{
+  background:rgba(255,255,255,.07) !important;
+  border:1px solid rgba(255,255,255,.16) !important;
+  border-left:5px solid #ffe66d !important;
+  padding:10px 12px !important;
+  border-radius:16px !important;
+  color:#ffffff !important;
+  text-shadow:0 1px 2px rgba(0,0,0,.35);
+}
+.memory-tip{
+  background:linear-gradient(135deg, rgba(255,230,109,.18), rgba(14,165,233,.10)) !important;
+  border:1px solid rgba(255,230,109,.34) !important;
+  color:#fff7c2 !important;
+  font-weight:900 !important;
+}
+.final-ranking, .end-card, .result-card, .final-card{
+  background:linear-gradient(180deg, rgba(8,14,50,.96), rgba(16,9,55,.95)) !important;
+  border:1px solid rgba(255,230,109,.24) !important;
+  color:#fff !important;
+  box-shadow:0 20px 45px rgba(0,0,0,.35), 0 0 35px rgba(255,230,109,.08) !important;
+}
+.final-ranking h2, .end-card h2, .result-card h2, .final-card h2{
+  color:#ffe66d !important;
+  text-shadow:0 0 14px rgba(255,230,109,.18);
+}
+.final-ranking p, .end-card p, .result-card p, .final-card p{
+  color:#eaf2ff !important;
+}
+.ranking-table, .ranking-list{
+  background:rgba(255,255,255,.06) !important;
+  border-radius:14px !important;
+}
+.brand{
+  position:static !important;
+  width:fit-content !important;
+  max-width:100% !important;
+  margin:8px auto 0 !important;
+  background:linear-gradient(135deg,#1d4ed8,#e11d48) !important;
+  color:#fff !important;
+  padding:7px 10px !important;
+  border-radius:999px !important;
+  text-align:center !important;
+  font-size:10px !important;
+}
+@media(max-width:860px){
+  .keys{gap:6px !important;}
+  .key{
+    min-height:34px !important;
+    font-size:16px !important;
+    padding:7px 0 !important;
+  }
+  .hint{
+    font-size:16px !important;
+    line-height:1.22 !important;
+    padding:9px 10px !important;
+  }
+  .theme-chip{
+    font-size:12px !important;
+    padding:6px 10px !important;
+  }
+}
+@media(max-width:380px){
+  .key{
+    min-height:32px !important;
+    font-size:15px !important;
+  }
+  .hint{
+    font-size:15px !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -393,7 +498,7 @@ body.playing .brand{position:absolute;right:10px;bottom:8px;background:linear-gr
     <div class="stat"><b id="combo">0</b><span>Combo</span></div>
     <div class="stat"><b id="round">1/30</b><span>Desafio</span></div>
   </div>
-  <div class="lives-card"><b>Forca do espantalho:</b> <span id="lives">6/6 chances — cada erro coloca uma parte na forca.</span></div>
+  <div class="lives-card"><b>Forca do espantalho</b><span id="lives">6 partes restantes do espantalho.</span></div>
   <div class="game-grid">
     <div class="card hang-area">
       <div class="hangman-box">
@@ -461,7 +566,7 @@ body.playing .brand{position:absolute;right:10px;bottom:8px;background:linear-gr
         <input id="guessInput" type="text" placeholder="Tentar palavra completa">
         <button class="btn" onclick="guessWord()">OK</button>
       </div>
-      <div id="memoryTip" class="memory-tip">💡 Dica de memória: pense nos assuntos estudados no 1º bimestre.</div>
+      <div id="memoryTip" class="memory-tip">💡 💡 Dica de memória: pense nos assuntos estudados no 1º bimestre.</div>
       <div id="feedback" class="feedback"></div>
     </div>
   </div>
@@ -634,16 +739,16 @@ function updateStats(){
 
 function getMemoryTip(theme){
   const tips = {
-    "Greetings": "💡 Dica de memória: pense em palavras usadas para cumprimentar alguém, como quando você chega à escola.",
-    "Farewells": "💡 Dica de memória: pense em palavras usadas para se despedir no fim da aula ou ao sair de um lugar.",
-    "Spelling names": "💡 Dica de memória: pense em letras, nome e na pergunta “How do you spell...?”.",
-    "Classroom commands": "💡 Dica de memória: pense nos comandos que a professora usa em sala: ler, ouvir, repetir, sentar e abrir o livro.",
-    "Classroom expressions": "💡 Dica de memória: pense nas frases úteis da sala: pedir ajuda, dizer que não sabe ou pedir para tentar.",
-    "Personal information": "💡 Dica de memória: pense em nome, idade e cidade: informações pessoais básicas.",
-    "Personal pronouns": "💡 Dica de memória: pense nos pronomes: I, you, he, she, we e they.",
-    "Possessive adjectives": "💡 Dica de memória: pense em posse: meu/minha, seu/sua, dele e dela."
+    "Greetings": "💡 💡 Dica de memória: pense em palavras usadas para cumprimentar alguém, como quando você chega à escola.",
+    "Farewells": "💡 💡 Dica de memória: pense em palavras usadas para se despedir no fim da aula ou ao sair de um lugar.",
+    "Spelling names": "💡 💡 Dica de memória: pense em letras, nome e na pergunta “How do you spell...?”.",
+    "Classroom commands": "💡 💡 Dica de memória: pense nos comandos que a professora usa em sala: ler, ouvir, repetir, sentar e abrir o livro.",
+    "Classroom expressions": "💡 💡 Dica de memória: pense nas frases úteis da sala: pedir ajuda, dizer que não sabe ou pedir para tentar.",
+    "Personal information": "💡 💡 Dica de memória: pense em nome, idade e cidade: informações pessoais básicas.",
+    "Personal pronouns": "💡 💡 Dica de memória: pense nos pronomes: I, you, he, she, we e they.",
+    "Possessive adjectives": "💡 💡 Dica de memória: pense em posse: meu/minha, seu/sua, dele e dela."
   };
-  return tips[theme] || "💡 Dica de memória: pense nos assuntos estudados no 1º bimestre.";
+  return tips[theme] || "💡 💡 Dica de memória: pense nos assuntos estudados no 1º bimestre.";
 }
 
 function loadChallenge(){
