@@ -2,267 +2,395 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>6º Ano - English Games</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>6º Ano — English Game Zone</title>
   <style>
     :root{
-      --bg1:#0f2870;
-      --bg2:#00a6c8;
-      --card:#ffffff;
-      --text:#162033;
-      --muted:#5b6475;
-      --line:#e2e8f0;
-      --shadow:0 14px 28px rgba(0,0,0,.17);
+      --bg1:#05061a;
+      --bg2:#080b33;
+      --bg3:#16014a;
+      --blue:#00dcff;
+      --purple:#7c3aed;
+      --pink:#ff2ebd;
+      --gold:#ffe66d;
+      --white:#ffffff;
+      --soft:#dbeafe;
+      --glass:rgba(9,13,58,.72);
+      --glass2:rgba(18,10,78,.70);
     }
     *{box-sizing:border-box}
+    html,body{min-height:100%;margin:0}
     body{
-      margin:0;
-      min-height:100vh;
-      font-family:Arial, Helvetica, sans-serif;
-      background:linear-gradient(135deg,var(--bg1),var(--bg2));
-      color:var(--text);
-      padding:16px;
-    }
-    .wrap{
-      max-width:1080px;
-      margin:0 auto;
-      background:rgba(255,255,255,.96);
-      border-radius:28px;
-      box-shadow:var(--shadow);
-      overflow:hidden;
-    }
-    header{
-      color:white;
-      text-align:center;
-      padding:24px 18px 22px;
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+      color:var(--white);
       background:
-        radial-gradient(circle at top left, rgba(255,255,255,.28), transparent 28%),
-        linear-gradient(135deg,#1d4ed8,#38bdf8);
+        radial-gradient(circle at 18% 10%, rgba(0,220,255,.28), transparent 22%),
+        radial-gradient(circle at 82% 13%, rgba(255,46,189,.25), transparent 24%),
+        radial-gradient(circle at 50% 78%, rgba(124,58,237,.24), transparent 30%),
+        linear-gradient(180deg,var(--bg1),var(--bg2) 48%,var(--bg3));
+      overflow-x:hidden;
     }
-    .topline{
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background-image:
+        radial-gradient(circle, rgba(255,255,255,.95) 0 1.2px, transparent 1.5px),
+        radial-gradient(circle, rgba(255,230,109,.9) 0 1.2px, transparent 1.5px),
+        radial-gradient(circle, rgba(0,220,255,.75) 0 1px, transparent 1.4px);
+      background-size:120px 120px, 190px 190px, 250px 250px;
+      background-position:0 0, 42px 85px, 95px 140px;
+      opacity:.45;
+      z-index:0;
+    }
+    .page{
+      position:relative;
+      z-index:1;
+      width:min(1120px,100%);
+      margin:0 auto;
+      padding:18px 16px 30px;
+    }
+    .topbar{
       display:flex;
-      justify-content:space-between;
-      gap:10px;
       align-items:center;
-      max-width:980px;
-      margin:0 auto 12px;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:16px;
     }
     .back{
-      color:white;
+      display:inline-flex;
+      align-items:center;
+      gap:7px;
+      color:#fff;
       text-decoration:none;
-      background:rgba(255,255,255,.18);
-      border:1px solid rgba(255,255,255,.38);
-      padding:9px 12px;
+      font-weight:900;
+      padding:10px 14px;
       border-radius:999px;
-      font-weight:800;
-      font-size:14px;
+      border:1px solid rgba(255,255,255,.35);
+      background:rgba(15,23,42,.52);
+      backdrop-filter:blur(10px);
+      box-shadow:0 8px 18px rgba(0,0,0,.24);
     }
-    .tag{
-      color:white;
-      background:rgba(255,255,255,.18);
-      border:1px solid rgba(255,255,255,.38);
-      padding:9px 12px;
-      border-radius:999px;
-      font-weight:800;
+    .music-toggle{
+      border:1px solid rgba(255,255,255,.42);
+      background:linear-gradient(135deg,rgba(255,46,189,.65),rgba(0,220,255,.42));
+      color:#fff;
+      font-weight:1000;
       font-size:14px;
+      padding:10px 14px;
+      border-radius:999px;
+      backdrop-filter:blur(10px);
+      box-shadow:0 8px 20px rgba(0,0,0,.25),0 0 18px rgba(255,46,189,.14);
+      cursor:pointer;
+    }
+    .music-toggle.playing{
+      background:linear-gradient(135deg,rgba(34,197,94,.78),rgba(0,220,255,.45));
+    }
+    .hero{
+      text-align:center;
+      padding:14px 8px 18px;
+    }
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 13px;
+      border-radius:999px;
+      background:rgba(255,230,109,.12);
+      border:1px solid rgba(255,230,109,.38);
+      color:#fff7ad;
+      font-weight:900;
+      font-size:13px;
+      margin-bottom:10px;
     }
     h1{
-      margin:6px 0 8px;
-      font-size:clamp(30px,7vw,54px);
+      margin:0;
+      font-size:clamp(36px,8vw,76px);
+      line-height:.92;
+      font-weight:1000;
+      letter-spacing:.5px;
+      background:linear-gradient(180deg,#fff 0 46%,#ffe66d 47% 100%);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+      text-shadow:0 0 18px rgba(255,230,109,.14);
     }
-    .subtitle{
-      max-width:720px;
-      margin:0 auto;
-      line-height:1.4;
-      font-size:clamp(15px,3.5vw,19px);
-      opacity:.96;
+    .hero-sub{
+      max-width:760px;
+      margin:12px auto 0;
+      color:#dbeafe;
+      font-size:clamp(15px,3.8vw,20px);
+      font-weight:800;
+      line-height:1.35;
     }
-    main{padding:20px}
-    .topics{
-      background:#f8fafc;
-      border:1px solid var(--line);
-      border-radius:22px;
+    .section{
+      margin-top:14px;
+      border-radius:26px;
       padding:16px;
-      margin-bottom:18px;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(0,220,255,.13), transparent 30%),
+        radial-gradient(circle at 100% 0%, rgba(255,46,189,.13), transparent 34%),
+        linear-gradient(180deg,rgba(8,12,58,.78),rgba(11,7,50,.82));
+      border:1px solid rgba(255,255,255,.14);
+      box-shadow:0 12px 28px rgba(0,0,0,.24), inset 0 0 0 1px rgba(255,255,255,.04);
+      backdrop-filter:blur(10px);
     }
-    .topics h2{
+    .section h2{
       margin:0 0 10px;
-      font-size:20px;
-      color:#0f3f91;
+      color:#fff;
+      font-size:clamp(20px,5vw,30px);
+      line-height:1.08;
+      font-weight:1000;
+    }
+    .teacher-note{
+      color:#fff;
+      font-size:clamp(15px,4vw,18px);
+      line-height:1.48;
+      font-weight:720;
+      margin:0;
+    }
+    .teacher-note strong{
+      color:#ffe66d;
+    }
+    .bncc-text{
+      color:#dbeafe;
+      font-size:15px;
+      line-height:1.45;
+      font-weight:750;
+      margin:0 0 14px;
     }
     .chips{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:10px;
     }
     .chip{
-      background:white;
-      border:1px solid #dbe4f0;
-      border-radius:999px;
-      padding:8px 11px;
-      font-weight:700;
-      font-size:13px;
-      color:#27405f;
+      padding:11px 10px;
+      border-radius:18px;
+      background:rgba(5,10,45,.68);
+      border:1px solid rgba(0,220,255,.30);
+      color:#fff;
+      font-weight:900;
+      text-align:center;
+      box-shadow:0 0 16px rgba(0,220,255,.08) inset;
+      min-height:58px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      line-height:1.15;
     }
-    .games{
+    .chip:nth-child(2n){border-color:rgba(255,46,189,.36);box-shadow:0 0 16px rgba(255,46,189,.08) inset}
+    .chip:nth-child(3n){border-color:rgba(255,230,109,.36);box-shadow:0 0 16px rgba(255,230,109,.07) inset}
+    .games-grid{
       display:grid;
       grid-template-columns:repeat(5,1fr);
-      gap:14px;
+      gap:12px;
+      margin-top:12px;
     }
-    .game{
-      min-height:245px;
+    .game-card{
+      position:relative;
+      overflow:hidden;
+      min-height:210px;
       border-radius:24px;
-      padding:18px;
-      text-decoration:none;
-      color:white;
+      padding:15px;
+      background:
+        radial-gradient(circle at 20% 0%, rgba(255,46,189,.18), transparent 36%),
+        radial-gradient(circle at 90% 15%, rgba(0,220,255,.16), transparent 32%),
+        linear-gradient(180deg,rgba(12,17,75,.86),rgba(12,7,48,.92));
+      border:1px solid rgba(255,255,255,.14);
+      box-shadow:0 12px 24px rgba(0,0,0,.25),0 0 0 1px rgba(255,255,255,.04) inset;
       display:flex;
       flex-direction:column;
       justify-content:space-between;
-      box-shadow:0 10px 22px rgba(0,0,0,.14);
-      position:relative;
-      overflow:hidden;
-      transition:.18s ease;
+      gap:12px;
     }
-    .game:hover{transform:translateY(-4px)}
-    .game::after{
+    .game-card::after{
       content:"";
-      width:130px;
-      height:130px;
-      border-radius:50%;
-      background:rgba(255,255,255,.16);
       position:absolute;
-      right:-45px;
-      bottom:-45px;
+      inset:auto -20% -35% -20%;
+      height:70%;
+      background:radial-gradient(ellipse at center, rgba(255,46,189,.15), transparent 58%);
+      pointer-events:none;
     }
-    .mission{background:linear-gradient(135deg,#2563eb,#06b6d4)}
-    .board{background:linear-gradient(135deg,#f97316,#facc15)}
-    .smart{background:linear-gradient(135deg,#16a34a,#86efac)}
-    .hangman{background:linear-gradient(135deg,#7c3aed,#c084fc)}
-    .spin{background:linear-gradient(135deg,#e11d48,#fb7185)}
-    .emoji{font-size:38px}
-    .game h3{
-      margin:10px 0 8px;
-      font-size:23px;
-      color:white;
-      line-height:1.05;
+    .game-icon{
+      font-size:38px;
+      filter:drop-shadow(0 0 10px rgba(255,230,109,.18));
     }
-    .game p{
+    .game-card h3{
       margin:0;
-      font-size:14px;
-      line-height:1.35;
-      color:rgba(255,255,255,.95);
+      font-size:20px;
+      line-height:1.05;
+      color:#fff;
+      font-weight:1000;
+    }
+    .game-card p{
+      margin:8px 0 0;
+      color:#dbeafe;
+      font-size:13.5px;
+      line-height:1.25;
+      font-weight:750;
     }
     .play{
-      margin-top:12px;
-      padding:10px 12px;
-      border-radius:14px;
-      background:rgba(255,255,255,.22);
-      border:1px solid rgba(255,255,255,.36);
-      color:white;
-      text-align:center;
-      font-weight:900;
       position:relative;
-      z-index:1;
+      z-index:2;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      text-decoration:none;
+      color:#fff;
+      font-weight:1000;
+      padding:11px 12px;
+      border-radius:18px;
+      background:linear-gradient(135deg,#ff9b00,#ff2ebd 54%,#7c3aed);
+      border:1px solid rgba(255,255,255,.26);
+      box-shadow:0 10px 18px rgba(255,46,189,.20);
     }
-    .note{
-      margin-top:18px;
-      color:var(--muted);
+    .signature{
+      margin:18px auto 0;
       text-align:center;
-      font-size:14px;
-      line-height:1.35;
+      color:#e0f2fe;
+      font-weight:900;
+      font-size:13px;
+      opacity:.95;
     }
-    @media(max-width:1000px){
-      .games{grid-template-columns:repeat(2,1fr)}
+    @media(max-width:980px){
+      .chips{grid-template-columns:repeat(2,1fr)}
+      .games-grid{grid-template-columns:repeat(2,1fr)}
     }
     @media(max-width:620px){
-      body{padding:10px}
-      .wrap{border-radius:22px}
-      header{padding:18px 12px}
-      main{padding:14px}
-      .topline{flex-direction:column; align-items:stretch}
-      .back,.tag{text-align:center}
-      .games{grid-template-columns:1fr}
-      .game{min-height:165px}
+      .page{padding:12px 10px 22px}
+      .topbar{margin-bottom:8px}
+      .back,.music-toggle{font-size:12px;padding:8px 10px}
+      .hero{padding-top:8px}
+      .section{padding:13px;border-radius:22px}
+      .chips{grid-template-columns:1fr 1fr;gap:8px}
+      .chip{font-size:12px;min-height:52px;padding:9px 8px;border-radius:15px}
+      .games-grid{grid-template-columns:1fr;gap:10px}
+      .game-card{min-height:166px;border-radius:22px}
+      .game-icon{font-size:34px}
+      .game-card h3{font-size:22px}
+      .game-card p{font-size:13.5px}
     }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <div class="topline">
-        <a class="back" href="index.html">⬅ Voltar para séries</a>
-        <div class="tag">🎒 1º Bimestre</div>
-      </div>
-      <h1>6º Ano — English Games</h1>
-      <p class="subtitle">Escolha um jogo para revisar os conteúdos do 1º bimestre de forma leve, divertida e desafiadora.</p>
-    </header>
+  <audio id="bgMusic6ano" src="musica-fundo.mp3.mp3" loop preload="auto"></audio>
 
-    <main>
-      <section class="topics">
-        <h2>Conteúdos desta fase</h2>
-        <div class="chips">
-          <span class="chip">Greetings</span>
-          <span class="chip">Farewells</span>
-          <span class="chip">Spelling names</span>
-          <span class="chip">Classroom commands</span>
-          <span class="chip">Classroom expressions</span>
-          <span class="chip">Personal information</span>
-          <span class="chip">Personal pronouns</span>
-          <span class="chip">Possessive adjectives</span>
-        </div>
-      </section>
+  <main class="page">
+    <div class="topbar">
+      <a class="back" href="index.html">← Voltar ao Hub</a>
+      <button class="music-toggle" id="musicToggle6ano" onclick="toggleBgMusic6ano()">🎵 Ativar trilha</button>
+    </div>
 
-      <section class="games">
-        <a class="game mission" href="6ano-mission-game.html">
-          <div>
-            <div class="emoji">🚀</div>
-            <h3>Mission Game</h3>
-            <p>Avance por missões, responda desafios e acumule pontos revisando tudo do bimestre.</p>
-          </div>
-          <div class="play">JOGAR</div>
-        </a>
+    <section class="hero">
+      <div class="badge">📘 6º ano • English Game Zone • Alinhado à BNCC</div>
+      <h1>6º ANO</h1>
+      <p class="hero-sub">Aprenda inglês jogando, avançando por missões e superando desafios.</p>
+    </section>
 
-        <a class="game board" href="6ano-board-game.html">
-          <div>
-            <div class="emoji">🎲</div>
-            <h3>Board Game</h3>
-            <p>Jogo de tabuleiro com dado, casas especiais e perguntas de Inglês.</p>
-          </div>
-          <div class="play">JOGAR</div>
-        </a>
-
-        <a class="game smart" href="6ano-smart-choice.html">
-          <div>
-            <div class="emoji">🧩</div>
-            <h3>Smart Choice</h3>
-            <p>Observe imagens, leia as opções e escolha a palavra correta.</p>
-          </div>
-          <div class="play">JOGAR</div>
-        </a>
-
-        <a class="game hangman" href="6ano-hangman-challenge.html">
-          <div>
-            <div class="emoji">🔤</div>
-            <h3>Hangman Challenge</h3>
-            <p>Descubra a palavra secreta com dicas sobre vocabulário e spelling.</p>
-          </div>
-          <div class="play">JOGAR</div>
-        </a>
-
-        <a class="game spin" href="6ano-spin-and-answer.html">
-          <div>
-            <div class="emoji">🎡</div>
-            <h3>Spin and Answer</h3>
-            <p>Gire a roleta, descubra o tema e responda ao desafio sorteado.</p>
-          </div>
-          <div class="play">JOGAR</div>
-        </a>
-      </section>
-
-      <p class="note">
-        Dica: cada jogo ficará em um arquivo separado para carregar melhor no celular.
+    <section class="section">
+      <h2>Por que aprender inglês jogando?</h2>
+      <p class="teacher-note">
+        <strong>Percebendo, em sala de aula, as dificuldades de muitos alunos em relação à Língua Inglesa,</strong>
+        este espaço foi criado como uma forma lúdica, acessível e motivadora de aproximar o inglês do cotidiano do estudante.
+        Por meio dos jogos, o aluno pode revisar conteúdos, ampliar o vocabulário, praticar situações reais de comunicação
+        e compreender que aprender inglês também pode ser leve, divertido e possível.
       </p>
-    </main>
-  </div>
+    </section>
+
+    <section class="section">
+      <h2>Aprendizagens desenvolvidas nos jogos</h2>
+      <p class="bncc-text">
+        Os jogos foram organizados para estimular habilidades importantes previstas para o 6º ano, como interação em inglês,
+        compreensão de comandos, leitura de textos curtos, construção de repertório lexical e uso funcional da língua em situações reais.
+      </p>
+      <div class="chips">
+        <div class="chip">Comunicação em sala</div>
+        <div class="chip">Comandos e expressões</div>
+        <div class="chip">Informações pessoais</div>
+        <div class="chip">Leitura de textos curtos</div>
+        <div class="chip">Vocabulário do cotidiano</div>
+        <div class="chip">Pronomes e posse</div>
+        <div class="chip">Verb to be em uso</div>
+        <div class="chip">Inglês em situações reais</div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Escolha seu desafio</h2>
+      <div class="games-grid">
+        <article class="game-card">
+          <div>
+            <div class="game-icon">🎡</div>
+            <h3>Spin and Answer</h3>
+            <p>Gire a roleta, responda aos desafios e avance nas missões.</p>
+          </div>
+          <a class="play" href="6ano-spin-and-answer.html">Jogar agora</a>
+        </article>
+
+        <article class="game-card">
+          <div>
+            <div class="game-icon">🌾</div>
+            <h3>Hangman Challenge</h3>
+            <p>Descubra palavras, use dicas e amplie seu vocabulário.</p>
+          </div>
+          <a class="play" href="6ano-hangman-challenge.html">Jogar agora</a>
+        </article>
+
+        <article class="game-card">
+          <div>
+            <div class="game-icon">🧠</div>
+            <h3>Smart Choice</h3>
+            <p>Escolha respostas rápidas e treine o inglês do cotidiano.</p>
+          </div>
+          <a class="play" href="6ano-smart-choice.html">Jogar agora</a>
+        </article>
+
+        <article class="game-card">
+          <div>
+            <div class="game-icon">🏎️</div>
+            <h3>Board Game</h3>
+            <p>Avance no tabuleiro, enfrente bônus e revise regras de forma divertida.</p>
+          </div>
+          <a class="play" href="6ano-board-game.html">Jogar agora</a>
+        </article>
+
+        <article class="game-card">
+          <div>
+            <div class="game-icon">🗺️</div>
+            <h3>Mission Game</h3>
+            <p>Cumpra missões pela cidade e use o inglês em situações reais.</p>
+          </div>
+          <a class="play" href="6ano-mission-game.html">Jogar agora</a>
+        </article>
+      </div>
+    </section>
+
+    <div class="signature">Jogo idealizado pelo professor Jasson Bruno.</div>
+  </main>
+
+  <script>
+    const music6ano = document.getElementById("bgMusic6ano");
+    const musicBtn6ano = document.getElementById("musicToggle6ano");
+    if (music6ano) music6ano.volume = 0.28;
+
+    async function toggleBgMusic6ano(){
+      if(!music6ano || !musicBtn6ano) return;
+      try{
+        if(music6ano.paused){
+          await music6ano.play();
+          musicBtn6ano.textContent = "⏸️ Pausar trilha";
+          musicBtn6ano.classList.add("playing");
+        } else {
+          music6ano.pause();
+          musicBtn6ano.textContent = "🎵 Ativar trilha";
+          musicBtn6ano.classList.remove("playing");
+        }
+      } catch(e){
+        alert("Toque novamente para ativar a música. Alguns celulares bloqueiam o áudio no primeiro toque.");
+      }
+    }
+  </script>
 </body>
 </html>
