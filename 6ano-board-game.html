@@ -1,155 +1,616 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>6º Ano Board Game F1</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>6º Ano - Board Game F1 Circuit</title>
 <style>
+:root{
+  --bg:#020617;
+  --panel:#07111f;
+  --cyan:#67e8f9;
+  --blue:#38bdf8;
+  --red:#ff1744;
+  --silver:#e5e7eb;
+  --green:#20ff67;
+  --yellow:#ffd21f;
+  --purple:#a855f7;
+  --track:#111827;
+  --track2:#0b1220;
+}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;height:100%;overflow:hidden;background:#020617;color:white;font-family:Arial,Helvetica,sans-serif}
-button{border:0;font-family:inherit;font-weight:900}
+html,body{
+  margin:0;width:100%;height:100%;overflow:hidden;
+  background:#020617;color:white;font-family:Arial,Helvetica,sans-serif;
+}
+button{border:0;font-family:inherit;cursor:pointer}
 .app{
-  width:min(100vw,520px);height:100dvh;margin:auto;position:relative;overflow:hidden;
-  background:radial-gradient(circle at 50% 4%,rgba(14,165,233,.35),transparent 28%),
-  linear-gradient(#020617,#07101f 55%,#020617)
+  width:min(100vw,520px);height:100dvh;margin:0 auto;position:relative;overflow:hidden;
+  background:
+    radial-gradient(circle at 50% 5%,rgba(14,165,233,.35),transparent 28%),
+    radial-gradient(circle at 18% 70%,rgba(255,46,166,.14),transparent 26%),
+    linear-gradient(180deg,#020617,#07101f 56%,#020617);
 }
-.screen{position:absolute;inset:0;display:none}.active{display:flex}
-#start{align-items:center;justify-content:center;padding:16px}
-.card{
+.screen{position:absolute;inset:0;display:none}
+.screen.active{display:flex}
+#startScreen{
+  align-items:center;justify-content:center;padding:16px;
+}
+.startCard{
+  width:100%;max-width:430px;padding:18px;border-radius:28px;
   background:rgba(3,7,18,.94);border:2px solid rgba(103,232,249,.5);
-  border-radius:26px;padding:18px;max-width:430px;box-shadow:0 0 30px rgba(14,165,233,.35)
+  box-shadow:0 0 30px rgba(14,165,233,.35), inset 0 0 30px rgba(255,255,255,.04);
 }
-.card h1{text-align:center;margin:0;color:#7dd3fc;font-size:34px;line-height:.9;font-style:italic;text-shadow:0 0 14px #00a3ff}
-.card h1 span{display:block;color:#ff2ea6}
-.card label{display:block;margin-top:10px;color:#ffd21f;font-weight:900}
-.card input{width:100%;padding:12px;border-radius:13px;border:2px solid #0ea5e9;font-weight:900}
-.motiv{margin:12px 0;padding:12px;border-radius:18px;background:rgba(255,210,31,.12);border:1px solid rgba(255,210,31,.45);font-size:14px;text-align:center;font-weight:900;line-height:1.35}
-.startBtn{width:100%;margin-top:14px;padding:14px;border-radius:18px;background:linear-gradient(#fff466,#ffc400 55%,#ff8a00);font-size:18px;color:#111827}
+.startCard h1{
+  margin:0;text-align:center;text-transform:uppercase;font-size:34px;line-height:.9;
+  color:#7dd3fc;font-style:italic;text-shadow:0 0 14px #00a3ff,0 0 28px #00a3ff;
+}
+.startCard h1 span{display:block;color:#ff2ea6;text-shadow:0 0 14px #ff2ea6,0 0 28px #ff2ea6}
+.motiv{
+  margin:12px 0;padding:12px;border-radius:18px;
+  background:rgba(255,210,31,.12);border:1px solid rgba(255,210,31,.45);
+  font-size:14px;text-align:center;font-weight:900;line-height:1.35;
+}
+.startCard label{display:block;margin-top:10px;color:#ffd21f;font-weight:1000}
+.startCard input{
+  width:100%;padding:12px;border-radius:13px;border:2px solid #0ea5e9;
+  font-size:15px;font-weight:900;
+}
+.startBtn{
+  width:100%;margin-top:14px;padding:14px;border-radius:18px;
+  background:linear-gradient(180deg,#fff466,#ffc400 55%,#ff8a00);
+  color:#111827;font-size:18px;font-weight:1000;
+  box-shadow:0 0 18px rgba(255,196,0,.7);
+}
 .brand{text-align:center;margin-top:12px;font-size:11px;font-weight:900;color:#cbd5e1}
-#game{flex-direction:column}
-.hud{height:8.5dvh;min-height:62px;display:grid;grid-template-columns:1fr 1.1fr 1fr;gap:6px;padding:5px 7px 0}
-.score{border:2px solid;border-radius:13px;background:rgba(2,6,23,.86);display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 0 13px currentColor}
-.score small{font-size:9px}.score b{font-size:22px}
-.red{color:#fb7185;border-color:#ff1744}.yellow{color:#fde047;border-color:#ffd21f}
-.title{text-align:center;font-size:19px;line-height:.86;font-weight:1000;font-style:italic;color:#60a5fa;text-shadow:0 0 12px #00a3ff}
-.title span{display:block;color:#ff2ea6}.round{text-align:center;margin-top:3px;font-size:10px;color:#e9d5ff}
-.board{
-  height:79.5dvh;margin:0 4px;position:relative;overflow:hidden;border-radius:18px;
+
+#gameScreen{flex-direction:column}
+.hud{
+  height:8dvh;min-height:58px;display:grid;grid-template-columns:1fr 1.12fr 1fr;
+  gap:6px;padding:5px 7px 0;z-index:6;
+}
+.score{
+  border:2px solid;border-radius:13px;background:rgba(2,6,23,.86);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  box-shadow:0 0 14px currentColor;font-weight:1000;
+}
+.score small{font-size:9px}.score b{font-size:21px;line-height:1}
+.redScore{color:#fb7185;border-color:#ff1744}
+.silverScore{color:#e5e7eb;border-color:#cbd5e1}
+.titleWrap{text-align:center}
+.gameTitle{
+  font-size:18px;line-height:.86;font-weight:1000;font-style:italic;text-transform:uppercase;
+  color:#60a5fa;text-shadow:0 0 12px #00a3ff,0 0 24px #00a3ff;
+}
+.gameTitle span{display:block;color:#ff2ea6;text-shadow:0 0 12px #ff2ea6}
+.round{
+  display:inline-block;margin-top:3px;padding:3px 8px;border-radius:999px;
+  background:#19042f;border:1px solid #a855f7;color:#e9d5ff;font-size:10px;font-weight:1000;
+}
+
+.boardArea{
+  position:relative;height:80dvh;margin:0 4px;border-radius:18px;overflow:hidden;
   border:1px solid rgba(103,232,249,.35);
-  background:radial-gradient(circle at 50% 30%,rgba(14,165,233,.22),transparent 38%),
-  radial-gradient(circle at 20% 65%,rgba(255,46,166,.16),transparent 30%),
-  linear-gradient(#07101f,#030712);box-shadow:inset 0 0 36px #000
+  background:
+    radial-gradient(circle at 50% 18%,rgba(255,255,255,.12),transparent 9%),
+    radial-gradient(circle at 14% 26%,rgba(14,165,233,.18),transparent 19%),
+    radial-gradient(circle at 84% 62%,rgba(255,46,166,.16),transparent 22%),
+    linear-gradient(180deg,#07101f,#030712 68%,#07101f);
+  box-shadow:inset 0 0 38px rgba(0,0,0,.85);
 }
-.city{position:absolute;inset:0;opacity:.28;background-image:linear-gradient(90deg,transparent 0 9%,rgba(14,165,233,.65) 9% 10%,transparent 10% 20%,rgba(244,63,94,.6) 20% 21%,transparent 21% 32%),radial-gradient(circle,#fff 0 1px,transparent 1.4px);background-size:75px 100%,38px 38px}
-.track{position:absolute;inset:4px 7px 22px 7px;display:grid;grid-template-rows:repeat(8,1fr);gap:4px;z-index:2}
-.row{display:grid;gap:3px}.r6,.l6{grid-template-columns:repeat(7,1fr)}.r5,.l5{grid-template-columns:repeat(6,1fr)}
-.cell,.curve{
-  border:2px solid rgba(248,250,252,.75);border-radius:10px;
-  background:linear-gradient(#1d2632,#080d16);display:flex;align-items:center;justify-content:center;
-  text-align:center;font-weight:1000;font-size:clamp(15px,4vw,22px);
-  text-shadow:0 2px 5px #000;box-shadow:inset 0 0 10px rgba(255,255,255,.07),0 0 8px rgba(103,232,249,.16);
-  position:relative;overflow:hidden
+.city{
+  position:absolute;inset:0;opacity:.32;
+  background-image:
+    linear-gradient(90deg,transparent 0 7%,rgba(14,165,233,.65) 7% 8%,transparent 8% 17%,rgba(244,63,94,.6) 17% 18%,transparent 18% 30%),
+    radial-gradient(circle,#fff 0 1px,transparent 1.4px);
+  background-size:72px 100%,38px 38px;
 }
-.cell:before{content:"";position:absolute;inset:4px;border-radius:7px;border-top:3px solid rgba(255,255,255,.2);border-bottom:3px solid rgba(255,255,255,.14)}
-.cell small{display:block;font-size:.52em}
-.curve{border-radius:999px;background:radial-gradient(circle,#162033 0 45%,#090f1a 46% 100%);box-shadow:0 0 15px rgba(168,85,247,.45)}
-.green{background:linear-gradient(#20ff67,#063b19);box-shadow:0 0 16px rgba(32,255,103,.67)}
-.pen{background:linear-gradient(#ff1744,#57000f);box-shadow:0 0 16px rgba(255,23,68,.67)}
-.purp{background:linear-gradient(#a855f7,#2e0757);box-shadow:0 0 16px rgba(168,85,247,.67);font-size:clamp(10px,3vw,15px)}
-.gold{background:linear-gradient(#ffd21f,#7a4200);box-shadow:0 0 16px rgba(255,210,31,.8)}
-.startCell{background:linear-gradient(#16a34a,#052e16)}
-.finish{background:linear-gradient(#ffd21f,#b45309);color:#111827;text-shadow:none}
-.flag{position:absolute;inset:0;opacity:.22;background-image:linear-gradient(45deg,#fff 25%,transparent 25%,transparent 75%,#fff 75%),linear-gradient(45deg,#fff 25%,#111 25%,#111 75%,#fff 75%);background-size:12px 12px;background-position:0 0,6px 6px}
-.flagPole{position:absolute;right:6px;bottom:18px;width:44px;height:54px;z-index:4;filter:drop-shadow(0 0 8px white)}
-.flagPole:before{content:"";position:absolute;left:7px;top:0;width:4px;height:54px;background:#e5e7eb}
-.flagPole:after{content:"";position:absolute;left:11px;top:2px;width:30px;height:24px;background-image:linear-gradient(45deg,#fff 25%,#111 25%,#111 50%,#fff 50%,#fff 75%,#111 75%);background-size:12px 12px;clip-path:polygon(0 0,100% 10%,88% 56%,100% 100%,0 85%)}
-.car{position:absolute;width:52px;height:34px;z-index:8;transform:translate(-50%,-50%);transition:left .8s linear,top .8s linear,rotate .8s linear,filter .2s;filter:drop-shadow(0 0 7px currentColor)}
-.car svg{width:100%;height:100%;display:block}.redCar{color:#ff1744}.yellowCar{color:#ffd21f}.activeCar{filter:drop-shadow(0 0 11px #fff) drop-shadow(0 0 13px currentColor)}
-.toast{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:20;padding:10px 14px;border-radius:999px;background:rgba(2,6,23,.9);border:1px solid rgba(103,232,249,.7);font-weight:1000;display:none}
-.signature{position:absolute;bottom:3px;left:0;right:0;text-align:center;font-size:8px;font-weight:900;color:#cbd5e1;opacity:.75;z-index:4}
-.bottom{height:12dvh;min-height:82px;display:grid;grid-template-columns:1fr 1.08fr;gap:6px;padding:5px}
-.control,.rules{border-radius:16px;background:rgba(3,7,18,.88);border:1px solid rgba(103,232,249,.35);padding:5px;box-shadow:0 0 13px rgba(14,165,233,.22)}
-.turn{text-align:center;font-size:11px;font-weight:1000}.controlRow{display:flex;align-items:center;gap:7px;margin-top:3px}
-.dice{width:42px;height:42px;border-radius:11px;background:linear-gradient(145deg,#ff3535,#710815);display:grid;grid-template:repeat(3,1fr)/repeat(3,1fr);gap:3px;padding:7px;box-shadow:0 0 12px rgba(255,23,68,.62)}
+.lightBeam{
+  position:absolute;width:60px;height:90px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,.6),transparent 68%);
+  filter:blur(1px);opacity:.35;
+}
+.lb1{left:4%;top:7%}.lb2{right:4%;top:9%}.lb3{left:40%;bottom:5%}
+
+.trackSvg{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
+.trackShadow{
+  fill:none;stroke:#000;stroke-width:86;stroke-linecap:round;stroke-linejoin:round;opacity:.45;
+  filter:blur(4px);
+}
+.trackBase{
+  fill:none;stroke:#0b1220;stroke-width:74;stroke-linecap:round;stroke-linejoin:round;
+}
+.trackAsphalt{
+  fill:none;stroke:#121923;stroke-width:60;stroke-linecap:round;stroke-linejoin:round;
+}
+.trackInnerGlow{
+  fill:none;stroke:rgba(103,232,249,.23);stroke-width:47;stroke-linecap:round;stroke-linejoin:round;
+}
+.kerbWhite{
+  fill:none;stroke:white;stroke-width:74;stroke-linecap:round;stroke-linejoin:round;
+  stroke-dasharray:18 18;opacity:.95;
+}
+.kerbRed{
+  fill:none;stroke:#ef233c;stroke-width:74;stroke-linecap:round;stroke-linejoin:round;
+  stroke-dasharray:18 18;stroke-dashoffset:18;opacity:.95;
+}
+.innerLine{
+  fill:none;stroke:rgba(255,255,255,.34);stroke-width:2;stroke-dasharray:6 7;stroke-linecap:round;
+}
+.startLabel,.finishLabel{
+  position:absolute;z-index:5;font-weight:1000;text-shadow:0 0 10px #000,0 0 14px currentColor;
+  letter-spacing:.8px;
+}
+.startLabel{
+  left:5%;top:10.4%;font-size:15px;color:#86efac;transform:rotate(-72deg);
+}
+.finishLabel{
+  right:5%;bottom:6.4%;font-size:16px;color:#ffd21f;transform:rotate(-5deg);
+}
+.finishFlag{
+  position:absolute;right:8%;bottom:9.5%;width:46px;height:58px;z-index:6;filter:drop-shadow(0 0 9px white);
+}
+.finishFlag:before{
+  content:"";position:absolute;left:7px;top:0;width:4px;height:58px;background:#e5e7eb;border-radius:4px;
+}
+.finishFlag:after{
+  content:"";position:absolute;left:11px;top:2px;width:32px;height:25px;
+  background-image:linear-gradient(45deg,#fff 25%,#111 25%,#111 50%,#fff 50%,#fff 75%,#111 75%);
+  background-size:12px 12px;
+  clip-path:polygon(0 0,100% 10%,88% 56%,100% 100%,0 85%);
+}
+.cell{
+  position:absolute;z-index:3;width:9.7%;height:5.25%;
+  transform:translate(-50%,-50%);
+  border-radius:12px;border:2px solid rgba(248,250,252,.82);
+  background:linear-gradient(180deg,#202a37,#080d16);
+  display:flex;align-items:center;justify-content:center;text-align:center;
+  font-weight:1000;font-size:clamp(12px,3.5vw,17px);color:#fff;text-shadow:0 2px 5px #000;
+  box-shadow:0 0 12px rgba(103,232,249,.28),inset 0 0 12px rgba(255,255,255,.07);
+}
+.cell:before{
+  content:"";position:absolute;inset:4px;border-radius:8px;border-top:3px solid rgba(255,255,255,.16);border-bottom:3px solid rgba(255,255,255,.11);
+}
+.cell small{font-size:.52em;line-height:1;display:block}
+.cell.green{background:linear-gradient(180deg,#20ff67,#073b19);box-shadow:0 0 17px rgba(32,255,103,.75)}
+.cell.penalty{background:linear-gradient(180deg,#ff1744,#57000f);box-shadow:0 0 17px rgba(255,23,68,.75)}
+.cell.yellow{background:linear-gradient(180deg,#ffd21f,#7a4200);box-shadow:0 0 17px rgba(255,210,31,.8)}
+.cell.purple{background:linear-gradient(180deg,#a855f7,#2e0757);box-shadow:0 0 17px rgba(168,85,247,.75);font-size:clamp(9px,2.7vw,13px)}
+.cell.startPad{
+  width:12%;height:6%;background:linear-gradient(180deg,#16a34a,#052e16);color:#dcfce7;font-size:clamp(10px,3vw,14px)
+}
+.cell.finishPad{
+  width:12%;height:6%;background:linear-gradient(180deg,#ffd21f,#b45309);color:#111827;text-shadow:none;font-size:clamp(10px,3vw,14px)
+}
+.checker{
+  position:absolute;inset:0;opacity:.18;
+  background-image:linear-gradient(45deg,#fff 25%,transparent 25%,transparent 75%,#fff 75%),linear-gradient(45deg,#fff 25%,#111 25%,#111 75%,#fff 75%);
+  background-size:10px 10px;background-position:0 0,5px 5px;border-radius:10px;
+}
+
+.car{
+  position:absolute;z-index:8;width:43px;height:28px;
+  transform:translate(-50%,-50%);
+  transition:left .8s linear,top .8s linear,rotate .8s linear,filter .2s;
+  filter:drop-shadow(0 0 7px currentColor);
+}
+.car svg{width:100%;height:100%;display:block}
+.redCar{color:#ff1744}.silverCar{color:#e5e7eb}
+.car.activeCar{filter:drop-shadow(0 0 10px #fff) drop-shadow(0 0 13px currentColor) brightness(1.15)}
+
+.toast{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  z-index:20;padding:10px 14px;border-radius:999px;
+  background:rgba(2,6,23,.9);border:1px solid rgba(103,232,249,.75);
+  font-weight:1000;color:#e0f2fe;display:none;box-shadow:0 0 18px rgba(14,165,233,.45);
+}
+.signature{
+  position:absolute;left:0;right:0;bottom:2px;text-align:center;z-index:4;
+  font-size:8px;font-weight:900;letter-spacing:.25px;color:#cbd5e1;opacity:.72;
+}
+
+.bottom{
+  height:12.5dvh;min-height:86px;display:grid;grid-template-columns:1fr 1.08fr;gap:6px;padding:5px;
+}
+.control,.rules{
+  border-radius:16px;background:rgba(3,7,18,.88);border:1px solid rgba(103,232,249,.35);
+  padding:5px;box-shadow:0 0 13px rgba(14,165,233,.22);overflow:hidden;
+}
+.turn{text-align:center;font-size:11px;font-weight:1000;color:#e0f2fe}
+.controlRow{display:flex;align-items:center;justify-content:center;gap:7px;margin-top:3px}
+.dice{
+  width:42px;height:42px;border-radius:11px;background:linear-gradient(145deg,#ff3535,#710815);
+  display:grid;grid-template:repeat(3,1fr)/repeat(3,1fr);gap:3px;padding:7px;
+  box-shadow:0 0 12px rgba(255,23,68,.62),inset 0 0 8px rgba(255,255,255,.35);
+}
 .pip{border-radius:50%;background:#fff;opacity:0}.pip.on{opacity:1}
-.roll{flex:1;padding:10px 4px;border-radius:15px;background:linear-gradient(#fff466,#ffc400 55%,#ff8a00);font-size:14px;color:#111827}
-.roll:disabled{filter:grayscale(.9);opacity:.55}.rules h3{font-size:13px;margin:0 0 3px;text-align:center;color:#67e8f9}.rule{font-size:10px;line-height:1.05;margin:2px 0;font-weight:900}.ico{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;margin-right:4px}.ok{background:#16a34a}.bad{background:#dc2626}.star{background:#9333ea}
-.modal{position:absolute;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.78);z-index:30;padding:13px}.modal.show{display:flex}
-.qbox{width:100%;max-width:465px;border-radius:22px;background:linear-gradient(#0b1630,#040817);border:2px solid rgba(103,232,249,.72);box-shadow:0 0 26px rgba(14,165,233,.4);padding:13px}
-.qtop{display:flex;justify-content:space-between;margin-bottom:8px;font-weight:1000}.tag{padding:5px 9px;border-radius:999px;background:rgba(255,210,31,.14);border:1px solid rgba(255,210,31,.45);color:#ffe66d;font-size:12px}
-.qtext{font-size:17px;line-height:1.28;font-weight:900;margin:10px 0}.answers{display:grid;gap:8px}.ans{text-align:left;padding:11px;border-radius:13px;background:#111827;color:white;border:1px solid rgba(255,255,255,.18);font-weight:900;font-size:14px}.ans.correct{background:#14532d;border-color:#22c55e}.ans.wrong{background:#5f0613;border-color:#fb7185}.hint{font-size:11px;color:#cbd5e1;text-align:center;margin-top:8px}.end{text-align:center}.end h2{font-size:32px;color:#ffd21f}.smallBtn{padding:11px 15px;border-radius:14px;background:#ffd21f;color:#111827}
-</style></head><body>
+.rollBtn{
+  flex:1;min-width:0;padding:10px 4px;border-radius:15px;
+  background:linear-gradient(180deg,#fff466,#ffc400 55%,#ff8a00);
+  color:#111827;font-size:14px;font-weight:1000;box-shadow:0 0 15px rgba(255,196,0,.58);
+}
+.rollBtn:disabled{filter:grayscale(.9);opacity:.55}
+.rules h3{font-size:13px;margin:0 0 3px;text-align:center;color:#67e8f9}
+.rule{font-size:10px;line-height:1.05;margin:2px 0;font-weight:900}
+.ico{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;margin-right:4px}
+.ok{background:#16a34a}.bad{background:#dc2626}.star{background:#9333ea}
+
+.modal{
+  position:absolute;inset:0;display:none;align-items:center;justify-content:center;
+  background:rgba(0,0,0,.78);z-index:30;padding:13px;
+}
+.modal.show{display:flex}
+.qbox{
+  width:100%;max-width:465px;border-radius:22px;background:linear-gradient(180deg,#0b1630,#040817);
+  border:2px solid rgba(103,232,249,.72);box-shadow:0 0 26px rgba(14,165,233,.4);padding:13px;
+}
+.qtop{display:flex;justify-content:space-between;gap:8px;margin-bottom:8px;font-weight:1000}
+.tag{padding:5px 9px;border-radius:999px;background:rgba(255,210,31,.14);border:1px solid rgba(255,210,31,.45);color:#ffe66d;font-size:12px}
+.qtext{font-size:17px;line-height:1.28;font-weight:900;margin:10px 0}
+.answers{display:grid;gap:8px}
+.ans{text-align:left;padding:11px;border-radius:13px;background:#111827;color:white;border:1px solid rgba(255,255,255,.18);font-weight:900;font-size:14px}
+.ans.correct{background:#14532d;border-color:#22c55e}
+.ans.wrong{background:#5f0613;border-color:#fb7185}
+.hint{font-size:11px;color:#cbd5e1;text-align:center;margin-top:8px}
+.end{text-align:center}.end h2{font-size:32px;color:#ffd21f;text-shadow:0 0 16px #ffd21f}
+.smallBtn{padding:11px 15px;border-radius:14px;background:#ffd21f;color:#111827;font-weight:1000}
+</style>
+</head>
+<body>
 <div class="app">
 <audio id="carAudio" preload="auto" src="f1%20som%20atual.mpeg"></audio>
-<section id="start" class="screen active">
-<div class="card"><h1>BOARD GAME<span>CHALLENGE</span></h1>
-<div class="motiv">Aprender inglês pode ser mais divertido quando você aceita o desafio, tenta, erra, aprende e continua jogando. Cada fase vencida mostra que você é capaz de ir mais longe. Acredite em você: você é do tamanho dos seus sonhos!</div>
-<label>Nome</label><input id="playerName" placeholder="Digite seu nome">
-<label>Turma</label><input id="className" placeholder="Ex.: 601">
-<label>Escola</label><input id="schoolName" value="Escola Delfina de Jesus Amorim">
-<button class="startBtn" onclick="startGame()">COMEÇAR CORRIDA</button>
-<div class="brand">Jogo idealizado pelo professor Jasson Bruno.</div></div></section>
-<section id="game" class="screen">
-<div class="hud"><div class="score red"><small>EQUIPE VERMELHA</small><b id="redScore">0/40</b></div><div><div class="title">BOARD GAME<span>CHALLENGE</span></div><div class="round">RODADA <span id="roundNum">1</span></div></div><div class="score yellow"><small>EQUIPE AMARELA</small><b id="yellowScore">0/40</b></div></div>
-<div class="board"><div class="city"></div><div class="track" id="track"></div><div id="redCar" class="car redCar"></div><div id="yellowCar" class="car yellowCar"></div><div class="flagPole"></div><div class="toast" id="toast">Acelerando!</div><div class="signature">JOGO IDEALIZADO PELO PROFESSOR JASSON BRUNO.</div></div>
-<div class="bottom"><div class="control"><div class="turn" id="turnText">VEZ DA EQUIPE VERMELHA</div><div class="controlRow"><div class="dice" id="dice"></div><button class="roll" id="rollBtn" onclick="rollDice()">GIRAR DADO</button></div></div><div class="rules"><h3>COMO JOGAR</h3><div class="rule"><span class="ico ok">✓</span>Acertou? A tela fecha e o carro anda.</div><div class="rule"><span class="ico bad">×</span>Errou? Volte 2 casas.</div><div class="rule"><span class="ico star">★</span>Casas coloridas mudam o jogo.</div></div></div>
+
+<section id="startScreen" class="screen active">
+  <div class="startCard">
+    <h1>Board Game<span>Challenge</span></h1>
+    <div class="motiv">Aprender inglês pode ser mais divertido quando você aceita o desafio, tenta, erra, aprende e continua jogando. Cada fase vencida mostra que você é capaz de ir mais longe. Acredite em você: você é do tamanho dos seus sonhos!</div>
+    <label>Nome</label><input id="playerName" placeholder="Digite seu nome">
+    <label>Turma</label><input id="className" placeholder="Ex.: 601">
+    <label>Escola</label><input id="schoolName" value="Escola Delfina de Jesus Amorim">
+    <button class="startBtn" onclick="startGame()">COMEÇAR CORRIDA</button>
+    <div class="brand">Jogo idealizado pelo professor Jasson Bruno.</div>
+  </div>
 </section>
-<div class="modal" id="questionModal"><div class="qbox"><div class="qtop"><span class="tag" id="qTheme">TEMA</span><span class="tag">DADO: <span id="diceValue">1</span></span></div><div class="qtext" id="qText"></div><div class="answers" id="answers"></div><div class="hint">Ao responder, a pergunta sai da tela e o carro corre no tabuleiro.</div></div></div>
-<div class="modal" id="endModal"><div class="qbox end"><h2>🏁 FINISH!</h2><p id="endText"></p><button class="smallBtn" onclick="location.reload()">Jogar novamente</button></div></div>
+
+<section id="gameScreen" class="screen">
+  <div class="hud">
+    <div class="score redScore"><small>EQUIPE VERMELHA</small><b id="redScore">0/40</b></div>
+    <div class="titleWrap"><div class="gameTitle">Board Game<span>Challenge</span></div><div class="round">RODADA <span id="roundNum">1</span></div></div>
+    <div class="score silverScore"><small>EQUIPE PRATEADA</small><b id="silverScore">0/40</b></div>
+  </div>
+  <div class="boardArea" id="boardArea">
+    <div class="city"></div>
+    <div class="lightBeam lb1"></div><div class="lightBeam lb2"></div><div class="lightBeam lb3"></div>
+    <svg class="trackSvg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+      <path id="trackPath" d="M 12 12 C 28 5, 77 5, 88 14 C 100 24, 87 35, 68 35 C 48 35, 25 30, 15 40 C 5 50, 18 60, 38 60 C 58 60, 86 55, 89 68 C 92 81, 72 83, 52 80 C 32 77, 15 82, 13 91 C 26 94, 73 94, 88 89" class="trackShadow"/>
+      <path d="M 12 12 C 28 5, 77 5, 88 14 C 100 24, 87 35, 68 35 C 48 35, 25 30, 15 40 C 5 50, 18 60, 38 60 C 58 60, 86 55, 89 68 C 92 81, 72 83, 52 80 C 32 77, 15 82, 13 91 C 26 94, 73 94, 88 89" class="kerbWhite"/>
+      <path d="M 12 12 C 28 5, 77 5, 88 14 C 100 24, 87 35, 68 35 C 48 35, 25 30, 15 40 C 5 50, 18 60, 38 60 C 58 60, 86 55, 89 68 C 92 81, 72 83, 52 80 C 32 77, 15 82, 13 91 C 26 94, 73 94, 88 89" class="kerbRed"/>
+      <path d="M 12 12 C 28 5, 77 5, 88 14 C 100 24, 87 35, 68 35 C 48 35, 25 30, 15 40 C 5 50, 18 60, 38 60 C 58 60, 86 55, 89 68 C 92 81, 72 83, 52 80 C 32 77, 15 82, 13 91 C 26 94, 73 94, 88 89" class="trackBase"/>
+      <path d="M 12 12 C 28 5, 77 5, 88 14 C 100 24, 87 35, 68 35 C 48 35, 25 30, 15 40 C 5 50, 18 60, 38 60 C 58 60, 86 55, 89 68 C 92 81, 72 83, 52 80 C 32 77, 15 82, 13 91 C 26 94, 73 94, 88 89" class="trackAsphalt"/>
+      <path d="M 12 12 C 28 5, 77 5, 88 14 C 100 24, 87 35, 68 35 C 48 35, 25 30, 15 40 C 5 50, 18 60, 38 60 C 58 60, 86 55, 89 68 C 92 81, 72 83, 52 80 C 32 77, 15 82, 13 91 C 26 94, 73 94, 88 89" class="trackInnerGlow"/>
+      <path d="M 12 12 C 28 5, 77 5, 88 14 C 100 24, 87 35, 68 35 C 48 35, 25 30, 15 40 C 5 50, 18 60, 38 60 C 58 60, 86 55, 89 68 C 92 81, 72 83, 52 80 C 32 77, 15 82, 13 91 C 26 94, 73 94, 88 89" class="innerLine"/>
+    </svg>
+    <div class="startLabel">START</div>
+    <div class="finishLabel">FINISH</div>
+    <div class="finishFlag"></div>
+    <div id="cellsLayer"></div>
+    <div id="redCar" class="car redCar"></div>
+    <div id="silverCar" class="car silverCar"></div>
+    <div class="toast" id="toast">Acelerando!</div>
+    <div class="signature">JOGO IDEALIZADO PELO PROFESSOR JASSON BRUNO.</div>
+  </div>
+  <div class="bottom">
+    <div class="control">
+      <div class="turn" id="turnText">VEZ DA EQUIPE VERMELHA</div>
+      <div class="controlRow"><div class="dice" id="dice"></div><button class="rollBtn" id="rollBtn" onclick="rollDice()">GIRAR DADO</button></div>
+    </div>
+    <div class="rules">
+      <h3>COMO JOGAR</h3>
+      <div class="rule"><span class="ico ok">✓</span>Acertou? A tela fecha e o carro anda.</div>
+      <div class="rule"><span class="ico bad">×</span>Errou? Volte 2 casas.</div>
+      <div class="rule"><span class="ico star">★</span>Casas especiais mudam a corrida.</div>
+    </div>
+  </div>
+</section>
+
+<div class="modal" id="questionModal">
+  <div class="qbox">
+    <div class="qtop"><span class="tag" id="qTheme">TEMA</span><span class="tag">DADO: <span id="diceValue">1</span></span></div>
+    <div class="qtext" id="qText"></div>
+    <div class="answers" id="answers"></div>
+    <div class="hint">Ao responder, a pergunta sai da tela e o carro corre no circuito.</div>
+  </div>
 </div>
+
+<div class="modal" id="endModal">
+  <div class="qbox end">
+    <h2>🏁 FINISH!</h2>
+    <p id="endText"></p>
+    <button class="smallBtn" onclick="location.reload()">Jogar novamente</button>
+  </div>
+</div>
+</div>
+
 <script>
-const track=document.getElementById('track'),redCar=document.getElementById('redCar'),yellowCar=document.getElementById('yellowCar'),diceEl=document.getElementById('dice'),rollBtn=document.getElementById('rollBtn'),carAudio=document.getElementById('carAudio'),toast=document.getElementById('toast');
+const boardArea=document.getElementById('boardArea');
+const cellsLayer=document.getElementById('cellsLayer');
+const redCar=document.getElementById('redCar');
+const silverCar=document.getElementById('silverCar');
+const diceEl=document.getElementById('dice');
+const rollBtn=document.getElementById('rollBtn');
+const carAudio=document.getElementById('carAudio');
+const toast=document.getElementById('toast');
+const trackPath=document.getElementById('trackPath');
+
 let currentTeam='red',round=1,diceValue=1,gameOver=false,isMoving=false;
-const state={red:{pos:0},yellow:{pos:0}},tileEls={};
-const rows=[
- ['r6',[0,1,2,3,4,5,6]],['l6',[12,11,10,9,8,7,'C']],
- ['r6',[13,14,15,16,17,18,'C']],['l6',[24,23,22,21,20,19,'C']],
- ['r5',[25,26,27,28,29,'C']],['l5',[34,33,32,31,30,'C']],
- ['r5',[35,36,37,38,39,'C']],['l5',[40,'C','C','C','C','C']]
-];
+const state={red:{pos:0},silver:{pos:0}};
+const points=[];
+const tileEls={};
+
 const special={
- 5:['green','5<br><small>+2</small>'],7:['gold','7<br><small>★</small>'],
- 10:['green','10<br><small>+2</small>'],13:['pen','13<br><small>-2</small>'],
- 17:['gold','17<br><small>★</small>'],19:['pen','19<br><small>-2</small>'],
- 22:['green','22<br><small>+2</small>'],24:['purp','24<br><small>DESAFIO</small>'],
- 28:['pen','28<br><small>-2</small>'],31:['green','31<br><small>+2</small>'],
- 34:['pen','34<br><small>-2</small>'],37:['green','37<br><small>+2</small>'],
- 40:['finish','<span class="flag"></span>FINISH']
+  5:{cls:'green',html:'5<br><small>+2</small>'},
+  7:{cls:'yellow',html:'7<br><small>EVENTO</small>'},
+  10:{cls:'green',html:'10<br><small>+2</small>'},
+  13:{cls:'penalty',html:'13<br><small>-2</small>'},
+  17:{cls:'yellow',html:'17<br><small>EVENTO</small>'},
+  19:{cls:'penalty',html:'19<br><small>-2</small>'},
+  22:{cls:'green',html:'22<br><small>+2</small>'},
+  24:{cls:'purple',html:'24<br><small>DESAFIO</small>'},
+  28:{cls:'penalty',html:'28<br><small>-2</small>'},
+  31:{cls:'green',html:'31<br><small>+2</small>'},
+  34:{cls:'penalty',html:'34<br><small>-2</small>'},
+  37:{cls:'green',html:'37<br><small>+2</small>'}
 };
-function f1(color,accent){return '<svg viewBox="0 0 170 94" xmlns="http://www.w3.org/2000/svg"><rect x="6" y="28" width="32" height="11" rx="3" fill="#06101f"/><rect x="6" y="55" width="32" height="11" rx="3" fill="#06101f"/><rect x="129" y="25" width="34" height="13" rx="3" fill="#06101f"/><rect x="129" y="56" width="34" height="13" rx="3" fill="#06101f"/><circle cx="41" cy="25" r="10" fill="#020617" stroke="#475569" stroke-width="3"/><circle cx="41" cy="69" r="10" fill="#020617" stroke="#475569" stroke-width="3"/><circle cx="128" cy="25" r="10" fill="#020617" stroke="#475569" stroke-width="3"/><circle cx="128" cy="69" r="10" fill="#020617" stroke="#475569" stroke-width="3"/><path d="M16 47 L51 28 L112 31 L158 47 L112 63 L51 66 Z" fill="'+color+'" stroke="'+accent+'" stroke-width="4"/><path d="M56 36 L100 37 L120 47 L100 57 L56 58 L43 47 Z" fill="#0f172a" opacity=".9"/><path d="M79 14 L98 47 L79 80 L64 47 Z" fill="'+accent+'"/><path d="M94 33 C110 35 116 40 119 47 C116 54 110 59 94 61" fill="none" stroke="#e2e8f0" stroke-width="4"/><path d="M16 47 H158" stroke="rgba(255,255,255,.5)" stroke-width="2"/></svg>'}
-function build(){rows.forEach(r=>{let row=document.createElement('div');row.className='row '+r[0];r[1].forEach(it=>{let c=document.createElement('div');if(it==='C'){c.className='curve'}else{c.className='cell '+(it===0?'startCell ':'')+(special[it]?.[0]||'');c.innerHTML=it===0?'START':(special[it]?.[1]||it);tileEls[it]=c}row.appendChild(c)});track.appendChild(row)});redCar.innerHTML=f1('#ff1744','#f8fafc');yellowCar.innerHTML=f1('#ffd21f','#003049');drawDice(1);updateUI()}
-function center(n){let a=document.querySelector('.app').getBoundingClientRect(),r=tileEls[n].getBoundingClientRect();return{x:(r.left+r.width/2-a.left)/a.width*100,y:(r.top+r.height/2-a.top)/a.height*100}}
-function angle(a,b){return Math.atan2(b.y-a.y,b.x-a.x)*180/Math.PI}
-function off(t){return t==='red'?-1.05:1.05}
-function place(t,p,inst=false,angl=null){let el=t==='red'?redCar:yellowCar,pt=center(p);if(inst)el.style.transition='none';el.style.left=pt.x+'%';el.style.top=(pt.y+off(t))+'%';if(angl!==null)el.style.rotate=angl+'deg';if(inst)setTimeout(()=>el.style.transition='left .8s linear,top .8s linear,rotate .8s linear,filter .2s',25)}
-function updateUI(){redScore.textContent=state.red.pos+'/40';yellowScore.textContent=state.yellow.pos+'/40';roundNum.textContent=round;turnText.textContent='VEZ DA EQUIPE '+(currentTeam==='red'?'VERMELHA':'AMARELA');redCar.classList.toggle('activeCar',currentTeam==='red');yellowCar.classList.toggle('activeCar',currentTeam==='yellow');place('red',state.red.pos,true,0);place('yellow',state.yellow.pos,true,0)}
-function drawDice(v){diceEl.innerHTML='';const on={1:[4],2:[0,8],3:[0,4,8],4:[0,2,6,8],5:[0,2,4,6,8],6:[0,2,3,5,6,8]};for(let i=0;i<9;i++){let p=document.createElement('div');p.className='pip '+(on[v].includes(i)?'on':'');diceEl.appendChild(p)}}
-const qs=[
- ['Greetings','Bob Esponja chegou à escola de manhã. Como ele pode dizer “Bom dia”?',['Good morning','Good night','Goodbye','See you','Thank you'],0],
- ['Farewells','No final da aula, a professora diz “Até amanhã!”. Qual frase combina melhor?',['See you tomorrow','Good morning','My name is','Open your book','I am fine'],0],
- ['Commands','A professora quer que os alunos abram o livro. Qual comando está correto?',['Open your book','Close the door','Stand up','Listen and repeat','Raise your hand'],0],
- ['Personal Information','Para perguntar “Qual é o seu nome?” em inglês, usamos:',['What is your name?','How old are you?','Where are you from?','Are you OK?','What color is it?'],0],
- ['Pronouns','Na frase “Maria is my friend”, qual pronome pode substituir “Maria”?',['She','He','They','We','It'],0],
- ['Possessive Adjectives','Complete: I am João. ____ name is João.',['My','Your','His','Her','Its'],0],
- ['Spelling','Quando alguém pergunta “How do you spell your name?”, quer saber:',['como soletrar seu nome','quantos anos você tem','onde você mora','qual é sua turma','qual é sua cor favorita'],0],
- ['Classroom','Se o aluno precisa pedir para ir ao banheiro, qual frase é mais adequada?',['May I go to the bathroom?','Close your book','Good evening','I am ten','Her name is Ana'],0],
- ['Greetings','Qual alternativa significa “Boa tarde”?',['Good afternoon','Good night','Goodbye','See you','Thank you'],0],
- ['Commands','“Look at the board” significa:',['Olhe para o quadro','Abra a porta','Feche o livro','Levante a mão','Escreva seu nome'],0],
- ['Pronouns','“Ana and Pedro” pode ser substituído por:',['They','We','He','She','It'],0],
- ['Possessive Adjectives','Complete: She is Ana. ____ pencil is red.',['Her','His','My','Your','Our'],0]
+
+function f1Car(color,accent,silver){
+  const bodyStroke=silver?'#94a3b8':accent;
+  return '<svg viewBox="0 0 170 94" xmlns="http://www.w3.org/2000/svg" aria-label="carro de Fórmula 1">'+
+  '<rect x="6" y="28" width="32" height="11" rx="3" fill="#06101f"/><rect x="6" y="55" width="32" height="11" rx="3" fill="#06101f"/>'+
+  '<rect x="129" y="25" width="34" height="13" rx="3" fill="#06101f"/><rect x="129" y="56" width="34" height="13" rx="3" fill="#06101f"/>'+
+  '<circle cx="41" cy="25" r="10" fill="#020617" stroke="#475569" stroke-width="3"/><circle cx="41" cy="69" r="10" fill="#020617" stroke="#475569" stroke-width="3"/>'+
+  '<circle cx="128" cy="25" r="10" fill="#020617" stroke="#475569" stroke-width="3"/><circle cx="128" cy="69" r="10" fill="#020617" stroke="#475569" stroke-width="3"/>'+
+  '<path d="M16 47 L51 29 L112 31 L158 47 L112 63 L51 65 Z" fill="'+color+'" stroke="'+bodyStroke+'" stroke-width="4"/>'+
+  '<path d="M56 36 L100 37 L120 47 L100 57 L56 58 L43 47 Z" fill="#0f172a" opacity=".9"/>'+
+  '<path d="M79 14 L98 47 L79 80 L64 47 Z" fill="'+accent+'"/>'+
+  '<path d="M94 33 C110 35 116 40 119 47 C116 54 110 59 94 61" fill="none" stroke="#e2e8f0" stroke-width="4"/>'+
+  '<path d="M16 47 H158" stroke="rgba(255,255,255,.5)" stroke-width="2"/>'+
+  '<path d="M13 38 H45 M13 56 H45 M119 36 H164 M119 58 H164" stroke="'+accent+'" stroke-width="4" stroke-linecap="round"/></svg>';
+}
+
+function buildCells(){
+  redCar.innerHTML=f1Car('#ff1744','#f8fafc',false);
+  silverCar.innerHTML=f1Car('#d1d5db','#38bdf8',true);
+
+  const total=trackPath.getTotalLength();
+  points.length=0;
+
+  const startP=trackPath.getPointAtLength(0);
+  points[0]={x:startP.x,y:startP.y,a:0};
+
+  for(let i=1;i<=40;i++){
+    const len=(i/(40+1))*total;
+    const p=trackPath.getPointAtLength(len);
+    const p2=trackPath.getPointAtLength(Math.min(total,len+2));
+    const angle=Math.atan2(p2.y-p.y,p2.x-p.x)*180/Math.PI;
+    points[i]={x:p.x,y:p.y,a:angle};
+
+    const d=document.createElement('div');
+    d.className='cell '+(special[i]?.cls||'');
+    d.style.left=p.x+'%';
+    d.style.top=p.y+'%';
+    d.style.rotate=angle+'deg';
+    d.innerHTML=special[i]?.html||String(i);
+    tileEls[i]=d;
+    cellsLayer.appendChild(d);
+  }
+
+  const endP=trackPath.getPointAtLength(total);
+  points[41]={x:endP.x,y:endP.y,a:0};
+  const finish=document.createElement('div');
+  finish.className='cell finishPad';
+  finish.style.left=endP.x+'%';
+  finish.style.top=endP.y+'%';
+  finish.innerHTML='<span class="checker"></span>FINISH';
+  cellsLayer.appendChild(finish);
+
+  drawDice(1);
+  updateUI();
+}
+
+function startGame(){
+  document.getElementById('startScreen').classList.remove('active');
+  document.getElementById('gameScreen').classList.add('active');
+  setTimeout(updateUI,100);
+}
+
+function carOffset(team){return team==='red'?-1.25:1.25}
+function setCarPosition(team,pos,instant=false,angle=null){
+  const el=team==='red'?redCar:silverCar;
+  const p=points[Math.max(0,Math.min(40,pos))];
+  if(instant)el.style.transition='none';
+  el.style.left=p.x+'%';
+  el.style.top=(p.y+carOffset(team))+'%';
+  el.style.rotate=(angle!==null?angle:p.a)+'deg';
+  if(instant)setTimeout(()=>{el.style.transition='left .8s linear,top .8s linear,rotate .8s linear,filter .2s'},30);
+}
+
+function updateUI(){
+  document.getElementById('redScore').textContent=state.red.pos+'/40';
+  document.getElementById('silverScore').textContent=state.silver.pos+'/40';
+  document.getElementById('roundNum').textContent=round;
+  document.getElementById('turnText').textContent='VEZ DA EQUIPE '+(currentTeam==='red'?'VERMELHA':'PRATEADA');
+  redCar.classList.toggle('activeCar',currentTeam==='red');
+  silverCar.classList.toggle('activeCar',currentTeam==='silver');
+  setCarPosition('red',state.red.pos,true,0);
+  setCarPosition('silver',state.silver.pos,true,0);
+}
+
+function drawDice(v){
+  diceEl.innerHTML='';
+  const on={1:[4],2:[0,8],3:[0,4,8],4:[0,2,6,8],5:[0,2,4,6,8],6:[0,2,3,5,6,8]};
+  for(let i=0;i<9;i++){
+    const p=document.createElement('div');
+    p.className='pip '+(on[v].includes(i)?'on':'');
+    diceEl.appendChild(p);
+  }
+}
+
+const questions=[
+{theme:'Greetings',q:'Bob Esponja chegou à escola de manhã. Como ele pode dizer “Bom dia”?',a:['Good morning','Good night','Goodbye','See you','Thank you'],c:0},
+{theme:'Farewells',q:'No final da aula, a professora diz “Até amanhã!”. Qual frase combina melhor?',a:['See you tomorrow','Good morning','My name is','Open your book','I am fine'],c:0},
+{theme:'Commands',q:'A professora quer que os alunos abram o livro. Qual comando está correto?',a:['Open your book','Close the door','Stand up','Listen and repeat','Raise your hand'],c:0},
+{theme:'Commands',q:'Quando a professora diz “Listen!”, o aluno deve:',a:['ouvir','escrever o nome','levantar','fechar o caderno','sair da sala'],c:0},
+{theme:'Personal Information',q:'Para perguntar “Qual é o seu nome?” em inglês, usamos:',a:['What is your name?','How old are you?','Where are you from?','Are you OK?','What color is it?'],c:0},
+{theme:'Personal Information',q:'A resposta “I am twelve years old” fala sobre:',a:['idade','nome','cor favorita','objeto escolar','despedida'],c:0},
+{theme:'Pronouns',q:'Na frase “Maria is my friend”, qual pronome pode substituir “Maria”?',a:['She','He','They','We','It'],c:0},
+{theme:'Pronouns',q:'Na frase “Pedro is a student”, qual pronome substitui “Pedro”?',a:['He','She','It','We','They'],c:0},
+{theme:'Possessive Adjectives',q:'Complete: I am João. ____ name is João.',a:['My','Your','His','Her','Its'],c:0},
+{theme:'Possessive Adjectives',q:'Complete: She is Ana. ____ pencil is red.',a:['Her','His','My','Your','Our'],c:0},
+{theme:'Spelling',q:'Quando alguém pergunta “How do you spell your name?”, quer saber:',a:['como soletrar seu nome','quantos anos você tem','onde você mora','qual é sua turma','qual é sua cor favorita'],c:0},
+{theme:'Classroom',q:'Se o aluno precisa pedir para ir ao banheiro, qual frase é mais adequada?',a:['May I go to the bathroom?','Close your book','Good evening','I am ten','Her name is Ana'],c:0},
+{theme:'Greetings',q:'Qual alternativa significa “Boa tarde”?',a:['Good afternoon','Good night','Goodbye','See you','Thank you'],c:0},
+{theme:'Commands',q:'“Look at the board” significa:',a:['Olhe para o quadro','Abra a porta','Feche o livro','Levante a mão','Escreva seu nome'],c:0},
+{theme:'Pronouns',q:'“Ana and Pedro” pode ser substituído por:',a:['They','We','He','She','It'],c:0},
+{theme:'Possessive Adjectives',q:'Complete: They are students. ____ teacher is kind.',a:['Their','Our','His','Her','My'],c:0},
+{theme:'Farewells',q:'Qual opção significa “Até logo”?',a:['See you soon','Good afternoon','Open your book','I am Brazilian','Repeat, please'],c:0},
+{theme:'Classroom',q:'“Write your name” significa:',a:['Escreva seu nome','Leia seu nome','Soletre seu nome','Apague seu nome','Diga seu nome'],c:0}
 ];
-function shuffle(a){return a.map(v=>[Math.random(),v]).sort((a,b)=>a[0]-b[0]).map(x=>x[1])}
-function startGame(){start.classList.remove('active');game.classList.add('active');setTimeout(updateUI,80)}
+
+function shuffle(arr){return arr.map(v=>[Math.random(),v]).sort((a,b)=>a[0]-b[0]).map(x=>x[1])}
 function sleep(ms){return new Promise(r=>setTimeout(r,ms))}
-function moveMs(){let ms=1450;if(carAudio&&isFinite(carAudio.duration)&&carAudio.duration>0)ms=carAudio.duration/2.5*1000;return Math.max(900,Math.min(2600,ms))}
-function playS(){try{carAudio.pause();carAudio.currentTime=0;carAudio.playbackRate=2.5;carAudio.play().catch(()=>{})}catch(e){}}
-function stopS(){try{carAudio.pause();carAudio.currentTime=0}catch(e){}}
-async function animate(t,target){isMoving=true;rollBtn.disabled=true;let s=state[t].pos,e=Math.max(0,Math.min(40,target)),d=e>=s?1:-1,steps=Math.abs(e-s);if(!steps){isMoving=false;return}let per=moveMs()/steps,el=t==='red'?redCar:yellowCar;toast.textContent='🏎️ Acelerando na pista!';toast.style.display='block';playS();for(let p=s+d;p!==e+d;p+=d){let A=center(p-d),B=center(p);el.style.transition='left '+per+'ms linear,top '+per+'ms linear,rotate '+per+'ms linear,filter .2s';state[t].pos=p;place(t,p,false,angle(A,B));document.getElementById(t==='red'?'redScore':'yellowScore').textContent=state[t].pos+'/40';await sleep(per+25)}stopS();toast.style.display='none';isMoving=false}
-function rollDice(){if(gameOver||isMoving)return;rollBtn.disabled=true;let r=0,t=setInterval(()=>{diceValue=Math.floor(Math.random()*6)+1;drawDice(diceValue);if(++r>10){clearInterval(t);ask()}},60)}
-function ask(){let q=qs[Math.floor(Math.random()*qs.length)];diceValue=document.getElementById('diceValue').textContent=diceValue;qTheme.textContent=q[0];qText.textContent=q[1];answers.innerHTML='';shuffle(q[2].map((x,i)=>({x,ok:i===q[3]}))).forEach((op,i)=>{let b=document.createElement('button');b.className='ans';b.innerHTML=String.fromCharCode(65+i)+') '+op.x;b.onclick=()=>answer(op.ok,b);answers.appendChild(b)});questionModal.classList.add('show')}
-async function answer(ok,btn){Array.from(document.querySelectorAll('.ans')).forEach(b=>b.disabled=true);btn.classList.add(ok?'correct':'wrong');await sleep(260);questionModal.classList.remove('show');await sleep(160);let team=state[currentTeam];if(ok){await animate(currentTeam,team.pos+diceValue);await specialMove(currentTeam)}else await animate(currentTeam,team.pos-2);if(state[currentTeam].pos>=40){end();return}currentTeam=currentTeam==='red'?'yellow':'red';if(currentTeam==='red')round++;rollBtn.disabled=false;updateUI()}
-async function specialMove(t){let p=state[t].pos;if([5,10,22,31,37].includes(p)){toast.textContent='✅ Casa bônus: avance +2!';toast.style.display='block';await sleep(700);toast.style.display='none';await animate(t,p+2)}else if([13,19,28,34].includes(p)){toast.textContent='⚠️ Casa vermelha: volte 2!';toast.style.display='block';await sleep(700);toast.style.display='none';await animate(t,p-2)}}
-function end(){gameOver=true;let w=currentTeam==='red'?'EQUIPE VERMELHA':'EQUIPE AMARELA',nome=playerName.value||w,turma=className.value||'6º ano',escola=schoolName.value||'Escola Delfina de Jesus Amorim';endText.innerHTML=w+' cruzou a bandeira quadriculada!<br><br><b>'+nome+'</b><br>'+turma+' - '+escola+'<br><br>Faça o print da tela final.';endModal.classList.add('show')}
-window.addEventListener('resize',()=>setTimeout(updateUI,120));build();
-</script></body></html>
+function movementDuration(){
+  let ms=1450;
+  if(carAudio && isFinite(carAudio.duration) && carAudio.duration>0) ms=(carAudio.duration/2.5)*1000;
+  return Math.max(900,Math.min(2600,ms));
+}
+function playCarSound(){
+  try{
+    carAudio.pause();
+    carAudio.currentTime=0;
+    carAudio.playbackRate=2.5;
+    carAudio.play().catch(()=>{});
+  }catch(e){}
+}
+function stopCarSound(){
+  try{carAudio.pause();carAudio.currentTime=0}catch(e){}
+}
+
+async function animateMove(team,target){
+  isMoving=true;
+  rollBtn.disabled=true;
+  const start=state[team].pos;
+  const end=Math.max(0,Math.min(40,target));
+  const dir=end>=start?1:-1;
+  const steps=Math.abs(end-start);
+  if(!steps){isMoving=false;return}
+  const per=movementDuration()/steps;
+  const el=team==='red'?redCar:silverCar;
+  toast.textContent='🏎️ Acelerando na pista!';
+  toast.style.display='block';
+  playCarSound();
+  for(let p=start+dir;p!==end+dir;p+=dir){
+    const prev=points[p-dir],next=points[p];
+    const angle=Math.atan2(next.y-prev.y,next.x-prev.x)*180/Math.PI;
+    el.style.transition='left '+per+'ms linear, top '+per+'ms linear, rotate '+per+'ms linear, filter .2s';
+    state[team].pos=p;
+    setCarPosition(team,p,false,angle);
+    document.getElementById(team==='red'?'redScore':'silverScore').textContent=state[team].pos+'/40';
+    await sleep(per+25);
+  }
+  stopCarSound();
+  toast.style.display='none';
+  isMoving=false;
+}
+
+function rollDice(){
+  if(gameOver||isMoving)return;
+  rollBtn.disabled=true;
+  let r=0;
+  const timer=setInterval(()=>{
+    diceValue=Math.floor(Math.random()*6)+1;
+    drawDice(diceValue);
+    if(++r>10){clearInterval(timer);askQuestion()}
+  },60);
+}
+
+function askQuestion(){
+  const q=questions[Math.floor(Math.random()*questions.length)];
+  document.getElementById('diceValue').textContent=diceValue;
+  document.getElementById('qTheme').textContent=q.theme;
+  document.getElementById('qText').textContent=q.q;
+  const box=document.getElementById('answers');
+  box.innerHTML='';
+  shuffle(q.a.map((txt,i)=>({txt,ok:i===q.c}))).forEach((op,i)=>{
+    const b=document.createElement('button');
+    b.className='ans';
+    b.innerHTML=String.fromCharCode(65+i)+') '+op.txt;
+    b.onclick=()=>answer(op.ok,b);
+    box.appendChild(b);
+  });
+  document.getElementById('questionModal').classList.add('show');
+}
+
+async function answer(ok,btn){
+  Array.from(document.querySelectorAll('.ans')).forEach(b=>b.disabled=true);
+  btn.classList.add(ok?'correct':'wrong');
+  await sleep(260);
+  document.getElementById('questionModal').classList.remove('show');
+  await sleep(160);
+
+  const team=state[currentTeam];
+  if(ok){
+    await animateMove(currentTeam,team.pos+diceValue);
+    await applySpecial(currentTeam);
+  }else{
+    await animateMove(currentTeam,team.pos-2);
+  }
+
+  if(state[currentTeam].pos>=40){endGame();return}
+  currentTeam=currentTeam==='red'?'silver':'red';
+  if(currentTeam==='red')round++;
+  rollBtn.disabled=false;
+  updateUI();
+}
+
+async function applySpecial(team){
+  const p=state[team].pos;
+  if([5,10,22,31,37].includes(p)){
+    toast.textContent='✅ Casa verde: avance +2!';
+    toast.style.display='block';
+    await sleep(700);
+    toast.style.display='none';
+    await animateMove(team,p+2);
+  }else if([13,19,28,34].includes(p)){
+    toast.textContent='⚠️ Casa vermelha: volte 2!';
+    toast.style.display='block';
+    await sleep(700);
+    toast.style.display='none';
+    await animateMove(team,p-2);
+  }else if([7,17].includes(p)){
+    toast.textContent='⭐ Evento: continue na corrida!';
+    toast.style.display='block';
+    await sleep(850);
+    toast.style.display='none';
+  }else if(p===24){
+    toast.textContent='💜 Desafio vencido!';
+    toast.style.display='block';
+    await sleep(850);
+    toast.style.display='none';
+  }
+}
+
+function endGame(){
+  gameOver=true;
+  const winner=currentTeam==='red'?'EQUIPE VERMELHA':'EQUIPE PRATEADA';
+  const nome=document.getElementById('playerName').value||winner;
+  const turma=document.getElementById('className').value||'6º ano';
+  const escola=document.getElementById('schoolName').value||'Escola Delfina de Jesus Amorim';
+  document.getElementById('endText').innerHTML=winner+' cruzou a bandeira quadriculada!<br><br><b>'+nome+'</b><br>'+turma+' - '+escola+'<br><br>Faça o print da tela final.';
+  document.getElementById('endModal').classList.add('show');
+}
+
+window.addEventListener('resize',()=>setTimeout(updateUI,120));
+buildCells();
+</script>
+</body>
+</html>
