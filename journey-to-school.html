@@ -293,6 +293,60 @@
   .log p{margin:0 0 6px}
 
 
+
+  .block{
+    position:absolute;border-radius:18px;border:3px solid rgba(255,255,255,.72);
+    box-shadow:inset 0 0 0 2px rgba(0,0,0,.05);
+    z-index:0;
+  }
+  .block.residential{background:#f9d7ba}
+  .block.commercial{background:#f8ef9a}
+  .block.service{background:#d2e8ff}
+  .block.green{background:#c4f0a5}
+  .plaza{
+    position:absolute;border-radius:22px;background:#e6d2b1;border:3px solid rgba(255,255,255,.72);z-index:0;
+  }
+  .mini-building{
+    position:absolute;width:26px;height:20px;border-radius:4px;background:#fffaf0;border:2px solid #8a5b2c;z-index:1;
+  }
+  .mini-building:before{
+    content:"";position:absolute;left:-2px;top:-12px;border-left:15px solid transparent;border-right:15px solid transparent;border-bottom:12px solid #ff7171;
+  }
+  .mini-building.flat:before{display:none;}
+  .mini-building.flat{background:#f5f5f5;border-color:#708090}
+  .mini-building.flat:after{
+    content:"";position:absolute;left:4px;top:4px;width:18px;height:5px;background:#9fd6ff;box-shadow:0 7px 0 #9fd6ff;
+  }
+  .mini-building:after{
+    content:"";position:absolute;left:9px;bottom:0;width:8px;height:10px;background:#8a5b2c;
+  }
+  .tree.big{width:18px;height:18px}
+  .tree.small{width:10px;height:10px}
+  .crosswalk{
+    position:absolute;background:repeating-linear-gradient(90deg,#fff 0 7px,#424242 7px 14px);
+    border-radius:6px;z-index:1;opacity:.9;
+  }
+  .crosswalk.v{width:18px;height:44px}
+  .crosswalk.h{width:44px;height:18px}
+  .car{
+    position:absolute;width:18px;height:10px;border-radius:6px;background:#ff5c73;z-index:1;
+    box-shadow:0 0 0 2px rgba(255,255,255,.45) inset;
+  }
+  .car.blue{background:#3cb8ff}
+  .car.yellow{background:#ffd84d}
+  .car.green{background:#7df27d}
+  .water-wave{
+    position:absolute;width:28px;height:3px;background:rgba(255,255,255,.85);border-radius:999px;z-index:0;
+  }
+  .umbrella{
+    position:absolute;width:14px;height:14px;border-radius:50% 50% 0 0;transform:rotate(180deg);z-index:0;
+    background:conic-gradient(#ff6b6b 0 25%, #fff 25% 50%, #ffd84d 50% 75%, #fff 75% 100%);
+    border:1px solid rgba(0,0,0,.08);
+  }
+  .bench{
+    position:absolute;width:16px;height:5px;background:#8b5a2b;border-radius:4px;z-index:0;
+  }
+
   .place-photo{
     width:100%;
     aspect-ratio:16/9;
@@ -488,9 +542,20 @@
   <main class="game-area">
     
 <div class="map-wrap" id="board">
-      <div class="city-art">
+      
+<div class="city-art">
         <div class="sea"></div>
         <div class="river"></div>
+
+        <div class="water-wave" style="left:10%;top:16%"></div>
+        <div class="water-wave" style="left:14%;top:22%"></div>
+        <div class="water-wave" style="left:19%;top:28%"></div>
+        <div class="water-wave" style="left:11%;top:76%"></div>
+        <div class="water-wave" style="left:16%;top:82%"></div>
+
+        <div class="umbrella" style="left:30%;top:15%"></div>
+        <div class="umbrella" style="left:27%;top:22%"></div>
+        <div class="bench" style="left:24%;top:19%"></div>
 
         <div class="road h1"></div>
         <div class="road h2"></div>
@@ -502,6 +567,28 @@
         <div class="road v3"></div>
         <div class="road v4"></div>
 
+        <div class="crosswalk h" style="left:39%;top:29%"></div>
+        <div class="crosswalk v" style="left:58.9%;top:32.5%"></div>
+        <div class="crosswalk h" style="left:69.5%;top:54.2%"></div>
+        <div class="crosswalk v" style="left:80.5%;top:76%"></div>
+
+        <div class="block residential" style="left:40.5%;top:9.8%;width:17%;height:21%;"></div>
+        <div class="block service" style="left:58.5%;top:9.8%;width:12%;height:21%;"></div>
+        <div class="block residential" style="left:71%;top:9.8%;width:9%;height:21%;"></div>
+        <div class="block commercial" style="left:80.5%;top:9.8%;width:8.8%;height:21%;"></div>
+
+        <div class="block commercial" style="left:40.5%;top:35%;width:17%;height:21%;"></div>
+        <div class="block residential" style="left:58.5%;top:35%;width:12%;height:21%;"></div>
+        <div class="block residential" style="left:71%;top:35%;width:9%;height:21%;"></div>
+        <div class="block service" style="left:80.5%;top:35%;width:8.8%;height:21%;"></div>
+
+        <div class="block service" style="left:40.5%;top:60.2%;width:17%;height:21%;"></div>
+        <div class="block green" style="left:58.5%;top:60.2%;width:12%;height:21%;"></div>
+        <div class="block green" style="left:71%;top:60.2%;width:9%;height:21%;"></div>
+        <div class="block residential" style="left:80.5%;top:60.2%;width:8.8%;height:21%;"></div>
+
+        <div class="plaza" style="left:42%;top:85%;width:18%;height:8%;"></div>
+
         <div class="city-label museum-box">🏛️ Museu João Fona</div>
         <div class="city-label orla-box">🌊 Orla de Santarém</div>
         <div class="city-label center-box">🏙️ Centro</div>
@@ -512,42 +599,56 @@
         <div class="city-label aeroporto-box">📍 Aeroporto Velho</div>
         <div class="city-label school-box">🏫 Escola Delfina</div>
 
-        <div class="house" style="left:24%; top:58%;"></div>
-        <div class="house" style="left:29%; top:58%;"></div>
-        <div class="house" style="left:65%; top:36%;"></div>
-        <div class="house" style="left:70%; top:36%;"></div>
-        <div class="house" style="left:74%; top:36%;"></div>
-        <div class="house" style="left:87%; top:84%;"></div>
-        <div class="house" style="left:91%; top:84%;"></div>
-        <div class="house" style="left:94%; top:84%;"></div>
+        <div class="mini-building" style="left:24%; top:58%;"></div>
+        <div class="mini-building" style="left:29%; top:58%;"></div>
+        <div class="mini-building flat" style="left:43.5%; top:14%;"></div>
+        <div class="mini-building flat" style="left:47%; top:14%;"></div>
+        <div class="mini-building flat" style="left:58%; top:14%;"></div>
+        <div class="mini-building flat" style="left:62%; top:14%;"></div>
+        <div class="mini-building" style="left:65%; top:36%;"></div>
+        <div class="mini-building" style="left:70%; top:36%;"></div>
+        <div class="mini-building" style="left:74%; top:36%;"></div>
+        <div class="mini-building flat" style="left:82%; top:39%;"></div>
+        <div class="mini-building" style="left:87%; top:84%;"></div>
+        <div class="mini-building" style="left:91%; top:84%;"></div>
+        <div class="mini-building" style="left:94%; top:84%;"></div>
+        <div class="mini-building flat" style="left:61%; top:85%;"></div>
+        <div class="mini-building flat" style="left:66%; top:85%;"></div>
 
-        <div class="tree" style="left:33%; top:12%;"></div>
-        <div class="tree" style="left:36%; top:16%;"></div>
-        <div class="tree" style="left:48%; top:25%;"></div>
-        <div class="tree" style="left:56%; top:31%;"></div>
-        <div class="tree" style="left:57%; top:73%;"></div>
-        <div class="tree" style="left:62%; top:76%;"></div>
-        <div class="tree" style="left:69%; top:76%;"></div>
-        <div class="tree" style="left:73%; top:22%;"></div>
-        <div class="tree" style="left:78%; top:22%;"></div>
-        <div class="tree" style="left:79%; top:66%;"></div>
-        <div class="tree" style="left:83%; top:68%;"></div>
-        <div class="tree" style="left:89%; top:24%;"></div>
+        <div class="tree big" style="left:33%; top:12%;"></div>
+        <div class="tree small" style="left:36%; top:16%;"></div>
+        <div class="tree small" style="left:48%; top:25%;"></div>
+        <div class="tree small" style="left:56%; top:31%;"></div>
+        <div class="tree big" style="left:57%; top:73%;"></div>
+        <div class="tree small" style="left:62%; top:76%;"></div>
+        <div class="tree small" style="left:69%; top:76%;"></div>
+        <div class="tree small" style="left:73%; top:22%;"></div>
+        <div class="tree small" style="left:78%; top:22%;"></div>
+        <div class="tree big" style="left:79%; top:66%;"></div>
+        <div class="tree small" style="left:83%; top:68%;"></div>
+        <div class="tree small" style="left:89%; top:24%;"></div>
+        <div class="tree small" style="left:20%; top:65%;"></div>
+        <div class="tree small" style="left:17%; top:70%;"></div>
+        <div class="tree small" style="left:25%; top:82%;"></div>
+
+        <div class="car blue" style="left:44%;top:52%"></div>
+        <div class="car yellow" style="left:62%;top:56%"></div>
+        <div class="car green" style="left:82%;top:52%"></div>
+        <div class="car" style="left:61.3%;top:24%;transform:rotate(90deg)"></div>
       </div>
-
-      <svg class="route-svg" viewBox="0 0 1000 600" preserveAspectRatio="none">
+      <svg class="route-svg"  viewBox="0 0 1000 600" preserveAspectRatio="none">
         <path class="route-path" d="M85 330 L170 330 L255 330 L340 330 L430 330 L430 235 L430 120 L520 120 L610 120 L700 120 L790 120 L880 120 L880 225 L880 330 L880 440 L790 440 L700 440 L700 535 L610 535 L520 535 L430 535 L430 440 L520 440 L610 440 L610 330 L700 330 L790 330" />
         <path class="route-path-inner" d="M85 330 L170 330 L255 330 L340 330 L430 330 L430 235 L430 120 L520 120 L610 120 L700 120 L790 120 L880 120 L880 225 L880 330 L880 440 L790 440 L700 440 L700 535 L610 535 L520 535 L430 535 L430 440 L520 440 L610 440 L610 330 L700 330 L790 330" />
       </svg>
 
-      <div class="landmark" style="left:13%;top:58%">🏛️ Museu João Fona</div>
-      <div class="landmark" style="left:15%;top:19%">🌊 Orla</div>
-      <div class="landmark" style="left:50%;top:18%">🏙️ Centro</div>
-      <div class="landmark" style="left:47%;top:39%">🛒 Mercado</div>
-      <div class="landmark" style="left:47%;top:63%">🍎 Mercadão 2000</div>
-      <div class="landmark" style="left:69%;top:70%">🌳 Parque</div>
-      <div class="landmark" style="left:78%;top:38%">📍 Aeroporto Velho</div>
-      <div class="landmark" style="left:80%;top:15%">🏫 Escola Delfina</div>
+      <div class="landmark" style="left:14%;top:51%">🏛️ Museu João Fona</div>
+      <div class="landmark" style="left:18%;top:11%">🌊 Orla</div>
+      <div class="landmark" style="left:50%;top:7%">🏙️ Centro</div>
+      <div class="landmark" style="left:48%;top:32%">🛒 Mercado</div>
+      <div class="landmark" style="left:48%;top:57%">🍎 Mercadão 2000</div>
+      <div class="landmark" style="left:67%;top:63%">🌳 Parque</div>
+      <div class="landmark" style="left:80%;top:30%">📍 Aeroporto Velho</div>
+      <div class="landmark" style="left:80%;top:8%">🏫 Escola Delfina</div>
 
       <div id="cells"></div>
       <div id="token1" class="token p1token">👦</div>
@@ -970,8 +1071,9 @@ function buildBoard(){
     d.className=`cell ${t.type==="question"?"":t.type}`;
     d.style.left=p[0]+"%";
     d.style.top=p[1]+"%";
-    d.textContent=n;
+    d.textContent="";
     d.title=(t.place||t.type||"Casa")+" "+n;
+    d.setAttribute("aria-label","Casa "+n);
     cells.appendChild(d);
   });
   updateTokens(true);
