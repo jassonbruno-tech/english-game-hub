@@ -1,0 +1,1453 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Journey to School - Trilha até a Escola</title>
+<style>
+
+  :root{
+    --bg1:#070b1f;
+    --bg2:#110f2f;
+    --bg3:#091b36;
+    --card:rgba(14,20,44,.84);
+    --card-2:rgba(18,25,54,.92);
+    --ink:#f4f7ff;
+    --muted:#b7c4f3;
+    --accent:#00f0ff;
+    --accent2:#ff4fd8;
+    --accent3:#9dff00;
+    --warn:#ffd84d;
+    --danger:#ff5f7a;
+    --blue:#36b9ff;
+    --red:#ff5a8d;
+    --purple:#9b6dff;
+    --line:rgba(255,255,255,.14);
+    --shadow:0 0 18px rgba(0,240,255,.18), 0 0 38px rgba(255,79,216,.10);
+  }
+  *{box-sizing:border-box}
+  html,body{
+    margin:0;
+    width:100%;
+    height:100%;
+    font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    color:var(--ink);
+    overflow:hidden;
+    background:
+      radial-gradient(circle at 15% 20%, rgba(0,240,255,.10), transparent 25%),
+      radial-gradient(circle at 82% 14%, rgba(255,79,216,.12), transparent 20%),
+      linear-gradient(135deg,var(--bg1),var(--bg2) 48%,var(--bg3));
+  }
+  button,input{font-family:inherit}
+  .screen{
+    width:100vw;
+    height:100dvh;
+    display:none;
+    overflow:hidden;
+  }
+  .screen.active{display:flex}
+
+  #startScreen{
+    align-items:center;
+    justify-content:center;
+    padding:14px;
+    background:
+      radial-gradient(circle at 14% 18%, rgba(0,240,255,.14), transparent 22%),
+      radial-gradient(circle at 86% 12%, rgba(255,79,216,.16), transparent 18%),
+      radial-gradient(circle at 55% 88%, rgba(157,255,0,.08), transparent 22%),
+      linear-gradient(135deg,#050814,#140f35 55%,#0a2347);
+  }
+  .start-card{
+    width:min(980px,96vw);
+    max-height:96dvh;
+    overflow:auto;
+    background:linear-gradient(180deg, rgba(18,25,54,.94), rgba(10,15,35,.94));
+    border:1px solid rgba(255,255,255,.10);
+    box-shadow:0 20px 70px rgba(0,0,0,.5), 0 0 30px rgba(0,240,255,.12), 0 0 55px rgba(255,79,216,.08);
+    border-radius:30px;
+    padding:20px;
+    backdrop-filter:blur(12px);
+  }
+  .brand{text-align:center;margin-bottom:12px}
+  .brand h1{
+    font-size:clamp(2rem,7vw,4rem);
+    line-height:.95;
+    margin:0;
+    letter-spacing:.06em;
+    color:#f7fbff;
+    text-transform:uppercase;
+    text-shadow:0 0 8px rgba(0,240,255,.55),0 0 22px rgba(255,79,216,.26);
+  }
+  .brand h2{
+    margin:8px 0 4px;
+    font-size:clamp(1rem,3.6vw,1.45rem);
+    color:#86fff8;
+    text-shadow:0 0 10px rgba(0,240,255,.35);
+  }
+  .route-pill{
+    display:inline-block;
+    background:rgba(255,255,255,.08);
+    color:#fff5a9;
+    border:1px solid rgba(255,216,77,.35);
+    box-shadow:0 0 12px rgba(255,216,77,.12);
+    padding:8px 14px;
+    border-radius:999px;
+    font-weight:800;
+    font-size:.95rem;
+  }
+  .intro{
+    margin:14px auto;
+    max-width:760px;
+    font-size:clamp(.92rem,2.7vw,1.05rem);
+    line-height:1.45;
+    color:#dbe7ff;
+    text-align:center;
+  }
+  .form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    margin-top:14px;
+  }
+  .player-box{
+    background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+    border:1px solid rgba(255,255,255,.10);
+    border-radius:22px;
+    padding:12px;
+    box-shadow:var(--shadow);
+  }
+  .player-box h3{
+    margin:0 0 8px;
+    font-size:1rem;
+    text-shadow:0 0 10px currentColor;
+  }
+  .player-box.blue h3{color:var(--blue)}
+  .player-box.red h3{color:var(--red)}
+  label{
+    display:block;
+    font-size:.78rem;
+    font-weight:800;
+    color:#bbcaf9;
+    margin:6px 0 4px;
+    letter-spacing:.04em;
+  }
+  input{
+    width:100%;
+    border:1px solid rgba(255,255,255,.10);
+    border-radius:14px;
+    padding:11px 12px;
+    outline:none;
+    font-size:1rem;
+    background:rgba(5,10,25,.78);
+    color:#f8fbff;
+  }
+  input:focus{
+    border-color:#00f0ff;
+    box-shadow:0 0 0 3px rgba(0,240,255,.14), 0 0 16px rgba(0,240,255,.18);
+  }
+  .start-actions{
+    display:flex;
+    gap:10px;
+    justify-content:center;
+    align-items:center;
+    flex-wrap:wrap;
+    margin-top:14px;
+  }
+  .primary-btn,.secondary-btn{
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:18px;
+    padding:13px 18px;
+    font-size:1rem;
+    font-weight:900;
+    cursor:pointer;
+    transition:.2s ease;
+  }
+  .primary-btn{
+    background:linear-gradient(135deg,#00e6ff,#12a3ff 45%,#9b6dff 100%);
+    color:#05111f;
+    box-shadow:0 0 18px rgba(0,240,255,.35), 0 0 28px rgba(155,109,255,.18);
+  }
+  .secondary-btn{
+    background:linear-gradient(135deg,rgba(255,79,216,.16),rgba(0,240,255,.12));
+    color:#f7fbff;
+    box-shadow:0 0 14px rgba(255,79,216,.18);
+  }
+  .primary-btn:hover,.secondary-btn:hover,.roll-btn:hover,.option:hover{
+    transform:translateY(-1px) scale(1.01);
+  }
+  .teacher{
+    text-align:center;
+    margin-top:10px;
+    font-size:.82rem;
+    color:#c8d5ff;
+    font-weight:700;
+  }
+
+  #gameScreen{
+    flex-direction:column;
+    background:
+      radial-gradient(circle at 10% 18%, rgba(0,240,255,.12), transparent 20%),
+      radial-gradient(circle at 86% 10%, rgba(255,79,216,.12), transparent 18%),
+      linear-gradient(135deg,#050814,#141033 40%,#091b36);
+  }
+  .hud{
+    height:78px;
+    flex:0 0 78px;
+    display:grid;
+    grid-template-columns:1fr auto 1fr;
+    align-items:center;
+    gap:8px;
+    padding:8px 10px;
+    background:rgba(9,14,30,.82);
+    border-bottom:1px solid rgba(255,255,255,.08);
+    box-shadow:0 10px 22px rgba(0,0,0,.26),0 0 18px rgba(0,240,255,.10);
+    z-index:3;
+    backdrop-filter:blur(12px);
+  }
+  .hud-title{text-align:center}
+  .hud-title strong{
+    display:block;
+    font-size:clamp(1rem,3.6vw,1.45rem);
+    color:#ffffff;
+    line-height:1;
+    text-shadow:0 0 10px rgba(0,240,255,.35);
+  }
+  .hud-title span{
+    font-size:.78rem;
+    font-weight:800;
+    color:#a8bcff;
+  }
+  .player-panel{
+    min-width:0;
+    padding:7px 8px;
+    border-radius:16px;
+    background:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+    border:1px solid rgba(255,255,255,.10);
+    font-weight:800;
+    font-size:.85rem;
+    color:#fff;
+  }
+  .player-panel.active{
+    border-color:#00f0ff;
+    box-shadow:0 0 0 2px rgba(0,240,255,.18), 0 0 18px rgba(0,240,255,.20);
+  }
+  .player-panel .name{
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .p1{color:var(--blue)}
+  .p2{color:var(--red)}
+  .scoreline{
+    color:#d8e5ff;
+    font-size:.75rem;
+    font-weight:700;
+  }
+  .game-area{
+    flex:1;
+    min-height:0;
+    display:grid;
+    grid-template-columns:minmax(0,1fr) 230px;
+    gap:8px;
+    padding:8px;
+  }
+  .map-wrap{
+    position:relative;
+    border-radius:28px;
+    overflow:hidden;
+    background:
+      radial-gradient(circle at 22% 20%, rgba(0,240,255,.16), transparent 18%),
+      radial-gradient(circle at 82% 15%, rgba(255,79,216,.18), transparent 16%),
+      linear-gradient(135deg,#10193a,#162b55 55%,#122036);
+    border:1px solid rgba(255,255,255,.10);
+    box-shadow:0 14px 35px rgba(0,0,0,.35), 0 0 28px rgba(0,240,255,.12);
+  }
+  .map-wrap::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+      repeating-linear-gradient(90deg, rgba(255,255,255,.04) 0 1px, transparent 1px 52px),
+      repeating-linear-gradient(0deg, rgba(255,255,255,.03) 0 1px, transparent 1px 52px);
+    opacity:.45;
+    pointer-events:none;
+  }
+  .route-svg{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    pointer-events:none;
+  }
+  .route-path{
+    fill:none;
+    stroke:#ff4fd8;
+    stroke-width:20;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+    filter:drop-shadow(0 0 9px rgba(255,79,216,.8)) drop-shadow(0 0 22px rgba(255,79,216,.3));
+  }
+  .route-path-inner{
+    fill:none;
+    stroke:#00f0ff;
+    stroke-width:8;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+    stroke-dasharray:14 12;
+    filter:drop-shadow(0 0 8px rgba(0,240,255,.8));
+  }
+  .landmark{
+    position:absolute;
+    transform:translate(-50%,-50%);
+    background:rgba(9,14,30,.84);
+    border:1px solid rgba(255,255,255,.10);
+    border-radius:14px;
+    padding:4px 7px;
+    display:flex;
+    align-items:center;
+    gap:4px;
+    font-size:clamp(.54rem,1.2vw,.72rem);
+    font-weight:900;
+    color:#f7fbff;
+    box-shadow:0 0 14px rgba(0,240,255,.08);
+    max-width:145px;
+    line-height:1.05;
+    z-index:1;
+    backdrop-filter:blur(8px);
+  }
+  .cell{
+    position:absolute;
+    width:30px;
+    height:30px;
+    transform:translate(-50%,-50%);
+    border-radius:50%;
+    background:#0a1230;
+    border:2px solid #00f0ff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:.72rem;
+    font-weight:1000;
+    color:#fff;
+    box-shadow:0 0 14px rgba(0,240,255,.32), inset 0 0 10px rgba(0,240,255,.10);
+    z-index:2;
+  }
+  .cell.place{
+    background:#0f1838;
+    border-color:#00f0ff;
+    box-shadow:0 0 14px rgba(0,240,255,.35);
+  }
+  .cell.bonus{
+    background:#13240f;
+    border-color:#9dff00;
+    box-shadow:0 0 14px rgba(157,255,0,.35);
+  }
+  .cell.penalty{
+    background:#301021;
+    border-color:#ff5f7a;
+    box-shadow:0 0 14px rgba(255,95,122,.35);
+  }
+  .cell.special{
+    background:#302508;
+    border-color:#ffd84d;
+    box-shadow:0 0 14px rgba(255,216,77,.35);
+  }
+  .cell.final{
+    background:#082f25;
+    border-color:#00ffb7;
+    box-shadow:0 0 18px rgba(0,255,183,.42);
+    width:40px;
+    height:40px;
+  }
+  .token{
+    position:absolute;
+    width:34px;
+    height:34px;
+    transform:translate(-50%,-90%);
+    border-radius:50% 50% 45% 45%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:20px;
+    z-index:4;
+    transition:left .36s ease, top .36s ease;
+    filter:drop-shadow(0 0 10px rgba(255,255,255,.18));
+  }
+  .token::after{
+    content:"";
+    position:absolute;
+    bottom:-8px;
+    width:18px;
+    height:9px;
+    border-radius:50%;
+    background:rgba(0,0,0,.32);
+    z-index:-1;
+  }
+  .token.p1token{
+    background:linear-gradient(135deg,#041426,#143d5e);
+    border:3px solid var(--blue);
+    box-shadow:0 0 18px rgba(54,185,255,.38);
+  }
+  .token.p2token{
+    background:linear-gradient(135deg,#23091b,#4e1738);
+    border:3px solid var(--red);
+    transform:translate(-50%,-20%);
+    box-shadow:0 0 18px rgba(255,90,141,.38);
+  }
+  .side{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    min-width:0;
+  }
+  .panel{
+    background:linear-gradient(180deg, rgba(18,25,54,.92), rgba(8,12,28,.92));
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:22px;
+    padding:10px;
+    box-shadow:0 10px 24px rgba(0,0,0,.24), 0 0 18px rgba(0,240,255,.08);
+    color:#fff;
+  }
+  .place-now{
+    font-size:.82rem;
+    color:#b9cbff;
+    font-weight:800;
+  }
+  .place-now strong{
+    color:#fff;
+    display:block;
+    font-size:1rem;
+    text-shadow:0 0 8px rgba(0,240,255,.24);
+  }
+  .dice-box{text-align:center}
+  .dice{
+    width:74px;
+    height:74px;
+    margin:2px auto 8px;
+    border-radius:20px;
+    background:linear-gradient(135deg,#0a1432,#152750);
+    border:3px solid #00f0ff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:2.2rem;
+    font-weight:1000;
+    color:#fff;
+    box-shadow:0 0 18px rgba(0,240,255,.24), inset 0 0 14px rgba(255,255,255,.05);
+  }
+  .dice.rolling{animation:shake .35s infinite}
+  @keyframes shake{
+    0%{transform:rotate(-8deg) scale(1)}
+    50%{transform:rotate(8deg) scale(1.06)}
+    100%{transform:rotate(-8deg) scale(1)}
+  }
+  .roll-btn{
+    width:100%;
+    border:1px solid rgba(255,255,255,.08);
+    background:linear-gradient(135deg,#ff4fd8,#9b6dff 55%,#00f0ff);
+    border-radius:18px;
+    padding:13px;
+    font-size:1rem;
+    font-weight:1000;
+    color:#fff;
+    cursor:pointer;
+    box-shadow:0 0 16px rgba(255,79,216,.24);
+  }
+  .roll-btn:disabled{
+    opacity:.55;
+    cursor:not-allowed;
+  }
+  .mini-rules{
+    font-size:.72rem;
+    line-height:1.35;
+    color:#dce7ff;
+    font-weight:700;
+  }
+  .log{
+    flex:1;
+    min-height:0;
+    overflow:auto;
+    font-size:.76rem;
+    line-height:1.35;
+    color:#dbe7ff;
+  }
+  .log p{margin:0 0 6px}
+
+  .modal-backdrop{
+    position:fixed;
+    inset:0;
+    background:rgba(3,6,16,.70);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:20;
+    padding:14px;
+    backdrop-filter:blur(6px);
+  }
+  .modal-backdrop.show{display:flex}
+  .modal-card{
+    width:min(760px,96vw);
+    max-height:92dvh;
+    overflow:auto;
+    background:linear-gradient(180deg, rgba(18,25,54,.97), rgba(8,12,28,.97));
+    color:#fff;
+    border:1px solid rgba(255,255,255,.10);
+    border-radius:28px;
+    padding:18px;
+    box-shadow:0 28px 80px rgba(0,0,0,.55),0 0 28px rgba(0,240,255,.12);
+  }
+  .modal-card h2{
+    margin:0 0 8px;
+    font-size:clamp(1.25rem,5vw,2rem);
+    color:#fff;
+    text-shadow:0 0 10px rgba(0,240,255,.24);
+  }
+  .question-meta{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-bottom:10px;
+  }
+  .tag{
+    background:rgba(255,255,255,.08);
+    color:#dff9ff;
+    border:1px solid rgba(0,240,255,.22);
+    border-radius:999px;
+    padding:6px 10px;
+    font-size:.78rem;
+    font-weight:900;
+    box-shadow:0 0 12px rgba(0,240,255,.08);
+  }
+  .question-text{
+    font-size:clamp(1rem,3.6vw,1.28rem);
+    line-height:1.35;
+    color:#f4f7ff;
+    font-weight:800;
+    margin:12px 0;
+  }
+  .options{
+    display:grid;
+    gap:8px;
+  }
+  .option{
+    border:1px solid rgba(255,255,255,.10);
+    background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+    border-radius:18px;
+    padding:12px;
+    text-align:left;
+    cursor:pointer;
+    font-size:clamp(.95rem,3.3vw,1.05rem);
+    font-weight:800;
+    color:#f4f7ff;
+    box-shadow:0 0 12px rgba(0,240,255,.05);
+  }
+  .option:hover{
+    border-color:#00f0ff;
+    box-shadow:0 0 0 1px rgba(0,240,255,.35), 0 0 16px rgba(0,240,255,.14);
+  }
+  .feedback{text-align:center}
+  .feedback.good h2{color:#9dff00}
+  .feedback.bad h2{color:#ff7a8e}
+  .feedback.special h2{color:#ffd84d}
+  .feedback p{
+    font-size:clamp(1rem,3.5vw,1.18rem);
+    line-height:1.45;
+    font-weight:800;
+    color:#f4f7ff;
+  }
+  .tip-box{
+    background:rgba(255,216,77,.10);
+    border:1px solid rgba(255,216,77,.32);
+    border-radius:18px;
+    padding:12px;
+    margin-top:10px;
+    color:#fff2b4;
+    box-shadow:0 0 14px rgba(255,216,77,.08);
+  }
+  .countbar{
+    width:100%;
+    height:9px;
+    background:rgba(255,255,255,.08);
+    border-radius:999px;
+    overflow:hidden;
+    margin-top:12px;
+  }
+  .countbar span{
+    display:block;
+    height:100%;
+    width:100%;
+    background:linear-gradient(90deg,#00f0ff,#ff4fd8,#ffd84d);
+    animation:countdown 3s linear forwards;
+  }
+  @keyframes countdown{to{width:0%}}
+
+  #endScreen{
+    align-items:center;
+    justify-content:center;
+    padding:14px;
+    background:
+      radial-gradient(circle at 12% 18%, rgba(0,240,255,.12), transparent 20%),
+      radial-gradient(circle at 84% 14%, rgba(255,79,216,.16), transparent 18%),
+      linear-gradient(135deg,#060918,#1a103b 45%,#091b36);
+  }
+  .end-card{
+    width:min(720px,96vw);
+    background:linear-gradient(180deg, rgba(18,25,54,.96), rgba(8,12,28,.96));
+    border:1px solid rgba(255,255,255,.10);
+    border-radius:30px;
+    padding:22px;
+    text-align:center;
+    box-shadow:0 30px 90px rgba(0,0,0,.45),0 0 30px rgba(0,240,255,.12);
+    color:#fff;
+  }
+  .end-card h1{
+    margin:0;
+    font-size:clamp(2rem,8vw,4rem);
+    color:#9dff00;
+    text-shadow:0 0 12px rgba(157,255,0,.28);
+  }
+  .end-stats{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    margin:14px 0;
+  }
+  .stat{
+    background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:20px;
+    padding:12px;
+    font-weight:900;
+    color:#f4f7ff;
+  }
+
+  @media (max-width:820px){
+    .hud{
+      height:72px;
+      flex-basis:72px;
+      grid-template-columns:1fr;
+      grid-template-areas:
+      "title"
+      "players";
+      gap:2px;
+      padding:5px 7px;
+    }
+    .hud-title{grid-area:title}
+    .hud-title strong{font-size:1.08rem}
+    .hud-title span{display:none}
+    .player-wrap{
+      grid-area:players;
+      display:grid!important;
+      grid-template-columns:1fr 1fr;
+      gap:5px;
+    }
+    .hud > .player-panel{display:none}
+    .game-area{
+      grid-template-columns:1fr;
+      grid-template-rows:minmax(0,1fr) auto;
+      padding:6px;
+      gap:6px;
+    }
+    .side{
+      display:grid;
+      grid-template-columns:1fr 122px;
+      gap:6px;
+    }
+    .side .panel{
+      padding:7px;
+      border-radius:18px;
+    }
+    .side .log,.mini-rules{display:none}
+    .dice{width:52px;height:52px;border-radius:15px;font-size:1.7rem;margin:0 auto 4px}
+    .roll-btn{padding:9px;border-radius:14px;font-size:.82rem}
+    .place-now strong{font-size:.88rem}
+    .place-now{font-size:.7rem}
+    .cell{width:24px;height:24px;font-size:.58rem;border-width:2px}
+    .cell.final{width:32px;height:32px}
+    .token{width:27px;height:27px;font-size:17px}
+    .landmark{font-size:.52rem;padding:3px 5px;max-width:108px}
+    .route-path{stroke-width:14}
+    .route-path-inner{stroke-width:6}
+    .form-grid{grid-template-columns:1fr}
+    .start-card{padding:15px;border-radius:22px}
+  }
+  @media (max-height:640px){
+    .intro{display:none}
+    .brand h1{font-size:2rem}
+    .brand h2{font-size:1rem}
+    .start-card{padding:12px}
+    .player-box{padding:8px}
+    input{padding:8px 10px}
+  }
+
+</style>
+</head>
+<body>
+
+<section id="startScreen" class="screen active">
+  <div class="start-card">
+    <div class="brand">
+      <h1>Journey to School</h1>
+      <h2>Trilha até a Escola</h2>
+      <span class="route-pill">Museu João Fona → Escola Delfina de Jesus Amorim</span>
+    </div>
+    <p class="intro">
+      A aula começa às <strong>13h30</strong>! Dois alunos precisam atravessar uma trilha inspirada em Santarém,
+      responder desafios de Inglês e chegar à escola no horário. Fazer a tarefa, estudar em casa, respeitar os colegas,
+      usar o uniforme e seguir as regras também ajudam nessa jornada.
+    </p>
+    <div class="form-grid">
+      <div class="player-box blue">
+        <h3>Jogador 1 / Equipe A</h3>
+        <label>Nome</label>
+        <input id="p1Name" value="Equipe A" maxlength="18">
+        <label>Turma</label>
+        <input id="p1Class" value="6º ano" maxlength="14">
+      </div>
+      <div class="player-box red">
+        <h3>Jogador 2 / Equipe B</h3>
+        <label>Nome</label>
+        <input id="p2Name" value="Equipe B" maxlength="18">
+        <label>Turma</label>
+        <input id="p2Class" value="6º ano" maxlength="14">
+      </div>
+    </div>
+    <label>Escola</label>
+    <input id="schoolName" value="Escola Delfina de Jesus Amorim" maxlength="45">
+    <div class="start-actions">
+      <button class="primary-btn" onclick="startGame()">START JOURNEY</button>
+      <button class="secondary-btn" id="soundBtn" onclick="toggleSound()">🔊 Música: ON</button>
+    </div>
+    <div class="teacher">Jogo idealizado pelo professor Jasson Bruno.</div>
+  </div>
+</section>
+
+<section id="gameScreen" class="screen">
+  <header class="hud">
+    <div class="player-panel" id="hudP1">
+      <div class="name p1" id="p1HudName">Equipe A</div>
+      <div class="scoreline">Casa <span id="p1Pos">1</span> · Pontos <span id="p1Score">0</span></div>
+    </div>
+    <div class="hud-title">
+      <strong>Journey to School</strong>
+      <span>Chegue antes das 13h30 respondendo aos desafios.</span>
+    </div>
+    <div class="player-panel" id="hudP2">
+      <div class="name p2" id="p2HudName">Equipe B</div>
+      <div class="scoreline">Casa <span id="p2Pos">1</span> · Pontos <span id="p2Score">0</span></div>
+    </div>
+    <div class="player-wrap" style="display:none">
+      <div class="player-panel" id="hudP1m">
+        <div class="name p1" id="p1HudNameM">Equipe A</div>
+        <div class="scoreline">Casa <span id="p1PosM">1</span> · <span id="p1ScoreM">0</span> pts</div>
+      </div>
+      <div class="player-panel" id="hudP2m">
+        <div class="name p2" id="p2HudNameM">Equipe B</div>
+        <div class="scoreline">Casa <span id="p2PosM">1</span> · <span id="p2ScoreM">0</span> pts</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="game-area">
+    <div class="map-wrap" id="board">
+      <svg class="route-svg" viewBox="0 0 1000 600" preserveAspectRatio="none">
+        <path class="route-path" d="M70 505 C190 430, 80 330, 225 285 S400 470, 510 350 S405 165, 585 140 S770 250, 700 385 S800 555, 930 92" />
+        <path class="route-path-inner" d="M70 505 C190 430, 80 330, 225 285 S400 470, 510 350 S405 165, 585 140 S770 250, 700 385 S800 555, 930 92" />
+      </svg>
+      <div class="landmark" style="left:7%;top:84%">🏛️ Museu João Fona</div>
+      <div class="landmark" style="left:18%;top:56%">🌊 Orla</div>
+      <div class="landmark" style="left:36%;top:72%">🏙️ Centro / Mercado</div>
+      <div class="landmark" style="left:51%;top:58%">🍎 Mercadão 2000</div>
+      <div class="landmark" style="left:56%;top:22%">🌳 Parque da Cidade</div>
+      <div class="landmark" style="left:72%;top:43%">🛣️ Caminho urbano</div>
+      <div class="landmark" style="left:73%;top:72%">📍 Aeroporto Velho</div>
+      <div class="landmark" style="left:91%;top:16%">🏫 Escola Delfina</div>
+      <div id="cells"></div>
+      <div id="token1" class="token p1token">🎒</div>
+      <div id="token2" class="token p2token">🎒</div>
+    </div>
+
+    <aside class="side">
+      <div class="panel">
+        <div class="place-now">Local atual:<strong id="currentPlace">Museu João Fona</strong></div>
+      </div>
+      <div class="panel dice-box">
+        <div class="dice" id="dice">🎲</div>
+        <button class="roll-btn" id="rollBtn" onclick="rollDice()">ROLL DICE</button>
+      </div>
+      <div class="panel mini-rules">
+        <strong>Regra:</strong> jogue o dado, responda à pergunta e avance. Se errar, aparece uma dica rápida e você volta para a casa anterior.
+      </div>
+      <div class="panel log" id="gameLog">
+        <p>🎮 A jornada começou. Boa sorte!</p>
+      </div>
+    </aside>
+  </main>
+</section>
+
+<section id="endScreen" class="screen">
+  <div class="end-card">
+    <h1>CONGRATULATIONS!</h1>
+    <h2 id="winnerText">Você chegou à escola!</h2>
+    <p>Você chegou à Escola Delfina de Jesus Amorim antes das 13h30. Pontualidade, estudo e respeito também fazem parte da jornada.</p>
+    <div class="end-stats">
+      <div class="stat"><span id="endP1">Equipe A</span><br><span id="endP1Score">0</span> pontos</div>
+      <div class="stat"><span id="endP2">Equipe B</span><br><span id="endP2Score">0</span> pontos</div>
+    </div>
+    <button class="primary-btn" onclick="location.reload()">JOGAR NOVAMENTE</button>
+    <div class="teacher">Jogo idealizado pelo professor Jasson Bruno.</div>
+  </div>
+</section>
+
+<div class="modal-backdrop" id="modal">
+  <div class="modal-card" id="modalCard"></div>
+</div>
+
+<script>
+const cellPositions = [
+  [7,84],[10,78],[13,70],[16,62],[21,56],[27,52],[34,55],[40,63],[46,69],[52,67],
+  [55,58],[52,48],[47,40],[44,31],[49,24],[57,22],[65,24],[71,31],[75,39],[73,48],
+  [68,56],[64,64],[67,72],[73,78],[80,82],[85,76],[83,66],[78,58],[75,50],[78,42],
+  [83,35],[88,29],[91,23],[92,18],[89,14],[84,16],[81,22],[84,28],[90,23],[93,15]
+];
+
+const tileTypes = {
+  1:{type:"place", place:"Museu João Fona", msg:"A jornada começou no Museu João Fona.", effect:"start"},
+  2:{type:"place", place:"Museu João Fona"},
+  3:{type:"bonus", msg:"Você saiu cedo de casa e está no caminho certo para não se atrasar.", effect:"advance", value:1},
+  4:{type:"question", place:"Geral"},
+  5:{type:"bonus", msg:"Você fez a tarefa de casa e chegou mais preparado para aprender.", effect:"advance", value:2},
+  6:{type:"penalty", msg:"Você se distraiu no caminho e perdeu um pouco o ritmo.", effect:"back", value:1},
+  7:{type:"place", place:"Orla de Santarém"},
+  8:{type:"bonus", msg:"Gol da vitória! Você mostrou foco e espírito de equipe.", effect:"advance", value:1},
+  9:{type:"penalty", msg:"A aula começa às 13h30, mas você saiu um pouco tarde.", effect:"back", value:2},
+  10:{type:"question", place:"Geral"},
+  11:{type:"bonus", msg:"Você respeitou um colega e ajudou a escola a ser um lugar melhor.", effect:"advance", value:1},
+  12:{type:"place", place:"Centro / Mercado Municipal"},
+  13:{type:"penalty", msg:"Você esqueceu parte do material escolar. Organização também ajuda na aprendizagem.", effect:"back", value:1},
+  14:{type:"bonus", msg:"Você veio com o uniforme e mostrou compromisso com a rotina escolar.", effect:"advance", value:1},
+  15:{type:"question", place:"Geral"},
+  16:{type:"place", place:"Mercadão 2000"},
+  17:{type:"bonus", msg:"Modo estratégia ativado! Você usou foco como em uma boa partida.", effect:"again", value:0},
+  18:{type:"penalty", msg:"Ops! A tarefa ficou em casa. Na próxima, organize melhor sua rotina.", effect:"back", value:2},
+  19:{type:"question", place:"Geral"},
+  20:{type:"special", msg:"Você chegou à metade da jornada. A escola está cada vez mais perto!", effect:"points", value:10},
+  21:{type:"bonus", msg:"Você escolheu respeitar, acolher e não praticar bullying.", effect:"advance", value:1},
+  22:{type:"place", place:"Parque da Cidade"},
+  23:{type:"question", place:"Geral"},
+  24:{type:"penalty", msg:"Você conversou quando precisava prestar atenção.", effect:"skip", value:0},
+  25:{type:"bonus", msg:"Você revisou em casa e reforçou o que aprendeu na escola.", effect:"advance", value:2},
+  26:{type:"question", place:"Geral"},
+  27:{type:"bonus", msg:"Momento K-pop! Disciplina, treino e dedicação também ajudam a aprender.", effect:"advance", value:1},
+  28:{type:"special", msg:"O professor pediu uma revisão antes de continuar.", effect:"extra", value:0},
+  29:{type:"place", place:"Caminho urbano"},
+  30:{type:"penalty", msg:"Sua mochila estava desorganizada e isso atrasou sua jornada.", effect:"back", value:1},
+  31:{type:"bonus", msg:"Você ajudou um colega que estava com dificuldade na atividade.", effect:"advance", value:2},
+  32:{type:"question", place:"Geral"},
+  33:{type:"penalty", msg:"Hoje o trajeto ficou mais demorado. É preciso manter o foco.", effect:"back", value:2},
+  34:{type:"place", place:"Aeroporto Velho"},
+  35:{type:"special", msg:"Desafio relâmpago! Se acertar a próxima pergunta, ganha bônus extra.", effect:"nextBonus", value:10},
+  36:{type:"question", place:"Geral"},
+  37:{type:"penalty", msg:"Você está quase chegando, mas precisa se apressar. A aula começa às 13h30.", effect:"back", value:1},
+  38:{type:"place", place:"Perto da escola"},
+  39:{type:"bonus", msg:"Você chegou no horário, respeitou os colegas e manteve o foco.", effect:"advanceTo", value:40},
+  40:{type:"final", place:"Escola Delfina de Jesus Amorim"}
+};
+
+let players = [
+  {name:"Equipe A", klass:"6º ano", pos:1, score:0, skip:false, nextBonus:false, correct:0},
+  {name:"Equipe B", klass:"6º ano", pos:1, score:0, skip:false, nextBonus:false, correct:0}
+];
+let current = 0;
+let usedQuestions = new Set();
+let waiting = false;
+let soundOn = true;
+let audioCtx = null, bgOsc = null, bgGain = null;
+
+function shuffle(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+function makeQ(id, place, topic, question, correct, wrongs, tip){
+  const opts = shuffle([correct, ...wrongs]).slice(0,5);
+  return {id, place, topic, question, correct, options:opts, tip};
+}
+
+const contexts = {
+  "Museu João Fona":[
+    "No Museu João Fona, a professora pediu que a turma lesse uma placa.",
+    "No começo da jornada, no Museu João Fona, um aluno se apresentou para o grupo.",
+    "Durante a visita ao Museu João Fona, dois colegas conversaram antes de seguir para a escola.",
+    "No Museu João Fona, a professora perguntou se todos estavam prontos para continuar."
+  ],
+  "Orla de Santarém":[
+    "Na Orla de Santarém, dois colegas se encontraram antes de seguir para a escola.",
+    "Na Orla, um aluno viu o colega chegando e quis cumprimentá-lo.",
+    "Na Orla de Santarém, a turma precisou ouvir uma orientação rápida.",
+    "Na Orla, dois alunos se despediram de um familiar antes de ir para a escola."
+  ],
+  "Centro / Mercado Municipal":[
+    "No Centro, perto do Mercado Municipal, um aluno precisou pedir ajuda com educação.",
+    "Na região do Mercado Municipal, a professora perguntou o nome de um aluno novo.",
+    "No Centro de Santarém, dois alunos conversaram sobre seus materiais escolares.",
+    "Perto do Mercado Municipal, a turma precisou seguir uma orientação do professor."
+  ],
+  "Mercadão 2000":[
+    "No Mercadão 2000, Ana viu 5 bananas em uma banca.",
+    "No Mercadão 2000, João comprou 2 maçãs para o lanche.",
+    "No Mercadão 2000, um aluno mostrou a garrafa dele para o colega.",
+    "No Mercadão 2000, a turma encontrou uma banca com 12 laranjas."
+  ],
+  "Parque da Cidade":[
+    "No Parque da Cidade, Lucas foi beber água de coco e perguntou se o colega também queria.",
+    "No Parque da Cidade, Ana viu os colegas jogando bola e quis falar que gosta de futebol.",
+    "No Parque da Cidade, um aluno quis perguntar se o colega gosta de açaí.",
+    "No Parque da Cidade, dois colegas perceberam que não estavam atrasados ainda."
+  ],
+  "Caminho urbano":[
+    "No caminho pela cidade, a professora pediu atenção à turma.",
+    "Atravessando a cidade, dois alunos falaram sobre a mochila deles.",
+    "No caminho urbano, um aluno não entendeu a orientação e pediu para repetir.",
+    "Durante o trajeto, a equipe queria dizer que estava pronta."
+  ],
+  "Aeroporto Velho":[
+    "No bairro Aeroporto Velho, os alunos já estavam perto da escola.",
+    "No Aeroporto Velho, uma aluna percebeu que o caderno dela estava na mochila.",
+    "Perto do Aeroporto Velho, dois colegas perguntaram se a escola estava perto.",
+    "No Aeroporto Velho, o professor lembrou que a aula começa às 13h30."
+  ],
+  "Perto da escola":[
+    "Perto da Escola Delfina, os alunos precisavam entrar preparados.",
+    "No portão da Escola Delfina, a professora perguntou se a turma estava pronta.",
+    "Antes de entrar na escola, um aluno lembrou da tarefa de casa.",
+    "Chegando à Escola Delfina, a professora pediu para os alunos abrirem o livro."
+  ],
+  "Geral":[
+    "Durante a jornada, apareceu um desafio de Inglês.",
+    "Na trilha até a escola, os alunos precisam escolher a frase correta.",
+    "No caminho, uma situação de sala de aula apareceu no desafio.",
+    "Para continuar avançando, observe a situação e marque a melhor opção."
+  ]
+};
+
+let questions = [];
+let id=1;
+function add(place, topic, q, c, w, t){ questions.push(makeQ(id++, place, topic, q, c, w, t)); }
+
+const places = ["Museu João Fona","Orla de Santarém","Centro / Mercado Municipal","Mercadão 2000","Parque da Cidade","Caminho urbano","Aeroporto Velho","Perto da escola","Geral"];
+
+// Verb to be affirmative - 15
+[
+ ["Ana está pronta para a aula. Qual frase afirma isso em inglês?","She is ready for class.",["She are ready for class.","Is she ready for class?","She isn’t ready for class.","He is ready for class."],"Para she, usamos is: She is..."],
+ ["João está no caminho para a escola. Qual frase afirma isso?","He is on the way to school.",["He are on the way to school.","Is he on the way to school?","He isn’t on the way to school.","They is on the way."],"Para he, usamos is: He is..."],
+ ["Dois alunos estão prontos para jogar. Qual frase afirma isso?","They are ready to play.",["They is ready to play.","Are they ready to play?","They aren’t ready.","He is ready to play."],"Para they, usamos are: They are..."],
+ ["Eu estou preparado para o desafio. Qual frase está correta?","I am ready for the challenge.",["I are ready for the challenge.","Am I ready for the challenge?","I am not ready.","She is ready."],"Com I, usamos am: I am..."],
+ ["Nós estamos perto da escola. Qual frase afirma isso?","We are near the school.",["We is near the school.","Are we near the school?","We aren’t near the school.","He is near the school."],"Para we, usamos are: We are..."],
+ ["Você está no horário. Qual frase afirma isso em inglês?","You are on time.",["You is on time.","Are you on time?","You aren’t on time.","She is on time."],"Para you, usamos are: You are..."],
+ ["A mochila está organizada. Qual frase afirma isso?","The backpack is organized.",["The backpack are organized.","Is the backpack organized?","The backpack isn’t organized.","They are organized."],"Para objeto no singular, usamos is."],
+ ["A tarefa está pronta. Qual frase afirma isso?","The homework is ready.",["The homework are ready.","Is the homework ready?","The homework isn’t ready.","They are ready."],"Homework no singular combina com is."],
+ ["Os colegas estão felizes. Qual frase afirma isso?","The classmates are happy.",["The classmates is happy.","Are the classmates happy?","The classmates aren’t happy.","She is happy."],"Plural combina com are."],
+ ["A professora está na escola. Qual frase afirma isso?","The teacher is at school.",["The teacher are at school.","Is the teacher at school?","The teacher isn’t at school.","They are at school."],"The teacher é singular: is."],
+ ["O jogo está fácil. Qual frase afirma isso?","The game is easy.",["The game are easy.","Is the game easy?","The game isn’t easy.","They are easy."],"The game é singular: is."],
+ ["Os livros estão na mochila. Qual frase afirma isso?","The books are in the backpack.",["The books is in the backpack.","Are the books in the backpack?","The books aren’t in the backpack.","It is in the backpack."],"Books está no plural: are."],
+ ["Maria e Ana estão na trilha. Qual frase afirma isso?","Maria and Ana are on the trail.",["Maria and Ana is on the trail.","Are Maria and Ana on the trail?","Maria and Ana aren’t on the trail.","She is on the trail."],"Duas pessoas = plural: are."],
+ ["O aluno está atento. Qual frase afirma isso?","The student is attentive.",["The student are attentive.","Is the student attentive?","The student isn’t attentive.","They are attentive."],"The student é singular: is."],
+ ["A escola está perto. Qual frase afirma isso?","The school is near.",["The school are near.","Is the school near?","The school isn’t near.","They are near."],"The school é singular: is."]
+].forEach((x,i)=>add(places[i%places.length],"verb_to_be_affirmative", `${contexts[places[i%places.length]][i%4]} ${x[0]}`, x[1], x[2], x[3]));
+
+// Verb to be negative - 15
+[
+ ["Pedro percebeu que não está atrasado. Qual frase mostra essa negativa?","I am not late.",["I am late.","Am I late?","I are not late.","She is late."],"Para negar com I: I am not..."],
+ ["Ana quer dizer que ela não está cansada. Qual frase está correta?","She isn’t tired.",["She is tired.","Is she tired?","She aren’t tired.","He isn’t tired."],"Para she na negativa: She isn’t..."],
+ ["João quer dizer que ele não está pronto. Qual frase mostra isso?","He isn’t ready.",["He is ready.","Is he ready?","He aren’t ready.","They aren’t ready."],"Para he na negativa: He isn’t..."],
+ ["Dois colegas querem dizer que não estão atrasados. Qual frase está correta?","They aren’t late.",["They are late.","Are they late?","They isn’t late.","He isn’t late."],"Para they na negativa: They aren’t..."],
+ ["A turma quer dizer que não está perdida. Qual frase está correta?","We aren’t lost.",["We are lost.","Are we lost?","We isn’t lost.","I am lost."],"Para we na negativa: We aren’t..."],
+ ["O aluno quer dizer que o livro não está na mochila. Qual frase está correta?","The book isn’t in the backpack.",["The book is in the backpack.","Is the book in the backpack?","The book aren’t in the backpack.","The books is not."],"Book é singular: isn’t."],
+ ["A professora avisou que a aula não está terminada. Qual frase mostra isso?","The class isn’t over.",["The class is over.","Is the class over?","The class aren’t over.","They aren’t over."],"Class é singular: isn’t."],
+ ["Os alunos querem dizer que os materiais não estão completos. Qual frase está correta?","The materials aren’t complete.",["The materials are complete.","Are the materials complete?","The materials isn’t complete.","It isn’t complete."],"Plural: aren’t."],
+ ["Você quer dizer que não está confuso. Qual frase está correta?","You aren’t confused.",["You are confused.","Are you confused?","You isn’t confused.","I am confused."],"Para you na negativa: You aren’t..."],
+ ["O jogo não está difícil. Qual frase mostra isso?","The game isn’t difficult.",["The game is difficult.","Is the game difficult?","The game aren’t difficult.","They aren’t difficult."],"Game é singular: isn’t."],
+ ["A mochila não está pesada. Qual frase está correta?","The backpack isn’t heavy.",["The backpack is heavy.","Is the backpack heavy?","The backpack aren’t heavy.","They are heavy."],"Backpack é singular: isn’t."],
+ ["Maria e Lucas não estão na Orla agora. Qual frase está correta?","Maria and Lucas aren’t at the Orla now.",["Maria and Lucas are at the Orla now.","Are Maria and Lucas at the Orla now?","Maria and Lucas isn’t at the Orla now.","She isn’t at the Orla."],"Duas pessoas = aren’t."],
+ ["A escola não está longe. Qual frase mostra essa negativa?","The school isn’t far.",["The school is far.","Is the school far?","The school aren’t far.","They aren’t far."],"School é singular: isn’t."],
+ ["Os colegas não estão conversando. Qual frase está correta?","The classmates aren’t talking.",["The classmates are talking.","Are the classmates talking?","The classmates isn’t talking.","He isn’t talking."],"Classmates é plural: aren’t."],
+ ["A tarefa não está pronta. Qual frase está correta?","The homework isn’t ready.",["The homework is ready.","Is the homework ready?","The homework aren’t ready.","They are ready."],"Homework combina com isn’t."]
+].forEach((x,i)=>add(places[(i+2)%places.length],"verb_to_be_negative", `${contexts[places[(i+2)%places.length]][i%4]} ${x[0]}`, x[1], x[2], x[3]));
+
+// Verb to be interrogative - 15
+[
+ ["A professora quer perguntar: “Você está pronto?” Qual frase faz essa pergunta?","Are you ready?",["You are ready.","You aren’t ready.","Is you ready?","Are ready you?"],"Em pergunta com verb to be, o verbo vem antes: Are you...?"],
+ ["Um aluno quer perguntar: “Ela está na escola?” Qual frase está correta?","Is she at school?",["She is at school.","She isn’t at school.","Are she at school?","Is at school she?"],"Para she, pergunta com Is she...?"],
+ ["A turma quer perguntar: “Eles estão atrasados?” Qual frase está correta?","Are they late?",["They are late.","They aren’t late.","Is they late?","Are late they?"],"Para they, pergunta com Are they...?"],
+ ["O colega quer perguntar: “Ele está no caminho?” Qual frase faz essa pergunta?","Is he on the way?",["He is on the way.","He isn’t on the way.","Are he on the way?","Is on the way he?"],"Para he, pergunta com Is he...?"],
+ ["A equipe quer perguntar: “Nós estamos perto?” Qual frase está correta?","Are we near?",["We are near.","We aren’t near.","Is we near?","Are near we?"],"Para we, pergunta com Are we...?"],
+ ["Um aluno quer perguntar: “O livro está na mochila?” Qual frase está correta?","Is the book in the backpack?",["The book is in the backpack.","The book isn’t in the backpack.","Are the book in the backpack?","Is in the backpack the book?"],"Book singular: Is the book...?"],
+ ["A professora quer perguntar: “Os alunos estão prontos?” Qual frase está correta?","Are the students ready?",["The students are ready.","The students aren’t ready.","Is the students ready?","Are ready the students?"],"Students plural: Are the students...?"],
+ ["Um colega quer perguntar: “A tarefa está pronta?” Qual frase está correta?","Is the homework ready?",["The homework is ready.","The homework isn’t ready.","Are the homework ready?","Is ready the homework?"],"Homework singular: Is the homework...?"],
+ ["A equipe quer perguntar: “O jogo está fácil?” Qual frase faz essa pergunta?","Is the game easy?",["The game is easy.","The game isn’t easy.","Are the game easy?","Is easy the game?"],"Game singular: Is the game...?"],
+ ["O professor quer perguntar: “Vocês estão no horário?” Qual frase está correta?","Are you on time?",["You are on time.","You aren’t on time.","Is you on time?","Are on time you?"],"Para you, pergunta com Are you...?"],
+ ["Um aluno quer perguntar: “Eu estou certo?” Qual frase está correta?","Am I right?",["I am right.","I am not right.","Are I right?","Am right I?"],"Com I, a pergunta começa com Am I...?"],
+ ["Dois colegas querem perguntar: “Maria e Ana estão aqui?” Qual frase está correta?","Are Maria and Ana here?",["Maria and Ana are here.","Maria and Ana aren’t here.","Is Maria and Ana here?","Are here Maria and Ana?"],"Duas pessoas: Are Maria and Ana...?"],
+ ["A turma quer perguntar: “A escola está perto?” Qual frase está correta?","Is the school near?",["The school is near.","The school isn’t near.","Are the school near?","Is near the school?"],"School singular: Is the school...?"],
+ ["Um aluno quer perguntar: “Os livros estão na mesa?” Qual frase faz essa pergunta?","Are the books on the table?",["The books are on the table.","The books aren’t on the table.","Is the books on the table?","Are on the table the books?"],"Books plural: Are the books...?"],
+ ["A professora quer perguntar: “A mochila está organizada?” Qual frase está correta?","Is the backpack organized?",["The backpack is organized.","The backpack isn’t organized.","Are the backpack organized?","Is organized the backpack?"],"Backpack singular: Is the backpack...?"]
+].forEach((x,i)=>add(places[(i+4)%places.length],"verb_to_be_interrogative", `${contexts[places[(i+4)%places.length]][i%4]} ${x[0]}`, x[1], x[2], x[3]));
+
+// Pronouns - 15
+[
+ ["Para substituir o nome Ana, qual pronome usamos?","She",["He","It","They","We"],"Ana é menina/mulher: she."],
+ ["Para substituir João, qual pronome usamos?","He",["She","It","They","We"],"João é menino/homem: he."],
+ ["Para falar de João e Pedro juntos, qual pronome usamos?","They",["He","She","It","I"],"Duas ou mais pessoas: they."],
+ ["Para falar de você mesmo em inglês, qual pronome usamos?","I",["You","He","She","They"],"Para falar de si mesmo: I."],
+ ["Para falar com um colega diretamente, qual pronome usamos?","You",["I","He","She","It"],"Falando com alguém: you."],
+ ["Para falar de uma mochila, qual pronome pode substituir o objeto?","It",["He","She","They","We"],"Para objeto singular, usamos it."],
+ ["Para falar da turma incluindo você, qual pronome usamos?","We",["They","He","She","It"],"Nós = we."],
+ ["Para falar dos alunos sem incluir você, qual pronome usamos?","They",["We","I","He","It"],"Eles/elas = they."],
+ ["Para substituir Maria e Ana, qual pronome usamos?","They",["She","He","It","I"],"Duas pessoas: they."],
+ ["Para substituir a professora, qual pronome usamos?","She",["He","It","They","We"],"Professora = she."],
+ ["Para substituir o professor, qual pronome usamos?","He",["She","It","They","We"],"Professor = he."],
+ ["Para substituir a escola, qual pronome usamos?","It",["He","She","They","We"],"Para coisa/lugar singular: it."],
+ ["Para dizer que nós estamos prontos, qual pronome inicia a frase?","We",["They","You","He","It"],"Nós = we."],
+ ["Para dizer que eles estão perto, qual pronome inicia a frase?","They",["We","He","She","I"],"Eles/elas = they."],
+ ["Para dizer que eu estou atento, qual pronome inicia a frase?","I",["You","He","She","They"],"Eu = I."]
+].forEach((x,i)=>add(places[(i+1)%places.length],"personal_pronouns", `${contexts[places[(i+1)%places.length]][i%4]} ${x[0]}`, x[1], x[2], x[3]));
+
+// Possessive adjectives - 15
+[
+ ["Ana trouxe a mochila dela. Qual expressão está correta?","Her backpack",["His backpack","My backpack","Our backpack","Their backpack"],"Para menina/mulher: her = dela."],
+ ["João mostrou o caderno dele. Qual expressão está correta?","His notebook",["Her notebook","My notebook","Your notebook","Our notebook"],"Para menino/homem: his = dele."],
+ ["Você quer dizer “meu livro”. Qual expressão está correta?","My book",["Your book","His book","Her book","They book"],"Meu/minha = my."],
+ ["A professora fala com um aluno e diz “seu lápis”. Qual expressão está correta?","Your pencil",["My pencil","His pencil","Her pencil","Our pencil"],"Seu/sua falando com alguém = your."],
+ ["A equipe quer dizer “nossa escola”. Qual expressão está correta?","Our school",["Their school","My school","His school","Her school"],"Nosso/nossa = our."],
+ ["Dois alunos mostraram os materiais deles. Qual expressão está correta?","Their materials",["Our materials","His materials","Her materials","My materials"],"Deles/delas = their."],
+ ["Maria pegou a garrafa dela. Qual expressão está correta?","Her bottle",["His bottle","Your bottle","My bottle","Our bottle"],"Dela = her."],
+ ["Pedro organizou a mochila dele. Qual expressão está correta?","His backpack",["Her backpack","Their backpack","Our backpack","My backpack"],"Dele = his."],
+ ["Você diz que a tarefa é sua. Qual expressão está correta?","My homework",["Your homework","His homework","Her homework","They homework"],"Minha = my."],
+ ["A turma fala da escola de todos. Qual expressão está correta?","Our school",["My school","His school","Her school","Its school"],"Nossa = our."],
+ ["Os colegas falam do time deles. Qual expressão está correta?","Their team",["Our team","His team","Her team","My team"],"Deles = their."],
+ ["Um aluno fala com você sobre a sua turma. Qual expressão está correta?","Your class",["My class","His class","Her class","Their class"],"Sua, falando com você = your."],
+ ["A escola tem suas regras. Qual expressão pode indicar “suas regras” para a escola?","Its rules",["His rules","Her rules","My rules","You rules"],"Para coisa/lugar singular: its."],
+ ["Ana e Bia falam da professora delas. Qual expressão está correta?","Their teacher",["Her teacher","His teacher","Our teacher","My teacher"],"Duas pessoas: their."],
+ ["Você e seu colega falam da mochila de vocês. Qual expressão está correta?","Our backpack",["Their backpack","His backpack","Her backpack","My backpack"],"De nós = our."]
+].forEach((x,i)=>add(places[(i+3)%places.length],"possessive_adjectives", `${contexts[places[(i+3)%places.length]][i%4]} ${x[0]}`, x[1], x[2], x[3]));
+
+// Greetings/Farewells - 15
+[
+ ["O aluno chegou à tarde, antes da aula das 13h30. Qual cumprimento combina melhor?","Good afternoon!",["Good morning!","Good night!","Goodbye!","See you later!"],"À tarde, usamos Good afternoon."],
+ ["Dois colegas se encontram e querem dizer “Oi” de forma simples. Qual expressão combina?","Hi!",["Bye!","Good night!","Stand up!","Close your book!"],"Hi significa Oi."],
+ ["A aula terminou e o aluno quer se despedir. Qual expressão combina?","Goodbye!",["Hello!","Good morning!","Open your book!","I am ready!"],"Goodbye é despedida."],
+ ["Um aluno vai encontrar o colega depois. Qual expressão indica “Até mais tarde”?","See you later!",["Good morning!","Hello!","Sit down!","My name is Ana."],"See you later = Até mais tarde."],
+ ["À noite, ao se despedir, qual expressão combina melhor?","Good night!",["Good morning!","Good afternoon!","Hi!","Open your book!"],"Good night pode ser usado como despedida à noite."],
+ ["Ao conhecer um aluno novo, qual expressão pode iniciar a conversa?","Hello!",["Goodbye!","See you later!","Close your book!","I am twelve."],"Hello é cumprimento."],
+ ["A professora chegou pela manhã. Qual cumprimento combina?","Good morning!",["Good afternoon!","Good night!","Bye!","See you later!"],"Pela manhã: Good morning."],
+ ["Um colega saiu rapidamente e disse “Tchau”. Qual expressão em inglês combina?","Bye!",["Hi!","Hello!","Good morning!","Listen!"],"Bye significa Tchau."],
+ ["O aluno encontrou o professor no portão e quer cumprimentar com educação à tarde. Qual opção usar?","Good afternoon!",["Good night!","Goodbye!","Close your book!","See you later!"],"À tarde: Good afternoon."],
+ ["Na saída da escola, qual opção mostra despedida?","See you later!",["Good afternoon!","Hello!","Stand up!","My pencil."],"See you later é despedida."],
+ ["Antes de começar a conversa, qual expressão significa “Olá”?","Hello!",["Goodbye!","Good night!","Write!","His book."],"Hello = Olá."],
+ ["Um aluno vai dormir depois de estudar. Qual expressão combina?","Good night!",["Good morning!","Good afternoon!","Hello!","Read!"],"À noite, usamos Good night."],
+ ["Um aluno encontrou o colega rapidamente no caminho. Qual opção é cumprimento?","Hi!",["Bye!","Goodbye!","See you later!","Sit down!"],"Hi é cumprimento."],
+ ["O jogo terminou e a equipe quer se despedir. Qual opção combina?","Goodbye!",["Hello!","Good morning!","Are you ready?","My name is."],"Goodbye é usado para despedida."],
+ ["A professora entra na sala e cumprimenta a turma. Qual expressão pode usar?","Good afternoon, class!",["Goodbye, class!","See you later, class!","Close your book!","Her class!"],"Para cumprimentar à tarde: Good afternoon."]
+].forEach((x,i)=>add(places[(i+5)%places.length],"greetings_farewells", `${contexts[places[(i+5)%places.length]][i%4]} ${x[0]}`, x[1], x[2], x[3]));
+
+// Commands/expressions - 15
+[
+ ["A professora quer que os alunos abram o livro. Qual comando usar?","Open your book.",["Close your book.","Sit down.","Stand up.","Goodbye."],"Abrir o livro = Open your book."],
+ ["O professor quer que a turma sente. Qual comando usar?","Sit down.",["Stand up.","Open your book.","Good night.","My name is."],"Sentar = Sit down."],
+ ["A professora quer que todos levantem. Qual comando usar?","Stand up.",["Sit down.","Close your book.","Hello.","Her pencil."],"Levantar = Stand up."],
+ ["O aluno não entendeu e quer pedir repetição com educação. Qual frase usar?","Can you repeat, please?",["Goodbye!","I am eleven.","Her book.","Stand up."],"Para pedir repetição: Can you repeat, please?"],
+ ["O aluno precisa pedir para ir ao banheiro. Qual frase combina?","May I go to the bathroom?",["Open your book.","I am a bathroom.","Good night.","They are books."],"Pedido educado: May I go...?"],
+ ["A professora quer que a turma escute. Qual comando usar?","Listen.",["Write.","Read.","Goodbye.","My backpack."],"Escutar = Listen."],
+ ["A professora quer que os alunos escrevam. Qual comando usar?","Write.",["Listen.","Sit down.","Good afternoon.","His book."],"Escrever = Write."],
+ ["A professora quer que a turma repita. Qual comando usar?","Repeat.",["Close.","Goodbye.","I am ready.","Their school."],"Repetir = Repeat."],
+ ["A professora quer que os alunos fechem o livro. Qual comando usar?","Close your book.",["Open your book.","Stand up.","Good morning.","My name is."],"Fechar o livro = Close your book."],
+ ["O aluno quer dizer que não entendeu. Qual frase combina?","I don’t understand.",["I am twelve.","Open your book.","Goodbye.","Her backpack."],"Não entendo = I don’t understand."],
+ ["O aluno quer pedir licença com educação. Qual expressão usar?","Excuse me.",["Good night.","They are late.","My pencil.","Sit down."],"Com licença = Excuse me."],
+ ["A professora quer que a turma leia. Qual comando usar?","Read.",["Write.","Listen.","Goodbye.","Your class."],"Ler = Read."],
+ ["O aluno quer perguntar o significado de uma palavra. Qual frase combina melhor?","What does it mean?",["Are you ready?","Goodbye!","Close your book.","I am late."],"What does it mean? = O que significa?"],
+ ["A professora pediu atenção antes da resposta. Qual comando combina?","Pay attention.",["See you later.","My name is.","Her bottle.","Are they late?"],"Prestar atenção = Pay attention."],
+ ["O aluno terminou a atividade e quer avisar. Qual frase combina?","I’m finished.",["Open your book.","Good morning.","They are pencils.","His school."],"I’m finished = Terminei."]
+].forEach((x,i)=>add(places[(i+6)%places.length],"commands_expressions", `${contexts[places[(i+6)%places.length]][i%4]} ${x[0]}`, x[1], x[2], x[3]));
+
+// Likes/dislikes - 15
+[
+ ["O colega respondeu que não gosta de água de coco. Qual frase mostra essa negativa?","I don’t like coconut water.",["I like coconut water.","Do you like coconut water?","She likes coconut water.","I am coconut water."],"Para negar gosto: I don’t like..."],
+ ["Ana quer perguntar se o colega gosta de açaí. Qual frase faz essa pergunta?","Do you like açaí?",["You like açaí.","I don’t like açaí.","Are you açaí?","She is açaí."],"Para perguntar com like: Do you like...?"],
+ ["Pedro quer dizer que gosta de futebol. Qual frase afirma isso?","I like soccer.",["I don’t like soccer.","Do you like soccer?","I am soccer.","She likes soccer."],"Afirmativa simples: I like..."],
+ ["Um colega quer dizer que não gosta de acordar atrasado. Qual frase mostra essa negativa?","I don’t like being late.",["I like being late.","Do you like being late?","I am late like.","She likes late."],"Negativa: I don’t like..."],
+ ["A aluna quer perguntar se você gosta de Inglês. Qual frase está correta?","Do you like English?",["You like English?","I don’t like English.","Are you English?","English do you like is?"],"Pergunta: Do you like...?"],
+ ["Um aluno quer dizer que gosta de games. Qual frase está correta?","I like games.",["I don’t like games.","Do you like games?","I am games.","Games like I."],"Eu gosto = I like..."],
+ ["O colega respondeu que não gosta de bullying. Qual frase está correta?","I don’t like bullying.",["I like bullying.","Do you like bullying?","I am bullying.","She likes bullying."],"Não gosto = I don’t like..."],
+ ["Uma aluna quer dizer que gosta de K-pop. Qual frase afirma isso?","I like K-pop.",["I don’t like K-pop.","Do you like K-pop?","I am K-pop.","Are you K-pop?"],"Afirmativa: I like..."],
+ ["Um aluno quer perguntar se o colega gosta de estudar em casa. Qual frase está correta?","Do you like studying at home?",["You like studying at home?","I don’t like studying at home.","Are you study at home?","Studying do you like is?"],"Pergunta com like: Do you like...?"],
+ ["O colega diz que não gosta de esquecer a tarefa. Qual frase mostra isso?","I don’t like forgetting homework.",["I like forgetting homework.","Do you like homework?","I am homework.","She is homework."],"Negativa: I don’t like..."],
+ ["Ana quer dizer que gosta da escola. Qual frase está correta?","I like school.",["I don’t like school.","Do you like school?","I am school.","School like I."],"Eu gosto de escola = I like school."],
+ ["O colega pergunta se você gosta de música. Qual frase está correta?","Do you like music?",["You like music?","I don’t like music.","Are you music?","Music you do like?"],"Pergunta: Do you like...?"],
+ ["Pedro responde que não gosta de brigas. Qual frase está correta?","I don’t like fights.",["I like fights.","Do you like fights?","I am fights.","They are like fights."],"Não gosto = I don’t like..."],
+ ["Um aluno quer dizer que gosta de jogar em equipe. Qual frase está correta?","I like playing in a team.",["I don’t like playing in a team.","Do you like playing in a team?","I am team.","Team I like am."],"Afirmativa: I like..."],
+ ["O colega quer perguntar se você gosta do jogo. Qual frase está correta?","Do you like the game?",["You like the game?","I don’t like the game.","Are you the game?","The game do like?"],"Pergunta: Do you like...?"]
+].forEach((x,i)=>add(places[(i+4)%places.length],"likes_dislikes", `${contexts[places[(i+4)%places.length]][i%4]} ${x[0]}`, x[1], x[2], x[3]));
+
+// Numbers - 15 to increase location variation
+[
+ ["Ana viu 5 bananas. Como se escreve o número 5 em inglês?","Five",["Fifteen","Fifty","Four","Fine"],"5 em inglês é five."],
+ ["João viu 2 maçãs. Como se escreve o número 2 em inglês?","Two",["Three","Ten","Twelve","Twenty"],"2 em inglês é two."],
+ ["A banca tinha 12 laranjas. Como se escreve 12 em inglês?","Twelve",["Twenty","Two","Ten","Thirteen"],"12 em inglês é twelve."],
+ ["A equipe marcou 3 pontos. Como se escreve 3 em inglês?","Three",["Tree","Thirteen","Thirty","Two"],"3 em inglês é three."],
+ ["O aluno tem 11 anos. Como se escreve 11 em inglês?","Eleven",["Twelve","Seven","Seventeen","One"],"11 em inglês é eleven."],
+ ["A aula começa às 13h30. Como se escreve o número 13 em inglês?","Thirteen",["Thirty","Three","Twelve","Ten"],"13 em inglês é thirteen."],
+ ["O dado mostrou 6. Como se escreve 6 em inglês?","Six",["Seven","Sixty","Sixteen","Five"],"6 em inglês é six."],
+ ["A sala tem 20 cadeiras. Como se escreve 20 em inglês?","Twenty",["Twelve","Two","Thirty","Ten"],"20 em inglês é twenty."],
+ ["O jogador fez 10 pontos. Como se escreve 10 em inglês?","Ten",["Two","Twelve","Twenty","Teen"],"10 em inglês é ten."],
+ ["A equipe avançou 4 casas. Como se escreve 4 em inglês?","Four",["Five","Forty","Fourteen","For"],"4 em inglês é four."],
+ ["Havia 8 livros na mesa. Como se escreve 8 em inglês?","Eight",["Eighteen","Eighty","Seven","Height"],"8 em inglês é eight."],
+ ["A professora chamou 9 alunos. Como se escreve 9 em inglês?","Nine",["Nineteen","Ninety","Ten","Nice"],"9 em inglês é nine."],
+ ["O aluno viu 15 lápis. Como se escreve 15 em inglês?","Fifteen",["Five","Fifty","Sixteen","Thirteen"],"15 em inglês é fifteen."],
+ ["A turma respondeu 30 desafios. Como se escreve 30 em inglês?","Thirty",["Thirteen","Three","Twenty","Twelve"],"30 em inglês é thirty."],
+ ["O jogo tem 40 casas. Como se escreve 40 em inglês?","Forty",["Four","Fourteen","Fifty","Forteen"],"40 em inglês é forty."]
+].forEach((x,i)=>add(places[(i+3)%places.length],"numbers", `${contexts[places[(i+3)%places.length]][i%4]} ${x[0]}`, x[1], x[2], x[3]));
+
+console.log("Total questions:", questions.length);
+
+function buildBoard(){
+  const cells = document.getElementById("cells");
+  cells.innerHTML="";
+  cellPositions.forEach((p,i)=>{
+    const n=i+1;
+    const t = tileTypes[n] || {type:"question"};
+    const d=document.createElement("div");
+    d.className=`cell ${t.type==="question"?"":t.type}`;
+    d.style.left=p[0]+"%";
+    d.style.top=p[1]+"%";
+    d.textContent=n;
+    d.title=(t.place||t.type||"Casa")+" "+n;
+    cells.appendChild(d);
+  });
+  updateTokens(true);
+}
+
+function showScreen(id){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+}
+
+function startGame(){
+  players[0].name=document.getElementById("p1Name").value.trim()||"Equipe A";
+  players[0].klass=document.getElementById("p1Class").value.trim()||"6º ano";
+  players[1].name=document.getElementById("p2Name").value.trim()||"Equipe B";
+  players[1].klass=document.getElementById("p2Class").value.trim()||"6º ano";
+  document.getElementById("p1HudName").textContent=players[0].name;
+  document.getElementById("p2HudName").textContent=players[1].name;
+  document.getElementById("p1HudNameM").textContent=players[0].name;
+  document.getElementById("p2HudNameM").textContent=players[1].name;
+  showScreen("gameScreen");
+  buildBoard();
+  updateHud();
+  startAudio();
+  log(`🚶 ${players[0].name} e ${players[1].name} começaram a jornada.`);
+}
+
+function updateHud(){
+  ["","M"].forEach(s=>{
+    document.getElementById("p1Pos"+s).textContent=players[0].pos;
+    document.getElementById("p2Pos"+s).textContent=players[1].pos;
+    document.getElementById("p1Score"+s).textContent=players[0].score;
+    document.getElementById("p2Score"+s).textContent=players[1].score;
+  });
+  ["hudP1","hudP1m"].forEach(id=>document.getElementById(id).classList.toggle("active", current===0));
+  ["hudP2","hudP2m"].forEach(id=>document.getElementById(id).classList.toggle("active", current===1));
+  const tile=tileTypes[players[current].pos]||{};
+  document.getElementById("currentPlace").textContent = tile.place || inferPlace(players[current].pos);
+}
+
+function inferPlace(pos){
+  if(pos<=3) return "Museu João Fona";
+  if(pos<=9) return "Orla de Santarém";
+  if(pos<=15) return "Centro / Mercado Municipal";
+  if(pos<=19) return "Mercadão 2000";
+  if(pos<=25) return "Parque da Cidade";
+  if(pos<=31) return "Caminho urbano";
+  if(pos<=36) return "Aeroporto Velho";
+  if(pos<=39) return "Perto da escola";
+  return "Escola Delfina de Jesus Amorim";
+}
+
+function updateTokens(){
+  [0,1].forEach((idx)=>{
+    const pos=cellPositions[players[idx].pos-1];
+    const token=document.getElementById(idx===0?"token1":"token2");
+    token.style.left=pos[0]+"%";
+    token.style.top=pos[1]+"%";
+  });
+  updateHud();
+}
+
+function log(msg){
+  const box=document.getElementById("gameLog");
+  box.insertAdjacentHTML("afterbegin",`<p>${msg}</p>`);
+}
+
+function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
+
+async function rollDice(){
+  if(waiting) return;
+  const p=players[current];
+  if(p.skip){
+    p.skip=false;
+    showFeedback("⏳ Perca a vez", `${p.name} perdeu esta rodada, mas volta na próxima.`, "special", 2200, ()=>switchTurn());
+    return;
+  }
+  waiting=true;
+  document.getElementById("rollBtn").disabled=true;
+  const dice=document.getElementById("dice");
+  dice.classList.add("rolling");
+  playTone(180,.08);
+  let rolls=10;
+  let value=1;
+  for(let i=0;i<rolls;i++){
+    value=1+Math.floor(Math.random()*6);
+    dice.textContent=value;
+    await sleep(70);
+  }
+  dice.classList.remove("rolling");
+  playTone(330,.1);
+  const oldPos=p.pos;
+  let target=Math.min(40, p.pos+value);
+  log(`🎲 ${p.name} tirou ${value}.`);
+  await movePlayer(current, target);
+  if(target>=40){
+    askFinalQuestion(oldPos);
+  }else{
+    handleTileLanding(oldPos);
+  }
+}
+
+async function movePlayer(playerIdx, target){
+  const p=players[playerIdx];
+  const step = target > p.pos ? 1 : -1;
+  while(p.pos !== target){
+    p.pos += step;
+    updateTokens();
+    playStep();
+    await sleep(320);
+  }
+}
+
+function handleTileLanding(oldPos){
+  const p=players[current];
+  const tile = tileTypes[p.pos] || {type:"question", place:"Geral"};
+  updateHud();
+  if(tile.type==="bonus" || tile.type==="penalty" || tile.type==="special"){
+    applyTileEffect(tile, oldPos);
+  }else{
+    askQuestionForTile(tile, oldPos, false);
+  }
+}
+
+function askFinalQuestion(oldPos){
+  const finalTile={type:"final", place:"Perto da escola"};
+  const q = getQuestion("Perto da escola");
+  showQuestion(q, async (correct)=>{
+    if(correct){
+      players[current].score += 20;
+      players[current].correct++;
+      endGame();
+    }else{
+      await movePlayer(current, 39);
+      switchTurn();
+    }
+  }, true);
+}
+
+function applyTileEffect(tile, oldPos){
+  const p=players[current];
+  let text=tile.msg || "";
+  let after=()=>switchTurn();
+  if(tile.effect==="advance"){
+    text += `<br><br><strong>Efeito:</strong> avance ${tile.value} casa(s).`;
+    after=async()=>{ await movePlayer(current, Math.min(40,p.pos+tile.value)); if(p.pos>=40){askFinalQuestion(oldPos)} else switchTurn(); };
+  }else if(tile.effect==="back"){
+    text += `<br><br><strong>Efeito:</strong> volte ${tile.value} casa(s).`;
+    after=async()=>{ await movePlayer(current, Math.max(1,p.pos-tile.value)); switchTurn(); };
+  }else if(tile.effect==="again"){
+    text += `<br><br><strong>Efeito:</strong> jogue novamente.`;
+    after=()=>{ waiting=false; document.getElementById("rollBtn").disabled=false; updateHud(); };
+  }else if(tile.effect==="skip"){
+    text += `<br><br><strong>Efeito:</strong> perca a vez.`;
+    p.skip=true;
+  }else if(tile.effect==="points"){
+    p.score += tile.value;
+    text += `<br><br><strong>Efeito:</strong> +${tile.value} pontos.`;
+  }else if(tile.effect==="extra"){
+    showFeedback("📘 Revisão rápida", text + "<br><br>Responda uma pergunta extra para continuar.", "special", 2200, ()=>{
+      askQuestionForTile({place:inferPlace(p.pos)}, oldPos, true);
+    });
+    return;
+  }else if(tile.effect==="nextBonus"){
+    p.nextBonus=true;
+    text += `<br><br><strong>Efeito:</strong> seu próximo acerto vale +10 pontos.`;
+  }else if(tile.effect==="advanceTo"){
+    text += `<br><br><strong>Efeito:</strong> avance até a chegada, mas responda o desafio final.`;
+    after=async()=>{ await movePlayer(current,40); askFinalQuestion(oldPos); };
+  }
+  playTone(tile.type==="penalty"?130:520,.18);
+  showFeedback(tile.type==="penalty"?"⚠️ Atenção!":"⭐ Casa especial!", text, tile.type==="penalty"?"bad":"special", 3200, after);
+}
+
+function askQuestionForTile(tile, oldPos, extra){
+  const place = tile.place && tile.place !== "Geral" ? tile.place : inferPlace(players[current].pos);
+  const q = getQuestion(place);
+  showQuestion(q, async (correct)=>{
+    const p=players[current];
+    if(correct){
+      let pts = extra ? 8 : 10;
+      if(p.nextBonus){ pts += 10; p.nextBonus=false; }
+      p.score += pts;
+      p.correct++;
+      showFeedback("✅ Very good!", `Resposta correta! Você permanece na casa ${p.pos}.<br><br><strong>+${pts} pontos</strong>`, "good", 1600, ()=>switchTurn());
+    }else{
+      showFeedback("💡 Quase!", `<strong>Resposta correta:</strong><br>${q.correct}<div class="tip-box">${q.tip}</div>`, "bad", 3000, async ()=>{
+        if(!extra){
+          await movePlayer(current, oldPos);
+        }
+        switchTurn();
+      });
+    }
+  });
+}
+
+function getQuestion(place){
+  let pool = questions.filter(q=>q.place===place && !usedQuestions.has(q.id));
+  if(pool.length<1){
+    pool = questions.filter(q=>q.place==="Geral" && !usedQuestions.has(q.id));
+  }
+  if(pool.length<1){
+    pool = questions.filter(q=>!usedQuestions.has(q.id));
+  }
+  if(pool.length<1){
+    usedQuestions.clear();
+    pool = questions;
+  }
+  const q = pool[Math.floor(Math.random()*pool.length)];
+  usedQuestions.add(q.id);
+  return q;
+}
+
+function showQuestion(q, callback, final=false){
+  const modal=document.getElementById("modal");
+  const card=document.getElementById("modalCard");
+  const letters=["A","B","C","D","E"];
+  card.innerHTML=`
+    <h2>${final?"🏫 Desafio final":"❓ English Challenge"}</h2>
+    <div class="question-meta">
+      <span class="tag">📍 ${q.place}</span>
+      <span class="tag">📘 ${q.topic.replaceAll("_"," ")}</span>
+    </div>
+    <div class="question-text">${q.question}</div>
+    <div class="options">
+      ${q.options.map((op,i)=>`<button class="option" data-op="${escapeHtml(op)}"><strong>${letters[i]})</strong> ${op}</button>`).join("")}
+    </div>
+  `;
+  modal.classList.add("show");
+  card.querySelectorAll(".option").forEach(btn=>{
+    btn.onclick=()=>{
+      const selected=btn.getAttribute("data-op");
+      const correct=selected===q.correct;
+      modal.classList.remove("show");
+      playTone(correct?650:160,.14);
+      callback(correct);
+    };
+  });
+}
+
+function showFeedback(title, htmlText, kind, ms, callback){
+  const modal=document.getElementById("modal");
+  const card=document.getElementById("modalCard");
+  card.innerHTML=`
+    <div class="feedback ${kind}">
+      <h2>${title}</h2>
+      <p>${htmlText}</p>
+      <div class="countbar"><span style="animation-duration:${ms}ms"></span></div>
+    </div>
+  `;
+  modal.classList.add("show");
+  setTimeout(()=>{
+    modal.classList.remove("show");
+    if(callback) callback();
+  }, ms);
+}
+
+function switchTurn(){
+  current = current===0 ? 1 : 0;
+  waiting=false;
+  document.getElementById("rollBtn").disabled=false;
+  updateHud();
+  log(`➡️ Agora é a vez de ${players[current].name}.`);
+}
+
+function endGame(){
+  playVictory();
+  showScreen("endScreen");
+  document.getElementById("winnerText").textContent=`${players[current].name} venceu a jornada!`;
+  document.getElementById("endP1").textContent=players[0].name;
+  document.getElementById("endP2").textContent=players[1].name;
+  document.getElementById("endP1Score").textContent=players[0].score;
+  document.getElementById("endP2Score").textContent=players[1].score;
+}
+
+function escapeHtml(s){
+  return s.replaceAll("&","&amp;").replaceAll('"',"&quot;").replaceAll("<","&lt;").replaceAll(">","&gt;");
+}
+
+function toggleSound(){
+  soundOn=!soundOn;
+  document.getElementById("soundBtn").textContent = soundOn ? "🔊 Música: ON" : "🔇 Música: OFF";
+  if(soundOn) startAudio(); else stopAudio();
+}
+function startAudio(){
+  if(!soundOn) return;
+  try{
+    if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+    if(audioCtx.state==="suspended") audioCtx.resume();
+    if(bgOsc) return;
+    bgOsc=audioCtx.createOscillator();
+    bgGain=audioCtx.createGain();
+    bgOsc.type="sine";
+    bgOsc.frequency.value=220;
+    bgGain.gain.value=.018;
+    bgOsc.connect(bgGain).connect(audioCtx.destination);
+    bgOsc.start();
+  }catch(e){}
+}
+function stopAudio(){
+  try{
+    if(bgOsc){ bgOsc.stop(); bgOsc.disconnect(); bgOsc=null; }
+  }catch(e){}
+}
+function playTone(freq=440, dur=.08){
+  if(!soundOn || !audioCtx) return;
+  try{
+    const osc=audioCtx.createOscillator();
+    const gain=audioCtx.createGain();
+    osc.type="triangle";
+    osc.frequency.value=freq;
+    gain.gain.value=.06;
+    osc.connect(gain).connect(audioCtx.destination);
+    osc.start();
+    gain.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+dur);
+    osc.stop(audioCtx.currentTime+dur);
+  }catch(e){}
+}
+function playStep(){ playTone(360,.055); }
+function playVictory(){
+  [523,659,784,1046].forEach((f,i)=>setTimeout(()=>playTone(f,.18),i*160));
+}
+
+window.addEventListener("resize",()=>updateTokens());
+</script>
+</body>
+</html>
