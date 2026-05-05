@@ -243,6 +243,8 @@
   .cell.penalty{background:#301021;border-color:#ff6b88;box-shadow:0 0 14px rgba(255,107,136,.30)}
   .cell.special{background:#322606;border-color:#ffd84d;box-shadow:0 0 14px rgba(255,216,77,.30)}
   .cell.final{background:#083327;border-color:#00ffb7;box-shadow:0 0 18px rgba(0,255,183,.40);width:40px;height:40px}
+  .cell{font-size:0;}
+  .cell::after{content:"";width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.82);box-shadow:0 0 8px rgba(255,255,255,.35);}
 
   .token{
     position:absolute;width:34px;height:34px;transform:translate(-50%,-90%);
@@ -289,6 +291,32 @@
   .mini-rules{font-size:.72rem;line-height:1.35;color:#dce7ff;font-weight:700}
   .log{flex:1;min-height:0;overflow:auto;font-size:.76rem;line-height:1.35;color:#dbe7ff}
   .log p{margin:0 0 6px}
+
+
+  .place-photo{
+    width:100%;
+    aspect-ratio:16/9;
+    object-fit:cover;
+    border-radius:22px;
+    border:1px solid rgba(255,255,255,.14);
+    box-shadow:0 0 24px rgba(0,236,255,.16);
+    margin:10px 0 8px;
+    background:#111;
+  }
+  .place-intro-title{
+    text-align:center;
+    font-size:clamp(1.25rem,5vw,2rem);
+    margin:0;
+    color:#fff;
+    text-shadow:0 0 12px rgba(0,236,255,.32),0 0 20px rgba(255,79,216,.18);
+  }
+  .place-intro-sub{
+    text-align:center;
+    color:#dbe7ff;
+    font-weight:800;
+    margin:6px 0 0;
+    font-size:clamp(.9rem,3vw,1rem);
+  }
 
   .modal-backdrop{
     position:fixed;inset:0;background:rgba(3,6,16,.72);display:none;align-items:center;justify-content:center;
@@ -539,7 +567,7 @@
         <strong>Regra:</strong> jogue o dado, responda à pergunta e avance. Se errar, aparece uma dica rápida e você volta para a casa anterior.
       </div>
       <div class="panel log" id="gameLog">
-        <p>🎮 A jornada começou. Boa sorte!</p>
+        <p>🎮 A jornada começou. Nos pontos principais, uma imagem real aparece antes do desafio.</p>
       </div>
     </aside>
   </main>
@@ -717,6 +745,41 @@ const contexts = {
     "Para continuar avançando, observe a situação e marque a melhor opção."
   ]
 };
+
+
+const placeImages = {
+  "Museu João Fona": "museu%20joao%20fona.webp",
+  "Orla de Santarém": "orla%20de%20santarem.webp",
+  "Centro / Mercado Municipal": "mercado%20municipal.jpg",
+  "Mercado Municipal": "mercado%20municipal.jpg",
+  "Mercadão 2000": "mercadao%202000.jpg",
+  "Parque da Cidade": "parque%20da%20cidade.jpg",
+  "Aeroporto Velho": "aeroporto%20velho.jpg",
+  "Perto da escola": "escola%20Delfina.jpg",
+  "Escola Delfina de Jesus Amorim": "escola%20Delfina.jpg"
+};
+
+function showPlaceIntro(place, callback){
+  const img = placeImages[place];
+  if(!img){
+    callback();
+    return;
+  }
+  const modal=document.getElementById("modal");
+  const card=document.getElementById("modalCard");
+  card.innerHTML=`
+    <h2 class="place-intro-title">📍 Você chegou a:</h2>
+    <p class="place-intro-sub">${place}</p>
+    <img class="place-photo" src="${img}" alt="${place}" onerror="this.style.display='none'">
+    <div class="countbar"><span style="animation-duration:2000ms"></span></div>
+  `;
+  modal.classList.add("show");
+  playTone(480,.09);
+  setTimeout(()=>{
+    modal.classList.remove("show");
+    callback();
+  }, 2000);
+}
 
 let questions = [];
 let id=1;
@@ -1027,6 +1090,8 @@ function handleTileLanding(oldPos){
   updateHud();
   if(tile.type==="bonus" || tile.type==="penalty" || tile.type==="special"){
     applyTileEffect(tile, oldPos);
+  }else if(tile.type==="place" && tile.place){
+    showPlaceIntro(tile.place, ()=>askQuestionForTile(tile, oldPos, false));
   }else{
     askQuestionForTile(tile, oldPos, false);
   }
@@ -1035,16 +1100,18 @@ function handleTileLanding(oldPos){
 function askFinalQuestion(oldPos){
   const finalTile={type:"final", place:"Perto da escola"};
   const q = getQuestion("Perto da escola");
-  showQuestion(q, async (correct)=>{
-    if(correct){
-      players[current].score += 20;
-      players[current].correct++;
-      endGame();
-    }else{
-      await movePlayer(current, 39);
-      switchTurn();
-    }
-  }, true);
+  showPlaceIntro("Escola Delfina de Jesus Amorim", ()=>{
+    showQuestion(q, async (correct)=>{
+      if(correct){
+        players[current].score += 20;
+        players[current].correct++;
+        endGame();
+      }else{
+        await movePlayer(current, 39);
+        switchTurn();
+      }
+    }, true);
+  });
 }
 
 function applyTileEffect(tile, oldPos){
