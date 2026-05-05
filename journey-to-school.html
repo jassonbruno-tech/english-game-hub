@@ -141,182 +141,172 @@
 
   .game-area{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) 230px;gap:8px;padding:8px}
 
-  
-.map-wrap{
-    position:relative;
-    border-radius:28px;
-    overflow:hidden;
-    background:linear-gradient(180deg,#7fd3ff 0%, #b7ecff 34%, #d7f4ff 35%, #95d668 36%, #8dcf61 100%);
+  .map-wrap{
+    position:relative;border-radius:28px;overflow:hidden;
+    background:#8bc53f;
     border:1px solid rgba(255,255,255,.08);
     box-shadow:0 14px 35px rgba(0,0,0,.35),0 0 28px rgba(0,236,255,.10);
   }
   .city-art{
-    position:absolute;inset:0;
-    background:
-      radial-gradient(circle at 12% 15%, rgba(255,255,255,.32), transparent 14%),
-      linear-gradient(180deg,#78d1ff 0%,#b7ecff 34%,#c9effc 35%,#8ed064 36%,#87c85d 100%);
+    position:absolute;inset:0;background:#8bc53f;
   }
-  .sun{
-    position:absolute;right:7%;top:7%;width:72px;height:72px;border-radius:50%;
-    background:radial-gradient(circle,#fff9b1 0%, #ffd84d 50%, #ffb347 100%);
-    box-shadow:0 0 28px rgba(255,216,77,.45);
+  .sea{
+    position:absolute;left:3%;top:6%;width:30%;height:42%;
+    background:linear-gradient(135deg,#56d8ff,#2ea5ff);
+    border:6px solid #fff;border-radius:40% 48% 44% 52%;
+    box-shadow:inset 0 0 0 4px rgba(255,255,255,.45);
   }
-  .cloud{
-    position:absolute;width:90px;height:26px;background:rgba(255,255,255,.86);border-radius:999px;
+  .river{
+    position:absolute;left:3%;bottom:4%;width:34%;height:26%;
+    background:linear-gradient(135deg,#71e3ff,#41b7ff);
+    border:6px solid #fff;border-radius:48% 42% 40% 58%;
   }
-  .cloud:before,.cloud:after{
-    content:"";position:absolute;background:rgba(255,255,255,.86);border-radius:50%;
+  .road{
+    position:absolute;background:#6b6b6b;border:3px solid #ededed;border-radius:18px;
+    box-shadow:inset 0 0 0 2px rgba(255,255,255,.28);
   }
-  .cloud:before{width:34px;height:34px;left:12px;top:-12px}
-  .cloud:after{width:42px;height:42px;right:10px;top:-18px}
-  .street{
-    position:absolute;left:0;right:0;bottom:12%;height:22%;
-    background:linear-gradient(180deg,#54545a,#3f3f45);
-    border-top:5px solid #dcdcdc;
-    border-bottom:5px solid #2e2e33;
+  .road.h1{left:6%;top:49%;width:88%;height:8%}
+  .road.h2{left:39%;top:8%;width:51%;height:8%}
+  .road.h3{left:39%;top:33%;width:51%;height:8%}
+  .road.h4{left:39%;top:58%;width:42%;height:8%}
+  .road.h5{left:39%;top:84%;width:52%;height:8%}
+  .road.v1{left:39%;top:8%;width:8%;height:83%}
+  .road.v2{left:60%;top:8%;width:8%;height:58%}
+  .road.v3{left:81%;top:8%;width:8%;height:83%}
+  .road.v4{left:70%;top:58%;width:8%;height:33%}
+
+  .city-label{
+    position:absolute;
+    display:flex;align-items:center;justify-content:center;text-align:center;
+    padding:8px 10px;border-radius:16px;border:3px solid #fff;color:#202020;
+    font-weight:900;line-height:1.05;font-size:clamp(.62rem,1.2vw,.85rem);
+    box-shadow:0 6px 0 rgba(0,0,0,.08);
+    z-index:1;
   }
-  .street-line{
-    position:absolute;left:0;right:0;top:47%;height:6px;
-    background:repeating-linear-gradient(90deg,#fff 0 42px, transparent 42px 74px);
-    opacity:.9;
-  }
-  .sidewalk{
-    position:absolute;left:0;right:0;bottom:34%;height:8%;
-    background:linear-gradient(180deg,#e5ddcf,#cfc3b1);
-    border-top:3px solid rgba(255,255,255,.7);
-    border-bottom:3px solid rgba(120,96,76,.35);
-  }
-  .sidewalk-tile{
-    position:absolute;bottom:34%;height:8%;width:100%;
-    background:repeating-linear-gradient(90deg, transparent 0 42px, rgba(130,110,90,.18) 42px 44px);
-    opacity:.55;
-  }
-  .grass-strip{
-    position:absolute;left:0;right:0;bottom:42%;height:6%;
-    background:linear-gradient(180deg,#88d863,#77c450);
-  }
-  .park-lawn{
-    position:absolute;left:63%;bottom:42%;width:23%;height:24%;
-    background:linear-gradient(180deg,#8be36c,#77cf58);
-    border:4px solid rgba(255,255,255,.72);
-    border-radius:26px;
-    box-shadow:0 10px 0 rgba(0,0,0,.06);
-  }
-  .lake{
-    position:absolute;left:4%;bottom:46%;width:18%;height:24%;
-    background:linear-gradient(180deg,#7fd8ff,#2ea7ff);
-    border:5px solid rgba(255,255,255,.82);
-    border-radius:45% 55% 48% 52%;
-    box-shadow:inset 0 0 0 4px rgba(255,255,255,.22);
-  }
-  .waterline{
-    position:absolute;width:42px;height:4px;background:rgba(255,255,255,.85);border-radius:999px;
-  }
+  .museum-box{left:6%;top:57%;width:18%;height:16%;background:#ffef8f}
+  .orla-box{left:14%;top:16%;width:15%;height:11%;background:#ffd7f4}
+  .market-box{left:43%;top:36%;width:16%;height:13%;background:#ffe370}
+  .mercadao-box{left:43%;top:60%;width:16%;height:13%;background:#ffc98a}
+  .park-box{left:66%;top:67%;width:18%;height:18%;background:#b8ff8d}
+  .aeroporto-box{left:75%;top:36%;width:16%;height:13%;background:#ffd9ab}
+  .school-box{left:75%;top:14%;width:16%;height:15%;background:#ffe16c}
+  .houses-box{left:64%;top:12%;width:14%;height:12%;background:#ffd6d6}
+  .center-box{left:55%;top:14%;width:12%;height:15%;background:#c6e8ff}
+
   .tree{
-    position:absolute;width:20px;height:20px;border-radius:50%;
-    background:#34ad4d;box-shadow:0 8px 0 -3px #6f4a2b;
+    position:absolute;width:14px;height:14px;background:#2aa84a;border-radius:50%;
+    box-shadow:0 8px 0 -3px #6b4c2e;
+    z-index:0;
   }
   .tree:after{
-    content:"";position:absolute;left:8px;bottom:-9px;width:4px;height:10px;background:#6f4a2b;border-radius:4px;
+    content:"";position:absolute;left:5px;bottom:-8px;width:4px;height:8px;background:#6b4c2e;border-radius:4px;
   }
-  .building{
-    position:absolute;bottom:48%;border-radius:16px 16px 8px 8px;
-    border:4px solid rgba(255,255,255,.82);
-    box-shadow:0 10px 0 rgba(0,0,0,.07);
-    overflow:hidden;
+  .house{
+    position:absolute;width:26px;height:20px;background:#fff6df;border:2px solid #8a5b2c;border-radius:3px;
+    z-index:0;
   }
-  .building .sign{
-    position:absolute;left:8px;right:8px;top:8px;
-    padding:6px 8px;border-radius:12px;background:rgba(10,16,35,.88);color:#fff;
-    font-weight:900;font-size:clamp(.55rem,1.3vw,.85rem);text-align:center;
+  .house:before{
+    content:"";position:absolute;left:-2px;top:-13px;border-left:15px solid transparent;border-right:15px solid transparent;border-bottom:13px solid #ff6f6f;
   }
-  .building .windows{
-    position:absolute;left:10px;right:10px;bottom:10px;height:34%;
-    background:
-      repeating-linear-gradient(90deg, rgba(145,204,255,.95) 0 14%, transparent 14% 21%),
-      repeating-linear-gradient(90deg, transparent 0 21%, rgba(255,255,255,.18) 21% 23%);
-    border-radius:10px;
-    opacity:.92;
+  .house:after{
+    content:"";position:absolute;left:9px;bottom:0;width:8px;height:10px;background:#8a5b2c;
   }
-  .museum{left:4%;width:17%;height:20%;background:linear-gradient(180deg,#f8e891,#eedb69);}
-  .orla-board{
-    position:absolute;left:12%;bottom:61%;width:14%;height:10%;
-    background:linear-gradient(180deg,#f3d9ff,#efc3ff);
-    border:4px solid rgba(255,255,255,.82);border-radius:18px;
-    display:flex;align-items:center;justify-content:center;
-    font-weight:900;text-align:center;line-height:1.1;color:#2d2338;
-    box-shadow:0 10px 0 rgba(0,0,0,.06);
+
+  .route-svg{
+    position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2;
   }
-  .center{left:27%;width:11%;height:24%;background:linear-gradient(180deg,#f0d9c8,#ebc9af);}
-  .market{left:40%;width:15%;height:20%;background:linear-gradient(180deg,#f5e37c,#ebd85e);}
-  .mercadao{left:51%;width:15%;height:17%;background:linear-gradient(180deg,#ffd5ab,#f6b97f);}
-  .airport{left:76%;width:10%;height:18%;background:linear-gradient(180deg,#d3ebff,#b6dbff);}
-  .school{
-    right:4%;width:20%;height:26%;background:linear-gradient(180deg,#ffe77c,#f8d84d);
+  .route-path{
+    fill:none;stroke:#595959;stroke-width:26;stroke-linecap:round;stroke-linejoin:round;
+    filter:drop-shadow(0 0 6px rgba(0,0,0,.20));
   }
-  .school:before{
-    content:"";position:absolute;left:12%;right:12%;top:-28px;height:28px;
-    background:linear-gradient(180deg,#ff8484,#ff5d5d);
-    clip-path:polygon(0 100%, 10% 0, 20% 100%, 30% 0, 40% 100%, 50% 0, 60% 100%, 70% 0, 80% 100%, 90% 0, 100% 100%);
+  .route-path-inner{
+    display:none;
   }
-  .school .door{
-    position:absolute;left:42%;bottom:10px;width:16%;height:34%;background:#8b5a2b;border-radius:8px 8px 0 0;
+
+  .landmark{
+    position:absolute;transform:translate(-50%,-50%);
+    background:rgba(10,16,35,.90);border:1px solid rgba(255,255,255,.10);border-radius:14px;
+    padding:4px 7px;display:flex;align-items:center;gap:4px;
+    font-size:clamp(.54rem,1.2vw,.72rem);font-weight:900;color:#fff;
+    box-shadow:0 0 14px rgba(0,236,255,.08);max-width:145px;line-height:1.05;z-index:3;
+    backdrop-filter:blur(8px);
   }
-  .tag{
-    position:absolute;transform:translateX(-50%);
-    background:rgba(10,16,35,.88);color:#fff;border-radius:14px;
-    padding:6px 10px;font-size:clamp(.58rem,1.2vw,.78rem);font-weight:900;
-    box-shadow:0 0 14px rgba(0,236,255,.10);z-index:3;white-space:nowrap;
-  }
+
   .cell{
-    position:absolute;width:12px;height:12px;transform:translate(-50%,-50%);
-    border-radius:50%;
-    background:rgba(255,255,255,.95);
-    border:2px solid rgba(0,0,0,.18);
-    box-shadow:0 0 0 2px rgba(255,255,255,.25), 0 0 8px rgba(0,0,0,.10);
-    z-index:4;
+    position:absolute;width:30px;height:30px;transform:translate(-50%,-50%);
+    border-radius:50%;background:#0a1230;border:2px solid #00ecff;display:flex;
+    align-items:center;justify-content:center;font-size:.72rem;font-weight:1000;color:#fff;
+    box-shadow:0 0 14px rgba(0,236,255,.30), inset 0 0 10px rgba(0,236,255,.08);z-index:4;
   }
-  .cell.place{background:#8be7ff;border-color:#008db0}
-  .cell.bonus{background:#baff51;border-color:#3f7f00}
-  .cell.penalty{background:#ff8cab;border-color:#94304e}
-  .cell.special{background:#ffe57a;border-color:#9d7a00}
-  .cell.final{background:#4dffc2;border-color:#008f6a;width:14px;height:14px}
-  .token{
-    position:absolute;width:42px;height:76px;transform:translate(-50%,-100%);
-    transition:left .36s ease, top .36s ease;z-index:6;
+  .cell.place{background:#0f1838;border-color:#00ecff}
+  .cell.bonus{background:#152a0c;border-color:#9dff00;box-shadow:0 0 14px rgba(157,255,0,.30)}
+  .cell.penalty{background:#301021;border-color:#ff6b88;box-shadow:0 0 14px rgba(255,107,136,.30)}
+  .cell.special{background:#322606;border-color:#ffd84d;box-shadow:0 0 14px rgba(255,216,77,.30)}
+  .cell.final{background:#083327;border-color:#00ffb7;box-shadow:0 0 18px rgba(0,255,183,.40);width:40px;height:40px}
+  .cell{font-size:0;}
+  .cell::after{content:"";width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.82);box-shadow:0 0 8px rgba(255,255,255,.35);}
+
+  
+.token{
+    position:absolute;
+    width:64px;
+    height:64px;
+    transform:translate(-50%,-95%);
+    transition:left .36s ease, top .36s ease;
+    z-index:8;
+    background-repeat:no-repeat;
+    background-size:400% 300%;
+    background-position:0% 0%;
+    image-rendering:auto;
+    filter:drop-shadow(0 8px 6px rgba(0,0,0,.26));
   }
-  .token .head{
-    position:absolute;top:3px;left:13px;width:16px;height:16px;border-radius:50%;background:#f7c79a;z-index:3;
-  }
-  .token .hair{
-    position:absolute;top:0;left:12px;width:18px;height:10px;border-radius:10px 10px 4px 4px;background:#2f2430;z-index:4;
-  }
-  .token .body{
-    position:absolute;top:18px;left:10px;width:20px;height:24px;border-radius:10px 10px 8px 8px;z-index:3;
-  }
-  .token .bag{
-    position:absolute;top:18px;left:4px;width:11px;height:16px;border-radius:6px;background:#333b6d;z-index:2;
-  }
-  .token .arm{
-    position:absolute;top:23px;left:26px;width:12px;height:5px;border-radius:999px;background:#f7c79a;transform:rotate(-18deg);z-index:2;
-  }
-  .token .leg1,.token .leg2{
-    position:absolute;top:40px;width:7px;height:23px;border-radius:999px;background:#1c2238;z-index:1;
-  }
-  .token .leg1{left:14px;transform:rotate(10deg)}
-  .token .leg2{left:22px;transform:rotate(-12deg)}
   .token::after{
-    content:"";position:absolute;left:10px;right:10px;bottom:2px;height:9px;border-radius:50%;background:rgba(0,0,0,.25);
-    filter:blur(1px);z-index:0;
+    content:"";
+    position:absolute;
+    left:13px;
+    right:13px;
+    bottom:-6px;
+    height:8px;
+    border-radius:50%;
+    background:rgba(0,0,0,.28);
+    filter:blur(1px);
+    z-index:-1;
   }
-  .p1token .body{background:#36b9ff}
-  .p1token .bag{background:#2548c4}
-  .p1token .hair{background:#26344f}
-  .p2token .body{background:#ff6f9c}
-  .p2token .bag{background:#8a2f63}
-  .p2token .hair{background:#3a2135}
-  .side{
-display:flex;flex-direction:column;gap:8px;min-width:0}
+  .token.idle{
+    animation:idleSprite 2.2s steps(1) infinite;
+  }
+  .token.walking{
+    animation:walkSprite .50s steps(1) infinite;
+  }
+  .token.celebrate{
+    animation:celebrateSprite .70s steps(1) infinite;
+  }
+  .token.p1token{
+    background-image:url("boy-sprite.png");
+  }
+  .token.p2token{
+    background-image:url("girl-sprite.png");
+  }
+  @keyframes idleSprite{
+    0%,24%{background-position:0% 0%}
+    25%,49%{background-position:33.333% 0%}
+    50%,74%{background-position:66.666% 0%}
+    75%,100%{background-position:100% 0%}
+  }
+  @keyframes walkSprite{
+    0%,24%{background-position:0% 50%}
+    25%,49%{background-position:33.333% 50%}
+    50%,74%{background-position:66.666% 50%}
+    75%,100%{background-position:100% 50%}
+  }
+  @keyframes celebrateSprite{
+    0%,24%{background-position:0% 100%}
+    25%,49%{background-position:33.333% 100%}
+    50%,74%{background-position:66.666% 100%}
+    75%,100%{background-position:100% 100%}
+  }
+
+  .side{display:flex;flex-direction:column;gap:8px;min-width:0}
   .panel{
     background:linear-gradient(180deg, rgba(18,24,53,.94), rgba(8,12,28,.94));
     border:1px solid rgba(255,255,255,.08);border-radius:22px;padding:10px;
@@ -345,60 +335,6 @@ display:flex;flex-direction:column;gap:8px;min-width:0}
   .log{flex:1;min-height:0;overflow:auto;font-size:.76rem;line-height:1.35;color:#dbe7ff}
   .log p{margin:0 0 6px}
 
-
-
-  .block{
-    position:absolute;border-radius:18px;border:3px solid rgba(255,255,255,.72);
-    box-shadow:inset 0 0 0 2px rgba(0,0,0,.05);
-    z-index:0;
-  }
-  .block.residential{background:#f9d7ba}
-  .block.commercial{background:#f8ef9a}
-  .block.service{background:#d2e8ff}
-  .block.green{background:#c4f0a5}
-  .plaza{
-    position:absolute;border-radius:22px;background:#e6d2b1;border:3px solid rgba(255,255,255,.72);z-index:0;
-  }
-  .mini-building{
-    position:absolute;width:26px;height:20px;border-radius:4px;background:#fffaf0;border:2px solid #8a5b2c;z-index:1;
-  }
-  .mini-building:before{
-    content:"";position:absolute;left:-2px;top:-12px;border-left:15px solid transparent;border-right:15px solid transparent;border-bottom:12px solid #ff7171;
-  }
-  .mini-building.flat:before{display:none;}
-  .mini-building.flat{background:#f5f5f5;border-color:#708090}
-  .mini-building.flat:after{
-    content:"";position:absolute;left:4px;top:4px;width:18px;height:5px;background:#9fd6ff;box-shadow:0 7px 0 #9fd6ff;
-  }
-  .mini-building:after{
-    content:"";position:absolute;left:9px;bottom:0;width:8px;height:10px;background:#8a5b2c;
-  }
-  .tree.big{width:18px;height:18px}
-  .tree.small{width:10px;height:10px}
-  .crosswalk{
-    position:absolute;background:repeating-linear-gradient(90deg,#fff 0 7px,#424242 7px 14px);
-    border-radius:6px;z-index:1;opacity:.9;
-  }
-  .crosswalk.v{width:18px;height:44px}
-  .crosswalk.h{width:44px;height:18px}
-  .car{
-    position:absolute;width:18px;height:10px;border-radius:6px;background:#ff5c73;z-index:1;
-    box-shadow:0 0 0 2px rgba(255,255,255,.45) inset;
-  }
-  .car.blue{background:#3cb8ff}
-  .car.yellow{background:#ffd84d}
-  .car.green{background:#7df27d}
-  .water-wave{
-    position:absolute;width:28px;height:3px;background:rgba(255,255,255,.85);border-radius:999px;z-index:0;
-  }
-  .umbrella{
-    position:absolute;width:14px;height:14px;border-radius:50% 50% 0 0;transform:rotate(180deg);z-index:0;
-    background:conic-gradient(#ff6b6b 0 25%, #fff 25% 50%, #ffd84d 50% 75%, #fff 75% 100%);
-    border:1px solid rgba(0,0,0,.08);
-  }
-  .bench{
-    position:absolute;width:16px;height:5px;background:#8b5a2b;border-radius:4px;z-index:0;
-  }
 
   .place-photo{
     width:100%;
@@ -594,96 +530,71 @@ display:flex;flex-direction:column;gap:8px;min-width:0}
 
   <main class="game-area">
     
-
 <div class="map-wrap" id="board">
       <div class="city-art">
-        <div class="sun"></div>
-        <div class="cloud" style="left:9%;top:10%"></div>
-        <div class="cloud" style="left:46%;top:8%"></div>
-        <div class="cloud" style="left:70%;top:14%;transform:scale(.8)"></div>
+        <div class="sea"></div>
+        <div class="river"></div>
 
-        <div class="lake"></div>
-        <div class="waterline" style="left:8%;bottom:62%"></div>
-        <div class="waterline" style="left:11%;bottom:56%"></div>
+        <div class="road h1"></div>
+        <div class="road h2"></div>
+        <div class="road h3"></div>
+        <div class="road h4"></div>
+        <div class="road h5"></div>
+        <div class="road v1"></div>
+        <div class="road v2"></div>
+        <div class="road v3"></div>
+        <div class="road v4"></div>
 
-        <div class="grass-strip"></div>
-        <div class="park-lawn"></div>
-        <div class="tree" style="left:61%;bottom:52%"></div>
-        <div class="tree" style="left:67%;bottom:53%"></div>
-        <div class="tree" style="left:73%;bottom:54%"></div>
-        <div class="tree" style="left:81%;bottom:53%"></div>
-        <div class="tree" style="left:18%;bottom:52%"></div>
-        <div class="tree" style="left:23%;bottom:54%"></div>
+        <div class="city-label museum-box">🏛️ Museu João Fona</div>
+        <div class="city-label orla-box">🌊 Orla de Santarém</div>
+        <div class="city-label center-box">🏙️ Centro</div>
+        <div class="city-label market-box">🛒 Mercado Municipal</div>
+        <div class="city-label mercadao-box">🍎 Mercadão 2000</div>
+        <div class="city-label houses-box">🏘️ Área urbana</div>
+        <div class="city-label park-box">🌳 Parque da Cidade</div>
+        <div class="city-label aeroporto-box">📍 Aeroporto Velho</div>
+        <div class="city-label school-box">🏫 Escola Delfina</div>
 
-        <div class="building museum">
-          <div class="sign">🏛️ Museu João Fona</div>
-          <div class="windows"></div>
-        </div>
+        <div class="house" style="left:24%; top:58%;"></div>
+        <div class="house" style="left:29%; top:58%;"></div>
+        <div class="house" style="left:65%; top:36%;"></div>
+        <div class="house" style="left:70%; top:36%;"></div>
+        <div class="house" style="left:74%; top:36%;"></div>
+        <div class="house" style="left:87%; top:84%;"></div>
+        <div class="house" style="left:91%; top:84%;"></div>
+        <div class="house" style="left:94%; top:84%;"></div>
 
-        <div class="orla-board">🌊 Orla de<br>Santarém</div>
-
-        <div class="building center">
-          <div class="sign">🏙️ Centro</div>
-          <div class="windows"></div>
-        </div>
-
-        <div class="building market">
-          <div class="sign">🛒 Mercado Municipal</div>
-          <div class="windows"></div>
-        </div>
-
-        <div class="building mercadao">
-          <div class="sign">🍎 Mercadão 2000</div>
-          <div class="windows"></div>
-        </div>
-
-        <div class="building airport">
-          <div class="sign">✈️ Aeroporto Velho</div>
-          <div class="windows"></div>
-        </div>
-
-        <div class="building school">
-          <div class="sign">🏫 Escola Delfina</div>
-          <div class="windows"></div>
-          <div class="door"></div>
-        </div>
-
-        <div class="sidewalk"></div>
-        <div class="sidewalk-tile"></div>
-        <div class="street">
-          <div class="street-line"></div>
-        </div>
-
-        <div class="tag" style="left:12%;bottom:69%;">Museu João Fona</div>
-        <div class="tag" style="left:18%;bottom:79%;">Orla</div>
-        <div class="tag" style="left:32%;bottom:73%;">Centro</div>
-        <div class="tag" style="left:48%;bottom:70%;">Mercado</div>
-        <div class="tag" style="left:58%;bottom:66%;">Mercadão 2000</div>
-        <div class="tag" style="left:74%;bottom:71%;">Parque</div>
-        <div class="tag" style="left:81%;bottom:68%;">Aeroporto</div>
-        <div class="tag" style="left:90%;bottom:76%;">Escola Delfina</div>
+        <div class="tree" style="left:33%; top:12%;"></div>
+        <div class="tree" style="left:36%; top:16%;"></div>
+        <div class="tree" style="left:48%; top:25%;"></div>
+        <div class="tree" style="left:56%; top:31%;"></div>
+        <div class="tree" style="left:57%; top:73%;"></div>
+        <div class="tree" style="left:62%; top:76%;"></div>
+        <div class="tree" style="left:69%; top:76%;"></div>
+        <div class="tree" style="left:73%; top:22%;"></div>
+        <div class="tree" style="left:78%; top:22%;"></div>
+        <div class="tree" style="left:79%; top:66%;"></div>
+        <div class="tree" style="left:83%; top:68%;"></div>
+        <div class="tree" style="left:89%; top:24%;"></div>
       </div>
+
+      <svg class="route-svg" viewBox="0 0 1000 600" preserveAspectRatio="none">
+        <path class="route-path" d="M85 330 L170 330 L255 330 L340 330 L430 330 L430 235 L430 120 L520 120 L610 120 L700 120 L790 120 L880 120 L880 225 L880 330 L880 440 L790 440 L700 440 L700 535 L610 535 L520 535 L430 535 L430 440 L520 440 L610 440 L610 330 L700 330 L790 330" />
+        <path class="route-path-inner" d="M85 330 L170 330 L255 330 L340 330 L430 330 L430 235 L430 120 L520 120 L610 120 L700 120 L790 120 L880 120 L880 225 L880 330 L880 440 L790 440 L700 440 L700 535 L610 535 L520 535 L430 535 L430 440 L520 440 L610 440 L610 330 L700 330 L790 330" />
+      </svg>
+
+      <div class="landmark" style="left:13%;top:58%">🏛️ Museu João Fona</div>
+      <div class="landmark" style="left:15%;top:19%">🌊 Orla</div>
+      <div class="landmark" style="left:50%;top:18%">🏙️ Centro</div>
+      <div class="landmark" style="left:47%;top:39%">🛒 Mercado</div>
+      <div class="landmark" style="left:47%;top:63%">🍎 Mercadão 2000</div>
+      <div class="landmark" style="left:69%;top:70%">🌳 Parque</div>
+      <div class="landmark" style="left:78%;top:38%">📍 Aeroporto Velho</div>
+      <div class="landmark" style="left:80%;top:15%">🏫 Escola Delfina</div>
 
       <div id="cells"></div>
-
-      <div id="token1" class="token p1token">
-        <span class="head"></span>
-        <span class="hair"></span>
-        <span class="bag"></span>
-        <span class="body"></span>
-        <span class="arm"></span>
-        <span class="leg1"></span>
-        <span class="leg2"></span>
-      </div>
-      <div id="token2" class="token p2token">
-        <span class="head"></span>
-        <span class="hair"></span>
-        <span class="bag"></span>
-        <span class="body"></span>
-        <span class="arm"></span>
-        <span class="leg1"></span>
-        <span class="leg2"></span>
-      </div>
+      <div id="token1" class="token p1token idle"></div>
+      <div id="token2" class="token p2token idle"></div>
     </div>
 
 
@@ -725,13 +636,34 @@ display:flex;flex-direction:column;gap:8px;min-width:0}
 
 <script>
 
-
-const baseCellPositions = Array.from({length:40}, (_,i)=>[4 + (i*2.35), 78]);
-const playerPaths = [
-  baseCellPositions.map(([x,y])=>[x, 73]),
-  baseCellPositions.map(([x,y])=>[x, 81])
+const baseCellPositions = [
+  [13,58],[18,58],[23,58],[28,58],[33,58],[38,58],[43,58],[48,58],[53,58],[58,58],
+  [63,58],[68,58],[73,58],[78,58],[78,52],[78,46],[78,40],[78,34],[78,28],[78,22],
+  [72,22],[66,22],[60,22],[54,22],[48,22],[48,28],[48,34],[48,40],[48,46],[48,52],
+  [48,58],[54,58],[60,58],[66,58],[72,58],[78,58],[83,58],[83,46],[83,30],[80,16]
 ];
 
+function buildLane(base, lane){
+  const path = [];
+  for(let i=0;i<base.length;i++){
+    const prev = base[i-1] || base[i];
+    const next = base[i+1] || base[i];
+    const dx = next[0] - prev[0];
+    const dy = next[1] - prev[1];
+    const mag = Math.hypot(dx,dy) || 1;
+    let nx = -dy / mag;
+    let ny = dx / mag;
+    const offset = lane === "blue" ? -2.1 : 2.1;
+    path.push([+(base[i][0] + nx*offset).toFixed(2), +(base[i][1] + ny*offset).toFixed(2)]);
+  }
+  return path;
+}
+
+const cellPositions = baseCellPositions;
+const playerPaths = [
+  buildLane(baseCellPositions, "blue"),
+  buildLane(baseCellPositions, "red")
+];
 
 
 const tileTypes = {
@@ -1135,6 +1067,14 @@ function inferPlace(pos){
   return "Escola Delfina de Jesus Amorim";
 }
 
+
+function setTokenState(playerIdx, state){
+  const token=document.getElementById(playerIdx===0 ? "token1" : "token2");
+  if(!token) return;
+  token.classList.remove("idle","walking","celebrate");
+  token.classList.add(state);
+}
+
 function updateTokens(){
   [0,1].forEach((idx)=>{
     const pos=playerPaths[idx][players[idx].pos-1];
@@ -1186,6 +1126,7 @@ async function rollDice(){
 }
 
 async function movePlayer(playerIdx, target){
+  setTokenState(playerIdx, 'walking');
   const p=players[playerIdx];
   const step = target > p.pos ? 1 : -1;
   while(p.pos !== target){
@@ -1194,6 +1135,7 @@ async function movePlayer(playerIdx, target){
     playStep();
     await sleep(320);
   }
+  setTokenState(playerIdx, 'idle');
 }
 
 function handleTileLanding(oldPos){
@@ -1353,6 +1295,7 @@ function switchTurn(){
 }
 
 function endGame(){
+  setTokenState(current, 'celebrate');
   playVictory();
   showScreen("endScreen");
   document.getElementById("winnerText").textContent=`${players[current].name} venceu a jornada!`;
