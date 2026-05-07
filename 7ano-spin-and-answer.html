@@ -1,137 +1,1458 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Spin and Answer 7º Ano | English Game Hub</title>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Spin and Answer - 7º Ano</title>
 <style>
-:root{--bg1:#120d3d;--bg2:#071e54;--cyan:#39d7ff;--pink:#ff3ecf;--gold:#ffd34d;--green:#87d36c;--red:#ff5c7c;--soft:#dbeafe}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;width:100%;height:100%;font-family:Arial,Helvetica,sans-serif;color:white;overflow:hidden;background:linear-gradient(160deg,var(--bg1),var(--bg2))}
-body:before{content:"";position:fixed;inset:0;background:radial-gradient(circle at 20% 10%,rgba(255,62,207,.28),transparent 30%),radial-gradient(circle at 80% 15%,rgba(57,215,255,.28),transparent 32%),radial-gradient(circle at 45% 92%,rgba(255,211,77,.16),transparent 35%);pointer-events:none}
-.app{position:relative;z-index:1;max-width:520px;margin:0 auto;height:100dvh;padding:10px;display:flex;flex-direction:column;gap:8px}
-.screen{display:none;height:100%}.active{display:flex}
-.card{background:rgba(5,13,48,.78);border:1px solid rgba(255,255,255,.16);border-radius:26px;box-shadow:0 18px 45px rgba(0,0,0,.38);backdrop-filter:blur(8px)}
-.start{flex-direction:column;justify-content:center;gap:12px;text-align:center}
-.logo{padding:18px 14px}.logo h1{margin:0;font-size:2.15rem;line-height:.95;text-shadow:0 4px 0 rgba(0,0,0,.28),0 0 18px rgba(57,215,255,.45)}.logo h1 span{display:block;color:var(--gold)}
-.grade{display:inline-block;margin-top:12px;padding:8px 16px;border-radius:999px;background:linear-gradient(135deg,var(--pink),#7c3aed);font-weight:950}.logo p{font-size:.9rem;line-height:1.35;color:var(--soft);margin:14px 0 0}
-.form{padding:14px;text-align:left}label{display:block;font-weight:900;margin:8px 2px 5px;font-size:.82rem}input{width:100%;border:none;outline:none;border-radius:16px;padding:13px 14px;font-size:1rem;background:rgba(255,255,255,.92);color:#071e54;font-weight:800}
-.btn{border:none;border-radius:18px;padding:13px 16px;font-weight:950;font-size:1rem;color:#071e54;background:linear-gradient(135deg,#fff7c2,var(--gold));box-shadow:0 10px 24px rgba(0,0,0,.28);cursor:pointer}.btn:disabled{opacity:.55}.secondary{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.20)}
-.game{flex-direction:column;gap:8px}.hud{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;padding:9px 10px;border-radius:20px;background:rgba(0,0,0,.20);border:1px solid rgba(255,255,255,.13)}.hud-title{font-weight:950;font-size:.88rem}.hud-title span{color:var(--gold)}.hearts{font-size:1.15rem;white-space:nowrap}
-.progress{height:9px;border-radius:999px;overflow:hidden;background:rgba(255,255,255,.13)}.bar{height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--green),var(--gold));transition:.3s}
-.wheel-area{padding:12px;display:flex;flex-direction:column;align-items:center;gap:8px}.pointer{width:0;height:0;border-left:18px solid transparent;border-right:18px solid transparent;border-top:30px solid var(--gold);filter:drop-shadow(0 0 10px rgba(255,211,77,.55));z-index:2}
-.wheel{width:min(76vw,330px);height:min(76vw,330px);border-radius:50%;position:relative;display:grid;place-items:center;border:10px solid rgba(255,255,255,.16);box-shadow:0 0 0 3px rgba(255,255,255,.12),0 22px 48px rgba(0,0,0,.45),0 0 35px rgba(57,215,255,.30);overflow:hidden;transition:transform 2.4s cubic-bezier(.12,.75,.15,1)}
-.wheel:before{content:"";position:absolute;inset:0;background:conic-gradient(#39d7ff 0 120deg,#ff3ecf 120deg 240deg,#87d36c 240deg 360deg)}.wheel:after{content:"";position:absolute;inset:20%;border-radius:50%;background:rgba(5,13,48,.88);border:4px solid rgba(255,255,255,.18)}
-.wheel-label{position:relative;z-index:1;text-align:center;font-weight:950;font-size:1.05rem;line-height:1.05;text-shadow:0 2px 8px #000}.mini{font-size:.78rem;color:var(--soft)}
-.question-card{flex:1;min-height:0;padding:12px;display:flex;flex-direction:column;gap:8px}.theme{align-self:flex-start;padding:7px 10px;border-radius:999px;font-size:.74rem;font-weight:950;background:linear-gradient(135deg,var(--cyan),#8b5cf6)}.qtext{font-weight:850;line-height:1.25;font-size:.96rem;overflow:auto}.options{display:grid;gap:7px;margin-top:auto}
-.opt{border:none;text-align:left;padding:10px 11px;border-radius:15px;background:rgba(255,255,255,.93);color:#071e54;font-weight:900;font-size:.84rem;line-height:1.2}.opt.correct{background:linear-gradient(135deg,#b7ffcf,#57e389);color:#06331b}.opt.wrong{background:linear-gradient(135deg,#ffd1d9,#ff6b86);color:#4a0613}
-.feedback{display:none;padding:10px;border-radius:18px;background:rgba(3,9,35,.92);border:1px solid rgba(255,255,255,.18)}.feedback.show{display:block}.feedback h3{margin:0 0 4px;font-size:.95rem}.feedback p{margin:0;color:var(--soft);font-size:.8rem;line-height:1.25}
-.result{flex-direction:column;justify-content:center;gap:12px;text-align:center}.result-card{padding:18px 14px}.result-card h1{margin:0 0 8px;font-size:2rem;color:var(--gold)}.stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}.stat{padding:12px;border-radius:18px;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.14)}.stat b{display:block;color:var(--gold);font-size:1.25rem}.footer{text-align:center;font-size:.72rem;color:#c7d2fe}.row{display:flex;gap:8px}.row .btn{flex:1}
-@media(max-height:740px){.wheel{width:min(58vw,250px);height:min(58vw,250px)}.logo h1{font-size:1.9rem}.qtext{font-size:.84rem}.opt{font-size:.76rem;padding:8px 9px}.question-card{padding:9px}.wheel-area{padding:8px}}
+*{box-sizing:border-box}
+:root{--blue:#2563eb;--pink:#e11d48;--dark:#172033;--cream:#fff7ed}
+html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;color:var(--dark)}
+body{
+  min-height:100vh;
+  background:linear-gradient(135deg,#1d4ed8,#06b6d4 45%,#e11d48);
+  display:flex;align-items:center;justify-content:center;padding:10px;
+}
+.app{width:min(100%,1100px);min-height:min(760px,96vh);background:rgba(255,255,255,.93);border-radius:26px;overflow:hidden;box-shadow:0 24px 50px rgba(0,0,0,.2)}
+header{background:linear-gradient(135deg,#4361ee,#8b5cf6 45%,#e11d48);color:white;padding:14px 18px;text-align:center;position:relative}
+.topbar{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:6px}
+.back,.pill{color:white;text-decoration:none;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:7px 11px;font-weight:900;font-size:12px}
+h1{font-size:clamp(32px,6vw,54px);line-height:1;margin:0;text-shadow:0 3px 10px rgba(0,0,0,.18)}
+.subtitle{margin:6px 0 0;font-weight:800}
+main{padding:14px}
+.screen{display:none} .screen.active{display:block}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:9px}
+.stat{background:white;border:1px solid #dbeafe;border-radius:16px;padding:8px;text-align:center;box-shadow:0 6px 16px rgba(15,23,42,.06)}
+.stat b{display:block;font-size:24px;color:#0b4db3;line-height:1} .stat span{font-size:10px;font-weight:900;color:#475569;text-transform:uppercase}
+.mission-card{margin:8px 0 10px;padding:10px 14px;border-radius:18px;background:linear-gradient(180deg,rgba(32,12,83,.96),rgba(16,8,56,.96));border:2px solid rgba(255,205,84,.35);box-shadow:0 0 0 1px rgba(255,255,255,.04),0 10px 18px rgba(0,0,0,.18);display:flex;align-items:center;justify-content:space-between;gap:10px;color:#fff}.mission-card b{font-size:18px;line-height:1.1;color:#ffe66d}.mission-card span{font-size:14px;font-weight:900;color:#dbeafe;text-align:right}.lives-card{background:#fff1f2;border:1px solid #fecdd3;border-radius:15px;padding:7px;text-align:center;font-weight:900;margin-bottom:9px}
+.heart{font-size:24px;color:#e11d48;margin:0 2px;line-height:1} .heart.lost{display:none}
+.game-grid{display:grid;grid-template-columns:1fr 1.08fr;gap:12px;align-items:stretch}
+.card{background:linear-gradient(180deg,#fff,#f8fafc);border:1px solid #dbeafe;border-radius:22px;padding:14px;box-shadow:0 10px 22px rgba(15,23,42,.08)}
+.wheel-wrap{position:relative;display:flex;flex-direction:column;align-items:center;gap:9px}
+.pointer{position:absolute;top:2px;left:50%;transform:translateX(-50%);z-index:10;width:0;height:0;border-left:17px solid transparent;border-right:17px solid transparent;border-top:42px solid #111827;filter:drop-shadow(0 2px 2px rgba(0,0,0,.35))}
+.pointer::after{content:"";position:absolute;left:-6px;top:-28px;width:12px;height:12px;background:white;border:4px solid #111827;border-radius:50%}
+.wheel{width:min(78vw,390px);height:min(78vw,390px);max-width:390px;max-height:390px;border-radius:50%;background:conic-gradient(#06b6d4 0deg 120deg, #e11d48 120deg 240deg, #8b5cf6 240deg 360deg);position:relative;border:7px solid white;box-shadow:0 18px 32px rgba(0,0,0,.18);transition:transform 5.4s cubic-bezier(.08,.82,.12,1)}
+.wheel::after{content:attr(data-theme);position:absolute;inset:31%;border-radius:50%;background:#f8fafc;border:6px solid #e2e8f0;display:flex;align-items:center;justify-content:center;text-align:center;color:#1d4ed8;font-weight:900;font-size:clamp(17px,4vw,25px);line-height:1.05;padding:8px}
+.wheel-label{position:absolute;left:50%;top:50%;width:92px;margin-left:-46px;margin-top:-10px;transform:rotate(var(--r)) translateY(-151px) rotate(calc(-1 * var(--r)));transform-origin:center;font-size:15px;line-height:1.05;color:white;text-shadow:0 2px 4px rgba(0,0,0,.35);font-weight:900;text-align:center;pointer-events:none}
+.spin-btn{border:0;border-radius:14px;padding:12px 42px;background:linear-gradient(135deg,#e11d48,#fb7185);color:white;font-weight:900;font-size:16px;cursor:pointer;box-shadow:0 8px 18px rgba(225,29,72,.25)}
+.spin-btn:disabled{opacity:.55;cursor:not-allowed}
+.sorted{width:100%;text-align:center;background:#fff1f2;border:1px solid #fecdd3;color:#e11d48;font-weight:900;border-radius:14px;padding:8px}
+.wheel-signature{width:100%;text-align:center;margin-top:10px;font-weight:900;font-size:12px;line-height:1.2;color:#cbd5e1;opacity:.95;text-shadow:0 1px 3px rgba(0,0,0,.28)}
+.theme-chip{display:inline-block;background:#dbeafe;color:#1d4ed8;border:1px solid #bfdbfe;border-radius:999px;padding:7px 12px;font-weight:900;margin-bottom:10px}
+.prompt{font-size:22px;line-height:1.28;font-weight:900;margin:0 0 12px}
+.options{display:grid;gap:9px}
+.option{border:2px solid #dbeafe;background:#f8fafc;border-radius:14px;padding:13px;text-align:left;font-weight:900;font-size:16px;cursor:pointer;color:#111827}
+.option.correct{background:#dcfce7;border-color:#22c55e;color:#14532d} .option.wrong{background:#fee2e2;border-color:#ef4444;color:#7f1d1d}
+.feedback{display:none;margin-top:10px;border-radius:14px;padding:10px;font-weight:900;line-height:1.25}
+.feedback.ok{display:block;background:#dcfce7;border:1px solid #86efac;color:#14532d} .feedback.bad{display:block;background:#fee2e2;border:1px solid #fca5a5;color:#7f1d1d}
+.brand{position:fixed;right:12px;bottom:12px;background:linear-gradient(135deg,#1e3a8a,#e11d48);color:white;font-weight:900;border-radius:14px;padding:9px 12px;font-size:12px;box-shadow:0 8px 18px rgba(15,23,42,.25);z-index:20}
+.final{text-align:center} .final h2{font-size:36px;color:#1d4ed8;margin:0 0 10px} .final p{font-weight:900;line-height:1.35}
+.final-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:15px 0}
+.box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:16px;padding:12px;font-weight:900} .box b{display:block;color:#e11d48;font-size:25px}
+
+@media(max-width:860px){
+  body.playing{height:100dvh;min-height:100dvh;overflow:hidden;padding:5px;align-items:flex-start}
+  body.playing .app{height:calc(100dvh - 10px);min-height:0;border-radius:16px;display:flex;flex-direction:column}
+  body.playing header{padding:5px 7px;flex:0 0 auto}
+  body.playing .topbar{margin-bottom:2px}
+  body.playing .back,body.playing .pill{font-size:9px;padding:4px 7px}
+  body.playing h1{font-size:22px}
+  body.playing .subtitle{display:none}
+  body.playing main{padding:5px;flex:1 1 auto;min-height:0;overflow:hidden}
+  body.playing #gameScreen.active{height:100%;display:flex;flex-direction:column;min-height:0;overflow:hidden}
+  body.playing .stats{grid-template-columns:repeat(4,1fr);gap:4px;margin-bottom:4px;flex:0 0 auto}
+  body.playing .stat{padding:4px 2px;border-radius:10px} body.playing .stat b{font-size:14px} body.playing .stat span{font-size:7px}
+  body.playing .lives-card{font-size:10px;padding:4px;margin-bottom:4px;border-radius:10px;flex:0 0 auto} body.playing .heart{font-size:17px}
+  body.playing .game-grid{grid-template-columns:1fr;grid-template-rows:auto 1fr;gap:5px;min-height:0;flex:1 1 auto;overflow:hidden}
+  body.playing .card{padding:6px;border-radius:13px}
+  body.playing .wheel-card{height:310px;min-height:310px;overflow:hidden}
+  body.playing .wheel{width:220px;height:220px;border-width:5px}
+  body.playing .wheel::after{inset:31%;font-size:14px;border-width:4px}
+  body.playing .wheel-label{font-size:9px;width:58px;margin-left:-29px;transform:rotate(var(--r)) translateY(-84px) rotate(calc(-1 * var(--r)))}
+  body.playing .pointer{top:1px;border-left-width:12px;border-right-width:12px;border-top-width:30px}
+  body.playing .pointer::after{left:-5px;top:-22px;width:9px;height:9px;border-width:3px}
+  body.playing .spin-btn{padding:8px 26px;font-size:12px;border-radius:10px}
+  body.playing .sorted{font-size:10px;padding:5px}
+  body.playing .question-card{min-height:0;overflow:hidden}
+  body.playing .theme-chip{font-size:10px;padding:5px 8px;margin-bottom:5px}
+  body.playing .prompt{font-size:13px;line-height:1.15;margin-bottom:5px;max-height:50px;overflow:hidden}
+  body.playing .options{gap:5px}
+  body.playing .option{font-size:11.5px;line-height:1.05;padding:7px;border-radius:9px;min-height:31px}
+  body.playing .feedback{font-size:10.5px;padding:5px;max-height:42px;overflow:hidden;margin-top:5px}
+  body.playing .brand{display:none}
+}
+@media(max-width:380px){body.playing .wheel-card{height:280px;min-height:280px} body.playing .wheel{width:196px;height:196px} body.playing .wheel-label{font-size:8px;transform:rotate(var(--r)) translateY(-75px) rotate(calc(-1 * var(--r)))}}
+
+.start-card{
+  max-width:520px;
+  margin:0 auto;
+  text-align:center;
+}
+.start-card h2{
+  font-size:34px;
+  color:#1d4ed8;
+  margin:0 0 8px;
+}
+.start-text{
+  font-weight:900;
+  line-height:1.35;
+  color:#334155;
+}
+.player-form{
+  display:grid;
+  gap:6px;
+  margin:12px 0;
+  text-align:left;
+}
+.player-form label{
+  font-weight:900;
+  color:#1e3a8a;
+  font-size:13px;
+}
+.player-form input{
+  width:100%;
+  border:2px solid #bfdbfe;
+  border-radius:14px;
+  padding:11px 12px;
+  font-size:15px;
+  font-weight:800;
+  outline:none;
+  background:white;
+}
+.player-form input:focus{
+  border-color:#2563eb;
+  box-shadow:0 0 0 3px rgba(37,99,235,.15);
+}
+.brand-start{
+  margin-top:12px;
+  font-weight:900;
+  color:#334155;
+}
+.final-ranking h2{
+  margin:0 0 8px;
+  text-align:center;
+  font-size:28px;
+  color:#1d4ed8;
+}
+.final-message{
+  background:linear-gradient(135deg,#fff7ed,#fde68a 22%,#ffffff 100%);
+  border:2px solid #f59e0b;
+  color:#111827; font-weight:1000;
+  text-shadow:none;
+  border-radius:16px;
+  padding:10px;
+  font-weight:900;
+  line-height:1.25;
+  text-align:center;
+  margin:8px 0;
+  font-size:12.5px;
+}
+.player-summary{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:6px;
+  margin:8px 0;
+}
+.summary-box{
+  background:#f8fafc;
+  border:1px solid #e2e8f0;
+  border-radius:13px;
+  padding:8px 5px;
+  text-align:center;
+  font-weight:900;
+}
+.summary-box span{
+  display:block;
+  color:#64748b;
+  font-size:9px;
+  text-transform:uppercase;
+}
+.summary-box b{
+  display:block;
+  color:#e11d48;
+  font-size:17px;
+  margin-top:2px;
+}
+.ranking-title{
+  text-align:center;
+  margin:9px 0 6px;
+  font-size:17px;
+  color:#1d4ed8;
+}
+.rank-list{
+  display:grid;
+  gap:5px;
+  margin:5px 0;
+}
+.rank-row{
+  display:grid;
+  grid-template-columns:29px 1fr auto;
+  gap:6px;
+  align-items:center;
+  padding:5px;
+  border-radius:11px;
+  background:#f8fafc;
+  border:1px solid #e2e8f0;
+  box-shadow:0 3px 8px rgba(15,23,42,.04);
+}
+.rank-row.player{
+  background:linear-gradient(135deg,#fff7ed,#dbeafe);
+  border:2px solid #f8d36b;
+  box-shadow:0 6px 12px rgba(245,158,11,.16);
+}
+.rank-pos{
+  width:24px;
+  height:24px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:900;
+  background:#dbeafe;
+  color:#1d4ed8;
+  font-size:10px;
+}
+.rank-row.player .rank-pos{
+  background:#f8d36b;
+  color:#172033;
+}
+.rank-name{
+  font-weight:900;
+  color:#172033;
+  line-height:1.05;
+  font-size:10.8px;
+}
+.rank-school{
+  font-size:8.2px;
+  font-weight:800;
+  color:#64748b;
+  margin-top:1px;
+}
+.rank-score{
+  font-weight:900;
+  color:#e11d48;
+  text-align:right;
+  font-size:10.5px;
+}
+.rank-note{
+  text-align:center;
+  font-size:9px;
+  color:#475569;
+  font-weight:800;
+  line-height:1.15;
+  margin-top:5px;
+}
+.rank-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:6px;
+  margin-top:8px;
+}
+.final-ranking .spin-btn{
+  padding:9px 8px;
+  font-size:11px;
+}
+.wheel.spinning{
+  filter:drop-shadow(0 0 16px rgba(255,255,255,.85)) drop-shadow(0 0 28px rgba(225,29,72,.45));
+}
+.suspense{
+  animation:suspensePulse .6s ease-in-out infinite alternate;
+}
+@keyframes suspensePulse{
+  from{transform:scale(1); filter:brightness(1)}
+  to{transform:scale(1.045); filter:brightness(1.08)}
+}
+@media(max-width:860px){
+  #startScreen.active{
+    display:flex;
+    height:100%;
+    align-items:center;
+    justify-content:center;
+  }
+  .start-card{
+    padding:14px;
+  }
+  .start-card h2{
+    font-size:28px;
+  }
+  .start-text{
+    font-size:13px;
+  }
+  #finalScreen.active{
+    height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+  }
+  .final-ranking{
+    width:100%;
+    max-height:100%;
+    overflow:hidden;
+    padding:7px;
+  }
+  .final-ranking h2{
+    font-size:23px;
+  }
+  .rank-actions{
+    grid-template-columns:1fr;
+  }
+}
+
+
+/* ===== Neon colorful update inspired by approved reference ===== */
+body{position:relative;background:
+ radial-gradient(circle at 20% 20%, rgba(236,72,153,.22), transparent 18%),
+ radial-gradient(circle at 80% 15%, rgba(59,130,246,.22), transparent 20%),
+ radial-gradient(circle at 50% 80%, rgba(168,85,247,.18), transparent 20%),
+ linear-gradient(180deg,#060818 0%,#090b28 40%,#12013a 100%);}
+body::before,body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:0}
+body::before{background-image:
+ radial-gradient(circle, rgba(255,255,255,.95) 0 1.2px, transparent 1.4px),
+ radial-gradient(circle, rgba(255,255,255,.7) 0 1px, transparent 1.2px),
+ radial-gradient(circle, rgba(255,214,10,.85) 0 1.2px, transparent 1.4px),
+ radial-gradient(circle, rgba(96,165,250,.8) 0 1.1px, transparent 1.3px);
+background-size:120px 120px, 180px 180px, 220px 220px, 260px 260px;
+background-position:0 0, 40px 70px, 80px 120px, 20px 140px;opacity:.55}
+body::after{background:
+ radial-gradient(ellipse at 50% 120%, rgba(14,165,233,.28), transparent 35%),
+ radial-gradient(ellipse at 50% -10%, rgba(244,63,94,.22), transparent 30%);opacity:.9}
+.app{position:relative;z-index:1;background:linear-gradient(180deg,rgba(9,10,38,.96),rgba(12,7,52,.95));border:1px solid rgba(167,139,250,.42);box-shadow:0 0 0 1px rgba(236,72,153,.14),0 24px 50px rgba(0,0,0,.45);}
+header{background:linear-gradient(135deg,rgba(24,24,80,.72),rgba(35,15,101,.55) 45%,rgba(7,121,198,.35));border-bottom:1px solid rgba(255,255,255,.12)}
+h1{background:linear-gradient(180deg,#fff,#fef08a 60%,#f59e0b 100%);-webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:.5px;text-shadow:0 0 16px rgba(251,191,36,.18)}
+.subtitle{color:#e2e8f0}
+.back,.pill{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.22);box-shadow:0 0 12px rgba(96,165,250,.18)}
+.stat{background:linear-gradient(180deg,rgba(17,24,69,.94),rgba(20,7,55,.9));border:1px solid rgba(96,165,250,.35);box-shadow:0 0 0 1px rgba(236,72,153,.12),0 8px 18px rgba(0,0,0,.28)}
+.stat b{color:#fff}.stat span{color:#cbd5e1}
+.stat:nth-child(1){border-color:#a855f7}.stat:nth-child(1) b{color:#fcd34d}
+.stat:nth-child(2){border-color:#06b6d4}.stat:nth-child(2) b{color:#67e8f9}
+.stat:nth-child(3){border-color:#f59e0b}.stat:nth-child(3) b{color:#fbbf24}
+.stat:nth-child(4){border-color:#ec4899}.stat:nth-child(4) b{color:#f9a8d4}
+.lives-card{background:linear-gradient(180deg,rgba(21,11,62,.94),rgba(30,8,48,.92));border:1px solid rgba(244,63,94,.4);color:#fff;box-shadow:0 0 0 1px rgba(96,165,250,.12),0 10px 18px rgba(0,0,0,.25)}
+.heart{filter:drop-shadow(0 0 6px rgba(255,0,90,.45))}
+.card{background:linear-gradient(180deg,rgba(11,18,62,.88),rgba(15,10,42,.9));border:1px solid rgba(96,165,250,.26);box-shadow:0 0 0 1px rgba(236,72,153,.08),0 10px 24px rgba(0,0,0,.25);color:#fff}
+.wheel-card{background:
+ radial-gradient(circle at 50% 50%, rgba(34,211,238,.08), transparent 35%),
+ radial-gradient(circle at 50% 50%, rgba(236,72,153,.08), transparent 65%),
+ linear-gradient(180deg,rgba(8,16,54,.85),rgba(15,7,47,.92));}
+.wheel-wrap::before{content:"";position:absolute;inset:auto 50% -8px 50%;width:105%;height:72%;transform:translateX(-50%);border:4px solid rgba(236,72,153,.7);border-top:none;border-radius:0 0 220px 220px;filter:drop-shadow(0 0 10px rgba(236,72,153,.4));pointer-events:none}
+.wheel-wrap::after{content:"";position:absolute;inset:auto 50% 10px 50%;width:110%;height:80%;transform:translateX(-50%);border:4px solid rgba(59,130,246,.55);border-top:none;border-radius:0 0 240px 240px;pointer-events:none;opacity:.8}
+.pointer{border-top-color:#050816;filter:drop-shadow(0 0 6px rgba(255,255,255,.22)) drop-shadow(0 3px 4px rgba(0,0,0,.5))}
+.pointer::after{background:#fff;border-color:#050816;box-shadow:0 0 12px rgba(255,255,255,.35)}
+.wheel{width:min(82vw,408px);height:min(82vw,408px);max-width:408px;max-height:408px;border:8px solid #f8fafc;box-shadow:0 0 0 4px rgba(236,72,153,.2),0 16px 34px rgba(0,0,0,.34)}
+.wheel::after{background:linear-gradient(180deg,#f8fafc,#e2e8f0);border-color:#cbd5e1;font-size:clamp(18px,4vw,28px);box-shadow:inset 0 0 12px rgba(255,255,255,.8),0 0 18px rgba(255,255,255,.18)}
+.wheel-label{width:118px;margin-left:-59px;transform:rotate(var(--r)) translateY(-158px) rotate(calc(-1 * var(--r)));font-size:18px;line-height:1.05;font-weight:1000;text-shadow:0 2px 6px rgba(0,0,0,.62),0 0 10px rgba(255,255,255,.12)}
+.spin-btn{background:linear-gradient(135deg,#f43f5e,#ec4899 55%,#fb7185);font-size:19px;letter-spacing:.5px;box-shadow:0 0 0 1px rgba(255,255,255,.14),0 10px 22px rgba(244,63,94,.3)}
+.sorted{background:linear-gradient(180deg,rgba(57,10,70,.72),rgba(41,6,54,.75));border-color:rgba(244,63,94,.45);color:#fef08a;box-shadow:0 0 14px rgba(236,72,153,.14) inset}
+.theme-chip{background:linear-gradient(135deg,rgba(37,99,235,.22),rgba(125,211,252,.18));color:#bfdbfe;border-color:rgba(96,165,250,.5)}
+.prompt{color:#fff;font-size:29px;line-height:1.22;text-shadow:0 2px 10px rgba(0,0,0,.25)}
+.option{position:relative;background:rgba(5,9,34,.76);color:#fff;border:2px solid rgba(96,165,250,.42);padding:14px 15px 14px 56px;box-shadow:0 6px 12px rgba(0,0,0,.18);transition:transform .12s ease, box-shadow .12s ease, border-color .12s ease;font-size:19px;line-height:1.14}
+.option:hover{transform:translateY(-1px);box-shadow:0 8px 18px rgba(0,0,0,.24)}
+.option::before{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:28px;height:28px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-weight:1000;color:#fff;border:1px solid rgba(255,255,255,.18)}
+.options .option:nth-child(1)::before{content:"A";background:linear-gradient(135deg,#22c55e,#16a34a)}
+.options .option:nth-child(2)::before{content:"B";background:linear-gradient(135deg,#3b82f6,#2563eb)}
+.options .option:nth-child(3)::before{content:"C";background:linear-gradient(135deg,#f59e0b,#d97706)}
+.options .option:nth-child(4)::before{content:"D";background:linear-gradient(135deg,#ec4899,#db2777)}
+.option.correct{background:rgba(20,83,45,.35);border-color:#22c55e;color:#dcfce7}.option.wrong{background:rgba(127,29,29,.42);border-color:#ef4444;color:#fee2e2}
+.feedback.ok{background:rgba(22,101,52,.28);border-color:#4ade80;color:#dcfce7}.feedback.bad{background:rgba(127,29,29,.35);border-color:#f87171;color:#fee2e2}
+.final h2{color:#fff}
+.box{background:linear-gradient(180deg,rgba(9,16,54,.9),rgba(15,10,42,.92));border-color:rgba(96,165,250,.28);color:#fff}
+.box b{color:#fbbf24}
+.final-message,.rank-item,.rank-head{color:inherit}
+@media(max-width:860px){
+  body.playing .stat{background:linear-gradient(180deg,rgba(17,24,69,.96),rgba(20,7,55,.95))}
+  body.playing .wheel-card{height:286px;min-height:286px}
+  body.playing .wheel{width:208px;height:208px}
+  body.playing .wheel::after{font-size:14px}
+  body.playing .wheel-label{font-size:9.8px;width:62px;margin-left:-31px;transform:rotate(var(--r)) translateY(-82px) rotate(calc(-1 * var(--r)))}
+  body.playing .sorted{font-size:10.8px;padding:5px 6px}
+  body.playing .question-card{display:flex;flex-direction:column;justify-content:flex-start;min-height:0;overflow:hidden}
+  body.playing .theme-chip{font-size:11.5px;padding:5px 8px;margin-bottom:5px}
+  body.playing .prompt{font-size:16.6px;line-height:1.18;margin-bottom:6px;max-height:none;overflow:visible}
+  body.playing .options{gap:4px}
+  body.playing .option{font-size:13.9px;line-height:1.1;padding:8px 8px 8px 39px;border-radius:10px;min-height:35px}
+  body.playing .option::before{left:8px;width:20px;height:20px;font-size:10.5px}
+  body.playing .feedback{font-size:11.2px;padding:5px 6px;max-height:none;overflow:visible;margin-top:5px;line-height:1.15}
+}
+@media(max-width:380px){
+  body.playing .wheel-card{height:268px;min-height:268px}
+  body.playing .wheel{width:194px;height:194px}
+  body.playing .wheel-label{font-size:8.9px;transform:rotate(var(--r)) translateY(-77px) rotate(calc(-1 * var(--r)))}
+  body.playing .prompt{font-size:15.2px}
+  body.playing .option{font-size:12.9px;min-height:33px;padding:7px 7px 7px 36px}
+}
+
+
+/* Extra sound-event visual feedback */
+body.sound-win .final-card, body.sound-try .final-card{animation:finalGlow 1.6s ease-in-out infinite alternate}
+@keyframes finalGlow{
+  from{box-shadow:0 0 0 1px rgba(255,255,255,.10),0 12px 30px rgba(0,0,0,.25)}
+  to{box-shadow:0 0 26px rgba(251,191,36,.28),0 16px 42px rgba(0,0,0,.35)}
+}
+
+</style>
+
+<style id="spin2-mobile-exact-fix">
+/* ===== Correção final de layout para ficar muito mais fiel à Spin 2 ===== */
+@media(max-width:860px){
+  body.playing{
+    overflow:auto !important;
+    align-items:stretch !important;
+    padding:0 !important;
+  }
+  body.playing .app{
+    width:100% !important;
+    min-height:100dvh !important;
+    height:auto !important;
+    border-radius:0 !important;
+    border:none !important;
+    box-shadow:none !important;
+  }
+  body.playing header{
+    padding:10px 10px 6px !important;
+  }
+  body.playing h1{
+    font-size:26px !important;
+    margin-top:4px !important;
+    margin-bottom:2px !important;
+  }
+  body.playing .subtitle{
+    display:none !important;
+  }
+  body.playing main{
+    padding:8px 8px 12px !important;
+    overflow:visible !important;
+    min-height:0 !important;
+    height:auto !important;
+  }
+  body.playing .screen.active{
+    overflow:visible !important;
+    height:auto !important;
+  }
+  body.playing .stats{
+    gap:7px !important;
+    margin-bottom:7px !important;
+  }
+  body.playing .stat{
+    padding:8px 4px !important;
+  }
+  body.playing .stat b{
+    font-size:18px !important;
+  }
+  body.playing .stat span{
+    font-size:8px !important;
+  }
+  body.playing .lives-card{
+    padding:8px 10px !important;
+    border-radius:16px !important;
+    margin-bottom:8px !important;
+  }
+  body.playing .lives-card b{
+    font-size:14px !important;
+  }
+  body.playing .heart{
+    font-size:22px !important;
+  }
+
+  body.playing .game-grid{
+    grid-template-columns:1fr !important;
+    gap:8px !important;
+    overflow:visible !important;
+  }
+
+  body.playing .card{
+    padding:8px !important;
+    border-radius:18px !important;
+  }
+
+  /* Bigger, more centered wheel section */
+  body.playing .wheel-card{
+    min-height:570px !important;
+    height:570px !important;
+    padding-top:8px !important;
+    padding-bottom:8px !important;
+    overflow:hidden !important;
+  }
+  body.playing .wheel-wrap{
+    min-height:554px !important;
+    height:554px !important;
+    justify-content:flex-start !important;
+    gap:9px !important;
+    position:relative !important;
+  }
+  body.playing .wheel-wrap::before{
+    width:121% !important;
+    height:60% !important;
+    bottom:86px !important;
+    border-width:5px !important;
+  }
+  body.playing .wheel-wrap::after{
+    width:115% !important;
+    height:55% !important;
+    bottom:66px !important;
+    border-width:5px !important;
+  }
+  body.playing .pointer{
+    top:4px !important;
+    border-left-width:15px !important;
+    border-right-width:15px !important;
+    border-top-width:39px !important;
+  }
+  body.playing .pointer::after{
+    top:-26px !important;
+    left:-6px !important;
+    width:12px !important;
+    height:12px !important;
+    border-width:3px !important;
+  }
+  body.playing .wheel{
+    width:332px !important;
+    height:332px !important;
+    max-width:332px !important;
+    max-height:332px !important;
+    border-width:8px !important;
+    margin-top:6px !important;
+  }
+  body.playing .wheel::after{
+    inset:29% !important;
+    font-size:16px !important;
+    border-width:4px !important;
+  }
+
+  /* Better-fitting labels inside the wheel */
+  body.playing .wheel-label{
+    width:78px !important;
+    margin-left:-39px !important;
+    font-size:12.8px !important;
+    line-height:.96 !important;
+    transform:rotate(var(--r)) translateY(-132px) rotate(calc(-1 * var(--r))) !important;
+    text-align:center !important;
+    word-break:normal !important;
+    overflow-wrap:break-word !important;
+    letter-spacing:-0.1px !important;
+  }
+
+  body.playing .spin-btn{
+    padding:11px 44px !important;
+    font-size:20px !important;
+    border-radius:18px !important;
+    margin-top:2px !important;
+  }
+  body.playing .sorted{
+    font-size:14px !important;
+    padding:8px 10px !important;
+    border-radius:14px !important;
+  }
+
+  /* Push questions lower by using the enlarged wheel block */
+  body.playing .question-card{
+    min-height:0 !important;
+    overflow:visible !important;
+    padding-top:8px !important;
+    padding-bottom:10px !important;
+  }
+  body.playing .theme-chip{
+    font-size:13px !important;
+    padding:6px 10px !important;
+    margin-bottom:9px !important;
+  }
+  body.playing .prompt{
+    font-size:17px !important;
+    line-height:1.16 !important;
+    margin-bottom:10px !important;
+    max-height:none !important;
+    overflow:visible !important;
+  }
+  body.playing .options{
+    gap:8px !important;
+  }
+  body.playing .option{
+    font-size:15px !important;
+    line-height:1.1 !important;
+    min-height:49px !important;
+    padding:10px 10px 10px 43px !important;
+    border-radius:15px !important;
+  }
+  body.playing .option::before{
+    width:24px !important;
+    height:24px !important;
+    left:9px !important;
+    font-size:13px !important;
+  }
+  body.playing .feedback{
+    font-size:12px !important;
+    line-height:1.16 !important;
+    max-height:none !important;
+    overflow:visible !important;
+  }
+  body.playing .brand{
+    display:none !important;
+  }
+}
+
+@media(max-width:390px){
+  body.playing .wheel-card{
+    min-height:545px !important;
+    height:545px !important;
+  }
+  body.playing .wheel-wrap{
+    min-height:528px !important;
+    height:528px !important;
+  }
+  body.playing .wheel{
+    width:316px !important;
+    height:316px !important;
+    max-width:316px !important;
+    max-height:316px !important;
+  }
+  body.playing .wheel-label{
+    width:74px !important;
+    margin-left:-37px !important;
+    font-size:12.1px !important;
+    transform:rotate(var(--r)) translateY(-126px) rotate(calc(-1 * var(--r))) !important;
+  }
+}
+
+@media(max-width:370px){
+  body.playing .wheel-card{
+    min-height:510px !important;
+    height:510px !important;
+  }
+  body.playing .wheel-wrap{
+    min-height:495px !important;
+    height:495px !important;
+  }
+  body.playing .wheel{
+    width:294px !important;
+    height:294px !important;
+    max-width:294px !important;
+    max-height:294px !important;
+  }
+  body.playing .wheel-label{
+    width:70px !important;
+    margin-left:-35px !important;
+    font-size:11.2px !important;
+    transform:rotate(var(--r)) translateY(-118px) rotate(calc(-1 * var(--r))) !important;
+  }
+  body.playing .prompt{
+    font-size:16px !important;
+  }
+  body.playing .option{
+    font-size:14px !important;
+  }
+}
+</style>
+
+
+<style id="mobile-modal-and-desktop-wheel-fix">
+/* ===== Mobile question modal over the wheel ===== */
+.question-modal{
+  display:none;
+}
+@media(max-width:860px){
+  body.playing{
+    overflow:auto !important;
+  }
+  body.playing .question-card{
+    display:none !important;
+  }
+  body.playing .game-grid{
+    grid-template-columns:1fr !important;
+    gap:8px !important;
+  }
+  body.playing .wheel-card{
+    min-height:calc(100dvh - 190px) !important;
+    height:calc(100dvh - 190px) !important;
+    overflow:hidden !important;
+  }
+  body.playing .wheel-wrap{
+    min-height:100% !important;
+    height:100% !important;
+    justify-content:center !important;
+    padding-top:0 !important;
+  }
+  body.playing .wheel{
+    width:min(88vw, 340px) !important;
+    height:min(88vw, 340px) !important;
+    max-width:340px !important;
+    max-height:340px !important;
+  }
+  body.playing .wheel-label{
+    width:76px !important;
+    margin-left:-38px !important;
+    font-size:12px !important;
+    line-height:.96 !important;
+    transform:rotate(var(--r)) translateY(-126px) rotate(calc(-1 * var(--r))) !important;
+  }
+  body.playing .wheel::after{
+    font-size:18px !important;
+  }
+  .question-modal.show{
+    display:flex !important;
+    position:fixed;
+    inset:0;
+    z-index:9999;
+    align-items:center;
+    justify-content:center;
+    padding:18px;
+  }
+  .modal-backdrop{
+    position:absolute;
+    inset:0;
+    background:rgba(3,4,18,.42);
+    backdrop-filter:blur(2px);
+  }
+  .modal-card{
+    position:relative;
+    width:min(94vw, 430px);
+    max-height:88dvh;
+    overflow:auto;
+    border-radius:24px;
+    padding:14px;
+    background:
+      radial-gradient(circle at 20% 0%, rgba(0,212,255,.25), transparent 35%),
+      radial-gradient(circle at 88% 10%, rgba(255,0,153,.25), transparent 35%),
+      linear-gradient(180deg, rgba(5,9,48,.97), rgba(11,5,42,.98));
+    border:2px solid rgba(255,50,200,.55);
+    box-shadow:0 0 0 1px rgba(255,255,255,.08), 0 22px 50px rgba(0,0,0,.55), 0 0 32px rgba(236,72,153,.22);
+  }
+  .modal-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+    margin-bottom:8px;
+  }
+  .modal-mini{
+    color:#fde68a;
+    font-size:11px;
+    font-weight:900;
+    text-align:right;
+  }
+  .modal-card .theme-chip{
+    font-size:13px !important;
+    padding:6px 10px !important;
+    margin-bottom:0 !important;
+  }
+  .modal-prompt{
+    font-size:21px !important;
+    line-height:1.14 !important;
+    margin:10px 0 12px !important;
+    color:#fff !important;
+    text-shadow:0 2px 8px rgba(0,0,0,.22);
+  }
+  .modal-options{
+    gap:9px !important;
+  }
+  .modal-card .option{
+    font-size:17px !important;
+    line-height:1.1 !important;
+    min-height:54px !important;
+    padding:11px 11px 11px 46px !important;
+    border-radius:17px !important;
+    background:rgba(4,10,51,.97) !important;
+  }
+  .modal-card .option::before{
+    left:10px !important;
+    width:27px !important;
+    height:27px !important;
+    font-size:14px !important;
+  }
+  .modal-feedback{
+    font-size:13px !important;
+    line-height:1.18 !important;
+    margin-top:10px !important;
+    max-height:none !important;
+    overflow:visible !important;
+  }
+}
+
+/* ===== Desktop: keep side question, fix wheel labels escaping ===== */
+@media(min-width:861px){
+  body.playing .question-modal{
+    display:none !important;
+  }
+  body.playing .game-grid{
+    grid-template-columns:minmax(420px,.95fr) minmax(420px,1.05fr) !important;
+    align-items:stretch !important;
+  }
+  body.playing .wheel-card{
+    overflow:hidden !important;
+  }
+  body.playing .wheel-wrap{
+    min-height:520px !important;
+    height:auto !important;
+  }
+  body.playing .wheel{
+    width:360px !important;
+    height:360px !important;
+    max-width:360px !important;
+    max-height:360px !important;
+  }
+  body.playing .wheel::after{
+    inset:29% !important;
+    font-size:20px !important;
+  }
+  body.playing .wheel-label{
+    width:74px !important;
+    margin-left:-37px !important;
+    font-size:12.6px !important;
+    line-height:.96 !important;
+    letter-spacing:-.15px !important;
+    transform:rotate(var(--r)) translateY(-142px) rotate(calc(-1 * var(--r))) !important;
+    overflow-wrap:break-word !important;
+    word-break:normal !important;
+  }
+  body.playing .prompt{
+    font-size:25px !important;
+    line-height:1.15 !important;
+  }
+  body.playing .option{
+    font-size:19px !important;
+  }
+}
+</style>
+
+
+<style id="signature-placement-fix">
+@media(max-width:860px){body.playing .wheel-wrap{padding-bottom:10px !important} body.playing .wheel-signature{display:block !important}}
+@media(min-width:861px){body.playing .wheel-signature{font-size:12px; margin-top:12px; color:#dbeafe}}
+</style>
+
+<style id="mission-card-responsive">
+@media(max-width:860px){body.playing .mission-card{margin:7px 0 8px;padding:8px 10px;border-radius:15px;gap:8px}body.playing .mission-card b{font-size:14px}body.playing .mission-card span{font-size:11px}}
+@media(min-width:861px){body.playing .mission-card b{font-size:18px}body.playing .mission-card span{font-size:14px}}
+</style>
+
+<style id="final-msg-dark-fix">
+.final-message{color:#111827 !important; background:linear-gradient(135deg,#fff8e1,#fef3c7 38%,#ffffff 100%) !important; border-color:#d97706 !important; text-shadow:none !important; font-weight:1000 !important} 
+.final-message b,strong{color:#111827 !important} 
+@media(max-width:860px){.final-message{font-size:13px !important; line-height:1.28 !important}}
 </style>
 </head>
-<body>
+<body class="playing">
+<div class="app">
+<header>
+  <div class="topbar"><a class="back" href="7ano.html">← Voltar ao 7º ano</a><div class="pill">📘 Revisão 7º ano</div></div>
+  <h1>Spin and Answer</h1>
+  <p class="subtitle">Gire a roleta, revise um tema do 7º ano e responda ao desafio.</p>
+</header>
+<main>
 
-<main class="app">
-<section id="start" class="screen start active">
-  <div class="logo card"><h1>Spin and <span>Answer</span></h1><div class="grade">7º ANO • Revisão rápida</div><p>Gire a roleta, veja o tema e responda aplicando a regra de forma rápida.</p></div>
-  <div class="form card">
-    <label>Nome do aluno</label><input id="name" placeholder="Digite seu nome">
-    <label>Turma</label><input id="className" placeholder="Ex.: 701">
-    <label>Escola</label><input id="school" value="Escola Delfina de Jesus Amorim">
-    <div style="height:12px"></div><button class="btn" onclick="startGame()">Começar roleta</button>
-    <div style="height:8px"></div><button class="btn secondary" onclick="location.href='7ano.html'">Voltar ao 7º ano</button>
+<section id="startScreen" class="screen active">
+  <div class="card start-card">
+    <h2>🎡 Spin and Answer</h2>
+    <p class="start-text">Digite seus dados para revisar Likes and Dislikes, Adverbs of Frequency e Giving Opinions. Este jogo ajuda no estudo para o trabalho individual da próxima semana, mas não substitui os materiais usados em sala de aula.</p>
+    <div class="player-form">
+      <label>Seu nome</label>
+      <input id="playerName" type="text" placeholder="Digite seu nome" maxlength="28">
+      <label>Turma</label>
+      <input id="playerClass" type="text" placeholder="Ex.: 601" maxlength="12">
+      <label>Escola</label>
+      <input id="playerSchool" type="text" placeholder="Digite o nome da escola" maxlength="40">
+    </div>
+    <button class="spin-btn" onclick="restart()">Começar jogo</button>
+    <div class="brand-start">Jogo idealizado pelo professor Jasson Bruno.</div>
   </div>
-  <div class="footer">Jogo idealizado pelo <b>Prof. Jasson Bruno</b>.</div>
 </section>
-<section id="game" class="screen game">
-  <div class="hud"><div class="hud-title">Spin and Answer • <span id="roundInfo">1/60</span></div><div class="hearts" id="hearts">❤️❤️❤️❤️❤️</div></div>
-  <div class="progress"><div class="bar" id="bar"></div></div>
-  <div class="wheel-area card">
-    <div class="pointer"></div>
-    <div id="wheel" class="wheel"><div class="wheel-label" id="wheelLabel">Ready?<br><span class="mini">clique para girar</span></div></div>
-    <button id="spinBtn" class="btn" onclick="spinWheel()">Girar roleta</button>
+
+<section id="gameScreen" class="screen">
+  <div class="stats">
+    <div class="stat"><b id="score">0</b><span>Pontos</span></div>
+    <div class="stat"><b id="corrects">0</b><span>Acertos</span></div>
+    <div class="stat"><b id="combo">0</b><span>Combo</span></div>
+    <div class="stat"><b id="round">1 de 20</b><span>Rodada</span></div>
   </div>
-  <div id="questionBox" class="question-card card" style="display:none">
-    <div class="theme" id="theme"></div><div class="qtext" id="question"></div><div class="options" id="options"></div>
+  <div class="mission-card"><b id="missionLabel">Missão 1/10</b><span id="roundLabel">Rodada 1 de 20</span></div>
+  <div class="lives-card"><b>Vidas:</b> <span id="lives"></span></div>
+  <div class="game-grid">
+    <div class="card wheel-card">
+      <div class="wheel-wrap">
+        <div class="pointer"></div>
+        <div id="wheel" class="wheel" data-theme="SPIN">
+          <div class="wheel-label" style="--r:60deg">Adverbs of Frequency</div>
+<div class="wheel-label" style="--r:180deg">Likes and Dislikes</div>
+<div class="wheel-label" style="--r:300deg">Giving Opinions</div>
+
+        </div>
+        <button id="spinBtn" class="spin-btn" onclick="spinWheel()">SPIN</button>
+        <div id="sorted" class="sorted">Gire a roleta para começar.</div>
+        <div class="wheel-signature">Jogo idealizado pelo professor Jasson Bruno</div>
+      </div>
+    </div>
+    <div class="card question-card">
+      <div id="theme" class="theme-chip">Tema</div>
+      <div id="prompt" class="prompt">Clique em SPIN para sortear o tema e liberar a pergunta.</div>
+      <div id="options" class="options"></div>
+      <div id="feedback" class="feedback"></div>
+    </div>
   </div>
-  <div class="feedback" id="feedback"><h3 id="fbTitle"></h3><p id="fbText"></p><div style="height:8px"></div><button class="btn" onclick="nextQuestion()">Continuar</button></div>
+
+  <div id="questionModal" class="question-modal" aria-hidden="true">
+    <div class="modal-backdrop"></div>
+    <div class="modal-card">
+      <div class="modal-top">
+        <span id="modalTheme" class="theme-chip">Tema</span>
+        <span class="modal-mini">Responda para continuar</span>
+      </div>
+      <div id="modalPrompt" class="prompt modal-prompt">Pergunta</div>
+      <div id="modalOptions" class="options modal-options"></div>
+      <div id="modalFeedback" class="feedback modal-feedback"></div>
+    </div>
+  </div>
 </section>
-<section id="result" class="screen result">
-  <div class="result-card card">
-    <h1 id="resultTitle">CONGRATULATIONS!</h1><p id="studentLine"></p>
-    <div class="stats"><div class="stat"><b id="score">0</b>Pontos</div><div class="stat"><b id="hits">0</b>Acertos</div><div class="stat"><b id="misses">0</b>Erros</div><div class="stat"><b id="status">OK</b>Status</div></div>
-    <p style="font-size:.78rem;color:#c7d2fe;line-height:1.28">Tire um print desta tela e continue revisando pelos materiais da sala.</p>
-    <div class="row"><button class="btn" onclick="restart()">Jogar de novo</button><button class="btn secondary" onclick="location.href='7ano.html'">Voltar</button></div>
+
+<section id="finalScreen" class="screen">
+  <div class="card final final-ranking">
+    <h2 id="finalTitle">💪 TRY AGAIN!</h2>
+    <div id="finalMsg" class="final-message"></div>
+
+    <div class="player-summary">
+      <div class="summary-box"><span>Pontuação</span><b id="fScore">0</b></div>
+      <div class="summary-box"><span>Acertos</span><b id="fCorrects">0/60</b></div>
+      <div class="summary-box"><span>Combo</span><b id="fCombo">0</b></div>
+      <div class="summary-box"><span>Vidas</span><b id="fLives">0/5</b></div>
+    </div>
+
+    <h3 class="ranking-title">🏆 Ranking do Desafio — Spin and Answer</h3>
+    <div id="rankList" class="rank-list"></div>
+
+    <div class="rank-note">
+      Ranking motivacional interno do jogo. Faça um print da sua pontuação e tente jogar novamente para subir no ranking.
+    </div>
+
+    <div class="rank-actions">
+      <button id="primaryActionBtn" class="spin-btn" onclick="restart()">Jogar novamente</button>
+      <button class="spin-btn" onclick="location.href='7ano.html'">Voltar ao 7º ano</button>
+    </div>
   </div>
-  <div class="footer">Jogo idealizado pelo <b>Prof. Jasson Bruno</b>.</div>
 </section>
+
 </main>
-
+<div class="brand">Jogo idealizado pelo professor Jasson Bruno.</div>
+</div>
 <script>
-const BANK = [{"theme": "Adverbs of Frequency", "q": "Complete: Marcos ____ plays soccer after school. Ele joga futebol depois da escola em muitos dias da semana.", "options": ["usually", "never", "boring", "like"], "answer": 0, "feedback": "“Usually” indica uma ação frequente, mas não obrigatoriamente todos os dias."}, {"theme": "Likes and Dislikes", "q": "Escolha a frase correta:", "options": ["She like pizza.", "She likes pizza.", "She don’t like pizza.", "She does likes pizza."], "answer": 1, "feedback": "Com “she”, usamos “likes” na afirmativa."}, {"theme": "Giving Opinions", "q": "Qual frase é usada para dar uma opinião?", "options": ["I think it is interesting.", "I play soccer.", "Does she like music?", "They never study."], "answer": 0, "feedback": "“I think it is” é uma estrutura comum para expressar opinião."}, {"theme": "Adverbs of Frequency", "q": "Complete: Ana ____ arrives early. Ela chega cedo todos os dias.", "options": ["always", "sometimes", "doesn’t", "opinion"], "answer": 0, "feedback": "Quando a ação acontece todos os dias, usamos “always”."}, {"theme": "Likes and Dislikes", "q": "Qual pergunta está correta?", "options": ["Do Pedro like games?", "Does Pedro likes games?", "Does Pedro like games?", "Pedro does like games?"], "answer": 2, "feedback": "Com “Pedro/he”, usamos “Does” e o verbo fica na forma base: “like”."}, {"theme": "Giving Opinions", "q": "Complete: I think this game is ____. O aluno achou o jogo divertido.", "options": ["fun", "never", "like", "usually"], "answer": 0, "feedback": "“Fun” significa divertido."}, {"theme": "Adverbs of Frequency", "q": "Escolha o advérbio que combina com uma ação que acontece poucas vezes:", "options": ["always", "usually", "rarely", "every day"], "answer": 2, "feedback": "“Rarely” indica algo que acontece poucas vezes."}, {"theme": "Likes and Dislikes", "q": "Escolha a frase negativa correta:", "options": ["He don’t like salad.", "He doesn’t like salad.", "He doesn’t likes salad.", "He not like salad."], "answer": 1, "feedback": "Com “he”, usamos “doesn’t like”."}, {"theme": "Giving Opinions", "q": "Qual alternativa expressa uma opinião negativa sobre um filme?", "options": ["I think it is boring.", "I think it is great.", "I think it is fun.", "I think it is exciting."], "answer": 0, "feedback": "“Boring” indica algo chato ou sem graça."}, {"theme": "Adverbs of Frequency", "q": "Complete: Lucas ____ studies English on weekends. Ele estuda Inglês em alguns fins de semana, mas não em todos.", "options": ["always", "sometimes", "never", "boring"], "answer": 1, "feedback": "“Sometimes” indica algo que acontece em alguns momentos."}, {"theme": "Likes and Dislikes", "q": "Com “I”, qual frase está correta?", "options": ["I likes music.", "I like music.", "I doesn’t like music.", "I does like music."], "answer": 1, "feedback": "Com “I”, usamos “like”."}, {"theme": "Giving Opinions", "q": "Complete: In my opinion, English is ____.", "options": ["useful", "usually", "doesn’t", "never"], "answer": 0, "feedback": "“Useful” significa útil."}, {"theme": "Adverbs of Frequency", "q": "Qual frase está escrita corretamente?", "options": ["She always listens to music.", "She listens always to music.", "Always she listens to music.", "She listen always music."], "answer": 0, "feedback": "O advérbio de frequência geralmente vem antes do verbo principal."}, {"theme": "Likes and Dislikes", "q": "Escolha a pergunta correta com “you”:", "options": ["Does you like soccer?", "Do you like soccer?", "You do like soccer?", "Do you likes soccer?"], "answer": 1, "feedback": "Com “you”, usamos “Do you like?”"}, {"theme": "Giving Opinions", "q": "Qual frase mostra concordância?", "options": ["I agree.", "I never.", "I doesn’t.", "I boring."], "answer": 0, "feedback": "“I agree” significa “Eu concordo”."}, {"theme": "Adverbs of Frequency", "q": "Complete: They ____ play video games after class. Eles jogam videogame com frequência.", "options": ["often", "doesn’t", "opinion", "boring"], "answer": 0, "feedback": "“Often” indica que algo acontece várias vezes."}, {"theme": "Likes and Dislikes", "q": "Escolha a frase correta com “they”:", "options": ["They likes hamburgers.", "They like hamburgers.", "They doesn’t like hamburgers.", "They does like hamburgers."], "answer": 1, "feedback": "Com “they”, usamos “like”."}, {"theme": "Giving Opinions", "q": "Qual frase combina com algo difícil, mas bom para aprender?", "options": ["I think it is difficult but useful.", "I think it is delicious.", "I think it is never.", "I think it is doesn’t."], "answer": 0, "feedback": "A frase expressa uma opinião equilibrada: difícil, mas útil."}, {"theme": "Adverbs of Frequency", "q": "Complete: Bruna ____ drinks soda. Ela não toma refrigerante.", "options": ["always", "usually", "never", "often"], "answer": 2, "feedback": "“Never” indica que a ação não acontece."}, {"theme": "Likes and Dislikes", "q": "Escolha a frase correta:", "options": ["My brother likes anime.", "My brother like anime.", "My brother don’t like anime.", "My brother does likes anime."], "answer": 0, "feedback": "Com “my brother/he”, usamos “likes”."}, {"theme": "Giving Opinions", "q": "Qual alternativa expressa uma opinião positiva?", "options": ["I think it is bad.", "I think it is confusing.", "I think it is great.", "I think it is boring."], "answer": 2, "feedback": "“Great” é uma opinião positiva."}, {"theme": "Adverbs of Frequency", "q": "Qual advérbio combina com “em muitos momentos, mas não sempre”?", "options": ["usually", "never", "bad", "hate"], "answer": 0, "feedback": "“Usually” indica algo que acontece muitas vezes, mas não sempre."}, {"theme": "Likes and Dislikes", "q": "Escolha a negativa correta com “we”:", "options": ["We doesn’t like tests.", "We don’t like tests.", "We don’t likes tests.", "We not like tests."], "answer": 1, "feedback": "Com “we”, usamos “don’t like”."}, {"theme": "Giving Opinions", "q": "“I don’t agree.” significa que a pessoa:", "options": ["tem a mesma opinião", "não tem a mesma opinião", "está perguntando", "está falando de rotina"], "answer": 1, "feedback": "“I don’t agree” significa “Eu não concordo”."}, {"theme": "Adverbs of Frequency", "q": "Escolha a frase correta:", "options": ["He usually plays Free Fire.", "He plays usually Free Fire.", "He usually play Free Fire.", "Usually he play Free Fire."], "answer": 0, "feedback": "A estrutura correta é “He usually plays”."}, {"theme": "Likes and Dislikes", "q": "Qual pergunta está correta com “Lara and Sofia”?", "options": ["Does Lara and Sofia like K-pop?", "Do Lara and Sofia like K-pop?", "Do Lara and Sofia likes K-pop?", "Lara and Sofia does like K-pop?"], "answer": 1, "feedback": "Lara and Sofia = they. Por isso, usamos “Do”."}, {"theme": "Giving Opinions", "q": "Qual frase pode ser usada para falar de uma aula interessante?", "options": ["I think it is interesting.", "I think it is soda.", "I think it is never.", "I think it is don’t."], "answer": 0, "feedback": "“Interesting” significa interessante."}, {"theme": "Adverbs of Frequency", "q": "Complete: Julia ____ forgets her homework. Ela esquece a tarefa poucas vezes.", "options": ["rarely", "always", "never", "every day"], "answer": 0, "feedback": "“Rarely” indica poucas vezes."}, {"theme": "Likes and Dislikes", "q": "Escolha a frase correta:", "options": ["He doesn’t like fish.", "He don’t like fish.", "He doesn’t likes fish.", "He not like fish."], "answer": 0, "feedback": "Com “he”, usamos “doesn’t like”."}, {"theme": "Giving Opinions", "q": "Qual frase combina com um jogo confuso?", "options": ["I think it is confusing.", "I think it is delicious.", "I think it is easy.", "I think it is always."], "answer": 0, "feedback": "“Confusing” significa confuso."}, {"theme": "Adverbs of Frequency", "q": "Complete: The students ____ use English in games. Eles usam Inglês em jogos muitas vezes.", "options": ["often", "hate", "boring", "doesn’t"], "answer": 0, "feedback": "“Often” indica frequência alta."}, {"theme": "Likes and Dislikes", "q": "Qual frase está correta?", "options": ["Ana don’t like horror movies.", "Ana doesn’t like horror movies.", "Ana doesn’t likes horror movies.", "Ana not like horror movies."], "answer": 1, "feedback": "Ana = she. Usamos “doesn’t like”."}, {"theme": "Giving Opinions", "q": "Complete: I think this activity is ____. A atividade ajudou o aluno a revisar.", "options": ["helpful", "never", "doesn’t", "hate"], "answer": 0, "feedback": "“Helpful” significa útil, algo que ajuda."}, {"theme": "Adverbs of Frequency", "q": "Qual frase está correta?", "options": ["They never arrive late.", "They arrives never late.", "They never arrives late.", "Never they arrives late."], "answer": 0, "feedback": "Com “they”, o verbo fica “arrive”, sem “s”."}, {"theme": "Likes and Dislikes", "q": "Escolha a pergunta correta:", "options": ["Does your sister like music?", "Do your sister like music?", "Does your sister likes music?", "Your sister does like music?"], "answer": 0, "feedback": "Your sister = she. Usamos “Does” + verbo base."}, {"theme": "Giving Opinions", "q": "Qual frase mostra uma opinião equilibrada?", "options": ["I think it is difficult but interesting.", "I think it is never.", "I think it doesn’t.", "I think it is soccer."], "answer": 0, "feedback": "A frase mistura dificuldade e interesse."}, {"theme": "Adverbs of Frequency", "q": "Complete: I ____ eat breakfast before school. Eu tomo café antes da escola todos os dias.", "options": ["always", "never", "boring", "opinion"], "answer": 0, "feedback": "Todos os dias combina com “always”."}, {"theme": "Likes and Dislikes", "q": "Com “she”, qual frase afirmativa está correta?", "options": ["She like volleyball.", "She likes volleyball.", "She don’t like volleyball.", "She does likes volleyball."], "answer": 1, "feedback": "Com “she”, usamos “likes”."}, {"theme": "Giving Opinions", "q": "Qual alternativa pode ser usada para dar opinião sobre comida?", "options": ["I think it is delicious.", "I think it is usually.", "I think it is never.", "I think it is doesn’t."], "answer": 0, "feedback": "“Delicious” significa delicioso."}, {"theme": "Adverbs of Frequency", "q": "Complete: Carlos ____ watches TV. Ele quase não assiste televisão.", "options": ["rarely", "always", "usually", "every day"], "answer": 0, "feedback": "“Rarely” indica pouca frequência."}, {"theme": "Likes and Dislikes", "q": "Escolha a frase correta com “my friends”:", "options": ["My friends likes soccer.", "My friends like soccer.", "My friends does like soccer.", "My friends doesn’t like soccer."], "answer": 1, "feedback": "My friends = they. Usamos “like”."}, {"theme": "Giving Opinions", "q": "Qual frase combina com algo muito legal?", "options": ["I think it is awesome.", "I think it is never.", "I think it is don’t.", "I think it is salad."], "answer": 0, "feedback": "“Awesome” significa incrível, muito legal."}, {"theme": "Adverbs of Frequency", "q": "Qual advérbio indica uma ação que não acontece?", "options": ["always", "usually", "never", "often"], "answer": 2, "feedback": "“Never” indica que a ação não acontece."}, {"theme": "Likes and Dislikes", "q": "Escolha a pergunta correta:", "options": ["Do they like English games?", "Does they like English games?", "Do they likes English games?", "They do likes English games?"], "answer": 0, "feedback": "Com “they”, usamos “Do they like?”"}, {"theme": "Giving Opinions", "q": "Qual frase mostra opinião sobre uma música?", "options": ["I think this song is good.", "I think this song always.", "I think this song doesn’t.", "I think this song never."], "answer": 0, "feedback": "“I think this song is good” expressa opinião."}, {"theme": "Adverbs of Frequency", "q": "Complete: Beatriz ____ studies at night. Ela estuda à noite em alguns dias.", "options": ["sometimes", "always", "never", "boring"], "answer": 0, "feedback": "“Sometimes” indica alguns dias ou alguns momentos."}, {"theme": "Likes and Dislikes", "q": "Escolha a negativa correta:", "options": ["They doesn’t like exams.", "They don’t likes exams.", "They don’t like exams.", "They not like exams."], "answer": 2, "feedback": "Com “they”, usamos “don’t like”."}, {"theme": "Giving Opinions", "q": "Complete: In my opinion, this movie is ____. O filme teve muitas cenas emocionantes.", "options": ["exciting", "never", "doesn’t", "usually"], "answer": 0, "feedback": "“Exciting” significa emocionante."}, {"theme": "Adverbs of Frequency", "q": "Escolha a frase correta:", "options": ["We often play games in English.", "We plays often games in English.", "We often plays games in English.", "Often we plays games in English."], "answer": 0, "feedback": "Com “we”, usamos “play”; e “often” fica antes do verbo principal."}, {"theme": "Likes and Dislikes", "q": "Qual frase está correta?", "options": ["I don’t like onions.", "I doesn’t like onions.", "I don’t likes onions.", "I not like onions."], "answer": 0, "feedback": "Com “I”, usamos “don’t like”."}, {"theme": "Giving Opinions", "q": "Qual frase mostra que a pessoa não concorda?", "options": ["I agree.", "I don’t agree.", "I like pizza.", "I always study."], "answer": 1, "feedback": "“I don’t agree” mostra discordância."}, {"theme": "Adverbs of Frequency", "q": "Complete: Rafael ____ goes to the gym. Ele vai à academia em muitos dias da semana.", "options": ["usually", "never", "bad", "doesn’t"], "answer": 0, "feedback": "“Usually” indica algo que acontece muitas vezes."}, {"theme": "Likes and Dislikes", "q": "Qual pergunta está correta com “your brother”?", "options": ["Do your brother like soccer?", "Does your brother like soccer?", "Does your brother likes soccer?", "Your brother does likes soccer?"], "answer": 1, "feedback": "Your brother = he. Usamos “Does” + verbo base."}, {"theme": "Giving Opinions", "q": "Qual frase combina com uma atividade fácil?", "options": ["I think it is easy.", "I think it is difficult.", "I think it is confusing.", "I think it is boring."], "answer": 0, "feedback": "“Easy” significa fácil."}, {"theme": "Adverbs of Frequency", "q": "Complete: Maria ____ misses class. Ela não costuma faltar aula.", "options": ["rarely", "always", "every day", "usually"], "answer": 0, "feedback": "“Rarely” indica que algo acontece poucas vezes."}, {"theme": "Likes and Dislikes", "q": "Escolha a frase correta:", "options": ["Lucas likes basketball.", "Lucas like basketball.", "Lucas don’t like basketball.", "Lucas does likes basketball."], "answer": 0, "feedback": "Lucas = he. Usamos “likes”."}, {"theme": "Giving Opinions", "q": "Qual frase combina com algo sem utilidade para estudar?", "options": ["I think it is useful.", "I think it is useless.", "I think it is interesting.", "I think it is helpful."], "answer": 1, "feedback": "“Useless” significa sem utilidade."}, {"theme": "Adverbs of Frequency", "q": "Complete: The teacher ____ explains the activity before the game. O professor explica a atividade em muitos momentos.", "options": ["usually", "never", "hate", "salad"], "answer": 0, "feedback": "“Usually” combina com uma ação frequente."}, {"theme": "Likes and Dislikes", "q": "Escolha a pergunta correta:", "options": ["Does Camila like volleyball?", "Do Camila like volleyball?", "Does Camila likes volleyball?", "Camila does likes volleyball?"], "answer": 0, "feedback": "Camila = she. Usamos “Does” + verbo base."}, {"theme": "Giving Opinions", "q": "Qual frase combina com uma revisão que ajuda antes do trabalho?", "options": ["I think it is helpful.", "I think it is useless.", "I think it is boring.", "I think it is bad."], "answer": 0, "feedback": "“Helpful” indica algo que ajuda."}];
-const TOTAL = 60;
-let player={}, sequence=[], current=0, lives=5, hits=0, misses=0, score=0, locked=false, spun=false, rotation=0;
-function shuffle(arr){const a=[arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
-function makeSequence(){
-  const by={"Adverbs of Frequency":shuffle(BANK.filter(q=>q.theme==="Adverbs of Frequency")),"Likes and Dislikes":shuffle(BANK.filter(q=>q.theme==="Likes and Dislikes")),"Giving Opinions":shuffle(BANK.filter(q=>q.theme==="Giving Opinions"))};
-  const themes=["Adverbs of Frequency","Likes and Dislikes","Giving Opinions"], seq=[];
-  for(let c=0;c<20;c++){const order=c===0?themes:shuffle(themes);order.forEach(t=>seq.push(by[t].shift()))}
-  return seq;
+
+
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+let audioCtx = null;
+let spinMusicTimer = null;
+let spinPulseTimer = null;
+let spinStep = 0;
+
+function ensureAudio(){
+  if(!AudioCtx) return null;
+  if(!audioCtx) audioCtx = new AudioCtx();
+  if(audioCtx.state === 'suspended') audioCtx.resume();
+  return audioCtx;
 }
-function screen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active')}
-function startGame(){
-  player.name=document.getElementById('name').value.trim()||"Aluno";
-  player.className=document.getElementById('className').value.trim()||"7º ano";
-  player.school=document.getElementById('school').value.trim()||"Escola Delfina de Jesus Amorim";
-  sequence=makeSequence();current=0;lives=5;hits=0;misses=0;score=0;rotation=0;screen('game');prepareRound();
+
+function playTone(freq=440, duration=.12, type='sine', volume=.03, when=0){
+  const ctx = ensureAudio();
+  if(!ctx) return;
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.type = type;
+  osc.frequency.setValueAtTime(freq, ctx.currentTime + when);
+  gain.gain.setValueAtTime(0.0001, ctx.currentTime + when);
+  gain.gain.exponentialRampToValueAtTime(volume, ctx.currentTime + when + 0.015);
+  gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + when + duration);
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+  osc.start(ctx.currentTime + when);
+  osc.stop(ctx.currentTime + when + duration + 0.03);
 }
-function prepareRound(){
-  spun=false;locked=false;
-  document.getElementById('roundInfo').textContent=`${current+1}/${TOTAL}`;
-  document.getElementById('bar').style.width=`${(current/TOTAL)*100}%`;
-  document.getElementById('hearts').textContent='❤️'.repeat(lives)+'🖤'.repeat(5-lives);
-  document.getElementById('questionBox').style.display='none';
-  document.getElementById('feedback').classList.remove('show');
-  document.getElementById('spinBtn').disabled=false;
-  document.getElementById('wheelLabel').innerHTML='Ready?<br><span class="mini">clique para girar</span>';
+
+function playNoise(duration=.18, volume=.025, when=0){
+  const ctx = ensureAudio();
+  if(!ctx) return;
+  const bufferSize = Math.max(1, Math.floor(ctx.sampleRate * duration));
+  const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+  const data = buffer.getChannelData(0);
+  for(let i=0;i<bufferSize;i++){
+    data[i] = (Math.random() * 2 - 1) * (1 - i / bufferSize);
+  }
+  const src = ctx.createBufferSource();
+  const gain = ctx.createGain();
+  src.buffer = buffer;
+  gain.gain.setValueAtTime(volume, ctx.currentTime + when);
+  gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + when + duration);
+  src.connect(gain);
+  gain.connect(ctx.destination);
+  src.start(ctx.currentTime + when);
+  src.stop(ctx.currentTime + when + duration + 0.02);
 }
-function angleForTheme(theme){ if(theme==="Adverbs of Frequency") return 60; if(theme==="Likes and Dislikes") return 180; return 300; }
+
+function startSpinMusic(){
+  stopSpinMusic();
+  ensureAudio();
+  spinStep = 0;
+  const melody = [
+    392.00, 523.25, 659.25, 783.99,
+    698.46, 659.25, 587.33, 523.25,
+    440.00, 554.37, 659.25, 880.00
+  ];
+  const bass = [196.00, 261.63, 220.00, 293.66];
+
+  spinMusicTimer = setInterval(()=>{
+    const f = melody[spinStep % melody.length];
+    playTone(f, .12, 'square', .028);
+    playTone(f * 1.5, .08, 'triangle', .013, .035);
+    if(spinStep % 2 === 0) playTone(bass[Math.floor(spinStep/2) % bass.length], .16, 'sine', .018, .015);
+    if(spinStep % 4 === 0) playNoise(.06, .012);
+    spinStep++;
+  }, 125);
+
+  spinPulseTimer = setInterval(()=>{
+    const btn = el('spinBtn');
+    const wheel = el('wheel');
+    if(btn) btn.style.transform = `scale(${1 + Math.random()*0.045}) rotate(${(Math.random()-.5)*2}deg)`;
+    if(wheel) wheel.style.filter = `saturate(${1.1 + Math.random()*0.35}) drop-shadow(0 0 ${10 + Math.random()*16}px rgba(236,72,153,.36))`;
+  }, 95);
+}
+
+function stopSpinMusic(){
+  if(spinMusicTimer){ clearInterval(spinMusicTimer); spinMusicTimer = null; }
+  if(spinPulseTimer){ clearInterval(spinPulseTimer); spinPulseTimer = null; }
+  const btn = el('spinBtn');
+  const wheel = el('wheel');
+  if(btn) btn.style.transform = '';
+  if(wheel) wheel.style.filter = '';
+}
+
+function playCorrectSound(){
+  const notes = [523.25, 659.25, 783.99, 1046.50];
+  notes.forEach((f,idx)=>playTone(f,.18,'triangle',.04,idx*0.065));
+  playNoise(.08,.01,.05);
+}
+
+function playErrorSound(){
+  playTone(220,.16,'sawtooth',.035,0);
+  playTone(196,.18,'sawtooth',.03,.12);
+  playTone(164.81,.24,'triangle',.026,.25);
+  playNoise(.18,.018,.03);
+}
+
+function playTryAgainMusic(){
+  const notes = [392, 392, 440, 523.25, 440, 392, 329.63, 392, 440, 523.25, 587.33, 523.25];
+  notes.forEach((f,i)=>{
+    playTone(f,.22,'triangle',.032,i*.18);
+    if(i % 3 === 0) playTone(f/2,.28,'sine',.018,i*.18);
+  });
+}
+
+function playVictoryMusic(){
+  const notes = [
+    523.25,659.25,783.99,1046.50,
+    987.77,1046.50,1174.66,1318.51,
+    1046.50,1318.51,1567.98
+  ];
+  notes.forEach((f,i)=>{
+    playTone(f,.24,'triangle',.04,i*.13);
+    if(i % 2 === 0) playTone(f/2,.28,'sine',.018,i*.13);
+  });
+  setTimeout(()=>playNoise(.22,.018), 360);
+}
+
+const THEMES = ["Adverbs of Frequency", "Likes and Dislikes", "Giving Opinions"];
+const QUESTIONS = [{"theme": "Adverbs of Frequency", "q": "Complete: Marcos ____ plays soccer after school. Ele joga futebol depois da escola em muitos dias da semana.", "a": "usually", "o": ["usually", "never", "boring", "like"], "e": "“Usually” indica uma ação frequente, mas não obrigatoriamente todos os dias."}, {"theme": "Likes and Dislikes", "q": "Escolha a frase correta:", "a": "She likes pizza.", "o": ["She like pizza.", "She likes pizza.", "She don’t like pizza.", "She does likes pizza."], "e": "Com “she”, usamos “likes” na afirmativa."}, {"theme": "Giving Opinions", "q": "Qual frase é usada para dar uma opinião?", "a": "I think it is interesting.", "o": ["I think it is interesting.", "I play soccer.", "Does she like music?", "They never study."], "e": "“I think it is” é uma estrutura comum para expressar opinião."}, {"theme": "Adverbs of Frequency", "q": "Complete: Ana ____ arrives early. Ela chega cedo todos os dias.", "a": "always", "o": ["always", "sometimes", "doesn’t", "opinion"], "e": "Quando a ação acontece todos os dias, usamos “always”."}, {"theme": "Likes and Dislikes", "q": "Qual pergunta está correta?", "a": "Does Pedro like games?", "o": ["Do Pedro like games?", "Does Pedro likes games?", "Does Pedro like games?", "Pedro does like games?"], "e": "Com “Pedro/he”, usamos “Does” e o verbo fica na forma base: “like”."}, {"theme": "Giving Opinions", "q": "Complete: I think this game is ____. O aluno achou o jogo divertido.", "a": "fun", "o": ["fun", "never", "like", "usually"], "e": "“Fun” significa divertido."}, {"theme": "Adverbs of Frequency", "q": "Escolha o advérbio que combina com uma ação que acontece poucas vezes:", "a": "rarely", "o": ["always", "usually", "rarely", "every day"], "e": "“Rarely” indica algo que acontece poucas vezes."}, {"theme": "Likes and Dislikes", "q": "Escolha a frase negativa correta:", "a": "He doesn’t like salad.", "o": ["He don’t like salad.", "He doesn’t like salad.", "He doesn’t likes salad.", "He not like salad."], "e": "Com “he”, usamos “doesn’t like”."}, {"theme": "Giving Opinions", "q": "Qual alternativa expressa uma opinião negativa sobre um filme?", "a": "I think it is boring.", "o": ["I think it is boring.", "I think it is great.", "I think it is fun.", "I think it is exciting."], "e": "“Boring” indica algo chato ou sem graça."}, {"theme": "Adverbs of Frequency", "q": "Complete: Lucas ____ studies English on weekends. Ele estuda Inglês em alguns fins de semana, mas não em todos.", "a": "sometimes", "o": ["always", "sometimes", "never", "boring"], "e": "“Sometimes” indica algo que acontece em alguns momentos."}, {"theme": "Likes and Dislikes", "q": "Com “I”, qual frase está correta?", "a": "I like music.", "o": ["I likes music.", "I like music.", "I doesn’t like music.", "I does like music."], "e": "Com “I”, usamos “like”."}, {"theme": "Giving Opinions", "q": "Complete: In my opinion, English is ____.", "a": "useful", "o": ["useful", "usually", "doesn’t", "never"], "e": "“Useful” significa útil."}, {"theme": "Adverbs of Frequency", "q": "Qual frase está escrita corretamente?", "a": "She always listens to music.", "o": ["She always listens to music.", "She listens always to music.", "Always she listens to music.", "She listen always music."], "e": "O advérbio de frequência geralmente vem antes do verbo principal."}, {"theme": "Likes and Dislikes", "q": "Escolha a pergunta correta com “you”:", "a": "Do you like soccer?", "o": ["Does you like soccer?", "Do you like soccer?", "You do like soccer?", "Do you likes soccer?"], "e": "Com “you”, usamos “Do you like?”"}, {"theme": "Giving Opinions", "q": "Qual frase mostra concordância?", "a": "I agree.", "o": ["I agree.", "I never.", "I doesn’t.", "I boring."], "e": "“I agree” significa “Eu concordo”."}, {"theme": "Adverbs of Frequency", "q": "Complete: They ____ play video games after class. Eles jogam videogame com frequência.", "a": "often", "o": ["often", "doesn’t", "opinion", "boring"], "e": "“Often” indica que algo acontece várias vezes."}, {"theme": "Likes and Dislikes", "q": "Escolha a frase correta com “they”:", "a": "They like hamburgers.", "o": ["They likes hamburgers.", "They like hamburgers.", "They doesn’t like hamburgers.", "They does like hamburgers."], "e": "Com “they”, usamos “like”."}, {"theme": "Giving Opinions", "q": "Qual frase combina com algo difícil, mas bom para aprender?", "a": "I think it is difficult but useful.", "o": ["I think it is difficult but useful.", "I think it is delicious.", "I think it is never.", "I think it is doesn’t."], "e": "A frase expressa uma opinião equilibrada: difícil, mas útil."}, {"theme": "Adverbs of Frequency", "q": "Complete: Bruna ____ drinks soda. Ela não toma refrigerante.", "a": "never", "o": ["always", "usually", "never", "often"], "e": "“Never” indica que a ação não acontece."}, {"theme": "Likes and Dislikes", "q": "Escolha a frase correta:", "a": "My brother likes anime.", "o": ["My brother likes anime.", "My brother like anime.", "My brother don’t like anime.", "My brother does likes anime."], "e": "Com “my brother/he”, usamos “likes”."}, {"theme": "Giving Opinions", "q": "Qual alternativa expressa uma opinião positiva?", "a": "I think it is great.", "o": ["I think it is bad.", "I think it is confusing.", "I think it is great.", "I think it is boring."], "e": "“Great” é uma opinião positiva."}, {"theme": "Adverbs of Frequency", "q": "Qual advérbio combina com “em muitos momentos, mas não sempre”?", "a": "usually", "o": ["usually", "never", "bad", "hate"], "e": "“Usually” indica algo que acontece muitas vezes, mas não sempre."}, {"theme": "Likes and Dislikes", "q": "Escolha a negativa correta com “we”:", "a": "We don’t like tests.", "o": ["We doesn’t like tests.", "We don’t like tests.", "We don’t likes tests.", "We not like tests."], "e": "Com “we”, usamos “don’t like”."}, {"theme": "Giving Opinions", "q": "“I don’t agree.” significa que a pessoa:", "a": "não tem a mesma opinião", "o": ["tem a mesma opinião", "não tem a mesma opinião", "está perguntando", "está falando de rotina"], "e": "“I don’t agree” significa “Eu não concordo”."}, {"theme": "Adverbs of Frequency", "q": "Escolha a frase correta:", "a": "He usually plays Free Fire.", "o": ["He usually plays Free Fire.", "He plays usually Free Fire.", "He usually play Free Fire.", "Usually he play Free Fire."], "e": "A estrutura correta é “He usually plays”."}, {"theme": "Likes and Dislikes", "q": "Qual pergunta está correta com “Lara and Sofia”?", "a": "Do Lara and Sofia like K-pop?", "o": ["Does Lara and Sofia like K-pop?", "Do Lara and Sofia like K-pop?", "Do Lara and Sofia likes K-pop?", "Lara and Sofia does like K-pop?"], "e": "Lara and Sofia = they. Por isso, usamos “Do”."}, {"theme": "Giving Opinions", "q": "Qual frase pode ser usada para falar de uma aula interessante?", "a": "I think it is interesting.", "o": ["I think it is interesting.", "I think it is soda.", "I think it is never.", "I think it is don’t."], "e": "“Interesting” significa interessante."}, {"theme": "Adverbs of Frequency", "q": "Complete: Julia ____ forgets her homework. Ela esquece a tarefa poucas vezes.", "a": "rarely", "o": ["rarely", "always", "never", "every day"], "e": "“Rarely” indica poucas vezes."}, {"theme": "Likes and Dislikes", "q": "Escolha a frase correta:", "a": "He doesn’t like fish.", "o": ["He doesn’t like fish.", "He don’t like fish.", "He doesn’t likes fish.", "He not like fish."], "e": "Com “he”, usamos “doesn’t like”."}, {"theme": "Giving Opinions", "q": "Qual frase combina com um jogo confuso?", "a": "I think it is confusing.", "o": ["I think it is confusing.", "I think it is delicious.", "I think it is easy.", "I think it is always."], "e": "“Confusing” significa confuso."}, {"theme": "Adverbs of Frequency", "q": "Complete: The students ____ use English in games. Eles usam Inglês em jogos muitas vezes.", "a": "often", "o": ["often", "hate", "boring", "doesn’t"], "e": "“Often” indica frequência alta."}, {"theme": "Likes and Dislikes", "q": "Qual frase está correta?", "a": "Ana doesn’t like horror movies.", "o": ["Ana don’t like horror movies.", "Ana doesn’t like horror movies.", "Ana doesn’t likes horror movies.", "Ana not like horror movies."], "e": "Ana = she. Usamos “doesn’t like”."}, {"theme": "Giving Opinions", "q": "Complete: I think this activity is ____. A atividade ajudou o aluno a revisar.", "a": "helpful", "o": ["helpful", "never", "doesn’t", "hate"], "e": "“Helpful” significa útil, algo que ajuda."}, {"theme": "Adverbs of Frequency", "q": "Qual frase está correta?", "a": "They never arrive late.", "o": ["They never arrive late.", "They arrives never late.", "They never arrives late.", "Never they arrives late."], "e": "Com “they”, o verbo fica “arrive”, sem “s”."}, {"theme": "Likes and Dislikes", "q": "Escolha a pergunta correta:", "a": "Does your sister like music?", "o": ["Does your sister like music?", "Do your sister like music?", "Does your sister likes music?", "Your sister does like music?"], "e": "Your sister = she. Usamos “Does” + verbo base."}, {"theme": "Giving Opinions", "q": "Qual frase mostra uma opinião equilibrada?", "a": "I think it is difficult but interesting.", "o": ["I think it is difficult but interesting.", "I think it is never.", "I think it doesn’t.", "I think it is soccer."], "e": "A frase mistura dificuldade e interesse."}, {"theme": "Adverbs of Frequency", "q": "Complete: I ____ eat breakfast before school. Eu tomo café antes da escola todos os dias.", "a": "always", "o": ["always", "never", "boring", "opinion"], "e": "Todos os dias combina com “always”."}, {"theme": "Likes and Dislikes", "q": "Com “she”, qual frase afirmativa está correta?", "a": "She likes volleyball.", "o": ["She like volleyball.", "She likes volleyball.", "She don’t like volleyball.", "She does likes volleyball."], "e": "Com “she”, usamos “likes”."}, {"theme": "Giving Opinions", "q": "Qual alternativa pode ser usada para dar opinião sobre comida?", "a": "I think it is delicious.", "o": ["I think it is delicious.", "I think it is usually.", "I think it is never.", "I think it is doesn’t."], "e": "“Delicious” significa delicioso."}, {"theme": "Adverbs of Frequency", "q": "Complete: Carlos ____ watches TV. Ele quase não assiste televisão.", "a": "rarely", "o": ["rarely", "always", "usually", "every day"], "e": "“Rarely” indica pouca frequência."}, {"theme": "Likes and Dislikes", "q": "Escolha a frase correta com “my friends”:", "a": "My friends like soccer.", "o": ["My friends likes soccer.", "My friends like soccer.", "My friends does like soccer.", "My friends doesn’t like soccer."], "e": "My friends = they. Usamos “like”."}, {"theme": "Giving Opinions", "q": "Qual frase combina com algo muito legal?", "a": "I think it is awesome.", "o": ["I think it is awesome.", "I think it is never.", "I think it is don’t.", "I think it is salad."], "e": "“Awesome” significa incrível, muito legal."}, {"theme": "Adverbs of Frequency", "q": "Qual advérbio indica uma ação que não acontece?", "a": "never", "o": ["always", "usually", "never", "often"], "e": "“Never” indica que a ação não acontece."}, {"theme": "Likes and Dislikes", "q": "Escolha a pergunta correta:", "a": "Do they like English games?", "o": ["Do they like English games?", "Does they like English games?", "Do they likes English games?", "They do likes English games?"], "e": "Com “they”, usamos “Do they like?”"}, {"theme": "Giving Opinions", "q": "Qual frase mostra opinião sobre uma música?", "a": "I think this song is good.", "o": ["I think this song is good.", "I think this song always.", "I think this song doesn’t.", "I think this song never."], "e": "“I think this song is good” expressa opinião."}, {"theme": "Adverbs of Frequency", "q": "Complete: Beatriz ____ studies at night. Ela estuda à noite em alguns dias.", "a": "sometimes", "o": ["sometimes", "always", "never", "boring"], "e": "“Sometimes” indica alguns dias ou alguns momentos."}, {"theme": "Likes and Dislikes", "q": "Escolha a negativa correta:", "a": "They don’t like exams.", "o": ["They doesn’t like exams.", "They don’t likes exams.", "They don’t like exams.", "They not like exams."], "e": "Com “they”, usamos “don’t like”."}, {"theme": "Giving Opinions", "q": "Complete: In my opinion, this movie is ____. O filme teve muitas cenas emocionantes.", "a": "exciting", "o": ["exciting", "never", "doesn’t", "usually"], "e": "“Exciting” significa emocionante."}, {"theme": "Adverbs of Frequency", "q": "Escolha a frase correta:", "a": "We often play games in English.", "o": ["We often play games in English.", "We plays often games in English.", "We often plays games in English.", "Often we plays games in English."], "e": "Com “we”, usamos “play”; e “often” fica antes do verbo principal."}, {"theme": "Likes and Dislikes", "q": "Qual frase está correta?", "a": "I don’t like onions.", "o": ["I don’t like onions.", "I doesn’t like onions.", "I don’t likes onions.", "I not like onions."], "e": "Com “I”, usamos “don’t like”."}, {"theme": "Giving Opinions", "q": "Qual frase mostra que a pessoa não concorda?", "a": "I don’t agree.", "o": ["I agree.", "I don’t agree.", "I like pizza.", "I always study."], "e": "“I don’t agree” mostra discordância."}, {"theme": "Adverbs of Frequency", "q": "Complete: Rafael ____ goes to the gym. Ele vai à academia em muitos dias da semana.", "a": "usually", "o": ["usually", "never", "bad", "doesn’t"], "e": "“Usually” indica algo que acontece muitas vezes."}, {"theme": "Likes and Dislikes", "q": "Qual pergunta está correta com “your brother”?", "a": "Does your brother like soccer?", "o": ["Do your brother like soccer?", "Does your brother like soccer?", "Does your brother likes soccer?", "Your brother does likes soccer?"], "e": "Your brother = he. Usamos “Does” + verbo base."}, {"theme": "Giving Opinions", "q": "Qual frase combina com uma atividade fácil?", "a": "I think it is easy.", "o": ["I think it is easy.", "I think it is difficult.", "I think it is confusing.", "I think it is boring."], "e": "“Easy” significa fácil."}, {"theme": "Adverbs of Frequency", "q": "Complete: Maria ____ misses class. Ela não costuma faltar aula.", "a": "rarely", "o": ["rarely", "always", "every day", "usually"], "e": "“Rarely” indica que algo acontece poucas vezes."}, {"theme": "Likes and Dislikes", "q": "Escolha a frase correta:", "a": "Lucas likes basketball.", "o": ["Lucas likes basketball.", "Lucas like basketball.", "Lucas don’t like basketball.", "Lucas does likes basketball."], "e": "Lucas = he. Usamos “likes”."}, {"theme": "Giving Opinions", "q": "Qual frase combina com algo sem utilidade para estudar?", "a": "I think it is useless.", "o": ["I think it is useful.", "I think it is useless.", "I think it is interesting.", "I think it is helpful."], "e": "“Useless” significa sem utilidade."}, {"theme": "Adverbs of Frequency", "q": "Complete: The teacher ____ explains the activity before the game. O professor explica a atividade em muitos momentos.", "a": "usually", "o": ["usually", "never", "hate", "salad"], "e": "“Usually” combina com uma ação frequente."}, {"theme": "Likes and Dislikes", "q": "Escolha a pergunta correta:", "a": "Does Camila like volleyball?", "o": ["Does Camila like volleyball?", "Do Camila like volleyball?", "Does Camila likes volleyball?", "Camila does likes volleyball?"], "e": "Camila = she. Usamos “Does” + verbo base."}, {"theme": "Giving Opinions", "q": "Qual frase combina com uma revisão que ajuda antes do trabalho?", "a": "I think it is helpful.", "o": ["I think it is helpful.", "I think it is useless.", "I think it is boring.", "I think it is bad."], "e": "“Helpful” indica algo que ajuda."}];
+const TOTAL_ROUNDS = 60;
+const MAX_LIVES = 5;
+const SEGMENT = 360 / THEMES.length;
+let state = {};
+
+function el(id){return document.getElementById(id)}
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function show(id){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));el(id).classList.add("active");document.body.classList.toggle("playing", id==="gameScreen")}
+
+function makeBag(){
+  const byTheme = {};
+  THEMES.forEach(t => byTheme[t] = shuffle(QUESTIONS.filter(q => q.theme === t)));
+  const bag = [];
+  for(let cycle=0; cycle<20; cycle++){
+    THEMES.forEach(t => {
+      if(!byTheme[t].length) byTheme[t] = shuffle(QUESTIONS.filter(q => q.theme === t));
+      bag.push(byTheme[t].pop());
+    });
+  }
+  return bag.slice(0,TOTAL_ROUNDS);
+}
+
+function getMission(){ return state.mission || 1; }
+function nextMissionLabel(){ return Math.min(getMission()+1,10); }
+function goToNextMission(){
+  state.mission = Math.min(getMission()+1,10);
+  restart();
+}
+
+function restart(){
+  const missionToUse = state.mission || 1;
+  state = {score:0,corrects:0,errors:0,combo:0,maxCombo:0,round:1,lives:MAX_LIVES,bag:makeBag(),current:null,spinning:false,answered:false,rotation:0,mission:missionToUse};
+  el("wheel").style.transform = "rotate(0deg)";
+  el("wheel").dataset.theme = "SPIN";
+  el("sorted").textContent = "Gire a roleta para começar.";
+  el("theme").textContent = "Tema";
+  el("prompt").textContent = "Clique em SPIN para sortear o tema e liberar a pergunta.";
+  el("options").innerHTML = "";
+  el("modalOptions").innerHTML = "";
+  el("feedback").className = "feedback";
+  el("feedback").innerHTML = "";
+  el("spinBtn").disabled = false;
+  updateStats();
+  show("gameScreen");
+}
+
+function updateStats(){
+  el("score").textContent = state.score;
+  el("corrects").textContent = state.corrects;
+  el("combo").textContent = state.combo;
+  el("round").textContent = `${state.round} de ${TOTAL_ROUNDS}`;
+  if(el("roundLabel")) el("roundLabel").textContent = `Rodada ${state.round} de ${TOTAL_ROUNDS}`;
+  if(el("missionLabel")) el("missionLabel").textContent = `Missão ${getMission()}/10`;
+  el("lives").innerHTML = Array.from({length:MAX_LIVES}, (_,i)=>`<span class="heart ${i>=state.lives ? 'lost' : ''}">♥</span>`).join("");
+}
+
 function spinWheel(){
-  if(spun)return;spun=true;
-  const q=sequence[current];
-  const target=angleForTheme(q.theme);
-  rotation += 1080 + (360-target);
-  document.getElementById('wheel').style.transform=`rotate(${rotation}deg)`;
-  document.getElementById('spinBtn').disabled=true;
-  document.getElementById('wheelLabel').innerHTML='Girando';
-  setTimeout(()=>showQuestion(q),2450);
+  if(state.spinning || state.answered) return;
+  if(state.round > TOTAL_ROUNDS) return finishGame(true);
+
+  state.current = state.bag[state.round-1];
+  const q = state.current;
+  const themeIndex = THEMES.indexOf(q.theme);
+
+  closeQuestionModal();
+  state.spinning = true;
+  el("spinBtn").disabled = true;
+  el("options").innerHTML = "";
+  el("feedback").className = "feedback";
+  el("feedback").innerHTML = "";
+  el("prompt").textContent = "A roleta está girando... espere o tema parar!";
+  el("theme").textContent = "Girando...";
+  el("wheel").dataset.theme = "SPIN";
+  el("wheel").classList.add("spinning");
+  startSpinMusic();
+  el("sorted").classList.add("suspense");
+  el("sorted").textContent = "Girando rápido...";
+
+  // Centro do tema que precisa parar no ponteiro superior.
+  const center = themeIndex * SEGMENT + SEGMENT / 2;
+  const target = 360 - center;
+
+  // Nunca deixa a roleta dar giro curto:
+  // calcula quanto falta até o alvo a partir da rotação atual e SOMA muitas voltas completas.
+  const currentNorm = ((state.rotation % 360) + 360) % 360;
+  const deltaToTarget = ((target - currentNorm) + 360) % 360;
+
+  // Todos os giros terão no mínimo 10 voltas completas e até 14 voltas.
+  const fullTurns = 10 + Math.floor(Math.random() * 5);
+
+  // Passa um pouco do ponto e volta suavemente, criando suspense.
+  const overshoot = 12 + Math.random() * 18;
+
+  const direction = Math.random() > 0.5 ? 1 : -1;
+  const suspenseOffset = overshoot * direction;
+
+  const firstStop = state.rotation + (fullTurns * 360) + deltaToTarget + suspenseOffset;
+  const finalStop = state.rotation + (fullTurns * 360) + deltaToTarget;
+
+  // Etapa 1: giro longo, acelerado e emocionante.
+  el("wheel").style.transition = "transform 6.2s cubic-bezier(.06,.88,.08,1)";
+  state.rotation = firstStop;
+  el("wheel").style.transform = `rotate(${state.rotation}deg)`;
+
+  setTimeout(()=>{
+    el("sorted").textContent = "Atenção... quase parando!";
+    el("prompt").textContent = "Quase parando... qual tema será?";
+  }, 2700);
+
+  setTimeout(()=>{
+    el("sorted").textContent = "Será que vai passar?";
+  }, 4300);
+
+  // Etapa 2: pequeno ajuste final, como se a roleta balançasse antes de parar.
+  setTimeout(()=>{
+    el("wheel").style.transition = "transform .9s cubic-bezier(.2,.95,.18,1)";
+    state.rotation = finalStop;
+    el("wheel").style.transform = `rotate(${state.rotation}deg)`;
+  }, 6250);
+
+  setTimeout(()=>{
+    stopSpinMusic();
+    state.spinning = false;
+    el("wheel").classList.remove("spinning");
+    el("sorted").classList.remove("suspense");
+    el("wheel").style.transition = "transform 6.2s cubic-bezier(.06,.88,.08,1)";
+    el("wheel").dataset.theme = q.theme;
+    el("sorted").textContent = `Tema sorteado: ${q.theme}`;
+    renderQuestion(q);
+  }, 7350);
 }
-function showQuestion(q){
-  document.getElementById('wheelLabel').innerHTML=q.theme.replace(' of ','<br>of ');
-  document.getElementById('questionBox').style.display='flex';
-  document.getElementById('theme').textContent=q.theme;
-  document.getElementById('question').textContent=q.q;
-  const opts=document.getElementById('options');opts.innerHTML='';
-  q.options.forEach((op,i)=>{const b=document.createElement('button');b.className='opt';b.innerHTML=`<b>${String.fromCharCode(65+i)})</b> ${op}`;b.onclick=()=>answer(i,b);opts.appendChild(b);});
+
+
+function isMobileGame(){
+  return window.innerWidth <= 860;
 }
-function answer(idx,btn){
-  if(locked)return;locked=true;
-  const q=sequence[current];
-  [document.querySelectorAll('.opt')].forEach((b,i)=>{b.disabled=true;if(i===q.answer)b.classList.add('correct')});
-  if(idx===q.answer){hits++;score+=10;document.getElementById('fbTitle').textContent='Great job! ✅';}else{misses++;lives--;btn.classList.add('wrong');document.getElementById('fbTitle').textContent='Observe a regra! ❌';}
-  document.getElementById('fbText').textContent=q.feedback;
-  document.getElementById('hearts').textContent='❤️'.repeat(Math.max(lives,0))+'🖤'.repeat(5-Math.max(lives,0));
-  document.getElementById('feedback').classList.add('show');
+
+function openQuestionModal(){
+  const modal = el("questionModal");
+  if(!modal) return;
+  modal.classList.add("show");
+  modal.setAttribute("aria-hidden", "false");
 }
-function nextQuestion(){if(lives<=0)return finish(false);current++;if(current>=TOTAL)return finish(true);prepareRound();}
-function finish(done){
-  document.getElementById('bar').style.width='100%';screen('result');
-  document.getElementById('resultTitle').textContent=done?'CONGRATULATIONS, YOU ARE THE ONE!!!':'GAME OVER';
-  document.getElementById('studentLine').textContent=`${player.name} • ${player.className} • ${player.school}`;
-  document.getElementById('score').textContent=score;document.getElementById('hits').textContent=hits;document.getElementById('misses').textContent=misses;document.getElementById('status').textContent=done?'Completed':'Try again';
+
+function closeQuestionModal(){
+  const modal = el("questionModal");
+  if(!modal) return;
+  modal.classList.remove("show");
+  modal.setAttribute("aria-hidden", "true");
 }
-function restart(){screen('start')}
+
+function makeOptionButton(opt){
+  const btn = document.createElement("button");
+  btn.className = "option";
+  btn.type = "button";
+  btn.textContent = opt;
+  btn.addEventListener("click", () => answer(opt));
+  return btn;
+}
+
+function renderQuestion(q){
+  state.answered = false;
+
+  // Desktop/PC question area
+  el("theme").textContent = q.theme;
+  el("prompt").textContent = q.q;
+  const box = el("options");
+  box.innerHTML = "";
+
+  // Mobile modal question area
+  el("modalTheme").textContent = q.theme;
+  el("modalPrompt").textContent = q.q;
+  const modalBox = el("modalOptions");
+  modalBox.innerHTML = "";
+
+  const mixedOptions = shuffle([...q.o]);
+  mixedOptions.forEach(opt => {
+    box.appendChild(makeOptionButton(opt));
+    modalBox.appendChild(makeOptionButton(opt));
+  });
+
+  el("feedback").className = "feedback";
+  el("feedback").innerHTML = "";
+  el("modalFeedback").className = "feedback modal-feedback";
+  el("modalFeedback").innerHTML = "";
+
+  if(isMobileGame()){
+    setTimeout(openQuestionModal, 180);
+  }
+}
+
+function markAllOptions(correct, selectedClean){
+  document.querySelectorAll(".option").forEach(b => {
+    b.disabled = true;
+    const txt = String(b.textContent).trim();
+    if(txt === correct) b.classList.add("correct");
+    if(txt === selectedClean && selectedClean !== correct) b.classList.add("wrong");
+  });
+}
+
+function setFeedback(ok, htmlText){
+  const fb = el("feedback");
+  const mfb = el("modalFeedback");
+  fb.className = ok ? "feedback ok" : "feedback bad";
+  mfb.className = ok ? "feedback modal-feedback ok" : "feedback modal-feedback bad";
+  fb.innerHTML = htmlText;
+  mfb.innerHTML = htmlText;
+}
+
+function prepareNextRound(){
+  state.round++;
+  state.answered = false;
+  el("spinBtn").disabled = false;
+  el("theme").textContent = "Tema";
+  el("prompt").textContent = "Clique em SPIN para sortear o próximo tema.";
+  el("options").innerHTML = "";
+  el("feedback").className = "feedback";
+  el("feedback").innerHTML = "";
+  el("modalTheme").textContent = "Tema";
+  el("modalPrompt").textContent = "Pergunta";
+  el("modalOptions").innerHTML = "";
+  el("modalFeedback").className = "feedback modal-feedback";
+  el("modalFeedback").innerHTML = "";
+  el("sorted").textContent = "Gire a roleta para continuar.";
+  closeQuestionModal();
+  updateStats();
+}
+
+function answer(selected){
+  if(state.answered || state.spinning) return;
+  state.answered = true;
+
+  const q = state.current;
+  const correct = String(q.a).trim();
+  const selectedClean = String(selected).trim();
+
+  markAllOptions(correct, selectedClean);
+
+  if(selectedClean === correct){
+    state.corrects++;
+    state.combo++;
+    state.maxCombo = Math.max(state.maxCombo, state.combo);
+    const bonus = state.combo >= 3 ? 20 : 0;
+    state.score += 100 + bonus;
+    playCorrectSound();
+    setFeedback(true, `✅ Great job! Você acertou.<br><b>Explicação:</b> ${q.e}${bonus ? "<br>🔥 Bônus de combo: +20 pontos!" : ""}`);
+  } else {
+    state.combo = 0;
+    state.lives = Math.max(0, state.lives - 1);
+    playErrorSound();
+    setFeedback(false, `❌ Quase! Você perdeu 1 vida. A resposta correta é <b>${q.a}</b>.<br><b>Explicação:</b> ${q.e}`);
+  }
+
+  updateStats();
+
+  const delay = 1700;
+
+  if(state.lives <= 0){
+    setTimeout(()=>{ closeQuestionModal(); finishGame(false); }, delay);
+    return;
+  }
+
+  if(state.round >= TOTAL_ROUNDS){
+    setTimeout(()=>{ closeQuestionModal(); finishGame(true); }, delay);
+    return;
+  }
+
+  setTimeout(prepareNextRound, delay);
+}
+
+
+
+const FAKE_RANKING_NAMES = [
+  ["Ana Clara", "Escola Municipal Frei Fabiano Merz — 602"],
+  ["Miguel Santos", "Escola Municipal Fluminense — 601"],
+  ["Lívia Beatriz", "Escola Municipal Maria Amália Queiroz de Sousa — 603"],
+  ["Gabriel Silva", "Escola Municipal Rotary — 601"],
+  ["Mariana Costa", "Escola Municipal Ubaldo Corrêa — 602"],
+  ["João Pedro", "Escola Municipal Haroldo Veloso — 601"],
+  ["Sofia Martins", "Escola Municipal São José Operário — 603"],
+  ["Lucas Henrique", "Escola Municipal Irmã Leodgard Gausepohl — 602"],
+  ["Isabela Rocha", "Escola Municipal Princesa Izabel — 601"],
+  ["Rafael Lima", "Escola Municipal Brigadeiro Eduardo Gomes — 601"]
+];
+
+function getPlayerInfo(){
+  const nameInput = document.getElementById("playerName");
+  const classInput = document.getElementById("playerClass");
+  const schoolInput = document.getElementById("playerSchool");
+  const name = (nameInput && nameInput.value ? nameInput.value : "Aluno(a)").trim() || "Aluno(a)";
+  const klass = (classInput && classInput.value ? classInput.value : "6º Ano").trim() || "6º Ano";
+  const school = (schoolInput && schoolInput.value ? schoolInput.value : "Minha escola").trim() || "Minha escola";
+  return {name, klass, school};
+}
+
+function buildMotivationalRanking(){
+  const player = getPlayerInfo();
+  const playerScore = state.score;
+
+  let playerRank = 6;
+  if(playerScore >= 2800) playerRank = 2;
+  else if(playerScore >= 2100) playerRank = 3;
+  else if(playerScore >= 1400) playerRank = 4;
+  else if(playerScore >= 800) playerRank = 5;
+
+  const shuffledNames = shuffle(FAKE_RANKING_NAMES);
+  const rows = [];
+  let fakeIndex = 0;
+
+  for(let pos = 1; pos <= 10; pos++){
+    if(pos === playerRank){
+      rows.push({
+        name: player.name,
+        school: `${player.school} — ${player.klass}`,
+        score: playerScore,
+        isPlayer: true
+      });
+    } else {
+      let score;
+      if(pos < playerRank){
+        score = playerScore + (playerRank - pos) * 210 + 90;
+      } else {
+        score = Math.max(0, playerScore - (pos - playerRank) * 120);
+      }
+
+      const fake = shuffledNames[fakeIndex % shuffledNames.length];
+      fakeIndex++;
+
+      rows.push({
+        name: fake[0],
+        school: fake[1],
+        score,
+        isPlayer: false
+      });
+    }
+  }
+
+  return rows;
+}
+
+function renderRanking(){
+  const list = document.getElementById("rankList");
+  if(!list) return;
+
+  const rows = buildMotivationalRanking();
+  list.innerHTML = rows.map((r, i) => `
+    <div class="rank-row ${r.isPlayer ? "player" : ""}">
+      <div class="rank-pos">${i + 1}º</div>
+      <div>
+        <div class="rank-name">${r.isPlayer ? "⭐ " : ""}${r.name}</div>
+        <div class="rank-school">${r.school}</div>
+      </div>
+      <div class="rank-score">${r.score} pts</div>
+    </div>
+  `).join("");
+}
+
+function finishGame(completed){
+  stopSpinMusic();
+  show("finalScreen");
+  document.body.classList.remove("sound-win","sound-try");
+  document.body.classList.add(completed ? "sound-win" : "sound-try");
+  setTimeout(()=> completed ? playVictoryMusic() : playTryAgainMusic(), 250);
+
+  const mission = getMission();
+  const nextMission = Math.min(mission + 1, 10);
+  const titleEl = document.getElementById("finalTitle");
+  const msgEl = document.getElementById("finalMsg");
+  const primaryBtn = document.getElementById("primaryActionBtn");
+
+  titleEl.textContent = completed ? "🏆 YOU ARE THE ONE!" : "💪 TRY AGAIN!";
+
+  if(completed){
+    if(mission < 10){
+      msgEl.textContent = `Parabéns! Você concluiu a Missão ${mission}/10 com muita atenção, coragem e persistência. Agora aceite o próximo passo e siga para o Desafio ${nextMission}!`;
+      primaryBtn.textContent = `Ir ao desafio ${nextMission}`;
+      primaryBtn.onclick = goToNextMission;
+    } else {
+      msgEl.textContent = "Parabéns! Você concluiu a Missão 10/10 e venceu toda a campanha do Spin and Answer. Seu desempenho foi excelente!";
+      primaryBtn.textContent = "Recomeçar campanha";
+      primaryBtn.onclick = function(){ state.mission = 1; restart(); };
+    }
+  } else {
+    msgEl.textContent = `Você tentou, errou, aprendeu e isso já mostra evolução. Reforce a Missão ${mission}/10 e tente melhorar sua pontuação para seguir em frente!`;
+    primaryBtn.textContent = "Tentar novamente";
+    primaryBtn.onclick = restart;
+  }
+
+  document.getElementById("fScore").textContent = state.score;
+  document.getElementById("fCorrects").textContent = `${state.corrects}/${TOTAL_ROUNDS}`;
+  document.getElementById("fCombo").textContent = state.maxCombo;
+  document.getElementById("fLives").textContent = `${state.lives}/${MAX_LIVES}`;
+
+  renderRanking();
+}
+
+show('startScreen');
 </script>
 </body>
 </html>
