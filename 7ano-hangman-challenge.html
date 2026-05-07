@@ -1106,7 +1106,7 @@ body.playing .key{
         <input id="guessInput" type="text" placeholder="Tentar palavra completa">
         <button class="btn" onclick="guessWord()">OK</button>
       </div>
-      <div id="memoryTip" class="memory-tip">💡 💡 Dica de memória: pense nos assuntos estudados no 1º bimestre.</div>
+      <div id="memoryTip" class="memory-tip">💡 💡 Dica de memória: pense nos assuntos do trabalho do 7º ano.</div>
       <div id="feedback" class="feedback"></div>
     </div>
   </div>
@@ -1423,8 +1423,7 @@ const FAKE_RANKING_NAMES = [
   ["Rafael Lima", "Escola Municipal Brigadeiro Eduardo Gomes — 601"]
 ];
 
-let state = {
-    challengeList: buildPhaseChallengeList(),};
+let state = {};
 
 function el(id){return document.getElementById(id)}
 function normalizeText(value){
@@ -1451,6 +1450,20 @@ function makeBag(){
     });
   }
   return bag.slice(0,TOTAL_ROUNDS);
+}
+
+function getCurrentPhaseIndex(){
+  return Math.min(PHASES.length - 1, Math.floor(((state && state.round) ? state.round - 1 : 0) / 5));
+}
+
+function showPhaseTransitionIfNeeded(){
+  // Mantém o fluxo direto: a tela de missão aparece apenas ao completar cada bloco.
+  return false;
+}
+
+function resetRoundLives(){
+  // Não reinicia as vidas gerais; apenas mantém o desenho sincronizado no novo desafio.
+  try{ updateScarecrowParts(); }catch(e){}
 }
 
 function startGame(){
@@ -1492,8 +1505,8 @@ function updateStats(){
   const phaseNumber = getCurrentPhaseIndex()+1;
   const wordNumber = getWordInPhase();
   el("round").textContent = `${wordNumber}/5`;
-  if(el("phaseLabel")) el("phaseLabel").textContent = `${phaseNumber}/6`;
-  if(el("missionName")) el("missionName").textContent = `Missão ${phaseNumber}/6`;
+  if(el("phaseLabel")) el("phaseLabel").textContent = `${phaseNumber}/${PHASES.length}`;
+  if(el("missionName")) el("missionName").textContent = `Missão ${phaseNumber}/${PHASES.length}`;
   if(el("missionProgress")) el("missionProgress").textContent = `Desafio ${wordNumber}/5`;
 
   const livesLeft = Math.max(0, Math.min(MAX_LIVES, Number(state.lives ?? MAX_LIVES)));
@@ -1687,7 +1700,7 @@ function showMissionVictory(){
   document.body.classList.remove("playing");
   const msg = el("missionVictoryMsg");
   if(msg){
-    msg.innerHTML = `Congratulations! Você concluiu a <b>Missão ${missionNumber}/6</b>. Respire, comemore e clique para continuar. Agora vem a <b>Missão ${nextMission}/6</b>!`;
+    msg.innerHTML = `Congratulations! Você concluiu a <b>Missão ${missionNumber}/${PHASES.length}</b>. Respire, comemore e clique para continuar. Agora vem a <b>Missão ${nextMission}/${PHASES.length}</b>!`;
   }
   show("missionVictoryScreen");
   playMissionVictoryMusic();
@@ -1702,7 +1715,7 @@ function goToNextMission(){
 
 function getPlayerInfo(){
   const name = (el("playerName").value || "Aluno(a)").trim() || "Aluno(a)";
-  const klass = (el("playerClass").value || "6º Ano").trim() || "6º Ano";
+  const klass = (el("playerClass").value || "7º Ano").trim() || "7º Ano";
   const school = (el("playerSchool").value || "Minha escola").trim() || "Minha escola";
   return {name, klass, school};
 }
