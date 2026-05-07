@@ -188,7 +188,7 @@ main{flex:1;min-height:0;padding:10px;overflow:hidden}
 }
 
 
-/* --- Modo Show do Milhão: suspense, tempo de 15 segundos, ajudas e alternativas A-E --- */
+/* --- Modo Show do Milhão: suspense, tempo de 20 segundos, ajudas e alternativas A-E --- */
 .question-card{
   gap:5px !important;
 }
@@ -384,7 +384,7 @@ main{flex:1;min-height:0;padding:10px;overflow:hidden}
 }
 
 
-/* --- Ajustes Show do Milhão v94: som, tempo de 15 segundos, ajudas e piscas --- */
+/* --- Ajustes Show do Milhão v94: som, tempo de 20 segundos, ajudas e piscas --- */
 .help-btn{
   font-size:15px !important;
   padding:12px 10px !important;
@@ -568,7 +568,7 @@ main{flex:1;min-height:0;padding:10px;overflow:hidden}
       <div class="info-list">
         <div class="info-item"><b>1.</b> São 5 missões com 10 rodadas cada.</div>
         <div class="info-item"><b>2.</b> O conteúdo cobre números em inglês: teen x ty, hundreds, thousands, ordinal numbers, idade com verb to be e posse com have/has.</div>
-        <div class="info-item"><b>3.</b> Você tem 15 segundos para responder. Se o tempo acabar, conta como pulo. Depois de 3 pulos, se não responder, é game over.</div>
+        <div class="info-item"><b>3.</b> Você tem 20 segundos para responder. Se o tempo acabar, conta como pulo. Depois de 3 pulos, se não responder, é game over.</div>
         <div class="info-item"><b>4.</b> Errou, acaba! A cada rodada, a premiação aumenta até chegar a S$ 1.000.000.</div>
       </div>
     </div>
@@ -957,7 +957,7 @@ function stopTimer(){
 }
 function startQuestionTimer(){
   stopTimer();
-  state.timeLeft = 15;
+  state.timeLeft = 20;
   updateTimerVisual();
   state.timer = setInterval(()=>{
     state.timeLeft -= .1;
@@ -972,7 +972,7 @@ function startQuestionTimer(){
   },100);
 }
 function updateTimerVisual(){
-  const pct = Math.max(0,(state.timeLeft/15)*100);
+  const pct = Math.max(0,(state.timeLeft/20)*100);
   if(el("timerBar")) el("timerBar").style.width = pct + "%";
   if(el("timerText")) el("timerText").textContent = "Tempo: " + Math.ceil(state.timeLeft) + "s";
 }
