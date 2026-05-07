@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Hangman Challenge 7º Ano | English Game Hub</title>
+<style>
+:root{
+  --bg1:#120d3d;--bg2:#071e54;--cyan:#39d7ff;--pink:#ff3ecf;
+  --gold:#ffd34d;--green:#87d36c;--red:#ff5c7c;--soft:#dbeafe;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{
+  margin:0;width:100%;height:100%;font-family:Arial,Helvetica,sans-serif;
+  color:#fff;overflow:hidden;background:linear-gradient(160deg,var(--bg1),var(--bg2));
+}
+body:before{
+  content:"";position:fixed;inset:0;pointer-events:none;
+  background:
+    radial-gradient(circle at 20% 10%,rgba(255,62,207,.28),transparent 30%),
+    radial-gradient(circle at 80% 15%,rgba(57,215,255,.28),transparent 32%),
+    radial-gradient(circle at 45% 92%,rgba(255,211,77,.16),transparent 35%);
+}
+.app{
+  position:relative;z-index:1;max-width:520px;margin:0 auto;height:100dvh;
+  padding:10px;display:flex;flex-direction:column;gap:8px;
+}
+.screen{display:none;height:100%}.active{display:flex}
+.card{
+  background:rgba(5,13,48,.78);border:1px solid rgba(255,255,255,.16);
+  border-radius:26px;box-shadow:0 18px 45px rgba(0,0,0,.38);backdrop-filter:blur(8px);
+}
+.start{flex-direction:column;justify-content:center;gap:12px;text-align:center}
+.logo{padding:18px 14px}
+.logo h1{
+  margin:0;font-size:2.15rem;line-height:.95;
+  text-shadow:0 4px 0 rgba(0,0,0,.28),0 0 18px rgba(57,215,255,.45);
+}
+.logo h1 span{display:block;color:var(--gold)}
+.grade{
+  display:inline-block;margin-top:12px;padding:8px 16px;border-radius:999px;
+  background:linear-gradient(135deg,var(--pink),#7c3aed);font-weight:950;
+}
+.logo p{font-size:.9rem;line-height:1.35;color:var(--soft);margin:14px 0 0}
+.form{padding:14px;text-align:left}
+label{display:block;font-weight:900;margin:8px 2px 5px;font-size:.82rem}
+input{
+  width:100%;border:none;outline:none;border-radius:16px;padding:13px 14px;
+  font-size:1rem;background:rgba(255,255,255,.92);color:#071e54;font-weight:800;
+}
+.btn{
+  border:none;border-radius:18px;padding:13px 16px;font-weight:950;font-size:1rem;
+  color:#071e54;background:linear-gradient(135deg,#fff7c2,var(--gold));
+  box-shadow:0 10px 24px rgba(0,0,0,.28);cursor:pointer;
+}
+.secondary{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.20)}
+.game{flex-direction:column;gap:8px}
+.hud{
+  display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;
+  padding:9px 10px;border-radius:20px;background:rgba(0,0,0,.20);
+  border:1px solid rgba(255,255,255,.13);
+}
+.hud-title{font-weight:950;font-size:.88rem}.hud-title span{color:var(--gold)}
+.hearts{font-size:1.15rem;white-space:nowrap}
+.progress{height:9px;border-radius:999px;overflow:hidden;background:rgba(255,255,255,.13)}
+.bar{height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--green),var(--gold));transition:.3s}
+.play-card{flex:1;min-height:0;padding:12px;display:flex;flex-direction:column;gap:8px}
+.theme{
+  align-self:flex-start;padding:7px 10px;border-radius:999px;font-size:.74rem;
+  font-weight:950;background:linear-gradient(135deg,var(--cyan),#8b5cf6);
+}
+.hint{
+  font-size:.92rem;line-height:1.28;color:var(--soft);font-weight:800;
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.10);
+  border-radius:18px;padding:10px;
+}
+.figure{height:112px;display:flex;align-items:center;justify-content:center;position:relative}
+.gallows{width:110px;height:105px;position:relative}
+.base,.pole,.top,.rope{position:absolute;background:#fff;border-radius:4px}
+.base{height:7px;width:100px;bottom:0;left:5px}
+.pole{width:7px;height:100px;bottom:0;left:18px}
+.top{height:7px;width:62px;top:0;left:18px}
+.rope{width:5px;height:20px;top:0;left:75px;background:var(--gold)}
+.bodypart{position:absolute;display:none;background:transparent;border:5px solid var(--red)}
+.head{width:34px;height:34px;border-radius:50%;top:18px;left:60px}
+.torso{
+  height:35px;border-left:5px solid var(--red);border-right:none;
+  border-top:none;border-bottom:none;top:50px;left:78px;
+}
+.arm1{
+  width:28px;top:58px;left:53px;transform:rotate(-28deg);
+  border-left:none;border-right:none;border-bottom:none;
+}
+.arm2{
+  width:28px;top:58px;left:78px;transform:rotate(28deg);
+  border-left:none;border-right:none;border-bottom:none;
+}
+.leg1{
+  width:28px;top:86px;left:53px;transform:rotate(-32deg);
+  border-left:none;border-right:none;border-bottom:none;
+}
+.leg2{
+  width:28px;top:86px;left:78px;transform:rotate(32deg);
+  border-left:none;border-right:none;border-bottom:none;
+}
+.word{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;padding:8px 2px}
+.letter-slot{
+  min-width:26px;height:34px;border-bottom:4px solid var(--gold);
+  display:grid;place-items:center;font-size:1.25rem;font-weight:950;text-transform:uppercase;
+}
+.keyboard{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:auto}
+.key{
+  border:none;border-radius:12px;padding:9px 0;background:rgba(255,255,255,.92);
+  color:#071e54;font-weight:950;font-size:.9rem;
+}
+.key:disabled{opacity:.35}.key.good{background:#8ff0ad}.key.bad{background:#ff8da1}
+.feedback{
+  display:none;padding:10px;border-radius:18px;background:rgba(3,9,35,.92);
+  border:1px solid rgba(255,255,255,.18);
+}
+.feedback.show{display:block}.feedback h3{margin:0 0 4px;font-size:.95rem}
+.feedback p{margin:0;color:var(--soft);font-size:.8rem;line-height:1.25}
+.result{flex-direction:column;justify-content:center;gap:12px;text-align:center}
+.result-card{padding:18px 14px}.result-card h1{margin:0 0 8px;font-size:2rem;color:var(--gold)}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}
+.stat{padding:12px;border-radius:18px;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.14)}
+.stat b{display:block;color:var(--gold);font-size:1.25rem}
+.footer{text-align:center;font-size:.72rem;color:#c7d2fe}.row{display:flex;gap:8px}.row .btn{flex:1}
+@media(max-height:740px){
+  .logo h1{font-size:1.85rem}.figure{height:88px}.gallows{transform:scale(.82)}
+  .hint{font-size:.8rem;padding:8px}.letter-slot{min-width:22px;height:28px;font-size:1rem}
+  .keyboard{gap:4px}.key{padding:7px 0;font-size:.78rem}.play-card{padding:9px}
+}
+</style>
+</head>
+<body>
+
+<main class="app">
+<section id="start" class="screen start active">
+  <div class="logo card"><h1>Hangman <span>Challenge</span></h1><div class="grade">7º ANO • Vocabulário</div><p>Leia a dica, descubra a palavra em Inglês e revise os três temas do trabalho individual.</p></div>
+  <div class="form card">
+    <label>Nome do aluno</label><input id="name" placeholder="Digite seu nome">
+    <label>Turma</label><input id="className" placeholder="Ex.: 701">
+    <label>Escola</label><input id="school" value="Escola Delfina de Jesus Amorim">
+    <div style="height:12px"></div><button class="btn" onclick="startGame()">Começar desafio</button>
+    <div style="height:8px"></div><button class="btn secondary" onclick="location.href='7ano.html'">Voltar ao 7º ano</button>
+  </div>
+  <div class="footer">Jogo idealizado pelo <b>Prof. Jasson Bruno</b>.</div>
+</section>
+
+<section id="game" class="screen game">
+  <div class="hud"><div class="hud-title">Hangman Challenge • <span id="roundInfo">1/60</span></div><div class="hearts" id="hearts">❤️❤️❤️❤️❤️</div></div>
+  <div class="progress"><div class="bar" id="bar"></div></div>
+  <div class="play-card card">
+    <div class="theme" id="theme"></div>
+    <div class="hint" id="hint"></div>
+    <div class="figure">
+      <div class="gallows">
+        <div class="base"></div><div class="pole"></div><div class="top"></div><div class="rope"></div>
+        <div class="bodypart head"></div><div class="bodypart torso"></div><div class="bodypart arm1"></div><div class="bodypart arm2"></div><div class="bodypart leg1"></div><div class="bodypart leg2"></div>
+      </div>
+    </div>
+    <div class="word" id="word"></div>
+    <div class="keyboard" id="keyboard"></div>
+  </div>
+  <div class="feedback" id="feedback"><h3 id="fbTitle"></h3><p id="fbText"></p><div style="height:8px"></div><button class="btn" onclick="nextWord()">Continuar</button></div>
+</section>
+
+<section id="result" class="screen result">
+  <div class="result-card card">
+    <h1 id="resultTitle">CONGRATULATIONS!</h1><p id="studentLine"></p>
+    <div class="stats"><div class="stat"><b id="score">0</b>Pontos</div><div class="stat"><b id="hits">0</b>Palavras</div><div class="stat"><b id="misses">0</b>Erros</div><div class="stat"><b id="status">OK</b>Status</div></div>
+    <p style="font-size:.78rem;color:#c7d2fe;line-height:1.28">Tire um print desta tela e continue revisando pelos materiais da sala.</p>
+    <div class="row"><button class="btn" onclick="restart()">Jogar de novo</button><button class="btn secondary" onclick="location.href='7ano.html'">Voltar</button></div>
+  </div>
+  <div class="footer">Jogo idealizado pelo <b>Prof. Jasson Bruno</b>.</div>
+</section>
+</main>
+
+<script>
+const BANK = [{"theme": "Adverbs of Frequency", "word": "always", "hint": "Acontece em todos os dias ou em todas as vezes."}, {"theme": "Likes and Dislikes", "word": "like", "hint": "Usamos quando gostamos de algo ou de alguma atividade."}, {"theme": "Giving Opinions", "word": "opinion", "hint": "É o que uma pessoa pensa sobre algo."}, {"theme": "Adverbs of Frequency", "word": "never", "hint": "Usamos quando uma ação não acontece."}, {"theme": "Likes and Dislikes", "word": "love", "hint": "Usamos para mostrar que gostamos muito de algo."}, {"theme": "Giving Opinions", "word": "think", "hint": "Aparece em frases como “I ___ it is interesting.”"}, {"theme": "Adverbs of Frequency", "word": "usually", "hint": "Acontece muitas vezes, mas não necessariamente sempre."}, {"theme": "Likes and Dislikes", "word": "hate", "hint": "Usamos quando não gostamos muito de algo."}, {"theme": "Giving Opinions", "word": "agree", "hint": "Usamos quando temos a mesma opinião de outra pessoa."}, {"theme": "Adverbs of Frequency", "word": "sometimes", "hint": "Acontece em alguns momentos, mas não em todos."}, {"theme": "Likes and Dislikes", "word": "enjoy", "hint": "Usamos quando uma pessoa gosta de fazer algo e se diverte com isso."}, {"theme": "Giving Opinions", "word": "boring", "hint": "Opinião usada para algo sem graça ou que não prende a atenção."}, {"theme": "Adverbs of Frequency", "word": "often", "hint": "Acontece várias vezes, com bastante frequência."}, {"theme": "Likes and Dislikes", "word": "prefer", "hint": "Usamos quando escolhemos uma coisa em vez de outra."}, {"theme": "Giving Opinions", "word": "interesting", "hint": "Opinião usada para algo que chama atenção e desperta curiosidade."}, {"theme": "Adverbs of Frequency", "word": "rarely", "hint": "Acontece poucas vezes."}, {"theme": "Likes and Dislikes", "word": "dislike", "hint": "Significa não gostar de algo."}, {"theme": "Giving Opinions", "word": "useful", "hint": "Opinião usada para algo que ajuda ou tem utilidade."}, {"theme": "Adverbs of Frequency", "word": "daily", "hint": "Algo que acontece todos os dias."}, {"theme": "Likes and Dislikes", "word": "pizza", "hint": "Comida muito usada em exemplos com “I like...” ou “I don’t like...”."}, {"theme": "Giving Opinions", "word": "difficult", "hint": "Opinião usada para algo que exige esforço ou não é fácil."}, {"theme": "Adverbs of Frequency", "word": "weekend", "hint": "Parte da semana que inclui sábado e domingo."}, {"theme": "Likes and Dislikes", "word": "music", "hint": "Podemos gostar de pop, funk, gospel, K-pop ou outros estilos."}, {"theme": "Giving Opinions", "word": "easy", "hint": "Opinião usada para algo simples de fazer ou entender."}, {"theme": "Adverbs of Frequency", "word": "routine", "hint": "Conjunto de ações que uma pessoa faz com frequência."}, {"theme": "Likes and Dislikes", "word": "soccer", "hint": "Esporte muito usado em frases como “He likes...” ou “Does she like...?”"}, {"theme": "Giving Opinions", "word": "exciting", "hint": "Opinião usada para algo emocionante, como um jogo com virada no final."}, {"theme": "Adverbs of Frequency", "word": "morning", "hint": "Parte do dia em que muitos alunos vão para a escola ou tomam café."}, {"theme": "Likes and Dislikes", "word": "salad", "hint": "Comida que aparece em frases como “Does he eat...?” ou “He doesn’t like...”"}, {"theme": "Giving Opinions", "word": "confusing", "hint": "Opinião usada para algo difícil de entender."}, {"theme": "Adverbs of Frequency", "word": "night", "hint": "Parte do dia em que muita gente descansa, estuda ou dorme."}, {"theme": "Likes and Dislikes", "word": "games", "hint": "Atividades digitais que muitos alunos gostam de jogar."}, {"theme": "Giving Opinions", "word": "helpful", "hint": "Opinião usada para algo que ajuda a aprender ou resolver um problema."}, {"theme": "Adverbs of Frequency", "word": "class", "hint": "Momento em que os alunos estudam uma disciplina na escola."}, {"theme": "Likes and Dislikes", "word": "movie", "hint": "Podemos dizer que ele é fun, boring, interesting ou exciting."}, {"theme": "Giving Opinions", "word": "great", "hint": "Opinião muito positiva, parecida com “muito bom”."}, {"theme": "Adverbs of Frequency", "word": "homework", "hint": "Atividade que o aluno faz fora da sala de aula."}, {"theme": "Likes and Dislikes", "word": "anime", "hint": "Tipo de desenho japonês que muitos alunos gostam de assistir."}, {"theme": "Giving Opinions", "word": "bad", "hint": "Opinião negativa, usada quando algo não é bom."}, {"theme": "Adverbs of Frequency", "word": "breakfast", "hint": "Refeição que muitas pessoas fazem pela manhã."}, {"theme": "Likes and Dislikes", "word": "dance", "hint": "Atividade ligada à música e movimento do corpo."}, {"theme": "Giving Opinions", "word": "funny", "hint": "Opinião usada para algo engraçado."}, {"theme": "Adverbs of Frequency", "word": "study", "hint": "Ação que o aluno faz para aprender ou revisar conteúdos."}, {"theme": "Likes and Dislikes", "word": "fish", "hint": "Comida comum em muitas famílias de Santarém e usada em frases de preferência."}, {"theme": "Giving Opinions", "word": "delicious", "hint": "Opinião usada para comida muito gostosa."}, {"theme": "Adverbs of Frequency", "word": "practice", "hint": "Repetir uma atividade para melhorar."}, {"theme": "Likes and Dislikes", "word": "volleyball", "hint": "Esporte que aparece em frases como “She likes...” ou “Do they like...?”"}, {"theme": "Giving Opinions", "word": "awesome", "hint": "Opinião muito positiva, usada para algo incrível ou muito legal."}, {"theme": "Adverbs of Frequency", "word": "school", "hint": "Lugar onde acontecem as aulas e atividades dos alunos."}, {"theme": "Likes and Dislikes", "word": "hamburger", "hint": "Comida que pode aparecer em frases com “like” ou “don’t like”."}, {"theme": "Giving Opinions", "word": "useless", "hint": "Opinião usada para algo que não ajuda ou não tem utilidade."}, {"theme": "Adverbs of Frequency", "word": "late", "hint": "Usamos quando alguém chega depois do horário esperado."}, {"theme": "Likes and Dislikes", "word": "coffee", "hint": "Bebida comum no café da manhã."}, {"theme": "Giving Opinions", "word": "cool", "hint": "Opinião informal para algo legal ou interessante."}, {"theme": "Adverbs of Frequency", "word": "early", "hint": "Usamos quando alguém chega antes do horário ou no começo de algo."}, {"theme": "Likes and Dislikes", "word": "fruit", "hint": "Grupo de alimentos como banana, maçã, manga e açaí."}, {"theme": "Giving Opinions", "word": "amazing", "hint": "Opinião muito positiva para algo surpreendente ou excelente."}, {"theme": "Adverbs of Frequency", "word": "week", "hint": "Período formado por sete dias."}, {"theme": "Likes and Dislikes", "word": "onions", "hint": "Alimento que algumas pessoas gostam e outras evitam."}, {"theme": "Giving Opinions", "word": "excellent", "hint": "Opinião muito positiva, parecida com “excelente”."}];
+const TOTAL = 60;
+const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+let player={}, sequence=[], current=0, lives=5, hits=0, misses=0, score=0, wrongInWord=0, guessed=[], activeWord="";
+
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function makeSequence(){
+  const by={"Adverbs of Frequency":shuffle(BANK.filter(x=>x.theme==="Adverbs of Frequency")),"Likes and Dislikes":shuffle(BANK.filter(x=>x.theme==="Likes and Dislikes")),"Giving Opinions":shuffle(BANK.filter(x=>x.theme==="Giving Opinions"))};
+  const themes=["Adverbs of Frequency","Likes and Dislikes","Giving Opinions"], seq=[];
+  for(let c=0;c<20;c++){const order=c===0?themes:shuffle(themes);order.forEach(t=>seq.push(by[t].shift()))}
+  return seq;
+}
+function screen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active')}
+function startGame(){
+  player.name=document.getElementById('name').value.trim()||"Aluno";
+  player.className=document.getElementById('className').value.trim()||"7º ano";
+  player.school=document.getElementById('school').value.trim()||"Escola Delfina de Jesus Amorim";
+  sequence=makeSequence();current=0;lives=5;hits=0;misses=0;score=0;screen('game');renderWord();
+}
+function renderWord(){
+  wrongInWord=0;guessed=[];activeWord=sequence[current].word.toUpperCase();
+  document.getElementById('roundInfo').textContent=`${current+1}/${TOTAL}`;
+  document.getElementById('bar').style.width=`${(current/TOTAL)*100}%`;
+  document.getElementById('hearts').textContent='❤️'.repeat(lives)+'🖤'.repeat(5-lives);
+  document.getElementById('theme').textContent=sequence[current].theme;
+  document.getElementById('hint').textContent="Dica: " + sequence[current].hint;
+  document.getElementById('feedback').classList.remove('show');
+  document.querySelectorAll('.bodypart').forEach(p=>p.style.display='none');
+  updateSlots();
+  buildKeyboard();
+}
+function updateSlots(){
+  const box=document.getElementById('word');box.innerHTML='';
+  activeWord.split('').forEach(ch=>{const s=document.createElement('div');s.className='letter-slot';s.textContent=guessed.includes(ch)?ch:'';box.appendChild(s);});
+}
+function buildKeyboard(){
+  const kb=document.getElementById('keyboard');kb.innerHTML='';
+  LETTERS.forEach(l=>{const b=document.createElement('button');b.className='key';b.textContent=l;b.onclick=()=>guess(l,b);kb.appendChild(b);});
+}
+function guess(letter,btn){
+  btn.disabled=true;
+  if(activeWord.includes(letter)){
+    btn.classList.add('good');guessed.push(letter);score+=2;updateSlots();
+    if(activeWord.split('').every(ch=>guessed.includes(ch))){hits++;score+=10;showFeedback(true);}
+  } else {
+    btn.classList.add('bad');wrongInWord++;misses++;
+    const parts=['head','torso','arm1','arm2','leg1','leg2'];
+    if(parts[wrongInWord-1]) document.querySelector('.'+parts[wrongInWord-1]).style.display='block';
+    if(wrongInWord>=6){lives--;showFeedback(false);}
+  }
+  document.getElementById('hearts').textContent='❤️'.repeat(Math.max(lives,0))+'🖤'.repeat(5-Math.max(lives,0));
+}
+function showFeedback(ok){
+  document.querySelectorAll('.key').forEach(k=>k.disabled=true);
+  document.getElementById('fbTitle').textContent=ok?'Great job! ✅':'Observe a palavra! ❌';
+  document.getElementById('fbText').textContent=ok?`Você descobriu: ${activeWord}.`:`A palavra era: ${activeWord}. Leia a dica e tente memorizar.`;
+  document.getElementById('feedback').classList.add('show');
+}
+function nextWord(){
+  if(lives<=0)return finish(false);
+  current++;
+  if(current>=TOTAL)return finish(true);
+  renderWord();
+}
+function finish(done){
+  document.getElementById('bar').style.width='100%';screen('result');
+  document.getElementById('resultTitle').textContent=done?'CONGRATULATIONS, YOU ARE THE ONE!!!':'GAME OVER';
+  document.getElementById('studentLine').textContent=`${player.name} • ${player.className} • ${player.school}`;
+  document.getElementById('score').textContent=score;document.getElementById('hits').textContent=hits;document.getElementById('misses').textContent=misses;document.getElementById('status').textContent=done?'Completed':'Try again';
+}
+function restart(){screen('start')}
+</script>
+</body>
+</html>
