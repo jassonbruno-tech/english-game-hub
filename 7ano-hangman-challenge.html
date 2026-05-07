@@ -964,71 +964,51 @@ body.playing .key{
 <main>
 <section id="startScreen" class="screen active">
   <div class="card start-card">
-    <div class="level-badge">🟡 6º Ano • Yellow Level</div>
+    <div class="level-badge">📘 7º Ano • Review Challenge</div>
     <div class="start-icon">🌾</div>
     <h2>Hangman Challenge</h2>
     <p class="start-text">Digite seus dados para revisar Likes and Dislikes, Adverbs of Frequency e Giving Opinions. O jogo é uma ferramenta lúdica para ajudar no estudo do trabalho individual da próxima semana, sem substituir o caderno, as explicações e os materiais usados em sala.</p>
-    <div class="start-highlight"><b>Desafio do 7º ano:</b> aqui o aluno fortalece o vocabulário do cotidiano, relembra conteúdos do 1º bimestre e aprende jogando de forma leve, visual e divertida.</div>
+    <div class="start-highlight"><b>Desafio do 7º ano:</b> aqui o aluno revisa Likes and Dislikes, Adverbs of Frequency e Giving Opinions de forma leve, visual e divertida.</div>
 
     <div class="quick-review">
       <div class="review-title">📚 Quick Review — Revisão rápida antes do desafio</div>
-      <p class="review-subtitle">Leia rapidinho para lembrar o vocabulário antes de jogar.</p>
+      <p class="review-subtitle">Leia rapidinho para lembrar o vocabulário do trabalho antes de jogar.</p>
       <div class="review-grid">
         <div class="review-block">
-          <b>Greetings / Cumprimentos</b>
-          <span>Hello = Olá</span>
-          <span>Hi = Oi</span>
-          <span>Good morning = Bom dia</span>
-          <span>Good afternoon = Boa tarde</span>
-          <span>Good evening = Boa noite ao chegar</span>
-          <span>Good night = Boa noite ao se despedir</span>
+          <b>Likes and Dislikes</b>
+          <span>like = gostar</span>
+          <span>likes = gosta (he/she/it)</span>
+          <span>love = amar/gostar muito</span>
+          <span>enjoy = gostar/aproveitar</span>
+          <span>don’t like = não gosto/não gostam</span>
+          <span>doesn’t like = não gosta</span>
         </div>
         <div class="review-block">
-          <b>Farewells / Despedidas</b>
-          <span>Goodbye = Tchau</span>
-          <span>Bye = Tchau</span>
-          <span>See you = Até logo</span>
-          <span>See you later = Até mais tarde</span>
-          <span>Take care = Se cuide</span>
+          <b>Adverbs of Frequency</b>
+          <span>always = sempre</span>
+          <span>usually = geralmente</span>
+          <span>often = frequentemente</span>
+          <span>sometimes = às vezes</span>
+          <span>rarely = raramente</span>
+          <span>never = nunca</span>
         </div>
         <div class="review-block">
-          <b>Classroom Commands / Comandos</b>
-          <span>Listen = Escute</span>
-          <span>Repeat = Repita</span>
-          <span>Read = Leia</span>
-          <span>Write = Escreva</span>
-          <span>Open = Abra</span>
-          <span>Close = Feche</span>
-          <span>Sit down = Sente-se</span>
-          <span>Stand up = Levante-se</span>
+          <b>Giving Opinions</b>
+          <span>opinion = opinião</span>
+          <span>I think = eu acho</span>
+          <span>In my opinion = na minha opinião</span>
+          <span>I agree = eu concordo</span>
+          <span>I don’t agree = eu não concordo</span>
+          <span>interesting / boring / fun = interessante / chato / divertido</span>
         </div>
         <div class="review-block">
-          <b>Classroom Expressions / Expressões</b>
-          <span>Please = Por favor</span>
-          <span>Thank you = Obrigado(a)</span>
-          <span>Excuse me = Com licença</span>
-          <span>Sorry = Desculpa</span>
-          <span>Help me = Ajude-me</span>
-          <span>I don't understand = Eu não entendi</span>
-        </div>
-        <div class="review-block">
-          <b>Pronouns / Pronomes</b>
-          <span>I = Eu</span>
-          <span>You = Você</span>
-          <span>He = Ele</span>
-          <span>She = Ela</span>
-          <span>It = Ele/Ela para animal, objeto ou coisa</span>
-          <span>We = Nós</span>
-          <span>They = Eles/Elas</span>
-        </div>
-        <div class="review-block">
-          <b>Possessives / Possessivos</b>
-          <span>My = Meu/minha</span>
-          <span>Your = Seu/sua</span>
-          <span>His = Dele</span>
-          <span>Her = Dela</span>
-          <span>Our = Nosso/nossa</span>
-          <span>Their = Deles/delas</span>
+          <b>Atenção nas frases</b>
+          <span>She likes music.</span>
+          <span>He doesn’t like salad.</span>
+          <span>Do you like games?</span>
+          <span>Does Ana like soccer?</span>
+          <span>I usually study English.</span>
+          <span>I think it is fun.</span>
         </div>
       </div>
     </div>
@@ -1041,7 +1021,7 @@ body.playing .key{
       <label>Escola</label>
       <input id="playerSchool" type="text" placeholder="Digite o nome da escola" maxlength="40">
     </div>
-    <button class="btn" onclick="restart()">Começar desafio</button>
+    <button class="btn" onclick="startGame()">Começar desafio</button>
     <div class="brand-start">Jogo idealizado pelo professor Jasson Bruno.</div>
   </div>
 </section>
@@ -1295,14 +1275,12 @@ function shuffleArray(arr){
 
 /*
 Banco pedagógico Yellow Level — 7º ano
-Foco: vocabulário funcional, spelling, comandos, expressões de sala,
-informações pessoais, pronomes, possessivos, verbo to be e situações reais.
+Foco: Likes and Dislikes, Adverbs of Frequency e Giving Opinions em situações reais.
 */
 
 /*
 Banco pedagógico Yellow Level — 7º ano expandido
-Foco: ampliar repertório lexical, reduzir repetição entre partidas e organizar palavras por fases.
-Cada partida usa 5 palavras sorteadas por fase, totalizando 30 rodadas.
+Foco: revisar vocabulário essencial do trabalho do 7º ano, reduzir repetição entre partidas e organizar palavras por ciclos.
 */
 const CHALLENGES = [{"theme": "Adverbs of Frequency", "word": "ALWAYS", "hint": "Acontece em todos os dias ou em todas as vezes."}, {"theme": "Likes and Dislikes", "word": "LIKE", "hint": "Usamos quando gostamos de algo ou de alguma atividade."}, {"theme": "Giving Opinions", "word": "OPINION", "hint": "É o que uma pessoa pensa sobre algo."}, {"theme": "Adverbs of Frequency", "word": "NEVER", "hint": "Usamos quando uma ação não acontece."}, {"theme": "Likes and Dislikes", "word": "LOVE", "hint": "Usamos para mostrar que gostamos muito de algo."}, {"theme": "Giving Opinions", "word": "THINK", "hint": "Aparece em frases como “I ___ it is interesting.”"}, {"theme": "Adverbs of Frequency", "word": "USUALLY", "hint": "Acontece muitas vezes, mas não necessariamente sempre."}, {"theme": "Likes and Dislikes", "word": "HATE", "hint": "Usamos quando não gostamos muito de algo."}, {"theme": "Giving Opinions", "word": "AGREE", "hint": "Usamos quando temos a mesma opinião de outra pessoa."}, {"theme": "Adverbs of Frequency", "word": "SOMETIMES", "hint": "Acontece em alguns momentos, mas não em todos."}, {"theme": "Likes and Dislikes", "word": "ENJOY", "hint": "Usamos quando uma pessoa gosta de fazer algo e se diverte com isso."}, {"theme": "Giving Opinions", "word": "BORING", "hint": "Opinião usada para algo sem graça ou que não prende a atenção."}, {"theme": "Adverbs of Frequency", "word": "OFTEN", "hint": "Acontece várias vezes, com bastante frequência."}, {"theme": "Likes and Dislikes", "word": "PREFER", "hint": "Usamos quando escolhemos uma coisa em vez de outra."}, {"theme": "Giving Opinions", "word": "INTERESTING", "hint": "Opinião usada para algo que chama atenção e desperta curiosidade."}, {"theme": "Adverbs of Frequency", "word": "RARELY", "hint": "Acontece poucas vezes."}, {"theme": "Likes and Dislikes", "word": "DISLIKE", "hint": "Significa não gostar de algo."}, {"theme": "Giving Opinions", "word": "USEFUL", "hint": "Opinião usada para algo que ajuda ou tem utilidade."}, {"theme": "Adverbs of Frequency", "word": "DAILY", "hint": "Algo que acontece todos os dias."}, {"theme": "Likes and Dislikes", "word": "PIZZA", "hint": "Comida muito usada em exemplos com “I like...” ou “I don’t like...”."}, {"theme": "Giving Opinions", "word": "DIFFICULT", "hint": "Opinião usada para algo que exige esforço ou não é fácil."}, {"theme": "Adverbs of Frequency", "word": "WEEKEND", "hint": "Parte da semana que inclui sábado e domingo."}, {"theme": "Likes and Dislikes", "word": "MUSIC", "hint": "Podemos gostar de pop, funk, gospel, K-pop ou outros estilos."}, {"theme": "Giving Opinions", "word": "EASY", "hint": "Opinião usada para algo simples de fazer ou entender."}, {"theme": "Adverbs of Frequency", "word": "ROUTINE", "hint": "Conjunto de ações que uma pessoa faz com frequência."}, {"theme": "Likes and Dislikes", "word": "SOCCER", "hint": "Esporte muito usado em frases como “He likes...” ou “Does she like...?”"}, {"theme": "Giving Opinions", "word": "EXCITING", "hint": "Opinião usada para algo emocionante, como um jogo com virada no final."}, {"theme": "Adverbs of Frequency", "word": "MORNING", "hint": "Parte do dia em que muitos alunos vão para a escola ou tomam café."}, {"theme": "Likes and Dislikes", "word": "SALAD", "hint": "Comida que aparece em frases como “Does he eat...?” ou “He doesn’t like...”"}, {"theme": "Giving Opinions", "word": "CONFUSING", "hint": "Opinião usada para algo difícil de entender."}, {"theme": "Adverbs of Frequency", "word": "NIGHT", "hint": "Parte do dia em que muita gente descansa, estuda ou dorme."}, {"theme": "Likes and Dislikes", "word": "GAMES", "hint": "Atividades digitais que muitos alunos gostam de jogar."}, {"theme": "Giving Opinions", "word": "HELPFUL", "hint": "Opinião usada para algo que ajuda a aprender ou resolver um problema."}, {"theme": "Adverbs of Frequency", "word": "CLASS", "hint": "Momento em que os alunos estudam uma disciplina na escola."}, {"theme": "Likes and Dislikes", "word": "MOVIE", "hint": "Podemos dizer que ele é fun, boring, interesting ou exciting."}, {"theme": "Giving Opinions", "word": "GREAT", "hint": "Opinião muito positiva, parecida com “muito bom”."}, {"theme": "Adverbs of Frequency", "word": "HOMEWORK", "hint": "Atividade que o aluno faz fora da sala de aula."}, {"theme": "Likes and Dislikes", "word": "ANIME", "hint": "Tipo de desenho japonês que muitos alunos gostam de assistir."}, {"theme": "Giving Opinions", "word": "BAD", "hint": "Opinião negativa, usada quando algo não é bom."}, {"theme": "Adverbs of Frequency", "word": "BREAKFAST", "hint": "Refeição que muitas pessoas fazem pela manhã."}, {"theme": "Likes and Dislikes", "word": "DANCE", "hint": "Atividade ligada à música e movimento do corpo."}, {"theme": "Giving Opinions", "word": "FUNNY", "hint": "Opinião usada para algo engraçado."}, {"theme": "Adverbs of Frequency", "word": "STUDY", "hint": "Ação que o aluno faz para aprender ou revisar conteúdos."}, {"theme": "Likes and Dislikes", "word": "FISH", "hint": "Comida comum em muitas famílias de Santarém e usada em frases de preferência."}, {"theme": "Giving Opinions", "word": "DELICIOUS", "hint": "Opinião usada para comida muito gostosa."}, {"theme": "Adverbs of Frequency", "word": "PRACTICE", "hint": "Repetir uma atividade para melhorar."}, {"theme": "Likes and Dislikes", "word": "VOLLEYBALL", "hint": "Esporte que aparece em frases como “She likes...” ou “Do they like...?”"}, {"theme": "Giving Opinions", "word": "AWESOME", "hint": "Opinião muito positiva, usada para algo incrível ou muito legal."}, {"theme": "Adverbs of Frequency", "word": "SCHOOL", "hint": "Lugar onde acontecem as aulas e atividades dos alunos."}, {"theme": "Likes and Dislikes", "word": "HAMBURGER", "hint": "Comida que pode aparecer em frases com “like” ou “don’t like”."}, {"theme": "Giving Opinions", "word": "USELESS", "hint": "Opinião usada para algo que não ajuda ou não tem utilidade."}, {"theme": "Adverbs of Frequency", "word": "LATE", "hint": "Usamos quando alguém chega depois do horário esperado."}, {"theme": "Likes and Dislikes", "word": "COFFEE", "hint": "Bebida comum no café da manhã."}, {"theme": "Giving Opinions", "word": "COOL", "hint": "Opinião informal para algo legal ou interessante."}, {"theme": "Adverbs of Frequency", "word": "EARLY", "hint": "Usamos quando alguém chega antes do horário ou no começo de algo."}, {"theme": "Likes and Dislikes", "word": "FRUIT", "hint": "Grupo de alimentos como banana, maçã, manga e açaí."}, {"theme": "Giving Opinions", "word": "AMAZING", "hint": "Opinião muito positiva para algo surpreendente ou excelente."}, {"theme": "Adverbs of Frequency", "word": "WEEK", "hint": "Período formado por sete dias."}, {"theme": "Likes and Dislikes", "word": "ONIONS", "hint": "Alimento que algumas pessoas gostam e outras evitam."}, {"theme": "Giving Opinions", "word": "EXCELLENT", "hint": "Opinião muito positiva, parecida com “excelente”."}];
 const KEYBOARD = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
@@ -1475,6 +1453,10 @@ function makeBag(){
   return bag.slice(0,TOTAL_ROUNDS);
 }
 
+function startGame(){
+  restart();
+}
+
 function restart(){
   stopFinalMusic();
   ensureAudio();
@@ -1529,29 +1511,11 @@ function updateStats(){
 
 function getMemoryTip(theme){
   const tips = {
-    "Greetings": "💡 Dica: greeting é cumprimento. Use quando você chega ou encontra alguém.",
-    "Farewells": "💡 Dica: farewell é despedida. Use quando você vai embora.",
-    "Classroom Commands": "💡 Dica: commands são ordens/instruções da aula, como ler, ouvir, repetir e escrever.",
-    "Classroom Expressions": "💡 Dica: expressions são frases úteis para pedir ajuda, agradecer, pedir licença ou dizer que não entendeu.",
-    "School Vocabulary": "💡 Dica: pense em lugares e objetos da escola.",
-    "Personal Information": "💡 Dica: informações pessoais falam sobre nome, idade, país e cidade.",
-    "Personal Pronouns": "💡 Dica: pronomes substituem nomes: I, you, he, she, it, we, they.",
-    "Possessive Adjectives": "💡 Dica: possessivos mostram posse: my, your, his, her, our, their."
+    "Adverbs of Frequency": "💡 Dica: adverbs of frequency mostram com que frequência algo acontece: always, usually, often, sometimes, rarely e never.",
+    "Likes and Dislikes": "💡 Dica: para he/she/it usamos likes. Na negativa, use doesn’t like. Na pergunta, use Does + pessoa + like...?",
+    "Giving Opinions": "💡 Dica: para dar opinião, use frases como I think it is..., In my opinion..., I agree e I don’t agree."
   };
-  return tips[theme] || "💡 Dica: pense no vocabulário estudado em sala.";
-}
-
-
-function resetRoundLives(){
-  state.lives = MAX_LIVES;
-  state.roundMistakes = 0;
-  try{
-    const parts = ["partHead","partBody","partArmL","partArmR","partLegL","partLegR"];
-    parts.forEach(id => {
-      const p = el(id);
-      if(p) p.classList.remove("show");
-    });
-  }catch(e){}
+  return tips[theme] || "💡 Dica: observe a pista, lembre o tema e tente formar a palavra em inglês.";
 }
 
 function loadChallenge(){
