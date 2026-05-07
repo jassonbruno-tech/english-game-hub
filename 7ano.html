@@ -1,22 +1,379 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>7º Ano - Em breve</title>
-<style>
-body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;font-family:Arial;background:linear-gradient(135deg,#102a63,#0f8fbd);padding:20px;color:#172033}
-.card{max-width:620px;background:white;border-radius:28px;padding:28px;text-align:center;box-shadow:0 14px 30px rgba(0,0,0,.18)}
-h1{font-size:40px;margin:0 0 10px;color:#1d4ed8}
-p{font-size:18px;line-height:1.4}
-a{display:inline-block;margin-top:14px;padding:12px 18px;background:#1d4ed8;color:white;text-decoration:none;border-radius:14px;font-weight:800}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>7º Ano | English Game Hub</title>
+
+  <meta property="og:title" content="English Game Hub - 7º Ano" />
+  <meta property="og:description" content="Jogos de revisão de Inglês para o 7º ano: Likes and Dislikes, Adverbs of Frequency e Giving Opinions." />
+  <meta property="og:image" content="https://jassonbruno-tech.github.io/english-game-hub/7ano-tela-inicial-revisao.png" />
+  <meta property="og:url" content="https://jassonbruno-tech.github.io/english-game-hub/7ano.html" />
+  <meta property="og:type" content="website" />
+
+  <style>
+    :root{
+      --bg1:#120d3d;
+      --bg2:#071e54;
+      --cyan:#39d7ff;
+      --pink:#ff3ecf;
+      --gold:#ffd34d;
+      --green:#87d36c;
+      --text:#ffffff;
+      --soft:#dbeafe;
+      --card:rgba(10,18,56,.78);
+      --card2:rgba(255,255,255,.10);
+    }
+
+    *{
+      box-sizing:border-box;
+      -webkit-tap-highlight-color:transparent;
+    }
+
+    html,body{
+      margin:0;
+      min-height:100%;
+      font-family: Arial, Helvetica, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at 20% 10%, rgba(255,62,207,.25), transparent 30%),
+        radial-gradient(circle at 80% 20%, rgba(57,215,255,.28), transparent 32%),
+        radial-gradient(circle at 50% 90%, rgba(255,211,77,.20), transparent 34%),
+        linear-gradient(160deg, var(--bg1), var(--bg2));
+      overflow-x:hidden;
+    }
+
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background-image:
+        radial-gradient(circle, rgba(255,255,255,.20) 1px, transparent 1.5px);
+      background-size:22px 22px;
+      opacity:.18;
+      mask-image:linear-gradient(to bottom, transparent, black 12%, black 88%, transparent);
+    }
+
+    .page{
+      width:100%;
+      max-width:520px;
+      min-height:100dvh;
+      margin:0 auto;
+      padding:14px 12px 18px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      position:relative;
+    }
+
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding:7px 8px;
+      border:1px solid rgba(255,255,255,.18);
+      background:rgba(2,8,34,.42);
+      border-radius:18px;
+      box-shadow:0 10px 28px rgba(0,0,0,.25);
+      backdrop-filter:blur(8px);
+    }
+
+    .back{
+      color:#fff;
+      text-decoration:none;
+      font-weight:800;
+      font-size:.78rem;
+      padding:9px 10px;
+      border-radius:14px;
+      background:linear-gradient(135deg, rgba(57,215,255,.25), rgba(255,62,207,.18));
+      border:1px solid rgba(255,255,255,.20);
+      white-space:nowrap;
+    }
+
+    .brand{
+      text-align:right;
+      line-height:1.05;
+      font-weight:900;
+      letter-spacing:.2px;
+      font-size:.8rem;
+      color:#fff;
+      text-shadow:0 2px 8px rgba(0,0,0,.35);
+    }
+
+    .brand span{
+      color:var(--gold);
+      display:block;
+      font-size:.68rem;
+      margin-top:2px;
+      font-weight:800;
+    }
+
+    .hero{
+      position:relative;
+      border-radius:30px;
+      overflow:hidden;
+      min-height:62dvh;
+      box-shadow:
+        0 22px 55px rgba(0,0,0,.45),
+        0 0 0 2px rgba(255,255,255,.12),
+        0 0 38px rgba(57,215,255,.22);
+      background:rgba(3,9,35,.55);
+    }
+
+    .hero img{
+      width:100%;
+      height:100%;
+      min-height:62dvh;
+      object-fit:cover;
+      display:block;
+    }
+
+    .hero::after{
+      content:"";
+      position:absolute;
+      inset:auto 0 0 0;
+      height:34%;
+      background:linear-gradient(to top, rgba(3,9,35,.88), transparent);
+      pointer-events:none;
+    }
+
+    .notice{
+      margin-top:-2px;
+      padding:13px 14px;
+      border-radius:22px;
+      background:linear-gradient(135deg, rgba(9,20,67,.86), rgba(22,18,75,.76));
+      border:1px solid rgba(255,255,255,.16);
+      box-shadow:0 14px 35px rgba(0,0,0,.25);
+      color:var(--soft);
+      font-size:.88rem;
+      line-height:1.32;
+    }
+
+    .notice strong{
+      color:var(--gold);
+    }
+
+    .games{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:10px;
+    }
+
+    .game-card{
+      position:relative;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:13px 13px;
+      text-decoration:none;
+      color:#fff;
+      border-radius:24px;
+      background:var(--card);
+      border:1px solid rgba(255,255,255,.18);
+      box-shadow:0 14px 34px rgba(0,0,0,.28);
+      overflow:hidden;
+      transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    }
+
+    .game-card:active{
+      transform:scale(.98);
+    }
+
+    .game-card::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      opacity:.55;
+      background:radial-gradient(circle at 18% 25%, var(--glow), transparent 36%);
+      pointer-events:none;
+    }
+
+    .icon{
+      width:54px;
+      height:54px;
+      min-width:54px;
+      border-radius:18px;
+      display:grid;
+      place-items:center;
+      font-size:1.7rem;
+      background:linear-gradient(135deg, rgba(255,255,255,.22), rgba(255,255,255,.05));
+      border:1px solid rgba(255,255,255,.22);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.28), 0 10px 24px rgba(0,0,0,.24);
+      z-index:1;
+    }
+
+    .card-text{
+      z-index:1;
+      flex:1;
+    }
+
+    .game-card h2{
+      margin:0 0 3px;
+      font-size:1.03rem;
+      line-height:1.05;
+    }
+
+    .game-card p{
+      margin:0;
+      color:#dbeafe;
+      font-size:.78rem;
+      line-height:1.25;
+    }
+
+    .arrow{
+      z-index:1;
+      font-size:1.45rem;
+      font-weight:900;
+      color:var(--gold);
+      text-shadow:0 0 12px rgba(255,211,77,.65);
+    }
+
+    .spin{ --glow:rgba(255,62,207,.70); }
+    .hangman{ --glow:rgba(57,215,255,.72); }
+    .smart{ --glow:rgba(135,211,108,.72); }
+
+    .topics{
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:7px;
+      padding:4px 0 0;
+    }
+
+    .topic{
+      font-size:.72rem;
+      font-weight:900;
+      color:#071e54;
+      background:linear-gradient(135deg, #fff7c2, #ffd34d);
+      border-radius:999px;
+      padding:7px 9px;
+      box-shadow:0 8px 20px rgba(0,0,0,.20);
+      border:1px solid rgba(255,255,255,.50);
+    }
+
+    .footer{
+      text-align:center;
+      color:#c7d2fe;
+      font-size:.74rem;
+      padding:4px 4px 0;
+      opacity:.95;
+    }
+
+    .footer strong{
+      color:#fff;
+    }
+
+    @media (min-width: 640px){
+      .page{
+        padding-top:20px;
+      }
+      .hero{
+        min-height:650px;
+      }
+      .hero img{
+        min-height:650px;
+      }
+      .games{
+        grid-template-columns:1fr 1fr 1fr;
+      }
+      .game-card{
+        flex-direction:column;
+        text-align:center;
+      }
+      .arrow{
+        display:none;
+      }
+    }
+
+    @media (max-height: 760px){
+      .hero{
+        min-height:55dvh;
+      }
+      .hero img{
+        min-height:55dvh;
+      }
+      .notice{
+        font-size:.8rem;
+        padding:10px 12px;
+      }
+      .game-card{
+        padding:10px 11px;
+      }
+      .icon{
+        width:46px;
+        height:46px;
+        min-width:46px;
+        font-size:1.45rem;
+      }
+      .game-card h2{
+        font-size:.96rem;
+      }
+      .game-card p{
+        font-size:.72rem;
+      }
+    }
+  </style>
 </head>
+
 <body>
-<div class="card">
-<h1>7º Ano</h1>
-<p>Esta página será organizada na próxima etapa do English Game Hub.</p>
-<a href="index.html">Voltar</a>
-</div>
+  <main class="page">
+    <header class="topbar">
+      <a class="back" href="index.html">← Voltar ao Hub</a>
+      <div class="brand">
+        7º Ano
+        <span>English Game Hub</span>
+      </div>
+    </header>
+
+    <section class="hero" aria-label="Tela inicial do 7º ano">
+      <img src="7ano-tela-inicial-revisao.png" alt="English Game Hub 7º Ano - Revisão para o trabalho individual" />
+    </section>
+
+    <section class="notice">
+      <strong>Objetivo:</strong> revisar os conteúdos para o trabalho individual da próxima semana de forma lúdica.
+      Os jogos são uma ferramenta a mais para ajudar no empenho dos alunos, mas não substituem os materiais e atividades utilizados em sala de aula.
+    </section>
+
+    <nav class="games" aria-label="Jogos do 7º ano">
+      <a class="game-card hangman" href="7ano-hangman-challenge.html">
+        <div class="icon">🔤</div>
+        <div class="card-text">
+          <h2>Hangman Challenge</h2>
+          <p>Aqueça o vocabulário essencial antes dos desafios.</p>
+        </div>
+        <div class="arrow">›</div>
+      </a>
+
+      <a class="game-card spin" href="7ano-spin-and-answer.html">
+        <div class="icon">🎡</div>
+        <div class="card-text">
+          <h2>Spin and Answer</h2>
+          <p>Gire a roleta e revise os temas de forma rápida.</p>
+        </div>
+        <div class="arrow">›</div>
+      </a>
+
+      <a class="game-card smart" href="7ano-smart-choice.html">
+        <div class="icon">🧠</div>
+        <div class="card-text">
+          <h2>Smart Choice</h2>
+          <p>Pense na situação e escolha a melhor resposta.</p>
+        </div>
+        <div class="arrow">›</div>
+      </a>
+    </nav>
+
+    <section class="topics" aria-label="Conteúdos revisados">
+      <span class="topic">Adverbs of Frequency</span>
+      <span class="topic">Likes and Dislikes</span>
+      <span class="topic">Giving Opinions</span>
+    </section>
+
+    <footer class="footer">
+      Jogo idealizado pelo <strong>Prof. Jasson Bruno</strong>.
+    </footer>
+  </main>
 </body>
 </html>
