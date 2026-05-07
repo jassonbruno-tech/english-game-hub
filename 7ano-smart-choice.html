@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Smart Choice 7º Ano | English Game Hub</title>
+<style>
+:root {
+  --bg1:#120d3d; --bg2:#071e54; --cyan:#39d7ff; --pink:#ff3ecf; --gold:#ffd34d;
+  --green:#87d36c; --red:#ff5c7c; --text:#fff; --soft:#dbeafe;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;width:100%;height:100%;font-family:Arial,Helvetica,sans-serif;color:var(--text);overflow:hidden;background:linear-gradient(160deg,var(--bg1),var(--bg2));}
+body::before{content:"";position:fixed;inset:0;background:
+radial-gradient(circle at 20% 10%,rgba(255,62,207,.27),transparent 28%),
+radial-gradient(circle at 85% 18%,rgba(57,215,255,.28),transparent 32%),
+radial-gradient(circle at 50% 90%,rgba(255,211,77,.18),transparent 34%),
+radial-gradient(circle,rgba(255,255,255,.18) 1px,transparent 1.5px);background-size:auto,auto,auto,24px 24px;opacity:1;pointer-events:none}
+.app{position:relative;z-index:1;max-width:520px;margin:0 auto;height:100dvh;padding:10px;display:flex;flex-direction:column;gap:8px}
+.screen{display:none;height:100%;}
+.screen.active{display:flex;}
+.card{background:rgba(5,13,48,.76);border:1px solid rgba(255,255,255,.16);border-radius:26px;box-shadow:0 18px 45px rgba(0,0,0,.38);backdrop-filter:blur(8px)}
+.start{flex-direction:column;justify-content:center;gap:12px;text-align:center}
+.logo{padding:18px 14px}
+.logo h1{margin:0;font-size:2.35rem;line-height:.95;text-shadow:0 4px 0 rgba(0,0,0,.28),0 0 18px rgba(57,215,255,.45)}
+.logo h1 span{display:block;color:var(--gold)}
+.logo .grade{display:inline-block;margin-top:12px;padding:8px 16px;border-radius:999px;background:linear-gradient(135deg,var(--pink),#7c3aed);font-weight:900;border:1px solid rgba(255,255,255,.28)}
+.logo p{font-size:.92rem;line-height:1.35;color:var(--soft);margin:14px 0 0}
+.form{padding:14px;text-align:left}
+label{display:block;font-weight:900;margin:8px 2px 5px;font-size:.82rem;color:#fff}
+input{width:100%;border:none;outline:none;border-radius:16px;padding:13px 14px;font-size:1rem;background:rgba(255,255,255,.92);color:#071e54;font-weight:800}
+.btn{border:none;border-radius:18px;padding:13px 16px;font-weight:950;font-size:1rem;color:#071e54;background:linear-gradient(135deg,#fff7c2,var(--gold));box-shadow:0 10px 24px rgba(0,0,0,.28);cursor:pointer}
+.btn.secondary{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.20)}
+.row{display:flex;gap:8px}
+.row .btn{flex:1}
+.hud{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;padding:9px 10px;border-radius:20px;background:rgba(0,0,0,.20);border:1px solid rgba(255,255,255,.13)}
+.hud-title{font-weight:950;font-size:.88rem;line-height:1.1}
+.hud-title span{color:var(--gold)}
+.hearts{font-size:1.18rem;letter-spacing:1px;white-space:nowrap}
+.progress{height:10px;border-radius:999px;overflow:hidden;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.10)}
+.bar{height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--green),var(--gold));transition:.3s}
+.game{flex-direction:column;gap:8px}
+.question-card{flex:1;display:flex;flex-direction:column;min-height:0;padding:13px;gap:8px}
+.theme{align-self:flex-start;padding:7px 10px;border-radius:999px;font-size:.74rem;font-weight:950;background:linear-gradient(135deg,var(--cyan),#8b5cf6);box-shadow:0 0 18px rgba(57,215,255,.25)}
+.qtext{font-size:1.02rem;line-height:1.28;font-weight:850;color:#fff;overflow:auto;padding-right:2px}
+.options{display:grid;grid-template-columns:1fr;gap:8px;margin-top:auto}
+.opt{width:100%;border:none;text-align:left;padding:11px 12px;border-radius:16px;background:rgba(255,255,255,.92);color:#071e54;font-weight:900;font-size:.92rem;line-height:1.22;box-shadow:0 8px 18px rgba(0,0,0,.22)}
+.opt.correct{background:linear-gradient(135deg,#b7ffcf,#57e389);color:#06331b}
+.opt.wrong{background:linear-gradient(135deg,#ffd1d9,#ff6b86);color:#4a0613}
+.feedback{display:none;padding:12px;border-radius:20px;background:rgba(3,9,35,.90);border:1px solid rgba(255,255,255,.18);box-shadow:0 -10px 30px rgba(0,0,0,.30)}
+.feedback.show{display:block}
+.feedback h3{margin:0 0 5px;font-size:1rem}
+.feedback p{margin:0;color:var(--soft);font-size:.86rem;line-height:1.28}
+.result{flex-direction:column;justify-content:center;gap:12px;text-align:center}
+.result-card{padding:18px 14px}
+.result-card h1{margin:0 0 8px;font-size:2.1rem;color:var(--gold);text-shadow:0 0 20px rgba(255,211,77,.35)}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}
+.stat{padding:12px;border-radius:18px;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.14)}
+.stat b{display:block;color:var(--gold);font-size:1.25rem}
+.small{font-size:.78rem;color:#c7d2fe;line-height:1.28}
+.footer{text-align:center;font-size:.72rem;color:#c7d2fe}
+@media (max-height:700px) {
+  .logo h1{font-size:1.9rem} .logo p{font-size:.8rem} .qtext{font-size:.92rem} .opt{font-size:.82rem;padding:9px 10px} .question-card{padding:10px} .feedback p{font-size:.78rem}
+}
+</style>
+</head>
+<body>
+<main class="app">
+  <section id="start" class="screen start active">
+    <div class="logo card">
+      <h1>Smart <span>Choice</span></h1>
+      <div class="grade">7º ANO • Revisão</div>
+      <p>Pense na situação, observe a intenção do personagem e escolha a melhor resposta em Inglês.</p>
+    </div>
+    <div class="form card">
+      <label>Nome do aluno</label><input id="name" placeholder="Digite seu nome" />
+      <label>Turma</label><input id="className" placeholder="Ex.: 701" />
+      <label>Escola</label><input id="school" value="Escola Delfina de Jesus Amorim" />
+      <div style="height:12px"></div>
+      <button class="btn" onclick="startGame()">Começar desafio</button>
+      <div style="height:8px"></div>
+      <button class="btn secondary" onclick="location.href='7ano.html'">Voltar ao 7º ano</button>
+    </div>
+    <div class="footer">Jogo idealizado pelo <b>Prof. Jasson Bruno</b>.</div>
+  </section>
+
+  <section id="game" class="screen game">
+    <div class="hud">
+      <div class="hud-title">Smart Choice • <span id="roundInfo">1/60</span></div>
+      <div class="hearts" id="hearts">❤️❤️❤️❤️❤️</div>
+    </div>
+    <div class="progress"><div class="bar" id="bar"></div></div>
+    <div class="question-card card">
+      <div class="theme" id="theme">Adverbs of Frequency</div>
+      <div class="qtext" id="question"></div>
+      <div class="options" id="options"></div>
+    </div>
+    <div class="feedback" id="feedback">
+      <h3 id="fbTitle"></h3>
+      <p id="fbText"></p>
+      <div style="height:10px"></div>
+      <button class="btn" onclick="nextQuestion()">Continuar</button>
+    </div>
+  </section>
+
+  <section id="result" class="screen result">
+    <div class="result-card card">
+      <h1 id="resultTitle">CONGRATULATIONS!</h1>
+      <p id="studentLine"></p>
+      <div class="stats">
+        <div class="stat"><b id="score">0</b>Pontos</div>
+        <div class="stat"><b id="hits">0</b>Acertos</div>
+        <div class="stat"><b id="misses">0</b>Erros</div>
+        <div class="stat"><b id="status">OK</b>Status</div>
+      </div>
+      <p class="small">Tire um print desta tela para mostrar seu desempenho. Continue revisando também pelos materiais usados em sala.</p>
+      <div style="height:12px"></div>
+      <div class="row">
+        <button class="btn" onclick="restart()">Jogar de novo</button>
+        <button class="btn secondary" onclick="location.href='7ano.html'">Voltar</button>
+      </div>
+    </div>
+    <div class="footer">Jogo idealizado pelo <b>Prof. Jasson Bruno</b>.</div>
+  </section>
+</main>
+
+<script>
+const QUESTION_BANK = [{"theme": "Adverbs of Frequency", "q": "Cristiano Ronaldo treina em muitos dias da semana. Quando está viajando ou descansando, ele não treina. Qual frase descreve melhor essa rotina?", "options": ["Cristiano Ronaldo never trains.", "Cristiano Ronaldo usually trains.", "Cristiano Ronaldo doesn’t train.", "Cristiano Ronaldo trains only once a year."], "answer": 1, "feedback": "“Usually” combina com algo que acontece muitas vezes, mas não necessariamente todos os dias."}, {"theme": "Likes and Dislikes", "q": "Lara vê açaí na mesa e fica animada. Ela pega uma tigela, sorri e começa a comer. Qual frase representa melhor essa situação?", "options": ["Lara doesn’t like açaí.", "Lara likes açaí.", "Lara never eats açaí.", "Lara doesn’t eat food."], "answer": 1, "feedback": "Como Lara demonstra alegria e come o açaí, a melhor frase é “Lara likes açaí.”"}, {"theme": "Giving Opinions", "q": "Depois de assistir a um filme com muitas cenas paradas, Pedro comenta que quase dormiu. Qual opinião combina melhor com Pedro?", "options": ["I think it is exciting.", "I think it is boring.", "I think it is delicious.", "I think it is easy."], "answer": 1, "feedback": "Se o filme quase fez Pedro dormir, a opinião mais adequada é “boring”."}, {"theme": "Adverbs of Frequency", "q": "Marina leva o caderno de Inglês para a escola de segunda a sexta. No sábado e no domingo, ela deixa o material em casa. Qual frase descreve melhor a rotina dela?", "options": ["Marina usually takes her English notebook to school.", "Marina never takes her English notebook to school.", "Marina hates English notebooks.", "Marina takes her notebook only on Sundays."], "answer": 0, "feedback": "A ação acontece em vários dias da semana, então “usually” é a melhor escolha."}, {"theme": "Likes and Dislikes", "q": "João quer saber se Bruno gosta de futebol. Qual frase mostra João fazendo essa pergunta para Bruno?", "options": ["Bruno likes soccer.", "Does Bruno like soccer?", "Bruno doesn’t like soccer.", "Do Bruno likes soccer?"], "answer": 1, "feedback": "Para perguntar sobre “Bruno/he”, usamos “Does + Bruno + verbo base”."}, {"theme": "Giving Opinions", "q": "Ana jogou uma fase difícil no celular. Ela perdeu algumas vezes, mas disse que o desafio fez ela pensar melhor. Qual frase combina com a opinião dela?", "options": ["I think it is difficult but interesting.", "I think it is boring and useless.", "I never play games.", "I don’t like learning."], "answer": 0, "feedback": "A situação mostra dificuldade, mas também interesse e aprendizagem."}, {"theme": "Adverbs of Frequency", "q": "Miguel participa dos treinos do time em quase todos os fins de semana. Quando está doente ou viajando, ele falta. Qual alternativa representa melhor essa rotina?", "options": ["Miguel never trains on weekends.", "Miguel usually trains on weekends.", "Miguel doesn’t like sports.", "Miguel trains only at school."], "answer": 1, "feedback": "“Usually” indica uma ação frequente, mas não obrigatoriamente constante."}, {"theme": "Likes and Dislikes", "q": "Sofia quer dizer que sua irmã não gosta de salada. Qual frase está correta?", "options": ["My sister don’t like salad.", "My sister doesn’t likes salad.", "My sister doesn’t like salad.", "My sister not like salad."], "answer": 2, "feedback": "Com “my sister/she”, usamos “doesn’t” e o verbo volta para a forma base: “like”."}, {"theme": "Giving Opinions", "q": "No intervalo, dois alunos falam sobre uma aula com música, imagens e jogo. Um deles diz que aprendeu melhor assim. Qual opinião combina com essa fala?", "options": ["I think it is boring.", "I think it is fun and useful.", "I think it is very bad.", "I don’t agree with school."], "answer": 1, "feedback": "A situação mostra que o aluno gostou e percebeu utilidade na atividade."}, {"theme": "Adverbs of Frequency", "q": "Bia não costuma chegar atrasada. Em quase todos os dias, ela já está na sala antes da aula começar. Qual frase representa melhor essa rotina?", "options": ["Bia usually arrives early.", "Bia never arrives at school.", "Bia doesn’t like school.", "Bia arrives late every day."], "answer": 0, "feedback": "A pista mostra que Bia chega cedo com frequência."}, {"theme": "Likes and Dislikes", "q": "Carlos quer perguntar se Ana gosta de música pop. Qual alternativa mostra a pergunta correta?", "options": ["Does Ana like pop music?", "Ana likes pop music?", "Do Ana like pop music?", "Does Ana likes pop music?"], "answer": 0, "feedback": "Em perguntas com “Ana/she”, usamos “Does” e o verbo fica “like”."}, {"theme": "Giving Opinions", "q": "Um aluno assiste a um jogo muito disputado, com virada no final e muitos gols. Qual opinião combina melhor com essa experiência?", "options": ["I think it is boring.", "I think it is exciting.", "I think it is difficult to eat.", "I think it is never."], "answer": 1, "feedback": "Um jogo com emoção e virada combina com “exciting”."}, {"theme": "Adverbs of Frequency", "q": "Rafaela entra no aplicativo de música em alguns dias, mas passa vários dias sem ouvir nada. Qual frase descreve melhor esse hábito?", "options": ["Rafaela always listens to music.", "Rafaela sometimes listens to music.", "Rafaela never listens to music.", "Rafaela doesn’t know music."], "answer": 1, "feedback": "Quando algo acontece em alguns momentos, mas não sempre, usamos “sometimes”."}, {"theme": "Likes and Dislikes", "q": "Enzo abre o prato, vê peixe e empurra para o lado. Ele escolhe frango e arroz. Qual frase representa melhor essa situação?", "options": ["Enzo likes fish.", "Enzo doesn’t like fish.", "Enzo always eats fish.", "Enzo thinks fish is great."], "answer": 1, "feedback": "A ação de evitar o peixe indica que ele não gosta."}, {"theme": "Giving Opinions", "q": "Júlia e Marcos assistem ao mesmo vídeo. Júlia acha criativo, mas Marcos diz que não entendeu nada e não gostou. Qual frase Marcos poderia dizer?", "options": ["I think it is confusing.", "I think it is amazing.", "I think it is delicious.", "I think it is my sister."], "answer": 0, "feedback": "Quando algo é difícil de entender, “confusing” combina melhor."}, {"theme": "Adverbs of Frequency", "q": "Lucas estuda Inglês antes das provas e em alguns dias de atividade, mas não mantém essa rotina toda semana. Qual frase descreve melhor esse comportamento?", "options": ["Lucas always studies English.", "Lucas sometimes studies English.", "Lucas never studies English.", "Lucas studies English every hour."], "answer": 1, "feedback": "A situação mostra que ele estuda em alguns momentos, então “sometimes” é adequado."}, {"theme": "Likes and Dislikes", "q": "Maria quer contar que seus amigos gostam de jogos online. Qual frase está correta?", "options": ["My friends likes online games.", "My friends like online games.", "My friends doesn’t like online games.", "My friends does like online games."], "answer": 1, "feedback": "Com “my friends/they”, usamos “like”, sem “s”."}, {"theme": "Giving Opinions", "q": "Depois de uma partida, Felipe diz: “O jogo foi difícil, mas eu jogaria de novo.” Qual opinião representa melhor essa ideia?", "options": ["I think it is difficult but fun.", "I think it is boring and bad.", "I never play games.", "I don’t like fun."], "answer": 0, "feedback": "Ele reconhece a dificuldade, mas demonstra que gostou."}, {"theme": "Adverbs of Frequency", "q": "Camila recusa refrigerante em todas as festas e sempre escolhe suco ou água. Qual frase descreve melhor esse hábito?", "options": ["Camila never drinks soda.", "Camila usually drinks soda.", "Camila sometimes drinks soda.", "Camila loves soda."], "answer": 0, "feedback": "Se ela recusa em todas as festas, a melhor opção é “never”."}, {"theme": "Likes and Dislikes", "q": "Pedro quer saber se Lara e Sofia gostam de K-pop. Qual pergunta está correta?", "options": ["Does Lara and Sofia like K-pop?", "Do Lara and Sofia like K-pop?", "Lara and Sofia likes K-pop?", "Do Lara and Sofia likes K-pop?"], "answer": 1, "feedback": "Com duas pessoas, usamos “they”. Então a pergunta começa com “Do”."}, {"theme": "Giving Opinions", "q": "Um aluno experimenta uma comida nova. Ele não faz careta, come tudo e diz que pediria outra vez. Qual opinião combina melhor?", "options": ["I think it is bad.", "I think it is delicious.", "I think it is boring.", "I think it is difficult."], "answer": 1, "feedback": "A situação mostra que ele gostou da comida."}, {"theme": "Adverbs of Frequency", "q": "Bruno só faz tarefa quando o professor avisa que vai corrigir. Em muitos dias, ele esquece. Qual frase representa melhor esse hábito?", "options": ["Bruno always does homework.", "Bruno usually does homework.", "Bruno sometimes does homework.", "Bruno never goes to school."], "answer": 2, "feedback": "A ação acontece apenas em alguns momentos, então “sometimes” combina melhor."}, {"theme": "Likes and Dislikes", "q": "Gabriela quer dizer que ela e a irmã não gostam de filmes de terror. Qual frase está correta?", "options": ["We don’t like horror movies.", "We doesn’t like horror movies.", "We don’t likes horror movies.", "We not like horror movies."], "answer": 0, "feedback": "Com “we”, usamos “don’t like”."}, {"theme": "Giving Opinions", "q": "A professora mostra um vídeo curto com imagens, áudio e exemplos. Lucas diz que ajudou a entender o assunto. Qual frase representa melhor a opinião dele?", "options": ["I think it is useful.", "I think it is useless.", "I think it is never.", "I think it is salad."], "answer": 0, "feedback": "Se ajudou a entender, a opinião mais adequada é “useful”."}, {"theme": "Adverbs of Frequency", "q": "Isabela entra no treino de dança todas as terças e quintas. Ela não treina nos outros dias. Qual frase descreve melhor essa rotina?", "options": ["Isabela never dances.", "Isabela always dances every day.", "Isabela often dances during the week.", "Isabela doesn’t like dancing."], "answer": 2, "feedback": "Treinar algumas vezes na semana combina com “often”."}, {"theme": "Likes and Dislikes", "q": "Rafael quer perguntar se a mãe dele gosta de café. Qual frase mostra essa pergunta corretamente?", "options": ["Does my mother like coffee?", "Do my mother like coffee?", "My mother likes coffee?", "Does my mother likes coffee?"], "answer": 0, "feedback": "“My mother” equivale a “she”, então usamos “Does + verbo base”."}, {"theme": "Giving Opinions", "q": "Depois de uma aula com muitas palavras novas e pouca explicação, Ana diz que ficou perdida. Qual opinião combina melhor?", "options": ["I think it is easy.", "I think it is confusing.", "I think it is delicious.", "I think it is funny."], "answer": 1, "feedback": "Se ela ficou perdida, “confusing” representa melhor a opinião."}, {"theme": "Adverbs of Frequency", "q": "Davi pratica inglês um pouco todos os dias: lê uma frase, ouve uma palavra ou responde uma questão. Qual frase representa melhor essa rotina?", "options": ["Davi always practices English.", "Davi never practices English.", "Davi doesn’t practice English.", "Davi practices English only in December."], "answer": 0, "feedback": "A pista mostra uma prática diária, então “always” é a melhor opção."}, {"theme": "Likes and Dislikes", "q": "Bianca gosta de vôlei, mas não gosta de basquete. Qual frase está correta?", "options": ["Bianca like volleyball, but she don’t like basketball.", "Bianca likes volleyball, but she doesn’t like basketball.", "Bianca likes volleyball, but she doesn’t likes basketball.", "Bianca doesn’t like volleyball, but she like basketball."], "answer": 1, "feedback": "Com “Bianca/she”, usamos “likes” na afirmativa e “doesn’t like” na negativa."}, {"theme": "Giving Opinions", "q": "Um aluno joga um quiz de Inglês. Ele erra algumas, mas percebe que aprendeu com o feedback. Qual opinião combina melhor com essa experiência?", "options": ["I think it is useless.", "I think it is boring and bad.", "I think it is helpful.", "I think it is never."], "answer": 2, "feedback": "Se o jogo ajudou a aprender, “helpful” é a melhor escolha."}, {"theme": "Adverbs of Frequency", "q": "Gustavo só abre o livro de Inglês quando tem atividade valendo ponto. Em dias comuns, ele quase não revisa. Qual frase representa melhor esse hábito?", "options": ["Gustavo always studies English.", "Gustavo sometimes studies English.", "Gustavo never goes to school.", "Gustavo studies English every morning."], "answer": 1, "feedback": "A situação mostra que ele estuda apenas em alguns momentos, então “sometimes” é a melhor escolha."}, {"theme": "Likes and Dislikes", "q": "Mariana quer perguntar se Felipe gosta de anime. Qual frase mostra Mariana fazendo essa pergunta corretamente?", "options": ["Does Felipe like anime?", "Do Felipe like anime?", "Felipe likes anime?", "Does Felipe likes anime?"], "answer": 0, "feedback": "Com “Felipe/he”, usamos “Does” e o verbo fica na forma base: “like”."}, {"theme": "Giving Opinions", "q": "Depois de assistir a um episódio com mistério, sustos e final inesperado, Laura diz que ficou presa na história até o fim. Qual opinião combina melhor com Laura?", "options": ["I think it is exciting.", "I think it is boring.", "I think it is difficult to eat.", "I think it is never."], "answer": 0, "feedback": "Uma história que prende a atenção combina com “exciting”."}, {"theme": "Adverbs of Frequency", "q": "Tiago leva garrafa de água para a escola em todos os dias de aula. Ele não esquece esse hábito. Qual frase descreve melhor essa rotina?", "options": ["Tiago never takes water to school.", "Tiago sometimes takes water to school.", "Tiago always takes water to school.", "Tiago doesn’t like water."], "answer": 2, "feedback": "Como ele leva água todos os dias, “always” é a melhor opção."}, {"theme": "Likes and Dislikes", "q": "Beatriz quer dizer que seu irmão não gosta de jogos de luta. Qual frase está correta?", "options": ["My brother don’t like fighting games.", "My brother doesn’t likes fighting games.", "My brother doesn’t like fighting games.", "My brother not like fighting games."], "answer": 2, "feedback": "Com “my brother/he”, usamos “doesn’t” + verbo base."}, {"theme": "Giving Opinions", "q": "Um aluno joga uma fase com regras claras, imagens bonitas e desafios possíveis. Ele diz que conseguiu entender e continuar jogando. Qual opinião combina melhor?", "options": ["I think it is confusing.", "I think it is easy and fun.", "I think it is boring and useless.", "I think it is salad."], "answer": 1, "feedback": "A situação mostra que o jogo foi compreensível e agradável."}, {"theme": "Adverbs of Frequency", "q": "Luana participa das aulas de Educação Física quase toda semana. Quando chove ou há feriado, ela não participa. Qual frase representa melhor essa rotina?", "options": ["Luana usually participates in P.E. classes.", "Luana never participates in P.E. classes.", "Luana doesn’t like school.", "Luana participates only once a year."], "answer": 0, "feedback": "“Usually” indica algo que acontece muitas vezes, mas pode ter exceções."}, {"theme": "Likes and Dislikes", "q": "Davi e Lucas veem uma pizza na mesa e comemoram. Eles pegam um pedaço rapidamente. Qual frase representa melhor a situação?", "options": ["Davi and Lucas don’t like pizza.", "Davi and Lucas like pizza.", "Davi and Lucas never eat food.", "Davi and Lucas doesn’t like pizza."], "answer": 1, "feedback": "Com duas pessoas, usamos “like”, sem “s”."}, {"theme": "Giving Opinions", "q": "Sofia tenta resolver uma atividade. Ela precisa pensar bastante, mas consegue fazer no final e diz que valeu a pena. Qual opinião combina melhor?", "options": ["I think it is difficult but useful.", "I think it is boring and bad.", "I think it is delicious.", "I think it is never."], "answer": 0, "feedback": "A situação mostra dificuldade, mas também utilidade."}, {"theme": "Adverbs of Frequency", "q": "Ruan não entra em campo em todas as partidas, mas joga em várias rodadas do campeonato. Qual frase descreve melhor isso?", "options": ["Ruan never plays soccer.", "Ruan often plays soccer.", "Ruan hates soccer.", "Ruan plays soccer every minute."], "answer": 1, "feedback": "“Often” combina com algo que acontece várias vezes."}, {"theme": "Likes and Dislikes", "q": "Amanda quer perguntar se suas amigas gostam de dançar. Qual frase está correta?", "options": ["Do my friends like dancing?", "Does my friends like dancing?", "Do my friends likes dancing?", "My friends likes dancing?"], "answer": 0, "feedback": "“My friends” equivale a “they”, então usamos “Do”."}, {"theme": "Giving Opinions", "q": "Depois de ouvir uma música nova, Caio diz que a batida é boa e a letra ficou na cabeça. Qual opinião combina melhor com ele?", "options": ["I think it is boring.", "I think it is good.", "I think it is difficult to read.", "I think it is never."], "answer": 1, "feedback": "Se ele gostou da música, “good” representa bem a opinião."}, {"theme": "Adverbs of Frequency", "q": "Nina esquece o lápis em alguns dias, mas na maioria das aulas ela traz o material completo. Qual frase descreve melhor o hábito dela?", "options": ["Nina never brings her pencil.", "Nina usually brings her pencil.", "Nina doesn’t like pencils.", "Nina brings her pencil only at night."], "answer": 1, "feedback": "A maioria das vezes indica “usually”."}, {"theme": "Likes and Dislikes", "q": "Henrique quer dizer que ele gosta de matemática, mas não gosta de história. Qual frase está correta?", "options": ["I likes Math, but I don’t like History.", "I like Math, but I don’t like History.", "I like Math, but I doesn’t like History.", "I don’t likes Math, but I like History."], "answer": 1, "feedback": "Com “I”, usamos “like” e “don’t like”."}, {"theme": "Giving Opinions", "q": "Uma aluna vê um vídeo muito longo, com pouca imagem e muita fala rápida. Ela diz que não conseguiu acompanhar. Qual opinião combina melhor?", "options": ["I think it is confusing.", "I think it is funny.", "I think it is delicious.", "I think it is great."], "answer": 0, "feedback": "Quando algo é difícil de acompanhar, “confusing” é uma boa opinião."}, {"theme": "Adverbs of Frequency", "q": "Vitor faz exercícios de Inglês todos os dias por poucos minutos. Mesmo quando está cansado, ele responde pelo menos uma questão. Qual frase representa melhor essa rotina?", "options": ["Vitor never practices English.", "Vitor sometimes practices English.", "Vitor always practices English.", "Vitor doesn’t know English."], "answer": 2, "feedback": "A ação acontece diariamente, por isso usamos “always”."}, {"theme": "Likes and Dislikes", "q": "Clara quer saber se Pedro e João gostam de hambúrguer. Qual pergunta ela deve fazer?", "options": ["Does Pedro and João like hamburgers?", "Do Pedro and João like hamburgers?", "Do Pedro and João likes hamburgers?", "Pedro and João like hamburgers?"], "answer": 1, "feedback": "Pedro e João = they. Por isso, a pergunta começa com “Do”."}, {"theme": "Giving Opinions", "q": "Depois de uma partida de futebol com muitos erros, pouca emoção e placar parado, Bruno diz que quase desligou a TV. Qual opinião combina melhor?", "options": ["I think it is exciting.", "I think it is boring.", "I think it is delicious.", "I think it is helpful."], "answer": 1, "feedback": "Uma partida sem emoção combina com “boring”."}, {"theme": "Adverbs of Frequency", "q": "Helena usa o celular para estudar em alguns fins de semana, mas em muitos outros ela prefere descansar. Qual frase representa melhor esse hábito?", "options": ["Helena always studies on her phone.", "Helena sometimes studies on her phone.", "Helena never uses a phone.", "Helena studies every hour."], "answer": 1, "feedback": "A situação mostra que ela estuda pelo celular em alguns momentos, não sempre."}, {"theme": "Likes and Dislikes", "q": "Arthur abre o lanche, vê banana e maçã, e escolhe as duas frutas. Qual frase representa melhor essa preferência?", "options": ["Arthur likes fruit.", "Arthur doesn’t like fruit.", "Arthur never eats fruit.", "Arthur hates apples and bananas."], "answer": 0, "feedback": "A escolha das frutas indica preferência positiva."}, {"theme": "Giving Opinions", "q": "Uma turma joga um quiz de Inglês. Mesmo errando algumas respostas, os alunos riem, tentam de novo e dizem que aprenderam. Qual opinião combina melhor?", "options": ["I think it is fun and helpful.", "I think it is boring and useless.", "I think it is difficult to eat.", "I think it is never."], "answer": 0, "feedback": "A experiência foi divertida e ajudou na aprendizagem."}, {"theme": "Adverbs of Frequency", "q": "Renata chega atrasada em quase todas as aulas. Ela só chega cedo quando alguém a leva de carro. Qual frase descreve melhor essa situação?", "options": ["Renata usually arrives late.", "Renata never arrives late.", "Renata always arrives early.", "Renata doesn’t like cars."], "answer": 0, "feedback": "Como o atraso acontece muitas vezes, “usually arrives late” é adequado."}, {"theme": "Likes and Dislikes", "q": "Guilherme quer perguntar se a professora gosta de jogos educativos. Qual frase mostra essa pergunta corretamente?", "options": ["Does the teacher like educational games?", "Do the teacher like educational games?", "Does the teacher likes educational games?", "The teacher like educational games?"], "answer": 0, "feedback": "“The teacher” pode equivaler a “she/he”, então usamos “Does” + verbo base."}, {"theme": "Giving Opinions", "q": "Depois de uma explicação com exemplos, imagens e frases curtas, Júlia diz que entendeu melhor. Qual opinião representa melhor essa fala?", "options": ["I think it is useful.", "I think it is useless.", "I think it is boring.", "I think it is bad."], "answer": 0, "feedback": "Se a explicação ajudou, “useful” é a melhor opção."}, {"theme": "Adverbs of Frequency", "q": "Rafael não costuma comer doces durante a semana, mas no domingo ele come sobremesa com a família. Qual frase descreve melhor esse hábito?", "options": ["Rafael always eats sweets.", "Rafael sometimes eats sweets.", "Rafael never eats sweets.", "Rafael eats sweets every hour."], "answer": 1, "feedback": "A ação acontece em alguns momentos, então “sometimes” é adequado."}, {"theme": "Likes and Dislikes", "q": "Isis quer dizer que ela não gosta de acordar cedo. Qual frase está correta?", "options": ["I doesn’t like waking up early.", "I don’t likes waking up early.", "I don’t like waking up early.", "I not like waking up early."], "answer": 2, "feedback": "Com “I”, usamos “don’t like”."}, {"theme": "Giving Opinions", "q": "Um aluno testa um aplicativo de estudos. Ele diz que o aplicativo é bonito, fácil de usar e ajuda a revisar. Qual opinião combina melhor?", "options": ["I think it is great.", "I think it is confusing.", "I think it is boring.", "I think it is bad."], "answer": 0, "feedback": "A descrição mostra uma opinião muito positiva."}, {"theme": "Adverbs of Frequency", "q": "Letícia quase não assiste televisão. Ela prefere ler, jogar no celular ou ouvir música. Qual frase representa melhor esse hábito?", "options": ["Letícia always watches TV.", "Letícia usually watches TV.", "Letícia often watches TV.", "Letícia rarely watches TV."], "answer": 3, "feedback": "“Rarely” indica algo que acontece poucas vezes."}, {"theme": "Likes and Dislikes", "q": "Matheus quer perguntar se Beatriz gosta de estudar com música. Qual frase mostra essa pergunta?", "options": ["Does Beatriz like studying with music?", "Do Beatriz like studying with music?", "Does Beatriz likes studying with music?", "Beatriz like studying with music?"], "answer": 0, "feedback": "Com “Beatriz/she”, usamos “Does” e o verbo fica “like”."}, {"theme": "Giving Opinions", "q": "Depois de jogar uma atividade online, Samuel diz que não percebeu o tempo passar e quis jogar novamente. Qual opinião combina melhor?", "options": ["I think it is boring.", "I think it is fun.", "I think it is difficult to eat.", "I think it is bad."], "answer": 1, "feedback": "Se ele quis jogar de novo e se envolveu, “fun” é a melhor opção."}];
+const TOTAL_ROUNDS = 60;
+let player = {}, sequence = [], current = 0, lives = 5, hits = 0, misses = 0, score = 0, locked = false;
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i=a.length-1;i>0;i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function makeSequence() {
+  // Primeiro ciclo fixo: Adverbs → Likes → Giving Opinions.
+  // Depois, cada ciclo de 3 vem embaralhado, sem repetir tema antes dos três passarem.
+  const byTheme = {
+    "Adverbs of Frequency": shuffle(QUESTION_BANK.filter(q=>q.theme==="Adverbs of Frequency")),
+    "Likes and Dislikes": shuffle(QUESTION_BANK.filter(q=>q.theme==="Likes and Dislikes")),
+    "Giving Opinions": shuffle(QUESTION_BANK.filter(q=>q.theme==="Giving Opinions"))
+  };
+  const themes = ["Adverbs of Frequency","Likes and Dislikes","Giving Opinions"];
+  const seq = [];
+  for (let cycle=0; cycle<20; cycle++) {
+    const order = cycle === 0 ? themes : shuffle(themes);
+    order.forEach(t => seq.push(byTheme[t].shift()));
+  }
+  return seq;
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function startGame() {
+  player.name = document.getElementById('name').value.trim() || "Aluno";
+  player.className = document.getElementById('className').value.trim() || "7º ano";
+  player.school = document.getElementById('school').value.trim() || "Escola Delfina de Jesus Amorim";
+  sequence = makeSequence();
+  current = 0; lives = 5; hits = 0; misses = 0; score = 0;
+  showScreen('game');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  locked = false;
+  const q = sequence[current];
+  document.getElementById('roundInfo').textContent = `${current+1}/${TOTAL_ROUNDS}`;
+  document.getElementById('theme').textContent = q.theme;
+  document.getElementById('question').textContent = q.q;
+  document.getElementById('bar').style.width = `${(current/TOTAL_ROUNDS)*100}%`;
+  document.getElementById('hearts').textContent = '❤️'.repeat(lives) + '🖤'.repeat(5-lives);
+  document.getElementById('feedback').classList.remove('show');
+  const opts = document.getElementById('options');
+  opts.innerHTML = '';
+  q.options.forEach((op,idx)=>{
+    const b = document.createElement('button');
+    b.className='opt';
+    b.innerHTML = `<b>${String.fromCharCode(65+idx)})</b> ${op}`;
+    b.onclick = () => answer(idx,b);
+    opts.appendChild(b);
+  });
+}
+
+function answer(idx, btn) {
+  if (locked) return;
+  locked = true;
+  const q = sequence[current];
+  const buttons = [...document.querySelectorAll('.opt')];
+  buttons.forEach((b,i)=>{
+    b.disabled = true;
+    if (i === q.answer) b.classList.add('correct');
+  });
+  if (idx === q.answer) {
+    hits++; score += 10;
+    document.getElementById('fbTitle').textContent = 'Great job! ✅';
+    document.getElementById('fbText').textContent = q.feedback;
+  } else {
+    misses++; lives--;
+    btn.classList.add('wrong');
+    document.getElementById('fbTitle').textContent = 'Observe a dica! ❌';
+    document.getElementById('fbText').textContent = q.feedback;
+  }
+  document.getElementById('hearts').textContent = '❤️'.repeat(Math.max(lives,0)) + '🖤'.repeat(5-Math.max(lives,0));
+  document.getElementById('feedback').classList.add('show');
+}
+
+function nextQuestion() {
+  if (lives <= 0) return finish(false);
+  current++;
+  if (current >= TOTAL_ROUNDS) return finish(true);
+  renderQuestion();
+}
+
+function finish(completed) {
+  document.getElementById('bar').style.width = '100%';
+  showScreen('result');
+  document.getElementById('resultTitle').textContent = completed ? 'CONGRATULATIONS, YOU ARE THE ONE!!!' : 'GAME OVER';
+  document.getElementById('studentLine').textContent = `${player.name} • ${player.className} • ${player.school}`;
+  document.getElementById('score').textContent = score;
+  document.getElementById('hits').textContent = hits;
+  document.getElementById('misses').textContent = misses;
+  document.getElementById('status').textContent = completed ? 'Completed' : 'Try again';
+}
+
+function restart() {
+  showScreen('start');
+}
+</script>
+</body>
+</html>
