@@ -830,7 +830,7 @@ body.sound-win .final-card, body.sound-try .final-card{animation:finalGlow 1.6s 
 @media(max-width:860px){.final-message{font-size:13px !important; line-height:1.28 !important}}
 </style>
 </head>
-<body class="playing">
+<body>
 <div class="app">
 <header>
   <div class="topbar"><a class="back" href="7ano.html">← Voltar ao 7º ano</a><div class="pill">📘 Revisão 7º ano</div></div>
@@ -851,7 +851,7 @@ body.sound-win .final-card, body.sound-try .final-card{animation:finalGlow 1.6s 
       <label>Escola</label>
       <input id="playerSchool" type="text" placeholder="Digite o nome da escola" maxlength="40">
     </div>
-    <button class="spin-btn" onclick="restart()">Começar jogo</button>
+    <button class="spin-btn" onclick="startGame()">Começar roleta</button>
     <div class="brand-start">Jogo idealizado pelo professor Jasson Bruno.</div>
   </div>
 </section>
@@ -1085,6 +1085,10 @@ function goToNextMission(){
   restart();
 }
 
+function startGame(){
+  restart();
+}
+
 function restart(){
   const missionToUse = state.mission || 1;
   state = {score:0,corrects:0,errors:0,combo:0,maxCombo:0,round:1,lives:MAX_LIVES,bag:makeBag(),current:null,spinning:false,answered:false,rotation:0,mission:missionToUse};
@@ -1094,7 +1098,7 @@ function restart(){
   el("theme").textContent = "Tema";
   el("prompt").textContent = "Clique em SPIN para sortear o tema e liberar a pergunta.";
   el("options").innerHTML = "";
-  el("modalOptions").innerHTML = "";
+  if(el("modalOptions")) el("modalOptions").innerHTML = "";
   el("feedback").className = "feedback";
   el("feedback").innerHTML = "";
   el("spinBtn").disabled = false;
@@ -1276,7 +1280,7 @@ function prepareNextRound(){
   el("feedback").innerHTML = "";
   el("modalTheme").textContent = "Tema";
   el("modalPrompt").textContent = "Pergunta";
-  el("modalOptions").innerHTML = "";
+  if(el("modalOptions")) el("modalOptions").innerHTML = "";
   el("modalFeedback").className = "feedback modal-feedback";
   el("modalFeedback").innerHTML = "";
   el("sorted").textContent = "Gire a roleta para continuar.";
