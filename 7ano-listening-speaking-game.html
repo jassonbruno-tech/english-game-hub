@@ -2,178 +2,145 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>English Speaking Challenge - 7º Ano</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>English Voice Challenge - 7º Ano</title>
 
   <style>
     * {
       box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
     }
 
     body {
       margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: linear-gradient(135deg, #e8fff1, #f5f7ff);
-      color: #1f2937;
       min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top left, #fff176 0, transparent 28%),
+        radial-gradient(circle at top right, #ff80ab 0, transparent 25%),
+        linear-gradient(145deg, #4614b8, #0f8b8d 55%, #00c853);
+      color: #fff;
       display: flex;
-      align-items: center;
       justify-content: center;
-      padding: 14px;
+      align-items: center;
+      padding: 10px;
     }
 
-    .game-container {
+    .app {
       width: 100%;
-      max-width: 430px;
-      background: #ffffff;
-      border-radius: 24px;
-      padding: 18px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.14);
-      text-align: center;
-      position: relative;
+      max-width: 440px;
+      min-height: 92vh;
+      background: rgba(15, 23, 42, 0.92);
+      border: 3px solid rgba(255, 255, 255, 0.25);
+      border-radius: 28px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
       overflow: hidden;
-    }
-
-    .badge {
-      display: inline-block;
-      background: #dcfce7;
-      color: #166534;
-      font-weight: bold;
-      padding: 6px 12px;
-      border-radius: 999px;
-      font-size: 0.82rem;
-      margin-bottom: 8px;
-    }
-
-    h1 {
-      margin: 6px 0 8px;
-      font-size: 1.45rem;
-      color: #14532d;
-    }
-
-    .subtitle {
-      font-size: 0.95rem;
-      line-height: 1.4;
-      margin: 0 0 14px;
-      color: #475569;
-    }
-
-    .teacher {
-      font-size: 0.82rem;
-      color: #64748b;
-      margin-top: 8px;
+      position: relative;
     }
 
     .screen {
       display: none;
+      padding: 16px;
+      min-height: 92vh;
     }
 
     .screen.active {
-      display: block;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .top-badge {
+      display: inline-block;
+      align-self: center;
+      background: linear-gradient(90deg, #ffeb3b, #ff9800);
+      color: #3b2600;
+      font-weight: 900;
+      padding: 7px 14px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      box-shadow: 0 4px 0 #a16207;
+    }
+
+    h1 {
+      margin: 12px 0 8px;
+      text-align: center;
+      font-size: 1.65rem;
+      line-height: 1.08;
+      color: #fff;
+      text-shadow: 0 3px 0 rgba(0, 0, 0, 0.25);
+    }
+
+    h2 {
+      margin: 8px 0;
+      text-align: center;
+      font-size: 1.18rem;
+    }
+
+    p {
+      margin: 8px 0;
+      line-height: 1.35;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #dbeafe;
+      font-size: 0.96rem;
+    }
+
+    .teacher {
+      text-align: center;
+      color: #cbd5e1;
+      font-size: 0.78rem;
+      margin-top: auto;
+      padding-top: 10px;
     }
 
     .input-box {
-      margin: 14px 0;
-      text-align: left;
+      margin-top: 12px;
     }
 
     label {
       display: block;
-      font-weight: bold;
+      font-weight: 800;
+      color: #fef08a;
       margin-bottom: 6px;
-      color: #334155;
+      font-size: 0.92rem;
     }
 
     input {
       width: 100%;
+      border: 2px solid #facc15;
+      border-radius: 16px;
       padding: 14px;
-      border-radius: 14px;
-      border: 2px solid #cbd5e1;
       font-size: 1rem;
       outline: none;
+      background: #fff;
+      color: #111827;
     }
 
     input:focus {
       border-color: #22c55e;
-    }
-
-    .progress-area {
-      margin: 12px 0;
-      background: #e5e7eb;
-      height: 14px;
-      border-radius: 999px;
-      overflow: hidden;
-    }
-
-    .progress-bar {
-      width: 0%;
-      height: 100%;
-      background: linear-gradient(90deg, #22c55e, #16a34a);
-      transition: width 0.3s ease;
-    }
-
-    .score-line {
-      font-weight: bold;
-      margin: 8px 0 12px;
-      color: #14532d;
-    }
-
-    .phrase-card {
-      background: #f8fafc;
-      border: 2px solid #dbeafe;
-      border-radius: 20px;
-      padding: 18px 12px;
-      margin: 12px 0;
-    }
-
-    .phrase-label {
-      font-size: 0.8rem;
-      color: #64748b;
-      margin-bottom: 8px;
-    }
-
-    .phrase {
-      font-size: 1.55rem;
-      font-weight: bold;
-      color: #111827;
-      line-height: 1.25;
-    }
-
-    .translation {
-      margin-top: 8px;
-      color: #64748b;
-      font-size: 0.92rem;
-    }
-
-    .tip {
-      margin-top: 8px;
-      font-size: 0.85rem;
-      color: #475569;
-      background: #fef9c3;
-      border-radius: 12px;
-      padding: 8px;
-    }
-
-    .button-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
-      margin-top: 14px;
+      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.25);
     }
 
     button {
+      width: 100%;
       border: none;
-      border-radius: 16px;
-      padding: 15px 14px;
-      font-size: 1.05rem;
-      font-weight: bold;
+      border-radius: 18px;
+      padding: 15px 12px;
+      font-size: 1.02rem;
+      font-weight: 900;
       cursor: pointer;
-      transition: transform 0.12s ease, opacity 0.2s ease;
       min-height: 54px;
+      transition: transform 0.1s ease, filter 0.2s ease, opacity 0.2s ease;
+      box-shadow: 0 5px 0 rgba(0, 0, 0, 0.25);
     }
 
     button:active {
-      transform: scale(0.97);
+      transform: translateY(3px);
+      box-shadow: 0 2px 0 rgba(0, 0, 0, 0.25);
     }
 
     button:disabled {
@@ -181,52 +148,225 @@
       cursor: not-allowed;
     }
 
-    .btn-primary {
-      background: #22c55e;
-      color: white;
+    .btn-green {
+      background: linear-gradient(180deg, #4ade80, #16a34a);
+      color: #052e16;
     }
 
-    .btn-secondary {
-      background: #2563eb;
-      color: white;
+    .btn-blue {
+      background: linear-gradient(180deg, #60a5fa, #2563eb);
+      color: #fff;
     }
 
-    .btn-warning {
-      background: #f59e0b;
-      color: white;
+    .btn-yellow {
+      background: linear-gradient(180deg, #fde047, #f59e0b);
+      color: #422006;
+    }
+
+    .btn-red {
+      background: linear-gradient(180deg, #fb7185, #e11d48);
+      color: #fff;
+    }
+
+    .btn-purple {
+      background: linear-gradient(180deg, #c084fc, #7c3aed);
+      color: #fff;
     }
 
     .btn-dark {
-      background: #111827;
-      color: white;
+      background: linear-gradient(180deg, #334155, #111827);
+      color: #fff;
     }
 
-    .btn-light {
-      background: #e2e8f0;
-      color: #1e293b;
+    .button-grid {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .button-grid.two {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .phase-map {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      margin: 14px 0;
+    }
+
+    .phase-tile {
+      min-height: 68px;
+      border-radius: 18px;
+      border: 2px solid rgba(255, 255, 255, 0.25);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-weight: 900;
+      position: relative;
+      text-align: center;
+      font-size: 0.78rem;
+    }
+
+    .phase-tile.open {
+      background: linear-gradient(180deg, #ffeb3b, #ff9800);
+      color: #422006;
+      border-color: #fff7ad;
+      animation: pulse 1.4s infinite;
+    }
+
+    .phase-tile.done {
+      background: linear-gradient(180deg, #4ade80, #16a34a);
+      color: #052e16;
+    }
+
+    .phase-tile.locked {
+      background: rgba(148, 163, 184, 0.25);
+      color: #cbd5e1;
+      opacity: 0.8;
+    }
+
+    .phase-number {
+      font-size: 1.2rem;
+      margin-bottom: 2px;
+    }
+
+    .lock {
+      font-size: 1.25rem;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.04); }
+      100% { transform: scale(1); }
+    }
+
+    .hud {
+      background: rgba(255, 255, 255, 0.12);
+      border: 2px solid rgba(255, 255, 255, 0.18);
+      border-radius: 20px;
+      padding: 10px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .hud-card {
+      background: rgba(15, 23, 42, 0.65);
+      border-radius: 14px;
+      padding: 8px;
+      text-align: center;
+      font-size: 0.84rem;
+      font-weight: 800;
+    }
+
+    .hud-card strong {
+      display: block;
+      color: #fef08a;
+      font-size: 1.05rem;
+      margin-top: 3px;
+    }
+
+    .progress-wrap {
+      height: 14px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.18);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 10px;
+      border: 1px solid rgba(255,255,255,0.18);
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #ffeb3b, #22c55e, #38bdf8);
+      transition: width 0.3s ease;
+    }
+
+    .phrase-card {
+      background: linear-gradient(180deg, #ffffff, #e0f2fe);
+      color: #0f172a;
+      border-radius: 24px;
+      padding: 14px;
+      margin-top: 12px;
+      border: 3px solid #facc15;
+      box-shadow: 0 7px 0 #a16207;
+      text-align: center;
+    }
+
+    .content-tag {
+      display: inline-block;
+      background: #312e81;
+      color: #fff;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 900;
+      margin-bottom: 8px;
+    }
+
+    .sentence-type {
+      display: inline-block;
+      background: #fce7f3;
+      color: #9d174d;
+      padding: 5px 9px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 900;
+      margin-left: 4px;
+      margin-bottom: 8px;
+    }
+
+    .phrase {
+      font-size: 1.55rem;
+      line-height: 1.18;
+      font-weight: 900;
+      color: #111827;
+      margin: 8px 0;
+    }
+
+    .translation {
+      color: #334155;
+      font-size: 0.92rem;
+      font-weight: 700;
+    }
+
+    .tip {
+      background: #fef3c7;
+      color: #713f12;
+      border-radius: 14px;
+      padding: 8px;
+      margin-top: 9px;
+      font-size: 0.84rem;
+      font-weight: 700;
     }
 
     .spoken-box {
-      margin-top: 14px;
-      background: #f1f5f9;
-      padding: 12px;
-      border-radius: 16px;
-      text-align: left;
-      font-size: 0.95rem;
-      min-height: 52px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 2px dashed rgba(255, 255, 255, 0.28);
+      border-radius: 18px;
+      padding: 10px;
+      margin-top: 12px;
+      min-height: 66px;
+      font-size: 0.93rem;
+      color: #e0f2fe;
     }
 
     .spoken-box strong {
-      color: #0f172a;
+      color: #fef08a;
     }
 
     .feedback {
-      margin-top: 12px;
-      padding: 12px;
-      border-radius: 16px;
-      font-weight: bold;
-      font-size: 1.05rem;
       display: none;
+      margin-top: 10px;
+      border-radius: 18px;
+      padding: 12px;
+      font-weight: 900;
+      text-align: center;
+      font-size: 1rem;
     }
 
     .feedback.show {
@@ -235,127 +375,175 @@
 
     .feedback.correct {
       background: #dcfce7;
-      color: #166534;
-      border: 2px solid #22c55e;
+      color: #14532d;
+      border: 3px solid #22c55e;
     }
 
     .feedback.wrong {
       background: #fee2e2;
       color: #991b1b;
-      border: 2px solid #ef4444;
+      border: 3px solid #ef4444;
     }
 
     .feedback.info {
       background: #dbeafe;
-      color: #1d4ed8;
-      border: 2px solid #60a5fa;
+      color: #1e40af;
+      border: 3px solid #60a5fa;
     }
 
     .ranking-list {
       list-style: none;
       padding: 0;
-      margin: 16px 0;
-      text-align: left;
+      margin: 12px 0;
     }
 
     .ranking-list li {
-      background: #f8fafc;
+      background: rgba(255, 255, 255, 0.12);
+      border: 2px solid rgba(255, 255, 255, 0.18);
+      padding: 10px;
+      border-radius: 16px;
       margin-bottom: 8px;
-      padding: 12px;
-      border-radius: 14px;
-      font-weight: bold;
-      border: 1px solid #e2e8f0;
+      font-weight: 800;
+      color: #fff;
     }
 
     .ranking-list li.you {
-      background: #dcfce7;
-      border: 2px solid #22c55e;
-      color: #14532d;
+      background: linear-gradient(180deg, #fef08a, #f59e0b);
+      color: #422006;
+      border-color: #fff7ad;
     }
 
     .final-score {
-      font-size: 1.4rem;
-      font-weight: bold;
+      background: #dcfce7;
       color: #14532d;
+      border-radius: 20px;
+      padding: 14px;
+      text-align: center;
+      font-size: 1.35rem;
+      font-weight: 900;
       margin: 12px 0;
     }
 
     .motivation {
-      font-size: 1.08rem;
-      font-weight: bold;
-      margin: 12px 0;
-      padding: 12px;
-      border-radius: 16px;
       background: #fef3c7;
-      color: #92400e;
+      color: #78350f;
+      border-radius: 18px;
+      padding: 12px;
+      font-weight: 900;
+      text-align: center;
+      margin-bottom: 12px;
     }
 
-    .small-note {
+    .mini-note {
+      color: #cbd5e1;
       font-size: 0.78rem;
-      color: #64748b;
+      text-align: center;
       line-height: 1.35;
       margin-top: 10px;
     }
 
-    @media (min-width: 390px) {
-      .button-grid.two {
-        grid-template-columns: 1fr 1fr;
+    @media (max-height: 720px) {
+      .screen {
+        padding: 12px;
+      }
+
+      h1 {
+        font-size: 1.35rem;
+        margin: 8px 0 5px;
+      }
+
+      .subtitle {
+        font-size: 0.85rem;
+      }
+
+      .phase-tile {
+        min-height: 56px;
+        border-radius: 14px;
+      }
+
+      .phrase {
+        font-size: 1.32rem;
+      }
+
+      button {
+        min-height: 48px;
+        padding: 12px 10px;
+        font-size: 0.95rem;
+      }
+
+      .phrase-card {
+        padding: 11px;
+        margin-top: 9px;
       }
     }
   </style>
 </head>
 
 <body>
-  <main class="game-container">
+  <main class="app">
 
-    <!-- TELA INICIAL -->
     <section id="startScreen" class="screen active">
-      <span class="badge">Listening + Speaking</span>
-      <h1>English Speaking Challenge</h1>
+      <span class="top-badge">English Voice Challenge</span>
+      <h1>Listening & Speaking Game</h1>
       <p class="subtitle">
-        Ouça a frase, tente repetir em inglês e veja sua pontuação no ranking motivacional.
+        Ouça, repita em inglês e desbloqueie as fases até chegar ao ranking final.
       </p>
 
       <div class="input-box">
         <label for="playerName">Nome do aluno:</label>
-        <input id="playerName" type="text" placeholder="Digite seu nome" />
+        <input id="playerName" type="text" placeholder="Digite seu nome">
       </div>
 
       <div class="input-box">
         <label for="playerSchool">Escola:</label>
-        <input id="playerSchool" type="text" placeholder="Digite sua escola" />
+        <input id="playerSchool" type="text" placeholder="Digite sua escola">
       </div>
 
-      <button class="btn-primary" onclick="startGame()">▶ Começar desafio</button>
+      <h2>Mapa das Fases</h2>
+      <div id="startPhaseMap" class="phase-map"></div>
+
+      <button class="btn-green" onclick="startGame()">▶ Começar Fase 1</button>
+
+      <p class="mini-note">
+        Dica: primeiro toque em “Ouvir”, depois toque em “Falar” e repita a frase.
+        No celular, o microfone funciona melhor no Chrome Android.
+      </p>
 
       <p class="teacher">Jogo idealizado pelo Prof. Jasson Bruno.</p>
-      <p class="small-note">
-        Este jogo usa a voz e o microfone do navegador. No celular, funciona melhor no Chrome Android.
-      </p>
     </section>
 
-    <!-- TELA DO JOGO -->
     <section id="gameScreen" class="screen">
-      <span class="badge" id="categoryBadge">Tema</span>
+      <span class="top-badge" id="phaseTitle">Fase 1</span>
 
-      <div class="score-line">
-        Pontuação: <span id="scoreText">0/0</span>
+      <div class="hud">
+        <div class="hud-card">
+          Pontuação
+          <strong id="scoreText">0/100</strong>
+        </div>
+        <div class="hud-card">
+          Frase
+          <strong id="questionText">1/10</strong>
+        </div>
       </div>
 
-      <div class="progress-area">
-        <div class="progress-bar" id="progressBar"></div>
+      <div class="progress-wrap">
+        <div id="progressBar" class="progress-bar"></div>
       </div>
+
+      <div id="gamePhaseMap" class="phase-map"></div>
 
       <div class="phrase-card">
-        <div class="phrase-label">Frase para ouvir e repetir:</div>
-        <div class="phrase" id="phraseText">Phrase here</div>
-        <div class="translation" id="translationText">Tradução</div>
-        <div class="tip" id="tipText">Dica</div>
+        <span id="contentTag" class="content-tag">Tema</span>
+        <span id="sentenceType" class="sentence-type">Tipo</span>
+
+        <div id="phraseText" class="phrase">I am happy.</div>
+        <div id="translationText" class="translation">Eu estou feliz.</div>
+        <div id="tipText" class="tip">Dica: I am = eu sou / estou.</div>
       </div>
 
       <div class="button-grid two">
-        <button class="btn-secondary" onclick="speakPhrase()">🔊 Ouvir</button>
-        <button class="btn-warning" onclick="startRecognition()">🎤 Falar</button>
+        <button class="btn-blue" onclick="speakPhrase()">🔊 Ouvir</button>
+        <button class="btn-yellow" onclick="startRecognition()">🎤 Falar</button>
       </div>
 
       <div class="spoken-box">
@@ -366,26 +554,21 @@
       <div id="feedbackBox" class="feedback"></div>
 
       <div class="button-grid">
-        <button class="btn-dark" id="nextButton" onclick="nextQuestion()" disabled>Próxima ➜</button>
+        <button id="nextButton" class="btn-purple" onclick="nextQuestion()" disabled>Próxima ➜</button>
       </div>
-
-      <p class="small-note">
-        Se o microfone não funcionar, o jogo continua normalmente. O importante é treinar a escuta e a repetição.
-      </p>
     </section>
 
-    <!-- TELA FINAL -->
     <section id="endScreen" class="screen">
-      <span class="badge">Resultado Final</span>
-      <h1>Challenge Completed!</h1>
+      <span class="top-badge">Resultado Final</span>
+      <h1>Journey Completed!</h1>
 
-      <div class="final-score" id="finalScore">Pontuação: 0/0</div>
-      <div class="motivation" id="motivationText"></div>
+      <div id="finalScore" class="final-score">Pontuação: 0/100</div>
+      <div id="motivationText" class="motivation"></div>
 
-      <h2 style="font-size:1.2rem; color:#14532d;">🏆 Ranking Motivacional</h2>
-      <ol class="ranking-list" id="rankingList"></ol>
+      <h2>🏆 Ranking Motivacional</h2>
+      <ol id="rankingList" class="ranking-list"></ol>
 
-      <button class="btn-primary" onclick="restartGame()">🔁 Jogar novamente</button>
+      <button class="btn-green" onclick="restartGame()">🔁 Jogar novamente</button>
 
       <p class="teacher">Jogo idealizado pelo Prof. Jasson Bruno.</p>
     </section>
@@ -394,142 +577,207 @@
 
   <script>
     /*
-      English Speaking Challenge
-      HTML + CSS + JavaScript puro
-      Usa:
-      - SpeechSynthesis para ouvir a frase
-      - SpeechRecognition / webkitSpeechRecognition para tentar reconhecer a fala
+      English Voice Challenge
+      Jogo em HTML, CSS e JavaScript puro.
+      Funciona com:
+      - SpeechSynthesis: voz do navegador para ouvir as frases.
+      - SpeechRecognition / webkitSpeechRecognition: microfone para capturar a fala.
+      - 10 fases com 10 frases cada.
+      - Fases bloqueadas visualmente com cadeados.
     */
 
-    const questions = [
+    const phases = [
       {
-        category: "Verb to be",
-        phrase: "I am happy",
-        translation: "Eu estou feliz.",
-        tip: "Dica: I am = eu sou / eu estou."
+        title: "Fase 1 - Verb to be",
+        items: [
+          { topic: "Verb to be", type: "Afirmativa", phrase: "I am happy", pt: "Eu estou feliz.", tip: "I am = eu sou / eu estou." },
+          { topic: "Verb to be", type: "Negativa", phrase: "I am not sad", pt: "Eu não estou triste.", tip: "am not = não sou / não estou." },
+          { topic: "Verb to be", type: "Interrogativa", phrase: "Am I late?", pt: "Eu estou atrasado?", tip: "Pergunta com I: Am I...?" },
+          { topic: "Verb to be", type: "Afirmativa", phrase: "She is my friend", pt: "Ela é minha amiga.", tip: "She is = ela é / está." },
+          { topic: "Verb to be", type: "Negativa", phrase: "He is not tired", pt: "Ele não está cansado.", tip: "is not = não é / não está." },
+          { topic: "Verb to be", type: "Interrogativa", phrase: "Is she a student?", pt: "Ela é estudante?", tip: "Pergunta com she: Is she...?" },
+          { topic: "Verb to be", type: "Afirmativa", phrase: "They are students", pt: "Eles são estudantes.", tip: "They are = eles/elas são." },
+          { topic: "Verb to be", type: "Negativa", phrase: "We are not at home", pt: "Nós não estamos em casa.", tip: "are not = não são / não estão." },
+          { topic: "Verb to be", type: "Interrogativa", phrase: "Are you ready?", pt: "Você está pronto?", tip: "Pergunta com you: Are you...?" },
+          { topic: "Verb to be", type: "Afirmativa", phrase: "It is sunny", pt: "Está ensolarado.", tip: "It is pode falar sobre clima." }
+        ]
       },
       {
-        category: "Verb to be",
-        phrase: "She is my friend",
-        translation: "Ela é minha amiga.",
-        tip: "Dica: She is = ela é / ela está."
+        title: "Fase 2 - Giving opinions",
+        items: [
+          { topic: "Giving opinions", type: "Afirmativa", phrase: "I like pizza", pt: "Eu gosto de pizza.", tip: "I like = eu gosto." },
+          { topic: "Giving opinions", type: "Negativa", phrase: "I don't like homework", pt: "Eu não gosto de tarefa de casa.", tip: "I don't like = eu não gosto." },
+          { topic: "Giving opinions", type: "Interrogativa", phrase: "Do you like English?", pt: "Você gosta de inglês?", tip: "Pergunta com you: Do you like...?" },
+          { topic: "Giving opinions", type: "Afirmativa", phrase: "I like music", pt: "Eu gosto de música.", tip: "music = música." },
+          { topic: "Giving opinions", type: "Negativa", phrase: "I don't like noise", pt: "Eu não gosto de barulho.", tip: "noise = barulho." },
+          { topic: "Giving opinions", type: "Interrogativa", phrase: "Do you like games?", pt: "Você gosta de jogos?", tip: "games = jogos." },
+          { topic: "Giving opinions", type: "Afirmativa", phrase: "She likes soccer", pt: "Ela gosta de futebol.", tip: "Com she, usamos likes." },
+          { topic: "Giving opinions", type: "Negativa", phrase: "He doesn't like rain", pt: "Ele não gosta de chuva.", tip: "He doesn't like = ele não gosta." },
+          { topic: "Giving opinions", type: "Interrogativa", phrase: "Does he like school?", pt: "Ele gosta da escola?", tip: "Com he, a pergunta começa com Does." },
+          { topic: "Giving opinions", type: "Afirmativa", phrase: "We like English class", pt: "Nós gostamos da aula de inglês.", tip: "We like = nós gostamos." }
+        ]
       },
       {
-        category: "Verb to be",
-        phrase: "They are students",
-        translation: "Eles são estudantes.",
-        tip: "Dica: They are = eles/elas são."
+        title: "Fase 3 - Frequency",
+        items: [
+          { topic: "Adverbs of frequency", type: "Afirmativa", phrase: "I always study English", pt: "Eu sempre estudo inglês.", tip: "always = sempre." },
+          { topic: "Adverbs of frequency", type: "Negativa", phrase: "I never sleep in class", pt: "Eu nunca durmo na aula.", tip: "never = nunca." },
+          { topic: "Adverbs of frequency", type: "Interrogativa", phrase: "Do you always study?", pt: "Você sempre estuda?", tip: "Do you... para perguntar." },
+          { topic: "Adverbs of frequency", type: "Afirmativa", phrase: "I usually play soccer", pt: "Eu geralmente jogo futebol.", tip: "usually = geralmente." },
+          { topic: "Adverbs of frequency", type: "Negativa", phrase: "I don't usually eat candy", pt: "Eu geralmente não como doce.", tip: "don't usually = geralmente não." },
+          { topic: "Adverbs of frequency", type: "Interrogativa", phrase: "Do you often read?", pt: "Você lê frequentemente?", tip: "often = frequentemente." },
+          { topic: "Adverbs of frequency", type: "Afirmativa", phrase: "She sometimes watches TV", pt: "Ela às vezes assiste TV.", tip: "sometimes = às vezes." },
+          { topic: "Adverbs of frequency", type: "Negativa", phrase: "He never plays here", pt: "Ele nunca joga aqui.", tip: "never pode aparecer antes do verbo." },
+          { topic: "Adverbs of frequency", type: "Interrogativa", phrase: "Does she usually dance?", pt: "Ela geralmente dança?", tip: "Com she, use Does." },
+          { topic: "Adverbs of frequency", type: "Afirmativa", phrase: "We often speak English", pt: "Nós frequentemente falamos inglês.", tip: "speak = falar." }
+        ]
       },
       {
-        category: "Verb to be",
-        phrase: "We are at school",
-        translation: "Nós estamos na escola.",
-        tip: "Dica: We are = nós somos / estamos."
+        title: "Fase 4 - Life / lives",
+        items: [
+          { topic: "Life / lives", type: "Afirmativa", phrase: "I like this life", pt: "Eu gosto desta vida.", tip: "life = vida." },
+          { topic: "Life / lives", type: "Negativa", phrase: "I don't like this life", pt: "Eu não gosto desta vida.", tip: "don't like = não gosto." },
+          { topic: "Life / lives", type: "Interrogativa", phrase: "Do you like this life?", pt: "Você gosta desta vida?", tip: "Do you like...? = Você gosta...?" },
+          { topic: "Life / lives", type: "Afirmativa", phrase: "She lives in Brazil", pt: "Ela mora no Brasil.", tip: "lives = mora / vive." },
+          { topic: "Life / lives", type: "Negativa", phrase: "He doesn't live here", pt: "Ele não mora aqui.", tip: "doesn't live = não mora." },
+          { topic: "Life / lives", type: "Interrogativa", phrase: "Does she live here?", pt: "Ela mora aqui?", tip: "Does she live...? = Ela mora...?" },
+          { topic: "Life / lives", type: "Afirmativa", phrase: "He lives near school", pt: "Ele mora perto da escola.", tip: "near school = perto da escola." },
+          { topic: "Life / lives", type: "Negativa", phrase: "They don't live in Brazil", pt: "Eles não moram no Brasil.", tip: "They don't live = eles não moram." },
+          { topic: "Life / lives", type: "Interrogativa", phrase: "Do they live near school?", pt: "Eles moram perto da escola?", tip: "Do they live...? = Eles moram...?" },
+          { topic: "Life / lives", type: "Afirmativa", phrase: "Life is good", pt: "A vida é boa.", tip: "Life is = a vida é." }
+        ]
       },
       {
-        category: "Giving opinions",
-        phrase: "I like pizza",
-        translation: "Eu gosto de pizza.",
-        tip: "Dica: I like = eu gosto."
+        title: "Fase 5 - Mixed practice",
+        items: [
+          { topic: "Mixed", type: "Afirmativa", phrase: "I am a student", pt: "Eu sou estudante.", tip: "I am = eu sou." },
+          { topic: "Mixed", type: "Negativa", phrase: "I am not angry", pt: "Eu não estou bravo.", tip: "angry = bravo." },
+          { topic: "Mixed", type: "Interrogativa", phrase: "Are they friends?", pt: "Eles são amigos?", tip: "Are they...? = Eles são...?" },
+          { topic: "Mixed", type: "Afirmativa", phrase: "I like my school", pt: "Eu gosto da minha escola.", tip: "my school = minha escola." },
+          { topic: "Mixed", type: "Negativa", phrase: "She doesn't like coffee", pt: "Ela não gosta de café.", tip: "She doesn't like = ela não gosta." },
+          { topic: "Mixed", type: "Interrogativa", phrase: "Do you like breakfast?", pt: "Você gosta de café da manhã?", tip: "breakfast = café da manhã." },
+          { topic: "Mixed", type: "Afirmativa", phrase: "I sometimes study at night", pt: "Eu às vezes estudo à noite.", tip: "at night = à noite." },
+          { topic: "Mixed", type: "Negativa", phrase: "I never run at school", pt: "Eu nunca corro na escola.", tip: "never = nunca." },
+          { topic: "Mixed", type: "Interrogativa", phrase: "Does he live in Santarem?", pt: "Ele mora em Santarém?", tip: "Does he live...? = Ele mora...?" },
+          { topic: "Mixed", type: "Afirmativa", phrase: "She is very kind", pt: "Ela é muito gentil.", tip: "kind = gentil." }
+        ]
       },
       {
-        category: "Giving opinions",
-        phrase: "I like English",
-        translation: "Eu gosto de inglês.",
-        tip: "Dica: English = inglês."
+        title: "Fase 6 - School sentences",
+        items: [
+          { topic: "School", type: "Afirmativa", phrase: "We are in class", pt: "Nós estamos na aula.", tip: "in class = na aula." },
+          { topic: "School", type: "Negativa", phrase: "They are not late", pt: "Eles não estão atrasados.", tip: "late = atrasado." },
+          { topic: "School", type: "Interrogativa", phrase: "Is the teacher here?", pt: "O professor está aqui?", tip: "teacher = professor." },
+          { topic: "School", type: "Afirmativa", phrase: "I like English class", pt: "Eu gosto da aula de inglês.", tip: "English class = aula de inglês." },
+          { topic: "School", type: "Negativa", phrase: "I don't like tests", pt: "Eu não gosto de provas.", tip: "tests = provas." },
+          { topic: "School", type: "Interrogativa", phrase: "Do you like your teacher?", pt: "Você gosta do seu professor?", tip: "your teacher = seu professor." },
+          { topic: "School", type: "Afirmativa", phrase: "I always do homework", pt: "Eu sempre faço tarefa.", tip: "do homework = fazer tarefa." },
+          { topic: "School", type: "Negativa", phrase: "I don't often speak in class", pt: "Eu não falo frequentemente na aula.", tip: "speak = falar." },
+          { topic: "School", type: "Interrogativa", phrase: "Do they study English?", pt: "Eles estudam inglês?", tip: "Do they study...? = Eles estudam...?" },
+          { topic: "School", type: "Afirmativa", phrase: "School life is important", pt: "A vida escolar é importante.", tip: "school life = vida escolar." }
+        ]
       },
       {
-        category: "Giving opinions",
-        phrase: "I don't like homework",
-        translation: "Eu não gosto de tarefa de casa.",
-        tip: "Dica: I don't like = eu não gosto."
+        title: "Fase 7 - Family and routine",
+        items: [
+          { topic: "Routine", type: "Afirmativa", phrase: "My family is happy", pt: "Minha família está feliz.", tip: "family = família." },
+          { topic: "Routine", type: "Negativa", phrase: "My brother is not here", pt: "Meu irmão não está aqui.", tip: "brother = irmão." },
+          { topic: "Routine", type: "Interrogativa", phrase: "Is your mother at home?", pt: "Sua mãe está em casa?", tip: "mother = mãe." },
+          { topic: "Routine", type: "Afirmativa", phrase: "I like breakfast", pt: "Eu gosto de café da manhã.", tip: "breakfast = café da manhã." },
+          { topic: "Routine", type: "Negativa", phrase: "I don't like cold coffee", pt: "Eu não gosto de café frio.", tip: "cold = frio." },
+          { topic: "Routine", type: "Interrogativa", phrase: "Do you like bread?", pt: "Você gosta de pão?", tip: "bread = pão." },
+          { topic: "Routine", type: "Afirmativa", phrase: "She usually eats bread", pt: "Ela geralmente come pão.", tip: "usually = geralmente." },
+          { topic: "Routine", type: "Negativa", phrase: "He never drinks soda", pt: "Ele nunca bebe refrigerante.", tip: "soda = refrigerante." },
+          { topic: "Routine", type: "Interrogativa", phrase: "Does he usually play?", pt: "Ele geralmente joga?", tip: "Does he...? = Ele...?" },
+          { topic: "Routine", type: "Afirmativa", phrase: "He lives with his family", pt: "Ele mora com a família dele.", tip: "with his family = com a família dele." }
+        ]
       },
       {
-        category: "Giving opinions",
-        phrase: "I don't like noise",
-        translation: "Eu não gosto de barulho.",
-        tip: "Dica: noise = barulho."
+        title: "Fase 8 - Feelings and opinions",
+        items: [
+          { topic: "Feelings", type: "Afirmativa", phrase: "I am excited", pt: "Eu estou animado.", tip: "excited = animado." },
+          { topic: "Feelings", type: "Negativa", phrase: "She is not nervous", pt: "Ela não está nervosa.", tip: "nervous = nervoso." },
+          { topic: "Feelings", type: "Interrogativa", phrase: "Are you happy today?", pt: "Você está feliz hoje?", tip: "today = hoje." },
+          { topic: "Feelings", type: "Afirmativa", phrase: "I like funny videos", pt: "Eu gosto de vídeos engraçados.", tip: "funny = engraçado." },
+          { topic: "Feelings", type: "Negativa", phrase: "I don't like sad movies", pt: "Eu não gosto de filmes tristes.", tip: "sad movies = filmes tristes." },
+          { topic: "Feelings", type: "Interrogativa", phrase: "Do you like music?", pt: "Você gosta de música?", tip: "music = música." },
+          { topic: "Feelings", type: "Afirmativa", phrase: "I always smile", pt: "Eu sempre sorrio.", tip: "smile = sorrir." },
+          { topic: "Feelings", type: "Negativa", phrase: "I never give up", pt: "Eu nunca desisto.", tip: "give up = desistir." },
+          { topic: "Feelings", type: "Interrogativa", phrase: "Does she like this song?", pt: "Ela gosta desta música?", tip: "song = música/canção." },
+          { topic: "Feelings", type: "Afirmativa", phrase: "This life is beautiful", pt: "Esta vida é bonita.", tip: "beautiful = bonita." }
+        ]
       },
       {
-        category: "Adverbs of frequency",
-        phrase: "I always study English",
-        translation: "Eu sempre estudo inglês.",
-        tip: "Dica: always = sempre."
+        title: "Fase 9 - Places",
+        items: [
+          { topic: "Places", type: "Afirmativa", phrase: "I am at school", pt: "Eu estou na escola.", tip: "at school = na escola." },
+          { topic: "Places", type: "Negativa", phrase: "He is not at the park", pt: "Ele não está no parque.", tip: "park = parque." },
+          { topic: "Places", type: "Interrogativa", phrase: "Are they at home?", pt: "Eles estão em casa?", tip: "at home = em casa." },
+          { topic: "Places", type: "Afirmativa", phrase: "I like the park", pt: "Eu gosto do parque.", tip: "the park = o parque." },
+          { topic: "Places", type: "Negativa", phrase: "I don't like the hospital", pt: "Eu não gosto do hospital.", tip: "hospital = hospital." },
+          { topic: "Places", type: "Interrogativa", phrase: "Do you like the museum?", pt: "Você gosta do museu?", tip: "museum = museu." },
+          { topic: "Places", type: "Afirmativa", phrase: "She sometimes goes to school", pt: "Ela às vezes vai para a escola.", tip: "goes to school = vai para a escola." },
+          { topic: "Places", type: "Negativa", phrase: "He never goes there", pt: "Ele nunca vai lá.", tip: "there = lá." },
+          { topic: "Places", type: "Interrogativa", phrase: "Does she live near the park?", pt: "Ela mora perto do parque?", tip: "near the park = perto do parque." },
+          { topic: "Places", type: "Afirmativa", phrase: "They live in Brazil", pt: "Eles moram no Brasil.", tip: "They live = eles moram." }
+        ]
       },
       {
-        category: "Adverbs of frequency",
-        phrase: "I usually play soccer",
-        translation: "Eu geralmente jogo futebol.",
-        tip: "Dica: usually = geralmente."
-      },
-      {
-        category: "Adverbs of frequency",
-        phrase: "I often read books",
-        translation: "Eu frequentemente leio livros.",
-        tip: "Dica: often = frequentemente."
-      },
-      {
-        category: "Adverbs of frequency",
-        phrase: "I sometimes watch TV",
-        translation: "Eu às vezes assisto TV.",
-        tip: "Dica: sometimes = às vezes."
-      },
-      {
-        category: "Adverbs of frequency",
-        phrase: "I never sleep in class",
-        translation: "Eu nunca durmo na aula.",
-        tip: "Dica: never = nunca."
-      },
-      {
-        category: "Life / lives",
-        phrase: "I like this life",
-        translation: "Eu gosto desta vida.",
-        tip: "Dica: life = vida."
-      },
-      {
-        category: "Life / lives",
-        phrase: "She lives in Brazil",
-        translation: "Ela mora no Brasil.",
-        tip: "Dica: lives = mora / vive."
-      },
-      {
-        category: "Life / lives",
-        phrase: "He lives near school",
-        translation: "Ele mora perto da escola.",
-        tip: "Dica: near school = perto da escola."
+        title: "Fase 10 - Final challenge",
+        items: [
+          { topic: "Final", type: "Afirmativa", phrase: "I am ready", pt: "Eu estou pronto.", tip: "ready = pronto." },
+          { topic: "Final", type: "Negativa", phrase: "I am not afraid", pt: "Eu não estou com medo.", tip: "afraid = com medo." },
+          { topic: "Final", type: "Interrogativa", phrase: "Are you ready for English?", pt: "Você está pronto para o inglês?", tip: "ready for English = pronto para o inglês." },
+          { topic: "Final", type: "Afirmativa", phrase: "I like learning English", pt: "Eu gosto de aprender inglês.", tip: "learning = aprender." },
+          { topic: "Final", type: "Negativa", phrase: "I don't like giving up", pt: "Eu não gosto de desistir.", tip: "giving up = desistir." },
+          { topic: "Final", type: "Interrogativa", phrase: "Do you like this challenge?", pt: "Você gosta deste desafio?", tip: "challenge = desafio." },
+          { topic: "Final", type: "Afirmativa", phrase: "I always try again", pt: "Eu sempre tento de novo.", tip: "try again = tentar de novo." },
+          { topic: "Final", type: "Negativa", phrase: "I never stop learning", pt: "Eu nunca paro de aprender.", tip: "stop learning = parar de aprender." },
+          { topic: "Final", type: "Interrogativa", phrase: "Does she live a good life?", pt: "Ela vive uma vida boa?", tip: "good life = vida boa." },
+          { topic: "Final", type: "Afirmativa", phrase: "English is part of my life", pt: "O inglês faz parte da minha vida.", tip: "part of my life = parte da minha vida." }
+        ]
       }
     ];
 
-    let shuffledQuestions = [];
-    let currentIndex = 0;
+    let currentPhase = 0;
+    let currentQuestion = 0;
     let score = 0;
+    let totalQuestions = phases.reduce((total, phase) => total + phase.items.length, 0);
     let answeredCurrent = false;
     let playerName = "Você";
-    let playerSchool = "";
+    let playerSchool = "Sua escola";
 
     const startScreen = document.getElementById("startScreen");
     const gameScreen = document.getElementById("gameScreen");
     const endScreen = document.getElementById("endScreen");
 
+    const startPhaseMap = document.getElementById("startPhaseMap");
+    const gamePhaseMap = document.getElementById("gamePhaseMap");
+    const phaseTitle = document.getElementById("phaseTitle");
+    const scoreText = document.getElementById("scoreText");
+    const questionText = document.getElementById("questionText");
+    const progressBar = document.getElementById("progressBar");
+
+    const contentTag = document.getElementById("contentTag");
+    const sentenceType = document.getElementById("sentenceType");
     const phraseText = document.getElementById("phraseText");
     const translationText = document.getElementById("translationText");
     const tipText = document.getElementById("tipText");
-    const categoryBadge = document.getElementById("categoryBadge");
     const spokenText = document.getElementById("spokenText");
     const feedbackBox = document.getElementById("feedbackBox");
     const nextButton = document.getElementById("nextButton");
-    const scoreText = document.getElementById("scoreText");
-    const progressBar = document.getElementById("progressBar");
+
+    renderPhaseMap(startPhaseMap, 0);
 
     function startGame() {
-      const nameInput = document.getElementById("playerName").value.trim();
-      const schoolInput = document.getElementById("playerSchool").value.trim();
+      const name = document.getElementById("playerName").value.trim();
+      const school = document.getElementById("playerSchool").value.trim();
 
-      playerName = nameInput || "Você";
-      playerSchool = schoolInput || "Sua escola";
+      playerName = name || "Você";
+      playerSchool = school || "Sua escola";
 
-      shuffledQuestions = shuffleArray([...questions]);
-      currentIndex = 0;
+      currentPhase = 0;
+      currentQuestion = 0;
       score = 0;
 
       showScreen(gameScreen);
@@ -543,32 +791,59 @@
       screen.classList.add("active");
     }
 
+    function renderPhaseMap(container, activePhase) {
+      container.innerHTML = "";
+
+      phases.forEach((phase, index) => {
+        const tile = document.createElement("div");
+        tile.className = "phase-tile";
+
+        if (index < activePhase) {
+          tile.classList.add("done");
+          tile.innerHTML = `<div class="phase-number">✓</div><div>Fase ${index + 1}</div>`;
+        } else if (index === activePhase) {
+          tile.classList.add("open");
+          tile.innerHTML = `<div class="phase-number">${index + 1}</div><div>Em andamento</div>`;
+        } else {
+          tile.classList.add("locked");
+          tile.innerHTML = `<div class="lock">🔒</div><div>Fase ${index + 1}</div>`;
+        }
+
+        container.appendChild(tile);
+      });
+    }
+
     function loadQuestion() {
       answeredCurrent = false;
       nextButton.disabled = true;
 
-      const current = shuffledQuestions[currentIndex];
+      const item = phases[currentPhase].items[currentQuestion];
 
-      phraseText.textContent = current.phrase;
-      translationText.textContent = current.translation;
-      tipText.textContent = current.tip;
-      categoryBadge.textContent = current.category;
+      phaseTitle.textContent = phases[currentPhase].title;
+      contentTag.textContent = item.topic;
+      sentenceType.textContent = item.type;
+      phraseText.textContent = item.phrase;
+      translationText.textContent = item.pt;
+      tipText.textContent = item.tip;
 
       spokenText.textContent = "Toque em “Falar” e repita a frase.";
       hideFeedback();
 
-      updateScoreAndProgress();
+      renderPhaseMap(gamePhaseMap, currentPhase);
+      updateHud();
     }
 
-    function updateScoreAndProgress() {
-      scoreText.textContent = `${score}/${shuffledQuestions.length}`;
+    function updateHud() {
+      const answeredSoFar = currentPhase * 10 + currentQuestion;
+      const progress = (answeredSoFar / totalQuestions) * 100;
 
-      const progress = ((currentIndex) / shuffledQuestions.length) * 100;
+      scoreText.textContent = `${score}/${totalQuestions}`;
+      questionText.textContent = `${currentQuestion + 1}/10`;
       progressBar.style.width = `${progress}%`;
     }
 
     function speakPhrase() {
-      const current = shuffledQuestions[currentIndex];
+      const item = phases[currentPhase].items[currentQuestion];
 
       if (!("speechSynthesis" in window)) {
         showFeedback("Seu navegador não suporta áudio de voz.", "wrong");
@@ -577,12 +852,11 @@
 
       window.speechSynthesis.cancel();
 
-      const utterance = new SpeechSynthesisUtterance(current.phrase);
+      const utterance = new SpeechSynthesisUtterance(item.phrase);
       utterance.lang = "en-US";
       utterance.rate = 0.82;
       utterance.pitch = 1;
 
-      // Tenta escolher uma voz em inglês, se existir no navegador
       const voices = window.speechSynthesis.getVoices();
       const englishVoice = voices.find(voice => voice.lang && voice.lang.toLowerCase().startsWith("en"));
       if (englishVoice) {
@@ -597,7 +871,7 @@
 
       if (!SpeechRecognition) {
         spokenText.textContent = "Seu navegador não suporta microfone.";
-        showFeedback("Seu navegador não suporta microfone. Você pode ouvir e repetir oralmente mesmo assim.", "info");
+        showFeedback("Seu navegador não suporta microfone. Continue ouvindo e repetindo oralmente.", "info");
         nextButton.disabled = false;
         return;
       }
@@ -620,31 +894,25 @@
 
       recognition.onerror = function() {
         spokenText.textContent = "Não foi possível reconhecer sua fala.";
-        showFeedback("Tente novamente ou toque em Próxima para continuar.", "wrong");
+        showFeedback("❌ Tente novamente ou toque em Próxima para continuar.", "wrong");
         nextButton.disabled = false;
       };
 
       recognition.onend = function() {
-        // Caso o aluno não fale nada, o navegador pode encerrar sem resultado.
         if (spokenText.textContent === "Ouvindo... fale a frase em inglês.") {
           spokenText.textContent = "Nenhuma fala foi reconhecida.";
-          showFeedback("Você não falou nada ou o áudio ficou baixo. Tente novamente.", "wrong");
+          showFeedback("⚠️ Você não falou nada ou o áudio ficou baixo. Tente novamente.", "wrong");
           nextButton.disabled = false;
         }
       };
     }
 
     function checkAnswer(spoken) {
-      const expected = shuffledQuestions[currentIndex].phrase;
+      const expected = phases[currentPhase].items[currentQuestion].phrase;
 
       const normalizedExpected = normalizeText(expected);
       const normalizedSpoken = normalizeText(spoken);
 
-      /*
-        Comparação simples:
-        - aceita se a frase falada contém boa parte da frase esperada
-        - também aceita se várias palavras principais aparecem
-      */
       const expectedWords = normalizedExpected.split(" ");
       let matchedWords = 0;
 
@@ -655,6 +923,7 @@
       });
 
       const similarity = matchedWords / expectedWords.length;
+
       const isCorrect =
         normalizedSpoken.includes(normalizedExpected) ||
         normalizedExpected.includes(normalizedSpoken) ||
@@ -671,7 +940,7 @@
       }
 
       nextButton.disabled = false;
-      updateScoreAndProgress();
+      updateHud();
     }
 
     function normalizeText(text) {
@@ -679,7 +948,9 @@
         .toLowerCase()
         .replace(/[.,!?;:]/g, "")
         .replace(/don't/g, "dont")
+        .replace(/doesn't/g, "doesnt")
         .replace(/do not/g, "dont")
+        .replace(/does not/g, "doesnt")
         .replace(/\s+/g, " ")
         .trim();
     }
@@ -695,9 +966,14 @@
     }
 
     function nextQuestion() {
-      currentIndex++;
+      currentQuestion++;
 
-      if (currentIndex >= shuffledQuestions.length) {
+      if (currentQuestion >= 10) {
+        currentPhase++;
+        currentQuestion = 0;
+      }
+
+      if (currentPhase >= phases.length) {
         finishGame();
       } else {
         loadQuestion();
@@ -708,13 +984,12 @@
       progressBar.style.width = "100%";
       showScreen(endScreen);
 
-      document.getElementById("finalScore").textContent =
-        `Pontuação: ${score}/${shuffledQuestions.length}`;
+      document.getElementById("finalScore").textContent = `Pontuação: ${score}/${totalQuestions}`;
 
-      const percentage = score / shuffledQuestions.length;
+      const percent = score / totalQuestions;
       const motivationText = document.getElementById("motivationText");
 
-      if (percentage >= 0.7) {
+      if (percent >= 0.7) {
         motivationText.textContent = "🔥 Você quase chegou ao topo!";
       } else {
         motivationText.textContent = "💪 Continue treinando para melhorar!";
@@ -727,15 +1002,15 @@
       const rankingList = document.getElementById("rankingList");
 
       const fakeRanking = [
-        { name: "Ana", school: "Escola Delfina de Jesus Amorim", score: 15 },
-        { name: "Carlos", school: "Escola Municipal Frei Ambrósio", score: 13 },
-        { name: "Mariana", school: "Escola Municipal Rotary", score: 12 },
-        { name: "Lucas", school: "Escola Municipal Haroldo Veloso", score: 10 },
-        { name: "Bianca", school: "Escola Municipal Fluminense", score: 8 }
+        { name: "Ana", school: "Escola Delfina de Jesus Amorim", score: 96 },
+        { name: "Carlos", school: "Escola Municipal Frei Ambrósio", score: 91 },
+        { name: "Mariana", school: "Escola Municipal Rotary", score: 84 },
+        { name: "Lucas", school: "Escola Municipal Haroldo Veloso", score: 75 },
+        { name: "Bianca", school: "Escola Municipal Fluminense", score: 68 }
       ];
 
       fakeRanking.push({
-        name: playerName === "Você" ? "Você" : playerName,
+        name: playerName,
         school: playerSchool,
         score: score,
         you: true
@@ -747,36 +1022,26 @@
 
       fakeRanking.forEach((player, index) => {
         const li = document.createElement("li");
+        if (player.you) li.classList.add("you");
 
-        if (player.you) {
-          li.classList.add("you");
-        }
-
-        const position = index + 1;
         const label = player.you ? "Você" : player.name;
-
-        li.textContent = `${position}º ${label} - ${player.school} (${player.score})`;
+        li.textContent = `${index + 1}º ${label} - ${player.school} (${player.score})`;
         rankingList.appendChild(li);
       });
     }
 
     function restartGame() {
-      window.speechSynthesis.cancel();
-      showScreen(startScreen);
+      if ("speechSynthesis" in window) {
+        window.speechSynthesis.cancel();
+      }
 
       document.getElementById("playerName").value = "";
       document.getElementById("playerSchool").value = "";
+
+      renderPhaseMap(startPhaseMap, 0);
+      showScreen(startScreen);
     }
 
-    function shuffleArray(array) {
-      for (let i = array.length - 1; i > 0; i--) {
-        const randomIndex = Math.floor(Math.random() * (i + 1));
-        [array[i], array[randomIndex]] = [array[randomIndex], array[i]];
-      }
-      return array;
-    }
-
-    // Carrega vozes do navegador quando disponíveis
     if ("speechSynthesis" in window) {
       window.speechSynthesis.onvoiceschanged = function() {
         window.speechSynthesis.getVoices();
