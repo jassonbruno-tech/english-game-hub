@@ -7,8 +7,8 @@
 
   <meta property="og:title" content="English Game Hub - 7º Ano" />
   <meta property="og:description" content="Jogos de revisão de Inglês para o 7º ano: Likes and Dislikes, Adverbs of Frequency e Giving Opinions." />
-  <meta property="og:image" content="https://jassonbruno-tech.github.io/english-game-hub/7ano-lets-practice-prof-jasson-bruno.png" />
-  <meta property="og:image:secure_url" content="https://jassonbruno-tech.github.io/english-game-hub/7ano-lets-practice-prof-jasson-bruno.png" />
+  <meta property="og:image" content="https://jassonbruno-tech.github.io/english-game-hub/7ano-lets-practice-banner-prof-jasson-bruno.png" />
+  <meta property="og:image:secure_url" content="https://jassonbruno-tech.github.io/english-game-hub/7ano-lets-practice-banner-prof-jasson-bruno.png" />
   <meta property="og:image:type" content="image/png" />
   <meta property="og:url" content="https://jassonbruno-tech.github.io/english-game-hub/7ano.html" />
   <meta property="og:type" content="website" />
@@ -49,8 +49,7 @@
       position:fixed;
       inset:0;
       pointer-events:none;
-      background-image:
-        radial-gradient(circle, rgba(255,255,255,.20) 1px, transparent 1.5px);
+      background-image: radial-gradient(circle, rgba(255,255,255,.18) 1px, transparent 1.5px);
       background-size:22px 22px;
       opacity:.18;
       mask-image:linear-gradient(to bottom, transparent, black 12%, black 88%, transparent);
@@ -61,10 +60,10 @@
       max-width:520px;
       min-height:100dvh;
       margin:0 auto;
-      padding:12px 12px 18px;
+      padding:14px 12px 18px;
       display:flex;
       flex-direction:column;
-      gap:10px;
+      gap:12px;
       position:relative;
     }
 
@@ -113,69 +112,36 @@
 
     .hero{
       position:relative;
-      border-radius:28px;
+      border-radius:26px;
       overflow:hidden;
       width:100%;
-      height:43dvh;
-      min-height:300px;
-      max-height:445px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:9px;
-      background:rgba(3,9,35,.55);
+      background:
+        radial-gradient(circle at 25% 15%, rgba(255,211,77,.18), transparent 26%),
+        radial-gradient(circle at 78% 15%, rgba(57,215,255,.20), transparent 30%),
+        rgba(3,9,35,.55);
       box-shadow:
         0 18px 46px rgba(0,0,0,.42),
         0 0 0 2px rgba(255,255,255,.12),
         0 0 34px rgba(57,215,255,.22);
-    }
-
-    .hero::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background-image:
-        linear-gradient(rgba(4,10,40,.30), rgba(4,10,40,.30)),
-        url("7ano-lets-practice-prof-jasson-bruno.png");
-      background-size:cover;
-      background-position:center;
-      filter:blur(12px) saturate(1.25) brightness(.82);
-      transform:scale(1.08);
-      opacity:.95;
-    }
-
-    .hero::after{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:
-        radial-gradient(circle at 50% 8%, rgba(255,211,77,.16), transparent 32%),
-        linear-gradient(to bottom, rgba(3,9,35,.10), rgba(3,9,35,.36));
-      pointer-events:none;
+      padding:8px;
     }
 
     .hero img{
-      position:relative;
-      z-index:1;
-      max-width:100%;
-      max-height:100%;
-      width:auto;
-      height:100%;
+      width:100%;
+      height:auto;
       display:block;
-      object-fit:contain;
       border-radius:20px;
-      box-shadow:0 14px 30px rgba(0,0,0,.28);
     }
 
     .notice{
-      padding:12px 13px;
-      border-radius:20px;
+      padding:13px 14px;
+      border-radius:22px;
       background:linear-gradient(135deg, rgba(9,20,67,.86), rgba(22,18,75,.76));
       border:1px solid rgba(255,255,255,.16);
-      box-shadow:0 12px 28px rgba(0,0,0,.23);
+      box-shadow:0 14px 35px rgba(0,0,0,.25);
       color:var(--soft);
-      font-size:.84rem;
-      line-height:1.28;
+      font-size:.88rem;
+      line-height:1.32;
     }
 
     .notice strong{
@@ -185,21 +151,21 @@
     .games{
       display:grid;
       grid-template-columns:1fr;
-      gap:9px;
+      gap:10px;
     }
 
     .game-card{
       position:relative;
       display:flex;
       align-items:center;
-      gap:11px;
-      padding:11px 12px;
+      gap:12px;
+      padding:13px 13px;
       text-decoration:none;
       color:#fff;
-      border-radius:22px;
+      border-radius:24px;
       background:var(--card);
       border:1px solid rgba(255,255,255,.18);
-      box-shadow:0 12px 28px rgba(0,0,0,.25);
+      box-shadow:0 14px 34px rgba(0,0,0,.28);
       overflow:hidden;
       transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
     }
@@ -218,13 +184,13 @@
     }
 
     .icon{
-      width:48px;
-      height:48px;
-      min-width:48px;
-      border-radius:17px;
+      width:54px;
+      height:54px;
+      min-width:54px;
+      border-radius:18px;
       display:grid;
       place-items:center;
-      font-size:1.45rem;
+      font-size:1.7rem;
       background:linear-gradient(135deg, rgba(255,255,255,.22), rgba(255,255,255,.05));
       border:1px solid rgba(255,255,255,.22);
       box-shadow:inset 0 1px 0 rgba(255,255,255,.28), 0 10px 24px rgba(0,0,0,.24);
@@ -238,20 +204,20 @@
 
     .game-card h2{
       margin:0 0 3px;
-      font-size:1rem;
+      font-size:1.03rem;
       line-height:1.05;
     }
 
     .game-card p{
       margin:0;
       color:#dbeafe;
-      font-size:.75rem;
-      line-height:1.22;
+      font-size:.78rem;
+      line-height:1.25;
     }
 
     .arrow{
       z-index:1;
-      font-size:1.4rem;
+      font-size:1.45rem;
       font-weight:900;
       color:var(--gold);
       text-shadow:0 0 12px rgba(255,211,77,.65);
@@ -265,17 +231,17 @@
       display:flex;
       flex-wrap:wrap;
       justify-content:center;
-      gap:6px;
-      padding:2px 0 0;
+      gap:7px;
+      padding:4px 0 0;
     }
 
     .topic{
-      font-size:.68rem;
+      font-size:.72rem;
       font-weight:900;
       color:#071e54;
       background:linear-gradient(135deg, #fff7c2, #ffd34d);
       border-radius:999px;
-      padding:6px 8px;
+      padding:7px 9px;
       box-shadow:0 8px 20px rgba(0,0,0,.20);
       border:1px solid rgba(255,255,255,.50);
     }
@@ -283,8 +249,8 @@
     .footer{
       text-align:center;
       color:#c7d2fe;
-      font-size:.72rem;
-      padding:2px 4px 0;
+      font-size:.74rem;
+      padding:4px 4px 0;
       opacity:.95;
     }
 
@@ -296,64 +262,37 @@
       .page{
         padding-top:20px;
       }
-
-      .hero{
-        height:620px;
-        max-height:620px;
-      }
-
       .games{
         grid-template-columns:1fr 1fr 1fr;
       }
-
       .game-card{
         flex-direction:column;
         text-align:center;
       }
-
       .arrow{
         display:none;
       }
     }
 
-    @media (max-height: 740px){
-      .page{
-        gap:8px;
-      }
-
-      .hero{
-        height:35dvh;
-        min-height:245px;
-        padding:7px;
-      }
-
+    @media (max-height: 760px){
       .notice{
-        font-size:.76rem;
-        padding:9px 11px;
+        font-size:.8rem;
+        padding:10px 12px;
       }
-
       .game-card{
-        padding:9px 10px;
+        padding:10px 11px;
       }
-
       .icon{
-        width:42px;
-        height:42px;
-        min-width:42px;
-        font-size:1.3rem;
+        width:46px;
+        height:46px;
+        min-width:46px;
+        font-size:1.45rem;
       }
-
       .game-card h2{
-        font-size:.92rem;
+        font-size:.96rem;
       }
-
       .game-card p{
-        font-size:.68rem;
-      }
-
-      .topic{
-        font-size:.62rem;
-        padding:5px 7px;
+        font-size:.72rem;
       }
     }
   </style>
@@ -370,10 +309,7 @@
     </header>
 
     <section class="hero" aria-label="Tela inicial do 7º ano">
-      <img
-        src="7ano-lets-practice-prof-jasson-bruno.png"
-        alt="Let's Practice - 7º Ano - English Game Hub"
-      />
+      <img src="7ano-lets-practice-banner-prof-jasson-bruno.png" alt="Let's Practice - 7º Ano" />
     </section>
 
     <section class="notice">
