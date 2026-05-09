@@ -163,18 +163,8 @@
       color: #422006;
     }
 
-    .btn-red {
-      background: linear-gradient(180deg, #fb7185, #e11d48);
-      color: #fff;
-    }
-
     .btn-purple {
       background: linear-gradient(180deg, #c084fc, #7c3aed);
-      color: #fff;
-    }
-
-    .btn-dark {
-      background: linear-gradient(180deg, #334155, #111827);
       color: #fff;
     }
 
@@ -295,6 +285,56 @@
       border: 3px solid #facc15;
       box-shadow: 0 7px 0 #a16207;
       text-align: center;
+      transition: box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+
+    .phrase-card.correct-glow {
+      animation: correctGlow 0.9s ease;
+      border-color: #22c55e;
+      box-shadow:
+        0 0 18px #22c55e,
+        0 0 35px rgba(34, 197, 94, 0.75),
+        0 7px 0 #15803d;
+    }
+
+    .phrase-card.wrong-shake {
+      animation: wrongShake 0.45s ease;
+      border-color: #ef4444;
+      box-shadow:
+        0 0 16px #ef4444,
+        0 0 28px rgba(239, 68, 68, 0.55),
+        0 7px 0 #991b1b;
+    }
+
+    @keyframes correctGlow {
+      0% {
+        transform: scale(1);
+        filter: brightness(1);
+      }
+
+      35% {
+        transform: scale(1.04);
+        filter: brightness(1.2);
+      }
+
+      70% {
+        transform: scale(1.02);
+        filter: brightness(1.1);
+      }
+
+      100% {
+        transform: scale(1);
+        filter: brightness(1);
+      }
+    }
+
+    @keyframes wrongShake {
+      0% { transform: translateX(0); }
+      20% { transform: translateX(-6px); }
+      40% { transform: translateX(6px); }
+      60% { transform: translateX(-4px); }
+      80% { transform: translateX(4px); }
+      100% { transform: translateX(0); }
     }
 
     .content-tag {
@@ -579,11 +619,8 @@
     /*
       English Voice Challenge
       Jogo em HTML, CSS e JavaScript puro.
-      Funciona com:
-      - SpeechSynthesis: voz do navegador para ouvir as frases.
-      - SpeechRecognition / webkitSpeechRecognition: microfone para capturar a fala.
-      - 10 fases com 10 frases cada.
-      - Fases bloqueadas visualmente com cadeados.
+      Usa SpeechSynthesis para ouvir e SpeechRecognition para microfone.
+      Agora possui brilho e som positivo no acerto.
     */
 
     const phases = [
@@ -766,6 +803,7 @@
     const spokenText = document.getElementById("spokenText");
     const feedbackBox = document.getElementById("feedbackBox");
     const nextButton = document.getElementById("nextButton");
+    const phraseCard = document.querySelector(".phrase-card");
 
     renderPhaseMap(startPhaseMap, 0);
 
@@ -828,6 +866,8 @@
 
       spokenText.textContent = "Toque em “Falar” e repita a frase.";
       hideFeedback();
+
+      phraseCard.classList.remove("correct-glow", "wrong-shake");
 
       renderPhaseMap(gamePhaseMap, currentPhase);
       updateHud();
@@ -895,6 +935,8 @@
       recognition.onerror = function() {
         spokenText.textContent = "Não foi possível reconhecer sua fala.";
         showFeedback("❌ Tente novamente ou toque em Próxima para continuar.", "wrong");
+        animateWrongCard();
+        playErrorSound();
         nextButton.disabled = false;
       };
 
@@ -902,9 +944,89 @@
         if (spokenText.textContent === "Ouvindo... fale a frase em inglês.") {
           spokenText.textContent = "Nenhuma fala foi reconhecida.";
           showFeedback("⚠️ Você não falou nada ou o áudio ficou baixo. Tente novamente.", "wrong");
+          animateWrongCard();
+          playErrorSound();
           nextButton.disabled = false;
         }
       };
+    }
+
+    function playSuccessSound() {
+      try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        const audioCtx = new AudioContext();
+
+        const notes = [
+          { frequency: 660, time: 0 },
+          { frequency: 880, time: 0.12 },
+          { frequency: 990, time: 0.24 }
+        ];
+
+        notes.forEach(note => {
+          const oscillator = audioCtx.createOscillator();
+          const gainNode = audioCtx.createGain();
+
+          oscillator.type = "sine";
+          oscillator.frequency.setValueAtTime(note.frequency, audioCtx.currentTime + note.time);
+
+          gainNode.gain.setValueAtTime(0.001, audioCtx.currentTime + note.time);
+          gainNode.gain.exponentialRampToValueAtTime(0.18, audioCtx.currentTime + note.time + 0.03);
+          gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + note.time + 0.22);
+
+          oscillator.connect(gainNode);
+          gainNode.connect(audioCtx.destination);
+
+          oscillator.start(audioCtx.currentTime + note.time);
+          oscillator.stop(audioCtx.currentTime + note.time + 0.24);
+        });
+      } catch (error) {
+        console.log("Som positivo não pôde ser reproduzido.");
+      }
+    }
+
+    function playErrorSound() {
+      try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        const audioCtx = new AudioContext();
+
+        const oscillator = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+
+        oscillator.type = "sawtooth";
+        oscillator.frequency.setValueAtTime(180, audioCtx.currentTime);
+        oscillator.frequency.exponentialRampToValueAtTime(95, audioCtx.currentTime + 0.22);
+
+        gainNode.gain.setValueAtTime(0.12, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.25);
+
+        oscillator.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+
+        oscillator.start();
+        oscillator.stop(audioCtx.currentTime + 0.25);
+      } catch (error) {
+        console.log("Som de erro não pôde ser reproduzido.");
+      }
+    }
+
+    function animateCorrectCard() {
+      phraseCard.classList.remove("correct-glow", "wrong-shake");
+      void phraseCard.offsetWidth;
+      phraseCard.classList.add("correct-glow");
+
+      setTimeout(() => {
+        phraseCard.classList.remove("correct-glow");
+      }, 900);
+    }
+
+    function animateWrongCard() {
+      phraseCard.classList.remove("correct-glow", "wrong-shake");
+      void phraseCard.offsetWidth;
+      phraseCard.classList.add("wrong-shake");
+
+      setTimeout(() => {
+        phraseCard.classList.remove("wrong-shake");
+      }, 500);
     }
 
     function checkAnswer(spoken) {
@@ -934,9 +1056,15 @@
           score++;
           answeredCurrent = true;
         }
-        showFeedback("✅ Muito bom! Sua fala ficou parecida com a frase.", "correct");
+
+        showFeedback("✅ Muito bom! Great job!", "correct");
+        animateCorrectCard();
+        playSuccessSound();
+
       } else {
         showFeedback("❌ Tente novamente. Ouça a frase e repita devagar.", "wrong");
+        animateWrongCard();
+        playErrorSound();
       }
 
       nextButton.disabled = false;
