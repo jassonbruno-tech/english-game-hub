@@ -965,7 +965,7 @@ body.playing .key{
 <section id="startScreen" class="screen active">
   <div class="card start-card">
     <div class="level-badge">📘 7º Ano • Review Challenge</div>
-    <div class="start-icon">🌾</div>
+    <div class="start-icon">🔤</div>
     <h2>Hangman Challenge</h2>
     <p class="start-text">Digite seus dados para revisar Likes and Dislikes, Adverbs of Frequency e Giving Opinions. O jogo é uma ferramenta lúdica para ajudar no estudo do trabalho individual da próxima semana, sem substituir o caderno, as explicações e os materiais usados em sala.</p>
     <div class="start-highlight"><b>Desafio do 7º ano:</b> aqui o aluno revisa Likes and Dislikes, Adverbs of Frequency e Giving Opinions de forma leve, visual e divertida.</div>
@@ -1282,7 +1282,7 @@ Foco: Likes and Dislikes, Adverbs of Frequency e Giving Opinions em situações 
 Banco pedagógico Yellow Level — 7º ano expandido
 Foco: revisar vocabulário essencial do trabalho do 7º ano, reduzir repetição entre partidas e organizar palavras por ciclos.
 */
-const CHALLENGES = [{"theme": "Adverbs of Frequency", "word": "ALWAYS", "hint": "Acontece em todos os dias ou em todas as vezes."}, {"theme": "Likes and Dislikes", "word": "LIKE", "hint": "Usamos quando gostamos de algo ou de alguma atividade."}, {"theme": "Giving Opinions", "word": "OPINION", "hint": "É o que uma pessoa pensa sobre algo."}, {"theme": "Adverbs of Frequency", "word": "NEVER", "hint": "Usamos quando uma ação não acontece."}, {"theme": "Likes and Dislikes", "word": "LOVE", "hint": "Usamos para mostrar que gostamos muito de algo."}, {"theme": "Giving Opinions", "word": "THINK", "hint": "Aparece em frases como “I ___ it is interesting.”"}, {"theme": "Adverbs of Frequency", "word": "USUALLY", "hint": "Acontece muitas vezes, mas não necessariamente sempre."}, {"theme": "Likes and Dislikes", "word": "HATE", "hint": "Usamos quando não gostamos muito de algo."}, {"theme": "Giving Opinions", "word": "AGREE", "hint": "Usamos quando temos a mesma opinião de outra pessoa."}, {"theme": "Adverbs of Frequency", "word": "SOMETIMES", "hint": "Acontece em alguns momentos, mas não em todos."}, {"theme": "Likes and Dislikes", "word": "ENJOY", "hint": "Usamos quando uma pessoa gosta de fazer algo e se diverte com isso."}, {"theme": "Giving Opinions", "word": "BORING", "hint": "Opinião usada para algo sem graça ou que não prende a atenção."}, {"theme": "Adverbs of Frequency", "word": "OFTEN", "hint": "Acontece várias vezes, com bastante frequência."}, {"theme": "Likes and Dislikes", "word": "PREFER", "hint": "Usamos quando escolhemos uma coisa em vez de outra."}, {"theme": "Giving Opinions", "word": "INTERESTING", "hint": "Opinião usada para algo que chama atenção e desperta curiosidade."}, {"theme": "Adverbs of Frequency", "word": "RARELY", "hint": "Acontece poucas vezes."}, {"theme": "Likes and Dislikes", "word": "DISLIKE", "hint": "Significa não gostar de algo."}, {"theme": "Giving Opinions", "word": "USEFUL", "hint": "Opinião usada para algo que ajuda ou tem utilidade."}, {"theme": "Adverbs of Frequency", "word": "DAILY", "hint": "Algo que acontece todos os dias."}, {"theme": "Likes and Dislikes", "word": "PIZZA", "hint": "Comida muito usada em exemplos com “I like...” ou “I don’t like...”."}, {"theme": "Giving Opinions", "word": "DIFFICULT", "hint": "Opinião usada para algo que exige esforço ou não é fácil."}, {"theme": "Adverbs of Frequency", "word": "WEEKEND", "hint": "Parte da semana que inclui sábado e domingo."}, {"theme": "Likes and Dislikes", "word": "MUSIC", "hint": "Podemos gostar de pop, funk, gospel, K-pop ou outros estilos."}, {"theme": "Giving Opinions", "word": "EASY", "hint": "Opinião usada para algo simples de fazer ou entender."}, {"theme": "Adverbs of Frequency", "word": "ROUTINE", "hint": "Conjunto de ações que uma pessoa faz com frequência."}, {"theme": "Likes and Dislikes", "word": "SOCCER", "hint": "Esporte muito usado em frases como “He likes...” ou “Does she like...?”"}, {"theme": "Giving Opinions", "word": "EXCITING", "hint": "Opinião usada para algo emocionante, como um jogo com virada no final."}, {"theme": "Adverbs of Frequency", "word": "MORNING", "hint": "Parte do dia em que muitos alunos vão para a escola ou tomam café."}, {"theme": "Likes and Dislikes", "word": "SALAD", "hint": "Comida que aparece em frases como “Does he eat...?” ou “He doesn’t like...”"}, {"theme": "Giving Opinions", "word": "CONFUSING", "hint": "Opinião usada para algo difícil de entender."}, {"theme": "Adverbs of Frequency", "word": "NIGHT", "hint": "Parte do dia em que muita gente descansa, estuda ou dorme."}, {"theme": "Likes and Dislikes", "word": "GAMES", "hint": "Atividades digitais que muitos alunos gostam de jogar."}, {"theme": "Giving Opinions", "word": "HELPFUL", "hint": "Opinião usada para algo que ajuda a aprender ou resolver um problema."}, {"theme": "Adverbs of Frequency", "word": "CLASS", "hint": "Momento em que os alunos estudam uma disciplina na escola."}, {"theme": "Likes and Dislikes", "word": "MOVIE", "hint": "Podemos dizer que ele é fun, boring, interesting ou exciting."}, {"theme": "Giving Opinions", "word": "GREAT", "hint": "Opinião muito positiva, parecida com “muito bom”."}, {"theme": "Adverbs of Frequency", "word": "HOMEWORK", "hint": "Atividade que o aluno faz fora da sala de aula."}, {"theme": "Likes and Dislikes", "word": "ANIME", "hint": "Tipo de desenho japonês que muitos alunos gostam de assistir."}, {"theme": "Giving Opinions", "word": "BAD", "hint": "Opinião negativa, usada quando algo não é bom."}, {"theme": "Adverbs of Frequency", "word": "BREAKFAST", "hint": "Refeição que muitas pessoas fazem pela manhã."}, {"theme": "Likes and Dislikes", "word": "DANCE", "hint": "Atividade ligada à música e movimento do corpo."}, {"theme": "Giving Opinions", "word": "FUNNY", "hint": "Opinião usada para algo engraçado."}, {"theme": "Adverbs of Frequency", "word": "STUDY", "hint": "Ação que o aluno faz para aprender ou revisar conteúdos."}, {"theme": "Likes and Dislikes", "word": "FISH", "hint": "Comida comum em muitas famílias de Santarém e usada em frases de preferência."}, {"theme": "Giving Opinions", "word": "DELICIOUS", "hint": "Opinião usada para comida muito gostosa."}, {"theme": "Adverbs of Frequency", "word": "PRACTICE", "hint": "Repetir uma atividade para melhorar."}, {"theme": "Likes and Dislikes", "word": "VOLLEYBALL", "hint": "Esporte que aparece em frases como “She likes...” ou “Do they like...?”"}, {"theme": "Giving Opinions", "word": "AWESOME", "hint": "Opinião muito positiva, usada para algo incrível ou muito legal."}, {"theme": "Adverbs of Frequency", "word": "SCHOOL", "hint": "Lugar onde acontecem as aulas e atividades dos alunos."}, {"theme": "Likes and Dislikes", "word": "HAMBURGER", "hint": "Comida que pode aparecer em frases com “like” ou “don’t like”."}, {"theme": "Giving Opinions", "word": "USELESS", "hint": "Opinião usada para algo que não ajuda ou não tem utilidade."}, {"theme": "Adverbs of Frequency", "word": "LATE", "hint": "Usamos quando alguém chega depois do horário esperado."}, {"theme": "Likes and Dislikes", "word": "COFFEE", "hint": "Bebida comum no café da manhã."}, {"theme": "Giving Opinions", "word": "COOL", "hint": "Opinião informal para algo legal ou interessante."}, {"theme": "Adverbs of Frequency", "word": "EARLY", "hint": "Usamos quando alguém chega antes do horário ou no começo de algo."}, {"theme": "Likes and Dislikes", "word": "FRUIT", "hint": "Grupo de alimentos como banana, maçã, manga e açaí."}, {"theme": "Giving Opinions", "word": "AMAZING", "hint": "Opinião muito positiva para algo surpreendente ou excelente."}, {"theme": "Adverbs of Frequency", "word": "WEEK", "hint": "Período formado por sete dias."}, {"theme": "Likes and Dislikes", "word": "ONIONS", "hint": "Alimento que algumas pessoas gostam e outras evitam."}, {"theme": "Giving Opinions", "word": "EXCELLENT", "hint": "Opinião muito positiva, parecida com “excelente”."}];
+const CHALLENGES = [{"theme": "Adverbs of Frequency", "word": "ALWAYS", "hint": "Significa sempre. A ação acontece em todas as vezes.", "letterHint": "A"}, {"theme": "Adverbs of Frequency", "word": "USUALLY", "hint": "Significa geralmente. A ação acontece muitas vezes, mas não sempre.", "letterHint": "U"}, {"theme": "Adverbs of Frequency", "word": "OFTEN", "hint": "Significa frequentemente. A ação acontece várias vezes.", "letterHint": "O"}, {"theme": "Adverbs of Frequency", "word": "SOMETIMES", "hint": "Significa às vezes. A ação acontece em alguns momentos.", "letterHint": "S"}, {"theme": "Adverbs of Frequency", "word": "RARELY", "hint": "Significa raramente. A ação quase não acontece.", "letterHint": "R"}, {"theme": "Adverbs of Frequency", "word": "NEVER", "hint": "Significa nunca. A ação não acontece.", "letterHint": "N"}, {"theme": "Adverbs of Frequency", "word": "FREQUENTLY", "hint": "Também significa frequentemente. Indica algo que acontece muitas vezes.", "letterHint": "F"}, {"theme": "Adverbs of Frequency", "word": "HARDLY EVER", "hint": "Significa quase nunca. Fica entre rarely e never.", "letterHint": "H"}, {"theme": "Adverbs of Frequency", "word": "EVERY DAY", "hint": "Significa todos os dias. Mostra frequência diária.", "letterHint": "E"}, {"theme": "Adverbs of Frequency", "word": "ONCE A WEEK", "hint": "Significa uma vez por semana.", "letterHint": "O"}, {"theme": "Adverbs of Frequency", "word": "TWICE A WEEK", "hint": "Significa duas vezes por semana.", "letterHint": "T"}, {"theme": "Adverbs of Frequency", "word": "THREE TIMES", "hint": "Expressão usada para dizer três vezes.", "letterHint": "T"}, {"theme": "Adverbs of Frequency", "word": "FREQUENCY", "hint": "Palavra que significa frequência.", "letterHint": "F"}, {"theme": "Adverbs of Frequency", "word": "DAILY", "hint": "Significa diariamente. Tem relação com every day.", "letterHint": "D"}, {"theme": "Adverbs of Frequency", "word": "WEEKLY", "hint": "Significa semanalmente. Tem relação com week.", "letterHint": "W"}, {"theme": "Adverbs of Frequency", "word": "ROUTINE", "hint": "Rotina: ações que uma pessoa faz com frequência.", "letterHint": "R"}, {"theme": "Adverbs of Frequency", "word": "HOW OFTEN", "hint": "Pergunta usada para saber com que frequência algo acontece.", "letterHint": "H"}, {"theme": "Adverbs of Frequency", "word": "I ALWAYS", "hint": "Começo de frase para dizer: eu sempre...", "letterHint": "I"}, {"theme": "Adverbs of Frequency", "word": "SHE NEVER", "hint": "Começo de frase para dizer: ela nunca...", "letterHint": "S"}, {"theme": "Adverbs of Frequency", "word": "HE USUALLY", "hint": "Começo de frase para dizer: ele geralmente...", "letterHint": "H"}, {"theme": "Likes and Dislikes", "word": "LIKE", "hint": "Verbo usado para dizer gostar.", "letterHint": "L"}, {"theme": "Likes and Dislikes", "word": "LIKES", "hint": "Forma usada com he, she ou it: he likes, she likes.", "letterHint": "L"}, {"theme": "Likes and Dislikes", "word": "LOVE", "hint": "Verbo usado para dizer amar ou gostar muito.", "letterHint": "L"}, {"theme": "Likes and Dislikes", "word": "LOVES", "hint": "Forma usada com he, she ou it: he loves, she loves.", "letterHint": "L"}, {"theme": "Likes and Dislikes", "word": "ENJOY", "hint": "Verbo usado para dizer que gosta e aproveita uma atividade.", "letterHint": "E"}, {"theme": "Likes and Dislikes", "word": "ENJOYS", "hint": "Forma usada com he, she ou it: he enjoys, she enjoys.", "letterHint": "E"}, {"theme": "Likes and Dislikes", "word": "PREFER", "hint": "Verbo usado quando a pessoa prefere uma coisa.", "letterHint": "P"}, {"theme": "Likes and Dislikes", "word": "PREFERS", "hint": "Forma usada com he, she ou it: he prefers, she prefers.", "letterHint": "P"}, {"theme": "Likes and Dislikes", "word": "HATE", "hint": "Verbo usado para dizer que detesta algo.", "letterHint": "H"}, {"theme": "Likes and Dislikes", "word": "HATES", "hint": "Forma usada com he, she ou it: he hates, she hates.", "letterHint": "H"}, {"theme": "Likes and Dislikes", "word": "DISLIKE", "hint": "Verbo usado para dizer não gostar.", "letterHint": "D"}, {"theme": "Likes and Dislikes", "word": "DISLIKES", "hint": "Forma usada com he, she ou it: he dislikes, she dislikes.", "letterHint": "D"}, {"theme": "Likes and Dislikes", "word": "DO NOT LIKE", "hint": "Forma negativa para I, you, we e they.", "letterHint": "D"}, {"theme": "Likes and Dislikes", "word": "DOES NOT LIKE", "hint": "Forma negativa para he, she e it.", "letterHint": "D"}, {"theme": "Likes and Dislikes", "word": "DO YOU LIKE", "hint": "Pergunta usada com you: você gosta...?", "letterHint": "D"}, {"theme": "Likes and Dislikes", "word": "DOES HE LIKE", "hint": "Pergunta usada com he: ele gosta...?", "letterHint": "D"}, {"theme": "Likes and Dislikes", "word": "DOES SHE LIKE", "hint": "Pergunta usada com she: ela gosta...?", "letterHint": "D"}, {"theme": "Likes and Dislikes", "word": "FAVORITE", "hint": "Palavra usada para falar do que é favorito ou preferido.", "letterHint": "F"}, {"theme": "Likes and Dislikes", "word": "I LIKE", "hint": "Começo de frase para dizer: eu gosto...", "letterHint": "I"}, {"theme": "Likes and Dislikes", "word": "SHE LIKES", "hint": "Começo de frase para dizer: ela gosta...", "letterHint": "S"}, {"theme": "Giving Opinions", "word": "OPINION", "hint": "Significa opinião: o que uma pessoa pensa sobre algo.", "letterHint": "O"}, {"theme": "Giving Opinions", "word": "THINK", "hint": "Verbo usado em I think: eu acho.", "letterHint": "T"}, {"theme": "Giving Opinions", "word": "I THINK", "hint": "Expressão usada para começar uma opinião: eu acho.", "letterHint": "I"}, {"theme": "Giving Opinions", "word": "IN MY OPINION", "hint": "Expressão que significa: na minha opinião.", "letterHint": "I"}, {"theme": "Giving Opinions", "word": "AGREE", "hint": "Significa concordar.", "letterHint": "A"}, {"theme": "Giving Opinions", "word": "DISAGREE", "hint": "Significa discordar.", "letterHint": "D"}, {"theme": "Giving Opinions", "word": "I AGREE", "hint": "Expressão usada para dizer: eu concordo.", "letterHint": "I"}, {"theme": "Giving Opinions", "word": "I DISAGREE", "hint": "Expressão usada para dizer: eu discordo.", "letterHint": "I"}, {"theme": "Giving Opinions", "word": "INTERESTING", "hint": "Opinião para algo interessante.", "letterHint": "I"}, {"theme": "Giving Opinions", "word": "BORING", "hint": "Opinião para algo chato ou sem graça.", "letterHint": "B"}, {"theme": "Giving Opinions", "word": "FUN", "hint": "Opinião para algo divertido.", "letterHint": "F"}, {"theme": "Giving Opinions", "word": "COOL", "hint": "Opinião informal para algo legal.", "letterHint": "C"}, {"theme": "Giving Opinions", "word": "GREAT", "hint": "Opinião muito positiva: muito bom.", "letterHint": "G"}, {"theme": "Giving Opinions", "word": "GOOD", "hint": "Opinião positiva: bom.", "letterHint": "G"}, {"theme": "Giving Opinions", "word": "BAD", "hint": "Opinião negativa: ruim.", "letterHint": "B"}, {"theme": "Giving Opinions", "word": "EASY", "hint": "Opinião para algo fácil.", "letterHint": "E"}, {"theme": "Giving Opinions", "word": "DIFFICULT", "hint": "Opinião para algo difícil.", "letterHint": "D"}, {"theme": "Giving Opinions", "word": "AMAZING", "hint": "Opinião muito positiva: incrível.", "letterHint": "A"}, {"theme": "Giving Opinions", "word": "EXCELLENT", "hint": "Opinião muito positiva: excelente.", "letterHint": "E"}, {"theme": "Giving Opinions", "word": "USEFUL", "hint": "Opinião para algo útil, que ajuda.", "letterHint": "U"}];
 const KEYBOARD = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
 /* ===== Sons internos: não dependem de arquivos externos ===== */
@@ -1509,13 +1509,14 @@ function updateStats(){
   if(el("missionName")) el("missionName").textContent = `Missão ${phaseNumber}/${PHASES.length}`;
   if(el("missionProgress")) el("missionProgress").textContent = `Desafio ${wordNumber}/5`;
 
-  const livesLeft = Math.max(0, Math.min(MAX_LIVES, Number(state.lives ?? MAX_LIVES)));
-  const mistakes = MAX_LIVES - livesLeft;
+  const mistakes = Math.max(0, Math.min(MAX_LIVES, Number(state.roundMistakes || 0)));
+  const livesLeft = Math.max(0, MAX_LIVES - mistakes);
+  state.lives = livesLeft;
 
-  el("lives").innerHTML = `<span class="parts-left">${livesLeft}</span>/6 partes restantes — a cada erro, uma parte do espantalho aparece na forca.`;
+  el("lives").innerHTML = `<span class="parts-left">${livesLeft}</span>/6 partes restantes nesta palavra — na próxima palavra o espantalho reinicia.`;
 
-  const parts = ["partHead","partBody","partArmL","partArmR","partLegL","partLegR"];
-  parts.forEach((id, index) => {
+  const correctParts = ["partHead","partBody","partArmL","partArmR","partLegL","partLegR"];
+  correctParts.forEach((id, index) => {
     const p = el(id);
     if(p) p.classList.toggle("show", index < mistakes);
   });
@@ -1531,16 +1532,39 @@ function getMemoryTip(theme){
   return tips[theme] || "💡 Dica: observe a pista, lembre o tema e tente formar a palavra em inglês.";
 }
 
+
+function getClueLetter(challenge){
+  const normalized = normalizeText(challenge.word).replace(/ /g, "");
+  const clue = normalizeText(challenge.letterHint || "").replace(/ /g, "");
+  return (clue && normalized.includes(clue[0])) ? clue[0] : normalized[0];
+}
+
+function resetScarecrowForNewWord(){
+  state.lives = MAX_LIVES;
+  state.roundMistakes = 0;
+  const parts = ["partHead","partBody","partArmL","partArmR","partLegL","partLegR"];
+  parts.forEach(id => {
+    const p = el(id);
+    if(p){
+      p.classList.remove("show");
+      p.style.display = "";
+      p.style.visibility = "";
+      p.style.opacity = "";
+    }
+  });
+}
+
 function loadChallenge(){
   stopFinalMusic();
   showPhaseTransitionIfNeeded();
-  resetRoundLives();
   state.current = state.bag[state.round-1];
+  resetScarecrowForNewWord();
   state.guessed = new Set();
-  state.roundMistakes = 0;
+  const clueLetter = getClueLetter(state.current);
+  if(clueLetter) state.guessed.add(clueLetter);
   state.finishedRound = false;
   el("theme").textContent = state.current.theme;
-  el("hint").textContent = state.current.hint;
+  el("hint").innerHTML = `${state.current.hint}<br><span style="color:#ffe66d">🔎 Letra dica: <b>${clueLetter}</b></span>`;
   el("memoryTip").textContent = getMemoryTip(state.current.theme);
   el("guessInput").value = "";
   el("feedback").className = "feedback";
@@ -1603,7 +1627,7 @@ function chooseLetter(btn, letter){
   } else {
     btn.classList.add("wrong");
     state.roundMistakes++;
-    state.lives = Math.max(0, state.lives - 1);
+    state.lives = Math.max(0, MAX_LIVES - state.roundMistakes);
     
     updateStats();state.combo = 0;
     updateScarecrowParts();
@@ -1650,7 +1674,7 @@ function guessWord(){
     completeRound(true);
   } else {
     state.roundMistakes++;
-    state.lives = Math.max(0, state.lives - 1);
+    state.lives = Math.max(0, MAX_LIVES - state.roundMistakes);
     state.combo = 0;
     updateScarecrowParts();
     playGameWrongAudio();
@@ -1786,21 +1810,21 @@ show("startScreen");
 
 function getMistakeCount(){
   try{
-    const lives = Number(state && state.lives);
-    if(Number.isFinite(lives)) return Math.max(0, Math.min(6, 6 - lives));
+    return Math.max(0, Math.min(MAX_LIVES, Number(state && state.roundMistakes || 0)));
   }catch(e){}
   return 0;
 }
 
 function applyScarecrowPartsByMistakes(){
   const mistakes = getMistakeCount();
-  const parts = ['head','body','armL','armR','legL','legR'];
+  const parts = ['partHead','partBody','partArmL','partArmR','partLegL','partLegR'];
   parts.forEach((id, index)=>{
     const elPart = document.getElementById(id);
     if(elPart){
-      elPart.style.display = index < mistakes ? 'block' : 'none';
-      elPart.style.visibility = index < mistakes ? 'visible' : 'hidden';
-      elPart.style.opacity = index < mistakes ? '1' : '0';
+      elPart.classList.toggle('show', index < mistakes);
+      elPart.style.display = '';
+      elPart.style.visibility = '';
+      elPart.style.opacity = '';
     }
   });
 }
@@ -1808,10 +1832,12 @@ function applyScarecrowPartsByMistakes(){
 function updateScarecrowParts(){
   applyScarecrowPartsByMistakes();
   try{
-    const partsLeft = Math.max(0, Math.min(6, Number(state && state.lives)));
+    const mistakes = getMistakeCount();
+    const partsLeft = Math.max(0, MAX_LIVES - mistakes);
+    state.lives = partsLeft;
     const livesEl = document.getElementById('lives');
     if(livesEl){
-      livesEl.innerHTML = `<span class="parts-left">${partsLeft}</span>/6 partes restantes do espantalho.`;
+      livesEl.innerHTML = `<span class="parts-left">${partsLeft}</span>/6 partes restantes nesta palavra — na próxima palavra o espantalho reinicia.`;
     }
   }catch(e){}
 }
