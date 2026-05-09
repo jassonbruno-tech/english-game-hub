@@ -952,6 +952,28 @@ body.playing .key{
   }
 }
 
+
+
+/* --- Efeito de palavra revelada: recompensa visual para o aluno --- */
+@keyframes wordRevealPulse{
+  0%{transform:scale(1);box-shadow:0 0 0 rgba(255,230,109,0);}
+  35%{transform:scale(1.12);box-shadow:0 0 20px rgba(255,230,109,.8);}
+  70%{transform:scale(1.04);box-shadow:0 0 14px rgba(56,189,248,.7);}
+  100%{transform:scale(1);box-shadow:0 0 0 rgba(255,230,109,0);}
+}
+.word.revealed .letter-box{
+  animation:wordRevealPulse .75s ease-in-out 0s 3;
+  background:linear-gradient(180deg,#fff8c7,#fde68a) !important;
+  border-color:#ffb703 !important;
+  color:#172033 !important;
+}
+.reveal-pop{
+  display:block;
+  margin-top:4px;
+  color:#ffe66d;
+  font-weight:1000;
+}
+
 </style>
 </head>
 <body>
@@ -959,7 +981,7 @@ body.playing .key{
 <header>
   <div class="topbar"><a class="back" href="7ano.html">← Voltar ao 7º ano</a><div class="pill">🟡 Yellow Level</div></div>
   <h1>Hangman Challenge</h1>
-  <p class="subtitle">Descubra palavras-chave da revisão do 7º ano.</p>
+  <p class="subtitle">Descubra palavras-chave, verbos e vocabulário da revisão do 7º ano.</p>
 </header>
 <main>
 <section id="startScreen" class="screen active">
@@ -967,8 +989,8 @@ body.playing .key{
     <div class="level-badge">📘 7º Ano • Review Challenge</div>
     <div class="start-icon">🔤</div>
     <h2>Hangman Challenge</h2>
-    <p class="start-text">Digite seus dados para revisar Likes and Dislikes, Adverbs of Frequency e Giving Opinions. O jogo é uma ferramenta lúdica para ajudar no estudo do trabalho individual da próxima semana, sem substituir o caderno, as explicações e os materiais usados em sala.</p>
-    <div class="start-highlight"><b>Desafio do 7º ano:</b> aqui o aluno revisa Likes and Dislikes, Adverbs of Frequency e Giving Opinions de forma leve, visual e divertida.</div>
+    <p class="start-text">Digite seus dados para revisar Likes and Dislikes, Adverbs of Frequency, Giving Opinions, verbos e vocabulário geral. O jogo é uma ferramenta lúdica para ajudar no estudo do trabalho individual da próxima semana, sem substituir o caderno, as explicações e os materiais usados em sala.</p>
+    <div class="start-highlight"><b>Desafio do 7º ano:</b> aqui o aluno revisa Likes and Dislikes, Adverbs of Frequency, Giving Opinions, verbos e vocabulário do dia a dia de forma leve, visual e divertida.</div>
 
     <div class="quick-review">
       <div class="review-title">📚 Quick Review — Revisão rápida antes do desafio</div>
@@ -1000,6 +1022,14 @@ body.playing .key{
           <span>I agree = eu concordo</span>
           <span>I don’t agree = eu não concordo</span>
           <span>interesting / boring / fun = interessante / chato / divertido</span>
+        </div>
+        <div class="review-block">
+          <b>Useful Verbs and Vocabulary</b>
+          <span>play = jogar/brincar/tocar</span>
+          <span>watch = assistir</span>
+          <span>study = estudar</span>
+          <span>read/write = ler/escrever</span>
+          <span>school/homework/class = escola/tarefa/aula</span>
         </div>
         <div class="review-block">
           <b>Atenção nas frases</b>
@@ -1282,7 +1312,7 @@ Foco: Likes and Dislikes, Adverbs of Frequency e Giving Opinions em situações 
 Banco pedagógico Yellow Level — 7º ano expandido
 Foco: revisar vocabulário essencial do trabalho do 7º ano, reduzir repetição entre partidas e organizar palavras por ciclos.
 */
-const CHALLENGES = [{"theme": "Adverbs of Frequency", "word": "ALWAYS", "hint": "Significa sempre. A ação acontece em todas as vezes.", "letterHint": "A"}, {"theme": "Adverbs of Frequency", "word": "USUALLY", "hint": "Significa geralmente. A ação acontece muitas vezes, mas não sempre.", "letterHint": "U"}, {"theme": "Adverbs of Frequency", "word": "OFTEN", "hint": "Significa frequentemente. A ação acontece várias vezes.", "letterHint": "O"}, {"theme": "Adverbs of Frequency", "word": "SOMETIMES", "hint": "Significa às vezes. A ação acontece em alguns momentos.", "letterHint": "S"}, {"theme": "Adverbs of Frequency", "word": "RARELY", "hint": "Significa raramente. A ação quase não acontece.", "letterHint": "R"}, {"theme": "Adverbs of Frequency", "word": "NEVER", "hint": "Significa nunca. A ação não acontece.", "letterHint": "N"}, {"theme": "Adverbs of Frequency", "word": "FREQUENTLY", "hint": "Também significa frequentemente. Indica algo que acontece muitas vezes.", "letterHint": "F"}, {"theme": "Adverbs of Frequency", "word": "HARDLY EVER", "hint": "Significa quase nunca. Fica entre rarely e never.", "letterHint": "H"}, {"theme": "Adverbs of Frequency", "word": "EVERY DAY", "hint": "Significa todos os dias. Mostra frequência diária.", "letterHint": "E"}, {"theme": "Adverbs of Frequency", "word": "ONCE A WEEK", "hint": "Significa uma vez por semana.", "letterHint": "O"}, {"theme": "Adverbs of Frequency", "word": "TWICE A WEEK", "hint": "Significa duas vezes por semana.", "letterHint": "T"}, {"theme": "Adverbs of Frequency", "word": "THREE TIMES", "hint": "Expressão usada para dizer três vezes.", "letterHint": "T"}, {"theme": "Adverbs of Frequency", "word": "FREQUENCY", "hint": "Palavra que significa frequência.", "letterHint": "F"}, {"theme": "Adverbs of Frequency", "word": "DAILY", "hint": "Significa diariamente. Tem relação com every day.", "letterHint": "D"}, {"theme": "Adverbs of Frequency", "word": "WEEKLY", "hint": "Significa semanalmente. Tem relação com week.", "letterHint": "W"}, {"theme": "Adverbs of Frequency", "word": "ROUTINE", "hint": "Rotina: ações que uma pessoa faz com frequência.", "letterHint": "R"}, {"theme": "Adverbs of Frequency", "word": "HOW OFTEN", "hint": "Pergunta usada para saber com que frequência algo acontece.", "letterHint": "H"}, {"theme": "Adverbs of Frequency", "word": "I ALWAYS", "hint": "Começo de frase para dizer: eu sempre...", "letterHint": "I"}, {"theme": "Adverbs of Frequency", "word": "SHE NEVER", "hint": "Começo de frase para dizer: ela nunca...", "letterHint": "S"}, {"theme": "Adverbs of Frequency", "word": "HE USUALLY", "hint": "Começo de frase para dizer: ele geralmente...", "letterHint": "H"}, {"theme": "Likes and Dislikes", "word": "LIKE", "hint": "Verbo usado para dizer gostar.", "letterHint": "L"}, {"theme": "Likes and Dislikes", "word": "LIKES", "hint": "Forma usada com he, she ou it: he likes, she likes.", "letterHint": "L"}, {"theme": "Likes and Dislikes", "word": "LOVE", "hint": "Verbo usado para dizer amar ou gostar muito.", "letterHint": "L"}, {"theme": "Likes and Dislikes", "word": "LOVES", "hint": "Forma usada com he, she ou it: he loves, she loves.", "letterHint": "L"}, {"theme": "Likes and Dislikes", "word": "ENJOY", "hint": "Verbo usado para dizer que gosta e aproveita uma atividade.", "letterHint": "E"}, {"theme": "Likes and Dislikes", "word": "ENJOYS", "hint": "Forma usada com he, she ou it: he enjoys, she enjoys.", "letterHint": "E"}, {"theme": "Likes and Dislikes", "word": "PREFER", "hint": "Verbo usado quando a pessoa prefere uma coisa.", "letterHint": "P"}, {"theme": "Likes and Dislikes", "word": "PREFERS", "hint": "Forma usada com he, she ou it: he prefers, she prefers.", "letterHint": "P"}, {"theme": "Likes and Dislikes", "word": "HATE", "hint": "Verbo usado para dizer que detesta algo.", "letterHint": "H"}, {"theme": "Likes and Dislikes", "word": "HATES", "hint": "Forma usada com he, she ou it: he hates, she hates.", "letterHint": "H"}, {"theme": "Likes and Dislikes", "word": "DISLIKE", "hint": "Verbo usado para dizer não gostar.", "letterHint": "D"}, {"theme": "Likes and Dislikes", "word": "DISLIKES", "hint": "Forma usada com he, she ou it: he dislikes, she dislikes.", "letterHint": "D"}, {"theme": "Likes and Dislikes", "word": "DO NOT LIKE", "hint": "Forma negativa para I, you, we e they.", "letterHint": "D"}, {"theme": "Likes and Dislikes", "word": "DOES NOT LIKE", "hint": "Forma negativa para he, she e it.", "letterHint": "D"}, {"theme": "Likes and Dislikes", "word": "DO YOU LIKE", "hint": "Pergunta usada com you: você gosta...?", "letterHint": "D"}, {"theme": "Likes and Dislikes", "word": "DOES HE LIKE", "hint": "Pergunta usada com he: ele gosta...?", "letterHint": "D"}, {"theme": "Likes and Dislikes", "word": "DOES SHE LIKE", "hint": "Pergunta usada com she: ela gosta...?", "letterHint": "D"}, {"theme": "Likes and Dislikes", "word": "FAVORITE", "hint": "Palavra usada para falar do que é favorito ou preferido.", "letterHint": "F"}, {"theme": "Likes and Dislikes", "word": "I LIKE", "hint": "Começo de frase para dizer: eu gosto...", "letterHint": "I"}, {"theme": "Likes and Dislikes", "word": "SHE LIKES", "hint": "Começo de frase para dizer: ela gosta...", "letterHint": "S"}, {"theme": "Giving Opinions", "word": "OPINION", "hint": "Significa opinião: o que uma pessoa pensa sobre algo.", "letterHint": "O"}, {"theme": "Giving Opinions", "word": "THINK", "hint": "Verbo usado em I think: eu acho.", "letterHint": "T"}, {"theme": "Giving Opinions", "word": "I THINK", "hint": "Expressão usada para começar uma opinião: eu acho.", "letterHint": "I"}, {"theme": "Giving Opinions", "word": "IN MY OPINION", "hint": "Expressão que significa: na minha opinião.", "letterHint": "I"}, {"theme": "Giving Opinions", "word": "AGREE", "hint": "Significa concordar.", "letterHint": "A"}, {"theme": "Giving Opinions", "word": "DISAGREE", "hint": "Significa discordar.", "letterHint": "D"}, {"theme": "Giving Opinions", "word": "I AGREE", "hint": "Expressão usada para dizer: eu concordo.", "letterHint": "I"}, {"theme": "Giving Opinions", "word": "I DISAGREE", "hint": "Expressão usada para dizer: eu discordo.", "letterHint": "I"}, {"theme": "Giving Opinions", "word": "INTERESTING", "hint": "Opinião para algo interessante.", "letterHint": "I"}, {"theme": "Giving Opinions", "word": "BORING", "hint": "Opinião para algo chato ou sem graça.", "letterHint": "B"}, {"theme": "Giving Opinions", "word": "FUN", "hint": "Opinião para algo divertido.", "letterHint": "F"}, {"theme": "Giving Opinions", "word": "COOL", "hint": "Opinião informal para algo legal.", "letterHint": "C"}, {"theme": "Giving Opinions", "word": "GREAT", "hint": "Opinião muito positiva: muito bom.", "letterHint": "G"}, {"theme": "Giving Opinions", "word": "GOOD", "hint": "Opinião positiva: bom.", "letterHint": "G"}, {"theme": "Giving Opinions", "word": "BAD", "hint": "Opinião negativa: ruim.", "letterHint": "B"}, {"theme": "Giving Opinions", "word": "EASY", "hint": "Opinião para algo fácil.", "letterHint": "E"}, {"theme": "Giving Opinions", "word": "DIFFICULT", "hint": "Opinião para algo difícil.", "letterHint": "D"}, {"theme": "Giving Opinions", "word": "AMAZING", "hint": "Opinião muito positiva: incrível.", "letterHint": "A"}, {"theme": "Giving Opinions", "word": "EXCELLENT", "hint": "Opinião muito positiva: excelente.", "letterHint": "E"}, {"theme": "Giving Opinions", "word": "USEFUL", "hint": "Opinião para algo útil, que ajuda.", "letterHint": "U"}];
+const CHALLENGES = [{"theme":"Adverbs of Frequency","word":"ALWAYS","hint":"Acontece em 100% das vezes. Exemplo: um aluno que estuda inglês todos os dias pode dizer: I ___ study English."},{"theme":"Adverbs of Frequency","word":"USUALLY","hint":"Acontece muitas vezes, mas não sempre. Fica perto de 'geralmente'."},{"theme":"Adverbs of Frequency","word":"OFTEN","hint":"Acontece várias vezes. É mais frequente que sometimes."},{"theme":"Adverbs of Frequency","word":"SOMETIMES","hint":"Acontece em alguns momentos. Não é sempre e também não é nunca."},{"theme":"Adverbs of Frequency","word":"RARELY","hint":"Acontece poucas vezes. É parecido com 'raramente'."},{"theme":"Adverbs of Frequency","word":"NEVER","hint":"Acontece zero vezes. Use quando a ação não acontece."},{"theme":"Adverbs of Frequency","word":"ALWAYS","hint":"Pense no advérbio que combina com uma rotina que não falha: todos os dias, todas as vezes."},{"theme":"Adverbs of Frequency","word":"USUALLY","hint":"É usado quando algo é comum na rotina, mas pode haver exceções."},{"theme":"Adverbs of Frequency","word":"OFTEN","hint":"Use para dizer que uma ação acontece com bastante frequência, como jogar bola várias vezes na semana."},{"theme":"Adverbs of Frequency","word":"SOMETIMES","hint":"Use quando a ação acontece de vez em quando, só em algumas ocasiões."},{"theme":"Adverbs of Frequency","word":"RARELY","hint":"Use quando quase não acontece, mas ainda pode acontecer alguma vez."},{"theme":"Adverbs of Frequency","word":"NEVER","hint":"É o contrário de always. A ação não acontece nenhuma vez."},{"theme":"Likes and Dislikes","word":"LIKE","hint":"Verbo usado para dizer que você gosta de algo. Exemplo: I ___ games."},{"theme":"Likes and Dislikes","word":"LIKES","hint":"Forma usada com he, she ou it para dizer que alguém gosta de algo."},{"theme":"Likes and Dislikes","word":"LOVE","hint":"Verbo usado quando a pessoa gosta muito de algo."},{"theme":"Likes and Dislikes","word":"LOVES","hint":"Forma usada com he ou she quando a pessoa ama ou gosta muito de algo."},{"theme":"Likes and Dislikes","word":"ENJOY","hint":"Verbo usado para dizer que a pessoa gosta e aproveita uma atividade."},{"theme":"Likes and Dislikes","word":"ENJOYS","hint":"Forma usada com he, she ou it para dizer que alguém aproveita uma atividade."},{"theme":"Likes and Dislikes","word":"PREFER","hint":"Verbo usado quando uma pessoa escolhe uma coisa mais do que outra."},{"theme":"Likes and Dislikes","word":"PREFERS","hint":"Forma usada com he, she ou it para dizer que alguém prefere algo."},{"theme":"Likes and Dislikes","word":"HATE","hint":"Verbo usado para dizer que a pessoa detesta alguma coisa."},{"theme":"Likes and Dislikes","word":"HATES","hint":"Forma usada com he, she ou it para dizer que alguém detesta algo."},{"theme":"Likes and Dislikes","word":"FAVORITE","hint":"Palavra usada para falar da coisa preferida de alguém."},{"theme":"Likes and Dislikes","word":"GAMES","hint":"Muitos alunos gostam de Free Fire, Minecraft ou Roblox. Essa palavra significa jogos."},{"theme":"Likes and Dislikes","word":"MUSIC","hint":"K-pop, gospel, funk, pop ou rap são exemplos dessa palavra em inglês."},{"theme":"Likes and Dislikes","word":"SOCCER","hint":"Esporte muito amado no Brasil. Em inglês americano, futebol é..."},{"theme":"Likes and Dislikes","word":"MOVIES","hint":"Filmes em inglês. Uma pessoa pode dizer: I like ___ ."},{"theme":"Likes and Dislikes","word":"FOOD","hint":"Palavra geral para comida. Exemplo: I love Brazilian ___ ."},{"theme":"Giving Opinions","word":"OPINION","hint":"É o que uma pessoa pensa sobre algo. Pode ser positiva ou negativa."},{"theme":"Giving Opinions","word":"THINK","hint":"Verbo usado em 'I ___' para começar uma opinião: eu acho."},{"theme":"Giving Opinions","word":"AGREE","hint":"Use quando você concorda com a ideia de outra pessoa."},{"theme":"Giving Opinions","word":"DISAGREE","hint":"Use quando você não concorda com a opinião de alguém."},{"theme":"Giving Opinions","word":"INTERESTING","hint":"Opinião positiva para algo que chama atenção e não é sem graça."},{"theme":"Giving Opinions","word":"BORING","hint":"Opinião usada quando algo é chato ou sem graça."},{"theme":"Giving Opinions","word":"FUN","hint":"Opinião curta para dizer que algo é divertido."},{"theme":"Giving Opinions","word":"COOL","hint":"Palavra informal para dizer que algo é legal."},{"theme":"Giving Opinions","word":"GREAT","hint":"Opinião muito positiva. Significa muito bom ou ótimo."},{"theme":"Giving Opinions","word":"GOOD","hint":"Opinião positiva simples. Significa bom."},{"theme":"Giving Opinions","word":"BAD","hint":"Opinião negativa simples. Significa ruim."},{"theme":"Giving Opinions","word":"EASY","hint":"Opinião para algo que não é difícil."},{"theme":"Giving Opinions","word":"DIFFICULT","hint":"Opinião para algo que exige esforço e parece mais complicado."},{"theme":"Giving Opinions","word":"AMAZING","hint":"Opinião muito positiva para algo incrível."},{"theme":"Giving Opinions","word":"EXCELLENT","hint":"Opinião muito positiva, mais forte que good."},{"theme":"Giving Opinions","word":"USEFUL","hint":"Opinião para algo que ajuda e tem utilidade."},{"theme":"Useful Verbs and Vocabulary","word":"PLAY","hint":"Verbo usado com games, soccer, volleyball e muitos esportes."},{"theme":"Useful Verbs and Vocabulary","word":"WATCH","hint":"Verbo usado quando você vê TV, filmes, vídeos ou séries."},{"theme":"Useful Verbs and Vocabulary","word":"STUDY","hint":"Verbo usado quando o aluno revisa conteúdos e aprende para uma prova."},{"theme":"Useful Verbs and Vocabulary","word":"READ","hint":"Verbo usado com book, text, comic ou mensagem."},{"theme":"Useful Verbs and Vocabulary","word":"WRITE","hint":"Verbo usado quando você faz frases, respostas ou anotações no caderno."},{"theme":"Useful Verbs and Vocabulary","word":"LISTEN","hint":"Verbo usado com music, audio ou a fala do professor."},{"theme":"Useful Verbs and Vocabulary","word":"SPEAK","hint":"Verbo usado quando você fala inglês ou conversa com alguém."},{"theme":"Useful Verbs and Vocabulary","word":"EAT","hint":"Verbo usado quando alguém come pizza, açaí, arroz, peixe ou lanche."},{"theme":"Useful Verbs and Vocabulary","word":"DRINK","hint":"Verbo usado quando alguém bebe água, suco ou refrigerante."},{"theme":"Useful Verbs and Vocabulary","word":"GO","hint":"Verbo usado para dizer ir. Exemplo: I ___ to school."},{"theme":"Useful Verbs and Vocabulary","word":"SCHOOL","hint":"Lugar onde o aluno estuda, encontra colegas e aprende inglês."},{"theme":"Useful Verbs and Vocabulary","word":"HOMEWORK","hint":"Atividade de casa para revisar o que foi aprendido na aula."},{"theme":"Useful Verbs and Vocabulary","word":"CLASS","hint":"Pode significar aula ou turma, dependendo da frase."},{"theme":"Useful Verbs and Vocabulary","word":"TEACHER","hint":"Pessoa que ensina a turma e orienta as atividades."},{"theme":"Useful Verbs and Vocabulary","word":"STUDENT","hint":"Pessoa que estuda. Em sala de aula, o aluno é um..."},{"theme":"Useful Verbs and Vocabulary","word":"ENGLISH","hint":"Disciplina e língua estudada neste jogo."}];
 const KEYBOARD = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 
 /* ===== Sons internos: não dependem de arquivos externos ===== */
@@ -1388,6 +1418,28 @@ function playMissionVictoryMusic(){
   }, 170);
 }
 
+function playWordRevealMusic(){
+  // Som curto de recompensa quando a palavra é descoberta, sem depender de arquivo externo.
+  try{
+    tone(659, .12, "triangle", .075, 0.00);
+    tone(784, .12, "triangle", .075, 0.12);
+    tone(988, .15, "triangle", .075, 0.24);
+    tone(1318, .22, "sine", .060, 0.40);
+  }catch(e){}
+}
+
+function highlightRevealedWord(){
+  try{
+    const w = el("word");
+    if(!w) return;
+    w.classList.remove("revealed");
+    void w.offsetWidth;
+    w.classList.add("revealed");
+    setTimeout(()=>w.classList.remove("revealed"), 2400);
+  }catch(e){}
+}
+
+
 function playTryAgainMusic(){
   stopFinalMusic();
   // Música de incentivo: começa suave e termina para cima, chamando o aluno para tentar de novo.
@@ -1439,11 +1491,11 @@ function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Mat
 function show(id){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));el(id).classList.add("active");document.body.classList.toggle("playing", id==="gameScreen")}
 
 function makeBag(){
-  const themes = ["Adverbs of Frequency","Likes and Dislikes","Giving Opinions"];
+  const themes = ["Adverbs of Frequency","Likes and Dislikes","Giving Opinions","Useful Verbs and Vocabulary"];
   const byTheme = {};
   themes.forEach(t => byTheme[t] = shuffle(CHALLENGES.filter(q => q.theme === t)));
   const bag = [];
-  for(let cycle=0; cycle<20; cycle++){
+  for(let cycle=0; cycle<15; cycle++){
     themes.forEach(t => {
       if(!byTheme[t].length) byTheme[t] = shuffle(CHALLENGES.filter(q => q.theme === t));
       bag.push(byTheme[t].pop());
@@ -1525,9 +1577,10 @@ function updateStats(){
 
 function getMemoryTip(theme){
   const tips = {
-    "Adverbs of Frequency": "💡 Dica: adverbs of frequency mostram com que frequência algo acontece: always, usually, often, sometimes, rarely e never.",
-    "Likes and Dislikes": "💡 Dica: para he/she/it usamos likes. Na negativa, use doesn’t like. Na pergunta, use Does + pessoa + like...?",
-    "Giving Opinions": "💡 Dica: para dar opinião, use frases como I think it is..., In my opinion..., I agree e I don’t agree."
+    "Adverbs of Frequency": "💡 Dica: neste jogo, use somente os advérbios estudados: always, usually, often, sometimes, rarely e never.",
+    "Likes and Dislikes": "💡 Dica: para he/she/it usamos likes, loves, enjoys, prefers ou hates. Pense em quem pratica a ação.",
+    "Giving Opinions": "💡 Dica: opiniões aparecem em palavras como good, bad, fun, boring, interesting, great, easy e difficult.",
+    "Useful Verbs and Vocabulary": "💡 Dica: pense em verbos e palavras do dia a dia da escola, jogos, música, comida e rotina."
   };
   return tips[theme] || "💡 Dica: observe a pista, lembre o tema e tente formar a palavra em inglês.";
 }
@@ -1560,11 +1613,9 @@ function loadChallenge(){
   state.current = state.bag[state.round-1];
   resetScarecrowForNewWord();
   state.guessed = new Set();
-  const clueLetter = getClueLetter(state.current);
-  if(clueLetter) state.guessed.add(clueLetter);
   state.finishedRound = false;
   el("theme").textContent = state.current.theme;
-  el("hint").innerHTML = `${state.current.hint}<br><span style="color:#ffe66d">🔎 Letra dica: <b>${clueLetter}</b></span>`;
+  el("hint").innerHTML = `🔎 ${state.current.hint}`;
   el("memoryTip").textContent = getMemoryTip(state.current.theme);
   el("guessInput").value = "";
   el("feedback").className = "feedback";
@@ -1694,8 +1745,10 @@ function completeRound(success){
   state.combo++;
   state.maxCombo = Math.max(state.maxCombo, state.combo);
   state.score += 120 + (state.combo >= 3 ? 20 : 0);
+  playWordRevealMusic();
+  highlightRevealedWord();
   el("feedback").className = "feedback ok";
-  el("feedback").innerHTML = `✅ Great job! A resposta era <b>${state.current.answer || state.current.word}</b>. Você venceu este desafio!`;
+  el("feedback").innerHTML = `✅ Great job! Palavra revelada: <b>${state.current.answer || state.current.word}</b>.<span class="reveal-pop">Continue jogando: a próxima palavra pode te levar para o topo do ranking!</span>`;
   updateStats();
 
   const missionEnded = state.round % 5 === 0 && state.round < TOTAL_ROUNDS;
