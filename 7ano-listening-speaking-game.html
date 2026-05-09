@@ -307,25 +307,10 @@
     }
 
     @keyframes correctGlow {
-      0% {
-        transform: scale(1);
-        filter: brightness(1);
-      }
-
-      35% {
-        transform: scale(1.04);
-        filter: brightness(1.2);
-      }
-
-      70% {
-        transform: scale(1.02);
-        filter: brightness(1.1);
-      }
-
-      100% {
-        transform: scale(1);
-        filter: brightness(1);
-      }
+      0% { transform: scale(1); filter: brightness(1); }
+      35% { transform: scale(1.04); filter: brightness(1.2); }
+      70% { transform: scale(1.02); filter: brightness(1.1); }
+      100% { transform: scale(1); filter: brightness(1); }
     }
 
     @keyframes wrongShake {
@@ -431,6 +416,42 @@
       border: 3px solid #60a5fa;
     }
 
+    .rating-box {
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.12);
+      border: 2px solid rgba(255,255,255,0.22);
+      text-align: center;
+    }
+
+    .rating-buttons {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .rating-buttons button {
+      min-height: 70px;
+      padding: 8px;
+      font-size: 0.82rem;
+      background: linear-gradient(180deg, #fef08a, #f59e0b);
+      color: #422006;
+    }
+
+    .rating-buttons .emoji {
+      display: block;
+      font-size: 1.8rem;
+      margin-bottom: 3px;
+    }
+
+    #ratingMessage {
+      color: #bbf7d0;
+      font-weight: 900;
+      min-height: 22px;
+    }
+
     .ranking-list {
       list-style: none;
       padding: 0;
@@ -483,38 +504,13 @@
     }
 
     @media (max-height: 720px) {
-      .screen {
-        padding: 12px;
-      }
-
-      h1 {
-        font-size: 1.35rem;
-        margin: 8px 0 5px;
-      }
-
-      .subtitle {
-        font-size: 0.85rem;
-      }
-
-      .phase-tile {
-        min-height: 56px;
-        border-radius: 14px;
-      }
-
-      .phrase {
-        font-size: 1.32rem;
-      }
-
-      button {
-        min-height: 48px;
-        padding: 12px 10px;
-        font-size: 0.95rem;
-      }
-
-      .phrase-card {
-        padding: 11px;
-        margin-top: 9px;
-      }
+      .screen { padding: 12px; }
+      h1 { font-size: 1.35rem; margin: 8px 0 5px; }
+      .subtitle { font-size: 0.85rem; }
+      .phase-tile { min-height: 56px; border-radius: 14px; }
+      .phrase { font-size: 1.32rem; }
+      button { min-height: 48px; padding: 12px 10px; font-size: 0.95rem; }
+      .phrase-card { padding: 11px; margin-top: 9px; }
     }
   </style>
 </head>
@@ -531,12 +527,12 @@
 
       <div class="input-box">
         <label for="playerName">Nome do aluno:</label>
-        <input id="playerName" type="text" placeholder="Digite seu nome">
+        <input id="playerName" type="text" maxlength="24" placeholder="Digite seu nome">
       </div>
 
       <div class="input-box">
         <label for="playerSchool">Escola:</label>
-        <input id="playerSchool" type="text" placeholder="Digite sua escola">
+        <input id="playerSchool" type="text" maxlength="32" placeholder="Digite sua escola">
       </div>
 
       <h2>Mapa das Fases</h2>
@@ -605,8 +601,32 @@
       <div id="finalScore" class="final-score">Pontuação: 0/100</div>
       <div id="motivationText" class="motivation"></div>
 
-      <h2>🏆 Ranking Motivacional</h2>
-      <ol id="rankingList" class="ranking-list"></ol>
+      <div class="rating-box">
+        <h2>Como foi jogar?</h2>
+        <p>Toque em uma opção:</p>
+
+        <div class="rating-buttons">
+          <button onclick="avaliarJogo('ruim', this)">
+            <span class="emoji">😡</span>
+            Difícil
+          </button>
+          <button onclick="avaliarJogo('neutro', this)">
+            <span class="emoji">😐</span>
+            Mais ou menos
+          </button>
+          <button onclick="avaliarJogo('bom', this)">
+            <span class="emoji">😀</span>
+            Gostei
+          </button>
+        </div>
+
+        <p id="ratingMessage"></p>
+      </div>
+
+      <h2>🏆 TOP 10 em tempo real</h2>
+      <ol id="rankingOnline" class="ranking-list">
+        <li>Carregando ranking...</li>
+      </ol>
 
       <button class="btn-green" onclick="restartGame()">🔁 Jogar novamente</button>
 
@@ -616,12 +636,7 @@
   </main>
 
   <script>
-    /*
-      English Voice Challenge
-      Jogo em HTML, CSS e JavaScript puro.
-      Usa SpeechSynthesis para ouvir e SpeechRecognition para microfone.
-      Agora possui brilho e som positivo no acerto.
-    */
+    const NOME_DO_JOGO = "7ano-listening-speaking-game";
 
     const phases = [
       {
@@ -783,6 +798,7 @@
     let answeredCurrent = false;
     let playerName = "Você";
     let playerSchool = "Sua escola";
+    let finalScoreSaved = false;
 
     const startScreen = document.getElementById("startScreen");
     const gameScreen = document.getElementById("gameScreen");
@@ -811,12 +827,18 @@
       const name = document.getElementById("playerName").value.trim();
       const school = document.getElementById("playerSchool").value.trim();
 
-      playerName = name || "Você";
-      playerSchool = school || "Sua escola";
+      if (!name) {
+        alert("Digite o nome do aluno para começar.");
+        return;
+      }
+
+      playerName = name.slice(0, 24);
+      playerSchool = school ? school.slice(0, 32) : "Sua escola";
 
       currentPhase = 0;
       currentQuestion = 0;
       score = 0;
+      finalScoreSaved = false;
 
       showScreen(gameScreen);
       loadQuestion();
@@ -899,9 +921,7 @@
 
       const voices = window.speechSynthesis.getVoices();
       const englishVoice = voices.find(voice => voice.lang && voice.lang.toLowerCase().startsWith("en"));
-      if (englishVoice) {
-        utterance.voice = englishVoice;
-      }
+      if (englishVoice) utterance.voice = englishVoice;
 
       window.speechSynthesis.speak(utterance);
     }
@@ -1039,9 +1059,7 @@
       let matchedWords = 0;
 
       expectedWords.forEach(word => {
-        if (normalizedSpoken.includes(word)) {
-          matchedWords++;
-        }
+        if (normalizedSpoken.includes(word)) matchedWords++;
       });
 
       const similarity = matchedWords / expectedWords.length;
@@ -1123,39 +1141,30 @@
         motivationText.textContent = "💪 Continue treinando para melhorar!";
       }
 
-      createRanking();
+      if (!finalScoreSaved) {
+        finalScoreSaved = true;
+
+        if (typeof window.salvarPontuacao === "function") {
+          window.salvarPontuacao(playerName, score, NOME_DO_JOGO);
+        }
+      }
     }
 
-    function createRanking() {
-      const rankingList = document.getElementById("rankingList");
+    function avaliarJogo(avaliacao, buttonElement) {
+      const ratingMessage = document.getElementById("ratingMessage");
 
-      const fakeRanking = [
-        { name: "Ana", school: "Escola Delfina de Jesus Amorim", score: 96 },
-        { name: "Carlos", school: "Escola Municipal Frei Ambrósio", score: 91 },
-        { name: "Mariana", school: "Escola Municipal Rotary", score: 84 },
-        { name: "Lucas", school: "Escola Municipal Haroldo Veloso", score: 75 },
-        { name: "Bianca", school: "Escola Municipal Fluminense", score: 68 }
-      ];
+      if (typeof window.salvarAvaliacao === "function") {
+        window.salvarAvaliacao(avaliacao, NOME_DO_JOGO);
+      }
 
-      fakeRanking.push({
-        name: playerName,
-        school: playerSchool,
-        score: score,
-        you: true
-      });
+      ratingMessage.textContent = "Obrigado! Sua avaliação foi registrada.";
 
-      fakeRanking.sort((a, b) => b.score - a.score);
+      const buttons = document.querySelectorAll(".rating-buttons button");
+      buttons.forEach(btn => btn.disabled = true);
 
-      rankingList.innerHTML = "";
-
-      fakeRanking.forEach((player, index) => {
-        const li = document.createElement("li");
-        if (player.you) li.classList.add("you");
-
-        const label = player.you ? "Você" : player.name;
-        li.textContent = `${index + 1}º ${label} - ${player.school} (${player.score})`;
-        rankingList.appendChild(li);
-      });
+      if (buttonElement) {
+        buttonElement.style.filter = "brightness(1.25)";
+      }
     }
 
     function restartGame() {
@@ -1165,6 +1174,13 @@
 
       document.getElementById("playerName").value = "";
       document.getElementById("playerSchool").value = "";
+      document.getElementById("ratingMessage").textContent = "";
+
+      const buttons = document.querySelectorAll(".rating-buttons button");
+      buttons.forEach(btn => {
+        btn.disabled = false;
+        btn.style.filter = "none";
+      });
 
       renderPhaseMap(startPhaseMap, 0);
       showScreen(startScreen);
@@ -1175,6 +1191,148 @@
         window.speechSynthesis.getVoices();
       };
     }
+  </script>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+
+    import {
+      getFirestore,
+      collection,
+      addDoc,
+      serverTimestamp,
+      query,
+      where,
+      orderBy,
+      limit,
+      onSnapshot
+    } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCVTR3nnyo5mYTF28TJisgTUe-Xyjk1upg",
+      authDomain: "english-game-hub.firebaseapp.com",
+      projectId: "english-game-hub",
+      storageBucket: "english-game-hub.firebasestorage.app",
+      messagingSenderId: "131880771426",
+      appId: "1:131880771426:web:cf29a6f34ca86be527d63b"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    window.registrarAcesso = async function registrarAcesso(jogo = NOME_DO_JOGO) {
+      try {
+        const agora = new Date();
+
+        await addDoc(collection(db, "acessos"), {
+          nome_do_jogo: jogo,
+          data: agora.toLocaleDateString("pt-BR"),
+          hora: agora.toLocaleTimeString("pt-BR"),
+          timestamp: serverTimestamp()
+        });
+
+        console.log("Acesso registrado no Firebase.");
+      } catch (error) {
+        console.error("Erro ao registrar acesso:", error);
+      }
+    };
+
+    window.salvarPontuacao = async function salvarPontuacao(nome, pontos, jogo = NOME_DO_JOGO) {
+      try {
+        const nomeLimpo = String(nome || "").trim().slice(0, 24);
+        const pontosNumero = Number(pontos);
+
+        if (!nomeLimpo) {
+          console.warn("Nome vazio. Pontuação não salva.");
+          return;
+        }
+
+        if (!Number.isInteger(pontosNumero) || pontosNumero < 0 || pontosNumero > 100) {
+          console.warn("Pontuação inválida. Pontuação não salva.");
+          return;
+        }
+
+        await addDoc(collection(db, "pontuacoes"), {
+          nome: nomeLimpo,
+          pontos: pontosNumero,
+          jogo: jogo,
+          timestamp: serverTimestamp()
+        });
+
+        console.log("Pontuação salva no Firebase.");
+      } catch (error) {
+        console.error("Erro ao salvar pontuação:", error);
+      }
+    };
+
+    window.salvarAvaliacao = async function salvarAvaliacao(avaliacao, jogo = NOME_DO_JOGO) {
+      try {
+        const avaliacoesPermitidas = ["ruim", "neutro", "bom"];
+
+        if (!avaliacoesPermitidas.includes(avaliacao)) {
+          console.warn("Avaliação inválida.");
+          return;
+        }
+
+        await addDoc(collection(db, "avaliacoes"), {
+          jogo: jogo,
+          avaliacao: avaliacao,
+          timestamp: serverTimestamp()
+        });
+
+        console.log("Avaliação salva no Firebase.");
+      } catch (error) {
+        console.error("Erro ao salvar avaliação:", error);
+      }
+    };
+
+    window.carregarRanking = function carregarRanking(jogo = NOME_DO_JOGO) {
+      const rankingContainer = document.getElementById("rankingOnline");
+
+      if (!rankingContainer) {
+        console.warn("Elemento rankingOnline não encontrado.");
+        return;
+      }
+
+      const rankingQuery = query(
+        collection(db, "pontuacoes"),
+        where("jogo", "==", jogo),
+        orderBy("pontos", "desc"),
+        limit(10)
+      );
+
+      onSnapshot(rankingQuery, (snapshot) => {
+        rankingContainer.innerHTML = "";
+
+        if (snapshot.empty) {
+          rankingContainer.innerHTML = "<li>Nenhuma pontuação registrada ainda.</li>";
+          return;
+        }
+
+        let posicao = 1;
+
+        snapshot.forEach((doc) => {
+          const item = doc.data();
+
+          const li = document.createElement("li");
+          li.textContent = `${posicao}º ${item.nome} - ${item.pontos} pontos`;
+
+          if (item.nome === playerName) {
+            li.classList.add("you");
+          }
+
+          rankingContainer.appendChild(li);
+          posicao++;
+        });
+
+      }, (error) => {
+        console.error("Erro ao carregar ranking:", error);
+        rankingContainer.innerHTML = "<li>Não foi possível carregar o ranking.</li>";
+      });
+    };
+
+    window.registrarAcesso(NOME_DO_JOGO);
+    window.carregarRanking(NOME_DO_JOGO);
   </script>
 </body>
 </html>
