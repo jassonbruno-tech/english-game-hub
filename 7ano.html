@@ -114,7 +114,10 @@
       border-radius:30px;
       overflow:hidden;
       width:100%;
-      background:rgba(3,9,35,.55);
+      background:
+        radial-gradient(circle at 25% 22%, rgba(255,211,77,.18), transparent 28%),
+        radial-gradient(circle at 78% 20%, rgba(57,215,255,.18), transparent 30%),
+        rgba(3,9,35,.55);
       box-shadow:
         0 22px 55px rgba(0,0,0,.45),
         0 0 0 2px rgba(255,255,255,.12),
@@ -126,6 +129,7 @@
       height:auto;
       display:block;
       object-fit:contain;
+      background:rgba(3,9,35,.35);
     }
 
     .notice{
@@ -311,7 +315,11 @@
     </header>
 
     <section class="hero" aria-label="Tela inicial do 7º ano">
-      <img src="7ano-lets-practice-prof-jasson-bruno.png" alt="Let's Practice - 7º Ano - English Game Hub" />
+      <img
+        id="heroImage"
+        src="7ano-lets-practice-prof-jasson-bruno.png"
+        alt="Let's Practice - 7º Ano - English Game Hub"
+      />
     </section>
 
     <section class="notice">
@@ -360,5 +368,32 @@
       Jogo idealizado pelo <strong>Prof. Jasson Bruno</strong>.
     </footer>
   </main>
+
+  <script>
+    const heroImage = document.getElementById("heroImage");
+
+    /*
+      A imagem nova deve estar preferencialmente com este nome:
+      7ano-lets-practice-prof-jasson-bruno.png
+
+      Mas deixei uma tentativa automática com o nome original que apareceu no GitHub,
+      caso ela tenha sido enviada sem renomear.
+    */
+    const imageOptions = [
+      "7ano-lets-practice-prof-jasson-bruno.png",
+      "7ano-lets-practice.png",
+      "ChatGPT%20Image%209%20de%20mai.%20de%202026%2C%2013_29_57.png",
+      "ChatGPT Image 9 de mai. de 2026, 13_29_57.png"
+    ];
+
+    let imageIndex = 0;
+
+    heroImage.onerror = function(){
+      imageIndex++;
+      if(imageIndex < imageOptions.length){
+        heroImage.src = imageOptions[imageIndex];
+      }
+    };
+  </script>
 </body>
 </html>
