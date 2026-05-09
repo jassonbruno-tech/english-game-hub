@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>English Speaking Challenge - 7º Ano</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(135deg, #e8fff1, #f5f7ff);
+      color: #1f2937;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px;
+    }
+
+    .game-container {
+      width: 100%;
+      max-width: 430px;
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 18px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.14);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #dcfce7;
+      color: #166534;
+      font-weight: bold;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      margin: 6px 0 8px;
+      font-size: 1.45rem;
+      color: #14532d;
+    }
+
+    .subtitle {
+      font-size: 0.95rem;
+      line-height: 1.4;
+      margin: 0 0 14px;
+      color: #475569;
+    }
+
+    .teacher {
+      font-size: 0.82rem;
+      color: #64748b;
+      margin-top: 8px;
+    }
+
+    .screen {
+      display: none;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    .input-box {
+      margin: 14px 0;
+      text-align: left;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 6px;
+      color: #334155;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      border-radius: 14px;
+      border: 2px solid #cbd5e1;
+      font-size: 1rem;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #22c55e;
+    }
+
+    .progress-area {
+      margin: 12px 0;
+      background: #e5e7eb;
+      height: 14px;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, #22c55e, #16a34a);
+      transition: width 0.3s ease;
+    }
+
+    .score-line {
+      font-weight: bold;
+      margin: 8px 0 12px;
+      color: #14532d;
+    }
+
+    .phrase-card {
+      background: #f8fafc;
+      border: 2px solid #dbeafe;
+      border-radius: 20px;
+      padding: 18px 12px;
+      margin: 12px 0;
+    }
+
+    .phrase-label {
+      font-size: 0.8rem;
+      color: #64748b;
+      margin-bottom: 8px;
+    }
+
+    .phrase {
+      font-size: 1.55rem;
+      font-weight: bold;
+      color: #111827;
+      line-height: 1.25;
+    }
+
+    .translation {
+      margin-top: 8px;
+      color: #64748b;
+      font-size: 0.92rem;
+    }
+
+    .tip {
+      margin-top: 8px;
+      font-size: 0.85rem;
+      color: #475569;
+      background: #fef9c3;
+      border-radius: 12px;
+      padding: 8px;
+    }
+
+    .button-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    button {
+      border: none;
+      border-radius: 16px;
+      padding: 15px 14px;
+      font-size: 1.05rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.12s ease, opacity 0.2s ease;
+      min-height: 54px;
+    }
+
+    button:active {
+      transform: scale(0.97);
+    }
+
+    button:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    .btn-primary {
+      background: #22c55e;
+      color: white;
+    }
+
+    .btn-secondary {
+      background: #2563eb;
+      color: white;
+    }
+
+    .btn-warning {
+      background: #f59e0b;
+      color: white;
+    }
+
+    .btn-dark {
+      background: #111827;
+      color: white;
+    }
+
+    .btn-light {
+      background: #e2e8f0;
+      color: #1e293b;
+    }
+
+    .spoken-box {
+      margin-top: 14px;
+      background: #f1f5f9;
+      padding: 12px;
+      border-radius: 16px;
+      text-align: left;
+      font-size: 0.95rem;
+      min-height: 52px;
+    }
+
+    .spoken-box strong {
+      color: #0f172a;
+    }
+
+    .feedback {
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 16px;
+      font-weight: bold;
+      font-size: 1.05rem;
+      display: none;
+    }
+
+    .feedback.show {
+      display: block;
+    }
+
+    .feedback.correct {
+      background: #dcfce7;
+      color: #166534;
+      border: 2px solid #22c55e;
+    }
+
+    .feedback.wrong {
+      background: #fee2e2;
+      color: #991b1b;
+      border: 2px solid #ef4444;
+    }
+
+    .feedback.info {
+      background: #dbeafe;
+      color: #1d4ed8;
+      border: 2px solid #60a5fa;
+    }
+
+    .ranking-list {
+      list-style: none;
+      padding: 0;
+      margin: 16px 0;
+      text-align: left;
+    }
+
+    .ranking-list li {
+      background: #f8fafc;
+      margin-bottom: 8px;
+      padding: 12px;
+      border-radius: 14px;
+      font-weight: bold;
+      border: 1px solid #e2e8f0;
+    }
+
+    .ranking-list li.you {
+      background: #dcfce7;
+      border: 2px solid #22c55e;
+      color: #14532d;
+    }
+
+    .final-score {
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #14532d;
+      margin: 12px 0;
+    }
+
+    .motivation {
+      font-size: 1.08rem;
+      font-weight: bold;
+      margin: 12px 0;
+      padding: 12px;
+      border-radius: 16px;
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .small-note {
+      font-size: 0.78rem;
+      color: #64748b;
+      line-height: 1.35;
+      margin-top: 10px;
+    }
+
+    @media (min-width: 390px) {
+      .button-grid.two {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="game-container">
+
+    <!-- TELA INICIAL -->
+    <section id="startScreen" class="screen active">
+      <span class="badge">Listening + Speaking</span>
+      <h1>English Speaking Challenge</h1>
+      <p class="subtitle">
+        Ouça a frase, tente repetir em inglês e veja sua pontuação no ranking motivacional.
+      </p>
+
+      <div class="input-box">
+        <label for="playerName">Nome do aluno:</label>
+        <input id="playerName" type="text" placeholder="Digite seu nome" />
+      </div>
+
+      <div class="input-box">
+        <label for="playerSchool">Escola:</label>
+        <input id="playerSchool" type="text" placeholder="Digite sua escola" />
+      </div>
+
+      <button class="btn-primary" onclick="startGame()">▶ Começar desafio</button>
+
+      <p class="teacher">Jogo idealizado pelo Prof. Jasson Bruno.</p>
+      <p class="small-note">
+        Este jogo usa a voz e o microfone do navegador. No celular, funciona melhor no Chrome Android.
+      </p>
+    </section>
+
+    <!-- TELA DO JOGO -->
+    <section id="gameScreen" class="screen">
+      <span class="badge" id="categoryBadge">Tema</span>
+
+      <div class="score-line">
+        Pontuação: <span id="scoreText">0/0</span>
+      </div>
+
+      <div class="progress-area">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+
+      <div class="phrase-card">
+        <div class="phrase-label">Frase para ouvir e repetir:</div>
+        <div class="phrase" id="phraseText">Phrase here</div>
+        <div class="translation" id="translationText">Tradução</div>
+        <div class="tip" id="tipText">Dica</div>
+      </div>
+
+      <div class="button-grid two">
+        <button class="btn-secondary" onclick="speakPhrase()">🔊 Ouvir</button>
+        <button class="btn-warning" onclick="startRecognition()">🎤 Falar</button>
+      </div>
+
+      <div class="spoken-box">
+        <strong>Você disse:</strong>
+        <div id="spokenText">Toque em “Falar” e repita a frase.</div>
+      </div>
+
+      <div id="feedbackBox" class="feedback"></div>
+
+      <div class="button-grid">
+        <button class="btn-dark" id="nextButton" onclick="nextQuestion()" disabled>Próxima ➜</button>
+      </div>
+
+      <p class="small-note">
+        Se o microfone não funcionar, o jogo continua normalmente. O importante é treinar a escuta e a repetição.
+      </p>
+    </section>
+
+    <!-- TELA FINAL -->
+    <section id="endScreen" class="screen">
+      <span class="badge">Resultado Final</span>
+      <h1>Challenge Completed!</h1>
+
+      <div class="final-score" id="finalScore">Pontuação: 0/0</div>
+      <div class="motivation" id="motivationText"></div>
+
+      <h2 style="font-size:1.2rem; color:#14532d;">🏆 Ranking Motivacional</h2>
+      <ol class="ranking-list" id="rankingList"></ol>
+
+      <button class="btn-primary" onclick="restartGame()">🔁 Jogar novamente</button>
+
+      <p class="teacher">Jogo idealizado pelo Prof. Jasson Bruno.</p>
+    </section>
+
+  </main>
+
+  <script>
+    /*
+      English Speaking Challenge
+      HTML + CSS + JavaScript puro
+      Usa:
+      - SpeechSynthesis para ouvir a frase
+      - SpeechRecognition / webkitSpeechRecognition para tentar reconhecer a fala
+    */
+
+    const questions = [
+      {
+        category: "Verb to be",
+        phrase: "I am happy",
+        translation: "Eu estou feliz.",
+        tip: "Dica: I am = eu sou / eu estou."
+      },
+      {
+        category: "Verb to be",
+        phrase: "She is my friend",
+        translation: "Ela é minha amiga.",
+        tip: "Dica: She is = ela é / ela está."
+      },
+      {
+        category: "Verb to be",
+        phrase: "They are students",
+        translation: "Eles são estudantes.",
+        tip: "Dica: They are = eles/elas são."
+      },
+      {
+        category: "Verb to be",
+        phrase: "We are at school",
+        translation: "Nós estamos na escola.",
+        tip: "Dica: We are = nós somos / estamos."
+      },
+      {
+        category: "Giving opinions",
+        phrase: "I like pizza",
+        translation: "Eu gosto de pizza.",
+        tip: "Dica: I like = eu gosto."
+      },
+      {
+        category: "Giving opinions",
+        phrase: "I like English",
+        translation: "Eu gosto de inglês.",
+        tip: "Dica: English = inglês."
+      },
+      {
+        category: "Giving opinions",
+        phrase: "I don't like homework",
+        translation: "Eu não gosto de tarefa de casa.",
+        tip: "Dica: I don't like = eu não gosto."
+      },
+      {
+        category: "Giving opinions",
+        phrase: "I don't like noise",
+        translation: "Eu não gosto de barulho.",
+        tip: "Dica: noise = barulho."
+      },
+      {
+        category: "Adverbs of frequency",
+        phrase: "I always study English",
+        translation: "Eu sempre estudo inglês.",
+        tip: "Dica: always = sempre."
+      },
+      {
+        category: "Adverbs of frequency",
+        phrase: "I usually play soccer",
+        translation: "Eu geralmente jogo futebol.",
+        tip: "Dica: usually = geralmente."
+      },
+      {
+        category: "Adverbs of frequency",
+        phrase: "I often read books",
+        translation: "Eu frequentemente leio livros.",
+        tip: "Dica: often = frequentemente."
+      },
+      {
+        category: "Adverbs of frequency",
+        phrase: "I sometimes watch TV",
+        translation: "Eu às vezes assisto TV.",
+        tip: "Dica: sometimes = às vezes."
+      },
+      {
+        category: "Adverbs of frequency",
+        phrase: "I never sleep in class",
+        translation: "Eu nunca durmo na aula.",
+        tip: "Dica: never = nunca."
+      },
+      {
+        category: "Life / lives",
+        phrase: "I like this life",
+        translation: "Eu gosto desta vida.",
+        tip: "Dica: life = vida."
+      },
+      {
+        category: "Life / lives",
+        phrase: "She lives in Brazil",
+        translation: "Ela mora no Brasil.",
+        tip: "Dica: lives = mora / vive."
+      },
+      {
+        category: "Life / lives",
+        phrase: "He lives near school",
+        translation: "Ele mora perto da escola.",
+        tip: "Dica: near school = perto da escola."
+      }
+    ];
+
+    let shuffledQuestions = [];
+    let currentIndex = 0;
+    let score = 0;
+    let answeredCurrent = false;
+    let playerName = "Você";
+    let playerSchool = "";
+
+    const startScreen = document.getElementById("startScreen");
+    const gameScreen = document.getElementById("gameScreen");
+    const endScreen = document.getElementById("endScreen");
+
+    const phraseText = document.getElementById("phraseText");
+    const translationText = document.getElementById("translationText");
+    const tipText = document.getElementById("tipText");
+    const categoryBadge = document.getElementById("categoryBadge");
+    const spokenText = document.getElementById("spokenText");
+    const feedbackBox = document.getElementById("feedbackBox");
+    const nextButton = document.getElementById("nextButton");
+    const scoreText = document.getElementById("scoreText");
+    const progressBar = document.getElementById("progressBar");
+
+    function startGame() {
+      const nameInput = document.getElementById("playerName").value.trim();
+      const schoolInput = document.getElementById("playerSchool").value.trim();
+
+      playerName = nameInput || "Você";
+      playerSchool = schoolInput || "Sua escola";
+
+      shuffledQuestions = shuffleArray([...questions]);
+      currentIndex = 0;
+      score = 0;
+
+      showScreen(gameScreen);
+      loadQuestion();
+    }
+
+    function showScreen(screen) {
+      startScreen.classList.remove("active");
+      gameScreen.classList.remove("active");
+      endScreen.classList.remove("active");
+      screen.classList.add("active");
+    }
+
+    function loadQuestion() {
+      answeredCurrent = false;
+      nextButton.disabled = true;
+
+      const current = shuffledQuestions[currentIndex];
+
+      phraseText.textContent = current.phrase;
+      translationText.textContent = current.translation;
+      tipText.textContent = current.tip;
+      categoryBadge.textContent = current.category;
+
+      spokenText.textContent = "Toque em “Falar” e repita a frase.";
+      hideFeedback();
+
+      updateScoreAndProgress();
+    }
+
+    function updateScoreAndProgress() {
+      scoreText.textContent = `${score}/${shuffledQuestions.length}`;
+
+      const progress = ((currentIndex) / shuffledQuestions.length) * 100;
+      progressBar.style.width = `${progress}%`;
+    }
+
+    function speakPhrase() {
+      const current = shuffledQuestions[currentIndex];
+
+      if (!("speechSynthesis" in window)) {
+        showFeedback("Seu navegador não suporta áudio de voz.", "wrong");
+        return;
+      }
+
+      window.speechSynthesis.cancel();
+
+      const utterance = new SpeechSynthesisUtterance(current.phrase);
+      utterance.lang = "en-US";
+      utterance.rate = 0.82;
+      utterance.pitch = 1;
+
+      // Tenta escolher uma voz em inglês, se existir no navegador
+      const voices = window.speechSynthesis.getVoices();
+      const englishVoice = voices.find(voice => voice.lang && voice.lang.toLowerCase().startsWith("en"));
+      if (englishVoice) {
+        utterance.voice = englishVoice;
+      }
+
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function startRecognition() {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+      if (!SpeechRecognition) {
+        spokenText.textContent = "Seu navegador não suporta microfone.";
+        showFeedback("Seu navegador não suporta microfone. Você pode ouvir e repetir oralmente mesmo assim.", "info");
+        nextButton.disabled = false;
+        return;
+      }
+
+      const recognition = new SpeechRecognition();
+      recognition.lang = "en-US";
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
+
+      spokenText.textContent = "Ouvindo... fale a frase em inglês.";
+      showFeedback("🎤 Pode falar agora!", "info");
+
+      recognition.start();
+
+      recognition.onresult = function(event) {
+        const spoken = event.results[0][0].transcript;
+        spokenText.textContent = spoken;
+        checkAnswer(spoken);
+      };
+
+      recognition.onerror = function() {
+        spokenText.textContent = "Não foi possível reconhecer sua fala.";
+        showFeedback("Tente novamente ou toque em Próxima para continuar.", "wrong");
+        nextButton.disabled = false;
+      };
+
+      recognition.onend = function() {
+        // Caso o aluno não fale nada, o navegador pode encerrar sem resultado.
+        if (spokenText.textContent === "Ouvindo... fale a frase em inglês.") {
+          spokenText.textContent = "Nenhuma fala foi reconhecida.";
+          showFeedback("Você não falou nada ou o áudio ficou baixo. Tente novamente.", "wrong");
+          nextButton.disabled = false;
+        }
+      };
+    }
+
+    function checkAnswer(spoken) {
+      const expected = shuffledQuestions[currentIndex].phrase;
+
+      const normalizedExpected = normalizeText(expected);
+      const normalizedSpoken = normalizeText(spoken);
+
+      /*
+        Comparação simples:
+        - aceita se a frase falada contém boa parte da frase esperada
+        - também aceita se várias palavras principais aparecem
+      */
+      const expectedWords = normalizedExpected.split(" ");
+      let matchedWords = 0;
+
+      expectedWords.forEach(word => {
+        if (normalizedSpoken.includes(word)) {
+          matchedWords++;
+        }
+      });
+
+      const similarity = matchedWords / expectedWords.length;
+      const isCorrect =
+        normalizedSpoken.includes(normalizedExpected) ||
+        normalizedExpected.includes(normalizedSpoken) ||
+        similarity >= 0.7;
+
+      if (isCorrect) {
+        if (!answeredCurrent) {
+          score++;
+          answeredCurrent = true;
+        }
+        showFeedback("✅ Muito bom! Sua fala ficou parecida com a frase.", "correct");
+      } else {
+        showFeedback("❌ Tente novamente. Ouça a frase e repita devagar.", "wrong");
+      }
+
+      nextButton.disabled = false;
+      updateScoreAndProgress();
+    }
+
+    function normalizeText(text) {
+      return text
+        .toLowerCase()
+        .replace(/[.,!?;:]/g, "")
+        .replace(/don't/g, "dont")
+        .replace(/do not/g, "dont")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    function showFeedback(message, type) {
+      feedbackBox.textContent = message;
+      feedbackBox.className = `feedback show ${type}`;
+    }
+
+    function hideFeedback() {
+      feedbackBox.textContent = "";
+      feedbackBox.className = "feedback";
+    }
+
+    function nextQuestion() {
+      currentIndex++;
+
+      if (currentIndex >= shuffledQuestions.length) {
+        finishGame();
+      } else {
+        loadQuestion();
+      }
+    }
+
+    function finishGame() {
+      progressBar.style.width = "100%";
+      showScreen(endScreen);
+
+      document.getElementById("finalScore").textContent =
+        `Pontuação: ${score}/${shuffledQuestions.length}`;
+
+      const percentage = score / shuffledQuestions.length;
+      const motivationText = document.getElementById("motivationText");
+
+      if (percentage >= 0.7) {
+        motivationText.textContent = "🔥 Você quase chegou ao topo!";
+      } else {
+        motivationText.textContent = "💪 Continue treinando para melhorar!";
+      }
+
+      createRanking();
+    }
+
+    function createRanking() {
+      const rankingList = document.getElementById("rankingList");
+
+      const fakeRanking = [
+        { name: "Ana", school: "Escola Delfina de Jesus Amorim", score: 15 },
+        { name: "Carlos", school: "Escola Municipal Frei Ambrósio", score: 13 },
+        { name: "Mariana", school: "Escola Municipal Rotary", score: 12 },
+        { name: "Lucas", school: "Escola Municipal Haroldo Veloso", score: 10 },
+        { name: "Bianca", school: "Escola Municipal Fluminense", score: 8 }
+      ];
+
+      fakeRanking.push({
+        name: playerName === "Você" ? "Você" : playerName,
+        school: playerSchool,
+        score: score,
+        you: true
+      });
+
+      fakeRanking.sort((a, b) => b.score - a.score);
+
+      rankingList.innerHTML = "";
+
+      fakeRanking.forEach((player, index) => {
+        const li = document.createElement("li");
+
+        if (player.you) {
+          li.classList.add("you");
+        }
+
+        const position = index + 1;
+        const label = player.you ? "Você" : player.name;
+
+        li.textContent = `${position}º ${label} - ${player.school} (${player.score})`;
+        rankingList.appendChild(li);
+      });
+    }
+
+    function restartGame() {
+      window.speechSynthesis.cancel();
+      showScreen(startScreen);
+
+      document.getElementById("playerName").value = "";
+      document.getElementById("playerSchool").value = "";
+    }
+
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const randomIndex = Math.floor(Math.random() * (i + 1));
+        [array[i], array[randomIndex]] = [array[randomIndex], array[i]];
+      }
+      return array;
+    }
+
+    // Carrega vozes do navegador quando disponíveis
+    if ("speechSynthesis" in window) {
+      window.speechSynthesis.onvoiceschanged = function() {
+        window.speechSynthesis.getVoices();
+      };
+    }
+  </script>
+</body>
+</html>
