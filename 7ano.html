@@ -7,7 +7,7 @@
 
   <meta property="og:title" content="English Game Hub - 7º Ano" />
   <meta property="og:description" content="Jogos de revisão de Inglês para o 7º ano: Likes and Dislikes, Adverbs of Frequency e Giving Opinions." />
-  <meta property="og:image" content="https://jassonbruno-tech.github.io/english-game-hub/minion-comemorando-7ano.png" />
+  <meta property="og:image" content="https://jassonbruno-tech.github.io/english-game-hub/7ano-lets-practice-prof-jasson-bruno.png" />
   <meta property="og:url" content="https://jassonbruno-tech.github.io/english-game-hub/7ano.html" />
   <meta property="og:type" content="website" />
 
@@ -22,7 +22,6 @@
       --text:#ffffff;
       --soft:#dbeafe;
       --card:rgba(10,18,56,.78);
-      --card2:rgba(255,255,255,.10);
     }
 
     *{
@@ -114,43 +113,22 @@
       position:relative;
       border-radius:30px;
       overflow:hidden;
-      min-height:62dvh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:16px;
-      background:
-        radial-gradient(circle at 25% 22%, rgba(255,211,77,.35), transparent 28%),
-        radial-gradient(circle at 78% 20%, rgba(57,215,255,.25), transparent 30%),
-        radial-gradient(circle at 50% 88%, rgba(255,62,207,.20), transparent 32%),
-        linear-gradient(160deg, rgba(4,12,48,.82), rgba(21,12,74,.72));
+      width:100%;
+      background:rgba(3,9,35,.55);
       box-shadow:
         0 22px 55px rgba(0,0,0,.45),
         0 0 0 2px rgba(255,255,255,.12),
         0 0 38px rgba(57,215,255,.22);
-      background:rgba(3,9,35,.55);
     }
 
     .hero img{
       width:100%;
-      height:100%;
-      min-height:62dvh;
-      object-fit:contain;
+      height:auto;
       display:block;
-      filter:drop-shadow(0 24px 32px rgba(0,0,0,.42));
-    }
-
-    .hero::after{
-      content:"";
-      position:absolute;
-      inset:auto 0 0 0;
-      height:34%;
-      background:linear-gradient(to top, rgba(3,9,35,.88), transparent);
-      pointer-events:none;
+      object-fit:contain;
     }
 
     .notice{
-      margin-top:-2px;
       padding:13px 14px;
       border-radius:22px;
       background:linear-gradient(135deg, rgba(9,20,67,.86), rgba(22,18,75,.76));
@@ -279,47 +257,42 @@
       .page{
         padding-top:20px;
       }
-      .hero{
-        min-height:650px;
-      }
-      .hero img{
-        min-height:650px;
-      }
+
       .games{
         grid-template-columns:1fr 1fr 1fr;
       }
+
       .game-card{
         flex-direction:column;
         text-align:center;
       }
+
       .arrow{
         display:none;
       }
     }
 
     @media (max-height: 760px){
-      .hero{
-        min-height:55dvh;
-      }
-      .hero img{
-        min-height:55dvh;
-      }
       .notice{
         font-size:.8rem;
         padding:10px 12px;
       }
+
       .game-card{
         padding:10px 11px;
       }
+
       .icon{
         width:46px;
         height:46px;
         min-width:46px;
         font-size:1.45rem;
       }
+
       .game-card h2{
         font-size:.96rem;
       }
+
       .game-card p{
         font-size:.72rem;
       }
@@ -338,7 +311,7 @@
     </header>
 
     <section class="hero" aria-label="Tela inicial do 7º ano">
-      <img src="minion-comemorando-7ano.png" alt="Minion comemorando feliz para jogar no English Game Hub do 7º Ano" />
+      <img src="7ano-lets-practice-prof-jasson-bruno.png" alt="Let's Practice - 7º Ano - English Game Hub" />
     </section>
 
     <section class="notice">
@@ -379,6 +352,8 @@
       <span class="topic">Adverbs of Frequency</span>
       <span class="topic">Likes and Dislikes</span>
       <span class="topic">Giving Opinions</span>
+      <span class="topic">Grammar Rules</span>
+      <span class="topic">Verb to be</span>
     </section>
 
     <footer class="footer">
