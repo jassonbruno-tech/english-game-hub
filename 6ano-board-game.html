@@ -14,43 +14,46 @@
       radial-gradient(circle at 85% 20%,rgba(0,213,255,.18),transparent 30%),
       linear-gradient(135deg,#071427,#0a213b 48%,#06111f);
   }
-  .app{width:100%;max-width:480px;height:100dvh;margin:0 auto;padding:7px;display:flex;flex-direction:column;gap:6px;overflow:hidden;position:relative}
+  .app{width:100%;max-width:480px;height:100dvh;margin:0 auto;padding:6px;display:flex;flex-direction:column;gap:5px;overflow:hidden;position:relative}
   .screen{display:none;height:100%;min-height:0;overflow:hidden}
   .screen.active{display:flex;flex-direction:column}
   .topbar{display:flex;align-items:center;justify-content:space-between;gap:6px;flex:0 0 auto}
-  .back{text-decoration:none;color:#fff;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.2);padding:7px 9px;border-radius:999px;font-size:.75rem;font-weight:900}
-  .badge{background:linear-gradient(90deg,#ffcf33,#ff5b00);color:#241000;border-radius:999px;padding:7px 10px;font-weight:1000;font-size:.72rem;text-align:center;box-shadow:0 4px 0 rgba(0,0,0,.34)}
+  .back{text-decoration:none;color:#fff;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.2);padding:6px 8px;border-radius:999px;font-size:.72rem;font-weight:900}
+  .badge{background:linear-gradient(90deg,#ffcf33,#ff5b00);color:#241000;border-radius:999px;padding:6px 9px;font-weight:1000;font-size:.7rem;text-align:center;box-shadow:0 4px 0 rgba(0,0,0,.34)}
   h1{font-size:1.35rem;line-height:1.05;text-align:center;margin:8px 0 6px;text-shadow:0 3px 0 rgba(0,0,0,.35)}
   .card{background:rgba(10,24,43,.92);border:2px solid rgba(255,255,255,.18);border-radius:24px;padding:14px;box-shadow:0 14px 32px rgba(0,0,0,.32);margin:auto 0}
   .sub{font-size:.9rem;color:#dbeafe;text-align:center;line-height:1.35}
   label{display:block;margin:9px 0 4px;color:#ffe66d;font-weight:1000}
   input{width:100%;border:2px solid #ffd60a;border-radius:15px;padding:12px;font-size:1rem;outline:none}
-  button{border:0;border-radius:17px;padding:12px 10px;min-height:46px;font-weight:1000;font-size:1rem;cursor:pointer;box-shadow:0 5px 0 rgba(0,0,0,.36)}
+  button{border:0;border-radius:17px;padding:10px 9px;min-height:42px;font-weight:1000;font-size:.96rem;cursor:pointer;box-shadow:0 5px 0 rgba(0,0,0,.36)}
   button:active{transform:translateY(3px);box-shadow:0 2px 0 rgba(0,0,0,.36)}
   button:disabled{opacity:.55;cursor:not-allowed}
   .btn-green{background:linear-gradient(#50ff7a,#00a84a);color:#052712}
   .btn-blue{background:linear-gradient(#42d4ff,#0958ff);color:#fff}
   .btn-orange{background:linear-gradient(#ffbd43,#ff5b00);color:#fff}
-  .btn-red{background:linear-gradient(#ff6363,#dc2626);color:#fff}
   .btn-gray{background:linear-gradient(#94a3b8,#475569);color:#fff}
-  .msg{min-height:18px;text-align:center;color:#ffe66d;font-weight:900;font-size:.82rem}
+  .msg{min-height:17px;text-align:center;color:#ffe66d;font-weight:900;font-size:.78rem}
 
-  .hud{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;flex:0 0 auto}
-  .stat{background:rgba(0,0,0,.42);border:1px solid rgba(255,255,255,.22);border-radius:14px;padding:5px 3px;text-align:center;font-size:.58rem;font-weight:900;box-shadow:0 5px 12px rgba(0,0,0,.22)}
-  .stat b{display:block;color:#ffe66d;font-size:.84rem;margin-bottom:1px}
-  .trackWrap{position:relative;flex:1;min-height:0;border-radius:24px;overflow:hidden;background:#18310c;border:3px solid rgba(255,255,255,.16);box-shadow:0 12px 32px rgba(0,0,0,.33)}
-  .trackImg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;user-select:none;pointer-events:none}
-  .trackShade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.08),transparent 18%,transparent 76%,rgba(0,0,0,.18));z-index:2;pointer-events:none}
-  .currentGlow{position:absolute;width:36px;height:36px;border-radius:50%;background:rgba(255,214,10,.42);box-shadow:0 0 18px 8px rgba(255,214,10,.4);transform:translate(-50%,-50%);z-index:4;transition:left .35s linear,top .35s linear;pointer-events:none}
-  .specialIcon{position:absolute;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:15px;background:rgba(0,0,0,.62);border:1px solid rgba(255,255,255,.58);z-index:5;transform:translate(-50%,-50%);box-shadow:0 3px 8px rgba(0,0,0,.35)}
-  .car{position:absolute;left:50%;top:90%;width:48px;height:48px;z-index:8;transform:translate(-50%,-50%) rotate(0deg);transition:left .35s linear,top .35s linear,transform .35s linear;filter:drop-shadow(0 10px 5px rgba(0,0,0,.55));will-change:left,top,transform}
-  .carSprite{width:100%;height:100%;background-image:url('ferrari-f1-sprite-sheet.png');background-repeat:no-repeat;background-size:400% 200%;background-position:0% 0%;transform-origin:center;animation:none}
-  .car.moving .carSprite{animation:wheelFeel .18s steps(2) infinite}
-  @keyframes wheelFeel{from{filter:brightness(1)}to{filter:brightness(1.25) saturate(1.25)}}
+  .hud{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;flex:0 0 auto}
+  .stat{background:rgba(0,0,0,.46);border:1px solid rgba(255,255,255,.22);border-radius:13px;padding:4px 2px;text-align:center;font-size:.54rem;font-weight:900;box-shadow:0 5px 12px rgba(0,0,0,.22)}
+  .stat b{display:block;color:#ffe66d;font-size:.77rem;margin-bottom:1px}
+  .trackWrap{position:relative;flex:1;min-height:0;border-radius:21px;overflow:hidden;background:
+    radial-gradient(circle at center,#244b13,#0c2610 74%);
+    border:3px solid rgba(255,255,255,.16);box-shadow:0 12px 32px rgba(0,0,0,.33)}
+
+  /* A pista aparece inteira. Nada de cover para não cortar START/FINISH. */
+  .trackImg{position:absolute;left:50%;top:50%;max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;transform:translate(-50%,-50%);z-index:1;user-select:none;pointer-events:none}
+  .trackShade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.06),transparent 18%,transparent 78%,rgba(0,0,0,.12));z-index:2;pointer-events:none}
+  .currentGlow{position:absolute;width:30px;height:30px;border-radius:50%;background:rgba(255,214,10,.35);box-shadow:0 0 15px 6px rgba(255,214,10,.34);transform:translate(-50%,-50%);z-index:4;transition:left .55s ease-in-out,top .55s ease-in-out;pointer-events:none}
+  .car{position:absolute;left:50%;top:90%;width:42px;height:62px;z-index:8;transform:translate(-50%,-50%) rotate(0deg);transition:left .55s ease-in-out,top .55s ease-in-out,transform .55s ease-in-out;filter:drop-shadow(0 10px 6px rgba(0,0,0,.58));will-change:left,top,transform}
+  .car img{width:100%;height:100%;object-fit:contain;display:block;transform-origin:center}
+  .car.moving{animation:carBoost .18s ease-in-out infinite alternate}
+  @keyframes carBoost{from{filter:drop-shadow(0 10px 6px rgba(0,0,0,.58)) brightness(1)}to{filter:drop-shadow(0 0 12px rgba(255,214,10,.75)) brightness(1.13)}}
+
   .control{display:grid;grid-template-columns:.95fr 1.3fr;gap:8px;align-items:center;flex:0 0 auto}
-  .diceBox{background:rgba(0,0,0,.38);border:1px solid rgba(255,255,255,.22);border-radius:20px;padding:7px;text-align:center;min-height:64px}
-  .dice{font-size:2.1rem;line-height:1}
-  .teacher{text-align:center;color:#fff7c2;font-weight:800;font-size:.68rem;text-shadow:0 2px 3px rgba(0,0,0,.8);margin:0;flex:0 0 auto}
+  .diceBox{background:rgba(0,0,0,.38);border:1px solid rgba(255,255,255,.22);border-radius:18px;padding:6px;text-align:center;min-height:58px}
+  .dice{font-size:1.85rem;line-height:1}
+  .teacher{text-align:center;color:#fff7c2;font-weight:800;font-size:.64rem;text-shadow:0 2px 3px rgba(0,0,0,.8);margin:0;flex:0 0 auto}
 
   .modal{position:fixed;inset:0;background:rgba(0,0,0,.78);display:none;align-items:center;justify-content:center;padding:14px;z-index:99}
   .modal.show{display:flex}
@@ -72,15 +75,14 @@
   @keyframes flash{0%{opacity:0}45%{opacity:1}100%{opacity:0}}
 
   @media(max-height:700px){
-    .app{gap:4px;padding:5px}
-    button{min-height:40px;padding:8px;font-size:.9rem}
-    .hud{gap:4px}
-    .stat{font-size:.54rem;padding:4px 2px}
-    .stat b{font-size:.78rem}
-    .diceBox{min-height:56px;padding:5px}
-    .dice{font-size:1.8rem}
-    .car{width:42px;height:42px}
-    .teacher{font-size:.62rem}
+    .app{gap:3px;padding:4px}
+    button{min-height:38px;padding:7px;font-size:.88rem}
+    .stat{font-size:.5rem;padding:3px 2px}
+    .stat b{font-size:.72rem}
+    .diceBox{min-height:52px;padding:5px}
+    .dice{font-size:1.65rem}
+    .car{width:36px;height:54px}
+    .teacher{font-size:.59rem}
   }
 </style>
 </head>
@@ -114,11 +116,10 @@
     </div>
 
     <div class="trackWrap" id="trackWrap">
-      <img class="trackImg" src="6ano-formula-race-track.png" alt="Pista Formula Race">
+      <img id="trackImg" class="trackImg" src="6ano-formula-race-track.png" alt="Pista Formula Race">
       <div class="trackShade"></div>
-      <div id="specialLayer"></div>
       <div id="currentGlow" class="currentGlow"></div>
-      <div id="car" class="car"><div id="carSprite" class="carSprite"></div></div>
+      <div id="car" class="car"><img src="ferrari-f1-top.png" alt="Ferrari F1"></div>
     </div>
 
     <div class="control">
@@ -165,8 +166,8 @@
 <audio id="engineSound" src="f1%20som%20atual.mpeg" preload="auto"></audio>
 
 <script>
-const QUESTIONS = [{"theme": "Greetings", "q": "Bob Esponja chegou à escola pela manhã. Qual expressão ele pode usar?", "a": ["See you!", "Good night!", "Good morning!", "Goodbye!"], "c": 2}, {"theme": "Greetings", "q": "Um colega diz: “Hello!”. Qual resposta combina melhor?", "a": ["Hello!", "Sit down!", "Open your book!", "Goodbye!"], "c": 0}, {"theme": "Farewells", "q": "No fim da aula, qual expressão significa “Tchau”?", "a": ["I am fine.", "Stand up!", "Good morning!", "Goodbye!"], "c": 3}, {"theme": "Farewells", "q": "Patrick vai embora e diz “See you!”. Isso quer dizer:", "a": ["Abra o livro!", "Até logo!", "Meu nome é Patrick.", "Bom dia!"], "c": 1}, {"theme": "Classroom Commands", "q": "O professor diz: “Open your book.” O aluno deve:", "a": ["apagar o quadro", "levantar a mão", "fechar o livro", "abrir o livro"], "c": 3}, {"theme": "Classroom Commands", "q": "“Sit down, please.” significa:", "a": ["Escreva, por favor.", "Leia, por favor.", "Levante-se, por favor.", "Sente-se, por favor."], "c": 3}, {"theme": "Classroom Commands", "q": "“Raise your hand.” significa:", "a": ["Levante a mão.", "Abra o livro.", "Feche a porta.", "Escute a música."], "c": 0}, {"theme": "Classroom Expressions", "q": "Como pedir para ir ao banheiro em inglês?", "a": ["I am Neymar.", "Good afternoon!", "May I go to the restroom?", "May I eat pizza?"], "c": 2}, {"theme": "Classroom Expressions", "q": "Se o aluno quer beber água, ele pode dizer:", "a": ["She is happy.", "May I drink water?", "What is your name?", "Close your book."], "c": 1}, {"theme": "Personal Information", "q": "Para perguntar o nome de alguém, usamos:", "a": ["What is your name?", "How old is blue?", "Where is pencil?", "Goodbye book."], "c": 0}, {"theme": "Personal Information", "q": "A pergunta “How old are you?” quer saber:", "a": ["o nome", "a escola", "a idade", "a cor"], "c": 2}, {"theme": "Spelling", "q": "Quando alguém pede “Spell your name”, a pessoa deve:", "a": ["dizer boa noite", "dizer a idade", "abrir o livro", "soletrar o nome"], "c": 3}, {"theme": "Pronouns", "q": "Qual pronome usamos para falar de uma menina?", "a": ["He", "She", "I", "They"], "c": 1}, {"theme": "Pronouns", "q": "Qual pronome usamos para falar de dois ou mais amigos?", "a": ["It", "They", "She", "He"], "c": 1}, {"theme": "Pronouns", "q": "Cristiano Ronaldo é homem. Qual pronome combina com ele?", "a": ["She", "It", "He", "We"], "c": 2}, {"theme": "Possessive Adjectives", "q": "Complete: I am Ana. ___ book is blue.", "a": ["Your", "Her", "His", "My"], "c": 3}, {"theme": "Possessive Adjectives", "q": "Complete: He is Lucas. ___ pencil is red.", "a": ["Your", "His", "My", "Her"], "c": 1}, {"theme": "Possessive Adjectives", "q": "Complete: She is Maria. ___ backpack is pink.", "a": ["Her", "My", "His", "Their"], "c": 0}, {"theme": "Verb to be", "q": "Complete: She ___ happy.", "a": ["is", "are", "like", "am"], "c": 0}, {"theme": "Verb to be", "q": "Complete: They ___ students.", "a": ["am", "likes", "are", "is"], "c": 2}, {"theme": "Verb to be", "q": "Complete: I ___ from Brazil.", "a": ["go", "are", "is", "am"], "c": 3}, {"theme": "Numbers", "q": "Messi fez 3 gols. Qual palavra representa 3?", "a": ["thirteen", "tree", "thirty", "three"], "c": 3}, {"theme": "Numbers", "q": "Qual alternativa representa o número 15?", "a": ["fourteen", "fifteen", "fifty", "five"], "c": 1}, {"theme": "School Objects", "q": "“Pencil” significa:", "a": ["mesa", "lápis", "borracha", "caneta"], "c": 1}, {"theme": "School Objects", "q": "“Book” significa:", "a": ["mochila", "janela", "livro", "porta"], "c": 2}, {"theme": "Colors", "q": "A cor “blue” é:", "a": ["azul", "amarelo", "vermelho", "verde"], "c": 0}, {"theme": "Colors", "q": "A cor “green” é:", "a": ["verde", "preto", "rosa", "branco"], "c": 0}, {"theme": "Daily Vocabulary", "q": "“Teacher” significa:", "a": ["livro", "lápis", "aluno", "professor/professora"], "c": 3}, {"theme": "Daily Vocabulary", "q": "“School” significa:", "a": ["parque", "casa", "mercado", "escola"], "c": 3}, {"theme": "Review", "q": "Qual frase está correta para dizer “Eu sou estudante”?", "a": ["I is a student.", "I am a student.", "She are student.", "They am students."], "c": 1}];
-const PATH_POINTS = [[49, 91], [50, 86], [46, 82], [40, 79], [34, 75], [33, 69], [43, 66], [55, 66], [66, 64], [70, 59], [63, 55], [52, 54], [40, 54], [29, 52], [23, 47], [26, 42], [38, 41], [51, 41], [64, 41], [75, 39], [78, 34], [70, 31], [58, 31], [45, 31], [34, 30], [23, 27], [20, 22], [30, 19], [44, 20], [57, 20], [70, 19], [82, 16], [79, 11], [66, 10], [54, 10], [43, 10], [33, 10], [24, 9], [20, 7], [30, 5], [48, 5]];
+const QUESTIONS = [{"theme": "Greetings", "q": "Bob Esponja chegou à escola pela manhã. Qual expressão ele pode usar?", "a": ["See you!", "Good morning!", "Goodbye!", "Good night!"], "c": 1}, {"theme": "Greetings", "q": "Um colega diz: “Hello!”. Qual resposta combina melhor?", "a": ["Goodbye!", "Hello!", "Open your book!", "Sit down!"], "c": 1}, {"theme": "Farewells", "q": "No fim da aula, qual expressão significa “Tchau”?", "a": ["Stand up!", "Good morning!", "I am fine.", "Goodbye!"], "c": 3}, {"theme": "Farewells", "q": "Patrick vai embora e diz “See you!”. Isso quer dizer:", "a": ["Meu nome é Patrick.", "Bom dia!", "Abra o livro!", "Até logo!"], "c": 3}, {"theme": "Classroom Commands", "q": "O professor diz: “Open your book.” O aluno deve:", "a": ["fechar o livro", "abrir o livro", "apagar o quadro", "levantar a mão"], "c": 1}, {"theme": "Classroom Commands", "q": "“Sit down, please.” significa:", "a": ["Escreva, por favor.", "Leia, por favor.", "Levante-se, por favor.", "Sente-se, por favor."], "c": 3}, {"theme": "Classroom Commands", "q": "“Raise your hand.” significa:", "a": ["Escute a música.", "Feche a porta.", "Abra o livro.", "Levante a mão."], "c": 3}, {"theme": "Classroom Expressions", "q": "Como pedir para ir ao banheiro em inglês?", "a": ["May I go to the restroom?", "May I eat pizza?", "Good afternoon!", "I am Neymar."], "c": 0}, {"theme": "Classroom Expressions", "q": "Se o aluno quer beber água, ele pode dizer:", "a": ["What is your name?", "Close your book.", "May I drink water?", "She is happy."], "c": 2}, {"theme": "Personal Information", "q": "Para perguntar o nome de alguém, usamos:", "a": ["What is your name?", "Where is pencil?", "Goodbye book.", "How old is blue?"], "c": 0}, {"theme": "Personal Information", "q": "A pergunta “How old are you?” quer saber:", "a": ["o nome", "a cor", "a escola", "a idade"], "c": 3}, {"theme": "Spelling", "q": "Quando alguém pede “Spell your name”, a pessoa deve:", "a": ["abrir o livro", "soletrar o nome", "dizer a idade", "dizer boa noite"], "c": 1}, {"theme": "Pronouns", "q": "Qual pronome usamos para falar de uma menina?", "a": ["She", "They", "I", "He"], "c": 0}, {"theme": "Pronouns", "q": "Qual pronome usamos para falar de dois ou mais amigos?", "a": ["He", "It", "She", "They"], "c": 3}, {"theme": "Pronouns", "q": "Cristiano Ronaldo é homem. Qual pronome combina com ele?", "a": ["We", "It", "She", "He"], "c": 3}, {"theme": "Possessive Adjectives", "q": "Complete: I am Ana. ___ book is blue.", "a": ["His", "Your", "Her", "My"], "c": 3}, {"theme": "Possessive Adjectives", "q": "Complete: He is Lucas. ___ pencil is red.", "a": ["Your", "My", "Her", "His"], "c": 3}, {"theme": "Possessive Adjectives", "q": "Complete: She is Maria. ___ backpack is pink.", "a": ["His", "My", "Their", "Her"], "c": 3}, {"theme": "Verb to be", "q": "Complete: She ___ happy.", "a": ["are", "is", "like", "am"], "c": 1}, {"theme": "Verb to be", "q": "Complete: They ___ students.", "a": ["are", "likes", "am", "is"], "c": 0}, {"theme": "Verb to be", "q": "Complete: I ___ from Brazil.", "a": ["am", "are", "is", "go"], "c": 0}, {"theme": "Numbers", "q": "Messi fez 3 gols. Qual palavra representa 3?", "a": ["tree", "thirty", "thirteen", "three"], "c": 3}, {"theme": "Numbers", "q": "Qual alternativa representa o número 15?", "a": ["fifty", "five", "fourteen", "fifteen"], "c": 3}, {"theme": "School Objects", "q": "“Pencil” significa:", "a": ["borracha", "lápis", "mesa", "caneta"], "c": 1}, {"theme": "School Objects", "q": "“Book” significa:", "a": ["porta", "janela", "livro", "mochila"], "c": 2}, {"theme": "Colors", "q": "A cor “blue” é:", "a": ["azul", "amarelo", "vermelho", "verde"], "c": 0}, {"theme": "Colors", "q": "A cor “green” é:", "a": ["branco", "rosa", "preto", "verde"], "c": 3}, {"theme": "Daily Vocabulary", "q": "“Teacher” significa:", "a": ["professor/professora", "lápis", "aluno", "livro"], "c": 0}, {"theme": "Daily Vocabulary", "q": "“School” significa:", "a": ["escola", "parque", "casa", "mercado"], "c": 0}, {"theme": "Review", "q": "Qual frase está correta para dizer “Eu sou estudante”?", "a": ["I is a student.", "She are student.", "They am students.", "I am a student."], "c": 3}];
+const PATH_POINTS = [[50, 92], [50, 88], [46, 84], [39, 80], [34, 76], [36, 71], [50, 69], [63, 68], [70, 64], [67, 59], [55, 57], [43, 57], [31, 55], [24, 51], [24, 46], [35, 44], [49, 44], [64, 43], [76, 40], [80, 35], [72, 32], [58, 32], [43, 32], [30, 31], [21, 28], [20, 23], [31, 21], [46, 21], [61, 21], [76, 18], [79, 14], [69, 11], [55, 11], [43, 11], [31, 11], [22, 10], [18, 7], [27, 5], [38, 5], [46, 5], [52, 5]];
 const SPECIALS = {"3": {"type": "bonus", "icon": "⚡", "title": "TURBO!", "desc": "Seu carro ganhou velocidade. Avance +1 casa.", "effect": "advance", "value": 1}, "6": {"type": "penalty", "icon": "🚧", "title": "CURVA PERIGOSA!", "desc": "Você reduziu a velocidade. Volte 1 casa.", "effect": "back", "value": 1}, "9": {"type": "bonus", "icon": "🏎️", "title": "ULTRAPASSAGEM!", "desc": "Você ganhou uma jogada extra.", "effect": "extraTurn", "value": 1}, "12": {"type": "bonus", "icon": "🔧", "title": "PIT STOP RÁPIDO!", "desc": "Equipe eficiente. Ganhe 1 vida.", "effect": "life", "value": 1}, "15": {"type": "penalty", "icon": "💥", "title": "PNEU FURADO!", "desc": "O carro perdeu estabilidade. Volte 2 casas.", "effect": "back", "value": 2}, "18": {"type": "challenge", "icon": "👑", "title": "DESAFIO DO CAMPEÃO!", "desc": "Bônus de campeão: +20 pontos.", "effect": "points", "value": 20}, "20": {"type": "bonus", "icon": "🟢", "title": "BANDEIRA VERDE!", "desc": "Pista livre. Avance +1 casa.", "effect": "advance", "value": 1}, "23": {"type": "bonus", "icon": "⚡", "title": "TURBO MÁXIMO!", "desc": "Avance +2 casas.", "effect": "advance", "value": 2}, "25": {"type": "penalty", "icon": "🟡", "title": "BANDEIRA AMARELA!", "desc": "Na próxima jogada, o avanço será limitado a 1 casa.", "effect": "yellow", "value": 1}, "27": {"type": "penalty", "icon": "🛑", "title": "PIT STOP DEMORADO!", "desc": "Você perde a próxima jogada.", "effect": "skip", "value": 1}, "30": {"type": "bonus", "icon": "🌟", "title": "VOLTA PERFEITA!", "desc": "Piloto concentrado. Ganhe +10 pontos.", "effect": "points", "value": 10}, "32": {"type": "penalty", "icon": "🚧", "title": "CURVA PERIGOSA!", "desc": "Volte 1 casa.", "effect": "back", "value": 1}, "34": {"type": "bonus", "icon": "🔧", "title": "PIT STOP RÁPIDO!", "desc": "Ganhe 1 vida.", "effect": "life", "value": 1}, "35": {"type": "challenge", "icon": "👑", "title": "DESAFIO DO CAMPEÃO!", "desc": "Grande ultrapassagem. Avance +3 casas.", "effect": "advance", "value": 3}, "37": {"type": "penalty", "icon": "💥", "title": "PNEU FURADO!", "desc": "Volte 2 casas.", "effect": "back", "value": 2}, "38": {"type": "bonus", "icon": "🏎️", "title": "ULTRAPASSAGEM!", "desc": "Jogue novamente.", "effect": "extraTurn", "value": 1}};
 const TOTAL_SPACES = 40;
 const DICE_MAX = 4;
@@ -186,12 +187,34 @@ let extraTurn = false;
 let skipTurn = false;
 let yellowFlag = false;
 let moving = false;
+let lastEngineFade = null;
 
 const $ = id => document.getElementById(id);
 
 function show(id){
   document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
   $(id).classList.add("active");
+}
+
+function getImageBox(){
+  const wrap = $("trackWrap").getBoundingClientRect();
+  const img = $("trackImg");
+  const naturalW = img.naturalWidth || 768;
+  const naturalH = img.naturalHeight || 1344;
+  const scale = Math.min(wrap.width / naturalW, wrap.height / naturalH);
+  const w = naturalW * scale;
+  const h = naturalH * scale;
+  const x = (wrap.width - w) / 2;
+  const y = (wrap.height - h) / 2;
+  return {x,y,w,h};
+}
+
+function pointToScreen(point){
+  const box = getImageBox();
+  return {
+    x: box.x + (point[0] / 100) * box.w,
+    y: box.y + (point[1] / 100) * box.h
+  };
 }
 
 function startGame(){
@@ -205,27 +228,9 @@ function startGame(){
   playerSchool = school.slice(0,42);
   position = 0; pendingMove = 0; score = 0; right = 0; errors = 0; lives = MAX_LIVES;
   extraTurn = false; skipTurn = false; yellowFlag = false; canRoll = true; moving = false;
-  buildSpecialIcons();
   updateHud();
-  placeCar(false);
   show("gameScreen");
-  setTimeout(()=>placeCar(false), 100);
-}
-
-function buildSpecialIcons(){
-  const layer = $("specialLayer");
-  layer.innerHTML = "";
-  Object.keys(SPECIALS).forEach(k=>{
-    const casa = Number(k);
-    const p = PATH_POINTS[casa];
-    if(!p) return;
-    const icon = document.createElement("div");
-    icon.className = "specialIcon";
-    icon.textContent = SPECIALS[k].icon;
-    icon.style.left = p[0] + "%";
-    icon.style.top = p[1] + "%";
-    layer.appendChild(icon);
-  });
+  setTimeout(()=>placeCar(false), 120);
 }
 
 function updateHud(){
@@ -238,7 +243,10 @@ function updateHud(){
 function placeCar(animate=true){
   const p = PATH_POINTS[position];
   const next = PATH_POINTS[Math.min(position+1, TOTAL_SPACES)] || p;
-  const angle = Math.atan2(next[1]-p[1], next[0]-p[0]) * 180 / Math.PI;
+  const sp = pointToScreen(p);
+  const sn = pointToScreen(next);
+  const angle = Math.atan2(sn.y-sp.y, sn.x-sp.x) * 180 / Math.PI;
+  const rotation = angle + 90; // PNG apontando para cima.
 
   const car = $("car");
   const glow = $("currentGlow");
@@ -246,36 +254,21 @@ function placeCar(animate=true){
     car.style.transition = "none";
     glow.style.transition = "none";
   } else {
-    car.style.transition = "left .35s linear, top .35s linear, transform .35s linear";
-    glow.style.transition = "left .35s linear, top .35s linear";
+    car.style.transition = "left .55s ease-in-out, top .55s ease-in-out, transform .55s ease-in-out";
+    glow.style.transition = "left .55s ease-in-out, top .55s ease-in-out";
   }
 
-  car.style.left = p[0] + "%";
-  car.style.top = p[1] + "%";
-  car.style.transform = `translate(-50%,-50%) rotate(${angle}deg)`;
-
-  glow.style.left = p[0] + "%";
-  glow.style.top = p[1] + "%";
-
-  chooseSprite(angle);
+  car.style.left = sp.x + "px";
+  car.style.top = sp.y + "px";
+  car.style.transform = `translate(-50%,-50%) rotate(${rotation}deg)`;
+  glow.style.left = sp.x + "px";
+  glow.style.top = sp.y + "px";
 
   if(!animate){
     setTimeout(()=>{
-      car.style.transition = "left .35s linear, top .35s linear, transform .35s linear";
-      glow.style.transition = "left .35s linear, top .35s linear";
+      car.style.transition = "left .55s ease-in-out, top .55s ease-in-out, transform .55s ease-in-out";
+      glow.style.transition = "left .55s ease-in-out, top .55s ease-in-out";
     },50);
-  }
-}
-
-function chooseSprite(angle){
-  // Usa a sprite sheet de forma simples: vista de cima para trechos verticais e lateral para trechos horizontais.
-  // Se a sprite sheet tiver outra organização visual, isso pode ser ajustado depois sem mexer na lógica.
-  const sprite = $("carSprite");
-  const abs = Math.abs(((angle % 360) + 360) % 360);
-  if((abs > 45 && abs < 135) || (abs > 225 && abs < 315)){
-    sprite.style.backgroundPosition = "0% 0%";
-  }else{
-    sprite.style.backgroundPosition = "33.33% 0%";
   }
 }
 
@@ -375,12 +368,12 @@ function animateMove(steps, callback){
   $("diceBtn").disabled = true;
 
   const casas = Math.max(1, steps);
-  const totalDuration = Math.min(2600, Math.max(1500, 1250 + casas * 280));
+  const totalDuration = Math.min(2800, Math.max(1550, 1250 + casas * 320));
   const perStep = totalDuration / casas;
 
   playEngine(totalDuration);
-
   $("car").classList.add("moving");
+
   let moved = 0;
   const timer = setInterval(()=>{
     if(moved >= casas || position >= TOTAL_SPACES){
@@ -404,13 +397,14 @@ function playEngine(durationMs){
   const audio = $("engineSound");
   if(!audio) return;
   try{
+    if(lastEngineFade) clearInterval(lastEngineFade);
     audio.pause();
     audio.currentTime = 0;
     audio.playbackRate = 2.0;
     audio.volume = 0.9;
     const p = audio.play();
     if(p && p.catch) p.catch(()=>{});
-    setTimeout(()=>stopEngineSoft(), durationMs + 120);
+    setTimeout(()=>stopEngineSoft(), durationMs + 160);
   }catch(e){}
 }
 
@@ -418,11 +412,13 @@ function stopEngineSoft(){
   const audio = $("engineSound");
   if(!audio || audio.paused) return;
   try{
+    if(lastEngineFade) clearInterval(lastEngineFade);
     let v = audio.volume || 0.9;
-    const fade = setInterval(()=>{
-      v -= 0.16;
+    lastEngineFade = setInterval(()=>{
+      v -= 0.18;
       if(v <= 0){
-        clearInterval(fade);
+        clearInterval(lastEngineFade);
+        lastEngineFade = null;
         audio.pause();
         audio.currentTime = 0;
         audio.volume = 0.9;
@@ -459,16 +455,6 @@ function applySpecial(ev){
     yellowFlag = true;
   }else if(ev.effect === "extraTurn"){
     extraTurn = true;
-  }else if(ev.effect === "advance"){
-    setTimeout(()=>{
-      if($("eventModal").classList.contains("show")) return;
-      animateMove(ev.value, releaseTurn);
-    },100);
-  }else if(ev.effect === "back"){
-    setTimeout(()=>{
-      if($("eventModal").classList.contains("show")) return;
-      moveBack(ev.value, releaseTurn);
-    },100);
   }
 }
 
@@ -491,7 +477,7 @@ function moveBack(steps, callback){
   const casas = Math.max(1, steps);
   let moved = 0;
   $("car").classList.add("moving");
-  playEngine(Math.max(1000, casas*520));
+  playEngine(Math.max(950, casas*560));
   const timer = setInterval(()=>{
     if(moved >= casas || position <= 0){
       clearInterval(timer);
@@ -506,7 +492,7 @@ function moveBack(steps, callback){
     moved++;
     placeCar(true);
     updateHud();
-  },520);
+  },560);
 }
 
 function releaseTurn(){
@@ -550,7 +536,13 @@ function flashGreen(){
   f.classList.add("on");
 }
 
-window.addEventListener("resize", () => placeCar(false));
+$("trackImg").addEventListener("load", () => {
+  if($("gameScreen").classList.contains("active")) placeCar(false);
+});
+
+window.addEventListener("resize", () => {
+  if($("gameScreen").classList.contains("active")) placeCar(false);
+});
 </script>
 </body>
 </html>
