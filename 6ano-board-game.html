@@ -75,6 +75,21 @@
   .screenFlash.on{animation:flash .42s ease 2}
   @keyframes flash{0%{opacity:0}45%{opacity:1}100%{opacity:0}}
 
+
+  .ratingBox{margin-top:12px;background:rgba(15,23,42,.08);border-radius:18px;padding:10px}
+  .ratingTitle{font-weight:1000;margin:0 0 8px;color:#0f172a}
+  .ratingBtns{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  .emojiBtn{font-size:1.45rem;background:#fff;border:2px solid #cbd5e1;box-shadow:0 4px 0 #94a3b8;min-height:48px}
+  .emojiBtn.selected{background:#dcfce7;border-color:#22c55e;box-shadow:0 4px 0 #16a34a}
+  .rankingBox{margin-top:12px;background:#0b1b2f;color:#fff;border-radius:18px;padding:10px;text-align:left}
+  .rankingBox h3{margin:0 0 8px;text-align:center;font-size:1rem;color:#ffd60a}
+  .rankRow{display:grid;grid-template-columns:28px 1fr auto;gap:8px;align-items:center;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:7px;margin-bottom:6px}
+  .rankPos{font-weight:1000;color:#ffd60a}
+  .rankName{font-weight:1000;font-size:.86rem}
+  .rankSchool{font-size:.7rem;color:#bfdbfe}
+  .rankPts{font-weight:1000;color:#86efac;font-size:.84rem}
+  .rankNote{text-align:center;color:#bfdbfe;font-size:.72rem;margin-top:5px}
+
   @media(max-height:700px){
     .app{gap:3px;padding:4px}
     button{min-height:38px;padding:7px;font-size:.88rem}
@@ -138,6 +153,23 @@
       <h1 id="finalTitle">🏆 Corrida concluída!</h1>
       <div id="finalScore" class="scoreBig">Pontuação: 0</div>
       <p id="finalMsg" class="sub" style="color:#0f172a;font-weight:900"></p>
+
+      <div class="ratingBox">
+        <p class="ratingTitle">Como você avalia este jogo?</p>
+        <div class="ratingBtns">
+          <button class="emojiBtn" onclick="avaliarJogo('ruim', this)">😡</button>
+          <button class="emojiBtn" onclick="avaliarJogo('neutro', this)">😐</button>
+          <button class="emojiBtn" onclick="avaliarJogo('bom', this)">😀</button>
+        </div>
+        <p id="ratingMsg" class="msg" style="color:#166534"></p>
+      </div>
+
+      <div class="rankingBox">
+        <h3>🏆 TOP 10 Geral</h3>
+        <div id="rankingList"><div class="rankNote">Carregando ranking em tempo real...</div></div>
+        <div class="rankNote">Ranking somatório: soma pontos deste e dos outros jogos integrados.</div>
+      </div>
+
       <button class="btn-green" onclick="restartGame()">🔁 Jogar novamente</button>
       <a href="6ano.html"><button class="btn-gray" style="margin-top:8px">🏠 Voltar aos jogos</button></a>
     </div>
@@ -1070,6 +1102,7 @@ let skipTurn = false;
 let yellowFlag = false;
 let moving = false;
 let lastEngineFade = null;
+let scoreSaved = false;
 
 const $ = id => document.getElementById(id);
 
@@ -1109,7 +1142,7 @@ function startGame(){
   playerName = name.slice(0,24);
   playerSchool = school.slice(0,42);
   position = 0; pendingMove = 0; score = 0; right = 0; errors = 0; lives = MAX_LIVES;
-  extraTurn = false; skipTurn = false; yellowFlag = false; canRoll = true; moving = false;
+  extraTurn = false; skipTurn = false; yellowFlag = false; canRoll = true; moving = false; scoreSaved = false;
   updateHud();
   show("gameScreen");
   setTimeout(()=>placeCar(false), 120);
@@ -1417,6 +1450,17 @@ function finishGame(won){
   $("finalMsg").textContent = won
     ? "Você chegou ao FINISH! Excelente corrida de Inglês!"
     : "Você tentou, treinou e isso já é um passo importante. Volte para a pista e tente novamente!";
+
+  if(!scoreSaved){
+    scoreSaved = true;
+    if(window.salvarPontuacao){
+      window.salvarPontuacao(playerName, score, "6ano-board-game-formula-race", playerSchool);
+    }
+  }
+
+  if(window.carregarRanking){
+    window.carregarRanking();
+  }
 }
 
 function restartGame(){
@@ -1431,6 +1475,16 @@ function flashGreen(){
   f.classList.add("on");
 }
 
+
+function avaliarJogo(valor, btn){
+  document.querySelectorAll(".emojiBtn").forEach(b => b.classList.remove("selected"));
+  if(btn) btn.classList.add("selected");
+  $("ratingMsg").textContent = "Obrigado pela avaliação!";
+  if(window.salvarAvaliacao){
+    window.salvarAvaliacao(valor, "6ano-board-game-formula-race", playerName, playerSchool);
+  }
+}
+
 $("trackImg").addEventListener("load", () => {
   if($("gameScreen").classList.contains("active")) placeCar(false);
 });
@@ -1439,5 +1493,146 @@ window.addEventListener("resize", () => {
   if($("gameScreen").classList.contains("active")) placeCar(false);
 });
 </script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+import { getFirestore, collection, addDoc, serverTimestamp, onSnapshot, query } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCVTR3nnyo5mYTF28TJisgTUe-Xyjk1upg",
+  authDomain: "english-game-hub.firebaseapp.com",
+  projectId: "english-game-hub",
+  storageBucket: "english-game-hub.firebasestorage.app",
+  messagingSenderId: "131880771426",
+  appId: "1:131880771426:web:cf29a6f34ca86be527d63b"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+function limitarTexto(texto, limite){
+  return String(texto || "").trim().slice(0, limite);
+}
+
+function dataHoraBrasil(){
+  const agora = new Date();
+  return {
+    data: agora.toLocaleDateString("pt-BR"),
+    hora: agora.toLocaleTimeString("pt-BR")
+  };
+}
+
+window.registrarAcesso = async function(jogo){
+  try{
+    const dh = dataHoraBrasil();
+    await addDoc(collection(db, "acessos"), {
+      nome_do_jogo: limitarTexto(jogo, 60),
+      data: dh.data,
+      hora: dh.hora,
+      timestamp: serverTimestamp()
+    });
+  }catch(error){
+    console.warn("Acesso não registrado:", error);
+  }
+};
+
+window.salvarPontuacao = async function(nome, pontos, jogo, escola){
+  try{
+    const nomeLimpo = limitarTexto(nome, 24);
+    const escolaLimpa = limitarTexto(escola, 42);
+    const pontosNum = Number(pontos);
+
+    if(!nomeLimpo || !Number.isFinite(pontosNum) || pontosNum < 0) return;
+
+    await addDoc(collection(db, "pontuacoes"), {
+      nome: nomeLimpo,
+      escola: escolaLimpa || "Escola não informada",
+      pontos: Math.round(pontosNum),
+      jogo: limitarTexto(jogo, 60),
+      timestamp: serverTimestamp()
+    });
+  }catch(error){
+    console.warn("Pontuação não salva:", error);
+  }
+};
+
+window.salvarAvaliacao = async function(avaliacao, jogo, nome, escola){
+  try{
+    const permitidas = ["ruim","neutro","bom"];
+    if(!permitidas.includes(avaliacao)) return;
+
+    await addDoc(collection(db, "avaliacoes"), {
+      avaliacao,
+      jogo: limitarTexto(jogo, 60),
+      nome: limitarTexto(nome, 24) || "Aluno",
+      escola: limitarTexto(escola, 42) || "Escola não informada",
+      timestamp: serverTimestamp()
+    });
+  }catch(error){
+    console.warn("Avaliação não salva:", error);
+  }
+};
+
+let rankingAtivo = false;
+
+window.carregarRanking = function(){
+  if(rankingAtivo) return;
+  rankingAtivo = true;
+
+  const container = document.getElementById("rankingList");
+  if(!container) return;
+
+  const q = query(collection(db, "pontuacoes"));
+
+  onSnapshot(q, (snapshot) => {
+    const acumulado = new Map();
+
+    snapshot.forEach((doc) => {
+      const d = doc.data();
+      const nome = limitarTexto(d.nome, 24);
+      const escola = limitarTexto(d.escola, 42) || "Escola não informada";
+      const pontos = Number(d.pontos || 0);
+
+      if(!nome || !Number.isFinite(pontos)) return;
+
+      const key = `${nome.toLowerCase()}|${escola.toLowerCase()}`;
+      if(!acumulado.has(key)){
+        acumulado.set(key, { nome, escola, pontos: 0 });
+      }
+      acumulado.get(key).pontos += pontos;
+    });
+
+    const top10 = Array.from(acumulado.values())
+      .sort((a,b) => b.pontos - a.pontos)
+      .slice(0,10);
+
+    if(top10.length === 0){
+      container.innerHTML = '<div class="rankNote">Ainda não há pontuações no ranking.</div>';
+      return;
+    }
+
+    container.innerHTML = "";
+    top10.forEach((item, index) => {
+      const row = document.createElement("div");
+      row.className = "rankRow";
+      row.innerHTML = `
+        <div class="rankPos">${index + 1}º</div>
+        <div>
+          <div class="rankName">${item.nome}</div>
+          <div class="rankSchool">${item.escola}</div>
+        </div>
+        <div class="rankPts">${item.pontos} pts</div>
+      `;
+      container.appendChild(row);
+    });
+  }, (error) => {
+    console.error("Erro ao carregar ranking:", error);
+    container.innerHTML = '<div class="rankNote">Ranking indisponível no momento.</div>';
+  });
+};
+
+window.registrarAcesso("6ano-board-game-formula-race");
+</script>
+
 </body>
 </html>
