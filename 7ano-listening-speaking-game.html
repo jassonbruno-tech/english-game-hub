@@ -664,12 +664,37 @@
         <p>💪 Não desista! Cada tentativa melhora sua escuta e sua pronúncia.</p>
       </div>
 
+      <div class="rating-box">
+        <h2>Como foi jogar?</h2>
+        <p>Antes de continuar, marque uma opção:</p>
+
+        <div class="rating-buttons">
+          <button onclick="avaliarJogo('ruim', this)">
+            <span class="emoji">😡</span>
+            Difícil
+          </button>
+
+          <button onclick="avaliarJogo('neutro', this)">
+            <span class="emoji">😐</span>
+            Mais ou menos
+          </button>
+
+          <button onclick="avaliarJogo('bom', this)">
+            <span class="emoji">😀</span>
+            Gostei
+          </button>
+        </div>
+
+        <p id="ratingMessageGameOver"></p>
+      </div>
+
       <div class="button-grid">
         <button class="btn-orange" onclick="retryCurrentPhase()">🔁 Tentar esta fase novamente</button>
         <button class="btn-gray" onclick="restartGame()">🏠 Voltar ao início</button>
       </div>
 
-      <h2>🏆 TOP 10 em tempo real</h2>
+      <h2>🏆 Ranking Geral do English Game Hub</h2>
+      <p class="mini-note">A pontuação soma os desafios jogados no Hub.</p>
       <ol id="rankingGameOver" class="ranking-list">
         <li>Carregando ranking...</li>
       </ol>
@@ -708,7 +733,8 @@
         <p id="ratingMessage"></p>
       </div>
 
-      <h2>🏆 TOP 10 em tempo real</h2>
+      <h2>🏆 Ranking Geral do English Game Hub</h2>
+      <p class="mini-note">A pontuação soma os desafios jogados no Hub.</p>
       <ol id="rankingOnline" class="ranking-list">
         <li>Carregando ranking...</li>
       </ol>
@@ -1818,7 +1844,7 @@
         gameOverSaved = true;
 
         if (typeof window.salvarPontuacao === "function") {
-          window.salvarPontuacao(playerName, score, NOME_DO_JOGO);
+          window.salvarPontuacao(playerName, score, NOME_DO_JOGO, playerSchool);
         }
       }
 
@@ -1855,7 +1881,7 @@
         finalScoreSaved = true;
 
         if (typeof window.salvarPontuacao === "function") {
-          window.salvarPontuacao(playerName, score, NOME_DO_JOGO);
+          window.salvarPontuacao(playerName, score, NOME_DO_JOGO, playerSchool);
         }
       }
 
@@ -1866,15 +1892,27 @@
 
     function avaliarJogo(avaliacao, buttonElement) {
       const ratingMessage = document.getElementById("ratingMessage");
+      const ratingMessageGameOver = document.getElementById("ratingMessageGameOver");
 
       if (typeof window.salvarAvaliacao === "function") {
         window.salvarAvaliacao(avaliacao, NOME_DO_JOGO);
       }
 
-      ratingMessage.textContent = "Obrigado! Sua avaliação foi registrada.";
+      if (ratingMessage) {
+        ratingMessage.textContent = "Obrigado! Sua avaliação foi registrada.";
+      }
 
-      const buttons = document.querySelectorAll(".rating-buttons button");
-      buttons.forEach(btn => btn.disabled = true);
+      if (ratingMessageGameOver) {
+        ratingMessageGameOver.textContent = "Obrigado! Sua avaliação foi registrada.";
+      }
+
+      const ratingBox = buttonElement ? buttonElement.closest(".rating-box") : null;
+      const buttons = ratingBox ? ratingBox.querySelectorAll("button") : document.querySelectorAll(".rating-buttons button");
+
+      buttons.forEach(btn => {
+        btn.disabled = true;
+        btn.style.filter = "none";
+      });
 
       if (buttonElement) {
         buttonElement.style.filter = "brightness(1.25)";
@@ -1889,6 +1927,10 @@
       document.getElementById("playerName").value = "";
       document.getElementById("playerSchool").value = "";
       document.getElementById("ratingMessage").textContent = "";
+      const ratingMessageGameOver = document.getElementById("ratingMessageGameOver");
+      if (ratingMessageGameOver) {
+        ratingMessageGameOver.textContent = "";
+      }
 
       const buttons = document.querySelectorAll(".rating-buttons button");
       buttons.forEach(btn => {
@@ -2013,9 +2055,10 @@
       }
     };
 
-    window.salvarPontuacao = async function salvarPontuacao(nome, pontos, jogo = NOME_DO_JOGO) {
+    window.salvarPontuacao = async function salvarPontuacao(nome, pontos, jogo = NOME_DO_JOGO, escola = "Escola não informada") {
       try {
         const nomeLimpo = String(nome || "").trim().slice(0, 24);
+        const escolaLimpa = String(escola || "Escola não informada").trim().slice(0, 42);
         const pontosNumero = Number(pontos);
 
         if (!nomeLimpo) {
@@ -2030,8 +2073,10 @@
 
         await addDoc(collection(db, "pontuacoes"), {
           nome: nomeLimpo,
+          escola: escolaLimpa || "Escola não informada",
           pontos: pontosNumero,
           jogo: jogo,
+          tipo: "real",
           timestamp: serverTimestamp()
         });
       } catch (error) {
@@ -2051,12 +2096,22 @@
         await addDoc(collection(db, "avaliacoes"), {
           jogo: jogo,
           avaliacao: avaliacao,
+          nome: playerName || "Não informado",
+          escola: playerSchool || "Escola não informada",
           timestamp: serverTimestamp()
         });
       } catch (error) {
         console.error("Erro ao salvar avaliação:", error);
       }
     };
+
+    const rankingMotivacionalInicial = [
+      { nome: "Ana Clara", escola: "Escola Delfina de Jesus Amorim", pontos: 85, tipo: "motivacional" },
+      { nome: "Pedro Lucas", escola: "Escola Frei Fabiano Merz", pontos: 74, tipo: "motivacional" },
+      { nome: "Maria Eduarda", escola: "Escola Maria Amália Queiroz", pontos: 68, tipo: "motivacional" },
+      { nome: "João Miguel", escola: "Escola São Francisco", pontos: 61, tipo: "motivacional" },
+      { nome: "Lívia Vitória", escola: "Escola Nossa Senhora de Fátima", pontos: 55, tipo: "motivacional" }
+    ];
 
     window.carregarRanking = function carregarRanking(jogo = NOME_DO_JOGO, containerId = "rankingOnline") {
       const rankingContainer = document.getElementById(containerId);
@@ -2068,33 +2123,63 @@
 
       const rankingQuery = query(
         collection(db, "pontuacoes"),
-        orderBy("pontos", "desc"),
-        limit(50)
+        limit(500)
       );
 
       onSnapshot(rankingQuery, (snapshot) => {
         rankingContainer.innerHTML = "";
 
-        const rankingItems = [];
+        const somaPorAluno = new Map();
 
+        // Ranking motivacional inicial: aparece na tela, mas não é salvo no banco.
+        rankingMotivacionalInicial.forEach(item => {
+          const chave = `${item.nome.toLowerCase()}|${item.escola.toLowerCase()}|motivacional`;
+          somaPorAluno.set(chave, { ...item });
+        });
+
+        // Dados reais do Firebase: somam todos os jogos do English Game Hub.
         snapshot.forEach((doc) => {
           const item = doc.data();
 
-          if (item.jogo === jogo) {
-            rankingItems.push(item);
+          if (!item || item.tipo === "motivacional") {
+            return;
           }
+
+          const nome = String(item.nome || "").trim();
+          const escola = String(item.escola || "Escola não informada").trim();
+          const pontos = Number(item.pontos || 0);
+
+          if (!nome || !Number.isFinite(pontos)) {
+            return;
+          }
+
+          const chave = `${nome.toLowerCase()}|${escola.toLowerCase()}|real`;
+          const atual = somaPorAluno.get(chave) || {
+            nome: nome,
+            escola: escola,
+            pontos: 0,
+            tipo: "real"
+          };
+
+          atual.pontos += pontos;
+          somaPorAluno.set(chave, atual);
         });
+
+        const rankingItems = Array.from(somaPorAluno.values())
+          .sort((a, b) => b.pontos - a.pontos)
+          .slice(0, 10);
 
         if (rankingItems.length === 0) {
           rankingContainer.innerHTML = "<li>Nenhuma pontuação registrada ainda.</li>";
           return;
         }
 
-        rankingItems.slice(0, 10).forEach((item, index) => {
+        rankingItems.forEach((item, index) => {
           const li = document.createElement("li");
-          li.textContent = `${index + 1}º ${item.nome} - ${item.pontos} pontos`;
+          const selo = item.tipo === "motivacional" ? " ⭐" : "";
+          li.textContent = `${index + 1}º ${item.nome} - ${item.escola} - ${item.pontos} pontos${selo}`;
 
-          if (item.nome === playerName) {
+          if (item.nome === playerName && item.tipo === "real") {
             li.classList.add("you");
           }
 
