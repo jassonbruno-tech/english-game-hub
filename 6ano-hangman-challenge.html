@@ -952,6 +952,50 @@ body.playing .key{
   }
 }
 
+
+/* --- Firebase: avaliação simples por emojis --- */
+.firebase-rating{
+  margin:10px 0 8px;
+  padding:10px;
+  border-radius:16px;
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,230,109,.24);
+  text-align:center;
+}
+.firebase-rating h3{
+  margin:0 0 7px;
+  color:#ffe66d;
+  font-size:16px;
+}
+.rating-buttons{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:7px;
+}
+.rating-buttons button{
+  border:0;
+  border-radius:14px;
+  padding:8px 5px;
+  background:linear-gradient(135deg,#fff7ad,#ffb703);
+  color:#172033;
+  font-weight:1000;
+  cursor:pointer;
+  box-shadow:0 6px 14px rgba(255,179,3,.18);
+}
+.rating-buttons button:disabled{opacity:.65;cursor:not-allowed}
+.rating-buttons .emoji{
+  display:block;
+  font-size:24px;
+  line-height:1;
+  margin-bottom:2px;
+}
+#ratingMessage{
+  margin:7px 0 0;
+  color:#fff7c2;
+  font-weight:900;
+  font-size:12px;
+}
+
 </style>
 </head>
 <body>
@@ -1156,9 +1200,20 @@ body.playing .key{
       <div class="summary-box"><span>Combo</span><b id="fCombo">0</b></div>
       <div class="summary-box"><span>Vidas</span><b id="fLives">0/5</b></div>
     </div>
-    <h3 class="ranking-title">🏆 Ranking do Desafio — Hangman Challenge</h3>
+    <h3 class="ranking-title">🏆 Ranking Geral — English Game Hub</h3>
     <div id="rankList" class="rank-list"></div>
-    <div class="rank-note">Ranking motivacional interno do jogo. Faça um print da sua pontuação e tente jogar novamente para subir no ranking.</div>
+    <div class="rank-note">Ranking geral somatório do English Game Hub. A pontuação do ranking é somada entre os jogos.</div>
+
+    <div class="firebase-rating">
+      <h3>Como foi jogar?</h3>
+      <div class="rating-buttons">
+        <button onclick="avaliarJogo('ruim', this)"><span class="emoji">😡</span>Difícil</button>
+        <button onclick="avaliarJogo('neutro', this)"><span class="emoji">😐</span>Mais ou menos</button>
+        <button onclick="avaliarJogo('bom', this)"><span class="emoji">😀</span>Gostei</button>
+      </div>
+      <p id="ratingMessage"></p>
+    </div>
+
     <div class="rank-actions">
       <button class="btn" onclick="restart()">Jogar novamente</button>
       <button class="btn" onclick="location.href='6ano.html'">Voltar ao 6º ano</button>
@@ -1169,6 +1224,8 @@ body.playing .key{
 </div>
 
 <script>
+
+const GAME_NAME = "6ano-hangman-challenge";
 
 const PHASES = [
   {
@@ -1677,7 +1734,7 @@ function restart(){
   ensureAudio();
   state = {
     score:0, corrects:0, combo:0, maxCombo:0, round:1, lives:MAX_LIVES,
-    bag:makeBag(), current:null, guessed:new Set(), roundMistakes:0, finishedRound:false
+    bag:makeBag(), current:null, guessed:new Set(), roundMistakes:0, finishedRound:false, scoreSaved:false
   };
   show("gameScreen");
   loadChallenge();
@@ -1969,8 +2026,17 @@ function buildMotivationalRanking(){
 }
 
 function renderRanking(){
+  const list = el("rankList");
+  if(!list) return;
+
+  if(typeof window.carregarRanking === "function"){
+    list.innerHTML = '<div class="rank-row"><div class="rank-pos">...</div><div><div class="rank-name">Carregando ranking geral...</div><div class="rank-school">English Game Hub</div></div><div class="rank-score">...</div></div>';
+    window.carregarRanking(GAME_NAME, "rankList");
+    return;
+  }
+
   const rows = buildMotivationalRanking();
-  el("rankList").innerHTML = rows.map((r,i)=>`
+  list.innerHTML = rows.map((r,i)=>`
     <div class="rank-row ${r.isPlayer ? "player" : ""}">
       <div class="rank-pos">${i+1}º</div>
       <div>
@@ -1988,6 +2054,16 @@ function finishGame(completed){
     else playFinalTryAgainSound();
   }catch(e){}
 
+  try{
+    const player = getPlayerInfo();
+    const hubPoints = Math.max(0, Math.min(100, Math.round((state.corrects / TOTAL_ROUNDS) * 100)));
+
+    if(!state.scoreSaved && typeof window.salvarPontuacao === "function"){
+      state.scoreSaved = true;
+      window.salvarPontuacao(player.name, hubPoints, GAME_NAME, player.school);
+    }
+  }catch(e){ console.warn("Pontuação não foi salva:", e); }
+
   show("finalScreen");
   if(completed){ playVictoryMusic(); } else { playTryAgainMusic(); }
   el("finalTitle").textContent = completed ? "🏆 YOU ARE THE ONE!" : "💪 TRY AGAIN!";
@@ -1999,6 +2075,32 @@ function finishGame(completed){
   el("fCombo").textContent = state.maxCombo;
   el("fLives").textContent = `${state.lives}/${MAX_LIVES}`;
   renderRanking();
+}
+
+
+function avaliarJogo(avaliacao, buttonElement){
+  try{
+    const player = getPlayerInfo();
+
+    if(typeof window.salvarAvaliacao === "function"){
+      window.salvarAvaliacao(avaliacao, GAME_NAME, player.name, player.school);
+    }
+
+    const msg = el("ratingMessage");
+    if(msg) msg.textContent = "Obrigado! Sua avaliação foi registrada.";
+
+    const box = buttonElement ? buttonElement.closest(".firebase-rating") : null;
+    if(box){
+      box.querySelectorAll("button").forEach(btn=>{
+        btn.disabled = true;
+        btn.style.filter = "none";
+      });
+    }
+
+    if(buttonElement) buttonElement.style.filter = "brightness(1.2)";
+  }catch(e){
+    console.warn("Erro ao registrar avaliação:", e);
+  }
 }
 
 show("startScreen");
@@ -2176,5 +2278,153 @@ function playFinalVictorySound(){
 }
 
 </script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+import { getFirestore, collection, addDoc, serverTimestamp, query, limit, onSnapshot } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCVTR3nnyo5mYTF28TJisgTUe-Xyjk1upg",
+  authDomain: "english-game-hub.firebaseapp.com",
+  projectId: "english-game-hub",
+  storageBucket: "english-game-hub.firebasestorage.app",
+  messagingSenderId: "131880771426",
+  appId: "1:131880771426:web:cf29a6f34ca86be527d63b"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+window.registrarAcesso = async function registrarAcesso(jogo = "6ano-hangman-challenge") {
+  try {
+    const agora = new Date();
+
+    await addDoc(collection(db, "acessos"), {
+      nome_do_jogo: jogo,
+      data: agora.toLocaleDateString("pt-BR"),
+      hora: agora.toLocaleTimeString("pt-BR"),
+      timestamp: serverTimestamp()
+    });
+  } catch (error) {
+    console.error("Erro ao registrar acesso:", error);
+  }
+};
+
+window.salvarPontuacao = async function salvarPontuacao(nome, pontos, jogo = "6ano-hangman-challenge", escola = "Escola não informada") {
+  try {
+    const nomeLimpo = String(nome || "").trim().slice(0, 24);
+    const escolaLimpa = String(escola || "Escola não informada").trim().slice(0, 42);
+    const pontosNumero = Number(pontos);
+
+    if (!nomeLimpo) return;
+    if (!Number.isInteger(pontosNumero) || pontosNumero < 0 || pontosNumero > 100) return;
+
+    await addDoc(collection(db, "pontuacoes"), {
+      nome: nomeLimpo,
+      escola: escolaLimpa || "Escola não informada",
+      pontos: pontosNumero,
+      jogo: jogo,
+      tipo: "real",
+      timestamp: serverTimestamp()
+    });
+  } catch (error) {
+    console.error("Erro ao salvar pontuação:", error);
+  }
+};
+
+window.salvarAvaliacao = async function salvarAvaliacao(avaliacao, jogo = "6ano-hangman-challenge", nome = "Não informado", escola = "Escola não informada") {
+  try {
+    if (!["ruim", "neutro", "bom"].includes(avaliacao)) return;
+
+    await addDoc(collection(db, "avaliacoes"), {
+      jogo: jogo,
+      avaliacao: avaliacao,
+      nome: String(nome || "Não informado").trim().slice(0, 24),
+      escola: String(escola || "Escola não informada").trim().slice(0, 42),
+      timestamp: serverTimestamp()
+    });
+  } catch (error) {
+    console.error("Erro ao salvar avaliação:", error);
+  }
+};
+
+const rankingMotivacionalInicial = [
+  { nome: "Ana Clara", escola: "Escola Delfina de Jesus Amorim", pontos: 85, tipo: "motivacional" },
+  { nome: "Pedro Lucas", escola: "Escola Frei Fabiano Merz", pontos: 74, tipo: "motivacional" },
+  { nome: "Maria Eduarda", escola: "Escola Maria Amália Queiroz", pontos: 68, tipo: "motivacional" },
+  { nome: "João Miguel", escola: "Escola São Francisco", pontos: 61, tipo: "motivacional" },
+  { nome: "Lívia Vitória", escola: "Escola Nossa Senhora de Fátima", pontos: 55, tipo: "motivacional" }
+];
+
+window.carregarRanking = function carregarRanking(jogo = "6ano-hangman-challenge", containerId = "rankList") {
+  const rankingContainer = document.getElementById(containerId);
+  if (!rankingContainer) return;
+
+  const rankingQuery = query(collection(db, "pontuacoes"), limit(500));
+
+  onSnapshot(rankingQuery, (snapshot) => {
+    rankingContainer.innerHTML = "";
+    const somaPorAluno = new Map();
+
+    rankingMotivacionalInicial.forEach(item => {
+      const chave = `${item.nome.toLowerCase()}|${item.escola.toLowerCase()}|motivacional`;
+      somaPorAluno.set(chave, { ...item });
+    });
+
+    snapshot.forEach((doc) => {
+      const item = doc.data();
+      if (!item || item.tipo === "motivacional") return;
+
+      const nome = String(item.nome || "").trim();
+      const escola = String(item.escola || "Escola não informada").trim();
+      const pontos = Number(item.pontos || 0);
+      if (!nome || !Number.isFinite(pontos)) return;
+
+      const chave = `${nome.toLowerCase()}|${escola.toLowerCase()}|real`;
+      const atual = somaPorAluno.get(chave) || { nome, escola, pontos: 0, tipo: "real" };
+      atual.pontos += pontos;
+      somaPorAluno.set(chave, atual);
+    });
+
+    const rankingItems = Array.from(somaPorAluno.values())
+      .sort((a, b) => b.pontos - a.pontos)
+      .slice(0, 10);
+
+    if (!rankingItems.length) {
+      rankingContainer.innerHTML = '<div class="rank-row"><div class="rank-pos">--</div><div><div class="rank-name">Nenhuma pontuação registrada ainda.</div><div class="rank-school">English Game Hub</div></div><div class="rank-score">0 pts</div></div>';
+      return;
+    }
+
+    rankingItems.forEach((item, index) => {
+      const row = document.createElement("div");
+      const playerNameInput = document.getElementById("playerName");
+      const currentName = playerNameInput ? playerNameInput.value.trim() : "";
+      const selo = item.tipo === "motivacional" ? " ⭐" : "";
+
+      row.className = "rank-row";
+      if (currentName && item.nome.toLowerCase() === currentName.toLowerCase() && item.tipo === "real") {
+        row.classList.add("player");
+      }
+
+      row.innerHTML = `
+        <div class="rank-pos">${index + 1}º</div>
+        <div>
+          <div class="rank-name">${item.nome}${selo}</div>
+          <div class="rank-school">${item.escola}</div>
+        </div>
+        <div class="rank-score">${item.pontos} pts</div>
+      `;
+
+      rankingContainer.appendChild(row);
+    });
+  }, (error) => {
+    console.error("Erro ao carregar ranking:", error);
+    rankingContainer.innerHTML = '<div class="rank-row"><div class="rank-pos">!</div><div><div class="rank-name">Não foi possível carregar o ranking.</div><div class="rank-school">Verifique a conexão/Firebase</div></div><div class="rank-score">--</div></div>';
+  });
+};
+
+window.registrarAcesso("6ano-hangman-challenge");
+</script>
+
 </body>
 </html>
