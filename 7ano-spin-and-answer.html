@@ -57,6 +57,9 @@
   .prompt{font-weight:900;text-align:center;color:#fef08a;margin:0 0 6px;min-height:20px;font-size:.9rem}
   .spinArea{margin-top:4px;display:grid;gap:6px}
   .modal{position:fixed;inset:0;background:rgba(0,0,0,.78);display:none;align-items:center;justify-content:center;z-index:99;padding:14px}
+  .screenFlash{position:fixed;inset:0;background:radial-gradient(circle,#bbf7d0 0%,#22c55e 45%,transparent 75%);opacity:0;pointer-events:none;z-index:120}
+  .screenFlash.on{animation:flashCorrect .75s ease}
+  @keyframes flashCorrect{0%{opacity:0}20%{opacity:.95}45%{opacity:.25}65%{opacity:.85}100%{opacity:0}}
   .modal.show{display:flex}
   .qbox{width:100%;max-width:420px;background:linear-gradient(180deg,#fff,#e0f2fe);color:#0f172a;border-radius:26px;padding:16px;border:4px solid #facc15;box-shadow:0 12px 35px rgba(0,0,0,.45),0 0 24px rgba(250,204,21,.6)}
   .qtheme{display:inline-block;background:#312e81;color:#fff;border-radius:999px;padding:6px 10px;font-size:.78rem;font-weight:900;margin-bottom:8px}
@@ -100,7 +103,7 @@
 
   <section id="gameScreen" class="screen">
     <div class="hud">
-      <div class="stat"><b id="roundText">1/30</b>Rodada</div>
+      <div class="stat"><b id="roundText">1/50</b>Rodada</div>
       <div class="stat"><b id="scoreText">0</b>Pontos</div>
       <div class="stat"><b id="rightText">0</b>Acertos</div>
       <div class="stat lives" id="livesBox">❤️❤️❤️❤️❤️</div>
@@ -126,6 +129,18 @@
       <div id="prompt" class="prompt">Toque no botão para girar a roleta.</div>
       <button id="spinBtn" class="btn-pink" onclick="spinWheel()">🎡 Girar roleta</button>
     </div>
+  </section>
+
+  <section id="phaseWinScreen" class="screen">
+    <div class="finalBox">
+      <h1>🎉 Mini Vitória!</h1>
+      <div id="phaseWinScore" class="scoreBig">Pontuação: 0</div>
+      <div id="phaseWinMsg" class="mot">
+        Você venceu esta fase da roleta! Respire, comemore e prepare-se para o próximo desafio.
+      </div>
+      <button id="phaseWinBtn" class="btn-green" onclick="continueNextPhase()">🚀 Continuar desafio</button>
+    </div>
+    <p class="teacher">Jogo idealizado pelo Prof. Jasson Bruno.</p>
   </section>
 
   <section id="finalScreen" class="screen">
@@ -157,6 +172,8 @@
   </section>
 </div>
 
+<div id="screenFlash" class="screenFlash"></div>
+
 <div id="questionModal" class="modal">
   <div class="qbox">
     <span id="modalTheme" class="qtheme">Tema</span>
@@ -179,7 +196,9 @@ const THEME_INDEX = {
   "Grammar Rules": 3,
   "Verb to be": 4
 };
-const TOTAL_ROUNDS = 30;
+const TOTAL_ROUNDS = 50;
+const ROUNDS_PER_PHASE = 10;
+const TOTAL_PHASES = 5;
 const MAX_LIVES = 5;
 
 let playerName = "Você";
@@ -197,6 +216,8 @@ let themeQueue = [];
 let wheelRotation = 0;
 let savedScore = false;
 let spinAudioTimer = null;
+let spinMelodyTimer = null;
+let phaseBreakPending = false;
 
 const $ = id => document.getElementById(id);
 
@@ -237,6 +258,7 @@ function startGame(){
   score = 0;
   lives = MAX_LIVES;
   savedScore = false;
+  phaseBreakPending = false;
   usedByTheme = {};
   themeQueue = shuffle(THEMES);
   answered = true;
@@ -247,7 +269,8 @@ function startGame(){
 }
 
 function updateHud(){
-  $("roundText").textContent = `${Math.min(round,TOTAL_ROUNDS)}/${TOTAL_ROUNDS}`;
+  const currentPhaseNumber = Math.ceil(Math.min(round, TOTAL_ROUNDS) / ROUNDS_PER_PHASE);
+  $("roundText").textContent = `F${currentPhaseNumber} • ${Math.min(round,TOTAL_ROUNDS)}/${TOTAL_ROUNDS}`;
   $("scoreText").textContent = score;
   $("rightText").textContent = right;
   $("livesBox").textContent = "❤️".repeat(lives) + "🖤".repeat(MAX_LIVES - lives);
@@ -327,7 +350,9 @@ function answer(index, btn){
     btn.classList.add("correct");
     $("feedback").textContent = "✅ Muito bom! Você acertou!";
     $("feedback").style.color = "#14532d";
+    flashCorrectAnswer();
     playCorrectSound();
+    playIncentiveSound();
   } else {
     lives--;
     btn.classList.add("wrong");
@@ -356,11 +381,46 @@ function closeQuestion(){
     return;
   }
 
+  if(round % ROUNDS_PER_PHASE === 0){
+    showPhaseWin();
+    return;
+  }
+
   round++;
   answered = true;
   currentQuestion = null;
   $("spinBtn").disabled = false;
   $("prompt").textContent = "Gire novamente para a próxima pergunta.";
+  updateHud();
+}
+
+function showPhaseWin(){
+  const phaseNumber = Math.ceil(round / ROUNDS_PER_PHASE);
+  phaseBreakPending = true;
+  $("phaseWinScore").textContent = `Fase ${phaseNumber}/${TOTAL_PHASES} concluída • Pontuação: ${score}/100 • Acertos: ${right}/${TOTAL_ROUNDS}`;
+  $("phaseWinMsg").textContent = phaseNumber < TOTAL_PHASES
+    ? "Você venceu esta fase da roleta! Agora vem um novo bloco de desafios. Está preparado?"
+    : "Você chegou ao último bloco. Falta pouco para completar o desafio!";
+  $("phaseWinBtn").textContent = phaseNumber < TOTAL_PHASES
+    ? `🚀 Começar Fase ${phaseNumber + 1}`
+    : "🏁 Continuar para o final";
+  playPhaseWinSound();
+  show("phaseWinScreen");
+}
+
+function continueNextPhase(){
+  if(round >= TOTAL_ROUNDS){
+    finish(true);
+    return;
+  }
+
+  round++;
+  answered = true;
+  currentQuestion = null;
+  $("spinBtn").disabled = false;
+  $("prompt").textContent = "Gire novamente para a próxima pergunta.";
+  phaseBreakPending = false;
+  show("gameScreen");
   updateHud();
 }
 
@@ -425,11 +485,18 @@ function beep(freq, duration, type="sine", volume=.14){
 function startSpinSound(){
   stopSpinSound();
   let step = 0;
+  const melody = [330,392,440,523,659,523,440,392,494,587,659,784];
+
   spinAudioTimer = setInterval(() => {
-    const freq = 260 + (step % 12) * 28;
-    beep(freq, .055, "square", .07);
+    const freq = 210 + (step % 10) * 35;
+    beep(freq, .045, "square", .055);
     step++;
-  }, 85);
+  }, 62);
+
+  spinMelodyTimer = setInterval(() => {
+    const note = melody[step % melody.length];
+    beep(note, .12, "triangle", .075);
+  }, 185);
 }
 
 function stopSpinSound(){
@@ -437,17 +504,40 @@ function stopSpinSound(){
     clearInterval(spinAudioTimer);
     spinAudioTimer = null;
   }
+
+  if(spinMelodyTimer){
+    clearInterval(spinMelodyTimer);
+    spinMelodyTimer = null;
+  }
 }
 
 function playStopSound(){
   beep(520,.09,"sine",.12);
   setTimeout(()=>beep(700,.12,"sine",.12),110);
+  setTimeout(()=>beep(880,.16,"sine",.12),240);
+}
+
+function flashCorrectAnswer(){
+  const flash = $("screenFlash");
+  flash.classList.remove("on");
+  void flash.offsetWidth;
+  flash.classList.add("on");
 }
 
 function playCorrectSound(){
-  beep(660,.12,"sine",.12);
-  setTimeout(()=>beep(880,.14,"sine",.14),120);
-  setTimeout(()=>beep(990,.16,"sine",.12),250);
+  beep(660,.10,"sine",.12);
+  setTimeout(()=>beep(880,.12,"sine",.14),100);
+  setTimeout(()=>beep(990,.14,"sine",.12),220);
+}
+
+function playIncentiveSound(){
+  setTimeout(()=>beep(1046,.10,"triangle",.10),370);
+  setTimeout(()=>beep(1318,.14,"triangle",.09),500);
+}
+
+function playPhaseWinSound(){
+  const notes = [523,659,784,1046,1318,1046];
+  notes.forEach((n,i)=>setTimeout(()=>beep(n,.14,"triangle",.11),i*130));
 }
 
 function playErrorSound(){
