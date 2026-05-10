@@ -245,13 +245,11 @@ function getCarRotation(sp, sn){
   const dx = sn.x - sp.x;
   const dy = sn.y - sp.y;
 
-  // A imagem ferrari-f1-top.png foi pensada como carro visto de cima.
-  // Aqui usamos direção por quadrantes para evitar ficar "de costas" ou torto em curva.
-  // Se o PNG estiver apontado para cima, estes graus ficam corretos.
-  if(Math.abs(dy) >= Math.abs(dx)){
-    return dy < 0 ? 0 : 180;     // sobe ou desce
-  }
-  return dx > 0 ? 90 : -90;      // direita ou esquerda
+  // ferrari-f1-top.png está naturalmente apontando para a ESQUERDA.
+  // Então usamos rotação contínua pela direção do trajeto
+  // e somamos 180 graus para alinhar a frente do carro ao caminho.
+  const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+  return angle + 180;
 }
 
 function placeCar(animate=true){
@@ -267,7 +265,7 @@ function placeCar(animate=true){
     car.style.transition = "none";
     glow.style.transition = "none";
   } else {
-    car.style.transition = "left .62s ease-in-out, top .62s ease-in-out, transform .62s ease-in-out";
+    car.style.transition = "left .62s ease-in-out, top .62s ease-in-out, transform .72s ease-in-out";
     glow.style.transition = "left .62s ease-in-out, top .62s ease-in-out";
   }
 
@@ -279,7 +277,7 @@ function placeCar(animate=true){
 
   if(!animate){
     setTimeout(()=>{
-      car.style.transition = "left .62s ease-in-out, top .62s ease-in-out, transform .62s ease-in-out";
+      car.style.transition = "left .62s ease-in-out, top .62s ease-in-out, transform .72s ease-in-out";
       glow.style.transition = "left .62s ease-in-out, top .62s ease-in-out";
     },50);
   }
