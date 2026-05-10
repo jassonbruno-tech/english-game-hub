@@ -219,6 +219,15 @@ let spinAudioTimer = null;
 let spinMelodyTimer = null;
 let phaseBreakPending = false;
 
+// Motor de áudio persistente.
+// Isso evita o problema do navegador mobile bloquear vários AudioContext pequenos.
+let audioCtx = null;
+let spinOsc = null;
+let spinGain = null;
+let spinLfo = null;
+let spinLfoGain = null;
+let spinMusicInterval = null;
+
 const $ = id => document.getElementById(id);
 
 function show(screenId){
@@ -243,6 +252,7 @@ function nextTheme(){
 }
 
 function startGame(){
+  initAudio();
   const name = $("playerName").value.trim();
   const school = $("playerSchool").value.trim();
 
@@ -278,6 +288,7 @@ function updateHud(){
 }
 
 function spinWheel(){
+  initAudio();
   if(spinning || !answered) return;
 
   spinning = true;
@@ -464,57 +475,139 @@ function restartGame(){
   location.reload();
 }
 
-function beep(freq, duration, type="sine", volume=.14){
+function initAudio(){
   try{
     const AudioContext = window.AudioContext || window.webkitAudioContext;
-    const ctx = new AudioContext();
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
+
+    if(!audioCtx){
+      audioCtx = new AudioContext();
+    }
+
+    if(audioCtx.state === "suspended"){
+      audioCtx.resume();
+    }
+  }catch(e){
+    console.warn("Áudio não pôde iniciar:", e);
+  }
+}
+
+function beep(freq, duration, type="sine", volume=.14){
+  try{
+    initAudio();
+
+    if(!audioCtx) return;
+
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+
     osc.type = type;
-    osc.frequency.setValueAtTime(freq, ctx.currentTime);
-    gain.gain.setValueAtTime(0.001, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(volume, ctx.currentTime + .02);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+
+    gain.gain.setValueAtTime(0.001, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(volume, audioCtx.currentTime + .02);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+
     osc.connect(gain);
-    gain.connect(ctx.destination);
-    osc.start();
-    osc.stop(ctx.currentTime + duration + .02);
-  }catch(e){}
+    gain.connect(audioCtx.destination);
+
+    osc.start(audioCtx.currentTime);
+    osc.stop(audioCtx.currentTime + duration + .03);
+  }catch(e){
+    console.warn("Erro no beep:", e);
+  }
 }
 
 function startSpinSound(){
   stopSpinSound();
-  let step = 0;
-  const melody = [330,392,440,523,659,523,440,392,494,587,659,784];
+  initAudio();
 
-  spinAudioTimer = setInterval(() => {
-    const freq = 210 + (step % 10) * 35;
-    beep(freq, .045, "square", .055);
-    step++;
-  }, 62);
+  if(!audioCtx) return;
 
-  spinMelodyTimer = setInterval(() => {
-    const note = melody[step % melody.length];
-    beep(note, .12, "triangle", .075);
-  }, 185);
+  try{
+    // Base contínua de suspense, tipo roleta/arcade.
+    spinOsc = audioCtx.createOscillator();
+    spinGain = audioCtx.createGain();
+    spinLfo = audioCtx.createOscillator();
+    spinLfoGain = audioCtx.createGain();
+
+    spinOsc.type = "sawtooth";
+    spinOsc.frequency.setValueAtTime(190, audioCtx.currentTime);
+    spinOsc.frequency.linearRampToValueAtTime(360, audioCtx.currentTime + 4.4);
+
+    spinGain.gain.setValueAtTime(0.001, audioCtx.currentTime);
+    spinGain.gain.exponentialRampToValueAtTime(0.14, audioCtx.currentTime + 0.08);
+
+    // Vibração rítmica para dar adrenalina.
+    spinLfo.type = "sine";
+    spinLfo.frequency.setValueAtTime(8, audioCtx.currentTime);
+    spinLfoGain.gain.setValueAtTime(55, audioCtx.currentTime);
+
+    spinLfo.connect(spinLfoGain);
+    spinLfoGain.connect(spinOsc.frequency);
+    spinOsc.connect(spinGain);
+    spinGain.connect(audioCtx.destination);
+
+    spinOsc.start();
+    spinLfo.start();
+
+    // Melodia curta repetida enquanto a roleta gira.
+    const melody = [392, 523, 659, 784, 659, 523, 440, 587, 740, 880];
+    let step = 0;
+
+    spinMusicInterval = setInterval(() => {
+      const note = melody[step % melody.length];
+      const accent = step % 4 === 0 ? 0.15 : 0.09;
+      beep(note, 0.11, "triangle", accent);
+      step++;
+    }, 150);
+
+  }catch(e){
+    console.warn("Erro no som da roleta:", e);
+  }
 }
 
 function stopSpinSound(){
-  if(spinAudioTimer){
-    clearInterval(spinAudioTimer);
-    spinAudioTimer = null;
-  }
+  try{
+    if(spinMusicInterval){
+      clearInterval(spinMusicInterval);
+      spinMusicInterval = null;
+    }
 
-  if(spinMelodyTimer){
-    clearInterval(spinMelodyTimer);
-    spinMelodyTimer = null;
+    if(spinGain && audioCtx){
+      spinGain.gain.cancelScheduledValues(audioCtx.currentTime);
+      spinGain.gain.setValueAtTime(spinGain.gain.value || 0.08, audioCtx.currentTime);
+      spinGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.18);
+    }
+
+    setTimeout(() => {
+      try{
+        if(spinOsc){
+          spinOsc.stop();
+          spinOsc.disconnect();
+        }
+        if(spinLfo){
+          spinLfo.stop();
+          spinLfo.disconnect();
+        }
+        if(spinGain) spinGain.disconnect();
+        if(spinLfoGain) spinLfoGain.disconnect();
+      }catch(e){}
+
+      spinOsc = null;
+      spinGain = null;
+      spinLfo = null;
+      spinLfoGain = null;
+    }, 220);
+  }catch(e){
+    console.warn("Erro ao parar som:", e);
   }
 }
 
 function playStopSound(){
-  beep(520,.09,"sine",.12);
-  setTimeout(()=>beep(700,.12,"sine",.12),110);
-  setTimeout(()=>beep(880,.16,"sine",.12),240);
+  beep(520,.09,"sine",.16);
+  setTimeout(()=>beep(700,.12,"sine",.16),110);
+  setTimeout(()=>beep(880,.16,"sine",.15),240);
+  setTimeout(()=>beep(1046,.20,"triangle",.12),410);
 }
 
 function flashCorrectAnswer(){
@@ -525,24 +618,25 @@ function flashCorrectAnswer(){
 }
 
 function playCorrectSound(){
-  beep(660,.10,"sine",.12);
-  setTimeout(()=>beep(880,.12,"sine",.14),100);
-  setTimeout(()=>beep(990,.14,"sine",.12),220);
+  beep(660,.10,"sine",.15);
+  setTimeout(()=>beep(880,.12,"sine",.16),100);
+  setTimeout(()=>beep(990,.14,"sine",.14),220);
 }
 
 function playIncentiveSound(){
-  setTimeout(()=>beep(1046,.10,"triangle",.10),370);
-  setTimeout(()=>beep(1318,.14,"triangle",.09),500);
+  setTimeout(()=>beep(1046,.10,"triangle",.12),370);
+  setTimeout(()=>beep(1318,.14,"triangle",.11),500);
+  setTimeout(()=>beep(1568,.16,"triangle",.10),660);
 }
 
 function playPhaseWinSound(){
-  const notes = [523,659,784,1046,1318,1046];
-  notes.forEach((n,i)=>setTimeout(()=>beep(n,.14,"triangle",.11),i*130));
+  const notes = [523,659,784,1046,1318,1046,1568];
+  notes.forEach((n,i)=>setTimeout(()=>beep(n,.14,"triangle",.13),i*130));
 }
 
 function playErrorSound(){
-  beep(180,.20,"sawtooth",.11);
-  setTimeout(()=>beep(95,.18,"sawtooth",.09),170);
+  beep(180,.20,"sawtooth",.12);
+  setTimeout(()=>beep(95,.18,"sawtooth",.10),170);
 }
 </script>
 
