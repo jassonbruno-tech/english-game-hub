@@ -2,9 +2,8 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>English Voice Challenge - 7º Ano</title>
-
   <style>
     * {
       box-sizing: border-box;
@@ -30,7 +29,7 @@
       width: 100%;
       max-width: 440px;
       min-height: 92vh;
-      background: rgba(15, 23, 42, 0.92);
+      background: rgba(15, 23, 42, 0.93);
       border: 3px solid rgba(255, 255, 255, 0.25);
       border-radius: 28px;
       box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
@@ -97,15 +96,19 @@
       padding-top: 10px;
     }
 
-    .input-box {
-      margin-top: 12px;
+    .mini-note {
+      color: #cbd5e1;
+      font-size: 0.78rem;
+      text-align: center;
+      line-height: 1.35;
+      margin-top: 10px;
     }
 
     label {
       display: block;
       font-weight: 800;
       color: #fef08a;
-      margin-bottom: 6px;
+      margin: 12px 0 6px;
       font-size: 0.92rem;
     }
 
@@ -148,25 +151,12 @@
       cursor: not-allowed;
     }
 
-    .btn-green {
-      background: linear-gradient(180deg, #4ade80, #16a34a);
-      color: #052e16;
-    }
-
-    .btn-blue {
-      background: linear-gradient(180deg, #60a5fa, #2563eb);
-      color: #fff;
-    }
-
-    .btn-yellow {
-      background: linear-gradient(180deg, #fde047, #f59e0b);
-      color: #422006;
-    }
-
-    .btn-purple {
-      background: linear-gradient(180deg, #c084fc, #7c3aed);
-      color: #fff;
-    }
+    .btn-green { background: linear-gradient(180deg, #4ade80, #16a34a); color: #052e16; }
+    .btn-blue { background: linear-gradient(180deg, #60a5fa, #2563eb); color: #fff; }
+    .btn-yellow { background: linear-gradient(180deg, #fde047, #f59e0b); color: #422006; }
+    .btn-purple { background: linear-gradient(180deg, #c084fc, #7c3aed); color: #fff; }
+    .btn-orange { background: linear-gradient(180deg, #fb923c, #ea580c); color: #fff; }
+    .btn-gray { background: linear-gradient(180deg, #94a3b8, #475569); color: #fff; }
 
     .button-grid {
       display: grid;
@@ -186,7 +176,7 @@
     }
 
     .phase-tile {
-      min-height: 68px;
+      min-height: 64px;
       border-radius: 18px;
       border: 2px solid rgba(255, 255, 255, 0.25);
       display: flex;
@@ -194,9 +184,8 @@
       justify-content: center;
       align-items: center;
       font-weight: 900;
-      position: relative;
       text-align: center;
-      font-size: 0.78rem;
+      font-size: 0.75rem;
     }
 
     .phase-tile.open {
@@ -214,7 +203,7 @@
     .phase-tile.locked {
       background: rgba(148, 163, 184, 0.25);
       color: #cbd5e1;
-      opacity: 0.8;
+      opacity: 0.88;
     }
 
     .phase-number {
@@ -259,6 +248,15 @@
       margin-top: 3px;
     }
 
+    .life-row {
+      display: flex;
+      justify-content: center;
+      gap: 4px;
+      font-size: 1.4rem;
+      margin-top: 4px;
+      letter-spacing: 2px;
+    }
+
     .progress-wrap {
       height: 14px;
       width: 100%;
@@ -266,7 +264,7 @@
       border-radius: 999px;
       overflow: hidden;
       margin-top: 10px;
-      border: 1px solid rgba(255,255,255,0.18);
+      border: 1px solid rgba(255, 255, 255, 0.18);
     }
 
     .progress-bar {
@@ -330,19 +328,18 @@
       border-radius: 999px;
       font-size: 0.72rem;
       font-weight: 900;
-      margin-bottom: 8px;
+      margin: 2px;
     }
 
     .sentence-type {
       display: inline-block;
       background: #fce7f3;
       color: #9d174d;
-      padding: 5px 9px;
+      padding: 6px 10px;
       border-radius: 999px;
       font-size: 0.72rem;
       font-weight: 900;
-      margin-left: 4px;
-      margin-bottom: 8px;
+      margin: 2px;
     }
 
     .phrase {
@@ -416,12 +413,53 @@
       border: 3px solid #60a5fa;
     }
 
+    .big-message-box {
+      background: linear-gradient(180deg, #ffffff, #e0f2fe);
+      color: #0f172a;
+      border-radius: 24px;
+      padding: 18px;
+      margin-top: 16px;
+      text-align: center;
+      border: 3px solid #facc15;
+      box-shadow: 0 7px 0 #a16207;
+    }
+
+    .big-message-box h1 {
+      color: #111827;
+      text-shadow: none;
+      margin-bottom: 10px;
+    }
+
+    .big-message-box p {
+      color: #334155;
+      font-weight: 700;
+    }
+
+    .game-over-title {
+      color: #dc2626 !important;
+      font-size: 2rem;
+    }
+
+    .victory-title {
+      color: #16a34a !important;
+      font-size: 1.8rem;
+    }
+
+    .phase-result {
+      background: #fef3c7;
+      color: #78350f;
+      border-radius: 16px;
+      padding: 12px;
+      font-weight: 900;
+      margin: 12px 0;
+    }
+
     .rating-box {
       margin-top: 12px;
       padding: 12px;
       border-radius: 20px;
-      background: rgba(255,255,255,0.12);
-      border: 2px solid rgba(255,255,255,0.22);
+      background: rgba(255, 255, 255, 0.12);
+      border: 2px solid rgba(255, 255, 255, 0.22);
       text-align: center;
     }
 
@@ -440,7 +478,7 @@
       color: #422006;
     }
 
-    .rating-buttons .emoji {
+    .emoji {
       display: block;
       font-size: 1.8rem;
       margin-bottom: 3px;
@@ -495,19 +533,11 @@
       margin-bottom: 12px;
     }
 
-    .mini-note {
-      color: #cbd5e1;
-      font-size: 0.78rem;
-      text-align: center;
-      line-height: 1.35;
-      margin-top: 10px;
-    }
-
     @media (max-height: 720px) {
       .screen { padding: 12px; }
       h1 { font-size: 1.35rem; margin: 8px 0 5px; }
       .subtitle { font-size: 0.85rem; }
-      .phase-tile { min-height: 56px; border-radius: 14px; }
+      .phase-tile { min-height: 54px; border-radius: 14px; }
       .phrase { font-size: 1.32rem; }
       button { min-height: 48px; padding: 12px 10px; font-size: 0.95rem; }
       .phrase-card { padding: 11px; margin-top: 9px; }
@@ -517,23 +547,16 @@
 
 <body>
   <main class="app">
-
     <section id="startScreen" class="screen active">
       <span class="top-badge">English Voice Challenge</span>
       <h1>Listening & Speaking Game</h1>
-      <p class="subtitle">
-        Ouça, repita em inglês e desbloqueie as fases até chegar ao ranking final.
-      </p>
+      <p class="subtitle">Ouça, repita em inglês e desbloqueie as fases até chegar ao ranking final.</p>
 
-      <div class="input-box">
-        <label for="playerName">Nome do aluno:</label>
-        <input id="playerName" type="text" maxlength="24" placeholder="Digite seu nome">
-      </div>
+      <label for="playerName">Nome do aluno:</label>
+      <input id="playerName" type="text" maxlength="24" placeholder="Digite seu nome" />
 
-      <div class="input-box">
-        <label for="playerSchool">Escola:</label>
-        <input id="playerSchool" type="text" maxlength="32" placeholder="Digite sua escola">
-      </div>
+      <label for="playerSchool">Escola:</label>
+      <input id="playerSchool" type="text" maxlength="32" placeholder="Digite sua escola" />
 
       <h2>Mapa das Fases</h2>
       <div id="startPhaseMap" class="phase-map"></div>
@@ -556,9 +579,15 @@
           Pontuação
           <strong id="scoreText">0/100</strong>
         </div>
+
         <div class="hud-card">
           Frase
           <strong id="questionText">1/10</strong>
+        </div>
+
+        <div class="hud-card" style="grid-column: 1 / 3;">
+          Vidas da fase
+          <div id="livesText" class="life-row">❤️❤️❤️❤️❤️</div>
         </div>
       </div>
 
@@ -568,7 +597,7 @@
 
       <div id="gamePhaseMap" class="phase-map"></div>
 
-      <div class="phrase-card">
+      <div id="phraseCard" class="phrase-card">
         <span id="contentTag" class="content-tag">Tema</span>
         <span id="sentenceType" class="sentence-type">Tipo</span>
 
@@ -594,6 +623,60 @@
       </div>
     </section>
 
+    <section id="phaseCompleteScreen" class="screen">
+      <span class="top-badge">Fase concluída</span>
+
+      <div class="big-message-box">
+        <h1 class="victory-title">🎉 Parabéns!</h1>
+
+        <p id="phaseCompleteMessage">Você completou esta fase!</p>
+
+        <div class="phase-result" id="phaseCompleteScore">Pontuação atual: 0/100</div>
+
+        <p>
+          Sua escuta e sua pronúncia estão evoluindo.
+          Você está preparado para o próximo desafio?
+        </p>
+      </div>
+
+      <div class="button-grid">
+        <button id="nextPhaseButton" class="btn-green" onclick="continueToNextPhase()">
+          🚀 Começar próxima fase
+        </button>
+      </div>
+
+      <p class="teacher">Jogo idealizado pelo Prof. Jasson Bruno.</p>
+    </section>
+
+    <section id="gameOverScreen" class="screen">
+      <span class="top-badge">Fim da tentativa</span>
+
+      <div class="big-message-box">
+        <h1 class="game-over-title">GAME OVER</h1>
+
+        <p>
+          Você tentou, treinou e isso já é um passo importante!
+          Aprender inglês é assim: ouvir, repetir, errar, corrigir e tentar novamente.
+        </p>
+
+        <div class="phase-result" id="gameOverScore">Pontuação: 0/100</div>
+
+        <p>💪 Não desista! Cada tentativa melhora sua escuta e sua pronúncia.</p>
+      </div>
+
+      <div class="button-grid">
+        <button class="btn-orange" onclick="retryCurrentPhase()">🔁 Tentar esta fase novamente</button>
+        <button class="btn-gray" onclick="restartGame()">🏠 Voltar ao início</button>
+      </div>
+
+      <h2>🏆 TOP 10 em tempo real</h2>
+      <ol id="rankingGameOver" class="ranking-list">
+        <li>Carregando ranking...</li>
+      </ol>
+
+      <p class="teacher">Jogo idealizado pelo Prof. Jasson Bruno.</p>
+    </section>
+
     <section id="endScreen" class="screen">
       <span class="top-badge">Resultado Final</span>
       <h1>Journey Completed!</h1>
@@ -610,10 +693,12 @@
             <span class="emoji">😡</span>
             Difícil
           </button>
+
           <button onclick="avaliarJogo('neutro', this)">
             <span class="emoji">😐</span>
             Mais ou menos
           </button>
+
           <button onclick="avaliarJogo('bom', this)">
             <span class="emoji">😀</span>
             Gostei
@@ -632,164 +717,762 @@
 
       <p class="teacher">Jogo idealizado pelo Prof. Jasson Bruno.</p>
     </section>
-
   </main>
 
   <script>
     const NOME_DO_JOGO = "7ano-listening-speaking-game";
-
     const phases = [
+  {
+    "title": "Fase 1 - Verb to be",
+    "items": [
       {
-        title: "Fase 1 - Verb to be",
-        items: [
-          { topic: "Verb to be", type: "Afirmativa", phrase: "I am happy", pt: "Eu estou feliz.", tip: "I am = eu sou / eu estou." },
-          { topic: "Verb to be", type: "Negativa", phrase: "I am not sad", pt: "Eu não estou triste.", tip: "am not = não sou / não estou." },
-          { topic: "Verb to be", type: "Interrogativa", phrase: "Am I late?", pt: "Eu estou atrasado?", tip: "Pergunta com I: Am I...?" },
-          { topic: "Verb to be", type: "Afirmativa", phrase: "She is my friend", pt: "Ela é minha amiga.", tip: "She is = ela é / está." },
-          { topic: "Verb to be", type: "Negativa", phrase: "He is not tired", pt: "Ele não está cansado.", tip: "is not = não é / não está." },
-          { topic: "Verb to be", type: "Interrogativa", phrase: "Is she a student?", pt: "Ela é estudante?", tip: "Pergunta com she: Is she...?" },
-          { topic: "Verb to be", type: "Afirmativa", phrase: "They are students", pt: "Eles são estudantes.", tip: "They are = eles/elas são." },
-          { topic: "Verb to be", type: "Negativa", phrase: "We are not at home", pt: "Nós não estamos em casa.", tip: "are not = não são / não estão." },
-          { topic: "Verb to be", type: "Interrogativa", phrase: "Are you ready?", pt: "Você está pronto?", tip: "Pergunta com you: Are you...?" },
-          { topic: "Verb to be", type: "Afirmativa", phrase: "It is sunny", pt: "Está ensolarado.", tip: "It is pode falar sobre clima." }
-        ]
+        "topic": "Verb to be",
+        "type": "Afirmativa",
+        "phrase": "I am happy",
+        "pt": "Eu estou feliz.",
+        "tip": "I am = eu sou / estou."
       },
       {
-        title: "Fase 2 - Giving opinions",
-        items: [
-          { topic: "Giving opinions", type: "Afirmativa", phrase: "I like pizza", pt: "Eu gosto de pizza.", tip: "I like = eu gosto." },
-          { topic: "Giving opinions", type: "Negativa", phrase: "I don't like homework", pt: "Eu não gosto de tarefa de casa.", tip: "I don't like = eu não gosto." },
-          { topic: "Giving opinions", type: "Interrogativa", phrase: "Do you like English?", pt: "Você gosta de inglês?", tip: "Pergunta com you: Do you like...?" },
-          { topic: "Giving opinions", type: "Afirmativa", phrase: "I like music", pt: "Eu gosto de música.", tip: "music = música." },
-          { topic: "Giving opinions", type: "Negativa", phrase: "I don't like noise", pt: "Eu não gosto de barulho.", tip: "noise = barulho." },
-          { topic: "Giving opinions", type: "Interrogativa", phrase: "Do you like games?", pt: "Você gosta de jogos?", tip: "games = jogos." },
-          { topic: "Giving opinions", type: "Afirmativa", phrase: "She likes soccer", pt: "Ela gosta de futebol.", tip: "Com she, usamos likes." },
-          { topic: "Giving opinions", type: "Negativa", phrase: "He doesn't like rain", pt: "Ele não gosta de chuva.", tip: "He doesn't like = ele não gosta." },
-          { topic: "Giving opinions", type: "Interrogativa", phrase: "Does he like school?", pt: "Ele gosta da escola?", tip: "Com he, a pergunta começa com Does." },
-          { topic: "Giving opinions", type: "Afirmativa", phrase: "We like English class", pt: "Nós gostamos da aula de inglês.", tip: "We like = nós gostamos." }
-        ]
+        "topic": "Verb to be",
+        "type": "Negativa",
+        "phrase": "I am not sad",
+        "pt": "Eu não estou triste.",
+        "tip": "am not = não sou / não estou."
       },
       {
-        title: "Fase 3 - Frequency",
-        items: [
-          { topic: "Adverbs of frequency", type: "Afirmativa", phrase: "I always study English", pt: "Eu sempre estudo inglês.", tip: "always = sempre." },
-          { topic: "Adverbs of frequency", type: "Negativa", phrase: "I never sleep in class", pt: "Eu nunca durmo na aula.", tip: "never = nunca." },
-          { topic: "Adverbs of frequency", type: "Interrogativa", phrase: "Do you always study?", pt: "Você sempre estuda?", tip: "Do you... para perguntar." },
-          { topic: "Adverbs of frequency", type: "Afirmativa", phrase: "I usually play soccer", pt: "Eu geralmente jogo futebol.", tip: "usually = geralmente." },
-          { topic: "Adverbs of frequency", type: "Negativa", phrase: "I don't usually eat candy", pt: "Eu geralmente não como doce.", tip: "don't usually = geralmente não." },
-          { topic: "Adverbs of frequency", type: "Interrogativa", phrase: "Do you often read?", pt: "Você lê frequentemente?", tip: "often = frequentemente." },
-          { topic: "Adverbs of frequency", type: "Afirmativa", phrase: "She sometimes watches TV", pt: "Ela às vezes assiste TV.", tip: "sometimes = às vezes." },
-          { topic: "Adverbs of frequency", type: "Negativa", phrase: "He never plays here", pt: "Ele nunca joga aqui.", tip: "never pode aparecer antes do verbo." },
-          { topic: "Adverbs of frequency", type: "Interrogativa", phrase: "Does she usually dance?", pt: "Ela geralmente dança?", tip: "Com she, use Does." },
-          { topic: "Adverbs of frequency", type: "Afirmativa", phrase: "We often speak English", pt: "Nós frequentemente falamos inglês.", tip: "speak = falar." }
-        ]
+        "topic": "Verb to be",
+        "type": "Interrogativa",
+        "phrase": "Am I late?",
+        "pt": "Eu estou atrasado?",
+        "tip": "Para perguntar com I, use: Am I...?"
       },
       {
-        title: "Fase 4 - Life / lives",
-        items: [
-          { topic: "Life / lives", type: "Afirmativa", phrase: "I like this life", pt: "Eu gosto desta vida.", tip: "life = vida." },
-          { topic: "Life / lives", type: "Negativa", phrase: "I don't like this life", pt: "Eu não gosto desta vida.", tip: "don't like = não gosto." },
-          { topic: "Life / lives", type: "Interrogativa", phrase: "Do you like this life?", pt: "Você gosta desta vida?", tip: "Do you like...? = Você gosta...?" },
-          { topic: "Life / lives", type: "Afirmativa", phrase: "She lives in Brazil", pt: "Ela mora no Brasil.", tip: "lives = mora / vive." },
-          { topic: "Life / lives", type: "Negativa", phrase: "He doesn't live here", pt: "Ele não mora aqui.", tip: "doesn't live = não mora." },
-          { topic: "Life / lives", type: "Interrogativa", phrase: "Does she live here?", pt: "Ela mora aqui?", tip: "Does she live...? = Ela mora...?" },
-          { topic: "Life / lives", type: "Afirmativa", phrase: "He lives near school", pt: "Ele mora perto da escola.", tip: "near school = perto da escola." },
-          { topic: "Life / lives", type: "Negativa", phrase: "They don't live in Brazil", pt: "Eles não moram no Brasil.", tip: "They don't live = eles não moram." },
-          { topic: "Life / lives", type: "Interrogativa", phrase: "Do they live near school?", pt: "Eles moram perto da escola?", tip: "Do they live...? = Eles moram...?" },
-          { topic: "Life / lives", type: "Afirmativa", phrase: "Life is good", pt: "A vida é boa.", tip: "Life is = a vida é." }
-        ]
+        "topic": "Verb to be",
+        "type": "Afirmativa",
+        "phrase": "She is my friend",
+        "pt": "Ela é minha amiga.",
+        "tip": "She is = ela é / ela está."
       },
       {
-        title: "Fase 5 - Mixed practice",
-        items: [
-          { topic: "Mixed", type: "Afirmativa", phrase: "I am a student", pt: "Eu sou estudante.", tip: "I am = eu sou." },
-          { topic: "Mixed", type: "Negativa", phrase: "I am not angry", pt: "Eu não estou bravo.", tip: "angry = bravo." },
-          { topic: "Mixed", type: "Interrogativa", phrase: "Are they friends?", pt: "Eles são amigos?", tip: "Are they...? = Eles são...?" },
-          { topic: "Mixed", type: "Afirmativa", phrase: "I like my school", pt: "Eu gosto da minha escola.", tip: "my school = minha escola." },
-          { topic: "Mixed", type: "Negativa", phrase: "She doesn't like coffee", pt: "Ela não gosta de café.", tip: "She doesn't like = ela não gosta." },
-          { topic: "Mixed", type: "Interrogativa", phrase: "Do you like breakfast?", pt: "Você gosta de café da manhã?", tip: "breakfast = café da manhã." },
-          { topic: "Mixed", type: "Afirmativa", phrase: "I sometimes study at night", pt: "Eu às vezes estudo à noite.", tip: "at night = à noite." },
-          { topic: "Mixed", type: "Negativa", phrase: "I never run at school", pt: "Eu nunca corro na escola.", tip: "never = nunca." },
-          { topic: "Mixed", type: "Interrogativa", phrase: "Does he live in Santarem?", pt: "Ele mora em Santarém?", tip: "Does he live...? = Ele mora...?" },
-          { topic: "Mixed", type: "Afirmativa", phrase: "She is very kind", pt: "Ela é muito gentil.", tip: "kind = gentil." }
-        ]
+        "topic": "Verb to be",
+        "type": "Negativa",
+        "phrase": "He is not tired",
+        "pt": "Ele não está cansado.",
+        "tip": "is not = não é / não está."
       },
       {
-        title: "Fase 6 - School sentences",
-        items: [
-          { topic: "School", type: "Afirmativa", phrase: "We are in class", pt: "Nós estamos na aula.", tip: "in class = na aula." },
-          { topic: "School", type: "Negativa", phrase: "They are not late", pt: "Eles não estão atrasados.", tip: "late = atrasado." },
-          { topic: "School", type: "Interrogativa", phrase: "Is the teacher here?", pt: "O professor está aqui?", tip: "teacher = professor." },
-          { topic: "School", type: "Afirmativa", phrase: "I like English class", pt: "Eu gosto da aula de inglês.", tip: "English class = aula de inglês." },
-          { topic: "School", type: "Negativa", phrase: "I don't like tests", pt: "Eu não gosto de provas.", tip: "tests = provas." },
-          { topic: "School", type: "Interrogativa", phrase: "Do you like your teacher?", pt: "Você gosta do seu professor?", tip: "your teacher = seu professor." },
-          { topic: "School", type: "Afirmativa", phrase: "I always do homework", pt: "Eu sempre faço tarefa.", tip: "do homework = fazer tarefa." },
-          { topic: "School", type: "Negativa", phrase: "I don't often speak in class", pt: "Eu não falo frequentemente na aula.", tip: "speak = falar." },
-          { topic: "School", type: "Interrogativa", phrase: "Do they study English?", pt: "Eles estudam inglês?", tip: "Do they study...? = Eles estudam...?" },
-          { topic: "School", type: "Afirmativa", phrase: "School life is important", pt: "A vida escolar é importante.", tip: "school life = vida escolar." }
-        ]
+        "topic": "Verb to be",
+        "type": "Interrogativa",
+        "phrase": "Is she a student?",
+        "pt": "Ela é estudante?",
+        "tip": "Para perguntar com she, use: Is she...?"
       },
       {
-        title: "Fase 7 - Family and routine",
-        items: [
-          { topic: "Routine", type: "Afirmativa", phrase: "My family is happy", pt: "Minha família está feliz.", tip: "family = família." },
-          { topic: "Routine", type: "Negativa", phrase: "My brother is not here", pt: "Meu irmão não está aqui.", tip: "brother = irmão." },
-          { topic: "Routine", type: "Interrogativa", phrase: "Is your mother at home?", pt: "Sua mãe está em casa?", tip: "mother = mãe." },
-          { topic: "Routine", type: "Afirmativa", phrase: "I like breakfast", pt: "Eu gosto de café da manhã.", tip: "breakfast = café da manhã." },
-          { topic: "Routine", type: "Negativa", phrase: "I don't like cold coffee", pt: "Eu não gosto de café frio.", tip: "cold = frio." },
-          { topic: "Routine", type: "Interrogativa", phrase: "Do you like bread?", pt: "Você gosta de pão?", tip: "bread = pão." },
-          { topic: "Routine", type: "Afirmativa", phrase: "She usually eats bread", pt: "Ela geralmente come pão.", tip: "usually = geralmente." },
-          { topic: "Routine", type: "Negativa", phrase: "He never drinks soda", pt: "Ele nunca bebe refrigerante.", tip: "soda = refrigerante." },
-          { topic: "Routine", type: "Interrogativa", phrase: "Does he usually play?", pt: "Ele geralmente joga?", tip: "Does he...? = Ele...?" },
-          { topic: "Routine", type: "Afirmativa", phrase: "He lives with his family", pt: "Ele mora com a família dele.", tip: "with his family = com a família dele." }
-        ]
+        "topic": "Verb to be",
+        "type": "Afirmativa",
+        "phrase": "They are students",
+        "pt": "Eles são estudantes.",
+        "tip": "They are = eles/elas são."
       },
       {
-        title: "Fase 8 - Feelings and opinions",
-        items: [
-          { topic: "Feelings", type: "Afirmativa", phrase: "I am excited", pt: "Eu estou animado.", tip: "excited = animado." },
-          { topic: "Feelings", type: "Negativa", phrase: "She is not nervous", pt: "Ela não está nervosa.", tip: "nervous = nervoso." },
-          { topic: "Feelings", type: "Interrogativa", phrase: "Are you happy today?", pt: "Você está feliz hoje?", tip: "today = hoje." },
-          { topic: "Feelings", type: "Afirmativa", phrase: "I like funny videos", pt: "Eu gosto de vídeos engraçados.", tip: "funny = engraçado." },
-          { topic: "Feelings", type: "Negativa", phrase: "I don't like sad movies", pt: "Eu não gosto de filmes tristes.", tip: "sad movies = filmes tristes." },
-          { topic: "Feelings", type: "Interrogativa", phrase: "Do you like music?", pt: "Você gosta de música?", tip: "music = música." },
-          { topic: "Feelings", type: "Afirmativa", phrase: "I always smile", pt: "Eu sempre sorrio.", tip: "smile = sorrir." },
-          { topic: "Feelings", type: "Negativa", phrase: "I never give up", pt: "Eu nunca desisto.", tip: "give up = desistir." },
-          { topic: "Feelings", type: "Interrogativa", phrase: "Does she like this song?", pt: "Ela gosta desta música?", tip: "song = música/canção." },
-          { topic: "Feelings", type: "Afirmativa", phrase: "This life is beautiful", pt: "Esta vida é bonita.", tip: "beautiful = bonita." }
-        ]
+        "topic": "Verb to be",
+        "type": "Negativa",
+        "phrase": "We are not at home",
+        "pt": "Nós não estamos em casa.",
+        "tip": "are not = não são / não estão."
       },
       {
-        title: "Fase 9 - Places",
-        items: [
-          { topic: "Places", type: "Afirmativa", phrase: "I am at school", pt: "Eu estou na escola.", tip: "at school = na escola." },
-          { topic: "Places", type: "Negativa", phrase: "He is not at the park", pt: "Ele não está no parque.", tip: "park = parque." },
-          { topic: "Places", type: "Interrogativa", phrase: "Are they at home?", pt: "Eles estão em casa?", tip: "at home = em casa." },
-          { topic: "Places", type: "Afirmativa", phrase: "I like the park", pt: "Eu gosto do parque.", tip: "the park = o parque." },
-          { topic: "Places", type: "Negativa", phrase: "I don't like the hospital", pt: "Eu não gosto do hospital.", tip: "hospital = hospital." },
-          { topic: "Places", type: "Interrogativa", phrase: "Do you like the museum?", pt: "Você gosta do museu?", tip: "museum = museu." },
-          { topic: "Places", type: "Afirmativa", phrase: "She sometimes goes to school", pt: "Ela às vezes vai para a escola.", tip: "goes to school = vai para a escola." },
-          { topic: "Places", type: "Negativa", phrase: "He never goes there", pt: "Ele nunca vai lá.", tip: "there = lá." },
-          { topic: "Places", type: "Interrogativa", phrase: "Does she live near the park?", pt: "Ela mora perto do parque?", tip: "near the park = perto do parque." },
-          { topic: "Places", type: "Afirmativa", phrase: "They live in Brazil", pt: "Eles moram no Brasil.", tip: "They live = eles moram." }
-        ]
+        "topic": "Verb to be",
+        "type": "Interrogativa",
+        "phrase": "Are you ready?",
+        "pt": "Você está pronto?",
+        "tip": "Para perguntar com you, use: Are you...?"
       },
       {
-        title: "Fase 10 - Final challenge",
-        items: [
-          { topic: "Final", type: "Afirmativa", phrase: "I am ready", pt: "Eu estou pronto.", tip: "ready = pronto." },
-          { topic: "Final", type: "Negativa", phrase: "I am not afraid", pt: "Eu não estou com medo.", tip: "afraid = com medo." },
-          { topic: "Final", type: "Interrogativa", phrase: "Are you ready for English?", pt: "Você está pronto para o inglês?", tip: "ready for English = pronto para o inglês." },
-          { topic: "Final", type: "Afirmativa", phrase: "I like learning English", pt: "Eu gosto de aprender inglês.", tip: "learning = aprender." },
-          { topic: "Final", type: "Negativa", phrase: "I don't like giving up", pt: "Eu não gosto de desistir.", tip: "giving up = desistir." },
-          { topic: "Final", type: "Interrogativa", phrase: "Do you like this challenge?", pt: "Você gosta deste desafio?", tip: "challenge = desafio." },
-          { topic: "Final", type: "Afirmativa", phrase: "I always try again", pt: "Eu sempre tento de novo.", tip: "try again = tentar de novo." },
-          { topic: "Final", type: "Negativa", phrase: "I never stop learning", pt: "Eu nunca paro de aprender.", tip: "stop learning = parar de aprender." },
-          { topic: "Final", type: "Interrogativa", phrase: "Does she live a good life?", pt: "Ela vive uma vida boa?", tip: "good life = vida boa." },
-          { topic: "Final", type: "Afirmativa", phrase: "English is part of my life", pt: "O inglês faz parte da minha vida.", tip: "part of my life = parte da minha vida." }
-        ]
+        "topic": "Verb to be",
+        "type": "Afirmativa",
+        "phrase": "It is sunny",
+        "pt": "Está ensolarado.",
+        "tip": "It is pode falar sobre clima."
       }
-    ];
+    ]
+  },
+  {
+    "title": "Fase 2 - Giving opinions",
+    "items": [
+      {
+        "topic": "Giving opinions",
+        "type": "Afirmativa",
+        "phrase": "I like pizza",
+        "pt": "Eu gosto de pizza.",
+        "tip": "I like = eu gosto."
+      },
+      {
+        "topic": "Giving opinions",
+        "type": "Negativa",
+        "phrase": "I don't like homework",
+        "pt": "Eu não gosto de tarefa de casa.",
+        "tip": "I don't like = eu não gosto."
+      },
+      {
+        "topic": "Giving opinions",
+        "type": "Interrogativa",
+        "phrase": "Do you like English?",
+        "pt": "Você gosta de inglês?",
+        "tip": "Do you like...? = Você gosta...?"
+      },
+      {
+        "topic": "Giving opinions",
+        "type": "Afirmativa",
+        "phrase": "I like music",
+        "pt": "Eu gosto de música.",
+        "tip": "music = música."
+      },
+      {
+        "topic": "Giving opinions",
+        "type": "Negativa",
+        "phrase": "I don't like noise",
+        "pt": "Eu não gosto de barulho.",
+        "tip": "noise = barulho."
+      },
+      {
+        "topic": "Giving opinions",
+        "type": "Interrogativa",
+        "phrase": "Do you like games?",
+        "pt": "Você gosta de jogos?",
+        "tip": "games = jogos."
+      },
+      {
+        "topic": "Giving opinions",
+        "type": "Afirmativa",
+        "phrase": "She likes soccer",
+        "pt": "Ela gosta de futebol.",
+        "tip": "Com she, usamos likes."
+      },
+      {
+        "topic": "Giving opinions",
+        "type": "Negativa",
+        "phrase": "He doesn't like rain",
+        "pt": "Ele não gosta de chuva.",
+        "tip": "He doesn't like = ele não gosta."
+      },
+      {
+        "topic": "Giving opinions",
+        "type": "Interrogativa",
+        "phrase": "Does he like school?",
+        "pt": "Ele gosta da escola?",
+        "tip": "Com he, a pergunta começa com Does."
+      },
+      {
+        "topic": "Giving opinions",
+        "type": "Afirmativa",
+        "phrase": "We like English class",
+        "pt": "Nós gostamos da aula de inglês.",
+        "tip": "We like = nós gostamos."
+      }
+    ]
+  },
+  {
+    "title": "Fase 3 - Adverbs of frequency",
+    "items": [
+      {
+        "topic": "Frequency",
+        "type": "Afirmativa",
+        "phrase": "I always study English",
+        "pt": "Eu sempre estudo inglês.",
+        "tip": "always = sempre."
+      },
+      {
+        "topic": "Frequency",
+        "type": "Negativa",
+        "phrase": "I never sleep in class",
+        "pt": "Eu nunca durmo na aula.",
+        "tip": "never = nunca."
+      },
+      {
+        "topic": "Frequency",
+        "type": "Interrogativa",
+        "phrase": "Do you always study?",
+        "pt": "Você sempre estuda?",
+        "tip": "Do you...? = Você...?"
+      },
+      {
+        "topic": "Frequency",
+        "type": "Afirmativa",
+        "phrase": "I usually play soccer",
+        "pt": "Eu geralmente jogo futebol.",
+        "tip": "usually = geralmente."
+      },
+      {
+        "topic": "Frequency",
+        "type": "Negativa",
+        "phrase": "I don't usually eat candy",
+        "pt": "Eu geralmente não como doce.",
+        "tip": "don't usually = geralmente não."
+      },
+      {
+        "topic": "Frequency",
+        "type": "Interrogativa",
+        "phrase": "Do you often read?",
+        "pt": "Você lê frequentemente?",
+        "tip": "often = frequentemente."
+      },
+      {
+        "topic": "Frequency",
+        "type": "Afirmativa",
+        "phrase": "She sometimes watches TV",
+        "pt": "Ela às vezes assiste TV.",
+        "tip": "sometimes = às vezes."
+      },
+      {
+        "topic": "Frequency",
+        "type": "Negativa",
+        "phrase": "He never plays here",
+        "pt": "Ele nunca joga aqui.",
+        "tip": "never = nunca."
+      },
+      {
+        "topic": "Frequency",
+        "type": "Interrogativa",
+        "phrase": "Does she usually dance?",
+        "pt": "Ela geralmente dança?",
+        "tip": "Com she, use Does."
+      },
+      {
+        "topic": "Frequency",
+        "type": "Afirmativa",
+        "phrase": "We often speak English",
+        "pt": "Nós frequentemente falamos inglês.",
+        "tip": "speak = falar."
+      }
+    ]
+  },
+  {
+    "title": "Fase 4 - Life / lives",
+    "items": [
+      {
+        "topic": "Life / lives",
+        "type": "Afirmativa",
+        "phrase": "I like this life",
+        "pt": "Eu gosto desta vida.",
+        "tip": "life = vida."
+      },
+      {
+        "topic": "Life / lives",
+        "type": "Negativa",
+        "phrase": "I don't like this life",
+        "pt": "Eu não gosto desta vida.",
+        "tip": "don't like = não gosto."
+      },
+      {
+        "topic": "Life / lives",
+        "type": "Interrogativa",
+        "phrase": "Do you like this life?",
+        "pt": "Você gosta desta vida?",
+        "tip": "Do you like...? = Você gosta...?"
+      },
+      {
+        "topic": "Life / lives",
+        "type": "Afirmativa",
+        "phrase": "She lives in Brazil",
+        "pt": "Ela mora no Brasil.",
+        "tip": "lives = mora / vive."
+      },
+      {
+        "topic": "Life / lives",
+        "type": "Negativa",
+        "phrase": "He doesn't live here",
+        "pt": "Ele não mora aqui.",
+        "tip": "doesn't live = não mora."
+      },
+      {
+        "topic": "Life / lives",
+        "type": "Interrogativa",
+        "phrase": "Does she live here?",
+        "pt": "Ela mora aqui?",
+        "tip": "Does she live...? = Ela mora...?"
+      },
+      {
+        "topic": "Life / lives",
+        "type": "Afirmativa",
+        "phrase": "He lives near school",
+        "pt": "Ele mora perto da escola.",
+        "tip": "near school = perto da escola."
+      },
+      {
+        "topic": "Life / lives",
+        "type": "Negativa",
+        "phrase": "They don't live in Brazil",
+        "pt": "Eles não moram no Brasil.",
+        "tip": "They don't live = eles não moram."
+      },
+      {
+        "topic": "Life / lives",
+        "type": "Interrogativa",
+        "phrase": "Do they live near school?",
+        "pt": "Eles moram perto da escola?",
+        "tip": "Do they live...? = Eles moram...?"
+      },
+      {
+        "topic": "Life / lives",
+        "type": "Afirmativa",
+        "phrase": "Life is good",
+        "pt": "A vida é boa.",
+        "tip": "Life is = a vida é."
+      }
+    ]
+  },
+  {
+    "title": "Fase 5 - Mixed practice",
+    "items": [
+      {
+        "topic": "Mixed",
+        "type": "Afirmativa",
+        "phrase": "I am a student",
+        "pt": "Eu sou estudante.",
+        "tip": "I am = eu sou."
+      },
+      {
+        "topic": "Mixed",
+        "type": "Negativa",
+        "phrase": "I am not angry",
+        "pt": "Eu não estou bravo.",
+        "tip": "angry = bravo."
+      },
+      {
+        "topic": "Mixed",
+        "type": "Interrogativa",
+        "phrase": "Are they friends?",
+        "pt": "Eles são amigos?",
+        "tip": "Are they...? = Eles são...?"
+      },
+      {
+        "topic": "Mixed",
+        "type": "Afirmativa",
+        "phrase": "I like my school",
+        "pt": "Eu gosto da minha escola.",
+        "tip": "my school = minha escola."
+      },
+      {
+        "topic": "Mixed",
+        "type": "Negativa",
+        "phrase": "She doesn't like coffee",
+        "pt": "Ela não gosta de café.",
+        "tip": "She doesn't like = ela não gosta."
+      },
+      {
+        "topic": "Mixed",
+        "type": "Interrogativa",
+        "phrase": "Do you like breakfast?",
+        "pt": "Você gosta de café da manhã?",
+        "tip": "breakfast = café da manhã."
+      },
+      {
+        "topic": "Mixed",
+        "type": "Afirmativa",
+        "phrase": "I sometimes study at night",
+        "pt": "Eu às vezes estudo à noite.",
+        "tip": "at night = à noite."
+      },
+      {
+        "topic": "Mixed",
+        "type": "Negativa",
+        "phrase": "I never run at school",
+        "pt": "Eu nunca corro na escola.",
+        "tip": "never = nunca."
+      },
+      {
+        "topic": "Mixed",
+        "type": "Interrogativa",
+        "phrase": "Does he live in Santarem?",
+        "pt": "Ele mora em Santarém?",
+        "tip": "Does he live...? = Ele mora...?"
+      },
+      {
+        "topic": "Mixed",
+        "type": "Afirmativa",
+        "phrase": "She is very kind",
+        "pt": "Ela é muito gentil.",
+        "tip": "kind = gentil."
+      }
+    ]
+  },
+  {
+    "title": "Fase 6 - School sentences",
+    "items": [
+      {
+        "topic": "School",
+        "type": "Afirmativa",
+        "phrase": "We are in class",
+        "pt": "Nós estamos na aula.",
+        "tip": "in class = na aula."
+      },
+      {
+        "topic": "School",
+        "type": "Negativa",
+        "phrase": "They are not late",
+        "pt": "Eles não estão atrasados.",
+        "tip": "late = atrasado."
+      },
+      {
+        "topic": "School",
+        "type": "Interrogativa",
+        "phrase": "Is the teacher here?",
+        "pt": "O professor está aqui?",
+        "tip": "teacher = professor."
+      },
+      {
+        "topic": "School",
+        "type": "Afirmativa",
+        "phrase": "I like English class",
+        "pt": "Eu gosto da aula de inglês.",
+        "tip": "English class = aula de inglês."
+      },
+      {
+        "topic": "School",
+        "type": "Negativa",
+        "phrase": "I don't like tests",
+        "pt": "Eu não gosto de provas.",
+        "tip": "tests = provas."
+      },
+      {
+        "topic": "School",
+        "type": "Interrogativa",
+        "phrase": "Do you like your teacher?",
+        "pt": "Você gosta do seu professor?",
+        "tip": "your teacher = seu professor."
+      },
+      {
+        "topic": "School",
+        "type": "Afirmativa",
+        "phrase": "I always do homework",
+        "pt": "Eu sempre faço tarefa.",
+        "tip": "do homework = fazer tarefa."
+      },
+      {
+        "topic": "School",
+        "type": "Negativa",
+        "phrase": "I don't often speak in class",
+        "pt": "Eu não falo frequentemente na aula.",
+        "tip": "speak = falar."
+      },
+      {
+        "topic": "School",
+        "type": "Interrogativa",
+        "phrase": "Do they study English?",
+        "pt": "Eles estudam inglês?",
+        "tip": "Do they study...? = Eles estudam...?"
+      },
+      {
+        "topic": "School",
+        "type": "Afirmativa",
+        "phrase": "School life is important",
+        "pt": "A vida escolar é importante.",
+        "tip": "school life = vida escolar."
+      }
+    ]
+  },
+  {
+    "title": "Fase 7 - Family and routine",
+    "items": [
+      {
+        "topic": "Routine",
+        "type": "Afirmativa",
+        "phrase": "My family is happy",
+        "pt": "Minha família está feliz.",
+        "tip": "family = família."
+      },
+      {
+        "topic": "Routine",
+        "type": "Negativa",
+        "phrase": "My brother is not here",
+        "pt": "Meu irmão não está aqui.",
+        "tip": "brother = irmão."
+      },
+      {
+        "topic": "Routine",
+        "type": "Interrogativa",
+        "phrase": "Is your mother at home?",
+        "pt": "Sua mãe está em casa?",
+        "tip": "mother = mãe."
+      },
+      {
+        "topic": "Routine",
+        "type": "Afirmativa",
+        "phrase": "I like breakfast",
+        "pt": "Eu gosto de café da manhã.",
+        "tip": "breakfast = café da manhã."
+      },
+      {
+        "topic": "Routine",
+        "type": "Negativa",
+        "phrase": "I don't like cold coffee",
+        "pt": "Eu não gosto de café frio.",
+        "tip": "cold = frio."
+      },
+      {
+        "topic": "Routine",
+        "type": "Interrogativa",
+        "phrase": "Do you like bread?",
+        "pt": "Você gosta de pão?",
+        "tip": "bread = pão."
+      },
+      {
+        "topic": "Routine",
+        "type": "Afirmativa",
+        "phrase": "She usually eats bread",
+        "pt": "Ela geralmente come pão.",
+        "tip": "usually = geralmente."
+      },
+      {
+        "topic": "Routine",
+        "type": "Negativa",
+        "phrase": "He never drinks soda",
+        "pt": "Ele nunca bebe refrigerante.",
+        "tip": "soda = refrigerante."
+      },
+      {
+        "topic": "Routine",
+        "type": "Interrogativa",
+        "phrase": "Does he usually play?",
+        "pt": "Ele geralmente joga?",
+        "tip": "Does he...? = Ele...?"
+      },
+      {
+        "topic": "Routine",
+        "type": "Afirmativa",
+        "phrase": "He lives with his family",
+        "pt": "Ele mora com a família dele.",
+        "tip": "with his family = com a família dele."
+      }
+    ]
+  },
+  {
+    "title": "Fase 8 - Feelings and opinions",
+    "items": [
+      {
+        "topic": "Feelings",
+        "type": "Afirmativa",
+        "phrase": "I am excited",
+        "pt": "Eu estou animado.",
+        "tip": "excited = animado."
+      },
+      {
+        "topic": "Feelings",
+        "type": "Negativa",
+        "phrase": "She is not nervous",
+        "pt": "Ela não está nervosa.",
+        "tip": "nervous = nervoso."
+      },
+      {
+        "topic": "Feelings",
+        "type": "Interrogativa",
+        "phrase": "Are you happy today?",
+        "pt": "Você está feliz hoje?",
+        "tip": "today = hoje."
+      },
+      {
+        "topic": "Feelings",
+        "type": "Afirmativa",
+        "phrase": "I like funny videos",
+        "pt": "Eu gosto de vídeos engraçados.",
+        "tip": "funny = engraçado."
+      },
+      {
+        "topic": "Feelings",
+        "type": "Negativa",
+        "phrase": "I don't like sad movies",
+        "pt": "Eu não gosto de filmes tristes.",
+        "tip": "sad movies = filmes tristes."
+      },
+      {
+        "topic": "Feelings",
+        "type": "Interrogativa",
+        "phrase": "Do you like music?",
+        "pt": "Você gosta de música?",
+        "tip": "music = música."
+      },
+      {
+        "topic": "Feelings",
+        "type": "Afirmativa",
+        "phrase": "I always smile",
+        "pt": "Eu sempre sorrio.",
+        "tip": "smile = sorrir."
+      },
+      {
+        "topic": "Feelings",
+        "type": "Negativa",
+        "phrase": "I never give up",
+        "pt": "Eu nunca desisto.",
+        "tip": "give up = desistir."
+      },
+      {
+        "topic": "Feelings",
+        "type": "Interrogativa",
+        "phrase": "Does she like this song?",
+        "pt": "Ela gosta desta música?",
+        "tip": "song = música/canção."
+      },
+      {
+        "topic": "Feelings",
+        "type": "Afirmativa",
+        "phrase": "This life is beautiful",
+        "pt": "Esta vida é bonita.",
+        "tip": "beautiful = bonita."
+      }
+    ]
+  },
+  {
+    "title": "Fase 9 - Places",
+    "items": [
+      {
+        "topic": "Places",
+        "type": "Afirmativa",
+        "phrase": "I am at school",
+        "pt": "Eu estou na escola.",
+        "tip": "at school = na escola."
+      },
+      {
+        "topic": "Places",
+        "type": "Negativa",
+        "phrase": "He is not at the park",
+        "pt": "Ele não está no parque.",
+        "tip": "park = parque."
+      },
+      {
+        "topic": "Places",
+        "type": "Interrogativa",
+        "phrase": "Are they at home?",
+        "pt": "Eles estão em casa?",
+        "tip": "at home = em casa."
+      },
+      {
+        "topic": "Places",
+        "type": "Afirmativa",
+        "phrase": "I like the park",
+        "pt": "Eu gosto do parque.",
+        "tip": "the park = o parque."
+      },
+      {
+        "topic": "Places",
+        "type": "Negativa",
+        "phrase": "I don't like the hospital",
+        "pt": "Eu não gosto do hospital.",
+        "tip": "hospital = hospital."
+      },
+      {
+        "topic": "Places",
+        "type": "Interrogativa",
+        "phrase": "Do you like the museum?",
+        "pt": "Você gosta do museu?",
+        "tip": "museum = museu."
+      },
+      {
+        "topic": "Places",
+        "type": "Afirmativa",
+        "phrase": "She sometimes goes to school",
+        "pt": "Ela às vezes vai para a escola.",
+        "tip": "goes to school = vai para a escola."
+      },
+      {
+        "topic": "Places",
+        "type": "Negativa",
+        "phrase": "He never goes there",
+        "pt": "Ele nunca vai lá.",
+        "tip": "there = lá."
+      },
+      {
+        "topic": "Places",
+        "type": "Interrogativa",
+        "phrase": "Does she live near the park?",
+        "pt": "Ela mora perto do parque?",
+        "tip": "near the park = perto do parque."
+      },
+      {
+        "topic": "Places",
+        "type": "Afirmativa",
+        "phrase": "They live in Brazil",
+        "pt": "Eles moram no Brasil.",
+        "tip": "They live = eles moram."
+      }
+    ]
+  },
+  {
+    "title": "Fase 10 - Final challenge",
+    "items": [
+      {
+        "topic": "Final",
+        "type": "Afirmativa",
+        "phrase": "I am ready",
+        "pt": "Eu estou pronto.",
+        "tip": "ready = pronto."
+      },
+      {
+        "topic": "Final",
+        "type": "Negativa",
+        "phrase": "I am not afraid",
+        "pt": "Eu não estou com medo.",
+        "tip": "afraid = com medo."
+      },
+      {
+        "topic": "Final",
+        "type": "Interrogativa",
+        "phrase": "Are you ready for English?",
+        "pt": "Você está pronto para o inglês?",
+        "tip": "ready for English = pronto para o inglês."
+      },
+      {
+        "topic": "Final",
+        "type": "Afirmativa",
+        "phrase": "I like learning English",
+        "pt": "Eu gosto de aprender inglês.",
+        "tip": "learning = aprender."
+      },
+      {
+        "topic": "Final",
+        "type": "Negativa",
+        "phrase": "I don't like giving up",
+        "pt": "Eu não gosto de desistir.",
+        "tip": "giving up = desistir."
+      },
+      {
+        "topic": "Final",
+        "type": "Interrogativa",
+        "phrase": "Do you like this challenge?",
+        "pt": "Você gosta deste desafio?",
+        "tip": "challenge = desafio."
+      },
+      {
+        "topic": "Final",
+        "type": "Afirmativa",
+        "phrase": "I always try again",
+        "pt": "Eu sempre tento de novo.",
+        "tip": "try again = tentar de novo."
+      },
+      {
+        "topic": "Final",
+        "type": "Negativa",
+        "phrase": "I never stop learning",
+        "pt": "Eu nunca paro de aprender.",
+        "tip": "stop learning = parar de aprender."
+      },
+      {
+        "topic": "Final",
+        "type": "Interrogativa",
+        "phrase": "Does she live a good life?",
+        "pt": "Ela vive uma vida boa?",
+        "tip": "good life = vida boa."
+      },
+      {
+        "topic": "Final",
+        "type": "Afirmativa",
+        "phrase": "English is part of my life",
+        "pt": "O inglês faz parte da minha vida.",
+        "tip": "part of my life = parte da minha vida."
+      }
+    ]
+  }
+];
 
     let currentPhase = 0;
     let currentQuestion = 0;
@@ -800,8 +1483,14 @@
     let playerSchool = "Sua escola";
     let finalScoreSaved = false;
 
+    const MAX_LIVES = 5;
+    let lives = MAX_LIVES;
+    let gameOverSaved = false;
+
     const startScreen = document.getElementById("startScreen");
     const gameScreen = document.getElementById("gameScreen");
+    const phaseCompleteScreen = document.getElementById("phaseCompleteScreen");
+    const gameOverScreen = document.getElementById("gameOverScreen");
     const endScreen = document.getElementById("endScreen");
 
     const startPhaseMap = document.getElementById("startPhaseMap");
@@ -810,6 +1499,7 @@
     const scoreText = document.getElementById("scoreText");
     const questionText = document.getElementById("questionText");
     const progressBar = document.getElementById("progressBar");
+    const livesText = document.getElementById("livesText");
 
     const contentTag = document.getElementById("contentTag");
     const sentenceType = document.getElementById("sentenceType");
@@ -819,7 +1509,7 @@
     const spokenText = document.getElementById("spokenText");
     const feedbackBox = document.getElementById("feedbackBox");
     const nextButton = document.getElementById("nextButton");
-    const phraseCard = document.querySelector(".phrase-card");
+    const phraseCard = document.getElementById("phraseCard");
 
     renderPhaseMap(startPhaseMap, 0);
 
@@ -838,7 +1528,9 @@
       currentPhase = 0;
       currentQuestion = 0;
       score = 0;
+      lives = MAX_LIVES;
       finalScoreSaved = false;
+      gameOverSaved = false;
 
       showScreen(gameScreen);
       loadQuestion();
@@ -847,7 +1539,10 @@
     function showScreen(screen) {
       startScreen.classList.remove("active");
       gameScreen.classList.remove("active");
+      phaseCompleteScreen.classList.remove("active");
+      gameOverScreen.classList.remove("active");
       endScreen.classList.remove("active");
+
       screen.classList.add("active");
     }
 
@@ -902,6 +1597,10 @@
       scoreText.textContent = `${score}/${totalQuestions}`;
       questionText.textContent = `${currentQuestion + 1}/10`;
       progressBar.style.width = `${progress}%`;
+
+      const hearts = "❤️".repeat(lives);
+      const lost = "🖤".repeat(MAX_LIVES - lives);
+      livesText.textContent = hearts + lost;
     }
 
     function speakPhrase() {
@@ -921,7 +1620,10 @@
 
       const voices = window.speechSynthesis.getVoices();
       const englishVoice = voices.find(voice => voice.lang && voice.lang.toLowerCase().startsWith("en"));
-      if (englishVoice) utterance.voice = englishVoice;
+
+      if (englishVoice) {
+        utterance.voice = englishVoice;
+      }
 
       window.speechSynthesis.speak(utterance);
     }
@@ -969,6 +1671,240 @@
           nextButton.disabled = false;
         }
       };
+    }
+
+    function checkAnswer(spoken) {
+      const expected = phases[currentPhase].items[currentQuestion].phrase;
+
+      const normalizedExpected = normalizeText(expected);
+      const normalizedSpoken = normalizeText(spoken);
+
+      const expectedWords = normalizedExpected.split(" ");
+      let matchedWords = 0;
+
+      expectedWords.forEach(word => {
+        if (normalizedSpoken.includes(word)) {
+          matchedWords++;
+        }
+      });
+
+      const similarity = matchedWords / expectedWords.length;
+      const isCorrect =
+        normalizedSpoken.includes(normalizedExpected) ||
+        normalizedExpected.includes(normalizedSpoken) ||
+        similarity >= 0.7;
+
+      if (isCorrect) {
+        if (!answeredCurrent) {
+          score++;
+          answeredCurrent = true;
+        }
+
+        showFeedback("✅ Muito bom! Great job!", "correct");
+        animateCorrectCard();
+        playSuccessSound();
+      } else {
+        lives--;
+
+        if (lives < 0) {
+          lives = 0;
+        }
+
+        showFeedback("❌ Tente novamente. Você perdeu 1 vida.", "wrong");
+        animateWrongCard();
+        playErrorSound();
+        updateHud();
+
+        if (lives <= 0) {
+          setTimeout(showGameOver, 700);
+          return;
+        }
+      }
+
+      nextButton.disabled = false;
+      updateHud();
+    }
+
+    function normalizeText(text) {
+      return text
+        .toLowerCase()
+        .replace(/[.,!?;:]/g, "")
+        .replace(/don't/g, "dont")
+        .replace(/doesn't/g, "doesnt")
+        .replace(/do not/g, "dont")
+        .replace(/does not/g, "doesnt")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    function showFeedback(message, type) {
+      feedbackBox.textContent = message;
+      feedbackBox.className = `feedback show ${type}`;
+    }
+
+    function hideFeedback() {
+      feedbackBox.textContent = "";
+      feedbackBox.className = "feedback";
+    }
+
+    function animateCorrectCard() {
+      phraseCard.classList.remove("correct-glow", "wrong-shake");
+      void phraseCard.offsetWidth;
+      phraseCard.classList.add("correct-glow");
+
+      setTimeout(() => {
+        phraseCard.classList.remove("correct-glow");
+      }, 900);
+    }
+
+    function animateWrongCard() {
+      phraseCard.classList.remove("correct-glow", "wrong-shake");
+      void phraseCard.offsetWidth;
+      phraseCard.classList.add("wrong-shake");
+
+      setTimeout(() => {
+        phraseCard.classList.remove("wrong-shake");
+      }, 500);
+    }
+
+    function nextQuestion() {
+      currentQuestion++;
+
+      if (currentQuestion >= 10) {
+        showPhaseComplete();
+        return;
+      }
+
+      loadQuestion();
+    }
+
+    function showPhaseComplete() {
+      const completedPhaseNumber = currentPhase + 1;
+
+      if (completedPhaseNumber >= phases.length) {
+        finishGame();
+        return;
+      }
+
+      document.getElementById("phaseCompleteMessage").textContent =
+        `Você completou a Fase ${completedPhaseNumber}!`;
+
+      document.getElementById("phaseCompleteScore").textContent =
+        `Pontuação atual: ${score}/${totalQuestions} | Vidas restantes: ${"❤️".repeat(lives)}${"🖤".repeat(MAX_LIVES - lives)}`;
+
+      document.getElementById("nextPhaseButton").textContent =
+        `🚀 Começar Fase ${completedPhaseNumber + 1}`;
+
+      showScreen(phaseCompleteScreen);
+    }
+
+    function continueToNextPhase() {
+      currentPhase++;
+      currentQuestion = 0;
+      lives = MAX_LIVES;
+      gameOverSaved = false;
+
+      showScreen(gameScreen);
+      loadQuestion();
+    }
+
+    function showGameOver() {
+      document.getElementById("gameOverScore").textContent =
+        `Pontuação: ${score}/${totalQuestions} | Você chegou até a Fase ${currentPhase + 1}`;
+
+      showScreen(gameOverScreen);
+
+      if (!gameOverSaved) {
+        gameOverSaved = true;
+
+        if (typeof window.salvarPontuacao === "function") {
+          window.salvarPontuacao(playerName, score, NOME_DO_JOGO);
+        }
+      }
+
+      if (typeof window.carregarRanking === "function") {
+        window.carregarRanking(NOME_DO_JOGO, "rankingGameOver");
+      }
+    }
+
+    function retryCurrentPhase() {
+      currentQuestion = 0;
+      lives = MAX_LIVES;
+      gameOverSaved = false;
+
+      showScreen(gameScreen);
+      loadQuestion();
+    }
+
+    function finishGame() {
+      progressBar.style.width = "100%";
+      showScreen(endScreen);
+
+      document.getElementById("finalScore").textContent = `Pontuação: ${score}/${totalQuestions}`;
+
+      const percent = score / totalQuestions;
+      const motivationText = document.getElementById("motivationText");
+
+      if (percent >= 0.7) {
+        motivationText.textContent = "🔥 Você quase chegou ao topo!";
+      } else {
+        motivationText.textContent = "💪 Continue treinando para melhorar!";
+      }
+
+      if (!finalScoreSaved) {
+        finalScoreSaved = true;
+
+        if (typeof window.salvarPontuacao === "function") {
+          window.salvarPontuacao(playerName, score, NOME_DO_JOGO);
+        }
+      }
+
+      if (typeof window.carregarRanking === "function") {
+        window.carregarRanking(NOME_DO_JOGO, "rankingOnline");
+      }
+    }
+
+    function avaliarJogo(avaliacao, buttonElement) {
+      const ratingMessage = document.getElementById("ratingMessage");
+
+      if (typeof window.salvarAvaliacao === "function") {
+        window.salvarAvaliacao(avaliacao, NOME_DO_JOGO);
+      }
+
+      ratingMessage.textContent = "Obrigado! Sua avaliação foi registrada.";
+
+      const buttons = document.querySelectorAll(".rating-buttons button");
+      buttons.forEach(btn => btn.disabled = true);
+
+      if (buttonElement) {
+        buttonElement.style.filter = "brightness(1.25)";
+      }
+    }
+
+    function restartGame() {
+      if ("speechSynthesis" in window) {
+        window.speechSynthesis.cancel();
+      }
+
+      document.getElementById("playerName").value = "";
+      document.getElementById("playerSchool").value = "";
+      document.getElementById("ratingMessage").textContent = "";
+
+      const buttons = document.querySelectorAll(".rating-buttons button");
+      buttons.forEach(btn => {
+        btn.disabled = false;
+        btn.style.filter = "none";
+      });
+
+      currentPhase = 0;
+      currentQuestion = 0;
+      score = 0;
+      lives = MAX_LIVES;
+      finalScoreSaved = false;
+      gameOverSaved = false;
+
+      renderPhaseMap(startPhaseMap, 0);
+      showScreen(startScreen);
     }
 
     function playSuccessSound() {
@@ -1029,163 +1965,6 @@
       }
     }
 
-    function animateCorrectCard() {
-      phraseCard.classList.remove("correct-glow", "wrong-shake");
-      void phraseCard.offsetWidth;
-      phraseCard.classList.add("correct-glow");
-
-      setTimeout(() => {
-        phraseCard.classList.remove("correct-glow");
-      }, 900);
-    }
-
-    function animateWrongCard() {
-      phraseCard.classList.remove("correct-glow", "wrong-shake");
-      void phraseCard.offsetWidth;
-      phraseCard.classList.add("wrong-shake");
-
-      setTimeout(() => {
-        phraseCard.classList.remove("wrong-shake");
-      }, 500);
-    }
-
-    function checkAnswer(spoken) {
-      const expected = phases[currentPhase].items[currentQuestion].phrase;
-
-      const normalizedExpected = normalizeText(expected);
-      const normalizedSpoken = normalizeText(spoken);
-
-      const expectedWords = normalizedExpected.split(" ");
-      let matchedWords = 0;
-
-      expectedWords.forEach(word => {
-        if (normalizedSpoken.includes(word)) matchedWords++;
-      });
-
-      const similarity = matchedWords / expectedWords.length;
-
-      const isCorrect =
-        normalizedSpoken.includes(normalizedExpected) ||
-        normalizedExpected.includes(normalizedSpoken) ||
-        similarity >= 0.7;
-
-      if (isCorrect) {
-        if (!answeredCurrent) {
-          score++;
-          answeredCurrent = true;
-        }
-
-        showFeedback("✅ Muito bom! Great job!", "correct");
-        animateCorrectCard();
-        playSuccessSound();
-
-      } else {
-        showFeedback("❌ Tente novamente. Ouça a frase e repita devagar.", "wrong");
-        animateWrongCard();
-        playErrorSound();
-      }
-
-      nextButton.disabled = false;
-      updateHud();
-    }
-
-    function normalizeText(text) {
-      return text
-        .toLowerCase()
-        .replace(/[.,!?;:]/g, "")
-        .replace(/don't/g, "dont")
-        .replace(/doesn't/g, "doesnt")
-        .replace(/do not/g, "dont")
-        .replace(/does not/g, "doesnt")
-        .replace(/\s+/g, " ")
-        .trim();
-    }
-
-    function showFeedback(message, type) {
-      feedbackBox.textContent = message;
-      feedbackBox.className = `feedback show ${type}`;
-    }
-
-    function hideFeedback() {
-      feedbackBox.textContent = "";
-      feedbackBox.className = "feedback";
-    }
-
-    function nextQuestion() {
-      currentQuestion++;
-
-      if (currentQuestion >= 10) {
-        currentPhase++;
-        currentQuestion = 0;
-      }
-
-      if (currentPhase >= phases.length) {
-        finishGame();
-      } else {
-        loadQuestion();
-      }
-    }
-
-    function finishGame() {
-      progressBar.style.width = "100%";
-      showScreen(endScreen);
-
-      document.getElementById("finalScore").textContent = `Pontuação: ${score}/${totalQuestions}`;
-
-      const percent = score / totalQuestions;
-      const motivationText = document.getElementById("motivationText");
-
-      if (percent >= 0.7) {
-        motivationText.textContent = "🔥 Você quase chegou ao topo!";
-      } else {
-        motivationText.textContent = "💪 Continue treinando para melhorar!";
-      }
-
-      if (!finalScoreSaved) {
-        finalScoreSaved = true;
-
-        if (typeof window.salvarPontuacao === "function") {
-          window.salvarPontuacao(playerName, score, NOME_DO_JOGO);
-        }
-      }
-    }
-
-    function avaliarJogo(avaliacao, buttonElement) {
-      const ratingMessage = document.getElementById("ratingMessage");
-
-      if (typeof window.salvarAvaliacao === "function") {
-        window.salvarAvaliacao(avaliacao, NOME_DO_JOGO);
-      }
-
-      ratingMessage.textContent = "Obrigado! Sua avaliação foi registrada.";
-
-      const buttons = document.querySelectorAll(".rating-buttons button");
-      buttons.forEach(btn => btn.disabled = true);
-
-      if (buttonElement) {
-        buttonElement.style.filter = "brightness(1.25)";
-      }
-    }
-
-    function restartGame() {
-      if ("speechSynthesis" in window) {
-        window.speechSynthesis.cancel();
-      }
-
-      document.getElementById("playerName").value = "";
-      document.getElementById("playerSchool").value = "";
-      document.getElementById("ratingMessage").textContent = "";
-
-      const buttons = document.querySelectorAll(".rating-buttons button");
-      buttons.forEach(btn => {
-        btn.disabled = false;
-        btn.style.filter = "none";
-      });
-
-      renderPhaseMap(startPhaseMap, 0);
-      showScreen(startScreen);
-    }
-
     if ("speechSynthesis" in window) {
       window.speechSynthesis.onvoiceschanged = function() {
         window.speechSynthesis.getVoices();
@@ -1202,7 +1981,6 @@
       addDoc,
       serverTimestamp,
       query,
-      where,
       orderBy,
       limit,
       onSnapshot
@@ -1230,8 +2008,6 @@
           hora: agora.toLocaleTimeString("pt-BR"),
           timestamp: serverTimestamp()
         });
-
-        console.log("Acesso registrado no Firebase.");
       } catch (error) {
         console.error("Erro ao registrar acesso:", error);
       }
@@ -1258,8 +2034,6 @@
           jogo: jogo,
           timestamp: serverTimestamp()
         });
-
-        console.log("Pontuação salva no Firebase.");
       } catch (error) {
         console.error("Erro ao salvar pontuação:", error);
       }
@@ -1279,52 +2053,53 @@
           avaliacao: avaliacao,
           timestamp: serverTimestamp()
         });
-
-        console.log("Avaliação salva no Firebase.");
       } catch (error) {
         console.error("Erro ao salvar avaliação:", error);
       }
     };
 
-    window.carregarRanking = function carregarRanking(jogo = NOME_DO_JOGO) {
-      const rankingContainer = document.getElementById("rankingOnline");
+    window.carregarRanking = function carregarRanking(jogo = NOME_DO_JOGO, containerId = "rankingOnline") {
+      const rankingContainer = document.getElementById(containerId);
 
       if (!rankingContainer) {
-        console.warn("Elemento rankingOnline não encontrado.");
+        console.warn("Elemento de ranking não encontrado.");
         return;
       }
 
       const rankingQuery = query(
         collection(db, "pontuacoes"),
-        where("jogo", "==", jogo),
         orderBy("pontos", "desc"),
-        limit(10)
+        limit(50)
       );
 
       onSnapshot(rankingQuery, (snapshot) => {
         rankingContainer.innerHTML = "";
 
-        if (snapshot.empty) {
-          rankingContainer.innerHTML = "<li>Nenhuma pontuação registrada ainda.</li>";
-          return;
-        }
-
-        let posicao = 1;
+        const rankingItems = [];
 
         snapshot.forEach((doc) => {
           const item = doc.data();
 
+          if (item.jogo === jogo) {
+            rankingItems.push(item);
+          }
+        });
+
+        if (rankingItems.length === 0) {
+          rankingContainer.innerHTML = "<li>Nenhuma pontuação registrada ainda.</li>";
+          return;
+        }
+
+        rankingItems.slice(0, 10).forEach((item, index) => {
           const li = document.createElement("li");
-          li.textContent = `${posicao}º ${item.nome} - ${item.pontos} pontos`;
+          li.textContent = `${index + 1}º ${item.nome} - ${item.pontos} pontos`;
 
           if (item.nome === playerName) {
             li.classList.add("you");
           }
 
           rankingContainer.appendChild(li);
-          posicao++;
         });
-
       }, (error) => {
         console.error("Erro ao carregar ranking:", error);
         rankingContainer.innerHTML = "<li>Não foi possível carregar o ranking.</li>";
@@ -1332,7 +2107,7 @@
     };
 
     window.registrarAcesso(NOME_DO_JOGO);
-    window.carregarRanking(NOME_DO_JOGO);
+    window.carregarRanking(NOME_DO_JOGO, "rankingOnline");
   </script>
 </body>
 </html>
