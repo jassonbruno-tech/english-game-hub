@@ -327,6 +327,26 @@
       text-shadow:0 2px 6px rgba(0,0,0,.75) !important;
     }
 
+  
+    /* Ajuste Dia das Mães: esconder nomes dos níveis para não poluir a homenagem */
+    .level-name,
+    .level-title,
+    .level-label,
+    .yellow,
+    .green,
+    .blue,
+    .red{
+      display:none !important;
+    }
+
+    /* Caso os cards estejam usando h2/h3 só para esses nomes, deixamos invisíveis sem quebrar clique */
+    .level-card h2,
+    .level-card h3,
+    .card h2,
+    .card h3{
+      display:none !important;
+    }
+
   </style>
 </head>
 <body>
@@ -340,10 +360,10 @@
       <h1 class="title">English Game Hub</h1>
       <p class="subtitle">Escolha sua série, reconheça seu nível e entre no desafio.</p>
       <div class="level-legend">
-        <span class="level-dot" style="--dot:#ffd84d"><i></i>Yellow</span>
-        <span class="level-dot" style="--dot:#67e36a"><i></i>Green</span>
-        <span class="level-dot" style="--dot:#63b6ff"><i></i>Blue</span>
-        <span class="level-dot" style="--dot:#ff6b6b"><i></i>Red</span>
+        <span class="level-dot" style="--dot:#ffd84d"><i></i></span>
+        <span class="level-dot" style="--dot:#67e36a"><i></i></span>
+        <span class="level-dot" style="--dot:#63b6ff"><i></i></span>
+        <span class="level-dot" style="--dot:#ff6b6b"><i></i></span>
       </div>
     </section>
 
@@ -358,7 +378,7 @@
         <div>
           <span class="badge">Nível 1</span>
           <h2>6º Ano</h2>
-          <div class="level-name">Yellow Level</div>
+          <div class="level-name"></div>
           <p class="desc">Primeiros passos no inglês: vocabulário inicial, comandos, apresentações e missões de base.</p>
         </div>
         <a class="enter" href="6ano.html">Entrar no nível amarelo</a>
@@ -368,7 +388,7 @@
         <div>
           <span class="badge">Nível 2</span>
           <h2>7º Ano</h2>
-          <div class="level-name">Green Level</div>
+          <div class="level-name"></div>
           <p class="desc">Mais interação e opinião: rotina, gostos, frequência e novos desafios de comunicação.</p>
         </div>
         <a class="enter" href="7ano.html">Entrar no nível verde</a>
@@ -378,7 +398,7 @@
         <div>
           <span class="badge">Nível 3</span>
           <h2>8º Ano</h2>
-          <div class="level-name">Blue Level</div>
+          <div class="level-name"></div>
           <p class="desc">Experiências, leitura e ampliação de repertório para usar o inglês com mais confiança.</p>
         </div>
         <a class="enter" href="8ano.html">Entrar no nível azul</a>
@@ -388,7 +408,7 @@
         <div>
           <span class="badge">Nível 4</span>
           <h2>9º Ano</h2>
-          <div class="level-name">Red Level</div>
+          <div class="level-name"></div>
           <p class="desc">Etapa final: estruturas mais avançadas, conexão de ideias e desafios de maior complexidade.</p>
         </div>
         <a class="enter" href="9ano.html">Entrar no nível vermelho</a>
