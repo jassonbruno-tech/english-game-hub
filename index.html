@@ -26,7 +26,7 @@
       overflow-y:auto;
       background:
         linear-gradient(rgba(4,10,25,.10), rgba(7,12,30,.22)),
-        url('fundo-dia-das-maes-mobile.png') center center / cover no-repeat fixed;
+        url('fundo-dia-das-maes-mobile-v2.png') center center / cover no-repeat fixed;
       position:relative;
     }
     body::before, body::after{
@@ -401,6 +401,28 @@
     .teacher{
       color:#fff !important;
       text-shadow:0 2px 6px rgba(0,0,0,.75) !important;
+    }
+
+  
+    /* Ajuste final Dia das Mães:
+       esconder SOMENTE a legenda do topo */
+    .level-legend{
+      display:none !important;
+    }
+
+    /* Abrir mais espaço central para a mensagem da arte aparecer linda */
+    .hero{
+      min-height:50vh !important;
+      padding:4px 10px 0 !important;
+    }
+
+    .topbar{
+      margin-bottom:2px !important;
+    }
+
+    .levels{
+      margin-top:auto !important;
+      margin-bottom:20px !important;
     }
 
   </style>
