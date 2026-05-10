@@ -98,7 +98,7 @@
       <p id="startMsg" class="msg"></p>
       <button class="btn-green" onclick="startGame()">▶ Começar desafio</button>
     </div>
-    <p class="teacher">Jogo idealizado pelo Prof. Jasson Bruno.</p>
+    <p class="teacher">Jogo idealizado pelo professor Jasson Bruno</p>
   </section>
 
   <section id="gameScreen" class="screen">
@@ -140,7 +140,7 @@
       </div>
       <button id="phaseWinBtn" class="btn-green" onclick="continueNextPhase()">🚀 Continuar desafio</button>
     </div>
-    <p class="teacher">Jogo idealizado pelo Prof. Jasson Bruno.</p>
+    <p class="teacher">Jogo idealizado pelo professor Jasson Bruno</p>
   </section>
 
   <section id="finalScreen" class="screen">
@@ -168,7 +168,7 @@
       <button class="btn-orange" onclick="restartGame()">🔁 Jogar novamente</button>
       <a href="7ano.html"><button class="btn-gray">🏠 Voltar aos jogos</button></a>
     </div>
-    <p class="teacher">Jogo idealizado pelo Prof. Jasson Bruno.</p>
+    <p class="teacher">Jogo idealizado pelo professor Jasson Bruno</p>
   </section>
 </div>
 
@@ -186,7 +186,618 @@
 
 <script>
 const GAME_NAME = "7ano-spin-and-answer";
-const QUESTIONS = {"Adverbs of Frequency": [{"p": "Complete a frase: Marcos ____ plays soccer after school. Ele joga futebol depois da escola em muitos dias da semana.", "a": ["usually", "never", "boring", "like"], "c": 0}, {"p": "Complete: Ana ____ arrives early. Ela chega cedo todos os dias.", "a": ["always", "sometimes", "doesn't", "opinion"], "c": 0}, {"p": "Escolha o advérbio que combina com uma ação que acontece poucas vezes.", "a": ["always", "usually", "rarely", "every day"], "c": 2}, {"p": "Complete: Lucas ____ studies English on weekends. Ele estuda Inglês em alguns fins de semana, mas não em todos.", "a": ["always", "sometimes", "never", "boring"], "c": 1}, {"p": "Qual frase está escrita corretamente?", "a": ["She always listens to music.", "She listens always to music.", "Always she listen to music.", "She listen always music."], "c": 0}, {"p": "Complete: They ____ play video games after class. Eles jogam videogame com frequência.", "a": ["often", "doesn't", "opinion", "boring"], "c": 0}, {"p": "Complete: Bruna ____ drinks soda. Ela não toma refrigerante.", "a": ["always", "usually", "never", "often"], "c": 2}, {"p": "Qual advérbio combina com “em muitos momentos, mas não sempre”?", "a": ["usually", "never", "bad", "hate"], "c": 0}, {"p": "Escolha a frase correta.", "a": ["He usually plays Free Fire.", "He plays usually Free Fire.", "He usually play Free Fire.", "Usually he play Free Fire."], "c": 0}, {"p": "Complete: Julia ____ forgets her homework. Ela esquece a tarefa poucas vezes.", "a": ["rarely", "always", "never", "every day"], "c": 0}, {"p": "Qual advérbio indica uma ação que não acontece?", "a": ["always", "usually", "never", "often"], "c": 2}, {"p": "Complete: I ____ eat breakfast before school. Eu tomo café antes da escola todos os dias.", "a": ["always", "never", "boring", "opinion"], "c": 0}], "Likes and Dislikes": [{"p": "Escolha a frase correta.", "a": ["She like pizza.", "She likes pizza.", "She don’t like pizza.", "She does likes pizza."], "c": 1}, {"p": "Qual pergunta está correta?", "a": ["Do Pedro like games?", "Does Pedro likes games?", "Does Pedro like games?", "Pedro does like games?"], "c": 2}, {"p": "Escolha a frase negativa correta.", "a": ["He don’t like salad.", "He doesn’t like salad.", "He doesn’t likes salad.", "He not like salad."], "c": 1}, {"p": "Com “I”, qual frase está correta?", "a": ["I likes music.", "I like music.", "I doesn’t like music.", "I does like music."], "c": 1}, {"p": "Escolha a pergunta correta com “you”.", "a": ["Does you like soccer?", "Do you like soccer?", "You do like soccer?", "Do you likes soccer?"], "c": 1}, {"p": "Escolha a frase correta com “they”.", "a": ["They likes hamburgers.", "They like hamburgers.", "They doesn’t like hamburgers.", "They does like hamburgers."], "c": 1}, {"p": "Escolha a negativa correta com “we”.", "a": ["We doesn’t like tests.", "We don’t like tests.", "We don’t likes tests.", "We not like tests."], "c": 1}, {"p": "Escolha a frase correta.", "a": ["My brother likes anime.", "My brother like anime.", "My brother don’t like anime.", "My brother does likes anime."], "c": 0}, {"p": "Qual pergunta está correta com “Lara and Sofia”?", "a": ["Does Lara and Sofia like K-pop?", "Do Lara and Sofia like K-pop?", "Do Lara and Sofia likes K-pop?", "Lara and Sofia does like K-pop?"], "c": 1}, {"p": "Escolha a frase correta.", "a": ["He doesn’t like fish.", "He don’t like fish.", "He doesn’t likes fish.", "He not like fish."], "c": 0}, {"p": "Escolha a pergunta correta.", "a": ["Does your sister like music?", "Do your sister like music?", "Does your sister likes music?", "Your sister does like music?"], "c": 0}, {"p": "Qual frase está correta?", "a": ["I don’t like onions.", "I doesn’t like onions.", "I don’t likes onions.", "I not like onions."], "c": 0}], "Giving Opinions": [{"p": "Qual frase é usada para dar uma opinião?", "a": ["I think it is interesting.", "I play soccer.", "Does she like music?", "They never study."], "c": 0}, {"p": "Complete: I think this game is ____. O aluno achou o jogo divertido.", "a": ["fun", "never", "like", "usually"], "c": 0}, {"p": "Qual alternativa expressa uma opinião negativa sobre um filme?", "a": ["I think it is boring.", "I think it is great.", "I think it is fun.", "I think it is exciting."], "c": 0}, {"p": "Complete: In my opinion, English is ____.", "a": ["useful", "usually", "doesn’t", "never"], "c": 0}, {"p": "Qual frase mostra concordância?", "a": ["I agree.", "I never.", "I doesn’t.", "I boring."], "c": 0}, {"p": "Qual frase combina com algo difícil, mas bom para aprender?", "a": ["I think it is difficult but useful.", "I think it is delicious.", "I think it is never.", "I think it is doesn’t."], "c": 0}, {"p": "Qual alternativa expressa uma opinião positiva?", "a": ["I think it is bad.", "I think it is confusing.", "I think it is great.", "I think it is boring."], "c": 2}, {"p": "“I don’t agree.” significa que a pessoa:", "a": ["tem a mesma opinião", "não tem a mesma opinião", "está perguntando", "está falando de rotina"], "c": 1}, {"p": "Qual frase pode ser usada para falar de uma aula interessante?", "a": ["I think it is interesting.", "I think it is soda.", "I think it is never.", "I think it is don’t."], "c": 0}, {"p": "Qual frase combina com um jogo confuso?", "a": ["I think it is confusing.", "I think it is delicious.", "I think it is easy.", "I think it is always."], "c": 0}, {"p": "Complete: I think this activity is ____. A atividade ajudou o aluno a revisar.", "a": ["helpful", "never", "doesn’t", "hate"], "c": 0}, {"p": "Qual frase mostra uma opinião equilibrada?", "a": ["I think it is difficult but interesting.", "I think it is never.", "I think it doesn’t.", "I think it is soccer."], "c": 0}], "Grammar Rules": [{"p": "A frase “She like soccer.” está errada. Qual é a correção?", "a": ["She likes soccer.", "She liking soccer.", "She does likes soccer.", "She are like soccer."], "c": 0}, {"p": "A frase “He don’t like coffee.” está errada. Escolha a forma correta.", "a": ["He doesn’t like coffee.", "He don’t likes coffee.", "He isn’t like coffee.", "He doesn’t likes coffee."], "c": 0}, {"p": "Escolha a frase correta.", "a": ["She watches TV.", "She watch TV.", "She watching TV.", "She does watches TV."], "c": 0}, {"p": "A pergunta “Does he likes music?” está errada. Qual é a correção?", "a": ["Does he like music?", "Do he likes music?", "Does he likes music?", "Is he likes music?"], "c": 0}, {"p": "A frase “They is students.” está errada. Qual verbo corrige a frase?", "a": ["are", "am", "likes", "does"], "c": 0}, {"p": "A frase “I am like pizza.” está errada. Qual é a forma correta?", "a": ["I like pizza.", "I likes pizza.", "I am likes pizza.", "I does like pizza."], "c": 0}, {"p": "Escolha a frase negativa correta.", "a": ["She doesn’t play soccer.", "She don’t play soccer.", "She doesn’t plays soccer.", "She isn’t play soccer."], "c": 0}, {"p": "A frase “We likes English.” está errada. Qual é a correção?", "a": ["We like English.", "We likes English.", "We is like English.", "We does like English."], "c": 0}, {"p": "A pergunta “Are you like games?” está errada. Qual é a correção?", "a": ["Do you like games?", "Are you likes games?", "Does you like games?", "You are like games?"], "c": 0}, {"p": "Escolha a frase correta.", "a": ["He goes to school.", "He go to school.", "He going to school.", "He does goes to school."], "c": 0}, {"p": "A frase “I doesn’t like tests.” está errada. Qual é a correção?", "a": ["I don’t like tests.", "I doesn’t like tests.", "I isn’t like tests.", "I am don’t like tests."], "c": 0}, {"p": "A frase “She don’t usually read.” está errada. Qual é a correção?", "a": ["She doesn’t usually read.", "She doesn’t usually reads.", "She don’t usually reads.", "She isn’t usually read."], "c": 0}], "Verb to be": [{"p": "Complete: I ___ happy.", "a": ["am", "is", "are", "like"], "c": 0}, {"p": "Complete: She ___ my friend.", "a": ["am", "is", "are", "like"], "c": 1}, {"p": "Complete: They ___ students.", "a": ["am", "is", "are", "likes"], "c": 2}, {"p": "Escolha a frase negativa correta.", "a": ["He is not tired.", "He are not tired.", "He am not tired.", "He doesn’t tired."], "c": 0}, {"p": "Escolha a pergunta correta.", "a": ["Are you ready?", "You are ready?", "Do you ready?", "Is you ready?"], "c": 0}, {"p": "Complete: We ___ in class.", "a": ["am", "is", "are", "does"], "c": 2}, {"p": "Escolha a pergunta correta.", "a": ["Is she a student?", "She is a student?", "Does she a student?", "Are she a student?"], "c": 0}, {"p": "Complete: It ___ sunny.", "a": ["am", "is", "are", "like"], "c": 1}, {"p": "Escolha a frase correta.", "a": ["I am not late.", "I is not late.", "I are not late.", "I don’t late."], "c": 0}, {"p": "Complete: You ___ very kind.", "a": ["am", "is", "are", "likes"], "c": 2}, {"p": "O que significa “They are students”?", "a": ["Eles são estudantes.", "Eles gostam de estudar.", "Ela é estudante.", "Eu sou estudante."], "c": 0}, {"p": "Escolha a resposta correta para: Are they friends?", "a": ["Yes, they are.", "Yes, they is.", "Yes, they do.", "Yes, they am."], "c": 0}]};
+const QUESTIONS = {
+  "Adverbs of Frequency": [
+    {
+      "p": "Complete a frase: Marcos ____ plays soccer after school. Ele joga futebol depois da escola em muitos dias da semana.",
+      "a": [
+        "boring",
+        "never",
+        "like",
+        "usually"
+      ],
+      "c": 3
+    },
+    {
+      "p": "Complete: Ana ____ arrives early. Ela chega cedo todos os dias.",
+      "a": [
+        "opinion",
+        "doesn't",
+        "always",
+        "sometimes"
+      ],
+      "c": 2
+    },
+    {
+      "p": "Escolha o advérbio que combina com uma ação que acontece poucas vezes.",
+      "a": [
+        "usually",
+        "every day",
+        "rarely",
+        "always"
+      ],
+      "c": 2
+    },
+    {
+      "p": "Complete: Lucas ____ studies English on weekends. Ele estuda Inglês em alguns fins de semana, mas não em todos.",
+      "a": [
+        "sometimes",
+        "never",
+        "always",
+        "boring"
+      ],
+      "c": 0
+    },
+    {
+      "p": "Qual frase está escrita corretamente?",
+      "a": [
+        "She listens always to music.",
+        "Always she listen to music.",
+        "She listen always music.",
+        "She always listens to music."
+      ],
+      "c": 3
+    },
+    {
+      "p": "Complete: They ____ play video games after class. Eles jogam videogame com frequência.",
+      "a": [
+        "doesn't",
+        "boring",
+        "opinion",
+        "often"
+      ],
+      "c": 3
+    },
+    {
+      "p": "Complete: Bruna ____ drinks soda. Ela não toma refrigerante.",
+      "a": [
+        "never",
+        "usually",
+        "always",
+        "often"
+      ],
+      "c": 0
+    },
+    {
+      "p": "Qual advérbio combina com “em muitos momentos, mas não sempre”?",
+      "a": [
+        "never",
+        "hate",
+        "usually",
+        "bad"
+      ],
+      "c": 2
+    },
+    {
+      "p": "Escolha a frase correta.",
+      "a": [
+        "He usually plays Free Fire.",
+        "He usually play Free Fire.",
+        "He plays usually Free Fire.",
+        "Usually he play Free Fire."
+      ],
+      "c": 0
+    },
+    {
+      "p": "Complete: Julia ____ forgets her homework. Ela esquece a tarefa poucas vezes.",
+      "a": [
+        "never",
+        "every day",
+        "rarely",
+        "always"
+      ],
+      "c": 2
+    },
+    {
+      "p": "Qual advérbio indica uma ação que não acontece?",
+      "a": [
+        "never",
+        "usually",
+        "often",
+        "always"
+      ],
+      "c": 0
+    },
+    {
+      "p": "Complete: I ____ eat breakfast before school. Eu tomo café antes da escola todos os dias.",
+      "a": [
+        "opinion",
+        "boring",
+        "never",
+        "always"
+      ],
+      "c": 3
+    }
+  ],
+  "Likes and Dislikes": [
+    {
+      "p": "Escolha a frase correta.",
+      "a": [
+        "She does likes pizza.",
+        "She likes pizza.",
+        "She like pizza.",
+        "She don’t like pizza."
+      ],
+      "c": 1
+    },
+    {
+      "p": "Qual pergunta está correta?",
+      "a": [
+        "Pedro does like games?",
+        "Does Pedro likes games?",
+        "Do Pedro like games?",
+        "Does Pedro like games?"
+      ],
+      "c": 3
+    },
+    {
+      "p": "Escolha a frase negativa correta.",
+      "a": [
+        "He don’t like salad.",
+        "He doesn’t like salad.",
+        "He not like salad.",
+        "He doesn’t likes salad."
+      ],
+      "c": 1
+    },
+    {
+      "p": "Com “I”, qual frase está correta?",
+      "a": [
+        "I does like music.",
+        "I likes music.",
+        "I doesn’t like music.",
+        "I like music."
+      ],
+      "c": 3
+    },
+    {
+      "p": "Escolha a pergunta correta com “you”.",
+      "a": [
+        "Do you like soccer?",
+        "Do you likes soccer?",
+        "You do like soccer?",
+        "Does you like soccer?"
+      ],
+      "c": 0
+    },
+    {
+      "p": "Escolha a frase correta com “they”.",
+      "a": [
+        "They like hamburgers.",
+        "They does like hamburgers.",
+        "They likes hamburgers.",
+        "They doesn’t like hamburgers."
+      ],
+      "c": 0
+    },
+    {
+      "p": "Escolha a negativa correta com “we”.",
+      "a": [
+        "We not like tests.",
+        "We don’t likes tests.",
+        "We don’t like tests.",
+        "We doesn’t like tests."
+      ],
+      "c": 2
+    },
+    {
+      "p": "Escolha a frase correta.",
+      "a": [
+        "My brother likes anime.",
+        "My brother like anime.",
+        "My brother don’t like anime.",
+        "My brother does likes anime."
+      ],
+      "c": 0
+    },
+    {
+      "p": "Qual pergunta está correta com “Lara and Sofia”?",
+      "a": [
+        "Does Lara and Sofia like K-pop?",
+        "Do Lara and Sofia likes K-pop?",
+        "Lara and Sofia does like K-pop?",
+        "Do Lara and Sofia like K-pop?"
+      ],
+      "c": 3
+    },
+    {
+      "p": "Escolha a frase correta.",
+      "a": [
+        "He doesn’t like fish.",
+        "He not like fish.",
+        "He doesn’t likes fish.",
+        "He don’t like fish."
+      ],
+      "c": 0
+    },
+    {
+      "p": "Escolha a pergunta correta.",
+      "a": [
+        "Do your sister like music?",
+        "Your sister does like music?",
+        "Does your sister likes music?",
+        "Does your sister like music?"
+      ],
+      "c": 3
+    },
+    {
+      "p": "Qual frase está correta?",
+      "a": [
+        "I don’t likes onions.",
+        "I not like onions.",
+        "I don’t like onions.",
+        "I doesn’t like onions."
+      ],
+      "c": 2
+    }
+  ],
+  "Giving Opinions": [
+    {
+      "p": "Qual frase é usada para dar uma opinião?",
+      "a": [
+        "Does she like music?",
+        "I think it is interesting.",
+        "I play soccer.",
+        "They never study."
+      ],
+      "c": 1
+    },
+    {
+      "p": "Complete: I think this game is ____. O aluno achou o jogo divertido.",
+      "a": [
+        "never",
+        "usually",
+        "fun",
+        "like"
+      ],
+      "c": 2
+    },
+    {
+      "p": "Qual alternativa expressa uma opinião negativa sobre um filme?",
+      "a": [
+        "I think it is exciting.",
+        "I think it is fun.",
+        "I think it is great.",
+        "I think it is boring."
+      ],
+      "c": 3
+    },
+    {
+      "p": "Complete: In my opinion, English is ____.",
+      "a": [
+        "usually",
+        "never",
+        "useful",
+        "doesn’t"
+      ],
+      "c": 2
+    },
+    {
+      "p": "Qual frase mostra concordância?",
+      "a": [
+        "I boring.",
+        "I never.",
+        "I agree.",
+        "I doesn’t."
+      ],
+      "c": 2
+    },
+    {
+      "p": "Qual frase combina com algo difícil, mas bom para aprender?",
+      "a": [
+        "I think it is difficult but useful.",
+        "I think it is delicious.",
+        "I think it is never.",
+        "I think it is doesn’t."
+      ],
+      "c": 0
+    },
+    {
+      "p": "Qual alternativa expressa uma opinião positiva?",
+      "a": [
+        "I think it is great.",
+        "I think it is bad.",
+        "I think it is boring.",
+        "I think it is confusing."
+      ],
+      "c": 0
+    },
+    {
+      "p": "“I don’t agree.” significa que a pessoa:",
+      "a": [
+        "tem a mesma opinião",
+        "está falando de rotina",
+        "está perguntando",
+        "não tem a mesma opinião"
+      ],
+      "c": 3
+    },
+    {
+      "p": "Qual frase pode ser usada para falar de uma aula interessante?",
+      "a": [
+        "I think it is interesting.",
+        "I think it is soda.",
+        "I think it is never.",
+        "I think it is don’t."
+      ],
+      "c": 0
+    },
+    {
+      "p": "Qual frase combina com um jogo confuso?",
+      "a": [
+        "I think it is delicious.",
+        "I think it is always.",
+        "I think it is confusing.",
+        "I think it is easy."
+      ],
+      "c": 2
+    },
+    {
+      "p": "Complete: I think this activity is ____. A atividade ajudou o aluno a revisar.",
+      "a": [
+        "never",
+        "doesn’t",
+        "helpful",
+        "hate"
+      ],
+      "c": 2
+    },
+    {
+      "p": "Qual frase mostra uma opinião equilibrada?",
+      "a": [
+        "I think it is never.",
+        "I think it doesn’t.",
+        "I think it is soccer.",
+        "I think it is difficult but interesting."
+      ],
+      "c": 3
+    }
+  ],
+  "Grammar Rules": [
+    {
+      "p": "A frase “She like soccer.” está errada. Qual é a correção?",
+      "a": [
+        "She liking soccer.",
+        "She likes soccer.",
+        "She does likes soccer.",
+        "She are like soccer."
+      ],
+      "c": 1
+    },
+    {
+      "p": "A frase “He don’t like coffee.” está errada. Escolha a forma correta.",
+      "a": [
+        "He doesn’t like coffee.",
+        "He isn’t like coffee.",
+        "He don’t likes coffee.",
+        "He doesn’t likes coffee."
+      ],
+      "c": 0
+    },
+    {
+      "p": "Escolha a frase correta.",
+      "a": [
+        "She watch TV.",
+        "She watches TV.",
+        "She does watches TV.",
+        "She watching TV."
+      ],
+      "c": 1
+    },
+    {
+      "p": "A pergunta “Does he likes music?” está errada. Qual é a correção?",
+      "a": [
+        "Is he likes music?",
+        "Do he likes music?",
+        "Does he likes music?",
+        "Does he like music?"
+      ],
+      "c": 3
+    },
+    {
+      "p": "A frase “They is students.” está errada. Qual verbo corrige a frase?",
+      "a": [
+        "does",
+        "am",
+        "are",
+        "likes"
+      ],
+      "c": 2
+    },
+    {
+      "p": "A frase “I am like pizza.” está errada. Qual é a forma correta?",
+      "a": [
+        "I am likes pizza.",
+        "I likes pizza.",
+        "I like pizza.",
+        "I does like pizza."
+      ],
+      "c": 2
+    },
+    {
+      "p": "Escolha a frase negativa correta.",
+      "a": [
+        "She isn’t play soccer.",
+        "She don’t play soccer.",
+        "She doesn’t plays soccer.",
+        "She doesn’t play soccer."
+      ],
+      "c": 3
+    },
+    {
+      "p": "A frase “We likes English.” está errada. Qual é a correção?",
+      "a": [
+        "We does like English.",
+        "We like English.",
+        "We is like English.",
+        "We likes English."
+      ],
+      "c": 1
+    },
+    {
+      "p": "A pergunta “Are you like games?” está errada. Qual é a correção?",
+      "a": [
+        "Are you likes games?",
+        "Do you like games?",
+        "You are like games?",
+        "Does you like games?"
+      ],
+      "c": 1
+    },
+    {
+      "p": "Escolha a frase correta.",
+      "a": [
+        "He going to school.",
+        "He goes to school.",
+        "He does goes to school.",
+        "He go to school."
+      ],
+      "c": 1
+    },
+    {
+      "p": "A frase “I doesn’t like tests.” está errada. Qual é a correção?",
+      "a": [
+        "I am don’t like tests.",
+        "I doesn’t like tests.",
+        "I isn’t like tests.",
+        "I don’t like tests."
+      ],
+      "c": 3
+    },
+    {
+      "p": "A frase “She don’t usually read.” está errada. Qual é a correção?",
+      "a": [
+        "She doesn’t usually reads.",
+        "She don’t usually reads.",
+        "She doesn’t usually read.",
+        "She isn’t usually read."
+      ],
+      "c": 2
+    }
+  ],
+  "Verb to be": [
+    {
+      "p": "Complete: I ___ happy.",
+      "a": [
+        "like",
+        "am",
+        "is",
+        "are"
+      ],
+      "c": 1
+    },
+    {
+      "p": "Complete: She ___ my friend.",
+      "a": [
+        "is",
+        "are",
+        "like",
+        "am"
+      ],
+      "c": 0
+    },
+    {
+      "p": "Complete: They ___ students.",
+      "a": [
+        "likes",
+        "is",
+        "are",
+        "am"
+      ],
+      "c": 2
+    },
+    {
+      "p": "Escolha a frase negativa correta.",
+      "a": [
+        "He are not tired.",
+        "He doesn’t tired.",
+        "He am not tired.",
+        "He is not tired."
+      ],
+      "c": 3
+    },
+    {
+      "p": "Escolha a pergunta correta.",
+      "a": [
+        "Are you ready?",
+        "Is you ready?",
+        "Do you ready?",
+        "You are ready?"
+      ],
+      "c": 0
+    },
+    {
+      "p": "Complete: We ___ in class.",
+      "a": [
+        "am",
+        "are",
+        "does",
+        "is"
+      ],
+      "c": 1
+    },
+    {
+      "p": "Escolha a pergunta correta.",
+      "a": [
+        "Are she a student?",
+        "Is she a student?",
+        "Does she a student?",
+        "She is a student?"
+      ],
+      "c": 1
+    },
+    {
+      "p": "Complete: It ___ sunny.",
+      "a": [
+        "am",
+        "like",
+        "is",
+        "are"
+      ],
+      "c": 2
+    },
+    {
+      "p": "Escolha a frase correta.",
+      "a": [
+        "I am not late.",
+        "I is not late.",
+        "I are not late.",
+        "I don’t late."
+      ],
+      "c": 0
+    },
+    {
+      "p": "Complete: You ___ very kind.",
+      "a": [
+        "is",
+        "are",
+        "likes",
+        "am"
+      ],
+      "c": 1
+    },
+    {
+      "p": "O que significa “They are students”?",
+      "a": [
+        "Ela é estudante.",
+        "Eu sou estudante.",
+        "Eles gostam de estudar.",
+        "Eles são estudantes."
+      ],
+      "c": 3
+    },
+    {
+      "p": "Escolha a resposta correta para: Are they friends?",
+      "a": [
+        "Yes, they am.",
+        "Yes, they are.",
+        "Yes, they do.",
+        "Yes, they is."
+      ],
+      "c": 1
+    }
+  ]
+};
 
 const THEMES = ["Likes and Dislikes","Adverbs of Frequency","Giving Opinions","Grammar Rules","Verb to be"];
 const THEME_INDEX = {
@@ -300,8 +911,11 @@ function spinWheel(){
   const idx = THEME_INDEX[currentTheme];
   const segmentCenter = idx * 72 + 36;
   const extraSpins = 5 + Math.floor(Math.random() * 3);
-  const target = 360 - segmentCenter;
-  wheelRotation += extraSpins * 360 + target;
+
+  // A seta fica no topo da roleta. No círculo CSS, o topo corresponde a 270 graus.
+  // Então a roleta precisa parar com o centro do tema escolhido exatamente sob a seta.
+  const target = 270 - segmentCenter;
+  wheelRotation = extraSpins * 360 + target;
 
   startSpinSound();
   $("wheel").style.transform = `rotate(${wheelRotation}deg)`;
