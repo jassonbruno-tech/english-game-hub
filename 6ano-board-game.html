@@ -167,7 +167,888 @@
 <audio id="engineSound" src="f1%20som%20atual.mpeg" preload="auto"></audio>
 
 <script>
-const QUESTIONS = [{"theme": "Greetings", "q": "Bob Esponja chegou à escola pela manhã. Qual expressão ele pode usar?", "a": ["See you!", "Good morning!", "Goodbye!", "Good night!"], "c": 1}, {"theme": "Greetings", "q": "Um colega diz: “Hello!”. Qual resposta combina melhor?", "a": ["Goodbye!", "Hello!", "Open your book!", "Sit down!"], "c": 1}, {"theme": "Farewells", "q": "No fim da aula, qual expressão significa “Tchau”?", "a": ["Stand up!", "Good morning!", "I am fine.", "Goodbye!"], "c": 3}, {"theme": "Farewells", "q": "Patrick vai embora e diz “See you!”. Isso quer dizer:", "a": ["Meu nome é Patrick.", "Bom dia!", "Abra o livro!", "Até logo!"], "c": 3}, {"theme": "Classroom Commands", "q": "O professor diz: “Open your book.” O aluno deve:", "a": ["fechar o livro", "abrir o livro", "apagar o quadro", "levantar a mão"], "c": 1}, {"theme": "Classroom Commands", "q": "“Sit down, please.” significa:", "a": ["Escreva, por favor.", "Leia, por favor.", "Levante-se, por favor.", "Sente-se, por favor."], "c": 3}, {"theme": "Classroom Commands", "q": "“Raise your hand.” significa:", "a": ["Escute a música.", "Feche a porta.", "Abra o livro.", "Levante a mão."], "c": 3}, {"theme": "Classroom Expressions", "q": "Como pedir para ir ao banheiro em inglês?", "a": ["May I go to the restroom?", "May I eat pizza?", "Good afternoon!", "I am Neymar."], "c": 0}, {"theme": "Classroom Expressions", "q": "Se o aluno quer beber água, ele pode dizer:", "a": ["What is your name?", "Close your book.", "May I drink water?", "She is happy."], "c": 2}, {"theme": "Personal Information", "q": "Para perguntar o nome de alguém, usamos:", "a": ["What is your name?", "Where is pencil?", "Goodbye book.", "How old is blue?"], "c": 0}, {"theme": "Personal Information", "q": "A pergunta “How old are you?” quer saber:", "a": ["o nome", "a cor", "a escola", "a idade"], "c": 3}, {"theme": "Spelling", "q": "Quando alguém pede “Spell your name”, a pessoa deve:", "a": ["abrir o livro", "soletrar o nome", "dizer a idade", "dizer boa noite"], "c": 1}, {"theme": "Pronouns", "q": "Qual pronome usamos para falar de uma menina?", "a": ["She", "They", "I", "He"], "c": 0}, {"theme": "Pronouns", "q": "Qual pronome usamos para falar de dois ou mais amigos?", "a": ["He", "It", "She", "They"], "c": 3}, {"theme": "Pronouns", "q": "Cristiano Ronaldo é homem. Qual pronome combina com ele?", "a": ["We", "It", "She", "He"], "c": 3}, {"theme": "Possessive Adjectives", "q": "Complete: I am Ana. ___ book is blue.", "a": ["His", "Your", "Her", "My"], "c": 3}, {"theme": "Possessive Adjectives", "q": "Complete: He is Lucas. ___ pencil is red.", "a": ["Your", "My", "Her", "His"], "c": 3}, {"theme": "Possessive Adjectives", "q": "Complete: She is Maria. ___ backpack is pink.", "a": ["His", "My", "Their", "Her"], "c": 3}, {"theme": "Verb to be", "q": "Complete: She ___ happy.", "a": ["are", "is", "like", "am"], "c": 1}, {"theme": "Verb to be", "q": "Complete: They ___ students.", "a": ["are", "likes", "am", "is"], "c": 0}, {"theme": "Verb to be", "q": "Complete: I ___ from Brazil.", "a": ["am", "are", "is", "go"], "c": 0}, {"theme": "Numbers", "q": "Messi fez 3 gols. Qual palavra representa 3?", "a": ["tree", "thirty", "thirteen", "three"], "c": 3}, {"theme": "Numbers", "q": "Qual alternativa representa o número 15?", "a": ["fifty", "five", "fourteen", "fifteen"], "c": 3}, {"theme": "School Objects", "q": "“Pencil” significa:", "a": ["borracha", "lápis", "mesa", "caneta"], "c": 1}, {"theme": "School Objects", "q": "“Book” significa:", "a": ["porta", "janela", "livro", "mochila"], "c": 2}, {"theme": "Colors", "q": "A cor “blue” é:", "a": ["azul", "amarelo", "vermelho", "verde"], "c": 0}, {"theme": "Colors", "q": "A cor “green” é:", "a": ["branco", "rosa", "preto", "verde"], "c": 3}, {"theme": "Daily Vocabulary", "q": "“Teacher” significa:", "a": ["professor/professora", "lápis", "aluno", "livro"], "c": 0}, {"theme": "Daily Vocabulary", "q": "“School” significa:", "a": ["escola", "parque", "casa", "mercado"], "c": 0}, {"theme": "Review", "q": "Qual frase está correta para dizer “Eu sou estudante”?", "a": ["I is a student.", "She are student.", "They am students.", "I am a student."], "c": 3}];
+const QUESTIONS = [
+  {
+    "theme": "Greetings",
+    "q": "Na largada da corrida, o piloto encontra a turma pela manhã. Qual saudação combina?",
+    "a": [
+      "Good night!",
+      "Sit down!",
+      "Good morning!",
+      "Goodbye!"
+    ],
+    "c": 2
+  },
+  {
+    "theme": "Greetings",
+    "q": "Antes da corrida começar, um colega diz “Hello!”. Qual resposta combina?",
+    "a": [
+      "Hello!",
+      "Close your book.",
+      "His car.",
+      "Goodbye!"
+    ],
+    "c": 0
+  },
+  {
+    "theme": "Greetings",
+    "q": "O piloto encontra a professora à tarde. Qual expressão usar?",
+    "a": [
+      "Good afternoon!",
+      "See you!",
+      "Open your book.",
+      "Good night!"
+    ],
+    "c": 0
+  },
+  {
+    "theme": "Greetings",
+    "q": "No fim da corrida, o aluno quer dizer “Até logo!”. Qual expressão está correta?",
+    "a": [
+      "Good morning!",
+      "See you!",
+      "My name is.",
+      "Read, please."
+    ],
+    "c": 1
+  },
+  {
+    "theme": "Greetings",
+    "q": "Um colega pergunta “How are you?”. Qual resposta significa “Estou bem”?",
+    "a": [
+      "She is pencil.",
+      "I am car.",
+      "I am fine.",
+      "Goodbye."
+    ],
+    "c": 2
+  },
+  {
+    "theme": "Greetings",
+    "q": "A equipe ajudou o piloto. Como ele agradece em inglês?",
+    "a": [
+      "What is your name?",
+      "Thank you!",
+      "You are welcome?",
+      "Stand up!"
+    ],
+    "c": 1
+  },
+  {
+    "theme": "Greetings",
+    "q": "Alguém disse “Thank you!”. Como responder “De nada”?",
+    "a": [
+      "Close the door.",
+      "I am twelve.",
+      "Good night!",
+      "You’re welcome!"
+    ],
+    "c": 3
+  },
+  {
+    "theme": "Greetings",
+    "q": "O piloto vai embora depois da prova. Qual expressão significa “Tchau”?",
+    "a": [
+      "Goodbye!",
+      "Write your name.",
+      "Good afternoon!",
+      "Hello!"
+    ],
+    "c": 0
+  },
+  {
+    "theme": "Greetings",
+    "q": "À noite, depois do treino, qual despedida combina melhor?",
+    "a": [
+      "Good afternoon!",
+      "Good night!",
+      "I like blue.",
+      "Good morning!"
+    ],
+    "c": 1
+  },
+  {
+    "theme": "Greetings",
+    "q": "No começo da aula, uma forma curta de dizer “Oi” é:",
+    "a": [
+      "Bye!",
+      "Hi!",
+      "His",
+      "Her"
+    ],
+    "c": 1
+  },
+  {
+    "theme": "Classroom English",
+    "q": "Antes da questão, o professor diz: “Listen!”. O aluno deve:",
+    "a": [
+      "escutar",
+      "escrever",
+      "sentar",
+      "abrir o livro"
+    ],
+    "c": 0
+  },
+  {
+    "theme": "Classroom English",
+    "q": "Na aula de Inglês, “Repeat, please” quer dizer:",
+    "a": [
+      "Corra, por favor.",
+      "Repita, por favor.",
+      "Leia, por favor.",
+      "Levante, por favor."
+    ],
+    "c": 1
+  },
+  {
+    "theme": "Classroom English",
+    "q": "Se aparece “Open your book”, o aluno deve:",
+    "a": [
+      "fechar o livro",
+      "abrir o livro",
+      "levantar a mão",
+      "dizer tchau"
+    ],
+    "c": 1
+  },
+  {
+    "theme": "Classroom English",
+    "q": "“Close your notebook” significa:",
+    "a": [
+      "Abra seu caderno.",
+      "Feche seu caderno.",
+      "Leia seu livro.",
+      "Pegue água."
+    ],
+    "c": 1
+  },
+  {
+    "theme": "Classroom English",
+    "q": "O professor diz “Read the sentence”. O aluno deve:",
+    "a": [
+      "apagar a frase",
+      "ler a frase",
+      "fechar os olhos",
+      "correr na pista"
+    ],
+    "c": 1
+  },
+  {
+    "theme": "Classroom English",
+    "q": "“Write your name” quer dizer:",
+    "a": [
+      "Sente no chão.",
+      "Diga boa noite.",
+      "Abra a porta.",
+      "Escreva seu nome."
+    ],
+    "c": 3
+  },
+  {
+    "theme": "Classroom English",
+    "q": "Se o aluno precisa de ajuda, qual frase combina?",
+    "a": [
+      "She is car.",
+      "Can you help me?",
+      "I am blue.",
+      "Goodbye teacher."
+    ],
+    "c": 1
+  },
+  {
+    "theme": "Classroom English",
+    "q": "Quando o aluno não entende, pode dizer:",
+    "a": [
+      "I don’t understand.",
+      "Good night book.",
+      "I don’t pencil.",
+      "He are student."
+    ],
+    "c": 0
+  },
+  {
+    "theme": "Classroom English",
+    "q": "Para pedir licença para ir ao banheiro, use:",
+    "a": [
+      "May I go to the bathroom?",
+      "I like bathroom?",
+      "What color are you?",
+      "May I close Brazil?"
+    ],
+    "c": 0
+  },
+  {
+    "theme": "Classroom English",
+    "q": "“Sit down, please” significa:",
+    "a": [
+      "Escreva, por favor.",
+      "Levante-se, por favor.",
+      "Leia, por favor.",
+      "Sente-se, por favor."
+    ],
+    "c": 3
+  },
+  {
+    "theme": "Personal Info",
+    "q": "O repórter pergunta o nome do piloto. Qual pergunta está correta?",
+    "a": [
+      "How old is your name?",
+      "Are you blue?",
+      "What is your name?",
+      "Where pencil?"
+    ],
+    "c": 2
+  },
+  {
+    "theme": "Personal Info",
+    "q": "Para responder o nome, o aluno pode dizer:",
+    "a": [
+      "I name Lucas.",
+      "He name are Lucas.",
+      "My name is Lucas.",
+      "My Lucas is name."
+    ],
+    "c": 2
+  },
+  {
+    "theme": "Personal Info",
+    "q": "A pergunta “How old are you?” quer saber:",
+    "a": [
+      "a escola",
+      "a idade",
+      "o nome",
+      "a cor"
+    ],
+    "c": 1
+  },
+  {
+    "theme": "Personal Info",
+    "q": "Qual frase fala idade corretamente?",
+    "a": [
+      "I have twelve years old.",
+      "I are twelve years old.",
+      "I am twelve years old.",
+      "I twelve old."
+    ],
+    "c": 2
+  },
+  {
+    "theme": "Personal Info",
+    "q": "Para dizer “Eu sou do Brasil”, use:",
+    "a": [
+      "I am from Brazil.",
+      "I is from Brazil.",
+      "I Brazil from.",
+      "I have from Brazil."
+    ],
+    "c": 0
+  },
+  {
+    "theme": "Personal Info",
+    "q": "O piloto mora em Santarém. Qual frase está correta?",
+    "a": [
+      "I lives in Santarém.",
+      "I living Brazil.",
+      "I am live Santarém.",
+      "I live in Santarém."
+    ],
+    "c": 3
+  },
+  {
+    "theme": "Personal Info",
+    "q": "A pergunta “Where are you from?” pede:",
+    "a": [
+      "seu lápis",
+      "sua idade",
+      "de onde você é",
+      "sua cor favorita"
+    ],
+    "c": 2
+  },
+  {
+    "theme": "Personal Info",
+    "q": "Para perguntar a escola de alguém, podemos dizer:",
+    "a": [
+      "What is your school?",
+      "How old school?",
+      "Is you school?",
+      "What pencil school?"
+    ],
+    "c": 0
+  },
+  {
+    "theme": "Personal Info",
+    "q": "Complete: I ___ a student.",
+    "a": [
+      "am",
+      "is",
+      "are",
+      "have"
+    ],
+    "c": 0
+  },
+  {
+    "theme": "Personal Info",
+    "q": "Se o aluno diz “I am 11 years old”, ele está falando:",
+    "a": [
+      "sua cor",
+      "sua idade",
+      "sua despedida",
+      "seu material"
+    ],
+    "c": 1
+  },
+  {
+    "theme": "Pronouns",
+    "q": "Marcelo é menino. Qual pronome combina com Marcelo?",
+    "a": [
+      "It",
+      "She",
+      "They",
+      "He"
+    ],
+    "c": 3
+  },
+  {
+    "theme": "Pronouns",
+    "q": "Lara é menina. Qual pronome combina com Lara?",
+    "a": [
+      "She",
+      "He",
+      "We",
+      "It"
+    ],
+    "c": 0
+  },
+  {
+    "theme": "Pronouns",
+    "q": "Marcelo e Murilo são dois primos. Qual pronome combina?",
+    "a": [
+      "It",
+      "She",
+      "He",
+      "They"
+    ],
+    "c": 3
+  },
+  {
+    "theme": "Pronouns",
+    "q": "Eu estou jogando. Qual pronome representa “eu”?",
+    "a": [
+      "I",
+      "They",
+      "You",
+      "He"
+    ],
+    "c": 0
+  },
+  {
+    "theme": "Pronouns",
+    "q": "Você está na corrida. Qual pronome representa “você”?",
+    "a": [
+      "She",
+      "It",
+      "You",
+      "I"
+    ],
+    "c": 2
+  },
+  {
+    "theme": "Pronouns",
+    "q": "A Ferrari é um objeto. Qual pronome pode substituir “the car”?",
+    "a": [
+      "They",
+      "It",
+      "He",
+      "She"
+    ],
+    "c": 1
+  },
+  {
+    "theme": "Pronouns",
+    "q": "A turma e eu estamos na escola. Qual pronome representa “nós”?",
+    "a": [
+      "They",
+      "It",
+      "He",
+      "We"
+    ],
+    "c": 3
+  },
+  {
+    "theme": "Pronouns",
+    "q": "Substitua “Ana” por um pronome:",
+    "a": [
+      "They",
+      "He",
+      "I",
+      "She"
+    ],
+    "c": 3
+  },
+  {
+    "theme": "Pronouns",
+    "q": "Substitua “the students” por um pronome:",
+    "a": [
+      "He",
+      "It",
+      "She",
+      "They"
+    ],
+    "c": 3
+  },
+  {
+    "theme": "Pronouns",
+    "q": "Qual frase está correta?",
+    "a": [
+      "They are students.",
+      "They is students.",
+      "She am student.",
+      "He are students."
+    ],
+    "c": 0
+  },
+  {
+    "theme": "Possessives",
+    "q": "Complete: I am Pedro. ___ car is red.",
+    "a": [
+      "My",
+      "Her",
+      "His",
+      "Your"
+    ],
+    "c": 0
+  },
+  {
+    "theme": "Possessives",
+    "q": "Complete: You are Ana. ___ notebook is blue.",
+    "a": [
+      "Your",
+      "His",
+      "My",
+      "Her"
+    ],
+    "c": 0
+  },
+  {
+    "theme": "Possessives",
+    "q": "Complete: He is Lucas. ___ helmet is black.",
+    "a": [
+      "Her",
+      "Your",
+      "My",
+      "His"
+    ],
+    "c": 3
+  },
+  {
+    "theme": "Possessives",
+    "q": "Complete: She is Maria. ___ bag is pink.",
+    "a": [
+      "Your",
+      "His",
+      "My",
+      "Her"
+    ],
+    "c": 3
+  },
+  {
+    "theme": "Possessives",
+    "q": "A frase “my book” significa:",
+    "a": [
+      "meu livro",
+      "livro dele",
+      "seu livro",
+      "livro dela"
+    ],
+    "c": 0
+  },
+  {
+    "theme": "Possessives",
+    "q": "A frase “his pencil” significa:",
+    "a": [
+      "meu lápis",
+      "o lápis dela",
+      "o lápis dele",
+      "seu lápis"
+    ],
+    "c": 2
+  },
+  {
+    "theme": "Possessives",
+    "q": "A frase “her school” significa:",
+    "a": [
+      "minha escola",
+      "a escola dele",
+      "sua escola",
+      "a escola dela"
+    ],
+    "c": 3
+  },
+  {
+    "theme": "Possessives",
+    "q": "Complete: Marcelo loves ___ family.",
+    "a": [
+      "my",
+      "her",
+      "your",
+      "his"
+    ],
+    "c": 3
+  },
+  {
+    "theme": "Possessives",
+    "q": "Complete: Lara loves ___ grandmother.",
+    "a": [
+      "her",
+      "his",
+      "your",
+      "their"
+    ],
+    "c": 0
+  },
+  {
+    "theme": "Possessives",
+    "q": "Qual alternativa combina com “você”?",
+    "a": [
+      "his",
+      "your",
+      "my",
+      "her"
+    ],
+    "c": 1
+  },
+  {
+    "theme": "Verb to be",
+    "q": "Complete: I ___ a student.",
+    "a": [
+      "are",
+      "am",
+      "is",
+      "like"
+    ],
+    "c": 1
+  },
+  {
+    "theme": "Verb to be",
+    "q": "Complete: She ___ happy.",
+    "a": [
+      "am",
+      "are",
+      "is",
+      "have"
+    ],
+    "c": 2
+  },
+  {
+    "theme": "Verb to be",
+    "q": "Complete: They ___ ready.",
+    "a": [
+      "likes",
+      "is",
+      "are",
+      "am"
+    ],
+    "c": 2
+  },
+  {
+    "theme": "Verb to be",
+    "q": "Transforme em negativa: She is happy.",
+    "a": [
+      "She are not happy.",
+      "She am not happy.",
+      "She not is happy.",
+      "She is not happy."
+    ],
+    "c": 3
+  },
+  {
+    "theme": "Verb to be",
+    "q": "Qual pergunta está correta?",
+    "a": [
+      "Are you ready?",
+      "You are ready?",
+      "Do you ready?",
+      "Is you ready?"
+    ],
+    "c": 0
+  },
+  {
+    "theme": "Verb to be",
+    "q": "Complete: He ___ my friend.",
+    "a": [
+      "have",
+      "am",
+      "are",
+      "is"
+    ],
+    "c": 3
+  },
+  {
+    "theme": "Verb to be",
+    "q": "Complete: We ___ in the race.",
+    "a": [
+      "is",
+      "are",
+      "am",
+      "has"
+    ],
+    "c": 1
+  },
+  {
+    "theme": "Verb to be",
+    "q": "Qual frase está correta?",
+    "a": [
+      "I am from Brazil.",
+      "I is from Brazil.",
+      "I are from Brazil.",
+      "I have from Brazil."
+    ],
+    "c": 0
+  },
+  {
+    "theme": "Verb to be",
+    "q": "Complete a pergunta: ___ she your friend?",
+    "a": [
+      "Do",
+      "Am",
+      "Is",
+      "Are"
+    ],
+    "c": 2
+  },
+  {
+    "theme": "Verb to be",
+    "q": "Complete a negativa: They ___ students.",
+    "a": [
+      "am not",
+      "are not",
+      "is not",
+      "does not"
+    ],
+    "c": 1
+  },
+  {
+    "theme": "Vocabulary",
+    "q": "Na corrida, “car” significa:",
+    "a": [
+      "lápis",
+      "caderno",
+      "porta",
+      "carro"
+    ],
+    "c": 3
+  },
+  {
+    "theme": "Vocabulary",
+    "q": "“School” significa:",
+    "a": [
+      "árvore",
+      "carro",
+      "pneu",
+      "escola"
+    ],
+    "c": 3
+  },
+  {
+    "theme": "Vocabulary",
+    "q": "“Teacher” significa:",
+    "a": [
+      "professor/professora",
+      "aluno",
+      "livro",
+      "piloto"
+    ],
+    "c": 0
+  },
+  {
+    "theme": "Vocabulary",
+    "q": "“Student” significa:",
+    "a": [
+      "mochila",
+      "janela",
+      "professor",
+      "aluno/aluna"
+    ],
+    "c": 3
+  },
+  {
+    "theme": "Vocabulary",
+    "q": "“Book” significa:",
+    "a": [
+      "pista",
+      "carro",
+      "livro",
+      "bola"
+    ],
+    "c": 2
+  },
+  {
+    "theme": "Vocabulary",
+    "q": "“Pencil” significa:",
+    "a": [
+      "borracha",
+      "lápis",
+      "cadeira",
+      "livro"
+    ],
+    "c": 1
+  },
+  {
+    "theme": "Vocabulary",
+    "q": "A cor “red” é:",
+    "a": [
+      "preto",
+      "azul",
+      "verde",
+      "vermelho"
+    ],
+    "c": 3
+  },
+  {
+    "theme": "Vocabulary",
+    "q": "A cor “blue” é:",
+    "a": [
+      "vermelho",
+      "amarelo",
+      "branco",
+      "azul"
+    ],
+    "c": 3
+  },
+  {
+    "theme": "Vocabulary",
+    "q": "O número 10 em inglês é:",
+    "a": [
+      "ten",
+      "teen",
+      "twelve",
+      "twenty"
+    ],
+    "c": 0
+  },
+  {
+    "theme": "Vocabulary",
+    "q": "O número 20 em inglês é:",
+    "a": [
+      "two",
+      "ten",
+      "twelve",
+      "twenty"
+    ],
+    "c": 3
+  },
+  {
+    "theme": "Mini Reading",
+    "q": "Leia: “Ana is 11. She is a student.” Qual pronome substitui Ana?",
+    "a": [
+      "They",
+      "It",
+      "She",
+      "He"
+    ],
+    "c": 2
+  },
+  {
+    "theme": "Mini Reading",
+    "q": "Leia: “Lucas has a red car.” Qual é a cor do carro?",
+    "a": [
+      "yellow",
+      "red",
+      "blue",
+      "green"
+    ],
+    "c": 1
+  },
+  {
+    "theme": "Mini Reading",
+    "q": "Leia: “I am João. I live in Brazil.” Onde João mora?",
+    "a": [
+      "England",
+      "book",
+      "school",
+      "Brazil"
+    ],
+    "c": 3
+  },
+  {
+    "theme": "Mini Reading",
+    "q": "Leia: “They are students.” A frase fala de:",
+    "a": [
+      "um menino",
+      "mais de um estudante",
+      "uma menina",
+      "um carro"
+    ],
+    "c": 1
+  },
+  {
+    "theme": "Mini Reading",
+    "q": "Leia: “My name is Bia.” A frase informa:",
+    "a": [
+      "a cor",
+      "o nome",
+      "a despedida",
+      "a idade"
+    ],
+    "c": 1
+  },
+  {
+    "theme": "Mini Reading",
+    "q": "Leia: “Pedro is happy.” Como Pedro está?",
+    "a": [
+      "tired",
+      "sad",
+      "happy",
+      "angry"
+    ],
+    "c": 2
+  },
+  {
+    "theme": "Mini Reading",
+    "q": "Leia: “Maria is my friend.” Qual palavra significa amiga/amigo?",
+    "a": [
+      "car",
+      "book",
+      "friend",
+      "school"
+    ],
+    "c": 2
+  },
+  {
+    "theme": "Mini Reading",
+    "q": "Leia: “Open your book.” O comando pede para abrir:",
+    "a": [
+      "a mochila",
+      "a porta",
+      "a janela",
+      "o livro"
+    ],
+    "c": 3
+  },
+  {
+    "theme": "Mini Reading",
+    "q": "Leia: “I am fine.” A pessoa está:",
+    "a": [
+      "bem",
+      "correndo",
+      "na escola",
+      "com fome"
+    ],
+    "c": 0
+  },
+  {
+    "theme": "Mini Reading",
+    "q": "Leia: “Goodbye, teacher!” A frase é usada para:",
+    "a": [
+      "cumprimento pela manhã",
+      "despedida",
+      "pergunta de idade",
+      "pedido de ajuda"
+    ],
+    "c": 1
+  }
+];
 const PATH_POINTS = [[50, 92], [50, 88], [48, 84], [42, 80], [36, 76], [37, 71], [50, 69], [63, 68], [70, 64], [67, 60], [56, 58], [44, 58], [32, 56], [25, 52], [25, 47], [36, 45], [50, 45], [64, 44], [76, 41], [80, 36], [73, 33], [59, 33], [45, 33], [31, 32], [22, 29], [21, 24], [31, 22], [46, 22], [61, 22], [75, 19], [79, 15], [70, 12], [56, 12], [43, 12], [31, 12], [23, 11], [20, 8], [28, 6], [39, 6], [47, 6], [52, 6]];
 const SPECIALS = {"3": {"type": "bonus", "icon": "⚡", "title": "TURBO!", "desc": "Seu carro ganhou velocidade. Avance +1 casa.", "effect": "advance", "value": 1}, "6": {"type": "penalty", "icon": "🚧", "title": "CURVA PERIGOSA!", "desc": "Você reduziu a velocidade. Volte 1 casa.", "effect": "back", "value": 1}, "9": {"type": "bonus", "icon": "🏎️", "title": "ULTRAPASSAGEM!", "desc": "Você ganhou uma jogada extra.", "effect": "extraTurn", "value": 1}, "12": {"type": "bonus", "icon": "🔧", "title": "PIT STOP RÁPIDO!", "desc": "Equipe eficiente. Ganhe 1 vida.", "effect": "life", "value": 1}, "15": {"type": "penalty", "icon": "💥", "title": "PNEU FURADO!", "desc": "O carro perdeu estabilidade. Volte 2 casas.", "effect": "back", "value": 2}, "18": {"type": "challenge", "icon": "👑", "title": "DESAFIO DO CAMPEÃO!", "desc": "Bônus de campeão: +20 pontos.", "effect": "points", "value": 20}, "20": {"type": "bonus", "icon": "🟢", "title": "BANDEIRA VERDE!", "desc": "Pista livre. Avance +1 casa.", "effect": "advance", "value": 1}, "23": {"type": "bonus", "icon": "⚡", "title": "TURBO MÁXIMO!", "desc": "Avance +2 casas.", "effect": "advance", "value": 2}, "25": {"type": "penalty", "icon": "🟡", "title": "BANDEIRA AMARELA!", "desc": "Na próxima jogada, o avanço será limitado a 1 casa.", "effect": "yellow", "value": 1}, "27": {"type": "penalty", "icon": "🛑", "title": "PIT STOP DEMORADO!", "desc": "Você perde a próxima jogada.", "effect": "skip", "value": 1}, "30": {"type": "bonus", "icon": "🌟", "title": "VOLTA PERFEITA!", "desc": "Piloto concentrado. Ganhe +10 pontos.", "effect": "points", "value": 10}, "32": {"type": "penalty", "icon": "🚧", "title": "CURVA PERIGOSA!", "desc": "Volte 1 casa.", "effect": "back", "value": 1}, "34": {"type": "bonus", "icon": "🔧", "title": "PIT STOP RÁPIDO!", "desc": "Ganhe 1 vida.", "effect": "life", "value": 1}, "35": {"type": "challenge", "icon": "👑", "title": "DESAFIO DO CAMPEÃO!", "desc": "Grande ultrapassagem. Avance +3 casas.", "effect": "advance", "value": 3}, "37": {"type": "penalty", "icon": "💥", "title": "PNEU FURADO!", "desc": "Volte 2 casas.", "effect": "back", "value": 2}, "38": {"type": "bonus", "icon": "🏎️", "title": "ULTRAPASSAGEM!", "desc": "Jogue novamente.", "effect": "extraTurn", "value": 1}};
 const TOTAL_SPACES = 40;
