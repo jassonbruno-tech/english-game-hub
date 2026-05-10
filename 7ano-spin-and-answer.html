@@ -47,7 +47,7 @@
     width:100%;height:100%;border-radius:50%;border:8px solid #fff;
     background:conic-gradient(from 0deg,#ff1744 0 72deg,#ffea00 72deg 144deg,#00e676 144deg 216deg,#00b0ff 216deg 288deg,#d500f9 288deg 360deg);
     box-shadow:0 0 0 6px rgba(255,255,255,.18),0 12px 30px rgba(0,0,0,.5),0 0 28px rgba(255,255,255,.25);
-    position:relative;transition:transform 4.6s cubic-bezier(.12,.78,.16,1);
+    position:relative;transition:transform 5.2s cubic-bezier(.08,.82,.13,1);
     overflow:hidden;
   }
   .wheel::after{content:"";position:absolute;inset:36%;border-radius:50%;background:#111827;border:6px solid #fff;box-shadow:0 0 16px rgba(0,0,0,.55)}
@@ -171,6 +171,8 @@
     <p class="teacher">Jogo idealizado pelo professor Jasson Bruno</p>
   </section>
 </div>
+
+<div class="fixedSignature">Jogo idealizado pelo professor Jasson Bruno</div>
 
 <div id="screenFlash" class="screenFlash"></div>
 
@@ -910,14 +912,24 @@ function spinWheel(){
 
   const idx = THEME_INDEX[currentTheme];
   const segmentCenter = idx * 72 + 36;
-  const extraSpins = 5 + Math.floor(Math.random() * 3);
+  const extraSpins = 8 + Math.floor(Math.random() * 5);
 
   // A seta fica no topo da roleta. No círculo CSS, o topo corresponde a 270 graus.
-  // Então a roleta precisa parar com o centro do tema escolhido exatamente sob a seta.
+  // Aqui o giro é CUMULATIVO: a roleta sempre dá várias voltas a partir da posição atual,
+  // evitando aquela sensação de que quase não girou.
   const target = 270 - segmentCenter;
-  wheelRotation = extraSpins * 360 + target;
+  const currentNormalized = ((wheelRotation % 360) + 360) % 360;
+  const targetNormalized = ((target % 360) + 360) % 360;
+  const correction = ((targetNormalized - currentNormalized) + 360) % 360;
+
+  wheelRotation += (extraSpins * 360) + correction;
 
   startSpinSound();
+
+  // Força o navegador a aplicar a animação de forma consistente no celular.
+  $("wheel").style.transition = "none";
+  $("wheel").offsetHeight;
+  $("wheel").style.transition = "transform 5.2s cubic-bezier(.08,.82,.13,1)";
   $("wheel").style.transform = `rotate(${wheelRotation}deg)`;
 
   setTimeout(() => {
@@ -927,7 +939,7 @@ function spinWheel(){
     $("themeText").textContent = `Tema: ${currentTheme}`;
     $("prompt").textContent = "Responda ao desafio!";
     showQuestion();
-  }, 4700);
+  }, 5300);
 }
 
 function pickQuestion(theme){
@@ -1149,7 +1161,7 @@ function startSpinSound(){
     spinOsc.frequency.linearRampToValueAtTime(360, audioCtx.currentTime + 4.4);
 
     spinGain.gain.setValueAtTime(0.001, audioCtx.currentTime);
-    spinGain.gain.exponentialRampToValueAtTime(0.14, audioCtx.currentTime + 0.08);
+    spinGain.gain.exponentialRampToValueAtTime(0.22, audioCtx.currentTime + 0.08);
 
     // Vibração rítmica para dar adrenalina.
     spinLfo.type = "sine";
@@ -1171,7 +1183,7 @@ function startSpinSound(){
     spinMusicInterval = setInterval(() => {
       const note = melody[step % melody.length];
       const accent = step % 4 === 0 ? 0.15 : 0.09;
-      beep(note, 0.11, "triangle", accent);
+      beep(note, 0.13, "triangle", accent + 0.035);
       step++;
     }, 150);
 
