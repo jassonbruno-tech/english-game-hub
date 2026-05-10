@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>6º Ano | Formula Race Board Game</title>
+<style>
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:Arial,Helvetica,sans-serif;background:#06111f;color:#fff}
+  button,input{font-family:inherit}
+  body{
+    background:
+      radial-gradient(circle at 15% 8%,rgba(255,214,10,.22),transparent 30%),
+      radial-gradient(circle at 85% 20%,rgba(0,213,255,.18),transparent 30%),
+      linear-gradient(135deg,#071427,#0a213b 48%,#06111f);
+  }
+  .app{width:100%;max-width:480px;height:100dvh;margin:0 auto;padding:7px;display:flex;flex-direction:column;gap:6px;overflow:hidden;position:relative}
+  .screen{display:none;height:100%;min-height:0;overflow:hidden}
+  .screen.active{display:flex;flex-direction:column}
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:6px;flex:0 0 auto}
+  .back{text-decoration:none;color:#fff;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.2);padding:7px 9px;border-radius:999px;font-size:.75rem;font-weight:900}
+  .badge{background:linear-gradient(90deg,#ffcf33,#ff5b00);color:#241000;border-radius:999px;padding:7px 10px;font-weight:1000;font-size:.72rem;text-align:center;box-shadow:0 4px 0 rgba(0,0,0,.34)}
+  h1{font-size:1.35rem;line-height:1.05;text-align:center;margin:8px 0 6px;text-shadow:0 3px 0 rgba(0,0,0,.35)}
+  .card{background:rgba(10,24,43,.92);border:2px solid rgba(255,255,255,.18);border-radius:24px;padding:14px;box-shadow:0 14px 32px rgba(0,0,0,.32);margin:auto 0}
+  .sub{font-size:.9rem;color:#dbeafe;text-align:center;line-height:1.35}
+  label{display:block;margin:9px 0 4px;color:#ffe66d;font-weight:1000}
+  input{width:100%;border:2px solid #ffd60a;border-radius:15px;padding:12px;font-size:1rem;outline:none}
+  button{border:0;border-radius:17px;padding:12px 10px;min-height:46px;font-weight:1000;font-size:1rem;cursor:pointer;box-shadow:0 5px 0 rgba(0,0,0,.36)}
+  button:active{transform:translateY(3px);box-shadow:0 2px 0 rgba(0,0,0,.36)}
+  button:disabled{opacity:.55;cursor:not-allowed}
+  .btn-green{background:linear-gradient(#50ff7a,#00a84a);color:#052712}
+  .btn-blue{background:linear-gradient(#42d4ff,#0958ff);color:#fff}
+  .btn-orange{background:linear-gradient(#ffbd43,#ff5b00);color:#fff}
+  .btn-red{background:linear-gradient(#ff6363,#dc2626);color:#fff}
+  .btn-gray{background:linear-gradient(#94a3b8,#475569);color:#fff}
+  .msg{min-height:18px;text-align:center;color:#ffe66d;font-weight:900;font-size:.82rem}
+
+  .hud{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;flex:0 0 auto}
+  .stat{background:rgba(0,0,0,.42);border:1px solid rgba(255,255,255,.22);border-radius:14px;padding:5px 3px;text-align:center;font-size:.58rem;font-weight:900;box-shadow:0 5px 12px rgba(0,0,0,.22)}
+  .stat b{display:block;color:#ffe66d;font-size:.84rem;margin-bottom:1px}
+  .trackWrap{position:relative;flex:1;min-height:0;border-radius:24px;overflow:hidden;background:#18310c;border:3px solid rgba(255,255,255,.16);box-shadow:0 12px 32px rgba(0,0,0,.33)}
+  .trackImg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;user-select:none;pointer-events:none}
+  .trackShade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.08),transparent 18%,transparent 76%,rgba(0,0,0,.18));z-index:2;pointer-events:none}
+  .currentGlow{position:absolute;width:36px;height:36px;border-radius:50%;background:rgba(255,214,10,.42);box-shadow:0 0 18px 8px rgba(255,214,10,.4);transform:translate(-50%,-50%);z-index:4;transition:left .35s linear,top .35s linear;pointer-events:none}
+  .specialIcon{position:absolute;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:15px;background:rgba(0,0,0,.62);border:1px solid rgba(255,255,255,.58);z-index:5;transform:translate(-50%,-50%);box-shadow:0 3px 8px rgba(0,0,0,.35)}
+  .car{position:absolute;left:50%;top:90%;width:48px;height:48px;z-index:8;transform:translate(-50%,-50%) rotate(0deg);transition:left .35s linear,top .35s linear,transform .35s linear;filter:drop-shadow(0 10px 5px rgba(0,0,0,.55));will-change:left,top,transform}
+  .carSprite{width:100%;height:100%;background-image:url('ferrari-f1-sprite-sheet.png');background-repeat:no-repeat;background-size:400% 200%;background-position:0% 0%;transform-origin:center;animation:none}
+  .car.moving .carSprite{animation:wheelFeel .18s steps(2) infinite}
+  @keyframes wheelFeel{from{filter:brightness(1)}to{filter:brightness(1.25) saturate(1.25)}}
+  .control{display:grid;grid-template-columns:.95fr 1.3fr;gap:8px;align-items:center;flex:0 0 auto}
+  .diceBox{background:rgba(0,0,0,.38);border:1px solid rgba(255,255,255,.22);border-radius:20px;padding:7px;text-align:center;min-height:64px}
+  .dice{font-size:2.1rem;line-height:1}
+  .teacher{text-align:center;color:#fff7c2;font-weight:800;font-size:.68rem;text-shadow:0 2px 3px rgba(0,0,0,.8);margin:0;flex:0 0 auto}
+
+  .modal{position:fixed;inset:0;background:rgba(0,0,0,.78);display:none;align-items:center;justify-content:center;padding:14px;z-index:99}
+  .modal.show{display:flex}
+  .qbox,.eventBox{width:100%;max-width:420px;background:linear-gradient(180deg,#fff,#e0f2fe);color:#0f172a;border:4px solid #ffd60a;border-radius:26px;padding:15px;box-shadow:0 18px 40px rgba(0,0,0,.45)}
+  .theme{display:inline-block;background:#0f172a;color:#fff;border-radius:999px;padding:6px 10px;font-weight:1000;font-size:.78rem}
+  .question{font-size:1.08rem;font-weight:1000;line-height:1.25;margin:10px 0}
+  .options{display:grid;gap:8px}
+  .options button{background:#fff;color:#111827;border:2px solid #93c5fd;text-align:left;box-shadow:0 4px 0 #60a5fa;min-height:44px}
+  .options button.correct{background:#dcfce7;border-color:#22c55e;box-shadow:0 4px 0 #16a34a}
+  .options button.wrong{background:#fee2e2;border-color:#ef4444;box-shadow:0 4px 0 #dc2626}
+  .feedback{min-height:24px;text-align:center;font-weight:1000;margin-top:8px}
+  .eventTitle{font-size:1.45rem;text-align:center;font-weight:1000;margin:6px 0;color:#991b1b}
+  .eventDesc{font-size:1rem;text-align:center;font-weight:900;line-height:1.35}
+  .finalBox{background:linear-gradient(180deg,#fff,#dbeafe);color:#0f172a;border:4px solid #ffd60a;border-radius:26px;padding:15px;text-align:center;box-shadow:0 14px 35px rgba(0,0,0,.42);margin:auto 0}
+  .scoreBig{background:#dcfce7;color:#14532d;border-radius:18px;padding:12px;font-size:1.05rem;font-weight:1000;margin:10px 0}
+  .hearts{letter-spacing:1px}
+  .screenFlash{position:fixed;inset:0;background:rgba(34,197,94,.35);z-index:120;opacity:0;pointer-events:none}
+  .screenFlash.on{animation:flash .42s ease 2}
+  @keyframes flash{0%{opacity:0}45%{opacity:1}100%{opacity:0}}
+
+  @media(max-height:700px){
+    .app{gap:4px;padding:5px}
+    button{min-height:40px;padding:8px;font-size:.9rem}
+    .hud{gap:4px}
+    .stat{font-size:.54rem;padding:4px 2px}
+    .stat b{font-size:.78rem}
+    .diceBox{min-height:56px;padding:5px}
+    .dice{font-size:1.8rem}
+    .car{width:42px;height:42px}
+    .teacher{font-size:.62rem}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <a href="6ano.html" class="back">⬅ Voltar</a>
+    <div class="badge">6º Ano • Formula Race</div>
+  </div>
+
+  <section id="startScreen" class="screen active">
+    <div class="card">
+      <h1>🏎️ Formula Race Board Game</h1>
+      <p class="sub">Role o dado, responda aos desafios de Inglês e leve a Ferrari do START até o FINISH.</p>
+      <label>Nome do aluno:</label>
+      <input id="playerName" maxlength="24" placeholder="Digite seu nome">
+      <label>Escola:</label>
+      <input id="playerSchool" maxlength="42" placeholder="Digite sua escola">
+      <p id="startMsg" class="msg"></p>
+      <button class="btn-green" onclick="startGame()">🏁 Começar corrida</button>
+    </div>
+    <p class="teacher">Jogo idealizado pelo professor Jasson Bruno.</p>
+  </section>
+
+  <section id="gameScreen" class="screen">
+    <div class="hud">
+      <div class="stat"><b id="posText">0/40</b>Casa</div>
+      <div class="stat"><b id="scoreText">0</b>Pontos</div>
+      <div class="stat"><b id="lifeText" class="hearts">❤️❤️❤️❤️❤️</b>Vidas</div>
+      <div class="stat"><b id="rightText">0</b>Acertos</div>
+    </div>
+
+    <div class="trackWrap" id="trackWrap">
+      <img class="trackImg" src="6ano-formula-race-track.png" alt="Pista Formula Race">
+      <div class="trackShade"></div>
+      <div id="specialLayer"></div>
+      <div id="currentGlow" class="currentGlow"></div>
+      <div id="car" class="car"><div id="carSprite" class="carSprite"></div></div>
+    </div>
+
+    <div class="control">
+      <div class="diceBox">
+        <div id="diceFace" class="dice">🎲</div>
+        <div id="moveMsg" class="msg">Pronto para largar!</div>
+      </div>
+      <button id="diceBtn" class="btn-orange" onclick="rollDice()">🎲 Rolar dado</button>
+    </div>
+    <p class="teacher">Jogo idealizado pelo professor Jasson Bruno.</p>
+  </section>
+
+  <section id="finalScreen" class="screen">
+    <div class="finalBox">
+      <h1 id="finalTitle">🏆 Corrida concluída!</h1>
+      <div id="finalScore" class="scoreBig">Pontuação: 0</div>
+      <p id="finalMsg" class="sub" style="color:#0f172a;font-weight:900"></p>
+      <button class="btn-green" onclick="restartGame()">🔁 Jogar novamente</button>
+      <a href="6ano.html"><button class="btn-gray" style="margin-top:8px">🏠 Voltar aos jogos</button></a>
+    </div>
+    <p class="teacher">Jogo idealizado pelo professor Jasson Bruno.</p>
+  </section>
+</div>
+
+<div id="questionModal" class="modal">
+  <div class="qbox">
+    <span id="qTheme" class="theme">Tema</span>
+    <div id="qText" class="question">Pergunta</div>
+    <div id="options" class="options"></div>
+    <div id="feedback" class="feedback"></div>
+    <button id="continueBtn" class="btn-blue" style="display:none;margin-top:8px" onclick="continueAfterQuestion()">Continuar ➜</button>
+  </div>
+</div>
+
+<div id="eventModal" class="modal">
+  <div class="eventBox">
+    <div id="eventTitle" class="eventTitle">Evento</div>
+    <p id="eventDesc" class="eventDesc">Descrição</p>
+    <button class="btn-blue" onclick="closeEvent()">Continuar corrida ➜</button>
+  </div>
+</div>
+
+<div id="screenFlash" class="screenFlash"></div>
+<audio id="engineSound" src="f1%20som%20atual.mpeg" preload="auto"></audio>
+
+<script>
+const QUESTIONS = [{"theme": "Greetings", "q": "Bob Esponja chegou à escola pela manhã. Qual expressão ele pode usar?", "a": ["See you!", "Good night!", "Good morning!", "Goodbye!"], "c": 2}, {"theme": "Greetings", "q": "Um colega diz: “Hello!”. Qual resposta combina melhor?", "a": ["Hello!", "Sit down!", "Open your book!", "Goodbye!"], "c": 0}, {"theme": "Farewells", "q": "No fim da aula, qual expressão significa “Tchau”?", "a": ["I am fine.", "Stand up!", "Good morning!", "Goodbye!"], "c": 3}, {"theme": "Farewells", "q": "Patrick vai embora e diz “See you!”. Isso quer dizer:", "a": ["Abra o livro!", "Até logo!", "Meu nome é Patrick.", "Bom dia!"], "c": 1}, {"theme": "Classroom Commands", "q": "O professor diz: “Open your book.” O aluno deve:", "a": ["apagar o quadro", "levantar a mão", "fechar o livro", "abrir o livro"], "c": 3}, {"theme": "Classroom Commands", "q": "“Sit down, please.” significa:", "a": ["Escreva, por favor.", "Leia, por favor.", "Levante-se, por favor.", "Sente-se, por favor."], "c": 3}, {"theme": "Classroom Commands", "q": "“Raise your hand.” significa:", "a": ["Levante a mão.", "Abra o livro.", "Feche a porta.", "Escute a música."], "c": 0}, {"theme": "Classroom Expressions", "q": "Como pedir para ir ao banheiro em inglês?", "a": ["I am Neymar.", "Good afternoon!", "May I go to the restroom?", "May I eat pizza?"], "c": 2}, {"theme": "Classroom Expressions", "q": "Se o aluno quer beber água, ele pode dizer:", "a": ["She is happy.", "May I drink water?", "What is your name?", "Close your book."], "c": 1}, {"theme": "Personal Information", "q": "Para perguntar o nome de alguém, usamos:", "a": ["What is your name?", "How old is blue?", "Where is pencil?", "Goodbye book."], "c": 0}, {"theme": "Personal Information", "q": "A pergunta “How old are you?” quer saber:", "a": ["o nome", "a escola", "a idade", "a cor"], "c": 2}, {"theme": "Spelling", "q": "Quando alguém pede “Spell your name”, a pessoa deve:", "a": ["dizer boa noite", "dizer a idade", "abrir o livro", "soletrar o nome"], "c": 3}, {"theme": "Pronouns", "q": "Qual pronome usamos para falar de uma menina?", "a": ["He", "She", "I", "They"], "c": 1}, {"theme": "Pronouns", "q": "Qual pronome usamos para falar de dois ou mais amigos?", "a": ["It", "They", "She", "He"], "c": 1}, {"theme": "Pronouns", "q": "Cristiano Ronaldo é homem. Qual pronome combina com ele?", "a": ["She", "It", "He", "We"], "c": 2}, {"theme": "Possessive Adjectives", "q": "Complete: I am Ana. ___ book is blue.", "a": ["Your", "Her", "His", "My"], "c": 3}, {"theme": "Possessive Adjectives", "q": "Complete: He is Lucas. ___ pencil is red.", "a": ["Your", "His", "My", "Her"], "c": 1}, {"theme": "Possessive Adjectives", "q": "Complete: She is Maria. ___ backpack is pink.", "a": ["Her", "My", "His", "Their"], "c": 0}, {"theme": "Verb to be", "q": "Complete: She ___ happy.", "a": ["is", "are", "like", "am"], "c": 0}, {"theme": "Verb to be", "q": "Complete: They ___ students.", "a": ["am", "likes", "are", "is"], "c": 2}, {"theme": "Verb to be", "q": "Complete: I ___ from Brazil.", "a": ["go", "are", "is", "am"], "c": 3}, {"theme": "Numbers", "q": "Messi fez 3 gols. Qual palavra representa 3?", "a": ["thirteen", "tree", "thirty", "three"], "c": 3}, {"theme": "Numbers", "q": "Qual alternativa representa o número 15?", "a": ["fourteen", "fifteen", "fifty", "five"], "c": 1}, {"theme": "School Objects", "q": "“Pencil” significa:", "a": ["mesa", "lápis", "borracha", "caneta"], "c": 1}, {"theme": "School Objects", "q": "“Book” significa:", "a": ["mochila", "janela", "livro", "porta"], "c": 2}, {"theme": "Colors", "q": "A cor “blue” é:", "a": ["azul", "amarelo", "vermelho", "verde"], "c": 0}, {"theme": "Colors", "q": "A cor “green” é:", "a": ["verde", "preto", "rosa", "branco"], "c": 0}, {"theme": "Daily Vocabulary", "q": "“Teacher” significa:", "a": ["livro", "lápis", "aluno", "professor/professora"], "c": 3}, {"theme": "Daily Vocabulary", "q": "“School” significa:", "a": ["parque", "casa", "mercado", "escola"], "c": 3}, {"theme": "Review", "q": "Qual frase está correta para dizer “Eu sou estudante”?", "a": ["I is a student.", "I am a student.", "She are student.", "They am students."], "c": 1}];
+const PATH_POINTS = [[49, 91], [50, 86], [46, 82], [40, 79], [34, 75], [33, 69], [43, 66], [55, 66], [66, 64], [70, 59], [63, 55], [52, 54], [40, 54], [29, 52], [23, 47], [26, 42], [38, 41], [51, 41], [64, 41], [75, 39], [78, 34], [70, 31], [58, 31], [45, 31], [34, 30], [23, 27], [20, 22], [30, 19], [44, 20], [57, 20], [70, 19], [82, 16], [79, 11], [66, 10], [54, 10], [43, 10], [33, 10], [24, 9], [20, 7], [30, 5], [48, 5]];
+const SPECIALS = {"3": {"type": "bonus", "icon": "⚡", "title": "TURBO!", "desc": "Seu carro ganhou velocidade. Avance +1 casa.", "effect": "advance", "value": 1}, "6": {"type": "penalty", "icon": "🚧", "title": "CURVA PERIGOSA!", "desc": "Você reduziu a velocidade. Volte 1 casa.", "effect": "back", "value": 1}, "9": {"type": "bonus", "icon": "🏎️", "title": "ULTRAPASSAGEM!", "desc": "Você ganhou uma jogada extra.", "effect": "extraTurn", "value": 1}, "12": {"type": "bonus", "icon": "🔧", "title": "PIT STOP RÁPIDO!", "desc": "Equipe eficiente. Ganhe 1 vida.", "effect": "life", "value": 1}, "15": {"type": "penalty", "icon": "💥", "title": "PNEU FURADO!", "desc": "O carro perdeu estabilidade. Volte 2 casas.", "effect": "back", "value": 2}, "18": {"type": "challenge", "icon": "👑", "title": "DESAFIO DO CAMPEÃO!", "desc": "Bônus de campeão: +20 pontos.", "effect": "points", "value": 20}, "20": {"type": "bonus", "icon": "🟢", "title": "BANDEIRA VERDE!", "desc": "Pista livre. Avance +1 casa.", "effect": "advance", "value": 1}, "23": {"type": "bonus", "icon": "⚡", "title": "TURBO MÁXIMO!", "desc": "Avance +2 casas.", "effect": "advance", "value": 2}, "25": {"type": "penalty", "icon": "🟡", "title": "BANDEIRA AMARELA!", "desc": "Na próxima jogada, o avanço será limitado a 1 casa.", "effect": "yellow", "value": 1}, "27": {"type": "penalty", "icon": "🛑", "title": "PIT STOP DEMORADO!", "desc": "Você perde a próxima jogada.", "effect": "skip", "value": 1}, "30": {"type": "bonus", "icon": "🌟", "title": "VOLTA PERFEITA!", "desc": "Piloto concentrado. Ganhe +10 pontos.", "effect": "points", "value": 10}, "32": {"type": "penalty", "icon": "🚧", "title": "CURVA PERIGOSA!", "desc": "Volte 1 casa.", "effect": "back", "value": 1}, "34": {"type": "bonus", "icon": "🔧", "title": "PIT STOP RÁPIDO!", "desc": "Ganhe 1 vida.", "effect": "life", "value": 1}, "35": {"type": "challenge", "icon": "👑", "title": "DESAFIO DO CAMPEÃO!", "desc": "Grande ultrapassagem. Avance +3 casas.", "effect": "advance", "value": 3}, "37": {"type": "penalty", "icon": "💥", "title": "PNEU FURADO!", "desc": "Volte 2 casas.", "effect": "back", "value": 2}, "38": {"type": "bonus", "icon": "🏎️", "title": "ULTRAPASSAGEM!", "desc": "Jogue novamente.", "effect": "extraTurn", "value": 1}};
+const TOTAL_SPACES = 40;
+const DICE_MAX = 4;
+const MAX_LIVES = 5;
+
+let playerName = "Você";
+let playerSchool = "Escola não informada";
+let position = 0;
+let pendingMove = 0;
+let score = 0;
+let right = 0;
+let errors = 0;
+let lives = MAX_LIVES;
+let currentQuestion = null;
+let canRoll = true;
+let extraTurn = false;
+let skipTurn = false;
+let yellowFlag = false;
+let moving = false;
+
+const $ = id => document.getElementById(id);
+
+function show(id){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  $(id).classList.add("active");
+}
+
+function startGame(){
+  const name = $("playerName").value.trim();
+  const school = $("playerSchool").value.trim();
+  if(!name || !school){
+    $("startMsg").textContent = "Digite o nome e a escola para começar.";
+    return;
+  }
+  playerName = name.slice(0,24);
+  playerSchool = school.slice(0,42);
+  position = 0; pendingMove = 0; score = 0; right = 0; errors = 0; lives = MAX_LIVES;
+  extraTurn = false; skipTurn = false; yellowFlag = false; canRoll = true; moving = false;
+  buildSpecialIcons();
+  updateHud();
+  placeCar(false);
+  show("gameScreen");
+  setTimeout(()=>placeCar(false), 100);
+}
+
+function buildSpecialIcons(){
+  const layer = $("specialLayer");
+  layer.innerHTML = "";
+  Object.keys(SPECIALS).forEach(k=>{
+    const casa = Number(k);
+    const p = PATH_POINTS[casa];
+    if(!p) return;
+    const icon = document.createElement("div");
+    icon.className = "specialIcon";
+    icon.textContent = SPECIALS[k].icon;
+    icon.style.left = p[0] + "%";
+    icon.style.top = p[1] + "%";
+    layer.appendChild(icon);
+  });
+}
+
+function updateHud(){
+  $("posText").textContent = `${position}/${TOTAL_SPACES}`;
+  $("scoreText").textContent = score;
+  $("rightText").textContent = right;
+  $("lifeText").textContent = "❤️".repeat(lives) + "🤍".repeat(MAX_LIVES-lives);
+}
+
+function placeCar(animate=true){
+  const p = PATH_POINTS[position];
+  const next = PATH_POINTS[Math.min(position+1, TOTAL_SPACES)] || p;
+  const angle = Math.atan2(next[1]-p[1], next[0]-p[0]) * 180 / Math.PI;
+
+  const car = $("car");
+  const glow = $("currentGlow");
+  if(!animate){
+    car.style.transition = "none";
+    glow.style.transition = "none";
+  } else {
+    car.style.transition = "left .35s linear, top .35s linear, transform .35s linear";
+    glow.style.transition = "left .35s linear, top .35s linear";
+  }
+
+  car.style.left = p[0] + "%";
+  car.style.top = p[1] + "%";
+  car.style.transform = `translate(-50%,-50%) rotate(${angle}deg)`;
+
+  glow.style.left = p[0] + "%";
+  glow.style.top = p[1] + "%";
+
+  chooseSprite(angle);
+
+  if(!animate){
+    setTimeout(()=>{
+      car.style.transition = "left .35s linear, top .35s linear, transform .35s linear";
+      glow.style.transition = "left .35s linear, top .35s linear";
+    },50);
+  }
+}
+
+function chooseSprite(angle){
+  // Usa a sprite sheet de forma simples: vista de cima para trechos verticais e lateral para trechos horizontais.
+  // Se a sprite sheet tiver outra organização visual, isso pode ser ajustado depois sem mexer na lógica.
+  const sprite = $("carSprite");
+  const abs = Math.abs(((angle % 360) + 360) % 360);
+  if((abs > 45 && abs < 135) || (abs > 225 && abs < 315)){
+    sprite.style.backgroundPosition = "0% 0%";
+  }else{
+    sprite.style.backgroundPosition = "33.33% 0%";
+  }
+}
+
+function rollDice(){
+  if(!canRoll || moving) return;
+
+  if(skipTurn){
+    skipTurn = false;
+    $("moveMsg").textContent = "🛑 Pit stop demorado: você perdeu esta jogada.";
+    canRoll = true;
+    return;
+  }
+
+  canRoll = false;
+  $("diceBtn").disabled = true;
+  let t = 0;
+  const faces = ["⚀","⚁","⚂","⚃"];
+  const timer = setInterval(()=>{
+    const n = Math.floor(Math.random()*DICE_MAX)+1;
+    $("diceFace").textContent = faces[n-1];
+    t++;
+    if(t>10){
+      clearInterval(timer);
+      pendingMove = Math.floor(Math.random()*DICE_MAX)+1;
+      if(yellowFlag){
+        pendingMove = Math.min(1, pendingMove);
+        yellowFlag = false;
+        $("moveMsg").textContent = "🟡 Bandeira amarela: nesta rodada você só pode avançar 1 casa.";
+      } else {
+        $("moveMsg").textContent = `Você tirou ${pendingMove}. Responda para acelerar!`;
+      }
+      $("diceFace").textContent = faces[pendingMove-1];
+      openQuestion();
+    }
+  },70);
+}
+
+function openQuestion(){
+  currentQuestion = QUESTIONS[Math.floor(Math.random()*QUESTIONS.length)];
+  $("qTheme").textContent = currentQuestion.theme;
+  $("qText").textContent = currentQuestion.q;
+  $("feedback").textContent = "";
+  $("continueBtn").style.display = "none";
+  $("options").innerHTML = "";
+  currentQuestion.a.forEach((op,idx)=>{
+    const btn = document.createElement("button");
+    btn.innerHTML = `<b>${String.fromCharCode(65+idx)})</b> ${op}`;
+    btn.onclick = () => answer(idx, btn);
+    $("options").appendChild(btn);
+  });
+  $("questionModal").classList.add("show");
+}
+
+function answer(idx, btn){
+  const buttons = Array.from(document.querySelectorAll("#options button"));
+  buttons.forEach(b=>b.disabled=true);
+  if(idx === currentQuestion.c){
+    btn.classList.add("correct");
+    right++;
+    score += 10;
+    flashGreen();
+    $("feedback").textContent = `✅ Muito bom! A Ferrari vai avançar ${pendingMove} casa(s).`;
+    $("feedback").style.color = "#14532d";
+  }else{
+    btn.classList.add("wrong");
+    if(buttons[currentQuestion.c]) buttons[currentQuestion.c].classList.add("correct");
+    errors++;
+    lives = Math.max(0, lives - 1);
+    pendingMove = 0;
+    $("feedback").textContent = "❌ Tente novamente! Você perdeu 1 vida e não avança.";
+    $("feedback").style.color = "#991b1b";
+    updateHud();
+  }
+  $("continueBtn").style.display = "block";
+}
+
+function continueAfterQuestion(){
+  $("questionModal").classList.remove("show");
+
+  if(lives <= 0){
+    finishGame(false);
+    return;
+  }
+
+  if(pendingMove > 0){
+    animateMove(pendingMove, () => {
+      checkSpecialOrContinue();
+    });
+  }else{
+    releaseTurn();
+  }
+}
+
+function animateMove(steps, callback){
+  moving = true;
+  canRoll = false;
+  $("diceBtn").disabled = true;
+
+  const casas = Math.max(1, steps);
+  const totalDuration = Math.min(2600, Math.max(1500, 1250 + casas * 280));
+  const perStep = totalDuration / casas;
+
+  playEngine(totalDuration);
+
+  $("car").classList.add("moving");
+  let moved = 0;
+  const timer = setInterval(()=>{
+    if(moved >= casas || position >= TOTAL_SPACES){
+      clearInterval(timer);
+      $("car").classList.remove("moving");
+      stopEngineSoft();
+      moving = false;
+      updateHud();
+      if(position >= TOTAL_SPACES) finishGame(true);
+      else callback && callback();
+      return;
+    }
+    position = Math.min(TOTAL_SPACES, position + 1);
+    moved++;
+    placeCar(true);
+    updateHud();
+  }, perStep);
+}
+
+function playEngine(durationMs){
+  const audio = $("engineSound");
+  if(!audio) return;
+  try{
+    audio.pause();
+    audio.currentTime = 0;
+    audio.playbackRate = 2.0;
+    audio.volume = 0.9;
+    const p = audio.play();
+    if(p && p.catch) p.catch(()=>{});
+    setTimeout(()=>stopEngineSoft(), durationMs + 120);
+  }catch(e){}
+}
+
+function stopEngineSoft(){
+  const audio = $("engineSound");
+  if(!audio || audio.paused) return;
+  try{
+    let v = audio.volume || 0.9;
+    const fade = setInterval(()=>{
+      v -= 0.16;
+      if(v <= 0){
+        clearInterval(fade);
+        audio.pause();
+        audio.currentTime = 0;
+        audio.volume = 0.9;
+      }else{
+        audio.volume = v;
+      }
+    },40);
+  }catch(e){}
+}
+
+function checkSpecialOrContinue(){
+  const ev = SPECIALS[position];
+  if(!ev){
+    releaseTurn();
+    return;
+  }
+  applySpecial(ev);
+}
+
+function applySpecial(ev){
+  $("eventTitle").textContent = `${ev.icon} ${ev.title}`;
+  $("eventDesc").textContent = ev.desc;
+  $("eventModal").classList.add("show");
+
+  if(ev.effect === "points"){
+    score += ev.value;
+    updateHud();
+  }else if(ev.effect === "life"){
+    lives = Math.min(MAX_LIVES, lives + ev.value);
+    updateHud();
+  }else if(ev.effect === "skip"){
+    skipTurn = true;
+  }else if(ev.effect === "yellow"){
+    yellowFlag = true;
+  }else if(ev.effect === "extraTurn"){
+    extraTurn = true;
+  }else if(ev.effect === "advance"){
+    setTimeout(()=>{
+      if($("eventModal").classList.contains("show")) return;
+      animateMove(ev.value, releaseTurn);
+    },100);
+  }else if(ev.effect === "back"){
+    setTimeout(()=>{
+      if($("eventModal").classList.contains("show")) return;
+      moveBack(ev.value, releaseTurn);
+    },100);
+  }
+}
+
+function closeEvent(){
+  const ev = SPECIALS[position];
+  $("eventModal").classList.remove("show");
+  if(!ev) return releaseTurn();
+
+  if(ev.effect === "advance"){
+    animateMove(ev.value, releaseTurn);
+  }else if(ev.effect === "back"){
+    moveBack(ev.value, releaseTurn);
+  }else{
+    releaseTurn();
+  }
+}
+
+function moveBack(steps, callback){
+  moving = true;
+  const casas = Math.max(1, steps);
+  let moved = 0;
+  $("car").classList.add("moving");
+  playEngine(Math.max(1000, casas*520));
+  const timer = setInterval(()=>{
+    if(moved >= casas || position <= 0){
+      clearInterval(timer);
+      $("car").classList.remove("moving");
+      stopEngineSoft();
+      moving = false;
+      updateHud();
+      callback && callback();
+      return;
+    }
+    position = Math.max(0, position - 1);
+    moved++;
+    placeCar(true);
+    updateHud();
+  },520);
+}
+
+function releaseTurn(){
+  if(position >= TOTAL_SPACES) return finishGame(true);
+
+  canRoll = true;
+  $("diceBtn").disabled = false;
+
+  if(extraTurn){
+    extraTurn = false;
+    $("moveMsg").textContent = "🏎️ Você ganhou uma jogada extra. Role novamente!";
+  }else if(skipTurn){
+    $("moveMsg").textContent = "🛑 Atenção: você perderá a próxima jogada.";
+  }else if(yellowFlag){
+    $("moveMsg").textContent = "🟡 Próxima rodada com avanço limitado.";
+  }else{
+    $("moveMsg").textContent = "Role o dado novamente!";
+  }
+}
+
+function finishGame(won){
+  canRoll = false;
+  $("diceBtn").disabled = true;
+  show("finalScreen");
+  $("finalTitle").textContent = won ? "🏆 Vitória na pista!" : "💪 Game Over";
+  $("finalScore").textContent = `Pontuação: ${score} | Acertos: ${right} | Erros: ${errors}`;
+  $("finalMsg").textContent = won
+    ? "Você chegou ao FINISH! Excelente corrida de Inglês!"
+    : "Você tentou, treinou e isso já é um passo importante. Volte para a pista e tente novamente!";
+}
+
+function restartGame(){
+  $("startMsg").textContent = "";
+  show("startScreen");
+}
+
+function flashGreen(){
+  const f = $("screenFlash");
+  f.classList.remove("on");
+  void f.offsetWidth;
+  f.classList.add("on");
+}
+
+window.addEventListener("resize", () => placeCar(false));
+</script>
+</body>
+</html>
