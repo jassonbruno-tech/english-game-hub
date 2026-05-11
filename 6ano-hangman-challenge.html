@@ -1074,6 +1074,31 @@ body.playing .key{
           <span>Our = Nosso/nossa</span>
           <span>Their = Deles/delas</span>
         </div>
+        <div class="review-block">
+          <b>Days of the Week / Dias da semana</b>
+          <span>Monday = Segunda-feira</span>
+          <span>Tuesday = Terça-feira</span>
+          <span>Wednesday = Quarta-feira</span>
+          <span>Thursday = Quinta-feira</span>
+          <span>Friday = Sexta-feira</span>
+          <span>Saturday = Sábado</span>
+          <span>Sunday = Domingo</span>
+        </div>
+        <div class="review-block">
+          <b>Months of the Year / Meses do ano</b>
+          <span>January = Janeiro</span>
+          <span>February = Fevereiro</span>
+          <span>March = Março</span>
+          <span>April = Abril</span>
+          <span>May = Maio</span>
+          <span>June = Junho</span>
+          <span>July = Julho</span>
+          <span>August = Agosto</span>
+          <span>September = Setembro</span>
+          <span>October = Outubro</span>
+          <span>November = Novembro</span>
+          <span>December = Dezembro</span>
+        </div>
       </div>
     </div>
 
@@ -1565,6 +1590,101 @@ const CHALLENGES = [
     "theme": "Possessive Adjectives",
     "word": "MY NAME IS",
     "hint": "Frase usada para se apresentar dizendo “meu nome é”. Como fica em inglês?"
+  },
+  {
+    "theme": "Days of the Week",
+    "word": "MONDAY",
+    "hint": "Na rotina da escola, esse costuma ser o primeiro dia de aula depois do fim de semana. Tente a letra M."
+  },
+  {
+    "theme": "Days of the Week",
+    "word": "TUESDAY",
+    "hint": "No calendário da semana, esse dia vem logo depois de Monday. Tente a letra T."
+  },
+  {
+    "theme": "Days of the Week",
+    "word": "WEDNESDAY",
+    "hint": "A semana já começou, Monday e Tuesday passaram. Esse é o próximo dia da sequência. Tente a letra W."
+  },
+  {
+    "theme": "Days of the Week",
+    "word": "THURSDAY",
+    "hint": "No calendário, esse dia vem depois de Wednesday e antes de Friday. Tente a letra T."
+  },
+  {
+    "theme": "Days of the Week",
+    "word": "FRIDAY",
+    "hint": "A turma fica animada porque esse é o último dia de aula antes do fim de semana. Tente a letra F."
+  },
+  {
+    "theme": "Days of the Week",
+    "word": "SATURDAY",
+    "hint": "Murilo olha a agenda e vê que é dia de brincar, descansar e não acordar tão cedo para a aula. Tente a letra S."
+  },
+  {
+    "theme": "Days of the Week",
+    "word": "SUNDAY",
+    "hint": "No aviso da escola aparece “No classes”. Esse dia costuma ser de descanso antes de a semana recomeçar. Tente a letra S."
+  },
+  {
+    "theme": "Months of the Year",
+    "word": "JANUARY",
+    "hint": "No começo do ano, muita gente ainda lembra das férias, da praia e dos planos novos. Tente a letra J."
+  },
+  {
+    "theme": "Months of the Year",
+    "word": "FEBRUARY",
+    "hint": "Depois de January, a turma começa a se organizar melhor para o ano letivo. Tente a letra F."
+  },
+  {
+    "theme": "Months of the Year",
+    "word": "MARCH",
+    "hint": "No calendário do ano, esse mês vem depois de February e antes de April. Tente a letra M."
+  },
+  {
+    "theme": "Months of the Year",
+    "word": "APRIL",
+    "hint": "Na sequência March, April, May, este é o mês que fica no meio. Tente a letra A."
+  },
+  {
+    "theme": "Months of the Year",
+    "word": "MAY",
+    "hint": "Esse mês vem logo depois de April e tem nome bem curtinho em inglês. Tente a letra M."
+  },
+  {
+    "theme": "Months of the Year",
+    "word": "JUNE",
+    "hint": "No meio do ano, a escola já está cheia de atividades e revisões. Esse mês vem antes de July. Tente a letra J."
+  },
+  {
+    "theme": "Months of the Year",
+    "word": "JULY",
+    "hint": "Muita gente lembra de descanso e férias no meio do ano. Esse mês vem depois de June. Tente a letra J."
+  },
+  {
+    "theme": "Months of the Year",
+    "word": "AUGUST",
+    "hint": "Depois de July, o calendário continua com este mês. Tente a letra A."
+  },
+  {
+    "theme": "Months of the Year",
+    "word": "SEPTEMBER",
+    "hint": "No final do ano letivo se aproximando, esse mês aparece antes de October. Tente a letra S."
+  },
+  {
+    "theme": "Months of the Year",
+    "word": "OCTOBER",
+    "hint": "Na sequência September, October, November, este é o mês que fica no meio. Tente a letra O."
+  },
+  {
+    "theme": "Months of the Year",
+    "word": "NOVEMBER",
+    "hint": "Esse mês vem depois de October e antes de December. Tente a letra N."
+  },
+  {
+    "theme": "Months of the Year",
+    "word": "DECEMBER",
+    "hint": "Luzes, árvore decorada e encerramento do ano escolar combinam com este mês. Tente a letra D."
   }
 ];
 const KEYBOARD = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
@@ -1790,7 +1910,9 @@ function getMemoryTip(theme){
     "School Vocabulary": "💡 Dica: pense em lugares e objetos da escola.",
     "Personal Information": "💡 Dica: informações pessoais falam sobre nome, idade, país e cidade.",
     "Personal Pronouns": "💡 Dica: pronomes substituem nomes: I, you, he, she, it, we, they.",
-    "Possessive Adjectives": "💡 Dica: possessivos mostram posse: my, your, his, her, our, their."
+    "Possessive Adjectives": "💡 Dica: possessivos mostram posse: my, your, his, her, our, their.",
+    "Days of the Week": "💡 Dica: pense na ordem da semana: Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday.",
+    "Months of the Year": "💡 Dica: pense na ordem do ano: January, February, March, April, May, June, July, August, September, October, November, December."
   };
   return tips[theme] || "💡 Dica: pense no vocabulário estudado em sala.";
 }
