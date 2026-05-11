@@ -1012,7 +1012,7 @@ body.playing .key{
     <div class="start-icon">🌾</div>
     <h2>Hangman Challenge</h2>
     <p class="start-text">Use seu vocabulário, observe a dica e tente descobrir a palavra em inglês antes que o espantalho fique completo na forca.</p>
-    <div class="start-highlight"><b>Desafio do 6º ano:</b> aqui o aluno fortalece o vocabulário do cotidiano, relembra conteúdos do 1º bimestre e aprende jogando de forma leve, visual e divertida.</div>
+    <div class="start-highlight"><b>Desafio do 6º ano:</b> aqui o foco principal é o 2º bimestre, sem apagar a revisão do 1º bimestre. A cada partida, aparecem mais palavras novas e algumas palavras antigas para reforçar a memória.</div>
 
     <div class="quick-review">
       <div class="review-title">📚 Quick Review — Revisão rápida antes do desafio</div>
@@ -1253,50 +1253,12 @@ body.playing .key{
 const GAME_NAME = "6ano-hangman-challenge";
 
 const PHASES = [
-  {
-    "name": "Greetings and Farewells",
-    "themes": [
-      "Greetings",
-      "Farewells"
-    ],
-    "label": "Missão 1/6 — Greetings and Farewells"
-  },
-  {
-    "name": "Classroom Commands",
-    "themes": [
-      "Classroom Commands"
-    ],
-    "label": "Missão 2/6 — Classroom Commands"
-  },
-  {
-    "name": "Classroom Expressions",
-    "themes": [
-      "Classroom Expressions"
-    ],
-    "label": "Missão 3/6 — Classroom Expressions"
-  },
-  {
-    "name": "School and Personal Information",
-    "themes": [
-      "School Vocabulary",
-      "Personal Information"
-    ],
-    "label": "Missão 4/6 — School and Personal Information"
-  },
-  {
-    "name": "Pronouns",
-    "themes": [
-      "Personal Pronouns"
-    ],
-    "label": "Missão 5/6 — Personal Pronouns"
-  },
-  {
-    "name": "Possessive Adjectives",
-    "themes": [
-      "Possessive Adjectives"
-    ],
-    "label": "Missão 6/6 — Possessive Adjectives"
-  }
+  {"name":"Numbers","themes":["Numbers"],"label":"Missão 1/6 — Numbers"},
+  {"name":"Days of the Week","themes":["Days of the Week"],"label":"Missão 2/6 — Days of the Week"},
+  {"name":"Months of the Year","themes":["Months of the Year"],"label":"Missão 3/6 — Months of the Year"},
+  {"name":"School Vocabulary","themes":["School Vocabulary"],"label":"Missão 4/6 — School Vocabulary"},
+  {"name":"Family and Feelings","themes":["Family","Feelings","Verb to be"],"label":"Missão 5/6 — Family / Feelings"},
+  {"name":"Review 1st Bimester","themes":["Review 1st Bimester","Greetings","Farewells","Classroom Commands","Classroom Expressions","Personal Pronouns","Possessive Adjectives"],"label":"Missão 6/6 — Review 1st Bimester"}
 ];
 
 function getCurrentPhaseIndex(){
@@ -1304,13 +1266,7 @@ function getCurrentPhaseIndex(){
 }
 
 function buildPhaseChallengeList(){
-  const fullList = [];
-  PHASES.forEach(phase => {
-    const pool = CHALLENGES.filter(item => phase.themes.includes(item.theme));
-    const selected = pool.slice(0, 5);
-    fullList.push(...selected);
-  });
-  return fullList;
+  return makeBag();
 }
 
 function showPhaseTransitionIfNeeded(){
@@ -1352,339 +1308,358 @@ Cada partida usa 5 palavras sorteadas por fase, totalizando 30 rodadas.
 */
 const CHALLENGES = [
   {
-    "theme": "Greetings",
-    "word": "HELLO",
-    "hint": "Você encontra um colega e quer dizer “olá”. Qual palavra em inglês combina com essa situação?"
+    "theme": "Numbers",
+    "word": "ELEVEN",
+    "hint": "A sequência chegou depois de ten. Esse número tem duas partes na escrita. Tente a letra E.",
+    "term": 2
   },
   {
-    "theme": "Greetings",
-    "word": "GOOD MORNING",
-    "hint": "A aula começa cedo. Como dizemos “bom dia” em inglês?"
+    "theme": "Numbers",
+    "word": "TWELVE",
+    "hint": "No placar aparecem 10 pontos e mais 2 pontos. Esse número vem depois de eleven. Tente a letra T.",
+    "term": 2
   },
   {
-    "theme": "Greetings",
-    "word": "GOOD AFTERNOON",
-    "hint": "Você encontra a professora depois do almoço. Como dizemos “boa tarde” em inglês?"
+    "theme": "Numbers",
+    "word": "THIRTEEN",
+    "hint": "Esse número começa a família dos teens e vem logo depois de twelve. Tente a letra T.",
+    "term": 2
   },
   {
-    "theme": "Farewells",
-    "word": "GOODBYE",
-    "hint": "A aula terminou e você quer se despedir. Qual palavra em inglês significa “tchau”?"
+    "theme": "Numbers",
+    "word": "FIFTEEN",
+    "hint": "No desafio, a turma contou 10 + 5 pontos. Esse número termina com teen. Tente a letra F.",
+    "term": 2
   },
   {
-    "theme": "Farewells",
-    "word": "SEE YOU",
-    "hint": "Você vai embora, mas quer dizer “até logo”. Qual expressão em inglês pode usar?"
+    "theme": "Numbers",
+    "word": "TWENTY",
+    "hint": "Duas dezenas no placar formam esse número. Ele não termina com teen, termina com ty. Tente a letra T.",
+    "term": 2
   },
   {
-    "theme": "Greetings",
-    "word": "HI",
-    "hint": "Você cumprimenta um amigo de forma curta e informal. Qual palavra em inglês significa “oi”?"
+    "theme": "Numbers",
+    "word": "THIRTY",
+    "hint": "Três dezenas completas aparecem no placar. Esse número termina com ty. Tente a letra T.",
+    "term": 2
   },
   {
-    "theme": "Farewells",
-    "word": "BYE",
-    "hint": "Você está saindo e quer dizer “tchau” de forma curta. Qual palavra em inglês pode usar?"
+    "theme": "Numbers",
+    "word": "FORTY",
+    "hint": "Quatro dezenas completas aparecem no desafio. Atenção: essa palavra não tem a letra U. Tente a letra F.",
+    "term": 2
   },
   {
-    "theme": "Farewells",
-    "word": "GOOD NIGHT",
-    "hint": "Você se despede à noite. Como dizemos “boa noite” em inglês nesse caso?"
-  },
-  {
-    "theme": "Classroom Commands",
-    "word": "LISTEN",
-    "hint": "O professor coloca um áudio e pede para a turma escutar. Qual comando em inglês significa “escute”?"
-  },
-  {
-    "theme": "Classroom Commands",
-    "word": "REPEAT",
-    "hint": "A professora fala uma palavra e pede para os alunos falarem de novo. Qual comando significa “repita”?"
-  },
-  {
-    "theme": "Classroom Commands",
-    "word": "READ",
-    "hint": "A atividade pede para olhar o texto e fazer a leitura. Qual comando em inglês significa “leia”?"
-  },
-  {
-    "theme": "Classroom Commands",
-    "word": "WRITE",
-    "hint": "A professora pede para escrever a resposta no caderno. Qual comando em inglês significa “escreva”?"
-  },
-  {
-    "theme": "Classroom Commands",
-    "word": "SIT DOWN",
-    "hint": "A turma está em pé e a professora pede para todos sentarem. Qual comando em inglês ela pode usar?"
-  },
-  {
-    "theme": "Classroom Commands",
-    "word": "STAND UP",
-    "hint": "A professora quer que os alunos fiquem de pé. Qual comando em inglês significa “levante-se”?"
-  },
-  {
-    "theme": "Classroom Commands",
-    "word": "OPEN YOUR BOOK",
-    "hint": "Antes da atividade, a professora pede para abrir o livro. Qual comando em inglês representa isso?"
-  },
-  {
-    "theme": "Classroom Commands",
-    "word": "CLOSE YOUR BOOK",
-    "hint": "A atividade terminou e a professora pede para fechar o livro. Qual comando em inglês representa isso?"
-  },
-  {
-    "theme": "Classroom Expressions",
-    "word": "PLEASE",
-    "hint": "Você quer fazer um pedido de forma educada. Qual palavra significa “por favor”?"
-  },
-  {
-    "theme": "Classroom Expressions",
-    "word": "THANK YOU",
-    "hint": "Alguém ajudou você. Qual expressão em inglês usamos para agradecer?"
-  },
-  {
-    "theme": "Classroom Expressions",
-    "word": "EXCUSE ME",
-    "hint": "Você precisa pedir licença antes de falar ou passar. Qual expressão em inglês pode usar?"
-  },
-  {
-    "theme": "Classroom Expressions",
-    "word": "SORRY",
-    "hint": "Você cometeu um erro e quer pedir desculpa. Qual palavra em inglês pode usar?"
-  },
-  {
-    "theme": "Classroom Expressions",
-    "word": "HELP ME",
-    "hint": "Você não entendeu a atividade e quer pedir ajuda. Qual expressão em inglês significa “me ajude”?"
-  },
-  {
-    "theme": "Classroom Expressions",
-    "word": "I DONT KNOW",
-    "hint": "A professora perguntou algo, mas você não sabe a resposta. Como dizer “eu não sei” em inglês?"
-  },
-  {
-    "theme": "Classroom Expressions",
-    "word": "I DONT UNDERSTAND",
-    "hint": "Você quer avisar que não entendeu a explicação. Como dizer isso em inglês?"
-  },
-  {
-    "theme": "Classroom Expressions",
-    "word": "MAY I GO OUT",
-    "hint": "Você precisa sair da sala por um momento. Qual pergunta educada em inglês pode fazer?"
-  },
-  {
-    "theme": "School Vocabulary",
-    "word": "SCHOOL",
-    "hint": "Lugar onde os alunos estudam. Qual é essa palavra em inglês?"
-  },
-  {
-    "theme": "School Vocabulary",
-    "word": "CLASSROOM",
-    "hint": "Lugar da escola onde acontecem as aulas. Como dizemos “sala de aula” em inglês?"
-  },
-  {
-    "theme": "School Vocabulary",
-    "word": "CAFETERIA",
-    "hint": "Lugar da escola onde os alunos podem comer ou lanchar. Qual é a palavra em inglês?"
-  },
-  {
-    "theme": "School Vocabulary",
-    "word": "BOOK",
-    "hint": "Objeto usado para ler e estudar. Como dizemos “livro” em inglês?"
-  },
-  {
-    "theme": "School Vocabulary",
-    "word": "PENCIL",
-    "hint": "Objeto usado para escrever ou desenhar. Como dizemos “lápis” em inglês?"
-  },
-  {
-    "theme": "Personal Information",
-    "word": "NAME",
-    "hint": "Na pergunta “What is your name?”, qual palavra significa “nome”?"
-  },
-  {
-    "theme": "Personal Information",
-    "word": "AGE",
-    "hint": "Informação que indica quantos anos uma pessoa tem. Qual palavra em inglês significa “idade”?"
-  },
-  {
-    "theme": "Personal Information",
-    "word": "BRAZIL",
-    "hint": "País onde moramos. Como escrevemos “Brasil” em inglês?"
-  },
-  {
-    "theme": "Personal Pronouns",
-    "word": "I",
-    "hint": "Pronome usado para falar “eu”. Qual é em inglês?"
-  },
-  {
-    "theme": "Personal Pronouns",
-    "word": "YOU",
-    "hint": "Pronome usado para falar “você”. Qual é em inglês?"
-  },
-  {
-    "theme": "Personal Pronouns",
-    "word": "HE",
-    "hint": "Pronome usado para falar de menino, homem ou personagem masculino. Qual é em inglês?"
-  },
-  {
-    "theme": "Personal Pronouns",
-    "word": "SHE",
-    "hint": "Pronome usado para falar de menina, mulher ou personagem feminina. Qual é em inglês?"
-  },
-  {
-    "theme": "Personal Pronouns",
-    "word": "IT",
-    "hint": "Pronome usado para animal, objeto, lugar ou coisa. Qual é em inglês?"
-  },
-  {
-    "theme": "Personal Pronouns",
-    "word": "WE",
-    "hint": "Pronome usado para falar “nós”. Qual é em inglês?"
-  },
-  {
-    "theme": "Personal Pronouns",
-    "word": "THEY",
-    "hint": "Pronome usado para falar “eles” ou “elas”. Qual é em inglês?"
-  },
-  {
-    "theme": "Personal Pronouns",
-    "word": "TEACHER",
-    "hint": "Pessoa que ensina os alunos. Como dizemos “professor/professora” em inglês?"
-  },
-  {
-    "theme": "Possessive Adjectives",
-    "word": "MY",
-    "hint": "Palavra usada para dizer “meu” ou “minha”. Exemplo: ___ name is Ana."
-  },
-  {
-    "theme": "Possessive Adjectives",
-    "word": "YOUR",
-    "hint": "Palavra usada para dizer “seu” ou “sua” quando estou falando com você. Exemplo: What is ___ name?"
-  },
-  {
-    "theme": "Possessive Adjectives",
-    "word": "HIS",
-    "hint": "Palavra usada para dizer “dele”. Exemplo: Pedro is a student. ___ book is blue."
-  },
-  {
-    "theme": "Possessive Adjectives",
-    "word": "HER",
-    "hint": "Palavra usada para dizer “dela”. Exemplo: Ana is a student. ___ pencil is red."
-  },
-  {
-    "theme": "Possessive Adjectives",
-    "word": "OUR",
-    "hint": "Palavra usada para dizer “nosso” ou “nossa”. Exemplo: ___ school is beautiful."
-  },
-  {
-    "theme": "Possessive Adjectives",
-    "word": "THEIR",
-    "hint": "Palavra usada para dizer “deles” ou “delas”. Exemplo: The students have books. ___ books are new."
-  },
-  {
-    "theme": "Possessive Adjectives",
-    "word": "ITS",
-    "hint": "Palavra usada para posse de animal, objeto ou coisa. Exemplo: The dog has a name. ___ name is Rex."
-  },
-  {
-    "theme": "Possessive Adjectives",
-    "word": "MY NAME IS",
-    "hint": "Frase usada para se apresentar dizendo “meu nome é”. Como fica em inglês?"
+    "theme": "Numbers",
+    "word": "FIFTY",
+    "hint": "Cinco dezenas completas aparecem no placar. Essa palavra termina com ty. Tente a letra F.",
+    "term": 2
   },
   {
     "theme": "Days of the Week",
     "word": "MONDAY",
-    "hint": "Na rotina da escola, esse costuma ser o primeiro dia de aula depois do fim de semana. Tente a letra M."
+    "hint": "Na rotina escolar, esse costuma ser o primeiro dia de aula depois do fim de semana. Tente a letra M.",
+    "term": 2
   },
   {
     "theme": "Days of the Week",
     "word": "TUESDAY",
-    "hint": "No calendário da semana, esse dia vem logo depois de Monday. Tente a letra T."
+    "hint": "No calendário, esse dia vem logo depois de Monday. Tente a letra T.",
+    "term": 2
   },
   {
     "theme": "Days of the Week",
     "word": "WEDNESDAY",
-    "hint": "A semana já começou, Monday e Tuesday passaram. Esse é o próximo dia da sequência. Tente a letra W."
+    "hint": "A sequência da semana está assim: Monday, Tuesday, _____. Tente a letra W.",
+    "term": 2
   },
   {
     "theme": "Days of the Week",
     "word": "THURSDAY",
-    "hint": "No calendário, esse dia vem depois de Wednesday e antes de Friday. Tente a letra T."
+    "hint": "Esse dia vem depois de Wednesday e antes de Friday. Tente a letra T.",
+    "term": 2
   },
   {
     "theme": "Days of the Week",
     "word": "FRIDAY",
-    "hint": "A turma fica animada porque esse é o último dia de aula antes do fim de semana. Tente a letra F."
+    "hint": "A turma fica animada porque é o último dia de aula antes do descanso do fim de semana. Tente a letra F.",
+    "term": 2
   },
   {
     "theme": "Days of the Week",
     "word": "SATURDAY",
-    "hint": "Murilo olha a agenda e vê que é dia de brincar, descansar e não acordar tão cedo para a aula. Tente a letra S."
+    "hint": "Dia muito lembrado para brincar, passear e descansar sem aula no dia seguinte. Tente a letra S.",
+    "term": 2
   },
   {
     "theme": "Days of the Week",
     "word": "SUNDAY",
-    "hint": "No aviso da escola aparece “No classes”. Esse dia costuma ser de descanso antes de a semana recomeçar. Tente a letra S."
+    "hint": "Dia que costuma aparecer antes de Monday, quando a semana recomeça. Tente a letra S.",
+    "term": 2
   },
   {
     "theme": "Months of the Year",
     "word": "JANUARY",
-    "hint": "No começo do ano, muita gente ainda lembra das férias, da praia e dos planos novos. Tente a letra J."
+    "hint": "No começo do ano, muita gente ainda lembra das férias e dos planos novos. Tente a letra J.",
+    "term": 2
   },
   {
     "theme": "Months of the Year",
     "word": "FEBRUARY",
-    "hint": "Depois de January, a turma começa a se organizar melhor para o ano letivo. Tente a letra F."
+    "hint": "Esse mês vem depois de January no calendário do ano. Tente a letra F.",
+    "term": 2
   },
   {
     "theme": "Months of the Year",
     "word": "MARCH",
-    "hint": "No calendário do ano, esse mês vem depois de February e antes de April. Tente a letra M."
+    "hint": "No calendário, esse mês vem depois de February e antes de April. Tente a letra M.",
+    "term": 2
   },
   {
     "theme": "Months of the Year",
     "word": "APRIL",
-    "hint": "Na sequência March, April, May, este é o mês que fica no meio. Tente a letra A."
+    "hint": "Na sequência March, April, May, este mês fica no meio. Tente a letra A.",
+    "term": 2
   },
   {
     "theme": "Months of the Year",
     "word": "MAY",
-    "hint": "Esse mês vem logo depois de April e tem nome bem curtinho em inglês. Tente a letra M."
+    "hint": "Esse mês vem depois de April e tem nome bem curtinho em inglês. Tente a letra M.",
+    "term": 2
   },
   {
     "theme": "Months of the Year",
     "word": "JUNE",
-    "hint": "No meio do ano, a escola já está cheia de atividades e revisões. Esse mês vem antes de July. Tente a letra J."
+    "hint": "Esse mês vem antes de July e aparece perto do meio do ano. Tente a letra J.",
+    "term": 2
   },
   {
     "theme": "Months of the Year",
     "word": "JULY",
-    "hint": "Muita gente lembra de descanso e férias no meio do ano. Esse mês vem depois de June. Tente a letra J."
+    "hint": "Esse mês vem depois de June e costuma lembrar férias do meio do ano. Tente a letra J.",
+    "term": 2
   },
   {
     "theme": "Months of the Year",
     "word": "AUGUST",
-    "hint": "Depois de July, o calendário continua com este mês. Tente a letra A."
+    "hint": "Depois de July, o calendário continua com este mês. Tente a letra A.",
+    "term": 2
   },
   {
     "theme": "Months of the Year",
     "word": "SEPTEMBER",
-    "hint": "No final do ano letivo se aproximando, esse mês aparece antes de October. Tente a letra S."
+    "hint": "Esse mês aparece antes de October na sequência do ano. Tente a letra S.",
+    "term": 2
   },
   {
     "theme": "Months of the Year",
     "word": "OCTOBER",
-    "hint": "Na sequência September, October, November, este é o mês que fica no meio. Tente a letra O."
+    "hint": "Na sequência September, October, November, este mês fica no meio. Tente a letra O.",
+    "term": 2
   },
   {
     "theme": "Months of the Year",
     "word": "NOVEMBER",
-    "hint": "Esse mês vem depois de October e antes de December. Tente a letra N."
+    "hint": "Esse mês vem depois de October e antes de December. Tente a letra N.",
+    "term": 2
   },
   {
     "theme": "Months of the Year",
     "word": "DECEMBER",
-    "hint": "Luzes, árvore decorada e encerramento do ano escolar combinam com este mês. Tente a letra D."
+    "hint": "Luzes, encerramento do ano e festas combinam com esse mês. Tente a letra D.",
+    "term": 2
+  },
+  {
+    "theme": "School Vocabulary",
+    "word": "SCHOOL",
+    "hint": "Lugar onde os alunos estudam, fazem atividades e convivem com a turma. Tente a letra S.",
+    "term": 2
+  },
+  {
+    "theme": "School Vocabulary",
+    "word": "CLASSROOM",
+    "hint": "Lugar da escola onde acontecem as aulas e os desafios de Inglês. Tente a letra C.",
+    "term": 2
+  },
+  {
+    "theme": "School Vocabulary",
+    "word": "BOOK",
+    "hint": "Objeto usado para leitura e estudo. Tente a letra B.",
+    "term": 2
+  },
+  {
+    "theme": "School Vocabulary",
+    "word": "NOTEBOOK",
+    "hint": "Objeto usado para copiar atividades e organizar anotações da aula. Tente a letra N.",
+    "term": 2
+  },
+  {
+    "theme": "School Vocabulary",
+    "word": "PENCIL",
+    "hint": "Objeto usado para escrever ou desenhar no caderno. Tente a letra P.",
+    "term": 2
+  },
+  {
+    "theme": "School Vocabulary",
+    "word": "ERASER",
+    "hint": "Objeto usado quando o aluno precisa apagar algo escrito a lápis. Tente a letra E.",
+    "term": 2
+  },
+  {
+    "theme": "School Vocabulary",
+    "word": "RULER",
+    "hint": "Objeto usado para fazer linhas retas ou medir no caderno. Tente a letra R.",
+    "term": 2
+  },
+  {
+    "theme": "School Vocabulary",
+    "word": "BACKPACK",
+    "hint": "Objeto usado para levar livros, caderno e materiais para a escola. Tente a letra B.",
+    "term": 2
+  },
+  {
+    "theme": "Family",
+    "word": "MOTHER",
+    "hint": "Pessoa da família que muitos chamam de mãe. Tente a letra M.",
+    "term": 2
+  },
+  {
+    "theme": "Family",
+    "word": "FATHER",
+    "hint": "Pessoa da família que muitos chamam de pai. Tente a letra F.",
+    "term": 2
+  },
+  {
+    "theme": "Family",
+    "word": "SISTER",
+    "hint": "Menina ou mulher que é filha dos mesmos pais ou faz parte da família como irmã. Tente a letra S.",
+    "term": 2
+  },
+  {
+    "theme": "Family",
+    "word": "BROTHER",
+    "hint": "Menino ou homem que é filho dos mesmos pais ou faz parte da família como irmão. Tente a letra B.",
+    "term": 2
+  },
+  {
+    "theme": "Family",
+    "word": "GRANDMOTHER",
+    "hint": "Na família, é uma pessoa muito querida que pode ser chamada de avó. Tente a letra G.",
+    "term": 2
+  },
+  {
+    "theme": "Feelings",
+    "word": "HAPPY",
+    "hint": "Sentimento de alegria quando algo bom acontece. Tente a letra H.",
+    "term": 2
+  },
+  {
+    "theme": "Feelings",
+    "word": "SAD",
+    "hint": "Sentimento que aparece quando alguém fica triste ou desanimado. Tente a letra S.",
+    "term": 2
+  },
+  {
+    "theme": "Feelings",
+    "word": "TIRED",
+    "hint": "Sentimento de cansaço depois de estudar, brincar ou fazer muitas atividades. Tente a letra T.",
+    "term": 2
+  },
+  {
+    "theme": "Feelings",
+    "word": "HUNGRY",
+    "hint": "Sensação de querer comer alguma coisa. Tente a letra H.",
+    "term": 2
+  },
+  {
+    "theme": "Verb to be",
+    "word": "AM",
+    "hint": "Usamos com I em frases como I ___ a student. Tente a letra A.",
+    "term": 2
+  },
+  {
+    "theme": "Verb to be",
+    "word": "IS",
+    "hint": "Usamos com he, she ou it em frases como She ___ happy. Tente a letra I.",
+    "term": 2
+  },
+  {
+    "theme": "Verb to be",
+    "word": "ARE",
+    "hint": "Usamos com you, we ou they em frases como They ___ students. Tente a letra A.",
+    "term": 2
+  },
+  {
+    "theme": "Review 1st Bimester",
+    "word": "HELLO",
+    "hint": "Revisão: expressão curta usada para cumprimentar alguém quando encontramos essa pessoa. Tente a letra H.",
+    "term": 1
+  },
+  {
+    "theme": "Review 1st Bimester",
+    "word": "GOODBYE",
+    "hint": "Revisão: expressão usada quando alguém vai embora ou encerra uma conversa. Tente a letra G.",
+    "term": 1
+  },
+  {
+    "theme": "Review 1st Bimester",
+    "word": "LISTEN",
+    "hint": "Revisão: comando usado quando o professor quer que a turma preste atenção no áudio ou na fala. Tente a letra L.",
+    "term": 1
+  },
+  {
+    "theme": "Review 1st Bimester",
+    "word": "REPEAT",
+    "hint": "Revisão: comando usado quando a turma precisa falar novamente para treinar pronúncia. Tente a letra R.",
+    "term": 1
+  },
+  {
+    "theme": "Review 1st Bimester",
+    "word": "PLEASE",
+    "hint": "Revisão: palavra usada para deixar um pedido mais educado. Tente a letra P.",
+    "term": 1
+  },
+  {
+    "theme": "Review 1st Bimester",
+    "word": "THANK YOU",
+    "hint": "Revisão: expressão usada quando alguém ajudou você ou fez algo gentil. Tente a letra T.",
+    "term": 1
+  },
+  {
+    "theme": "Review 1st Bimester",
+    "word": "I",
+    "hint": "Revisão: pronome usado quando a pessoa fala de si mesma. Tente a letra I.",
+    "term": 1
+  },
+  {
+    "theme": "Review 1st Bimester",
+    "word": "YOU",
+    "hint": "Revisão: pronome usado para falar diretamente com outra pessoa. Tente a letra Y.",
+    "term": 1
+  },
+  {
+    "theme": "Review 1st Bimester",
+    "word": "HE",
+    "hint": "Revisão: pronome usado para menino, homem ou personagem masculino. Tente a letra H.",
+    "term": 1
+  },
+  {
+    "theme": "Review 1st Bimester",
+    "word": "SHE",
+    "hint": "Revisão: pronome usado para menina, mulher ou personagem feminina. Tente a letra S.",
+    "term": 1
+  },
+  {
+    "theme": "Review 1st Bimester",
+    "word": "MY",
+    "hint": "Revisão: possessivo usado para dizer meu ou minha. Tente a letra M.",
+    "term": 1
+  },
+  {
+    "theme": "Review 1st Bimester",
+    "word": "YOUR",
+    "hint": "Revisão: possessivo usado para dizer seu ou sua quando falo com você. Tente a letra Y.",
+    "term": 1
   }
 ];
 const KEYBOARD = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
@@ -1844,9 +1819,25 @@ function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Mat
 function show(id){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));el(id).classList.add("active");document.body.classList.toggle("playing", id==="gameScreen")}
 
 function makeBag(){
-  const bag = shuffle(CHALLENGES);
-  while(bag.length < TOTAL_ROUNDS) bag.push(...shuffle(CHALLENGES));
-  return bag.slice(0,TOTAL_ROUNDS);
+  // Distribuição pedagógica do Hangman: 24 palavras do 2º bimestre e 6 palavras de revisão do 1º bimestre.
+  // Cada bloco de 5 desafios corresponde a uma missão visual do jogo.
+  const byTheme = theme => shuffle(CHALLENGES.filter(item => item.theme === theme));
+  const byThemes = themes => shuffle(CHALLENGES.filter(item => themes.includes(item.theme)));
+  const take = (pool, n) => pool.slice(0, n);
+
+  const bag = [];
+  bag.push(...take(byTheme("Numbers"), 5));
+  bag.push(...take(byTheme("Days of the Week"), 5));
+  bag.push(...take(byTheme("Months of the Year"), 5));
+  bag.push(...take(byTheme("School Vocabulary"), 5));
+  bag.push(...take(byThemes(["Family", "Feelings", "Verb to be"]), 4));
+  bag.push(...take(byTheme("Review 1st Bimester"), 1));
+  bag.push(...take(byTheme("Review 1st Bimester"), 5));
+
+  while(bag.length < TOTAL_ROUNDS){
+    bag.push(...take(shuffle(CHALLENGES.filter(item => item.term === 2)), 1));
+  }
+  return bag.slice(0, TOTAL_ROUNDS);
 }
 
 function restart(){
@@ -1903,20 +1894,23 @@ function updateStats(){
 
 function getMemoryTip(theme){
   const tips = {
+    "Numbers": "💡 Dica: observe se o número termina com teen (13–19) ou ty (20, 30, 40, 50).",
+    "Days of the Week": "💡 Dica: pense na ordem da semana: Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday.",
+    "Months of the Year": "💡 Dica: pense na ordem do ano: January, February, March, April, May, June, July, August, September, October, November, December.",
+    "School Vocabulary": "💡 Dica: pense nos objetos, lugares e materiais que você usa na escola.",
+    "Family": "💡 Dica: family vocabulary fala de pessoas da família, como mother, father, sister e brother.",
+    "Feelings": "💡 Dica: feelings são sentimentos, como happy, sad, tired e hungry.",
+    "Verb to be": "💡 Dica: no verb to be, usamos am com I, is com he/she/it e are com you/we/they.",
+    "Review 1st Bimester": "💡 Dica: esta é uma revisão rápida do 1º bimestre: greetings, commands, pronouns e possessives.",
     "Greetings": "💡 Dica: greeting é cumprimento. Use quando você chega ou encontra alguém.",
     "Farewells": "💡 Dica: farewell é despedida. Use quando você vai embora.",
     "Classroom Commands": "💡 Dica: commands são ordens/instruções da aula, como ler, ouvir, repetir e escrever.",
     "Classroom Expressions": "💡 Dica: expressions são frases úteis para pedir ajuda, agradecer, pedir licença ou dizer que não entendeu.",
-    "School Vocabulary": "💡 Dica: pense em lugares e objetos da escola.",
-    "Personal Information": "💡 Dica: informações pessoais falam sobre nome, idade, país e cidade.",
     "Personal Pronouns": "💡 Dica: pronomes substituem nomes: I, you, he, she, it, we, they.",
-    "Possessive Adjectives": "💡 Dica: possessivos mostram posse: my, your, his, her, our, their.",
-    "Days of the Week": "💡 Dica: pense na ordem da semana: Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday.",
-    "Months of the Year": "💡 Dica: pense na ordem do ano: January, February, March, April, May, June, July, August, September, October, November, December."
+    "Possessive Adjectives": "💡 Dica: possessivos mostram posse: my, your, his, her, our, their."
   };
   return tips[theme] || "💡 Dica: pense no vocabulário estudado em sala.";
 }
-
 
 function resetRoundLives(){
   state.lives = MAX_LIVES;
