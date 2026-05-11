@@ -6,484 +6,362 @@
 <title>6º Ano — English Game Hub</title>
 
 <style>
-* {
-  box-sizing: border-box;
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
 }
 
-:root {
-  --yellow: #facc15;
-  --gold: #f59e0b;
-  --dark-yellow: #b45309;
-  --blue: #1d4ed8;
-  --deep-blue: #0f2f7a;
-  --cream: #fff7d6;
-  --white: #ffffff;
-  --text: #1e293b;
+:root{
+  --yellow1:#fff7ad;
+  --yellow2:#facc15;
+  --yellow3:#f59e0b;
+  --blue1:#1d4ed8;
+  --blue2:#0f2f7a;
+  --white:#ffffff;
+  --text:#1e293b;
 }
 
-html, body {
-  margin: 0;
-  min-height: 100%;
-  font-family: Arial, Helvetica, sans-serif;
-  color: var(--text);
+html,body{
+  width:100%;
+  height:100%;
+  font-family:Arial, Helvetica, sans-serif;
+  overflow:hidden;
 }
 
-body {
+body{
   background:
-    radial-gradient(circle at top left, rgba(255,255,255,.65), transparent 25%),
-    radial-gradient(circle at top right, rgba(37,99,235,.25), transparent 22%),
-    linear-gradient(180deg, #fff7ad 0%, #facc15 40%, #f59e0b 100%);
-  padding: 14px;
+    radial-gradient(circle at top left, rgba(255,255,255,.55), transparent 22%),
+    radial-gradient(circle at top right, rgba(29,78,216,.18), transparent 20%),
+    linear-gradient(180deg,var(--yellow1) 0%, var(--yellow2) 48%, var(--yellow3) 100%);
+  color:var(--text);
 }
 
-.page {
-  width: min(1120px, 100%);
-  margin: 0 auto;
+.page{
+  width:100%;
+  height:100dvh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:8px;
 }
 
-.topbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 12px;
+.container{
+  width:min(100%, 1100px);
+  height:calc(100dvh - 16px);
+  background:rgba(255,255,255,.18);
+  border-radius:24px;
+  backdrop-filter:blur(6px);
+  border:2px solid rgba(255,255,255,.45);
+  box-shadow:0 18px 40px rgba(120,53,15,.18);
+  padding:10px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  overflow:hidden;
 }
 
-.back-btn,
-.sound-btn {
-  border: 0;
-  text-decoration: none;
-  cursor: pointer;
-  border-radius: 999px;
-  padding: 10px 14px;
-  font-size: 13px;
-  font-weight: 900;
-  color: white;
-  background: linear-gradient(135deg, var(--deep-blue), var(--blue));
-  box-shadow: 0 8px 18px rgba(15, 47, 122, .24);
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px;
+  flex:0 0 auto;
 }
 
-.sound-btn {
-  background: linear-gradient(135deg, #92400e, #f59e0b);
+.back-btn{
+  text-decoration:none;
+  background:linear-gradient(135deg,var(--blue2),var(--blue1));
+  color:white;
+  font-weight:900;
+  border-radius:999px;
+  padding:10px 14px;
+  font-size:13px;
+  box-shadow:0 8px 16px rgba(15,47,122,.24);
+  white-space:nowrap;
 }
 
-.hero-card {
-  background: rgba(255,255,255,.86);
-  border: 3px solid rgba(255,255,255,.85);
-  border-radius: 28px;
-  padding: 10px;
-  box-shadow: 0 22px 48px rgba(120, 53, 15, .22);
-  overflow: hidden;
+.level-pill{
+  background:linear-gradient(135deg,#f59e0b,#facc15);
+  color:#78350f;
+  font-weight:900;
+  border-radius:999px;
+  padding:8px 12px;
+  font-size:12px;
+  box-shadow:0 6px 14px rgba(180,83,9,.16);
+  white-space:nowrap;
 }
 
-.hero-image {
-  width: 100%;
-  display: block;
-  border-radius: 22px;
-  object-fit: contain;
-  background: #facc15;
+.hero-wrap{
+  flex:1 1 42%;
+  min-height:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(255,255,255,.72);
+  border-radius:22px;
+  padding:8px;
+  overflow:hidden;
 }
 
-.intro {
-  margin-top: 16px;
-  background: rgba(255,255,255,.92);
-  border-radius: 26px;
-  padding: 20px;
-  box-shadow: 0 14px 32px rgba(120, 53, 15, .16);
-  border: 2px solid rgba(255,255,255,.8);
+.hero-image{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  border-radius:18px;
+  display:block;
 }
 
-.level-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: linear-gradient(135deg, #1d4ed8, #2563eb);
-  color: white;
-  border-radius: 999px;
-  padding: 8px 13px;
-  font-size: 12px;
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: .4px;
+.games-section{
+  flex:1 1 58%;
+  min-height:0;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
 }
 
-.intro h1 {
-  margin: 12px 0 6px;
-  font-size: clamp(32px, 7vw, 58px);
-  line-height: .95;
-  color: var(--deep-blue);
-  text-shadow: 3px 3px 0 rgba(250, 204, 21, .55);
+.section-title{
+  text-align:center;
+  font-size:20px;
+  font-weight:900;
+  color:var(--blue2);
+  text-shadow:2px 2px 0 rgba(250,204,21,.55);
+  flex:0 0 auto;
 }
 
-.intro h2 {
-  margin: 0 0 12px;
-  font-size: clamp(20px, 4vw, 32px);
-  color: var(--dark-yellow);
+.games-grid{
+  flex:1 1 auto;
+  min-height:0;
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:10px;
 }
 
-.intro p {
-  margin: 0;
-  font-size: 16px;
-  line-height: 1.45;
-  font-weight: 700;
-}
-
-.section {
-  margin-top: 16px;
-  background: rgba(255,255,255,.9);
-  border-radius: 26px;
-  padding: 20px;
-  border: 2px solid rgba(255,255,255,.8);
-  box-shadow: 0 14px 32px rgba(120, 53, 15, .14);
-}
-
-.section h2 {
-  margin: 0 0 12px;
-  color: var(--deep-blue);
-  font-size: clamp(22px, 5vw, 34px);
-}
-
-.section p {
-  margin: 0;
-  line-height: 1.45;
-  font-weight: 700;
-}
-
-.skills-grid {
-  margin-top: 14px;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-}
-
-.skill {
-  background: linear-gradient(180deg, #ffffff, #fff7d6);
-  border: 2px solid #fde68a;
-  border-radius: 18px;
-  padding: 12px;
-  text-align: center;
-  font-weight: 900;
-  color: #78350f;
-  min-height: 72px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.games-grid {
-  margin-top: 14px;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 14px;
-}
-
-.game-card {
-  position: relative;
-  overflow: hidden;
-  border-radius: 24px;
-  padding: 16px;
-  min-height: 215px;
+.game-btn{
+  text-decoration:none;
+  border-radius:20px;
+  padding:12px 10px;
   background:
-    radial-gradient(circle at top right, rgba(255,255,255,.42), transparent 26%),
-    linear-gradient(145deg, #ffffff 0%, #fff7d6 48%, #fde68a 100%);
-  border: 2px solid rgba(255,255,255,.86);
-  box-shadow: 0 14px 28px rgba(120, 53, 15, .16);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+    radial-gradient(circle at top right, rgba(255,255,255,.45), transparent 28%),
+    linear-gradient(145deg,#ffffff 0%, #fff7d6 52%, #fde68a 100%);
+  border:2px solid rgba(255,255,255,.9);
+  box-shadow:0 10px 20px rgba(120,53,15,.13);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  text-align:center;
+  transition:.18s ease;
+  min-height:92px;
 }
 
-.game-card::before {
-  content: "";
-  position: absolute;
-  width: 120px;
-  height: 120px;
-  right: -38px;
-  top: -42px;
-  border-radius: 50%;
-  background: rgba(29, 78, 216, .12);
+.game-btn:hover{
+  transform:translateY(-2px) scale(1.01);
 }
 
-.game-icon {
-  width: 54px;
-  height: 54px;
-  border-radius: 18px;
-  background: linear-gradient(135deg, var(--blue), var(--deep-blue));
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 26px;
-  box-shadow: 0 8px 18px rgba(29, 78, 216, .25);
-  margin-bottom: 10px;
+.game-icon{
+  width:42px;
+  height:42px;
+  border-radius:14px;
+  background:linear-gradient(135deg,var(--blue1),var(--blue2));
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:21px;
+  box-shadow:0 8px 16px rgba(29,78,216,.22);
+  flex:0 0 auto;
 }
 
-.game-card h3 {
-  margin: 0 0 8px;
-  color: var(--deep-blue);
-  font-size: 22px;
-  line-height: 1.05;
+.game-name{
+  font-size:15px;
+  font-weight:900;
+  color:var(--blue2);
+  line-height:1.08;
 }
 
-.game-card p {
-  margin: 0 0 14px;
-  font-size: 14px;
-  line-height: 1.32;
-  font-weight: 800;
-  color: #475569;
+.footer{
+  flex:0 0 auto;
+  text-align:center;
+  font-size:12px;
+  font-weight:900;
+  color:#78350f;
+  opacity:.95;
+  padding-top:2px;
 }
 
-.play-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  border-radius: 16px;
-  padding: 12px 14px;
-  background: linear-gradient(135deg, #1d4ed8, #2563eb);
-  color: white;
-  font-weight: 900;
-  box-shadow: 0 8px 18px rgba(29, 78, 216, .24);
-}
-
-.footer {
-  text-align: center;
-  margin: 18px 0 6px;
-  font-weight: 900;
-  color: #78350f;
-}
-
-@media (max-width: 850px) {
-  body {
-    padding: 8px;
+/* Tablet/mobile */
+@media(max-width:850px){
+  .container{
+    border-radius:18px;
+    padding:8px;
+    gap:8px;
   }
 
-  .topbar {
-    gap: 6px;
+  .topbar{
+    gap:6px;
   }
 
   .back-btn,
-  .sound-btn {
-    font-size: 11px;
-    padding: 9px 10px;
+  .level-pill{
+    font-size:11px;
+    padding:8px 10px;
   }
 
-  .hero-card {
-    border-radius: 20px;
-    padding: 6px;
+  .hero-wrap{
+    flex:1 1 40%;
+    border-radius:16px;
+    padding:6px;
   }
 
-  .hero-image {
-    border-radius: 16px;
+  .hero-image{
+    border-radius:14px;
   }
 
-  .intro,
-  .section {
-    padding: 15px;
-    border-radius: 20px;
+  .section-title{
+    font-size:17px;
   }
 
-  .skills-grid {
-    grid-template-columns: repeat(2, 1fr);
+  .games-grid{
+    grid-template-columns:repeat(2, 1fr);
+    gap:8px;
   }
 
-  .games-grid {
-    grid-template-columns: 1fr;
+  .game-btn{
+    min-height:78px;
+    padding:10px 8px;
+    border-radius:16px;
   }
 
-  .game-card {
-    min-height: 190px;
+  .game-icon{
+    width:36px;
+    height:36px;
+    font-size:18px;
+    border-radius:12px;
+  }
+
+  .game-name{
+    font-size:13px;
+  }
+
+  .footer{
+    font-size:10.5px;
   }
 }
 
-@media (max-width: 390px) {
-  .skills-grid {
-    grid-template-columns: 1fr;
+/* celulares menores */
+@media(max-width:420px){
+  .page{
+    padding:6px;
   }
 
-  .intro p,
-  .section p {
-    font-size: 14px;
+  .container{
+    height:calc(100dvh - 12px);
+    gap:6px;
+    padding:6px;
+  }
+
+  .back-btn,
+  .level-pill{
+    font-size:10px;
+    padding:7px 9px;
+  }
+
+  .hero-wrap{
+    flex:1 1 38%;
+    padding:5px;
+  }
+
+  .section-title{
+    font-size:15px;
+  }
+
+  .games-grid{
+    gap:6px;
+  }
+
+  .game-btn{
+    min-height:72px;
+    padding:8px 6px;
+  }
+
+  .game-icon{
+    width:32px;
+    height:32px;
+    font-size:16px;
+  }
+
+  .game-name{
+    font-size:12px;
+  }
+
+  .footer{
+    font-size:9.5px;
   }
 }
 </style>
 </head>
-
 <body>
+
 <div class="page">
+  <div class="container">
 
-  <div class="topbar">
-    <a class="back-btn" href="index.html">← Voltar ao Hub</a>
-    <button class="sound-btn" onclick="toggleMusic()">🎵 Ativar trilha</button>
-  </div>
-
-  <section class="hero-card">
-    <img
-      class="hero-image"
-      src="6ano-tela-inicial-amarela.png?v=1"
-      alt="6º Ano - English Game Hub - Jogos de Inglês"
-    />
-  </section>
-
-  <section class="intro">
-    <span class="level-pill">6º ano • Yellow Level • Alinhado à BNCC</span>
-    <h1>6º ANO</h1>
-    <h2>Yellow Level</h2>
-    <p>
-      Primeiros passos no inglês: aprenda jogando, avance por missões e fortaleça sua base
-      com cumprimentos, comandos de sala, informações pessoais, pronomes, posse, números,
-      dias da semana, meses do ano e situações reais de comunicação.
-    </p>
-  </section>
-
-  <section class="section">
-    <h2>Por que aprender inglês jogando?</h2>
-    <p>
-      Percebendo, em sala de aula, as dificuldades de muitos alunos em relação à Língua Inglesa,
-      este espaço foi criado como uma forma lúdica, acessível e motivadora de aproximar o inglês
-      do cotidiano do estudante. Por meio dos jogos, você pode revisar conteúdos, ampliar o
-      vocabulário, praticar situações reais de comunicação e compreender que aprender inglês
-      também pode ser leve, divertido e possível.
-    </p>
-  </section>
-
-  <section class="section">
-    <h2>Aprendizagens desenvolvidas nos jogos</h2>
-    <p>
-      Os jogos foram organizados para estimular habilidades importantes previstas para o 6º ano,
-      como interação em inglês, compreensão de comandos, leitura de textos curtos, construção de
-      repertório lexical e uso funcional da língua em situações reais.
-    </p>
-
-    <div class="skills-grid">
-      <div class="skill">Comunicação em sala</div>
-      <div class="skill">Comandos e expressões</div>
-      <div class="skill">Informações pessoais</div>
-      <div class="skill">Leitura de textos curtos</div>
-      <div class="skill">Vocabulário do cotidiano</div>
-      <div class="skill">Pronomes e posse</div>
-      <div class="skill">Verb to be em uso</div>
-      <div class="skill">Dias e meses em inglês</div>
+    <div class="topbar">
+      <a class="back-btn" href="index.html">← Voltar ao Hub</a>
+      <div class="level-pill">6º Ano • Yellow Level</div>
     </div>
-  </section>
 
-  <section class="section">
-    <h2>Escolha seu desafio</h2>
+    <div class="hero-wrap">
+      <img
+        class="hero-image"
+        src="6ano-tela-inicial-amarela.png?v=1"
+        alt="6º Ano - English Game Hub"
+      >
+    </div>
 
-    <div class="games-grid">
+    <div class="games-section">
+      <div class="section-title">Escolha seu jogo</div>
 
-      <article class="game-card">
-        <div>
+      <div class="games-grid">
+        <a class="game-btn" href="6ano-spin-and-answer.html">
           <div class="game-icon">🎡</div>
-          <h3>Spin and Answer</h3>
-          <p>
-            Gire a roleta do Yellow Level, descubra o tema e responda aos desafios
-            de forma rápida e divertida.
-          </p>
-        </div>
-        <a class="play-btn" href="6ano-spin-and-answer.html">Jogar agora</a>
-      </article>
+          <div class="game-name">Spin and Answer</div>
+        </a>
 
-      <article class="game-card">
-        <div>
+        <a class="game-btn" href="6ano-hangman-challenge.html">
           <div class="game-icon">🌻</div>
-          <h3>Hangman Challenge</h3>
-          <p>
-            Descubra palavras importantes da fase inicial, observe as dicas e amplie
-            seu vocabulário em inglês.
-          </p>
-        </div>
-        <a class="play-btn" href="6ano-hangman-challenge.html">Jogar agora</a>
-      </article>
+          <div class="game-name">Hangman Challenge</div>
+        </a>
 
-      <article class="game-card">
-        <div>
+        <a class="game-btn" href="6ano-smart-choice.html">
           <div class="game-icon">💡</div>
-          <h3>Smart Choice</h3>
-          <p>
-            Escolha respostas rápidas, pense no contexto e fortaleça sua base no
-            inglês do cotidiano.
-          </p>
-        </div>
-        <a class="play-btn" href="6ano-smart-choice.html">Jogar agora</a>
-      </article>
+          <div class="game-name">Smart Choice</div>
+        </a>
 
-      <article class="game-card">
-        <div>
+        <a class="game-btn" href="6ano-board-game.html">
           <div class="game-icon">🏁</div>
-          <h3>Board Game</h3>
-          <p>
-            Avance no tabuleiro, responda perguntas e revise vocabulário, frases e
-            regras de forma divertida.
-          </p>
-        </div>
-        <a class="play-btn" href="6ano-board-game.html">Jogar agora</a>
-      </article>
+          <div class="game-name">Board Game</div>
+        </a>
 
-      <article class="game-card">
-        <div>
+        <a class="game-btn" href="6ano-listening-speaking-game.html">
           <div class="game-icon">🎧</div>
-          <h3>Listening & Speaking</h3>
-          <p>
-            Ouça, repita frases simples em inglês e avance por fases treinando escuta
-            e pronúncia.
-          </p>
-        </div>
-        <a class="play-btn" href="6ano-listening-speaking-game.html">Jogar agora</a>
-      </article>
+          <div class="game-name">Listening & Speaking</div>
+        </a>
 
-      <article class="game-card">
-        <div>
+        <a class="game-btn" href="6ano-mission-game.html">
           <div class="game-icon">🗺️</div>
-          <h3>Mission Game</h3>
-          <p>
-            Cumpra missões por Santarém e use o inglês em situações reais, com
-            desafios pensados para o 6º ano.
-          </p>
-        </div>
-        <a class="play-btn" href="6ano-mission-game.html">Jogar agora</a>
-      </article>
-
+          <div class="game-name">Mission Game</div>
+        </a>
+      </div>
     </div>
-  </section>
 
-  <div class="footer">
-    Jogo idealizado pelo professor Jasson Bruno.
+    <div class="footer">
+      Jogo idealizado pelo professor Jasson Bruno.
+    </div>
+
   </div>
-
 </div>
-
-<audio id="bgMusic" loop>
-  <source src="musica-fundo.mp3.mp3" type="audio/mpeg">
-  <source src="musica-fundo.mp3" type="audio/mpeg">
-</audio>
-
-<script>
-let musicOn = false;
-
-function toggleMusic() {
-  const audio = document.getElementById("bgMusic");
-  const btn = document.querySelector(".sound-btn");
-
-  if (!audio) return;
-
-  if (!musicOn) {
-    audio.volume = 0.35;
-    audio.play()
-      .then(() => {
-        musicOn = true;
-        btn.textContent = "🔇 Pausar trilha";
-      })
-      .catch(() => {
-        btn.textContent = "🎵 Trilha indisponível";
-      });
-  } else {
-    audio.pause();
-    musicOn = false;
-    btn.textContent = "🎵 Ativar trilha";
-  }
-}
-</script>
 
 </body>
 </html>
