@@ -550,7 +550,7 @@
     <section id="startScreen" class="screen active">
       <span class="top-badge">6º Ano • English Voice Challenge</span>
       <h1>Listening & Speaking Game - 6º Ano</h1>
-      <p class="subtitle">Ouça, repita frases básicas do 6º ano e desbloqueie as fases até chegar ao ranking final.</p>
+      <p class="subtitle">Ouça, repita frases do 2º bimestre e revise conteúdos do 1º bimestre até chegar ao ranking final.</p>
 
       <label for="playerName">Nome do aluno:</label>
       <input id="playerName" type="text" maxlength="24" placeholder="Digite seu nome" />
@@ -749,389 +749,239 @@
     const NOME_DO_JOGO = "6ano-listening-speaking-game";
     const phases = [
   {
-    "title": "Fase 1 - Greetings and Farewells",
+    "title": "Fase 1 - Numbers and Time",
     "items": [
       {
-        "topic": "Greetings",
-        "type": "Afirmativa",
-        "phrase": "Hello",
-        "pt": "Olá.",
-        "tip": "Hello = olá."
+        "topic": "Numbers",
+        "type": "Listening",
+        "phrase": "I have eleven pencils",
+        "pt": "Eu tenho onze lápis.",
+        "tip": "Ouça eleven. É o número 11 em inglês."
       },
       {
-        "topic": "Greetings",
-        "type": "Afirmativa",
-        "phrase": "Hi",
-        "pt": "Oi.",
-        "tip": "Hi = oi, forma curta e simples."
+        "topic": "Numbers",
+        "type": "Listening",
+        "phrase": "There are twelve books",
+        "pt": "Há doze livros.",
+        "tip": "Twelve = 12. Fale devagar: twelve."
       },
       {
-        "topic": "Greetings",
-        "type": "Afirmativa",
-        "phrase": "Good morning",
-        "pt": "Bom dia.",
-        "tip": "Usamos pela manhã."
+        "topic": "Numbers",
+        "type": "Listening",
+        "phrase": "My number is thirteen",
+        "pt": "Meu número é treze.",
+        "tip": "Thirteen termina com som de teen."
       },
       {
-        "topic": "Greetings",
-        "type": "Afirmativa",
-        "phrase": "Good afternoon",
-        "pt": "Boa tarde.",
-        "tip": "Usamos à tarde."
+        "topic": "Numbers",
+        "type": "Listening",
+        "phrase": "The answer is twenty",
+        "pt": "A resposta é vinte.",
+        "tip": "Twenty = 20. Não confunda teen com ty."
       },
       {
-        "topic": "Greetings",
-        "type": "Afirmativa",
-        "phrase": "Good night",
-        "pt": "Boa noite.",
-        "tip": "Usamos à noite ou ao se despedir."
+        "topic": "Numbers",
+        "type": "Listening",
+        "phrase": "I see thirty students",
+        "pt": "Eu vejo trinta alunos.",
+        "tip": "Thirty = 30. É número terminado em ty."
       },
       {
-        "topic": "Farewells",
-        "type": "Afirmativa",
-        "phrase": "Goodbye",
-        "pt": "Tchau.",
-        "tip": "Goodbye = despedida."
+        "topic": "Numbers",
+        "type": "Listening",
+        "phrase": "There are forty chairs",
+        "pt": "Há quarenta cadeiras.",
+        "tip": "Forty = 40. Fale a primeira sílaba com calma."
       },
       {
-        "topic": "Farewells",
-        "type": "Afirmativa",
-        "phrase": "See you",
-        "pt": "Até logo.",
-        "tip": "See you = até logo."
+        "topic": "Numbers",
+        "type": "Listening",
+        "phrase": "The score is fifty",
+        "pt": "A pontuação é cinquenta.",
+        "tip": "Fifty = 50. Ouça o som final de ty."
       },
       {
-        "topic": "Greetings",
-        "type": "Afirmativa",
-        "phrase": "Thank you",
-        "pt": "Obrigado(a).",
-        "tip": "Thank you = obrigado(a)."
+        "topic": "Telling Time",
+        "type": "Listening",
+        "phrase": "It is one o clock",
+        "pt": "É uma hora.",
+        "tip": "One o clock indica hora exata."
       },
       {
-        "topic": "Greetings",
-        "type": "Afirmativa",
-        "phrase": "You are welcome",
-        "pt": "De nada.",
-        "tip": "Resposta educada para Thank you."
+        "topic": "Telling Time",
+        "type": "Listening",
+        "phrase": "It is three o clock",
+        "pt": "São três horas.",
+        "tip": "Three o clock = três horas em ponto."
       },
       {
-        "topic": "Greetings",
-        "type": "Interrogativa",
-        "phrase": "How are you?",
-        "pt": "Como você está?",
-        "tip": "Pergunta simples para saber como alguém está."
+        "topic": "Telling Time",
+        "type": "Listening",
+        "phrase": "It is seven o clock",
+        "pt": "São sete horas.",
+        "tip": "Seven o clock = sete horas em ponto."
       }
     ]
   },
   {
-    "title": "Fase 2 - Classroom English",
+    "title": "Fase 2 - Days of the Week",
     "items": [
       {
-        "topic": "Classroom English",
-        "type": "Comando",
-        "phrase": "Open your book",
-        "pt": "Abra seu livro.",
-        "tip": "Open = abrir."
+        "topic": "Days of the Week",
+        "type": "Listening",
+        "phrase": "Today is Monday",
+        "pt": "Hoje é segunda-feira.",
+        "tip": "Monday aparece no começo da semana escolar."
       },
       {
-        "topic": "Classroom English",
-        "type": "Comando",
-        "phrase": "Close your notebook",
-        "pt": "Feche seu caderno.",
-        "tip": "Close = fechar."
+        "topic": "Days of the Week",
+        "type": "Listening",
+        "phrase": "English class is on Tuesday",
+        "pt": "A aula de Inglês é na terça-feira.",
+        "tip": "Tuesday vem depois de Monday."
       },
       {
-        "topic": "Classroom English",
-        "type": "Comando",
-        "phrase": "Listen, please",
-        "pt": "Escute, por favor.",
-        "tip": "Listen = escutar."
+        "topic": "Days of the Week",
+        "type": "Listening",
+        "phrase": "The game is on Wednesday",
+        "pt": "O jogo é na quarta-feira.",
+        "tip": "Wednesday tem escrita difícil, mas a fala é mais curta."
       },
       {
-        "topic": "Classroom English",
-        "type": "Comando",
-        "phrase": "Repeat, please",
-        "pt": "Repita, por favor.",
-        "tip": "Repeat = repetir."
+        "topic": "Days of the Week",
+        "type": "Listening",
+        "phrase": "The homework is for Thursday",
+        "pt": "A tarefa é para quinta-feira.",
+        "tip": "Thursday começa com o som de TH."
       },
       {
-        "topic": "Classroom English",
-        "type": "Comando",
-        "phrase": "Sit down",
-        "pt": "Sente-se.",
-        "tip": "Sit down = sentar."
+        "topic": "Days of the Week",
+        "type": "Listening",
+        "phrase": "The test is on Friday",
+        "pt": "A prova é na sexta-feira.",
+        "tip": "Friday vem antes do fim de semana."
       },
       {
-        "topic": "Classroom English",
-        "type": "Comando",
-        "phrase": "Stand up",
-        "pt": "Levante-se.",
-        "tip": "Stand up = levantar."
+        "topic": "Days of the Week",
+        "type": "Listening",
+        "phrase": "I play soccer on Saturday",
+        "pt": "Eu jogo futebol no sábado.",
+        "tip": "Saturday é um dia comum para lazer."
       },
       {
-        "topic": "Classroom English",
-        "type": "Comando",
-        "phrase": "Read the sentence",
-        "pt": "Leia a frase.",
-        "tip": "Read = ler."
+        "topic": "Days of the Week",
+        "type": "Listening",
+        "phrase": "I rest on Sunday",
+        "pt": "Eu descanso no domingo.",
+        "tip": "Sunday costuma ser dia de descanso."
       },
       {
-        "topic": "Classroom English",
-        "type": "Comando",
-        "phrase": "Write your name",
-        "pt": "Escreva seu nome.",
-        "tip": "Write = escrever."
+        "topic": "Days of the Week",
+        "type": "Listening",
+        "phrase": "Monday comes before Tuesday",
+        "pt": "Monday vem antes de Tuesday.",
+        "tip": "Treine a sequência dos dias."
       },
       {
-        "topic": "Classroom English",
-        "type": "Interrogativa",
-        "phrase": "Can you help me?",
-        "pt": "Você pode me ajudar?",
-        "tip": "Frase útil para pedir ajuda."
+        "topic": "Days of the Week",
+        "type": "Listening",
+        "phrase": "Friday comes after Thursday",
+        "pt": "Friday vem depois de Thursday.",
+        "tip": "Observe a ordem: Thursday, Friday."
       },
       {
-        "topic": "Classroom English",
-        "type": "Afirmativa",
-        "phrase": "I do not understand",
-        "pt": "Eu não entendo.",
-        "tip": "Forma simples para dizer que não entendeu."
+        "topic": "Days of the Week",
+        "type": "Listening",
+        "phrase": "Saturday and Sunday are the weekend",
+        "pt": "Saturday e Sunday são o fim de semana.",
+        "tip": "Weekend significa fim de semana."
       }
     ]
   },
   {
-    "title": "Fase 3 - Personal Information",
+    "title": "Fase 3 - Months of the Year",
     "items": [
       {
-        "topic": "Personal Info",
-        "type": "Afirmativa",
-        "phrase": "My name is Ana",
-        "pt": "Meu nome é Ana.",
-        "tip": "My name is = meu nome é."
+        "topic": "Months of the Year",
+        "type": "Listening",
+        "phrase": "My birthday is in January",
+        "pt": "Meu aniversário é em janeiro.",
+        "tip": "January aparece no começo do ano."
       },
       {
-        "topic": "Personal Info",
-        "type": "Interrogativa",
-        "phrase": "What is your name?",
-        "pt": "Qual é o seu nome?",
-        "tip": "Pergunta para saber o nome."
+        "topic": "Months of the Year",
+        "type": "Listening",
+        "phrase": "School starts in February",
+        "pt": "A escola começa em fevereiro.",
+        "tip": "February costuma aparecer no início do ano letivo."
       },
       {
-        "topic": "Personal Info",
-        "type": "Afirmativa",
-        "phrase": "I am eleven years old",
-        "pt": "Eu tenho onze anos.",
-        "tip": "Em inglês, idade usa I am."
+        "topic": "Months of the Year",
+        "type": "Listening",
+        "phrase": "March comes after February",
+        "pt": "March vem depois de February.",
+        "tip": "Treine a sequência: January, February, March."
       },
       {
-        "topic": "Personal Info",
-        "type": "Interrogativa",
-        "phrase": "How old are you?",
-        "pt": "Quantos anos você tem?",
-        "tip": "Pergunta sobre idade."
+        "topic": "Months of the Year",
+        "type": "Listening",
+        "phrase": "April comes before May",
+        "pt": "April vem antes de May.",
+        "tip": "Observe a ordem: March, April, May."
       },
       {
-        "topic": "Personal Info",
-        "type": "Afirmativa",
-        "phrase": "I am from Brazil",
-        "pt": "Eu sou do Brasil.",
-        "tip": "I am from = eu sou de."
+        "topic": "Months of the Year",
+        "type": "Listening",
+        "phrase": "May is a short word",
+        "pt": "May é uma palavra curta.",
+        "tip": "May tem apenas três letras."
       },
       {
-        "topic": "Personal Info",
-        "type": "Interrogativa",
-        "phrase": "Where are you from?",
-        "pt": "De onde você é?",
-        "tip": "Pergunta sobre origem."
+        "topic": "Months of the Year",
+        "type": "Listening",
+        "phrase": "June comes before July",
+        "pt": "June vem antes de July.",
+        "tip": "June e July são parecidos, mas diferentes."
       },
       {
-        "topic": "Personal Info",
-        "type": "Afirmativa",
-        "phrase": "I live in Santarem",
-        "pt": "Eu moro em Santarém.",
-        "tip": "I live in = eu moro em."
+        "topic": "Months of the Year",
+        "type": "Listening",
+        "phrase": "Vacation is in July",
+        "pt": "As férias são em julho.",
+        "tip": "July aparece muito em contexto de férias."
       },
       {
-        "topic": "Personal Info",
-        "type": "Afirmativa",
-        "phrase": "I am a student",
-        "pt": "Eu sou estudante.",
-        "tip": "I am = eu sou."
+        "topic": "Months of the Year",
+        "type": "Listening",
+        "phrase": "August comes after July",
+        "pt": "August vem depois de July.",
+        "tip": "Continue a sequência: June, July, August."
       },
       {
-        "topic": "Personal Info",
-        "type": "Afirmativa",
-        "phrase": "My school is Delfina",
-        "pt": "Minha escola é Delfina.",
-        "tip": "My school = minha escola."
+        "topic": "Months of the Year",
+        "type": "Listening",
+        "phrase": "September comes before October",
+        "pt": "September vem antes de October.",
+        "tip": "Esses meses aparecem perto do fim do ano."
       },
       {
-        "topic": "Personal Info",
-        "type": "Interrogativa",
-        "phrase": "Are you a student?",
-        "pt": "Você é estudante?",
-        "tip": "Pergunta com are you."
+        "topic": "Months of the Year",
+        "type": "Listening",
+        "phrase": "December is the last month",
+        "pt": "December é o último mês.",
+        "tip": "December combina com o fim do ano."
       }
     ]
   },
   {
-    "title": "Fase 4 - Personal Pronouns",
-    "items": [
-      {
-        "topic": "Pronouns",
-        "type": "Afirmativa",
-        "phrase": "I am happy",
-        "pt": "Eu estou feliz.",
-        "tip": "I = eu."
-      },
-      {
-        "topic": "Pronouns",
-        "type": "Afirmativa",
-        "phrase": "You are my friend",
-        "pt": "Você é meu amigo.",
-        "tip": "You = você."
-      },
-      {
-        "topic": "Pronouns",
-        "type": "Afirmativa",
-        "phrase": "He is a student",
-        "pt": "Ele é estudante.",
-        "tip": "He = ele."
-      },
-      {
-        "topic": "Pronouns",
-        "type": "Afirmativa",
-        "phrase": "She is my teacher",
-        "pt": "Ela é minha professora.",
-        "tip": "She = ela."
-      },
-      {
-        "topic": "Pronouns",
-        "type": "Afirmativa",
-        "phrase": "It is red",
-        "pt": "Ele/isso é vermelho.",
-        "tip": "It é usado para coisa, animal ou objeto."
-      },
-      {
-        "topic": "Pronouns",
-        "type": "Afirmativa",
-        "phrase": "We are students",
-        "pt": "Nós somos estudantes.",
-        "tip": "We = nós."
-      },
-      {
-        "topic": "Pronouns",
-        "type": "Afirmativa",
-        "phrase": "They are friends",
-        "pt": "Eles são amigos.",
-        "tip": "They = eles/elas."
-      },
-      {
-        "topic": "Pronouns",
-        "type": "Negativa",
-        "phrase": "He is not sad",
-        "pt": "Ele não está triste.",
-        "tip": "He is not = ele não é / não está."
-      },
-      {
-        "topic": "Pronouns",
-        "type": "Negativa",
-        "phrase": "She is not angry",
-        "pt": "Ela não está brava.",
-        "tip": "She is not = ela não é / não está."
-      },
-      {
-        "topic": "Pronouns",
-        "type": "Interrogativa",
-        "phrase": "Are they students?",
-        "pt": "Eles são estudantes?",
-        "tip": "Are they...? = Eles/elas são...?"
-      }
-    ]
-  },
-  {
-    "title": "Fase 5 - Possessive Adjectives",
-    "items": [
-      {
-        "topic": "Possessives",
-        "type": "Afirmativa",
-        "phrase": "My book is blue",
-        "pt": "Meu livro é azul.",
-        "tip": "My = meu/minha."
-      },
-      {
-        "topic": "Possessives",
-        "type": "Afirmativa",
-        "phrase": "Your pencil is red",
-        "pt": "Seu lápis é vermelho.",
-        "tip": "Your = seu/sua."
-      },
-      {
-        "topic": "Possessives",
-        "type": "Afirmativa",
-        "phrase": "His bag is black",
-        "pt": "A mochila dele é preta.",
-        "tip": "His = dele."
-      },
-      {
-        "topic": "Possessives",
-        "type": "Afirmativa",
-        "phrase": "Her notebook is pink",
-        "pt": "O caderno dela é rosa.",
-        "tip": "Her = dela."
-      },
-      {
-        "topic": "Possessives",
-        "type": "Afirmativa",
-        "phrase": "My school is big",
-        "pt": "Minha escola é grande.",
-        "tip": "My school = minha escola."
-      },
-      {
-        "topic": "Possessives",
-        "type": "Afirmativa",
-        "phrase": "Your teacher is here",
-        "pt": "Seu professor está aqui.",
-        "tip": "Your teacher = seu professor."
-      },
-      {
-        "topic": "Possessives",
-        "type": "Afirmativa",
-        "phrase": "His car is red",
-        "pt": "O carro dele é vermelho.",
-        "tip": "His car = carro dele."
-      },
-      {
-        "topic": "Possessives",
-        "type": "Afirmativa",
-        "phrase": "Her friend is kind",
-        "pt": "A amiga dela é gentil.",
-        "tip": "Her friend = amiga dela."
-      },
-      {
-        "topic": "Possessives",
-        "type": "Negativa",
-        "phrase": "My pencil is not green",
-        "pt": "Meu lápis não é verde.",
-        "tip": "My + objeto."
-      },
-      {
-        "topic": "Possessives",
-        "type": "Interrogativa",
-        "phrase": "Is your book blue?",
-        "pt": "Seu livro é azul?",
-        "tip": "Is your...? = Seu/sua é...?"
-      }
-    ]
-  },
-  {
-    "title": "Fase 6 - Verb to be affirmative",
+    "title": "Fase 4 - Verb to be affirmative",
     "items": [
       {
         "topic": "Verb to be",
         "type": "Afirmativa",
         "phrase": "I am a student",
         "pt": "Eu sou estudante.",
-        "tip": "I am = eu sou."
+        "tip": "I am = eu sou / estou."
       },
       {
         "topic": "Verb to be",
@@ -1157,9 +1007,9 @@
       {
         "topic": "Verb to be",
         "type": "Afirmativa",
-        "phrase": "It is a car",
-        "pt": "É um carro.",
-        "tip": "It is = é / está."
+        "phrase": "It is a pencil",
+        "pt": "É um lápis.",
+        "tip": "It is = é / está para coisa, objeto ou animal."
       },
       {
         "topic": "Verb to be",
@@ -1173,33 +1023,33 @@
         "type": "Afirmativa",
         "phrase": "They are students",
         "pt": "Eles são estudantes.",
-        "tip": "They are = eles/elas são."
+        "tip": "They are = eles/elas são / estão."
       },
       {
         "topic": "Verb to be",
         "type": "Afirmativa",
         "phrase": "The school is big",
         "pt": "A escola é grande.",
-        "tip": "School = escola."
+        "tip": "School is = escola é / está."
       },
       {
         "topic": "Verb to be",
         "type": "Afirmativa",
         "phrase": "The teacher is here",
         "pt": "O professor está aqui.",
-        "tip": "Teacher = professor/professora."
+        "tip": "Teacher is = professor é / está."
       },
       {
         "topic": "Verb to be",
         "type": "Afirmativa",
-        "phrase": "The car is red",
-        "pt": "O carro é vermelho.",
-        "tip": "Car = carro; red = vermelho."
+        "phrase": "The book is blue",
+        "pt": "O livro é azul.",
+        "tip": "Book is = livro é / está."
       }
     ]
   },
   {
-    "title": "Fase 7 - Verb to be negative",
+    "title": "Fase 5 - Verb to be negative",
     "items": [
       {
         "topic": "Verb to be",
@@ -1232,8 +1082,8 @@
       {
         "topic": "Verb to be",
         "type": "Negativa",
-        "phrase": "It is not blue",
-        "pt": "Não é azul.",
+        "phrase": "It is not red",
+        "pt": "Não é vermelho.",
         "tip": "It is not = não é / não está."
       },
       {
@@ -1248,33 +1098,33 @@
         "type": "Negativa",
         "phrase": "They are not angry",
         "pt": "Eles não estão bravos.",
-        "tip": "They are not = eles não são / não estão."
+        "tip": "They are not = eles/elas não são / não estão."
       },
       {
         "topic": "Verb to be",
         "type": "Negativa",
-        "phrase": "The book is not red",
-        "pt": "O livro não é vermelho.",
-        "tip": "Book = livro."
+        "phrase": "The book is not green",
+        "pt": "O livro não é verde.",
+        "tip": "Book is not = livro não é / não está."
       },
       {
         "topic": "Verb to be",
         "type": "Negativa",
         "phrase": "The pencil is not black",
         "pt": "O lápis não é preto.",
-        "tip": "Pencil = lápis."
+        "tip": "Pencil is not = lápis não é / não está."
       },
       {
         "topic": "Verb to be",
         "type": "Negativa",
         "phrase": "The class is not boring",
         "pt": "A aula não é chata.",
-        "tip": "Class = aula."
+        "tip": "Class is not = aula não é / não está."
       }
     ]
   },
   {
-    "title": "Fase 8 - Verb to be interrogative",
+    "title": "Fase 6 - Verb to be interrogative",
     "items": [
       {
         "topic": "Verb to be",
@@ -1314,8 +1164,8 @@
       {
         "topic": "Verb to be",
         "type": "Interrogativa",
-        "phrase": "Is it red?",
-        "pt": "É vermelho?",
+        "phrase": "Is it blue?",
+        "pt": "É azul?",
         "tip": "Pergunta com it: Is it...?"
       },
       {
@@ -1349,302 +1199,302 @@
     ]
   },
   {
-    "title": "Fase 9 - Vocabulary",
+    "title": "Fase 7 - School Vocabulary",
     "items": [
       {
-        "topic": "Vocabulary",
-        "type": "Afirmativa",
+        "topic": "School Vocabulary",
+        "type": "Listening",
         "phrase": "This is a book",
         "pt": "Isto é um livro.",
         "tip": "Book = livro."
       },
       {
-        "topic": "Vocabulary",
-        "type": "Afirmativa",
+        "topic": "School Vocabulary",
+        "type": "Listening",
         "phrase": "This is a pencil",
         "pt": "Isto é um lápis.",
         "tip": "Pencil = lápis."
       },
       {
-        "topic": "Vocabulary",
-        "type": "Afirmativa",
+        "topic": "School Vocabulary",
+        "type": "Listening",
         "phrase": "This is my notebook",
         "pt": "Isto é meu caderno.",
         "tip": "Notebook = caderno."
       },
       {
-        "topic": "Vocabulary",
-        "type": "Afirmativa",
-        "phrase": "The car is red",
-        "pt": "O carro é vermelho.",
-        "tip": "Car = carro; red = vermelho."
-      },
-      {
-        "topic": "Vocabulary",
-        "type": "Afirmativa",
-        "phrase": "The school is big",
-        "pt": "A escola é grande.",
-        "tip": "School = escola; big = grande."
-      },
-      {
-        "topic": "Vocabulary",
-        "type": "Afirmativa",
-        "phrase": "The teacher is kind",
-        "pt": "O professor é gentil.",
-        "tip": "Kind = gentil."
-      },
-      {
-        "topic": "Vocabulary",
-        "type": "Afirmativa",
-        "phrase": "The student is here",
-        "pt": "O aluno está aqui.",
-        "tip": "Student = aluno/aluna."
-      },
-      {
-        "topic": "Vocabulary",
-        "type": "Afirmativa",
-        "phrase": "The bag is black",
+        "topic": "School Vocabulary",
+        "type": "Listening",
+        "phrase": "The backpack is black",
         "pt": "A mochila é preta.",
-        "tip": "Bag = mochila; black = preto."
+        "tip": "Backpack = mochila."
       },
       {
-        "topic": "Vocabulary",
-        "type": "Afirmativa",
+        "topic": "School Vocabulary",
+        "type": "Listening",
+        "phrase": "The desk is in the classroom",
+        "pt": "A carteira está na sala de aula.",
+        "tip": "Desk = carteira/mesa escolar."
+      },
+      {
+        "topic": "School Vocabulary",
+        "type": "Listening",
         "phrase": "The door is open",
         "pt": "A porta está aberta.",
         "tip": "Door = porta; open = aberta."
       },
       {
-        "topic": "Vocabulary",
-        "type": "Afirmativa",
+        "topic": "School Vocabulary",
+        "type": "Listening",
         "phrase": "The window is blue",
         "pt": "A janela é azul.",
-        "tip": "Window = janela; blue = azul."
+        "tip": "Window = janela."
+      },
+      {
+        "topic": "School Vocabulary",
+        "type": "Listening",
+        "phrase": "The board is white",
+        "pt": "O quadro é branco.",
+        "tip": "Board = quadro."
+      },
+      {
+        "topic": "School Vocabulary",
+        "type": "Listening",
+        "phrase": "The cafeteria is near the classroom",
+        "pt": "A cantina fica perto da sala.",
+        "tip": "Cafeteria = cantina."
+      },
+      {
+        "topic": "School Vocabulary",
+        "type": "Listening",
+        "phrase": "The library is quiet",
+        "pt": "A biblioteca é silenciosa.",
+        "tip": "Library = biblioteca."
       }
     ]
   },
   {
-    "title": "Fase 10 - Review Challenge",
+    "title": "Fase 8 - Family and Feelings",
     "items": [
       {
-        "topic": "Review",
-        "type": "Afirmativa",
+        "topic": "Family",
+        "type": "Listening",
+        "phrase": "My mother is happy",
+        "pt": "Minha mãe está feliz.",
+        "tip": "Mother = mãe; happy = feliz."
+      },
+      {
+        "topic": "Family",
+        "type": "Listening",
+        "phrase": "My father is at home",
+        "pt": "Meu pai está em casa.",
+        "tip": "Father = pai."
+      },
+      {
+        "topic": "Family",
+        "type": "Listening",
+        "phrase": "He is my brother",
+        "pt": "Ele é meu irmão.",
+        "tip": "Brother = irmão."
+      },
+      {
+        "topic": "Family",
+        "type": "Listening",
+        "phrase": "She is my sister",
+        "pt": "Ela é minha irmã.",
+        "tip": "Sister = irmã."
+      },
+      {
+        "topic": "Family",
+        "type": "Listening",
+        "phrase": "My grandmother is kind",
+        "pt": "Minha avó é gentil.",
+        "tip": "Grandmother = avó."
+      },
+      {
+        "topic": "Family",
+        "type": "Listening",
+        "phrase": "My grandfather is funny",
+        "pt": "Meu avô é engraçado.",
+        "tip": "Grandfather = avô."
+      },
+      {
+        "topic": "Feelings",
+        "type": "Listening",
+        "phrase": "I am happy today",
+        "pt": "Eu estou feliz hoje.",
+        "tip": "Happy = feliz."
+      },
+      {
+        "topic": "Feelings",
+        "type": "Listening",
+        "phrase": "She is tired",
+        "pt": "Ela está cansada.",
+        "tip": "Tired = cansado(a)."
+      },
+      {
+        "topic": "Feelings",
+        "type": "Listening",
+        "phrase": "He is sad now",
+        "pt": "Ele está triste agora.",
+        "tip": "Sad = triste."
+      },
+      {
+        "topic": "Feelings",
+        "type": "Listening",
+        "phrase": "They are excited",
+        "pt": "Eles estão animados.",
+        "tip": "Excited = animado(a)."
+      }
+    ]
+  },
+  {
+    "title": "Fase 9 - Review 1st Bimester",
+    "items": [
+      {
+        "topic": "Review 1st Bimester",
+        "type": "Greetings",
+        "phrase": "Hello",
+        "pt": "Olá.",
+        "tip": "Revisão: cumprimento básico."
+      },
+      {
+        "topic": "Review 1st Bimester",
+        "type": "Greetings",
+        "phrase": "Good morning",
+        "pt": "Bom dia.",
+        "tip": "Revisão: cumprimento usado pela manhã."
+      },
+      {
+        "topic": "Review 1st Bimester",
+        "type": "Farewells",
+        "phrase": "Goodbye",
+        "pt": "Tchau.",
+        "tip": "Revisão: despedida."
+      },
+      {
+        "topic": "Review 1st Bimester",
+        "type": "Farewells",
+        "phrase": "See you",
+        "pt": "Até logo.",
+        "tip": "Revisão: despedida informal."
+      },
+      {
+        "topic": "Review 1st Bimester",
+        "type": "Classroom Command",
+        "phrase": "Listen please",
+        "pt": "Escute, por favor.",
+        "tip": "Revisão: comando de sala."
+      },
+      {
+        "topic": "Review 1st Bimester",
+        "type": "Classroom Command",
+        "phrase": "Repeat please",
+        "pt": "Repita, por favor.",
+        "tip": "Revisão: comando de sala."
+      },
+      {
+        "topic": "Review 1st Bimester",
+        "type": "Classroom Expression",
+        "phrase": "Can you help me?",
+        "pt": "Você pode me ajudar?",
+        "tip": "Revisão: pedido de ajuda."
+      },
+      {
+        "topic": "Review 1st Bimester",
+        "type": "Classroom Expression",
+        "phrase": "I do not understand",
+        "pt": "Eu não entendo.",
+        "tip": "Revisão: frase útil para sala."
+      },
+      {
+        "topic": "Review 1st Bimester",
+        "type": "Personal Information",
+        "phrase": "My name is Ana",
+        "pt": "Meu nome é Ana.",
+        "tip": "Revisão: apresentação pessoal."
+      },
+      {
+        "topic": "Review 1st Bimester",
+        "type": "Personal Information",
         "phrase": "I am from Brazil",
         "pt": "Eu sou do Brasil.",
-        "tip": "Revisão de origem."
-      },
-      {
-        "topic": "Review",
-        "type": "Afirmativa",
-        "phrase": "She is my friend",
-        "pt": "Ela é minha amiga.",
-        "tip": "She + is."
-      },
-      {
-        "topic": "Review",
-        "type": "Afirmativa",
-        "phrase": "They are students",
-        "pt": "Eles são estudantes.",
-        "tip": "They + are."
-      },
-      {
-        "topic": "Review",
-        "type": "Afirmativa",
-        "phrase": "My name is Lucas",
-        "pt": "Meu nome é Lucas.",
-        "tip": "My name is = meu nome é."
-      },
-      {
-        "topic": "Review",
-        "type": "Interrogativa",
-        "phrase": "Are you ready?",
-        "pt": "Você está pronto?",
-        "tip": "Pergunta com are."
-      },
-      {
-        "topic": "Review",
-        "type": "Afirmativa",
-        "phrase": "I like English",
-        "pt": "Eu gosto de inglês.",
-        "tip": "I like = eu gosto."
-      },
-      {
-        "topic": "Review",
-        "type": "Negativa",
-        "phrase": "I do not like noise",
-        "pt": "Eu não gosto de barulho.",
-        "tip": "do not like = não gosto."
-      },
-      {
-        "topic": "Review",
-        "type": "Afirmativa",
-        "phrase": "I always try again",
-        "pt": "Eu sempre tento de novo.",
-        "tip": "always = sempre."
-      },
-      {
-        "topic": "Review",
-        "type": "Afirmativa",
-        "phrase": "School life is important",
-        "pt": "A vida escolar é importante.",
-        "tip": "School life = vida escolar."
-      },
-      {
-        "topic": "Review",
-        "type": "Afirmativa",
-        "phrase": "English is part of my life",
-        "pt": "O inglês faz parte da minha vida.",
-        "tip": "part of my life = parte da minha vida."
+        "tip": "Revisão: origem."
       }
     ]
   },
   {
-    "title": "Fase 11 - Days of the Week",
+    "title": "Fase 10 - Review 1st Bimester",
     "items": [
       {
-        "topic": "Days of the Week",
-        "type": "Listening",
-        "phrase": "Today is Monday",
-        "pt": "Hoje é segunda-feira.",
-        "tip": "Ouça o som de Monday. É o primeiro dia da sequência escolar da semana."
+        "topic": "Review 1st Bimester",
+        "type": "Pronouns",
+        "phrase": "I am a student",
+        "pt": "Eu sou estudante.",
+        "tip": "Revisão: I = eu."
       },
       {
-        "topic": "Days of the Week",
-        "type": "Listening",
-        "phrase": "English class is on Tuesday",
-        "pt": "A aula de Inglês é na terça-feira.",
-        "tip": "Tuesday vem depois de Monday. Fale devagar: Tues-day."
+        "topic": "Review 1st Bimester",
+        "type": "Pronouns",
+        "phrase": "You are my friend",
+        "pt": "Você é meu amigo.",
+        "tip": "Revisão: You = você."
       },
       {
-        "topic": "Days of the Week",
-        "type": "Listening",
-        "phrase": "The game is on Wednesday",
-        "pt": "O jogo é na quarta-feira.",
-        "tip": "Wednesday tem escrita difícil, mas na fala soa como Wenz-day."
+        "topic": "Review 1st Bimester",
+        "type": "Pronouns",
+        "phrase": "He is a student",
+        "pt": "Ele é estudante.",
+        "tip": "Revisão: He = ele."
       },
       {
-        "topic": "Days of the Week",
-        "type": "Listening",
-        "phrase": "The homework is for Thursday",
-        "pt": "A tarefa é para quinta-feira.",
-        "tip": "Thursday começa com som de TH. Encoste a língua de leve nos dentes."
+        "topic": "Review 1st Bimester",
+        "type": "Pronouns",
+        "phrase": "She is my teacher",
+        "pt": "Ela é minha professora.",
+        "tip": "Revisão: She = ela."
       },
       {
-        "topic": "Days of the Week",
-        "type": "Listening",
-        "phrase": "The test is on Friday",
-        "pt": "A prova é na sexta-feira.",
-        "tip": "Friday combina com o fim da semana de aula. Repita: Fri-day."
+        "topic": "Review 1st Bimester",
+        "type": "Pronouns",
+        "phrase": "They are friends",
+        "pt": "Eles são amigos.",
+        "tip": "Revisão: They = eles/elas."
       },
       {
-        "topic": "Days of the Week",
-        "type": "Listening",
-        "phrase": "I play soccer on Saturday",
-        "pt": "Eu jogo futebol no sábado.",
-        "tip": "Saturday é um dia comum para brincar, descansar ou praticar esporte."
+        "topic": "Review 1st Bimester",
+        "type": "Possessives",
+        "phrase": "My book is blue",
+        "pt": "Meu livro é azul.",
+        "tip": "Revisão: My = meu/minha."
       },
       {
-        "topic": "Days of the Week",
-        "type": "Listening",
-        "phrase": "I rest on Sunday",
-        "pt": "Eu descanso no domingo.",
-        "tip": "Sunday costuma aparecer ligado ao descanso e à família."
+        "topic": "Review 1st Bimester",
+        "type": "Possessives",
+        "phrase": "Your pencil is red",
+        "pt": "Seu lápis é vermelho.",
+        "tip": "Revisão: Your = seu/sua."
       },
       {
-        "topic": "Days of the Week",
-        "type": "Listening",
-        "phrase": "Monday comes before Tuesday",
-        "pt": "Monday vem antes de Tuesday.",
-        "tip": "Treine a sequência: Monday, Tuesday, Wednesday."
+        "topic": "Review 1st Bimester",
+        "type": "Possessives",
+        "phrase": "His bag is black",
+        "pt": "A mochila dele é preta.",
+        "tip": "Revisão: His = dele."
       },
       {
-        "topic": "Days of the Week",
-        "type": "Listening",
-        "phrase": "Friday comes after Thursday",
-        "pt": "Friday vem depois de Thursday.",
-        "tip": "Observe a ordem: Wednesday, Thursday, Friday."
+        "topic": "Review 1st Bimester",
+        "type": "Possessives",
+        "phrase": "Her notebook is pink",
+        "pt": "O caderno dela é rosa.",
+        "tip": "Revisão: Her = dela."
       },
       {
-        "topic": "Days of the Week",
-        "type": "Listening",
-        "phrase": "Saturday and Sunday are the weekend",
-        "pt": "Saturday e Sunday são o fim de semana.",
-        "tip": "Weekend significa fim de semana. Fale em partes: week-end."
-      }
-    ]
-  },
-  {
-    "title": "Fase 12 - Months of the Year",
-    "items": [
-      {
-        "topic": "Months of the Year",
-        "type": "Listening",
-        "phrase": "My birthday is in January",
-        "pt": "Meu aniversário é em janeiro.",
-        "tip": "January aparece no começo do ano. Repita devagar: Ja-nu-a-ry."
-      },
-      {
-        "topic": "Months of the Year",
-        "type": "Listening",
-        "phrase": "School starts in February",
-        "pt": "A escola começa em fevereiro.",
-        "tip": "February costuma aparecer no início do ano letivo."
-      },
-      {
-        "topic": "Months of the Year",
-        "type": "Listening",
-        "phrase": "March comes after February",
-        "pt": "March vem depois de February.",
-        "tip": "Treine a sequência: January, February, March."
-      },
-      {
-        "topic": "Months of the Year",
-        "type": "Listening",
-        "phrase": "April comes before May",
-        "pt": "April vem antes de May.",
-        "tip": "Observe a ordem dos meses: March, April, May."
-      },
-      {
-        "topic": "Months of the Year",
-        "type": "Listening",
-        "phrase": "May is a short word",
-        "pt": "May é uma palavra curta.",
-        "tip": "May tem apenas três letras. Fale de forma curta e clara."
-      },
-      {
-        "topic": "Months of the Year",
-        "type": "Listening",
-        "phrase": "June comes before July",
-        "pt": "June vem antes de July.",
-        "tip": "June e July são parecidos, mas não são iguais. Ouça a diferença."
-      },
-      {
-        "topic": "Months of the Year",
-        "type": "Listening",
-        "phrase": "Vacation is in July",
-        "pt": "As férias são em julho.",
-        "tip": "July aparece muito em contextos de férias escolares."
-      },
-      {
-        "topic": "Months of the Year",
-        "type": "Listening",
-        "phrase": "August comes after July",
-        "pt": "August vem depois de July.",
-        "tip": "Continue a sequência: June, July, August."
-      },
-      {
-        "topic": "Months of the Year",
-        "type": "Listening",
-        "phrase": "September comes before October",
-        "pt": "September vem antes de October.",
-        "tip": "Esses meses aparecem perto do fim do ano. Fale com calma."
-      },
-      {
-        "topic": "Months of the Year",
-        "type": "Listening",
-        "phrase": "December is the last month",
-        "pt": "December é o último mês.",
-        "tip": "December combina com o fim do ano e o período de Natal."
+        "topic": "Review 1st Bimester",
+        "type": "Possessives",
+        "phrase": "Our school is beautiful",
+        "pt": "Nossa escola é bonita.",
+        "tip": "Revisão: Our = nosso/nossa."
       }
     ]
   }
