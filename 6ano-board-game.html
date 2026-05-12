@@ -102,6 +102,14 @@
   .championTag{display:block;margin-top:2px;font-size:.68rem;font-weight:1000;color:#7c2d12;background:rgba(255,255,255,.72);border-radius:999px;padding:2px 6px;text-align:center}
   @keyframes pulsePlayer{from{transform:scale(1);filter:brightness(1)}to{transform:scale(1.018);filter:brightness(1.13)}}
 
+  .rankActions{display:grid;grid-template-columns:1fr;gap:8px;margin-top:10px}
+  .rankingModalBox{width:100%;max-width:430px;max-height:88dvh;overflow:auto;background:linear-gradient(180deg,#071427,#0b1b2f);color:#fff;border:4px solid #ffd60a;border-radius:26px;padding:14px;box-shadow:0 18px 44px rgba(0,0,0,.55)}
+  .rankingModalBox h2{margin:0 0 6px;text-align:center;color:#ffd60a;font-size:1.35rem;text-shadow:0 2px 0 rgba(0,0,0,.35)}
+  .rankingModalBox .rankNote{color:#dbeafe}
+  .rankingModalHeader{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:8px;margin:8px 0 10px;text-align:center;font-weight:900;color:#fff7c2;font-size:.82rem;line-height:1.25}
+  .modalClose{width:100%;margin-top:10px;background:linear-gradient(#94a3b8,#475569);color:#fff}
+
+
   @media(max-height:700px){
     .app{gap:3px;padding:4px}
     button{min-height:38px;padding:7px;font-size:.88rem}
@@ -177,14 +185,17 @@
       </div>
 
       <div class="rankingBox">
-        <h3>🏆 TOP 10 Geral</h3>
+        <h3>🏆 TOP 10 do Jogo</h3>
         <div id="currentPlayerScore" class="currentScoreBox"></div>
         <div id="rankingList"><div class="rankNote">Carregando ranking em tempo real...</div></div>
-        <div class="rankNote">Ranking somatório: soma pontos deste e dos outros jogos integrados.</div>
+        <div class="rankNote">Ranking somatório deste jogo: soma todas as partidas registradas aqui.</div>
       </div>
 
-      <button class="btn-green" onclick="restartGame()">🔁 Jogar novamente</button>
-      <a href="6ano.html"><button class="btn-gray" style="margin-top:8px">🏠 Voltar aos jogos</button></a>
+      <div class="rankActions">
+        <button class="btn-blue" onclick="openRankingModal()">🏆 Ranking Geral</button>
+        <button class="btn-green" onclick="restartGame()">🔁 Jogar novamente</button>
+        <a href="6ano.html"><button class="btn-gray" style="width:100%">🏠 Voltar aos jogos</button></a>
+      </div>
     </div>
     <p class="teacher">Jogo idealizado pelo professor Jasson Bruno.</p>
   </section>
@@ -208,10 +219,24 @@
   </div>
 </div>
 
+
+<div id="rankingModal" class="modal">
+  <div class="rankingModalBox">
+    <h2>🏆 Ranking Geral do Jogo</h2>
+    <div class="rankingModalHeader">
+      Formula Race Board Game — 6º Ano<br>
+      Soma das pontuações registradas neste jogo.
+    </div>
+    <div id="generalRankingList"><div class="rankNote">Carregando ranking geral...</div></div>
+    <button class="modalClose" onclick="closeRankingModal()">Fechar ranking ✖</button>
+  </div>
+</div>
+
 <div id="screenFlash" class="screenFlash"></div>
 <audio id="engineSound" src="f1%20som%20atual.mpeg" preload="auto"></audio>
 
 <script>
+const GAME_NAME = "6ano-board-game-formula-race";
 const QUESTIONS = [
   {
     "theme": "Greetings",
@@ -2133,6 +2158,24 @@ function renderCurrentPlayerScore(){
   `;
 }
 
+
+function openRankingModal(){
+  const modal = $("rankingModal");
+  if(modal) modal.classList.add("show");
+  const container = $("generalRankingList");
+  if(container) container.innerHTML = '<div class="rankNote">Carregando ranking geral do jogo...</div>';
+  if(window.carregarRankingGeralJogo){
+    window.carregarRankingGeralJogo("generalRankingList");
+  }else if(window.carregarRanking){
+    window.carregarRanking("generalRankingList");
+  }
+}
+
+function closeRankingModal(){
+  const modal = $("rankingModal");
+  if(modal) modal.classList.remove("show");
+}
+
 function buildRankRow(item, index){
   const row = document.createElement("div");
   const medal = index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : `${index + 1}º`;
@@ -2167,13 +2210,14 @@ function finishGame(won){
     ultimaPontuacaoLocal = {
       nome: playerName,
       escola: playerSchool || "Escola não informada",
-      pontos: score
+      pontos: score,
+      jogo: GAME_NAME
     };
     window.ultimaPontuacaoLocalRef = ultimaPontuacaoLocal;
     renderCurrentPlayerScore();
 
     if(window.salvarPontuacao){
-      window.salvarPontuacao(playerName, score, "6ano-board-game-formula-race", playerSchool);
+      window.salvarPontuacao(playerName, score, GAME_NAME, playerSchool);
     }
   }
 
@@ -2200,7 +2244,7 @@ function avaliarJogo(valor, btn){
   if(btn) btn.classList.add("selected");
   $("ratingMsg").textContent = "Obrigado pela avaliação!";
   if(window.salvarAvaliacao){
-    window.salvarAvaliacao(valor, "6ano-board-game-formula-race", playerName, playerSchool);
+    window.salvarAvaliacao(valor, GAME_NAME, playerName, playerSchool);
   }
 }
 
@@ -2228,6 +2272,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const GAME_NAME_MODULE = "6ano-board-game-formula-race";
 
 function limitarTexto(texto, limite){
   return String(texto || "").trim().slice(0, limite);
@@ -2292,13 +2337,13 @@ window.salvarAvaliacao = async function(avaliacao, jogo, nome, escola){
   }
 };
 
-let rankingAtivo = false;
+let rankingAtivo = {};
 
-window.carregarRanking = function(){
-  if(rankingAtivo) return;
-  rankingAtivo = true;
+window.carregarRanking = function(containerId = "rankingList"){
+  if(rankingAtivo[containerId]) return;
+  rankingAtivo[containerId] = true;
 
-  const container = document.getElementById("rankingList");
+  const container = document.getElementById(containerId);
   if(!container) return;
 
   const q = query(collection(db, "pontuacoes"));
@@ -2311,7 +2356,9 @@ window.carregarRanking = function(){
       const nome = limitarTexto(d.nome, 24);
       const escola = limitarTexto(d.escola, 42) || "Escola não informada";
       const pontos = Number(d.pontos || 0);
+      const jogo = limitarTexto(d.jogo, 60);
 
+      if(jogo && jogo !== GAME_NAME_MODULE) return;
       if(!nome || !Number.isFinite(pontos)) return;
 
       const key = `${nome.toLowerCase()}|${escola.toLowerCase()}`;
@@ -2323,9 +2370,9 @@ window.carregarRanking = function(){
 
     // Inclui a pontuação local recém-finalizada para aparecer na hora.
     // Quando o Firebase atualizar, evitamos duplicar pelo mesmo nome+escola.
-    if(window.ultimaPontuacaoLocalRef && window.ultimaPontuacaoLocalRef.nome){
+    if(window.ultimaPontuacaoLocalRef && window.ultimaPontuacaoLocalRef.nome && (!window.ultimaPontuacaoLocalRef.jogo || window.ultimaPontuacaoLocalRef.jogo === GAME_NAME_MODULE)){
       const local = window.ultimaPontuacaoLocalRef;
-      const keyLocal = `${String(local.nome).toLowerCase()}|${String(local.escola).toLowerCase()}`;
+      const keyLocal = `${String(local.nome).toLowerCase()}|${String(local.escola || "Escola não informada").toLowerCase()}`;
       if(!acumulado.has(keyLocal)){
         acumulado.set(keyLocal, {
           nome: local.nome,
@@ -2370,7 +2417,11 @@ window.carregarRanking = function(){
   });
 };
 
-window.registrarAcesso("6ano-board-game-formula-race");
+window.carregarRankingGeralJogo = function(containerId = "generalRankingList"){
+  window.carregarRanking(containerId);
+};
+
+window.registrarAcesso(GAME_NAME_MODULE);
 </script>
 
 </body>
