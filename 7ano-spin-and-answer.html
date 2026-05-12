@@ -76,6 +76,16 @@
   .rating{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);border-radius:20px;padding:12px;margin-top:10px;text-align:center}
   .ratings{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.ratings button{font-size:.8rem;background:linear-gradient(#fef08a,#f59e0b);color:#422006}.emoji{display:block;font-size:1.7rem}
   .rank{list-style:none;padding:0;margin:8px 0}.rank li{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.22);border-radius:14px;padding:9px;margin-bottom:7px;font-weight:900;font-size:.88rem}.rank li.you{background:linear-gradient(#fef08a,#f59e0b);color:#422006}
+  .rank li.rank-1{background:linear-gradient(135deg,#ffd700,#fff3a0);color:#3a2100;border:2px solid #ffcc00;box-shadow:0 0 18px rgba(255,215,0,.85)}
+  .rank li.rank-2{background:linear-gradient(135deg,#e5e7eb,#ffffff);color:#1f2937;border:2px solid #c0c0c0;box-shadow:0 0 14px rgba(229,231,235,.72)}
+  .rank li.rank-3{background:linear-gradient(135deg,#cd7f32,#ffd2a0);color:#3a2100;border:2px solid #b87333;box-shadow:0 0 14px rgba(205,127,50,.7)}
+  .rank li.you{background:linear-gradient(135deg,#00e5ff,#fef08a)!important;color:#082f49!important;border:3px solid #00e5ff!important;box-shadow:0 0 18px rgba(0,229,255,.9);animation:pulseYou 1.1s infinite alternate}
+  .current-score-box{background:linear-gradient(135deg,#dcfce7,#dbeafe);color:#0f172a;border:3px solid #22c55e;border-radius:20px;padding:12px;margin:10px 0;font-weight:900;box-shadow:0 0 18px rgba(34,197,94,.25)}
+  .current-score-box b{color:#14532d}
+  .ranking-modal-box{width:100%;max-width:430px;max-height:88dvh;overflow:auto;background:linear-gradient(180deg,#fff,#e0f2fe);color:#0f172a;border-radius:26px;padding:16px;text-align:center;border:4px solid #facc15;box-shadow:0 12px 35px rgba(0,0,0,.45),0 0 24px rgba(250,204,21,.55)}
+  .ranking-modal-box h2{color:#111827;margin-top:0}
+  @keyframes pulseYou{from{transform:scale(1);filter:brightness(1)}to{transform:scale(1.02);filter:brightness(1.12)}}
+
   .mini{font-size:.76rem;color:#dbeafe;text-align:center}.teacher{font-size:.76rem;color:#cbd5e1;text-align:center;margin-top:auto}
   @media(max-height:720px){.wheelZone{min-height:285px}.wheelWrap{width:min(76vw,280px);height:min(76vw,280px)}.centerText{width:78px;height:78px;font-size:.68rem}.wlabel{font-size:.58rem}.qbox{padding:12px}.question{font-size:1.03rem}button{min-height:46px;padding:10px}}
 </style>
@@ -148,7 +158,9 @@
     <div class="finalBox">
       <h1 id="finalTitle">Resultado</h1>
       <div id="finalScore" class="scoreBig">Pontuação: 0</div>
+      <div id="currentScoreBox" class="current-score-box">✨ Sua pontuação agora aparecerá aqui.</div>
       <div id="finalMsg" class="mot"></div>
+      <button class="btn-blue" onclick="openRankingModal()">🏆 Ranking Geral</button>
     </div>
 
     <div class="rating">
@@ -161,8 +173,8 @@
       <p id="ratingMessage" class="msg"></p>
     </div>
 
-    <h2>🏆 Ranking Geral do English Game Hub</h2>
-    <p class="mini">A pontuação soma os desafios jogados no Hub.</p>
+    <h2>🏆 Top 10 — Spin and Answer</h2>
+    <p class="mini">A pontuação soma apenas este jogo.</p>
     <ol id="rankingOnline" class="rank"><li>Carregando ranking...</li></ol>
 
     <div class="grid">
@@ -186,6 +198,15 @@
   </div>
 </div>
 
+<div id="rankingModal" class="modal">
+  <div class="ranking-modal-box">
+    <h2>🏆 Ranking Geral — Spin and Answer</h2>
+    <p class="mini" style="color:#334155">Pontuação acumulada somente neste jogo.</p>
+    <ol id="rankingGeralModal" class="rank"><li>Carregando ranking...</li></ol>
+    <button class="btn-gray" onclick="closeRankingModal()">Fechar ranking</button>
+  </div>
+</div>
+
 <script>
 const GAME_NAME = "7ano-spin-and-answer";
 const QUESTIONS = {
@@ -201,7 +222,7 @@ const QUESTIONS = {
       "c": 3
     },
     {
-      "p": "Complete: Ana ____ arrives early. Ela chega cedo todos os dias.",
+      "p": "Ana chega cedo todos os dias. Complete: Ana ____ arrives early.",
       "a": [
         "opinion",
         "doesn't",
@@ -221,7 +242,7 @@ const QUESTIONS = {
       "c": 2
     },
     {
-      "p": "Complete: Lucas ____ studies English on weekends. Ele estuda Inglês em alguns fins de semana, mas não em todos.",
+      "p": "Lucas estuda Inglês em alguns fins de semana, mas não em todos. Complete: Lucas ____ studies English on weekends.",
       "a": [
         "sometimes",
         "never",
@@ -241,7 +262,7 @@ const QUESTIONS = {
       "c": 3
     },
     {
-      "p": "Complete: They ____ play video games after class. Eles jogam videogame com frequência.",
+      "p": "Eles jogam videogame com frequência depois da aula. Complete: They ____ play video games after class.",
       "a": [
         "doesn't",
         "boring",
@@ -251,7 +272,7 @@ const QUESTIONS = {
       "c": 3
     },
     {
-      "p": "Complete: Bruna ____ drinks soda. Ela não toma refrigerante.",
+      "p": "Bruna não toma refrigerante. Complete: Bruna ____ drinks soda.",
       "a": [
         "never",
         "usually",
@@ -281,7 +302,7 @@ const QUESTIONS = {
       "c": 0
     },
     {
-      "p": "Complete: Julia ____ forgets her homework. Ela esquece a tarefa poucas vezes.",
+      "p": "Julia esquece a tarefa poucas vezes. Complete: Julia ____ forgets her homework.",
       "a": [
         "never",
         "every day",
@@ -301,7 +322,7 @@ const QUESTIONS = {
       "c": 0
     },
     {
-      "p": "Complete: I ____ eat breakfast before school. Eu tomo café antes da escola todos os dias.",
+      "p": "Um aluno toma café antes da escola todos os dias. Complete: I ____ eat breakfast before school.",
       "a": [
         "opinion",
         "boring",
@@ -445,7 +466,7 @@ const QUESTIONS = {
       "c": 1
     },
     {
-      "p": "Complete: I think this game is ____. O aluno achou o jogo divertido.",
+      "p": "Um aluno gostou muito do jogo. Qual palavra completa melhor a opinião: I think this game is ____.",
       "a": [
         "never",
         "usually",
@@ -465,7 +486,7 @@ const QUESTIONS = {
       "c": 3
     },
     {
-      "p": "Complete: In my opinion, English is ____.",
+      "p": "Um aluno quer dizer que o Inglês ajuda na vida e nos estudos. Complete: In my opinion, English is ____.",
       "a": [
         "usually",
         "never",
@@ -505,7 +526,7 @@ const QUESTIONS = {
       "c": 0
     },
     {
-      "p": "“I don’t agree.” significa que a pessoa:",
+      "p": "Uma pessoa tem uma opinião diferente da outra. Qual alternativa mostra essa ideia?",
       "a": [
         "tem a mesma opinião",
         "está falando de rotina",
@@ -535,7 +556,7 @@ const QUESTIONS = {
       "c": 2
     },
     {
-      "p": "Complete: I think this activity is ____. A atividade ajudou o aluno a revisar.",
+      "p": "A atividade ajudou o aluno a revisar melhor. Complete: I think this activity is ____.",
       "a": [
         "never",
         "doesn’t",
@@ -779,7 +800,7 @@ const QUESTIONS = {
       "c": 1
     },
     {
-      "p": "O que significa “They are students”?",
+      "p": "Na frase “They are students”, qual é a tradução correta?",
       "a": [
         "Ela é estudante.",
         "Eu sou estudante.",
@@ -801,7 +822,9 @@ const QUESTIONS = {
   ]
 };
 
-const THEMES = ["Likes and Dislikes","Adverbs of Frequency","Giving Opinions","Grammar Rules","Verb to be"];
+const SECOND_BIMESTER_THEMES = ["Likes and Dislikes","Adverbs of Frequency","Giving Opinions","Grammar Rules"];
+const REVIEW_THEMES = ["Verb to be"];
+const THEMES = [...SECOND_BIMESTER_THEMES, ...REVIEW_THEMES];
 const THEME_INDEX = {
   "Likes and Dislikes": 0,
   "Adverbs of Frequency": 1,
@@ -857,9 +880,22 @@ function shuffle(arr){
   return copy;
 }
 
+function buildTenRoundThemeQueue(){
+  const secondPart = [];
+  while(secondPart.length < 8){
+    secondPart.push(...shuffle(SECOND_BIMESTER_THEMES));
+  }
+  const reviewPart = [];
+  while(reviewPart.length < 2){
+    reviewPart.push(...shuffle(REVIEW_THEMES));
+  }
+  // Regra pedagógica: a cada 10 rodadas, 8 temas do 2º bimestre e 2 de revisão.
+  return shuffle([...secondPart.slice(0,8), ...reviewPart.slice(0,2)]);
+}
+
 function nextTheme(){
   if(themeQueue.length === 0){
-    themeQueue = shuffle(THEMES);
+    themeQueue = buildTenRoundThemeQueue();
   }
   return themeQueue.shift();
 }
@@ -883,7 +919,7 @@ function startGame(){
   savedScore = false;
   phaseBreakPending = false;
   usedByTheme = {};
-  themeQueue = shuffle(THEMES);
+  themeQueue = buildTenRoundThemeQueue();
   answered = true;
   currentTheme = "";
 
@@ -1074,6 +1110,7 @@ function finish(completed){
   show("finalScreen");
   $("finalTitle").textContent = completed ? "🏆 Desafio concluído!" : "GAME OVER";
   $("finalScore").textContent = `Pontuação: ${finalPoints}/100 | Acertos: ${right}/${TOTAL_ROUNDS}`;
+  $("currentScoreBox").innerHTML = `✨ <b>Sua pontuação agora:</b><br>${playerName} • ${playerSchool}<br><b>${finalPoints} pontos</b> no Spin and Answer`;
   $("finalMsg").textContent = completed
     ? "🔥 Você quase chegou ao topo!"
     : "💪 Continue treinando para melhorar! Cada tentativa ajuda você a aprender mais.";
@@ -1099,6 +1136,17 @@ function avaliarJogo(avaliacao, buttonElement){
 
 function restartGame(){
   location.reload();
+}
+
+function openRankingModal(){
+  $("rankingModal").classList.add("show");
+  if(typeof window.carregarRanking === "function"){
+    window.carregarRanking(GAME_NAME, "rankingGeralModal");
+  }
+}
+
+function closeRankingModal(){
+  $("rankingModal").classList.remove("show");
 }
 
 function initAudio(){
@@ -1360,6 +1408,7 @@ window.carregarRanking = function carregarRanking(jogo = GAME_NAME, containerId 
     snapshot.forEach((doc) => {
       const item = doc.data();
       if (!item || item.tipo === "motivacional") return;
+      if (item.jogo !== jogo) return;
 
       const nome = String(item.nome || "").trim();
       const escola = String(item.escola || "Escola não informada").trim();
@@ -1372,29 +1421,65 @@ window.carregarRanking = function carregarRanking(jogo = GAME_NAME, containerId 
       somaPorAluno.set(chave, atual);
     });
 
-    const rankingItems = Array.from(somaPorAluno.values())
-      .sort((a, b) => b.pontos - a.pontos)
-      .slice(0, 10);
+    // Garante que o aluno veja a pontuação da rodada atual, mesmo antes do Firebase sincronizar.
+    const pontosAtuais = Number(score || 0);
+    const nomeAtual = String(playerName || "").trim();
+    const escolaAtual = String(playerSchool || "Escola não informada").trim();
+    if (nomeAtual && Number.isFinite(pontosAtuais)) {
+      const chaveAtual = `${nomeAtual.toLowerCase()}|${escolaAtual.toLowerCase()}|real`;
+      const atual = somaPorAluno.get(chaveAtual) || { nome: nomeAtual, escola: escolaAtual, pontos: 0, tipo: "real" };
+      if (atual.pontos < pontosAtuais) atual.pontos = pontosAtuais;
+      somaPorAluno.set(chaveAtual, atual);
+    }
+
+    const rankingCompleto = Array.from(somaPorAluno.values())
+      .sort((a, b) => b.pontos - a.pontos);
+
+    const rankingItems = rankingCompleto.slice(0, 10);
 
     if (rankingItems.length === 0) {
       rankingContainer.innerHTML = "<li>Nenhuma pontuação registrada ainda.</li>";
       return;
     }
 
+    let alunoAtualNoTop10 = false;
+
     rankingItems.forEach((item, index) => {
       const li = document.createElement("li");
+      const isCurrent = item.nome.toLowerCase() === String(playerName || "").toLowerCase()
+        && item.escola.toLowerCase() === String(playerSchool || "").toLowerCase()
+        && item.tipo === "real";
+
+      const medalha = index === 0 ? "🥇 " : index === 1 ? "🥈 " : index === 2 ? "🥉 " : "";
+      const campeao = index === 0 ? " 🏆 Campeão do dia" : "";
+      const voce = isCurrent ? " ⭐ Você" : "";
       const selo = item.tipo === "motivacional" ? " ⭐" : "";
-      li.textContent = `${index + 1}º ${item.nome} - ${item.escola} - ${item.pontos} pontos${selo}`;
 
-      if (item.nome === playerName && item.tipo === "real") {
+      li.textContent = `${medalha}${index + 1}º ${item.nome} - ${item.escola} - ${item.pontos} pontos${campeao}${voce}${selo}`;
+      if(index < 3) li.classList.add(`rank-${index+1}`);
+      if(isCurrent) {
         li.classList.add("you");
+        alunoAtualNoTop10 = true;
       }
-
       rankingContainer.appendChild(li);
     });
+
+    if(!alunoAtualNoTop10 && nomeAtual){
+      const posicao = rankingCompleto.findIndex(item =>
+        item.nome.toLowerCase() === nomeAtual.toLowerCase()
+        && item.escola.toLowerCase() === escolaAtual.toLowerCase()
+        && item.tipo === "real"
+      );
+
+      const li = document.createElement("li");
+      li.classList.add("you");
+      const posicaoTexto = posicao >= 0 ? `${posicao + 1}º` : "Sua posição";
+      li.textContent = `✨ ${posicaoTexto} ${nomeAtual} - ${escolaAtual} - ${pontosAtuais} pontos ⭐ Você`;
+      rankingContainer.appendChild(li);
+    }
   }, (error) => {
     console.error("Erro ao carregar ranking:", error);
-    rankingContainer.innerHTML = "<li>Não foi possível carregar o ranking.</li>";
+    rankingContainer.innerHTML = `<li class="you">✨ ${playerName} - ${playerSchool} - ${score} pontos ⭐ Você</li>`;
   });
 };
 
