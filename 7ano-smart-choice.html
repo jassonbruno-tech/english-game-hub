@@ -6,584 +6,70 @@
 <title>Smart Choice - 7º Ano</title>
 <style>
 *{box-sizing:border-box}
-:root{
-  --bg1:#06081f;--bg2:#12043b;--panel:rgba(9,13,50,.94);--panel2:rgba(15,20,70,.96);
-  --line:rgba(255,255,255,.16);--gold:#ffe66d;--gold2:#ffb703;--blue:#2563eb;--pink:#e11d48;
-  --green:#22c55e;--red:#ef4444;--text:#f8fafc;--muted:#dbeafe;
-}
+:root{--bg1:#06081f;--bg2:#12043b;--panel:rgba(9,13,50,.94);--gold:#ffe66d;--gold2:#ffb703;--blue:#2563eb;--pink:#e11d48;--green:#22c55e;--red:#ef4444;--text:#f8fafc}
 html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;color:var(--text)}
-body{
-  min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:8px;
-  background:
-    radial-gradient(circle at 18% 16%, rgba(56,189,248,.22) 0 9%, transparent 10%),
-    radial-gradient(circle at 82% 15%, rgba(255,230,109,.18) 0 8%, transparent 9%),
-    radial-gradient(circle at 50% 86%, rgba(225,29,72,.14) 0 10%, transparent 11%),
-    radial-gradient(circle, rgba(255,255,255,.82) 0 1.2px, transparent 1.4px) 0 0/94px 94px,
-    linear-gradient(180deg,var(--bg1),var(--bg2));
-}
-.app{
-  width:min(100%,1060px);height:min(770px,calc(100dvh - 16px));
-  background:linear-gradient(180deg,rgba(7,10,40,.96),rgba(11,8,48,.96));
-  border:1px solid rgba(255,230,109,.22);border-radius:22px;overflow:hidden;
-  box-shadow:0 24px 60px rgba(0,0,0,.45),0 0 36px rgba(255,230,109,.08);
-  display:flex;flex-direction:column;
-}
-header{
-  flex:0 0 auto;padding:10px 14px;text-align:center;color:#fff;
-  background:linear-gradient(135deg,#1d4ed8,#7c3aed 50%,#e11d48);
-  border-bottom:1px solid rgba(255,255,255,.16);
-}
+body{min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:8px;background:radial-gradient(circle at 18% 16%,rgba(56,189,248,.22) 0 9%,transparent 10%),radial-gradient(circle at 82% 15%,rgba(255,230,109,.18) 0 8%,transparent 9%),linear-gradient(180deg,var(--bg1),var(--bg2))}
+.app{width:min(100%,1060px);height:min(770px,calc(100dvh - 16px));background:linear-gradient(180deg,rgba(7,10,40,.96),rgba(11,8,48,.96));border:1px solid rgba(255,230,109,.22);border-radius:22px;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.45);display:flex;flex-direction:column}
+header{padding:10px 14px;text-align:center;background:linear-gradient(135deg,#1d4ed8,#7c3aed 50%,#e11d48);border-bottom:1px solid rgba(255,255,255,.16)}
 .topbar{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:4px}
-.back,.pill{
-  color:#fff;text-decoration:none;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.28);
-  border-radius:999px;padding:6px 10px;font-weight:900;font-size:12px;
-}
+.back,.pill{color:#fff;text-decoration:none;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.28);border-radius:999px;padding:6px 10px;font-weight:900;font-size:12px}
 h1{margin:0;font-size:clamp(26px,5.8vw,48px);line-height:1;text-shadow:0 3px 10px rgba(0,0,0,.2)}
 .subtitle{margin:4px 0 0;font-weight:800;color:#fff7c2;font-size:13px}
 main{flex:1;min-height:0;padding:10px;overflow:hidden}
-.screen{display:none;height:100%;min-height:0}
-.screen.active{display:flex}
-.card{
-  background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);
-  border-radius:18px;padding:12px;box-shadow:0 12px 30px rgba(0,0,0,.25);
-}
-.btn,.start-btn{
-  border:0;border-radius:16px;padding:13px 18px;cursor:pointer;width:100%;
-  background:linear-gradient(135deg,var(--gold),var(--gold2) 35%,#ff4d9e 78%,#7c3aed);
-  color:#172033;font-weight:1000;font-size:16px;box-shadow:0 10px 22px rgba(255,183,3,.22);
-}
+.screen{display:none;height:100%;min-height:0} .screen.active{display:flex}
+.card{background:linear-gradient(180deg,rgba(15,20,70,.96),rgba(9,13,50,.94));border:1px solid rgba(255,255,255,.16);border-radius:18px;padding:12px;box-shadow:0 12px 30px rgba(0,0,0,.25)}
+.btn,.start-btn{border:0;border-radius:16px;padding:13px 18px;cursor:pointer;width:100%;background:linear-gradient(135deg,var(--gold),var(--gold2) 35%,#ff4d9e 78%,#7c3aed);color:#172033;font-weight:1000;font-size:16px;box-shadow:0 10px 22px rgba(255,183,3,.22)}
 .btn.secondary{background:linear-gradient(135deg,#dbeafe,#a7f3d0);box-shadow:none}
-.brand{font-weight:900;color:#fff3b0;text-align:center;font-size:12px;margin-top:10px}
-
-/* Start */
+.brand,.final-brand{font-weight:900;color:#fff3b0;text-align:center;font-size:12px;margin-top:10px}
 #startScreen{align-items:center;justify-content:center;overflow:hidden}
 .start-wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:14px;width:100%;height:100%;min-height:0;align-items:stretch}
 .start-card{overflow:auto;display:flex;flex-direction:column;justify-content:flex-start;min-height:100%}
 .start-card h2,.info-card h3{margin:0 0 10px;color:#fff;font-size:30px;line-height:1.1}
-.motivation{
-  background:rgba(255,230,109,.12);border:1px solid rgba(255,230,109,.32);color:#fff7c2;
-  padding:14px;border-radius:16px;font-weight:900;line-height:1.38;margin:10px 0 12px;font-size:15px;
-}
+.motivation{background:rgba(255,230,109,.12);border:1px solid rgba(255,230,109,.32);color:#fff7c2;padding:14px;border-radius:16px;font-weight:900;line-height:1.38;margin:10px 0 12px;font-size:15px}
 .player-form{display:grid;gap:8px;text-align:left;margin:12px 0 0}
 .player-form label{font-weight:900;color:var(--gold);font-size:15px}
-.player-form input{
-  width:100%;border:2px solid rgba(96,165,250,.42);border-radius:14px;padding:12px 13px;
-  font-size:16px;font-weight:800;outline:none;background:rgba(255,255,255,.96);color:#172033;
-}
-.review-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;max-height:300px;overflow:auto;padding-right:3px;flex:0 0 auto}
+.player-form input{width:100%;border:2px solid rgba(96,165,250,.42);border-radius:14px;padding:12px 13px;font-size:16px;font-weight:800;outline:none;background:rgba(255,255,255,.96);color:#172033}
+.review-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;max-height:300px;overflow:auto;padding-right:3px}
 .review-block{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);border-radius:14px;padding:10px}
 .review-block b{display:block;color:#ffe66d;font-size:14px;margin-bottom:6px;line-height:1.15}
 .review-block span{display:block;color:#eaf2ff;font-weight:800;font-size:12px;line-height:1.3;margin:3px 0}
-.info-card{display:flex;flex-direction:column;justify-content:flex-start;min-height:100%}
-.info-list{display:grid;gap:10px}
-.info-item{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);border-radius:15px;padding:12px;font-weight:900;line-height:1.32;color:#eaf2ff;font-size:14px}
-.info-item b{color:var(--gold);font-size:16px}
-
-/* Game */
+.info-list{display:grid;gap:10px} .info-item{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);border-radius:15px;padding:12px;font-weight:900;line-height:1.32;color:#eaf2ff;font-size:14px} .info-item b{color:var(--gold);font-size:16px}
 #gameScreen.active{display:flex;flex-direction:column}
-.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;flex:0 0 auto;margin-bottom:8px}
-.stat{background:linear-gradient(180deg,rgba(13,20,72,.96),rgba(13,10,50,.96));border:1.5px solid rgba(255,230,109,.28);border-radius:14px;padding:8px 4px;text-align:center;box-shadow:0 6px 14px rgba(0,0,0,.18)}
-.stat b{display:block;font-size:21px;color:var(--gold);line-height:1}
-.stat span{font-size:10px;font-weight:900;color:#dbeafe;text-transform:uppercase;letter-spacing:.4px}
-.progress-card{
-  flex:0 0 auto;text-align:center;padding:9px 12px;margin-bottom:8px;border-radius:14px;
-  background:linear-gradient(90deg,rgba(255,230,109,.16),rgba(56,189,248,.13),rgba(225,29,72,.16));
-  border:1.5px solid rgba(255,230,109,.38);font-weight:1000;color:#fff3b0;font-size:15px;box-shadow:0 8px 18px rgba(0,0,0,.15);
-}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin-bottom:8px}
+.stat{background:linear-gradient(180deg,rgba(13,20,72,.96),rgba(13,10,50,.96));border:1.5px solid rgba(255,230,109,.28);border-radius:14px;padding:8px 4px;text-align:center}
+.stat b{display:block;font-size:18px;color:var(--gold);line-height:1} .stat span{font-size:10px;font-weight:900;color:#dbeafe;text-transform:uppercase;letter-spacing:.4px}
+.progress-card{text-align:center;padding:9px 12px;margin-bottom:8px;border-radius:14px;background:linear-gradient(90deg,rgba(255,230,109,.16),rgba(56,189,248,.13),rgba(225,29,72,.16));border:1.5px solid rgba(255,230,109,.38);font-weight:1000;color:#fff3b0;font-size:15px}
 .question-card{flex:1;min-height:0;overflow:hidden;display:flex;flex-direction:column;gap:6px;justify-content:flex-start}
-.mission-box{
-  display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 12px;border-radius:16px;
-  background:linear-gradient(135deg, rgba(255,230,109,.26), rgba(37,99,235,.20), rgba(225,29,72,.14));
-  border:1px solid rgba(255,230,109,.46);color:#fff7c2;font-weight:1000;box-shadow:0 8px 18px rgba(255,230,109,.08);
-}
-.mission-box small{color:#eaf2ff;font-weight:900;text-align:right;font-size:13px;line-height:1.15}
-.theme-chip{align-self:flex-start;background:linear-gradient(135deg,rgba(255,230,109,.24),rgba(255,183,3,.15));color:#fff3b0;border:1px solid rgba(255,230,109,.48);border-radius:999px;padding:7px 12px;font-weight:1000;font-size:15px;box-shadow:0 6px 12px rgba(255,183,3,.08)}
-.visual{display:flex;align-items:center;justify-content:center;min-height:64px;border-radius:18px;background:linear-gradient(135deg,rgba(239,246,255,.95),rgba(236,254,255,.92));border:1px dashed #93c5fd;font-size:42px;margin-bottom:2px}
-.prompt{font-size:22px;line-height:1.25;font-weight:900;color:#fff;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-left:5px solid var(--gold);padding:12px;border-radius:15px;margin-bottom:2px}
-.options{display:grid;grid-template-columns:1fr;gap:8px;min-height:0;overflow:hidden;margin-top:0;padding-top:0}
-.option{border:2px solid rgba(96,165,250,.32);background:linear-gradient(180deg,#ffffff,#eaf2ff);border-radius:14px;padding:12px 13px;text-align:left;font-weight:1000;font-size:16px;cursor:pointer;color:#172033;box-shadow:0 4px 10px rgba(0,0,0,.10)}
-.option.correct{background:#dcfce7;border-color:#22c55e;color:#14532d}
-.option.wrong{background:#fee2e2;border-color:#ef4444;color:#7f1d1d}
-.feedback{display:none;border-radius:13px;padding:8px;font-weight:900;line-height:1.22;font-size:12px}
-.feedback.good{display:block;background:#dcfce7;border:1px solid #86efac;color:#14532d}
-.feedback.bad{display:block;background:#fee2e2;border:1px solid #fca5a5;color:#7f1d1d}
-
-/* Mission / final */
-#missionWinScreen,#finalScreen{align-items:center;justify-content:center}
-.win-card,.final-card{width:100%;max-width:720px;text-align:center;max-height:100%;overflow:auto}
-.big-title{font-size:34px;color:var(--gold);margin:0 0 8px;text-shadow:0 0 16px rgba(255,230,109,.18)}
-.win-emoji{font-size:54px;margin:4px 0}
-.win-text,.final-message{font-weight:900;line-height:1.35;margin:8px 0 12px;color:#eaf2ff}
-.final-message{background:linear-gradient(135deg,#fff7ed,#dbeafe);border:2px solid var(--gold);color:#172033;border-radius:15px;padding:10px}
-.result-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:10px 0}
-.result-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:8px;text-align:center;font-weight:900}
-.result-box span{display:block;color:#64748b;font-size:9px;text-transform:uppercase}
-.result-box b{display:block;color:#e11d48;font-size:18px;margin-top:2px}
-.rank-list{display:grid;gap:5px;margin:8px 0}
-.rank-row{display:grid;grid-template-columns:30px 1fr auto;gap:6px;align-items:center;padding:6px;border-radius:11px;background:#f8fafc;border:1px solid #e2e8f0}
-.rank-row.player{background:linear-gradient(135deg,#fff7ed,#dbeafe);border:2px solid var(--gold)}
-.rank-pos{width:25px;height:25px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;background:#dbeafe;color:#1d4ed8;font-size:10px}
-.rank-name{font-weight:900;color:#172033;line-height:1.05;font-size:11px;text-align:left}
-.rank-school{font-size:8.5px;font-weight:800;color:#64748b;margin-top:1px;text-align:left}
-.rank-score{font-weight:900;color:#e11d48;text-align:right;font-size:11px}
-.rank-note{text-align:center;font-size:10px;color:#cbd5e1;font-weight:800;line-height:1.15;margin-top:5px}
+.mission-box{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 12px;border-radius:16px;background:linear-gradient(135deg,rgba(255,230,109,.26),rgba(37,99,235,.20),rgba(225,29,72,.14));border:1px solid rgba(255,230,109,.46);color:#fff7c2;font-weight:1000}
+.theme-chip{align-self:flex-start;background:linear-gradient(135deg,rgba(255,230,109,.24),rgba(255,183,3,.15));color:#fff3b0;border:1px solid rgba(255,230,109,.48);border-radius:999px;padding:7px 12px;font-weight:1000;font-size:15px}
+.visual{display:flex;align-items:center;justify-content:center;min-height:56px;border-radius:18px;background:linear-gradient(135deg,rgba(239,246,255,.95),rgba(236,254,255,.92));border:1px dashed #93c5fd;font-size:38px}
+.prompt{font-size:21px;line-height:1.25;font-weight:900;color:#fff;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-left:5px solid var(--gold);padding:12px;border-radius:15px}
+.timer-wrap{width:100%;height:12px;border-radius:999px;overflow:hidden;background:rgba(255,255,255,.12);border:1px solid rgba(255,230,109,.28)} .timer-bar{width:100%;height:100%;background:linear-gradient(90deg,#22c55e,#ffe66d,#ef4444);transition:width .15s linear} .timer-text{text-align:center;font-weight:1000;color:#fff7c2;font-size:13px}
+.options{display:grid;grid-template-columns:1fr;gap:7px;min-height:0;overflow:hidden}
+.option{border:2px solid rgba(96,165,250,.32);background:linear-gradient(180deg,#ffffff,#eaf2ff);border-radius:14px;padding:10px 12px;text-align:left;font-weight:1000;font-size:15.5px;cursor:pointer;color:#172033;box-shadow:0 4px 10px rgba(0,0,0,.10);display:flex;gap:9px;align-items:center}
+.option-letter{flex:0 0 31px;width:31px;height:31px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:1000;background:linear-gradient(135deg,#1d4ed8,#7c3aed);color:#fff}
+.option.correct{background:#dcfce7;border-color:#22c55e;color:#14532d;box-shadow:0 0 22px rgba(34,197,94,.75)} .option.wrong{background:#fee2e2;border-color:#ef4444;color:#7f1d1d}
+.option.hide-option{opacity:.18;pointer-events:none;filter:grayscale(1);text-decoration:line-through}
+.feedback{display:none;border-radius:13px;padding:8px;font-weight:900;line-height:1.22;font-size:12px} .feedback.good{display:block;background:#dcfce7;border:1px solid #86efac;color:#14532d} .feedback.bad{display:block;background:#fee2e2;border:1px solid #fca5a5;color:#7f1d1d}
+.lifelines{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:3px}
+.help-btn{border:1px solid rgba(255,230,109,.36);border-radius:14px;padding:10px 8px;background:linear-gradient(135deg,rgba(255,230,109,.18),rgba(37,99,235,.18),rgba(225,29,72,.12));color:#fff7c2;font-weight:1000;cursor:pointer} .help-btn:disabled{opacity:.45;cursor:not-allowed;filter:grayscale(.5)} .stop-btn{background:linear-gradient(135deg,rgba(34,197,94,.22),rgba(255,230,109,.20),rgba(37,99,235,.14))!important;color:#dcfce7!important}
+#finalScreen{align-items:center;justify-content:center} .final-card{width:100%;max-width:720px;text-align:center;max-height:100%;overflow:auto} .big-title{font-size:34px;color:var(--gold);margin:0 0 8px;text-shadow:0 0 16px rgba(255,230,109,.18)} .win-emoji{font-size:54px;margin:4px 0}
+.final-message{font-weight:900;line-height:1.35;margin:8px 0 12px;background:linear-gradient(135deg,#fff7ed,#dbeafe);border:2px solid var(--gold);color:#172033;border-radius:15px;padding:10px}
+.result-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:10px 0} .result-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:8px;text-align:center;font-weight:900} .result-box span{display:block;color:#64748b;font-size:9px;text-transform:uppercase} .result-box b{display:block;color:#e11d48;font-size:18px;margin-top:2px}
+.current-score-box{background:linear-gradient(135deg,#fff7ed,#dbeafe);border:2px solid #ffe66d;border-radius:16px;padding:10px;margin:10px 0;color:#172033;font-weight:1000;box-shadow:0 0 18px rgba(255,230,109,.28)}
+.rank-list{display:grid;gap:6px;margin:8px 0} .rank-row{display:grid;grid-template-columns:34px 1fr auto;gap:7px;align-items:center;padding:8px;border-radius:12px;background:#f8fafc;border:1px solid #e2e8f0;color:#172033} .rank-row.player{border:3px solid #00e5ff;box-shadow:0 0 18px rgba(0,229,255,.85);animation:pulsePlayer 1s infinite alternate} @keyframes pulsePlayer{from{filter:brightness(1)}to{filter:brightness(1.12)}}
+.rank-row.rank-1{background:linear-gradient(135deg,#ffd700,#fff3a0);border:3px solid #ffcc00;box-shadow:0 0 18px rgba(255,215,0,.8)} .rank-row.rank-2{background:linear-gradient(135deg,#c0c0c0,#f4f4f4);border:3px solid #b0b0b0} .rank-row.rank-3{background:linear-gradient(135deg,#cd7f32,#ffd2a0);border:3px solid #b87333}
+.rank-pos{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;background:#dbeafe;color:#1d4ed8;font-size:11px} .rank-name{font-weight:900;line-height:1.05;font-size:12px;text-align:left} .rank-school{font-size:9px;font-weight:800;color:#64748b;margin-top:2px;text-align:left} .rank-score{font-weight:900;color:#e11d48;text-align:right;font-size:12px} .champion-badge{display:block;color:#92400e;font-size:10px;margin-top:2px} .rank-note{text-align:center;font-size:12px;color:#fff7c2;font-weight:900;margin:8px 0 4px}
 .rank-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:9px}
-
-@media(max-width:860px){
-  body{padding:5px;align-items:flex-start}
-  .app{height:calc(100dvh - 10px);border-radius:16px}
-  header{padding:5px 7px}.topbar{margin-bottom:2px}.back,.pill{font-size:9px;padding:4px 7px}
-  h1{font-size:22px}.subtitle{display:none}main{padding:5px}
-  .start-wrap{grid-template-columns:1fr;height:100%;overflow:auto;gap:10px}
-  .start-card{padding:10px}
-  .start-card h2,.info-card h3{font-size:24px;line-height:1.1}
-  .motivation{font-size:13px;padding:11px;margin:8px 0 10px}
-  .player-form{gap:6px;margin:10px 0 0}.player-form label{font-size:13px}.player-form input{padding:10px 10px;font-size:14px}
-  .review-grid{grid-template-columns:1fr;max-height:250px;gap:7px}
-  .review-block{padding:8px}
-  .review-block b{font-size:12.5px}
-  .review-block span{font-size:11px}
-  .start-btn{font-size:15px;padding:12px 14px}
-  .brand{font-size:11px}
-  .info-card{display:none}
-  .stats{gap:5px;margin-bottom:5px}.stat{padding:6px 3px;border-radius:11px}.stat b{font-size:16px}.stat span{font-size:8.5px}
-  .progress-card{font-size:12px;padding:7px 8px;margin-bottom:5px;border-radius:11px}
-  .question-card{gap:4px;padding:7px;border-radius:13px}
-  .mission-box{padding:7px 8px}.mission-box span{font-size:13px}.mission-box small{font-size:10px}
-  .theme-chip{font-size:12px;padding:5px 9px}
-  .visual{min-height:36px;font-size:24px;border-radius:12px;margin-bottom:0}
-  .prompt{font-size:16px;line-height:1.18;padding:8px 9px;border-radius:12px;max-height:none;overflow:visible}
-  .options{gap:5px}
-  .option{font-size:13.5px;line-height:1.15;padding:8px 10px;border-radius:11px;min-height:36px}
-  .feedback{font-size:11px;padding:6px;max-height:none;overflow:visible}
-  .big-title{font-size:27px}.win-emoji{font-size:44px}.win-text{font-size:13px}
-  .result-grid{grid-template-columns:repeat(2,1fr)}
-}
-@media(max-height:680px) and (max-width:860px){
-  body.playing .topbar{display:none} body.playing header{padding:5px} body.playing h1{font-size:19px}
-  body.playing .stats{display:grid}
-  body.playing .visual{display:none}
-  body.playing .progress-card{font-size:11px;padding:5px 7px;margin-bottom:4px}
-  body.playing .mission-box{padding:5px 7px}
-  body.playing .mission-box span{font-size:12px}
-  body.playing .mission-box small{font-size:9px}
-  body.playing .theme-chip{font-size:11px;padding:4px 8px}
-  body.playing .prompt{font-size:13.5px;max-height:none;padding:7px 8px}
-  body.playing .option{font-size:12px;min-height:31px;padding:7px 8px}
-  body.playing .feedback{font-size:10px;padding:5px;display:block}
-}
-
-.mission-box span{font-size:17px;line-height:1.15}
-.question-card > *{margin-top:0}
-
-
-@media(max-width:860px){
-  #startScreen.active{
-    align-items:flex-start;
-  }
-  .start-card{
-    min-height:100%;
-    justify-content:flex-start;
-  }
-}
-
-
-/* --- Modo Show do Milhão: suspense, tempo de 20 segundos, ajudas e alternativas A-E --- */
-.question-card{
-  gap:5px !important;
-}
-.timer-wrap{
-  width:100%;
-  height:12px;
-  border-radius:999px;
-  overflow:hidden;
-  background:rgba(255,255,255,.12);
-  border:1px solid rgba(255,230,109,.28);
-  box-shadow:inset 0 2px 8px rgba(0,0,0,.28);
-}
-.timer-bar{
-  width:100%;
-  height:100%;
-  background:linear-gradient(90deg,#22c55e,#ffe66d,#ef4444);
-  transform-origin:left center;
-  transition:width .15s linear;
-}
-.timer-text{
-  text-align:center;
-  font-weight:1000;
-  color:#fff7c2;
-  font-size:13px;
-  margin-top:-1px;
-}
-.options{
-  gap:7px !important;
-}
-.option{
-  display:flex;
-  align-items:center;
-  gap:9px;
-  transform:translateX(26px);
-  opacity:0;
-  animation:slideOption .32s ease forwards;
-}
-.option-letter{
-  flex:0 0 31px;
-  width:31px;
-  height:31px;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:1000;
-  background:linear-gradient(135deg,#1d4ed8,#7c3aed);
-  color:#fff;
-  box-shadow:0 4px 10px rgba(0,0,0,.18);
-}
-.option-text{
-  flex:1;
-}
-.option.hide-option{
-  opacity:.18 !important;
-  pointer-events:none !important;
-  filter:grayscale(1);
-  text-decoration:line-through;
-}
-.option.correct{
-  animation:correctGlow .85s ease infinite alternate !important;
-}
-.option.wrong{
-  animation:wrongShake .25s ease 2 !important;
-}
-@keyframes slideOption{
-  from{opacity:0;transform:translateX(26px)}
-  to{opacity:1;transform:translateX(0)}
-}
-@keyframes correctGlow{
-  from{box-shadow:0 0 10px rgba(34,197,94,.25);filter:brightness(1)}
-  to{box-shadow:0 0 26px rgba(34,197,94,.95),0 0 40px rgba(34,197,94,.35);filter:brightness(1.12)}
-}
-@keyframes wrongShake{
-  0%,100%{transform:translateX(0)}
-  25%{transform:translateX(-4px)}
-  75%{transform:translateX(4px)}
-}
-.lifelines{
-  display:grid;
-  grid-template-columns:1fr 1fr 1fr;
-  gap:7px;
-  margin-top:3px;
-}
-.help-btn{
-  border:1px solid rgba(255,230,109,.36);
-  border-radius:14px;
-  padding:9px 8px;
-  background:linear-gradient(135deg,rgba(255,230,109,.18),rgba(37,99,235,.18),rgba(225,29,72,.12));
-  color:#fff7c2;
-  font-weight:1000;
-  cursor:pointer;
-  box-shadow:0 6px 14px rgba(0,0,0,.18);
-}
-.help-btn:disabled{
-  opacity:.45;
-  cursor:not-allowed;
-  filter:grayscale(.5);
-}
-.modal{
-  position:fixed;
-  inset:0;
-  z-index:40;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  background:rgba(2,6,23,.74);
-  backdrop-filter:blur(4px);
-  padding:15px;
-}
-.modal.active{display:flex}
-.modal-card{
-  width:min(100%,560px);
-  background:linear-gradient(180deg,rgba(15,20,70,.98),rgba(9,13,50,.98));
-  border:1.5px solid rgba(255,230,109,.4);
-  border-radius:22px;
-  padding:16px;
-  box-shadow:0 24px 60px rgba(0,0,0,.48),0 0 36px rgba(255,230,109,.12);
-  text-align:center;
-}
-.modal-card h2{
-  margin:0 0 8px;
-  color:#ffe66d;
-  font-size:28px;
-}
-.cards-row{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:10px;
-  margin:12px 0;
-}
-.magic-card{
-  min-height:112px;
-  border-radius:18px;
-  border:2px solid rgba(255,230,109,.5);
-  background:linear-gradient(135deg,#1d4ed8,#7c3aed 52%,#e11d48);
-  color:#fff;
-  font-weight:1000;
-  font-size:28px;
-  cursor:pointer;
-  box-shadow:0 12px 24px rgba(0,0,0,.28);
-}
-.magic-card.revealed{
-  background:linear-gradient(135deg,#fff7ed,#dbeafe);
-  color:#172033;
-}
-.audience-list{
-  display:grid;
-  gap:7px;
-  margin:10px 0;
-}
-.audience-row{
-  display:grid;
-  grid-template-columns:38px 1fr 48px;
-  gap:7px;
-  align-items:center;
-  color:#fff;
-  font-weight:900;
-}
-.audience-bar-bg{
-  height:22px;
-  border-radius:999px;
-  background:rgba(255,255,255,.12);
-  overflow:hidden;
-  border:1px solid rgba(255,255,255,.14);
-}
-.audience-bar{
-  height:100%;
-  border-radius:999px;
-  background:linear-gradient(90deg,#2563eb,#ffe66d);
-}
-.show-message{
-  font-weight:900;
-  color:#eaf2ff;
-  line-height:1.35;
-}
-@media(max-width:860px){
-  .timer-wrap{height:10px}
-  .timer-text{font-size:11px}
-  .lifelines{gap:5px}
-  .help-btn{font-size:10.5px;padding:7px 5px;border-radius:10px}
-  .option-letter{width:26px;height:26px;flex-basis:26px;font-size:12px}
-  .option{gap:6px}
-  .modal-card{padding:13px;border-radius:18px}
-  .modal-card h2{font-size:23px}
-  .magic-card{min-height:90px;font-size:23px}
-}
-@media(max-height:680px) and (max-width:860px){
-  body.playing .lifelines{gap:4px}
-  body.playing .help-btn{font-size:9.5px;padding:5px 4px}
-  body.playing .timer-wrap{height:8px}
-  body.playing .timer-text{font-size:10px}
-}
-
-
-/* --- Ajustes Show do Milhão v94: som, tempo de 20 segundos, ajudas e piscas --- */
-.help-btn{
-  font-size:15px !important;
-  padding:12px 10px !important;
-  min-height:52px !important;
-  border-radius:16px !important;
-  letter-spacing:.2px;
-  text-shadow:0 1px 2px rgba(0,0,0,.18);
-}
-.lifelines{
-  gap:9px !important;
-}
-.timer-text{
-  font-size:15px !important;
-}
-.option.correct{
-  animation:correctBlink 0.42s ease-in-out infinite alternate !important;
-}
-.option.wrong{
-  animation:wrongBlink 0.34s ease-in-out 6 alternate, wrongShake .25s ease 2 !important;
-}
-@keyframes correctBlink{
-  from{
-    background:#dcfce7;
-    border-color:#22c55e;
-    box-shadow:0 0 10px rgba(34,197,94,.25);
-    filter:brightness(1);
-  }
-  to{
-    background:#86efac;
-    border-color:#16a34a;
-    box-shadow:0 0 28px rgba(34,197,94,1),0 0 48px rgba(34,197,94,.42);
-    filter:brightness(1.18);
-  }
-}
-@keyframes wrongBlink{
-  from{
-    background:#fee2e2;
-    border-color:#ef4444;
-    box-shadow:0 0 8px rgba(239,68,68,.25);
-  }
-  to{
-    background:#fca5a5;
-    border-color:#b91c1c;
-    box-shadow:0 0 26px rgba(239,68,68,.95),0 0 42px rgba(239,68,68,.35);
-  }
-}
-.gameover-flash{
-  animation:screenRedFlash .42s ease-in-out 5 alternate;
-}
-@keyframes screenRedFlash{
-  from{filter:none}
-  to{filter:drop-shadow(0 0 28px rgba(239,68,68,.95)) brightness(1.18)}
-}
-@media(max-width:860px){
-  .help-btn{
-    font-size:12.5px !important;
-    padding:9px 6px !important;
-    min-height:44px !important;
-  }
-  .timer-text{
-    font-size:12.5px !important;
-  }
-}
-@media(max-height:680px) and (max-width:860px){
-  body.playing .help-btn{
-    font-size:11px !important;
-    padding:7px 5px !important;
-    min-height:36px !important;
-  }
-}
-
-
-.final-brand{
-  display:block !important;
-  margin-top:12px !important;
-  color:#fff3b0 !important;
-  font-size:13px !important;
-  font-weight:1000 !important;
-  text-align:center !important;
-}
-
-
-.gameplay-brand{
-  margin-top:12px !important;
-  margin-bottom:4px !important;
-  font-size:12px !important;
-  color:#fff3b0 !important;
-  text-align:center !important;
-  font-weight:900 !important;
-  opacity:.96;
-}
-@media(max-width:860px){
-  .gameplay-brand{
-    margin-top:10px !important;
-    margin-bottom:3px !important;
-    font-size:10.5px !important;
-  }
-}
-@media(max-height:680px) and (max-width:860px){
-  body.playing .gameplay-brand{
-    margin-top:8px !important;
-    margin-bottom:2px !important;
-    font-size:9.5px !important;
-  }
-}
-
-
-/* --- Pontuação estilo Show do Milhão --- */
-.stat b#score{
-  font-size:16px !important;
-}
-.gameover-flash{
-  animation:screenRedFlash .42s ease-in-out 5 alternate;
-}
-@media(max-width:860px){
-  .stat b#score{
-    font-size:11px !important;
-  }
-}
-
-
-/* --- Botão Parar e dinheiro fictício Smart Dollars --- */
-.lifelines{
-  grid-template-columns:repeat(4,1fr) !important;
-}
-.stop-btn{
-  background:linear-gradient(135deg,rgba(34,197,94,.22),rgba(255,230,109,.20),rgba(37,99,235,.14)) !important;
-  border-color:rgba(34,197,94,.46) !important;
-  color:#dcfce7 !important;
-}
-.money-note{
-  display:inline-block;
-  margin-left:6px;
-  padding:2px 7px;
-  border-radius:999px;
-  background:rgba(34,197,94,.16);
-  border:1px solid rgba(34,197,94,.28);
-  color:#dcfce7;
-  font-weight:1000;
-}
-@media(max-width:860px){
-  .lifelines{
-    grid-template-columns:repeat(2,1fr) !important;
-  }
-}
-
-
-/* --- Firebase: avaliação simples por emojis --- */
-.firebase-rating{
-  margin:10px 0 8px;
-  padding:10px;
-  border-radius:16px;
-  background:rgba(255,255,255,.07);
-  border:1px solid rgba(255,230,109,.24);
-  text-align:center;
-}
-.firebase-rating h3{
-  margin:0 0 7px;
-  color:#ffe66d;
-  font-size:16px;
-}
-.rating-buttons{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:7px;
-}
-.rating-buttons button{
-  border:0;
-  border-radius:14px;
-  padding:8px 5px;
-  background:linear-gradient(135deg,#fff7ad,#ffb703);
-  color:#172033;
-  font-weight:1000;
-  cursor:pointer;
-  box-shadow:0 6px 14px rgba(255,179,3,.18);
-}
-.rating-buttons button:disabled{opacity:.65;cursor:not-allowed}
-.rating-buttons .emoji{
-  display:block;
-  font-size:24px;
-  line-height:1;
-  margin-bottom:2px;
-}
-#ratingMessage{
-  margin:7px 0 0;
-  color:#fff7c2;
-  font-weight:900;
-  font-size:12px;
-}
-
+.modal{position:fixed;inset:0;z-index:50;display:none;align-items:center;justify-content:center;background:rgba(2,6,23,.78);backdrop-filter:blur(4px);padding:15px} .modal.active{display:flex} .modal-card{width:min(100%,620px);max-height:88dvh;overflow:auto;background:linear-gradient(180deg,rgba(15,20,70,.98),rgba(9,13,50,.98));border:1.5px solid rgba(255,230,109,.4);border-radius:22px;padding:16px;box-shadow:0 24px 60px rgba(0,0,0,.48);text-align:center} .modal-card h2{margin:0 0 8px;color:#ffe66d;font-size:28px}
+.firebase-rating{margin:10px 0 8px;padding:10px;border-radius:16px;background:rgba(255,255,255,.07);border:1px solid rgba(255,230,109,.24);text-align:center} .firebase-rating h3{margin:0 0 7px;color:#ffe66d;font-size:16px} .rating-buttons{display:grid;grid-template-columns:repeat(3,1fr);gap:7px} .rating-buttons button{border:0;border-radius:14px;padding:8px 5px;background:linear-gradient(135deg,#fff7ad,#ffb703);color:#172033;font-weight:1000;cursor:pointer} #ratingMessage{margin:7px 0 0;color:#fff7c2;font-weight:900;font-size:12px}
+@media(max-width:860px){body{padding:5px;align-items:flex-start}.app{height:calc(100dvh - 10px);border-radius:16px}header{padding:5px 7px}.back,.pill{font-size:9px;padding:4px 7px}h1{font-size:22px}.subtitle{display:none}main{padding:5px}.start-wrap{grid-template-columns:1fr;overflow:auto}.info-card{display:none}.start-card h2{font-size:24px}.motivation{font-size:13px;padding:11px}.review-grid{grid-template-columns:1fr;max-height:250px}.stats{gap:5px;margin-bottom:5px}.stat{padding:6px 3px;border-radius:11px}.stat b{font-size:14px}.stat span{font-size:8px}.progress-card{font-size:12px;padding:7px 8px;margin-bottom:5px}.question-card{gap:4px;padding:7px;border-radius:13px}.mission-box{padding:7px 8px}.mission-box span{font-size:12px}.mission-box small{font-size:9px}.theme-chip{font-size:12px;padding:5px 9px}.visual{min-height:32px;font-size:23px}.prompt{font-size:14.5px;line-height:1.18;padding:7px 8px}.timer-wrap{height:9px}.timer-text{font-size:11px}.options{gap:5px}.option{font-size:12.3px;line-height:1.13;padding:7px 8px;min-height:32px}.option-letter{width:25px;height:25px;flex-basis:25px;font-size:12px}.feedback{font-size:10.5px;padding:5px}.lifelines{grid-template-columns:repeat(2,1fr);gap:4px}.help-btn{font-size:10.5px;padding:6px 5px}.result-grid{grid-template-columns:repeat(2,1fr)}.big-title{font-size:27px}.win-emoji{font-size:42px}}
 </style>
 </head>
 <body>
 <div class="app">
 <header>
-  <div class="topbar">
-    <a class="back" href="7ano.html">← 7º ano</a>
-    <span class="pill">Alinhado à BNCC</span>
-  </div>
+  <div class="topbar"><a class="back" href="7ano.html">← 7º ano</a><span class="pill">Alinhado à BNCC</span></div>
   <h1>Smart Choice Show</h1>
   <p class="subtitle">Quiz show para revisar Likes and Dislikes, Adverbs of Frequency e Giving Opinions.</p>
 </header>
@@ -592,28 +78,27 @@ main{flex:1;min-height:0;padding:10px;overflow:hidden}
   <div class="start-wrap">
     <div class="card start-card">
       <h2>🧠 Smart Choice — 7º Ano</h2>
-      <div class="motivation">Esta revisão ajuda você a treinar para o trabalho individual da próxima semana. Os jogos são uma ferramenta a mais para estudar de forma lúdica, com atenção e empenho. Eles não substituem o caderno, as explicações e os materiais utilizados em sala de aula.</div>
+      <div class="motivation">Esta revisão ajuda você a treinar os conteúdos do 2º bimestre de forma divertida. Leia o comando em português, pense com calma e escolha a melhor frase em inglês.</div>
       <div class="review-grid">
-        <div class="review-block"><b>Likes and Dislikes</b><span>I like soccer.</span><span>She likes music.</span><span>He doesn’t like salad.</span><span>Do they like games?</span></div>
-        <div class="review-block"><b>Adverbs of Frequency</b><span>always = sempre</span><span>usually = geralmente</span><span>sometimes = às vezes</span><span>never = nunca</span></div>
-        <div class="review-block"><b>Giving Opinions</b><span>I think it is fun.</span><span>In my opinion...</span><span>I agree.</span><span>I don’t agree.</span></div>
-        <div class="review-block"><b>Atenção</b><span>He/She/It: likes</span><span>Negativa: doesn’t like</span><span>Pergunta: Does she like...?</span><span>Advérbio antes do verbo principal.</span></div>
+        <div class="review-block"><b>Likes and Dislikes</b><span>I like...</span><span>I don’t like...</span><span>He/She likes...</span><span>He/She doesn’t like...</span></div>
+        <div class="review-block"><b>Adverbs of Frequency</b><span>always, usually, often</span><span>sometimes, never</span><span>O advérbio geralmente vem antes do verbo principal.</span></div>
+        <div class="review-block"><b>Giving Opinions</b><span>I think...</span><span>In my opinion...</span><span>I agree / I don’t agree</span></div>
+        <div class="review-block"><b>Revisão rápida</b><span>Personal pronouns</span><span>Possessive adjectives</span><span>Classroom commands</span></div>
       </div>
       <div class="player-form">
-        <label>Nome do aluno</label><input id="playerName" type="text" placeholder="Digite seu nome" maxlength="28">
-        <label>Turma</label><input id="playerClass" type="text" placeholder="Ex.: 601" maxlength="12">
-        <label>Escola</label><input id="playerSchool" type="text" value="Escola Delfina de Jesus Amorim" maxlength="50">
+        <label>Nome do aluno</label><input id="playerName" placeholder="Digite seu nome"/>
+        <label>Turma</label><input id="playerClass" placeholder="Ex.: 701"/>
+        <label>Escola</label><input id="playerSchool" value="Escola Delfina de Jesus Amorim"/>
+        <button class="start-btn" onclick="startGame()">COMEÇAR O DESAFIO 🚀</button>
       </div>
-      <button class="start-btn" onclick="startGame()">Começar revisão</button>
-      <div class="brand">Jogo idealizado pelo Prof. Jasson Bruno</div>
+      <div class="brand">Jogo idealizado pelo professor Jasson Bruno.</div>
     </div>
     <div class="card info-card">
       <h3>Como funciona?</h3>
       <div class="info-list">
-        <div class="info-item"><b>1.</b> São 5 missões com 10 rodadas cada.</div>
-        <div class="info-item"><b>2.</b> O conteúdo cobre números em inglês: teen x ty, hundreds, thousands, ordinal numbers, idade com verb to be e posse com have/has.</div>
-        <div class="info-item"><b>3.</b> Você tem 20 segundos para responder. Se o tempo acabar, conta como pulo. Depois de 3 pulos, se não responder, é game over.</div>
-        <div class="info-item"><b>4.</b> Errou, acaba! A cada rodada, a premiação aumenta até chegar a S$ 1.000.000.</div>
+        <div class="info-item"><b>🎯 50 questões</b><br/>A cada 10 rodadas, 8 questões são do 2º bimestre e 2 são revisão.</div>
+        <div class="info-item"><b>⏱️ 20 segundos</b><br/>Leia o comando em português e escolha a frase correta em inglês.</div>
+        <div class="info-item"><b>🏆 Ranking</b><br/>Ao terminar, veja sua pontuação e o Ranking Geral do jogo.</div>
       </div>
     </div>
   </div>
@@ -621,560 +106,232 @@ main{flex:1;min-height:0;padding:10px;overflow:hidden}
 
 <section id="gameScreen" class="screen">
   <div class="stats">
-    <div class="stat"><b id="missionStat">1/5</b><span>Missão</span></div>
-    <div class="stat"><b id="roundStat">1/10</b><span>Rodada</span></div>
-    <div class="stat"><b id="score">S$ 0</b><span>Prêmio</span></div>
-    <div class="stat"><b id="corrects">0</b><span>Acertos</span></div>
-    <div class="stat"><b id="combo">0</b><span>Combo</span></div>
+    <div class="stat"><b id="mission">1/5</b><span>Missão</span></div>
+    <div class="stat"><b id="round">1/50</b><span>Rodada</span></div>
+    <div class="stat"><b id="score">0</b><span>Pontos</span></div>
+    <div class="stat"><b id="correct">0</b><span>Acertos</span></div>
+    <div class="stat"><b id="lives">5</b><span>Vidas</span></div>
   </div>
-  <div class="progress-card" id="progressText">Missão 1 de 5 • Rodada 1 de 10</div>
+  <div class="progress-card" id="progressText">Missão 1 • Rodada 1 de 10</div>
   <div class="card question-card">
-    <div class="mission-box"><span id="missionName">Missão 1 — Basic Communication</span><small id="missionProgress">Rodada 1/10</small></div>
+    <div class="mission-box"><span id="missionName">Missão 1 — Warm-up</span><small id="missionProgress">Rodada 1/10</small></div>
     <div id="theme" class="theme-chip">Tema</div>
-    <div class="visual" id="visual">🎮</div>
+    <div id="visual" class="visual">🧠</div>
     <div id="prompt" class="prompt">Pergunta</div>
-    <div>
-      <div class="timer-wrap"><div id="timerBar" class="timer-bar"></div></div>
-      <div id="timerText" class="timer-text">Tempo: 15s</div>
-    </div>
+    <div class="timer-wrap"><div id="timerBar" class="timer-bar"></div></div>
+    <div id="timerText" class="timer-text">20 segundos</div>
     <div id="options" class="options"></div>
     <div class="lifelines">
-      <button id="cardsHelpBtn" class="help-btn" onclick="openCardsHelp()">🃏 Cartas</button>
-      <button id="audienceHelpBtn" class="help-btn" onclick="openAudienceHelp()">👥 Plateia</button>
-      <button id="skipHelpBtn" class="help-btn" onclick="skipQuestion()">⏭️ Pular: 3</button>
-      <button id="stopHelpBtn" class="help-btn stop-btn" onclick="stopWithCurrentPrize()">💰 Parar</button>
+      <button id="fiftyBtn" class="help-btn" onclick="useFifty()">50/50</button>
+      <button id="skipBtn" class="help-btn" onclick="useSkip()">Pular: 3</button>
+      <button id="tipBtn" class="help-btn" onclick="useTip()">Dica</button>
+      <button class="help-btn stop-btn" onclick="finishGame('parou')">Parar</button>
     </div>
-    <div class="brand gameplay-brand">Jogo idealizado pelo Prof. Jasson Bruno</div>
     <div id="feedback" class="feedback"></div>
-  </div>
-</section>
-
-<section id="missionWinScreen" class="screen">
-  <div class="card win-card">
-    <div class="win-emoji">🌟🏆🌟</div>
-    <h2 class="big-title">MISSION COMPLETE!</h2>
-    <p id="missionWinText" class="win-text">Congratulations! Você concluiu uma missão.</p>
-    <button class="btn" onclick="nextMission()">Ir para a próxima missão 🚀</button>
-    <div class="brand">Jogo idealizado pelo Prof. Jasson Bruno</div>
+    <div class="brand">Jogo idealizado pelo professor Jasson Bruno.</div>
   </div>
 </section>
 
 <section id="finalScreen" class="screen">
   <div class="card final-card">
-    <h2 class="big-title" id="finalTitle">Resultado</h2>
-    <div id="finalMessage" class="final-message"></div>
+    <div class="win-emoji" id="finalEmoji">🏆</div>
+    <h2 class="big-title" id="finalTitle">RESULTADO FINAL</h2>
+    <p class="final-message" id="finalMessage">Parabéns por participar!</p>
+    <div class="current-score-box" id="currentScoreBox"></div>
     <div class="result-grid">
-      <div class="result-box"><span>Prêmio</span><b id="finalScore">S$ 0</b></div>
-      <div class="result-box"><span>Acertos</span><b id="finalCorrects">0/60</b></div>
-      <div class="result-box"><span>Combo</span><b id="finalCombo">0</b></div>
-      <div class="result-box"><span>Status</span><b id="finalStatus">---</b></div>
+      <div class="result-box"><span>Pontos</span><b id="finalScore">0</b></div>
+      <div class="result-box"><span>Acertos</span><b id="finalCorrect">0</b></div>
+      <div class="result-box"><span>Erros</span><b id="finalWrong">0</b></div>
+      <div class="result-box"><span>Status</span><b id="finalStatus">OK</b></div>
     </div>
-    <div class="rank-list" id="rankList"></div>
-    <div class="rank-note">Ranking geral somatório do English Game Hub. A pontuação do ranking é somada entre os jogos.</div>
-
+    <h3 style="color:#ffe66d;margin:8px 0 4px">🏆 Ranking rápido</h3>
+    <div id="rankingContainer" class="rank-list"><div class="rank-note">Carregando ranking...</div></div>
     <div class="firebase-rating">
       <h3>Como foi jogar?</h3>
       <div class="rating-buttons">
-        <button onclick="avaliarJogo('ruim', this)"><span class="emoji">😡</span>Difícil</button>
-        <button onclick="avaliarJogo('neutro', this)"><span class="emoji">😐</span>Mais ou menos</button>
-        <button onclick="avaliarJogo('bom', this)"><span class="emoji">😀</span>Gostei</button>
+        <button onclick="rateGame('ruim')"><span class="emoji">😕</span>Difícil</button>
+        <button onclick="rateGame('neutro')"><span class="emoji">🙂</span>Legal</button>
+        <button onclick="rateGame('bom')"><span class="emoji">🤩</span>Muito bom</button>
       </div>
       <p id="ratingMessage"></p>
     </div>
-
     <div class="rank-actions">
-      <button class="btn secondary" onclick="startGame()">Jogar novamente</button>
-      <button class="btn" onclick="location.href='7ano.html'">Voltar ao 7º ano</button>
+      <button class="btn" onclick="openRankingModal()">🏆 Ranking Geral</button>
+      <button class="btn secondary" onclick="restartGame()">Jogar novamente</button>
     </div>
-    <div class="brand">Jogo idealizado pelo Prof. Jasson Bruno</div>
+    <button class="btn secondary" style="margin-top:7px" onclick="location.href='7ano.html'">Voltar ao 7º ano</button>
+    <div class="final-brand">Jogo idealizado pelo professor Jasson Bruno.</div>
   </div>
 </section>
 
-<section id="cardsModal" class="modal">
+<section id="rankingModal" class="modal">
   <div class="modal-card">
-    <h2>🃏 Ajuda das Cartas</h2>
-    <p class="show-message">Escolha uma carta. Ela vai revelar quantas opções erradas serão eliminadas.</p>
-    <div class="cards-row">
-      <button class="magic-card" onclick="revealCard(this,1)">?</button>
-      <button class="magic-card" onclick="revealCard(this,2)">?</button>
-      <button class="magic-card" onclick="revealCard(this,3)">?</button>
-    </div>
-    <p id="cardsResult" class="show-message"></p>
+    <h2>🏆 Ranking Geral — Smart Choice 7º Ano</h2>
+    <p class="rank-note">Pontuação acumulada deste jogo.</p>
+    <div id="rankingModalList" class="rank-list"><div class="rank-note">Carregando ranking...</div></div>
+    <button class="btn secondary" onclick="closeRankingModal()">Fechar</button>
   </div>
 </section>
-
-<section id="audienceModal" class="modal">
-  <div class="modal-card">
-    <h2>👥 Ajuda da Plateia</h2>
-    <p class="show-message">A plateia votou. Observe as porcentagens e escolha com atenção.</p>
-    <div id="audienceList" class="audience-list"></div>
-    <button class="btn secondary" onclick="closeAudienceHelp()">Voltar para a pergunta</button>
-  </div>
-</section>
-
 </main>
 </div>
 
 <script>
 const GAME_NAME = "7ano-smart-choice";
-const MISSIONS = [{"title": "Warm-up Review", "subtitle": "Questões misturadas dos três temas."}, {"title": "Grammar in Context", "subtitle": "Afirmativa, negativa e interrogativa."}, {"title": "Pop Culture Challenge", "subtitle": "Cultura pop, jogos, música e futebol."}, {"title": "Classroom Practice", "subtitle": "Situações de sala e rotina de estudo."}, {"title": "Opinion Time", "subtitle": "Opiniões e preferências em contexto."}, {"title": "Final Review", "subtitle": "Revisão geral antes do trabalho individual."}];
-const CARDS = [{"theme": "Adverbs of Frequency", "visual": "⏰", "prompt": "Cristiano Ronaldo treina em muitos dias da semana. Quando está viajando ou descansando, ele não treina. Qual frase descreve melhor essa rotina?", "answer": "Cristiano Ronaldo usually trains.", "options": ["Cristiano Ronaldo never trains.", "Cristiano Ronaldo usually trains.", "Cristiano Ronaldo doesn’t train.", "Cristiano Ronaldo trains only once a year."], "explanation": "“Usually” combina com algo que acontece muitas vezes, mas não necessariamente todos os dias.", "mission": 1, "missionTitle": "Warm-up Review", "roundInMission": 1}, {"theme": "Likes and Dislikes", "visual": "❤️", "prompt": "Lara vê açaí na mesa e fica animada. Ela pega uma tigela, sorri e começa a comer. Qual frase representa melhor essa situação?", "answer": "Lara likes açaí.", "options": ["Lara doesn’t like açaí.", "Lara likes açaí.", "Lara never eats açaí.", "Lara doesn’t eat food."], "explanation": "Como Lara demonstra alegria e come o açaí, a melhor frase é “Lara likes açaí.”", "mission": 1, "missionTitle": "Warm-up Review", "roundInMission": 2}, {"theme": "Giving Opinions", "visual": "💬", "prompt": "Depois de assistir a um filme com muitas cenas paradas, Pedro comenta que quase dormiu. Qual opinião combina melhor com Pedro?", "answer": "I think it is boring.", "options": ["I think it is exciting.", "I think it is boring.", "I think it is delicious.", "I think it is easy."], "explanation": "Se o filme quase fez Pedro dormir, a opinião mais adequada é “boring”.", "mission": 1, "missionTitle": "Warm-up Review", "roundInMission": 3}, {"theme": "Adverbs of Frequency", "visual": "⏰", "prompt": "Marina leva o caderno de Inglês para a escola de segunda a sexta. No sábado e no domingo, ela deixa o material em casa. Qual frase descreve melhor a rotina dela?", "answer": "Marina usually takes her English notebook to school.", "options": ["Marina usually takes her English notebook to school.", "Marina never takes her English notebook to school.", "Marina hates English notebooks.", "Marina takes her notebook only on Sundays."], "explanation": "A ação acontece em vários dias da semana, então “usually” é a melhor escolha.", "mission": 1, "missionTitle": "Warm-up Review", "roundInMission": 4}, {"theme": "Likes and Dislikes", "visual": "❤️", "prompt": "João quer saber se Bruno gosta de futebol. Qual frase mostra João fazendo essa pergunta para Bruno?", "answer": "Does Bruno like soccer?", "options": ["Bruno likes soccer.", "Does Bruno like soccer?", "Bruno doesn’t like soccer.", "Do Bruno likes soccer?"], "explanation": "Para perguntar sobre “Bruno/he”, usamos “Does + Bruno + verbo base”.", "mission": 1, "missionTitle": "Warm-up Review", "roundInMission": 5}, {"theme": "Giving Opinions", "visual": "💬", "prompt": "Ana jogou uma fase difícil no celular. Ela perdeu algumas vezes, mas disse que o desafio fez ela pensar melhor. Qual frase combina com a opinião dela?", "answer": "I think it is difficult but interesting.", "options": ["I think it is difficult but interesting.", "I think it is boring and useless.", "I never play games.", "I don’t like learning."], "explanation": "A situação mostra dificuldade, mas também interesse e aprendizagem.", "mission": 1, "missionTitle": "Warm-up Review", "roundInMission": 6}, {"theme": "Adverbs of Frequency", "visual": "⏰", "prompt": "Miguel participa dos treinos do time em quase todos os fins de semana. Quando está doente ou viajando, ele falta. Qual alternativa representa melhor essa rotina?", "answer": "Miguel usually trains on weekends.", "options": ["Miguel never trains on weekends.", "Miguel usually trains on weekends.", "Miguel doesn’t like sports.", "Miguel trains only at school."], "explanation": "“Usually” indica uma ação frequente, mas não obrigatoriamente constante.", "mission": 1, "missionTitle": "Warm-up Review", "roundInMission": 7}, {"theme": "Likes and Dislikes", "visual": "❤️", "prompt": "Sofia quer dizer que sua irmã não gosta de salada. Qual frase está correta?", "answer": "My sister doesn’t like salad.", "options": ["My sister don’t like salad.", "My sister doesn’t likes salad.", "My sister doesn’t like salad.", "My sister not like salad."], "explanation": "Com “my sister/she”, usamos “doesn’t” e o verbo volta para a forma base: “like”.", "mission": 1, "missionTitle": "Warm-up Review", "roundInMission": 8}, {"theme": "Giving Opinions", "visual": "💬", "prompt": "No intervalo, dois alunos falam sobre uma aula com música, imagens e jogo. Um deles diz que aprendeu melhor assim. Qual opinião combina com essa fala?", "answer": "I think it is fun and useful.", "options": ["I think it is boring.", "I think it is fun and useful.", "I think it is very bad.", "I don’t agree with school."], "explanation": "A situação mostra que o aluno gostou e percebeu utilidade na atividade.", "mission": 1, "missionTitle": "Warm-up Review", "roundInMission": 9}, {"theme": "Adverbs of Frequency", "visual": "⏰", "prompt": "Bia não costuma chegar atrasada. Em quase todos os dias, ela já está na sala antes da aula começar. Qual frase representa melhor essa rotina?", "answer": "Bia usually arrives early.", "options": ["Bia usually arrives early.", "Bia never arrives at school.", "Bia doesn’t like school.", "Bia arrives late every day."], "explanation": "A pista mostra que Bia chega cedo com frequência.", "mission": 1, "missionTitle": "Warm-up Review", "roundInMission": 10}, {"theme": "Likes and Dislikes", "visual": "❤️", "prompt": "Carlos quer perguntar se Ana gosta de música pop. Qual alternativa mostra a pergunta correta?", "answer": "Does Ana like pop music?", "options": ["Does Ana like pop music?", "Ana likes pop music?", "Do Ana like pop music?", "Does Ana likes pop music?"], "explanation": "Em perguntas com “Ana/she”, usamos “Does” e o verbo fica “like”.", "mission": 2, "missionTitle": "Grammar in Context", "roundInMission": 1}, {"theme": "Giving Opinions", "visual": "💬", "prompt": "Um aluno assiste a um jogo muito disputado, com virada no final e muitos gols. Qual opinião combina melhor com essa experiência?", "answer": "I think it is exciting.", "options": ["I think it is boring.", "I think it is exciting.", "I think it is difficult to eat.", "I think it is never."], "explanation": "Um jogo com emoção e virada combina com “exciting”.", "mission": 2, "missionTitle": "Grammar in Context", "roundInMission": 2}, {"theme": "Adverbs of Frequency", "visual": "⏰", "prompt": "Rafaela entra no aplicativo de música em alguns dias, mas passa vários dias sem ouvir nada. Qual frase descreve melhor esse hábito?", "answer": "Rafaela sometimes listens to music.", "options": ["Rafaela always listens to music.", "Rafaela sometimes listens to music.", "Rafaela never listens to music.", "Rafaela doesn’t know music."], "explanation": "Quando algo acontece em alguns momentos, mas não sempre, usamos “sometimes”.", "mission": 2, "missionTitle": "Grammar in Context", "roundInMission": 3}, {"theme": "Likes and Dislikes", "visual": "❤️", "prompt": "Enzo abre o prato, vê peixe e empurra para o lado. Ele escolhe frango e arroz. Qual frase representa melhor essa situação?", "answer": "Enzo doesn’t like fish.", "options": ["Enzo likes fish.", "Enzo doesn’t like fish.", "Enzo always eats fish.", "Enzo thinks fish is great."], "explanation": "A ação de evitar o peixe indica que ele não gosta.", "mission": 2, "missionTitle": "Grammar in Context", "roundInMission": 4}, {"theme": "Giving Opinions", "visual": "💬", "prompt": "Júlia e Marcos assistem ao mesmo vídeo. Júlia acha criativo, mas Marcos diz que não entendeu nada e não gostou. Qual frase Marcos poderia dizer?", "answer": "I think it is confusing.", "options": ["I think it is confusing.", "I think it is amazing.", "I think it is delicious.", "I think it is my sister."], "explanation": "Quando algo é difícil de entender, “confusing” combina melhor.", "mission": 2, "missionTitle": "Grammar in Context", "roundInMission": 5}, {"theme": "Adverbs of Frequency", "visual": "⏰", "prompt": "Lucas estuda Inglês antes das provas e em alguns dias de atividade, mas não mantém essa rotina toda semana. Qual frase descreve melhor esse comportamento?", "answer": "Lucas sometimes studies English.", "options": ["Lucas always studies English.", "Lucas sometimes studies English.", "Lucas never studies English.", "Lucas studies English every hour."], "explanation": "A situação mostra que ele estuda em alguns momentos, então “sometimes” é adequado.", "mission": 2, "missionTitle": "Grammar in Context", "roundInMission": 6}, {"theme": "Likes and Dislikes", "visual": "❤️", "prompt": "Maria quer contar que seus amigos gostam de jogos online. Qual frase está correta?", "answer": "My friends like online games.", "options": ["My friends likes online games.", "My friends like online games.", "My friends doesn’t like online games.", "My friends does like online games."], "explanation": "Com “my friends/they”, usamos “like”, sem “s”.", "mission": 2, "missionTitle": "Grammar in Context", "roundInMission": 7}, {"theme": "Giving Opinions", "visual": "💬", "prompt": "Depois de uma partida, Felipe diz: “O jogo foi difícil, mas eu jogaria de novo.” Qual opinião representa melhor essa ideia?", "answer": "I think it is difficult but fun.", "options": ["I think it is difficult but fun.", "I think it is boring and bad.", "I never play games.", "I don’t like fun."], "explanation": "Ele reconhece a dificuldade, mas demonstra que gostou.", "mission": 2, "missionTitle": "Grammar in Context", "roundInMission": 8}, {"theme": "Adverbs of Frequency", "visual": "⏰", "prompt": "Camila recusa refrigerante em todas as festas e sempre escolhe suco ou água. Qual frase descreve melhor esse hábito?", "answer": "Camila never drinks soda.", "options": ["Camila never drinks soda.", "Camila usually drinks soda.", "Camila sometimes drinks soda.", "Camila loves soda."], "explanation": "Se ela recusa em todas as festas, a melhor opção é “never”.", "mission": 2, "missionTitle": "Grammar in Context", "roundInMission": 9}, {"theme": "Likes and Dislikes", "visual": "❤️", "prompt": "Pedro quer saber se Lara e Sofia gostam de K-pop. Qual pergunta está correta?", "answer": "Do Lara and Sofia like K-pop?", "options": ["Does Lara and Sofia like K-pop?", "Do Lara and Sofia like K-pop?", "Lara and Sofia likes K-pop?", "Do Lara and Sofia likes K-pop?"], "explanation": "Com duas pessoas, usamos “they”. Então a pergunta começa com “Do”.", "mission": 2, "missionTitle": "Grammar in Context", "roundInMission": 10}, {"theme": "Giving Opinions", "visual": "💬", "prompt": "Um aluno experimenta uma comida nova. Ele não faz careta, come tudo e diz que pediria outra vez. Qual opinião combina melhor?", "answer": "I think it is delicious.", "options": ["I think it is bad.", "I think it is delicious.", "I think it is boring.", "I think it is difficult."], "explanation": "A situação mostra que ele gostou da comida.", "mission": 3, "missionTitle": "Pop Culture Challenge", "roundInMission": 1}, {"theme": "Adverbs of Frequency", "visual": "⏰", "prompt": "Bruno só faz tarefa quando o professor avisa que vai corrigir. Em muitos dias, ele esquece. Qual frase representa melhor esse hábito?", "answer": "Bruno sometimes does homework.", "options": ["Bruno always does homework.", "Bruno usually does homework.", "Bruno sometimes does homework.", "Bruno never goes to school."], "explanation": "A ação acontece apenas em alguns momentos, então “sometimes” combina melhor.", "mission": 3, "missionTitle": "Pop Culture Challenge", "roundInMission": 2}, {"theme": "Likes and Dislikes", "visual": "❤️", "prompt": "Gabriela quer dizer que ela e a irmã não gostam de filmes de terror. Qual frase está correta?", "answer": "We don’t like horror movies.", "options": ["We don’t like horror movies.", "We doesn’t like horror movies.", "We don’t likes horror movies.", "We not like horror movies."], "explanation": "Com “we”, usamos “don’t like”.", "mission": 3, "missionTitle": "Pop Culture Challenge", "roundInMission": 3}, {"theme": "Giving Opinions", "visual": "💬", "prompt": "A professora mostra um vídeo curto com imagens, áudio e exemplos. Lucas diz que ajudou a entender o assunto. Qual frase representa melhor a opinião dele?", "answer": "I think it is useful.", "options": ["I think it is useful.", "I think it is useless.", "I think it is never.", "I think it is salad."], "explanation": "Se ajudou a entender, a opinião mais adequada é “useful”.", "mission": 3, "missionTitle": "Pop Culture Challenge", "roundInMission": 4}, {"theme": "Adverbs of Frequency", "visual": "⏰", "prompt": "Isabela entra no treino de dança todas as terças e quintas. Ela não treina nos outros dias. Qual frase descreve melhor essa rotina?", "answer": "Isabela often dances during the week.", "options": ["Isabela never dances.", "Isabela always dances every day.", "Isabela often dances during the week.", "Isabela doesn’t like dancing."], "explanation": "Treinar algumas vezes na semana combina com “often”.", "mission": 3, "missionTitle": "Pop Culture Challenge", "roundInMission": 5}, {"theme": "Likes and Dislikes", "visual": "❤️", "prompt": "Rafael quer perguntar se a mãe dele gosta de café. Qual frase mostra essa pergunta corretamente?", "answer": "Does my mother like coffee?", "options": ["Does my mother like coffee?", "Do my mother like coffee?", "My mother likes coffee?", "Does my mother likes coffee?"], "explanation": "“My mother” equivale a “she”, então usamos “Does + verbo base”.", "mission": 3, "missionTitle": "Pop Culture Challenge", "roundInMission": 6}, {"theme": "Giving Opinions", "visual": "💬", "prompt": "Depois de uma aula com muitas palavras novas e pouca explicação, Ana diz que ficou perdida. Qual opinião combina melhor?", "answer": "I think it is confusing.", "options": ["I think it is easy.", "I think it is confusing.", "I think it is delicious.", "I think it is funny."], "explanation": "Se ela ficou perdida, “confusing” representa melhor a opinião.", "mission": 3, "missionTitle": "Pop Culture Challenge", "roundInMission": 7}, {"theme": "Adverbs of Frequency", "visual": "⏰", "prompt": "Davi pratica inglês um pouco todos os dias: lê uma frase, ouve uma palavra ou responde uma questão. Qual frase representa melhor essa rotina?", "answer": "Davi always practices English.", "options": ["Davi always practices English.", "Davi never practices English.", "Davi doesn’t practice English.", "Davi practices English only in December."], "explanation": "A pista mostra uma prática diária, então “always” é a melhor opção.", "mission": 3, "missionTitle": "Pop Culture Challenge", "roundInMission": 8}, {"theme": "Likes and Dislikes", "visual": "❤️", "prompt": "Bianca gosta de vôlei, mas não gosta de basquete. Qual frase está correta?", "answer": "Bianca likes volleyball, but she doesn’t like basketball.", "options": ["Bianca like volleyball, but she don’t like basketball.", "Bianca likes volleyball, but she doesn’t like basketball.", "Bianca likes volleyball, but she doesn’t likes basketball.", "Bianca doesn’t like volleyball, but she like basketball."], "explanation": "Com “Bianca/she”, usamos “likes” na afirmativa e “doesn’t like” na negativa.", "mission": 3, "missionTitle": "Pop Culture Challenge", "roundInMission": 9}, {"theme": "Giving Opinions", "visual": "💬", "prompt": "Um aluno joga um quiz de Inglês. Ele erra algumas, mas percebe que aprendeu com o feedback. Qual opinião combina melhor com essa experiência?", "answer": "I think it is helpful.", "options": ["I think it is useless.", "I think it is boring and bad.", "I think it is helpful.", "I think it is never."], "explanation": "Se o jogo ajudou a aprender, “helpful” é a melhor escolha.", "mission": 3, "missionTitle": "Pop Culture Challenge", "roundInMission": 10}, {"theme": "Adverbs of Frequency", "visual": "⏰", "prompt": "Gustavo só abre o livro de Inglês quando tem atividade valendo ponto. Em dias comuns, ele quase não revisa. Qual frase representa melhor esse hábito?", "answer": "Gustavo sometimes studies English.", "options": ["Gustavo always studies English.", "Gustavo sometimes studies English.", "Gustavo never goes to school.", "Gustavo studies English every morning."], "explanation": "A situação mostra que ele estuda apenas em alguns momentos, então “sometimes” é a melhor escolha.", "mission": 4, "missionTitle": "Classroom Practice", "roundInMission": 1}, {"theme": "Likes and Dislikes", "visual": "❤️", "prompt": "Mariana quer perguntar se Felipe gosta de anime. Qual frase mostra Mariana fazendo essa pergunta corretamente?", "answer": "Does Felipe like anime?", "options": ["Does Felipe like anime?", "Do Felipe like anime?", "Felipe likes anime?", "Does Felipe likes anime?"], "explanation": "Com “Felipe/he”, usamos “Does” e o verbo fica na forma base: “like”.", "mission": 4, "missionTitle": "Classroom Practice", "roundInMission": 2}, {"theme": "Giving Opinions", "visual": "💬", "prompt": "Depois de assistir a um episódio com mistério, sustos e final inesperado, Laura diz que ficou presa na história até o fim. Qual opinião combina melhor com Laura?", "answer": "I think it is exciting.", "options": ["I think it is exciting.", "I think it is boring.", "I think it is difficult to eat.", "I think it is never."], "explanation": "Uma história que prende a atenção combina com “exciting”.", "mission": 4, "missionTitle": "Classroom Practice", "roundInMission": 3}, {"theme": "Adverbs of Frequency", "visual": "⏰", "prompt": "Tiago leva garrafa de água para a escola em todos os dias de aula. Ele não esquece esse hábito. Qual frase descreve melhor essa rotina?", "answer": "Tiago always takes water to school.", "options": ["Tiago never takes water to school.", "Tiago sometimes takes water to school.", "Tiago always takes water to school.", "Tiago doesn’t like water."], "explanation": "Como ele leva água todos os dias, “always” é a melhor opção.", "mission": 4, "missionTitle": "Classroom Practice", "roundInMission": 4}, {"theme": "Likes and Dislikes", "visual": "❤️", "prompt": "Beatriz quer dizer que seu irmão não gosta de jogos de luta. Qual frase está correta?", "answer": "My brother doesn’t like fighting games.", "options": ["My brother don’t like fighting games.", "My brother doesn’t likes fighting games.", "My brother doesn’t like fighting games.", "My brother not like fighting games."], "explanation": "Com “my brother/he”, usamos “doesn’t” + verbo base.", "mission": 4, "missionTitle": "Classroom Practice", "roundInMission": 5}, {"theme": "Giving Opinions", "visual": "💬", "prompt": "Um aluno joga uma fase com regras claras, imagens bonitas e desafios possíveis. Ele diz que conseguiu entender e continuar jogando. Qual opinião combina melhor?", "answer": "I think it is easy and fun.", "options": ["I think it is confusing.", "I think it is easy and fun.", "I think it is boring and useless.", "I think it is salad."], "explanation": "A situação mostra que o jogo foi compreensível e agradável.", "mission": 4, "missionTitle": "Classroom Practice", "roundInMission": 6}, {"theme": "Adverbs of Frequency", "visual": "⏰", "prompt": "Luana participa das aulas de Educação Física quase toda semana. Quando chove ou há feriado, ela não participa. Qual frase representa melhor essa rotina?", "answer": "Luana usually participates in P.E. classes.", "options": ["Luana usually participates in P.E. classes.", "Luana never participates in P.E. classes.", "Luana doesn’t like school.", "Luana participates only once a year."], "explanation": "“Usually” indica algo que acontece muitas vezes, mas pode ter exceções.", "mission": 4, "missionTitle": "Classroom Practice", "roundInMission": 7}, {"theme": "Likes and Dislikes", "visual": "❤️", "prompt": "Davi e Lucas veem uma pizza na mesa e comemoram. Eles pegam um pedaço rapidamente. Qual frase representa melhor a situação?", "answer": "Davi and Lucas like pizza.", "options": ["Davi and Lucas don’t like pizza.", "Davi and Lucas like pizza.", "Davi and Lucas never eat food.", "Davi and Lucas doesn’t like pizza."], "explanation": "Com duas pessoas, usamos “like”, sem “s”.", "mission": 4, "missionTitle": "Classroom Practice", "roundInMission": 8}, {"theme": "Giving Opinions", "visual": "💬", "prompt": "Sofia tenta resolver uma atividade. Ela precisa pensar bastante, mas consegue fazer no final e diz que valeu a pena. Qual opinião combina melhor?", "answer": "I think it is difficult but useful.", "options": ["I think it is difficult but useful.", "I think it is boring and bad.", "I think it is delicious.", "I think it is never."], "explanation": "A situação mostra dificuldade, mas também utilidade.", "mission": 4, "missionTitle": "Classroom Practice", "roundInMission": 9}, {"theme": "Adverbs of Frequency", "visual": "⏰", "prompt": "Ruan não entra em campo em todas as partidas, mas joga em várias rodadas do campeonato. Qual frase descreve melhor isso?", "answer": "Ruan often plays soccer.", "options": ["Ruan never plays soccer.", "Ruan often plays soccer.", "Ruan hates soccer.", "Ruan plays soccer every minute."], "explanation": "“Often” combina com algo que acontece várias vezes.", "mission": 4, "missionTitle": "Classroom Practice", "roundInMission": 10}, {"theme": "Likes and Dislikes", "visual": "❤️", "prompt": "Amanda quer perguntar se suas amigas gostam de dançar. Qual frase está correta?", "answer": "Do my friends like dancing?", "options": ["Do my friends like dancing?", "Does my friends like dancing?", "Do my friends likes dancing?", "My friends likes dancing?"], "explanation": "“My friends” equivale a “they”, então usamos “Do”.", "mission": 5, "missionTitle": "Opinion Time", "roundInMission": 1}, {"theme": "Giving Opinions", "visual": "💬", "prompt": "Depois de ouvir uma música nova, Caio diz que a batida é boa e a letra ficou na cabeça. Qual opinião combina melhor com ele?", "answer": "I think it is good.", "options": ["I think it is boring.", "I think it is good.", "I think it is difficult to read.", "I think it is never."], "explanation": "Se ele gostou da música, “good” representa bem a opinião.", "mission": 5, "missionTitle": "Opinion Time", "roundInMission": 2}, {"theme": "Adverbs of Frequency", "visual": "⏰", "prompt": "Nina esquece o lápis em alguns dias, mas na maioria das aulas ela traz o material completo. Qual frase descreve melhor o hábito dela?", "answer": "Nina usually brings her pencil.", "options": ["Nina never brings her pencil.", "Nina usually brings her pencil.", "Nina doesn’t like pencils.", "Nina brings her pencil only at night."], "explanation": "A maioria das vezes indica “usually”.", "mission": 5, "missionTitle": "Opinion Time", "roundInMission": 3}, {"theme": "Likes and Dislikes", "visual": "❤️", "prompt": "Henrique quer dizer que ele gosta de matemática, mas não gosta de história. Qual frase está correta?", "answer": "I like Math, but I don’t like History.", "options": ["I likes Math, but I don’t like History.", "I like Math, but I don’t like History.", "I like Math, but I doesn’t like History.", "I don’t likes Math, but I like History."], "explanation": "Com “I”, usamos “like” e “don’t like”.", "mission": 5, "missionTitle": "Opinion Time", "roundInMission": 4}, {"theme": "Giving Opinions", "visual": "💬", "prompt": "Uma aluna vê um vídeo muito longo, com pouca imagem e muita fala rápida. Ela diz que não conseguiu acompanhar. Qual opinião combina melhor?", "answer": "I think it is confusing.", "options": ["I think it is confusing.", "I think it is funny.", "I think it is delicious.", "I think it is great."], "explanation": "Quando algo é difícil de acompanhar, “confusing” é uma boa opinião.", "mission": 5, "missionTitle": "Opinion Time", "roundInMission": 5}, {"theme": "Adverbs of Frequency", "visual": "⏰", "prompt": "Vitor faz exercícios de Inglês todos os dias por poucos minutos. Mesmo quando está cansado, ele responde pelo menos uma questão. Qual frase representa melhor essa rotina?", "answer": "Vitor always practices English.", "options": ["Vitor never practices English.", "Vitor sometimes practices English.", "Vitor always practices English.", "Vitor doesn’t know English."], "explanation": "A ação acontece diariamente, por isso usamos “always”.", "mission": 5, "missionTitle": "Opinion Time", "roundInMission": 6}, {"theme": "Likes and Dislikes", "visual": "❤️", "prompt": "Clara quer saber se Pedro e João gostam de hambúrguer. Qual pergunta ela deve fazer?", "answer": "Do Pedro and João like hamburgers?", "options": ["Does Pedro and João like hamburgers?", "Do Pedro and João like hamburgers?", "Do Pedro and João likes hamburgers?", "Pedro and João like hamburgers?"], "explanation": "Pedro e João = they. Por isso, a pergunta começa com “Do”.", "mission": 5, "missionTitle": "Opinion Time", "roundInMission": 7}, {"theme": "Giving Opinions", "visual": "💬", "prompt": "Depois de uma partida de futebol com muitos erros, pouca emoção e placar parado, Bruno diz que quase desligou a TV. Qual opinião combina melhor?", "answer": "I think it is boring.", "options": ["I think it is exciting.", "I think it is boring.", "I think it is delicious.", "I think it is helpful."], "explanation": "Uma partida sem emoção combina com “boring”.", "mission": 5, "missionTitle": "Opinion Time", "roundInMission": 8}, {"theme": "Adverbs of Frequency", "visual": "⏰", "prompt": "Helena usa o celular para estudar em alguns fins de semana, mas em muitos outros ela prefere descansar. Qual frase representa melhor esse hábito?", "answer": "Helena sometimes studies on her phone.", "options": ["Helena always studies on her phone.", "Helena sometimes studies on her phone.", "Helena never uses a phone.", "Helena studies every hour."], "explanation": "A situação mostra que ela estuda pelo celular em alguns momentos, não sempre.", "mission": 5, "missionTitle": "Opinion Time", "roundInMission": 9}, {"theme": "Likes and Dislikes", "visual": "❤️", "prompt": "Arthur abre o lanche, vê banana e maçã, e escolhe as duas frutas. Qual frase representa melhor essa preferência?", "answer": "Arthur likes fruit.", "options": ["Arthur likes fruit.", "Arthur doesn’t like fruit.", "Arthur never eats fruit.", "Arthur hates apples and bananas."], "explanation": "A escolha das frutas indica preferência positiva.", "mission": 5, "missionTitle": "Opinion Time", "roundInMission": 10}, {"theme": "Giving Opinions", "visual": "💬", "prompt": "Uma turma joga um quiz de Inglês. Mesmo errando algumas respostas, os alunos riem, tentam de novo e dizem que aprenderam. Qual opinião combina melhor?", "answer": "I think it is fun and helpful.", "options": ["I think it is fun and helpful.", "I think it is boring and useless.", "I think it is difficult to eat.", "I think it is never."], "explanation": "A experiência foi divertida e ajudou na aprendizagem.", "mission": 6, "missionTitle": "Final Review", "roundInMission": 1}, {"theme": "Adverbs of Frequency", "visual": "⏰", "prompt": "Renata chega atrasada em quase todas as aulas. Ela só chega cedo quando alguém a leva de carro. Qual frase descreve melhor essa situação?", "answer": "Renata usually arrives late.", "options": ["Renata usually arrives late.", "Renata never arrives late.", "Renata always arrives early.", "Renata doesn’t like cars."], "explanation": "Como o atraso acontece muitas vezes, “usually arrives late” é adequado.", "mission": 6, "missionTitle": "Final Review", "roundInMission": 2}, {"theme": "Likes and Dislikes", "visual": "❤️", "prompt": "Guilherme quer perguntar se a professora gosta de jogos educativos. Qual frase mostra essa pergunta corretamente?", "answer": "Does the teacher like educational games?", "options": ["Does the teacher like educational games?", "Do the teacher like educational games?", "Does the teacher likes educational games?", "The teacher like educational games?"], "explanation": "“The teacher” pode equivaler a “she/he”, então usamos “Does” + verbo base.", "mission": 6, "missionTitle": "Final Review", "roundInMission": 3}, {"theme": "Giving Opinions", "visual": "💬", "prompt": "Depois de uma explicação com exemplos, imagens e frases curtas, Júlia diz que entendeu melhor. Qual opinião representa melhor essa fala?", "answer": "I think it is useful.", "options": ["I think it is useful.", "I think it is useless.", "I think it is boring.", "I think it is bad."], "explanation": "Se a explicação ajudou, “useful” é a melhor opção.", "mission": 6, "missionTitle": "Final Review", "roundInMission": 4}, {"theme": "Adverbs of Frequency", "visual": "⏰", "prompt": "Rafael não costuma comer doces durante a semana, mas no domingo ele come sobremesa com a família. Qual frase descreve melhor esse hábito?", "answer": "Rafael sometimes eats sweets.", "options": ["Rafael always eats sweets.", "Rafael sometimes eats sweets.", "Rafael never eats sweets.", "Rafael eats sweets every hour."], "explanation": "A ação acontece em alguns momentos, então “sometimes” é adequado.", "mission": 6, "missionTitle": "Final Review", "roundInMission": 5}, {"theme": "Likes and Dislikes", "visual": "❤️", "prompt": "Isis quer dizer que ela não gosta de acordar cedo. Qual frase está correta?", "answer": "I don’t like waking up early.", "options": ["I doesn’t like waking up early.", "I don’t likes waking up early.", "I don’t like waking up early.", "I not like waking up early."], "explanation": "Com “I”, usamos “don’t like”.", "mission": 6, "missionTitle": "Final Review", "roundInMission": 6}, {"theme": "Giving Opinions", "visual": "💬", "prompt": "Um aluno testa um aplicativo de estudos. Ele diz que o aplicativo é bonito, fácil de usar e ajuda a revisar. Qual opinião combina melhor?", "answer": "I think it is great.", "options": ["I think it is great.", "I think it is confusing.", "I think it is boring.", "I think it is bad."], "explanation": "A descrição mostra uma opinião muito positiva.", "mission": 6, "missionTitle": "Final Review", "roundInMission": 7}, {"theme": "Adverbs of Frequency", "visual": "⏰", "prompt": "Letícia quase não assiste televisão. Ela prefere ler, jogar no celular ou ouvir música. Qual frase representa melhor esse hábito?", "answer": "Letícia rarely watches TV.", "options": ["Letícia always watches TV.", "Letícia usually watches TV.", "Letícia often watches TV.", "Letícia rarely watches TV."], "explanation": "“Rarely” indica algo que acontece poucas vezes.", "mission": 6, "missionTitle": "Final Review", "roundInMission": 8}, {"theme": "Likes and Dislikes", "visual": "❤️", "prompt": "Matheus quer perguntar se Beatriz gosta de estudar com música. Qual frase mostra essa pergunta?", "answer": "Does Beatriz like studying with music?", "options": ["Does Beatriz like studying with music?", "Do Beatriz like studying with music?", "Does Beatriz likes studying with music?", "Beatriz like studying with music?"], "explanation": "Com “Beatriz/she”, usamos “Does” e o verbo fica “like”.", "mission": 6, "missionTitle": "Final Review", "roundInMission": 9}, {"theme": "Giving Opinions", "visual": "💬", "prompt": "Depois de jogar uma atividade online, Samuel diz que não percebeu o tempo passar e quis jogar novamente. Qual opinião combina melhor?", "answer": "I think it is fun.", "options": ["I think it is boring.", "I think it is fun.", "I think it is difficult to eat.", "I think it is bad."], "explanation": "Se ele quis jogar de novo e se envolveu, “fun” é a melhor opção.", "mission": 6, "missionTitle": "Final Review", "roundInMission": 10}];
-const TOTAL_MISSIONS = 6;
-const ROUNDS_PER_MISSION = 10;
-const TOTAL_ROUNDS = 60;
-const CURRENCY_NAME = "Smart Dollars";
-const CURRENCY_SYMBOL = "S$";
-const PRIZE_LADDER = [100, 200, 300, 500, 800, 1200, 1800, 2500, 3500, 5000, 7000, 9000, 12000, 16000, 20000, 26000, 32000, 40000, 50000, 65000, 80000, 100000, 125000, 150000, 180000, 220000, 260000, 300000, 350000, 400000, 450000, 500000, 550000, 600000, 650000, 700000, 750000, 800000, 850000, 900000, 920000, 940000, 960000, 970000, 980000, 985000, 990000, 995000, 998000, 1000000];
-const OPTION_LETTERS = ["A","B","C","D","E"];
-let state = {};
-
+const TOTAL_ROUNDS = 50;
+const SECOND_BANK = [{"theme": "Likes and Dislikes", "visual": "❤️", "prompt": "Um aluno quer dizer que gosta de pizza. Qual frase está correta?", "answer": "I like pizza.", "options": ["I am like pizza.", "I likes pizza.", "I don’t like pizza.", "I liking pizza.", "I like pizza."], "tip": "Usamos I like + coisa para falar do que gostamos.", "bimester": "2"}, {"theme": "Likes and Dislikes", "visual": "❤️", "prompt": "Uma aluna quer dizer que não gosta de dever de casa. Qual frase está correta?", "answer": "I don’t like homework.", "options": ["I don’t likes homework.", "I not like homework.", "I don’t like homework.", "I am not like homework.", "I doesn’t like homework."], "tip": "Com I, usamos don’t like.", "bimester": "2"}, {"theme": "Likes and Dislikes", "visual": "❤️", "prompt": "Pedro fala sobre futebol com entusiasmo. Qual frase mostra essa ideia em inglês?", "answer": "He likes soccer.", "options": ["He is like soccer.", "He like soccer.", "He don’t like soccer.", "He likes soccer.", "He liking soccer."], "tip": "Com he, usamos likes.", "bimester": "2"}, {"theme": "Likes and Dislikes", "visual": "❤️", "prompt": "Maria prefere não comer salada. Qual frase está correta?", "answer": "She doesn’t like salad.", "options": ["She don’t like salad.", "She doesn’t likes salad.", "She not like salad.", "She isn’t like salad.", "She doesn’t like salad."], "tip": "Com she, usamos doesn’t like.", "bimester": "2"}, {"theme": "Likes and Dislikes", "visual": "❤️", "prompt": "Dois amigos falam que gostam de videogame. Qual frase está correta?", "answer": "They like video games.", "options": ["They liking video games.", "They are like video games.", "They doesn’t like video games.", "They like video games.", "They likes video games."], "tip": "Com they, usamos like.", "bimester": "2"}, {"theme": "Likes and Dislikes", "visual": "❤️", "prompt": "Você quer perguntar se Ana gosta de música. Qual pergunta está correta?", "answer": "Does Ana like music?", "options": ["Does Ana likes music?", "Do Ana like music?", "Does Ana like music?", "Is Ana like music?", "Ana does like music?"], "tip": "Com he/she ou nome de uma pessoa, usamos Does + sujeito + like.", "bimester": "2"}, {"theme": "Likes and Dislikes", "visual": "❤️", "prompt": "Você quer perguntar se seus colegas gostam de Inglês. Qual pergunta está correta?", "answer": "Do your classmates like English?", "options": ["Does your classmates like English?", "Do your classmates likes English?", "Do your classmates like English?", "Are your classmates like English?", "Your classmates do like English?"], "tip": "Com plural, usamos Do.", "bimester": "2"}, {"theme": "Likes and Dislikes", "visual": "❤️", "prompt": "Lucas não gosta de acordar cedo. Qual frase está correta?", "answer": "He doesn’t like waking up early.", "options": ["He isn’t like waking up early.", "He doesn’t like waking up early.", "He don’t like waking up early.", "He doesn’t likes waking up early.", "He not likes waking up early."], "tip": "Depois de doesn’t, o verbo volta para a forma simples.", "bimester": "2"}, {"theme": "Likes and Dislikes", "visual": "❤️", "prompt": "Carla e Bia não gostam de filmes de terror. Qual frase está correta?", "answer": "They don’t like horror movies.", "options": ["They not like horror movies.", "They aren’t like horror movies.", "They don’t like horror movies.", "They don’t likes horror movies.", "They doesn’t like horror movies."], "tip": "Com they, usamos don’t like.", "bimester": "2"}, {"theme": "Likes and Dislikes", "visual": "❤️", "prompt": "Qual resposta curta combina com a pergunta sobre você gostar de chocolate?", "answer": "Yes, I do.", "options": ["Yes, I don’t.", "Yes, I am.", "Yes, I does.", "Yes, I do.", "Yes, I like."], "tip": "Para Do you like...?, podemos responder Yes, I do.", "bimester": "2"}, {"theme": "Adverbs of Frequency", "visual": "⏰", "prompt": "Um aluno pratica Inglês todos os dias. Qual frase expressa melhor essa rotina?", "answer": "He always studies English.", "options": ["He studies always English.", "He never studies English.", "He always studies English.", "He sometimes studies English.", "He study always English."], "tip": "Always indica algo que acontece sempre.", "bimester": "2"}, {"theme": "Adverbs of Frequency", "visual": "⏰", "prompt": "Uma aluna vai à biblioteca em muitos dias, mas não em todos. Qual frase combina melhor?", "answer": "She often goes to the library.", "options": ["She goes often to the library.", "She often go to the library.", "She never goes to the library.", "She often goes to the library.", "She is often go to the library."], "tip": "Often indica frequência alta.", "bimester": "2"}, {"theme": "Adverbs of Frequency", "visual": "⏰", "prompt": "Um aluno joga futebol de vez em quando. Qual frase está correta?", "answer": "He sometimes plays soccer.", "options": ["He sometimes plays soccer.", "He plays sometimes soccer.", "He never plays soccer.", "He sometimes play soccer.", "He always never plays soccer."], "tip": "Sometimes normalmente vem antes do verbo principal.", "bimester": "2"}, {"theme": "Adverbs of Frequency", "visual": "⏰", "prompt": "Marcos não chega atrasado. Qual frase expressa essa ideia?", "answer": "He never arrives late.", "options": ["He never arrive late.", "He never arrives late.", "He arrives never late.", "He always arrives late.", "He is never arrive late."], "tip": "Never indica que algo não acontece.", "bimester": "2"}, {"theme": "Adverbs of Frequency", "visual": "⏰", "prompt": "Lara costuma estudar depois do almoço na maioria dos dias. Qual frase está correta?", "answer": "She usually studies after lunch.", "options": ["She usually study after lunch.", "She is usually study after lunch.", "She never studies after lunch.", "She studies usually after lunch.", "She usually studies after lunch."], "tip": "Usually indica costume frequente.", "bimester": "2"}, {"theme": "Adverbs of Frequency", "visual": "⏰", "prompt": "Qual frase usa o advérbio de frequência no lugar mais adequado?", "answer": "I always do my homework.", "options": ["I do my always homework.", "Always I do my homework.", "I am always do my homework.", "I always do my homework.", "I do always my homework."], "tip": "O advérbio costuma vir antes do verbo principal.", "bimester": "2"}, {"theme": "Adverbs of Frequency", "visual": "⏰", "prompt": "Uma pessoa não assiste TV em nenhum dia da semana. Qual frase está correta?", "answer": "She never watches TV.", "options": ["She doesn’t never watches TV.", "She always watches TV.", "She never watches TV.", "She watches never TV.", "She never watch TV."], "tip": "Com she, o verbo recebe -es: watches.", "bimester": "2"}, {"theme": "Adverbs of Frequency", "visual": "⏰", "prompt": "Uma pessoa pratica esporte em alguns dias, mas não sempre. Qual frase combina melhor?", "answer": "I sometimes play sports.", "options": ["I sometimes play sports.", "I sometimes plays sports.", "I am sometimes play sports.", "I never play sports.", "I play sometimes sports."], "tip": "Sometimes indica frequência média/ocasional.", "bimester": "2"}, {"theme": "Adverbs of Frequency", "visual": "⏰", "prompt": "Qual alternativa mostra uma rotina muito frequente?", "answer": "They usually have English classes.", "options": ["They usually has English classes.", "They are usually have English classes.", "They have usually English classes.", "They never have English classes.", "They usually have English classes."], "tip": "Usually indica algo que acontece na maioria das vezes.", "bimester": "2"}, {"theme": "Adverbs of Frequency", "visual": "⏰", "prompt": "Qual frase está correta para falar sobre uma rotina de Ana?", "answer": "Ana often reads books.", "options": ["Ana often reads books.", "Ana reads often books.", "Ana often reading books.", "Ana is often read books.", "Ana often read books."], "tip": "Com nome de uma pessoa no singular, o verbo recebe -s.", "bimester": "2"}, {"theme": "Giving Opinions", "visual": "💬", "prompt": "Um aluno quer dizer que acha o jogo divertido. Qual frase está correta?", "answer": "I think the game is fun.", "options": ["I think the game is fun.", "I think game fun.", "I am think the game is fun.", "I think the game are fun.", "I thinks the game is fun."], "tip": "I think... introduz uma opinião.", "bimester": "2"}, {"theme": "Giving Opinions", "visual": "💬", "prompt": "Uma aluna concorda com a opinião do colega. Qual frase está correta?", "answer": "I agree.", "options": ["I agrees.", "I don’t agree.", "I agreeing.", "I am agree.", "I agree."], "tip": "I agree significa que você concorda.", "bimester": "2"}, {"theme": "Giving Opinions", "visual": "💬", "prompt": "Um aluno discorda com respeito. Qual frase está correta?", "answer": "I don’t agree.", "options": ["I doesn’t agree.", "I not agreeing.", "I don’t agree.", "I am not agree.", "I no agree."], "tip": "I don’t agree indica discordância.", "bimester": "2"}, {"theme": "Giving Opinions", "visual": "💬", "prompt": "Qual frase apresenta uma opinião simples sobre Matemática?", "answer": "In my opinion, Math is important.", "options": ["My opinion Math is important.", "In my opinion, Math are important.", "In my opinion, Math is important.", "In my opinion, Math important.", "In my opinion, Math is importance."], "tip": "In my opinion significa “na minha opinião”.", "bimester": "2"}, {"theme": "Giving Opinions", "visual": "💬", "prompt": "Um aluno quer dizer que acha a atividade interessante. Qual alternativa está correta?", "answer": "I think this activity is interesting.", "options": ["I thinks this activity is interesting.", "I think this activity are interesting.", "I think this activity is interesting.", "I think this activity interesting is.", "I am think this activity is interesting."], "tip": "Depois de I think, usamos uma frase completa.", "bimester": "2"}, {"theme": "Giving Opinions", "visual": "💬", "prompt": "Qual alternativa mostra uma opinião positiva sobre Inglês?", "answer": "I think English is cool.", "options": ["I think English is cool.", "I thinks English is cool.", "I am think English is cool.", "I think English cool is.", "I think English are cool."], "tip": "English é singular como disciplina, então usamos is.", "bimester": "2"}, {"theme": "Giving Opinions", "visual": "💬", "prompt": "Qual alternativa mostra uma opinião negativa de forma simples?", "answer": "I think the test is difficult.", "options": ["I think the test is difficult.", "I think the test are difficult.", "I thinks the test is difficult.", "I am think the test is difficult.", "I think difficult the test is."], "tip": "A frase segue a ordem: I think + sujeito + verbo + característica.", "bimester": "2"}, {"theme": "Giving Opinions", "visual": "💬", "prompt": "Um colega diz que uma música é boa e você pensa igual. Qual frase combina melhor?", "answer": "I agree.", "options": ["I agreeing.", "I agrees.", "I agree.", "I don’t agree.", "I am agree."], "tip": "Para concordar, usamos I agree.", "bimester": "2"}, {"theme": "Giving Opinions", "visual": "💬", "prompt": "Um colega diz algo e você tem opinião diferente. Qual frase combina melhor?", "answer": "I don’t agree.", "options": ["I agree.", "I am agree.", "I doesn’t agree.", "I not agree.", "I don’t agree."], "tip": "Para discordar, usamos I don’t agree.", "bimester": "2"}, {"theme": "Giving Opinions", "visual": "💬", "prompt": "Qual frase está correta para começar uma opinião pessoal?", "answer": "In my opinion, the movie is great.", "options": ["In my opinion, the movie great is.", "In my opinion, the movie is great.", "In my opinion movie is great.", "My opinion, the movie is great.", "In my opinion, the movie are great."], "tip": "Essa estrutura é útil para expressar opinião.", "bimester": "2"}, {"theme": "Grammar Rules", "visual": "🧩", "prompt": "Observe a ideia: Ana gosta de dança. Qual frase está gramaticalmente correta?", "answer": "Ana likes dance.", "options": ["Ana likes dance.", "Ana like dance.", "Ana doesn’t likes dance.", "Ana liking dance.", "Ana are likes dance."], "tip": "Com uma pessoa no singular, usamos likes.", "bimester": "2"}, {"theme": "Grammar Rules", "visual": "🧩", "prompt": "Observe a ideia: João não gosta de café. Qual frase está correta?", "answer": "João doesn’t like coffee.", "options": ["João don’t like coffee.", "João doesn’t like coffee.", "João not like coffee.", "João doesn’t likes coffee.", "João isn’t like coffee."], "tip": "Depois de doesn’t, usamos like sem -s.", "bimester": "2"}, {"theme": "Grammar Rules", "visual": "🧩", "prompt": "Qual frase está correta para perguntar sobre uma menina?", "answer": "Does she like volleyball?", "options": ["She does like volleyball?", "Do she like volleyball?", "Is she like volleyball?", "Does she likes volleyball?", "Does she like volleyball?"], "tip": "Pergunta com she: Does she like...?", "bimester": "2"}, {"theme": "Grammar Rules", "visual": "🧩", "prompt": "Qual frase está correta para falar de duas pessoas?", "answer": "They don’t like rain.", "options": ["They not like rain.", "They aren’t like rain.", "They doesn’t like rain.", "They don’t likes rain.", "They don’t like rain."], "tip": "Com they, usamos don’t.", "bimester": "2"}, {"theme": "Grammar Rules", "visual": "🧩", "prompt": "Qual alternativa corrige a frase com terceira pessoa?", "answer": "He watches cartoons.", "options": ["He watching cartoons.", "He watch cartoons.", "He watchs cartoons.", "He watches cartoons.", "He is watch cartoons."], "tip": "Com he, watch vira watches.", "bimester": "2"}, {"theme": "Verb to be", "visual": "🔤", "prompt": "Um aluno quer dizer que está feliz. Qual frase está correta?", "answer": "I am happy.", "options": ["I happy am.", "I am happy.", "I are happy.", "I is happy.", "I be happy."], "tip": "Com I, usamos am.", "bimester": "2"}, {"theme": "Verb to be", "visual": "🔤", "prompt": "Uma menina está na escola. Qual frase está correta?", "answer": "She is at school.", "options": ["She be at school.", "She at school is.", "She is at school.", "She are at school.", "She am at school."], "tip": "Com she, usamos is.", "bimester": "2"}, {"theme": "Verb to be", "visual": "🔤", "prompt": "Dois amigos estão prontos. Qual frase está correta?", "answer": "They are ready.", "options": ["They ready are.", "They be ready.", "They am ready.", "They are ready.", "They is ready."], "tip": "Com they, usamos are.", "bimester": "2"}, {"theme": "Verb to be", "visual": "🔤", "prompt": "Qual pergunta está correta para falar de um menino?", "answer": "Is he your friend?", "options": ["Am he your friend?", "Are he your friend?", "Does he your friend?", "Is he your friend?", "He is your friend?"], "tip": "Na pergunta com he, usamos Is he...?", "bimester": "2"}, {"theme": "Verb to be", "visual": "🔤", "prompt": "Qual frase negativa está correta para uma turma?", "answer": "They are not tired.", "options": ["They not are tired.", "They don’t are tired.", "They are not tired.", "They is not tired.", "They am not tired."], "tip": "Forma negativa: sujeito + verb to be + not.", "bimester": "2"}];
+const REVIEW_BANK = [{"theme": "Review", "visual": "👋", "prompt": "Ao chegar à escola pela manhã, qual expressão combina melhor?", "answer": "Good morning!", "options": ["Goodbye!", "Good night!", "See you!", "Good morning!", "I am ten."], "tip": "Good morning é usado pela manhã.", "bimester": "1"}, {"theme": "Review", "visual": "👋", "prompt": "Ao se despedir de um colega, qual expressão combina melhor?", "answer": "Goodbye!", "options": ["What is your name?", "I like pizza.", "She is happy.", "Good morning!", "Goodbye!"], "tip": "Goodbye é usado para despedida.", "bimester": "1"}, {"theme": "Review", "visual": "🧑", "prompt": "Qual pronome substitui uma menina?", "answer": "She", "options": ["She", "They", "We", "He", "It"], "tip": "She é usado para menina/mulher.", "bimester": "1"}, {"theme": "Review", "visual": "🧑", "prompt": "Qual pronome substitui dois amigos?", "answer": "They", "options": ["They", "It", "She", "I", "He"], "tip": "They é usado para eles/elas.", "bimester": "1"}, {"theme": "Review", "visual": "🎒", "prompt": "Qual comando combina com abrir o livro?", "answer": "Open your book.", "options": ["Open your book.", "Listen to music.", "Close the door.", "Stand up.", "Sit down."], "tip": "Open your book significa abrir o livro.", "bimester": "1"}, {"theme": "Review", "visual": "🎒", "prompt": "Qual comando combina com sentar?", "answer": "Sit down.", "options": ["Repeat, please.", "Open your book.", "Good evening.", "Stand up.", "Sit down."], "tip": "Sit down significa sente-se.", "bimester": "1"}, {"theme": "Review", "visual": "🧩", "prompt": "Qual adjetivo possessivo combina com he?", "answer": "His", "options": ["Her", "Your", "Their", "His", "My"], "tip": "He combina com his.", "bimester": "1"}, {"theme": "Review", "visual": "🧩", "prompt": "Qual adjetivo possessivo combina com she?", "answer": "Her", "options": ["Our", "My", "Her", "His", "Your"], "tip": "She combina com her.", "bimester": "1"}, {"theme": "Review", "visual": "🔠", "prompt": "Uma pessoa pergunta seu nome. Qual resposta combina melhor?", "answer": "My name is Lucas.", "options": ["Open your book.", "Goodbye!", "They are ready.", "I am at school.", "My name is Lucas."], "tip": "My name is... responde ao nome.", "bimester": "1"}, {"theme": "Review", "visual": "🔠", "prompt": "Uma pessoa pergunta sua idade. Qual resposta está correta?", "answer": "I am twelve years old.", "options": ["I have twelve years old.", "I twelve years old.", "I like twelve years old.", "I am twelve years old.", "I are twelve years old."], "tip": "Em inglês, idade usa verb to be: I am.", "bimester": "1"}];
+let state = {
+  deck: [], index: 0, score: 0, correct: 0, wrong: 0, lives: 5,
+  skipLeft: 3, tipUsed: false, fiftyUsed: false, timer: null, timeLeft: 20,
+  player: null, finished: false, lastResult: null
+};
 function el(id){return document.getElementById(id)}
-function formatPoints(n){return CURRENCY_SYMBOL + " " + Number(n||0).toLocaleString("pt-BR")}
-function currentPrize(){return PRIZE_LADDER[Math.min(state.round-1, PRIZE_LADDER.length-1)] || 0}
-function show(id){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));el(id).classList.add("active");document.body.classList.toggle("playing",id==="gameScreen");}
+function showScreen(id){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));el(id).classList.add("active");document.body.classList.toggle("playing",id==="gameScreen")}
 function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function makeDeck(){
+  let second = shuffle(SECOND_BANK), review = shuffle(REVIEW_BANK), deck = [];
+  for(let block=0; block<5; block++){
+    let part = [];
+    for(let i=0;i<8;i++) part.push(second[(block*8+i)%second.length]);
+    for(let i=0;i<2;i++) part.push(review[(block*2+i)%review.length]);
+    deck.push(...shuffle(part));
+  }
+  return deck;
+}
 function getPlayerInfo(){
   return {
-    name:(el("playerName").value||"Aluno(a)").trim()||"Aluno(a)",
-    klass:(el("playerClass").value||"7º ano").trim()||"7º ano",
-    school:(el("playerSchool").value||"Escola Delfina de Jesus Amorim").trim()||"Escola Delfina de Jesus Amorim"
+    nome:(el("playerName").value||"Aluno(a)").trim().slice(0,24),
+    turma:(el("playerClass").value||"7º ano").trim().slice(0,20),
+    escola:(el("playerSchool").value||"Escola Delfina de Jesus Amorim").trim().slice(0,40)
   };
 }
-function buildDeck(){
-  const themes = ["Adverbs of Frequency","Likes and Dislikes","Giving Opinions"];
-  const byTheme = {};
-  themes.forEach(t => byTheme[t] = shuffle(CARDS.filter(c => c.theme === t)));
-  const deck = [];
-  for(let cycle=0; cycle<20; cycle++){
-    themes.forEach(t => {
-      if(!byTheme[t].length) byTheme[t] = shuffle(CARDS.filter(c => c.theme === t));
-      deck.push(byTheme[t].pop());
-    });
-  }
-  return deck.slice(0,TOTAL_ROUNDS).map((item,idx)=>({ ...item, mission: Math.ceil((idx+1)/ROUNDS_PER_MISSION), missionTitle: MISSIONS[Math.ceil((idx+1)/ROUNDS_PER_MISSION)-1].title, roundInMission: ((idx)%ROUNDS_PER_MISSION)+1 }));
-}
 function startGame(){
-  stopMusic();
-  state={round:1,score:0,corrects:0,combo:0,maxCombo:0,deck:buildDeck(),answered:false,completed:false,cardsHelp:1,audienceHelp:1,skips:3,timer:null,timeLeft:10,currentOptions:[],eliminated:[],scoreSaved:false};
-  show("gameScreen");
+  state = {...state, deck: makeDeck(), index:0, score:0, correct:0, wrong:0, lives:5, skipLeft:3, tipUsed:false, fiftyUsed:false, finished:false, player:getPlayerInfo(), lastResult:null};
+  showScreen("gameScreen");
   loadQuestion();
 }
-function currentMission(){return Math.ceil(state.round/ROUNDS_PER_MISSION)}
-function roundInMission(){return ((state.round-1)%ROUNDS_PER_MISSION)+1}
+function currentQuestion(){return state.deck[state.index]}
 function loadQuestion(){
-  stopTimer();
-  stopMusic();
-  state.answered=false;
-  state.eliminated=[];
-  const q=state.deck[state.round-1];
-  state.current=q;
-  const m=currentMission(), r=roundInMission();
-  el("missionStat").textContent = m + "/" + TOTAL_MISSIONS;
-  el("roundStat").textContent = r + "/" + ROUNDS_PER_MISSION;
-  el("score").textContent = formatPoints(state.score);
-  el("corrects").textContent = state.corrects;
-  el("combo").textContent = state.combo;
-  el("progressText").textContent = `Missão ${m} de ${TOTAL_MISSIONS} • Rodada ${r} de ${ROUNDS_PER_MISSION} • Valendo ${formatPoints(currentPrize())}`;
-  el("missionName").textContent = `Missão ${m} — ${MISSIONS[m-1].title}`;
-  el("missionProgress").textContent = `Rodada ${r}/${ROUNDS_PER_MISSION}`;
-  el("theme").textContent = q.theme;
+  clearInterval(state.timer);
+  if(state.index >= TOTAL_ROUNDS) return finishGame("venceu");
+  if(state.lives <= 0) return finishGame("gameover");
+  const q=currentQuestion();
+  const mission=Math.floor(state.index/10)+1, roundInMission=(state.index%10)+1;
+  el("mission").textContent = mission + "/5";
+  el("round").textContent = (state.index+1) + "/" + TOTAL_ROUNDS;
+  el("score").textContent = state.score;
+  el("correct").textContent = state.correct;
+  el("lives").textContent = "❤️".repeat(state.lives) || "0";
+  el("progressText").textContent = `Missão ${mission} • Rodada ${roundInMission} de 10`;
+  el("missionName").textContent = `Missão ${mission} — ${missionTitle(mission)}`;
+  el("missionProgress").textContent = `Rodada ${roundInMission}/10`;
+  el("theme").textContent = q.theme + (q.bimester==="2" ? " • 2º bimestre" : " • Revisão");
   el("visual").textContent = q.visual;
   el("prompt").textContent = q.prompt;
-  el("feedback").className = "feedback";
-  el("feedback").innerHTML = "";
-  updateHelpButtons();
-  const box=el("options");
-  box.innerHTML="";
-  state.currentOptions = shuffle(q.options).slice(0,5);
-  state.currentOptions.forEach((opt,idx)=>{
-    const b=document.createElement("button");
-    b.className="option"; b.type="button"; b.dataset.value=opt;
-    b.style.animationDelay=(idx*.18)+"s";
-    b.innerHTML=`<span class="option-letter">${OPTION_LETTERS[idx]}</span><span class="option-text">${escapeHtml(opt)}</span>`;
-    b.onclick=()=>answer(b,opt);
-    box.appendChild(b);
-  });
-  startQuestionTimer();
-  playSuspenseMusic();
+  el("feedback").className="feedback"; el("feedback").textContent="";
+  el("fiftyBtn").disabled = state.fiftyUsed; el("skipBtn").disabled = state.skipLeft<=0; el("skipBtn").textContent = "Pular: " + state.skipLeft; el("tipBtn").disabled = state.tipUsed;
+  const opts = shuffle(q.options);
+  el("options").innerHTML = opts.map((op,i)=>`<button class="option" onclick="answerQuestion(this, ${JSON.stringify(op)})"><span class="option-letter">${String.fromCharCode(65+i)}</span><span class="option-text">${op}</span></button>`).join("");
+  startTimer();
 }
-function answer(btn,selected){
-  if(state.answered) return;
-  state.answered=true;
-  stopTimer();
-  stopMusic();
-  const q=state.current;
-  document.querySelectorAll(".option").forEach(b=>{
-    b.disabled=true;
-    if(b.dataset.value===q.answer) b.classList.add("correct");
-  });
-  const fb=el("feedback");
-  if(String(selected).trim()===String(q.answer).trim()){
-    state.corrects++;
-    state.combo++;
-    state.maxCombo=Math.max(state.maxCombo,state.combo);
-    state.score = currentPrize();
-    fb.className="feedback good";
-    fb.innerHTML=`✅ Correct answer! Você garantiu <b>${formatPoints(state.score)}</b>. ${q.explanation}`;
-    playCorrectCelebration();
-    el("score").textContent=formatPoints(state.score);
-    el("corrects").textContent=state.corrects;
-    el("combo").textContent=state.combo;
-    setTimeout(afterQuestion,1800);
-  }else{
-    state.combo=0;
-    btn.classList.add("wrong");
-    fb.className="feedback bad";
-    fb.innerHTML=`❌ Resposta errada! A correta era <b>${q.answer}</b>. ${q.explanation}`;
-    playWrong();
-    el("combo").textContent=state.combo;
-    const card = document.querySelector(".question-card");
-    if(card) card.classList.add("gameover-flash");
-    setTimeout(()=>{
-      if(card) card.classList.remove("gameover-flash");
-      finishGame(true, "wrong");
-    },2100);
+function missionTitle(n){return ["Likes and Dislikes","Frequency Challenge","Opinion Time","Grammar Focus","Final Review"][n-1] || "Smart Choice"}
+function startTimer(){
+  state.timeLeft=20;
+  el("timerBar").style.width="100%"; el("timerText").textContent="20 segundos";
+  state.timer=setInterval(()=>{
+    state.timeLeft-=0.2;
+    const pct=Math.max(0,(state.timeLeft/20)*100);
+    el("timerBar").style.width=pct+"%";
+    el("timerText").textContent=Math.ceil(Math.max(0,state.timeLeft))+" segundos";
+    if(state.timeLeft<=0){clearInterval(state.timer); timeoutQuestion();}
+  },200);
+}
+function lockOptions(){document.querySelectorAll(".option").forEach(b=>b.disabled=true)}
+function answerQuestion(btn, selected){
+  clearInterval(state.timer); lockOptions();
+  const q=currentQuestion();
+  const ok = selected === q.answer;
+  document.querySelectorAll(".option").forEach(b=>{if(b.innerText.includes(q.answer)) b.classList.add("correct")});
+  if(ok){
+    state.correct++; state.score += q.bimester==="2" ? 20 : 10;
+    btn.classList.add("correct");
+    el("feedback").className="feedback good"; el("feedback").textContent="✅ Very good! Você escolheu a alternativa correta.";
+  } else {
+    state.wrong++; state.lives--; btn.classList.add("wrong");
+    el("feedback").className="feedback bad"; el("feedback").textContent="❌ Atenção: a resposta correta é “"+q.answer+"”. "+q.tip;
   }
+  setTimeout(()=>{state.index++; loadQuestion()}, ok ? 900 : 1700);
 }
-
-function afterQuestion(){
-  const missionEnded = roundInMission()===ROUNDS_PER_MISSION && state.round<TOTAL_ROUNDS;
-  if(state.round>=TOTAL_ROUNDS){finishGame(); return;}
-  if(missionEnded){showMissionWin(); return;}
-  state.round++;
-  loadQuestion();
+function timeoutQuestion(){
+  lockOptions();
+  const q=currentQuestion(); state.wrong++; state.lives--;
+  document.querySelectorAll(".option").forEach(b=>{if(b.innerText.includes(q.answer)) b.classList.add("correct")});
+  el("feedback").className="feedback bad"; el("feedback").textContent="⏰ O tempo acabou. A resposta correta é “"+q.answer+"”. "+q.tip;
+  setTimeout(()=>{state.index++; loadQuestion()},1700);
 }
-function updateHelpButtons(){
-  if(el("cardsHelpBtn")) el("cardsHelpBtn").disabled = state.cardsHelp <= 0 || state.answered;
-  if(el("audienceHelpBtn")) el("audienceHelpBtn").disabled = state.audienceHelp <= 0 || state.answered;
-  if(el("skipHelpBtn")){
-    el("skipHelpBtn").disabled = state.skips <= 0 || state.answered;
-    el("skipHelpBtn").textContent = "⏭️ Pular: " + state.skips;
+function useFifty(){
+  if(state.fiftyUsed) return; state.fiftyUsed=true; el("fiftyBtn").disabled=true;
+  const q=currentQuestion(); const wrong=[...document.querySelectorAll(".option")].filter(b=>!b.innerText.includes(q.answer));
+  shuffle(wrong).slice(0,2).forEach(b=>b.classList.add("hide-option"));
+}
+function useSkip(){ if(state.skipLeft<=0) return; state.skipLeft--; state.index++; loadQuestion(); }
+function useTip(){
+  if(state.tipUsed) return; state.tipUsed=true; el("tipBtn").disabled=true;
+  const q=currentQuestion(); el("feedback").className="feedback good"; el("feedback").textContent="💡 Dica: "+q.tip;
+}
+function finishGame(status){
+  if(state.finished) return; state.finished=true; clearInterval(state.timer);
+  const pontosRanking = state.score;
+  const p = state.player || getPlayerInfo();
+  state.lastResult = {...p, pontos:pontosRanking, score:state.score, acertos:state.correct, erros:state.wrong, jogo:GAME_NAME, status};
+  const won = status==="venceu";
+  el("finalEmoji").textContent = won ? "🏆🌟" : status==="parou" ? "🛑" : "💪";
+  el("finalTitle").textContent = won ? "CONGRATULATIONS!" : status==="parou" ? "VOCÊ PAROU COM SEGURANÇA" : "GAME OVER";
+  el("finalMessage").textContent = won ? "Você concluiu o Smart Choice Show!" : status==="parou" ? "Você decidiu parar e guardar sua pontuação." : "Você chegou ao fim da rodada. Continue treinando!";
+  el("finalScore").textContent=state.score; el("finalCorrect").textContent=state.correct; el("finalWrong").textContent=state.wrong; el("finalStatus").textContent=status.toUpperCase();
+  el("currentScoreBox").innerHTML = `✨ SUA PONTUAÇÃO AGORA ✨<br><b>${p.nome}</b> — ${state.score} pontos<br><small>Turma: ${p.turma} • ${p.escola}</small>`;
+  showScreen("finalScreen");
+  if(window.salvarPontuacao) window.salvarPontuacao(GAME_NAME, p.nome, p.turma, p.escola, pontosRanking, state.correct, state.wrong, status);
+  carregarRanking();
+}
+function restartGame(){showScreen("startScreen")}
+function rankRowHTML(item, idx, current=false){
+  const pos=idx+1; const cls = current ? " player" : pos<=3 ? " rank-"+pos : "";
+  const medal = pos===1?"🥇":pos===2?"🥈":pos===3?"🥉":pos+"º";
+  const badge = pos===1 ? `<span class="champion-badge">🏆 Campeão do dia</span>` : "";
+  const you = current ? " ⭐ Você" : "";
+  return `<div class="rank-row${cls}"><div class="rank-pos">${medal}</div><div><div class="rank-name">${escapeHtml(item.nome)}${you}</div><div class="rank-school">${escapeHtml(item.escola||"Escola")}</div></div><div class="rank-score">${item.pontos} pts${badge}</div></div>`;
+}
+function escapeHtml(s){return String(s||"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m]))}
+function renderRanking(container, rows){
+  const current = state.lastResult;
+  let list = rows || [];
+  const keyCur = current ? `${current.nome.toLowerCase()}|${current.escola.toLowerCase()}` : "";
+  if(current && !list.some(x=>`${x.nome.toLowerCase()}|${(x.escola||"").toLowerCase()}`===keyCur)){
+    list = [...list, {nome:current.nome, escola:current.escola, pontos:current.pontos, local:true}];
   }
-  if(el("stopHelpBtn")){
-    el("stopHelpBtn").disabled = state.answered || state.score <= 0;
-    el("stopHelpBtn").textContent = state.score > 0 ? "💰 Parar: " + formatPoints(state.score) : "💰 Parar";
-  }
-}
-function stopWithCurrentPrize(){
-  if(state.answered || state.score <= 0) return;
-  stopTimer();
-  stopMusic();
-  state.answered = true;
-  el("feedback").className="feedback good";
-  el("feedback").innerHTML=`💰 Você decidiu parar e garantiu <b>${formatPoints(state.score)}</b> em Smart Dollars. Boa estratégia!`;
-  document.querySelectorAll(".option").forEach(b=>b.disabled=true);
-  setTimeout(()=>finishGame(false, "stop"), 1100);
-}
-
-function openCardsHelp(){
-  if(state.cardsHelp<=0 || state.answered) return;
-  stopTimer();
-  stopMusic();
-  el("cardsResult").textContent="";
-  document.querySelectorAll(".magic-card").forEach(c=>{c.disabled=false;c.classList.remove("revealed");c.textContent="?";});
-  el("cardsModal").classList.add("active");
-}
-function revealCard(card,idx){
-  document.querySelectorAll(".magic-card").forEach(c=>c.disabled=true);
-  const possibilities=[1,2,3];
-  const eliminateCount = possibilities[Math.floor(Math.random()*possibilities.length)];
-  card.classList.add("revealed");
-  card.textContent = "-" + eliminateCount;
-  el("cardsResult").textContent = `A carta eliminou ${eliminateCount} alternativa${eliminateCount>1?"s":""} errada${eliminateCount>1?"s":""}.`;
-  state.cardsHelp--;
-  eliminateWrongOptions(eliminateCount);
-  updateHelpButtons();
-  setTimeout(()=>{
-    el("cardsModal").classList.remove("active");
-    startQuestionTimer();
-    playSuspenseMusic();
-  },1300);
-}
-function eliminateWrongOptions(count){
-  const wrongButtons = Array.from(document.querySelectorAll(".option")).filter(b=>b.dataset.value!==state.current.answer && !b.classList.contains("hide-option"));
-  const chosen = shuffle(wrongButtons).slice(0,count);
-  chosen.forEach(b=>{b.classList.add("hide-option"); b.disabled=true;});
-}
-function openAudienceHelp(){
-  if(state.audienceHelp<=0 || state.answered) return;
-  stopTimer();
-  stopMusic();
-  state.audienceHelp--;
-  updateHelpButtons();
-  const votes = buildAudienceVotes();
-  el("audienceList").innerHTML = votes.map(v=>`
-    <div class="audience-row">
-      <div>${v.letter}</div>
-      <div class="audience-bar-bg"><div class="audience-bar" style="width:${v.percent}%"></div></div>
-      <div>${v.percent}%</div>
-    </div>
-  `).join("");
-  el("audienceModal").classList.add("active");
-}
-function buildAudienceVotes(){
-  const correctIndex = state.currentOptions.findIndex(o=>o===state.current.answer);
-  const correctPct = 42 + Math.floor(Math.random()*24); // 42 a 65
-  let remaining = 100-correctPct;
-  const votes = state.currentOptions.map((opt,idx)=>({letter:OPTION_LETTERS[idx],percent:0,opt}));
-  const wrongIdxs = votes.map((_,i)=>i).filter(i=>i!==correctIndex);
-  wrongIdxs.forEach((idx,i)=>{
-    if(i===wrongIdxs.length-1) votes[idx].percent=remaining;
-    else{
-      const max = Math.max(5, remaining - (wrongIdxs.length-i-1)*5);
-      const val = 5 + Math.floor(Math.random()*Math.max(1, Math.min(18,max)-4));
-      votes[idx].percent=val; remaining-=val;
+  list.sort((a,b)=>b.pontos-a.pontos);
+  const top10 = list.slice(0,10);
+  container.innerHTML = top10.map((item,i)=>rankRowHTML(item,i,current && `${item.nome.toLowerCase()}|${(item.escola||"").toLowerCase()}`===keyCur)).join("");
+  if(current){
+    const pos = list.findIndex(x=>`${x.nome.toLowerCase()}|${(x.escola||"").toLowerCase()}`===keyCur);
+    if(pos>=10){
+      container.insertAdjacentHTML("beforeend", `<div class="rank-note">✨ Sua posição nesta rodada</div>` + rankRowHTML(list[pos], pos, true));
     }
-  });
-  if(correctIndex>=0) votes[correctIndex].percent=correctPct;
-  return votes;
-}
-function closeAudienceHelp(){
-  el("audienceModal").classList.remove("active");
-  if(!state.answered){startQuestionTimer(); playSuspenseMusic();}
-}
-function skipQuestion(){
-  if(state.skips<=0 || state.answered) return;
-  stopTimer();
-  stopMusic();
-  state.skips--;
-  updateHelpButtons();
-  el("feedback").className="feedback good";
-  el("feedback").innerHTML="⏭️ Você pulou esta pergunta. Nenhum ponto foi perdido.";
-  setTimeout(()=>{
-    if(state.round>=TOTAL_ROUNDS){finishGame(); return;}
-    state.round++;
-    loadQuestion();
-  },700);
-}
-
-function showMissionWin(){
-  stopTimer();
-  stopMusic();
-  const m=currentMission();
-  el("missionWinText").innerHTML = `Congratulations! Você concluiu a <b>Missão ${m} de ${TOTAL_MISSIONS}</b>. Agora vem a próxima etapa do desafio.`;
-  show("missionWinScreen");
-  playMissionMusic();
-}
-function nextMission(){
-  stopMusic();
-  state.round++;
-  show("gameScreen");
-  loadQuestion();
-}
-function finishGame(gameOver=false, reason=""){
-  stopTimer();
-  stopMusic();
-
-  try{
-    const player = getPlayerInfo();
-    const hubPoints = Math.max(0, Math.min(100, Math.round((state.corrects / TOTAL_ROUNDS) * 100)));
-
-    if(!state.scoreSaved && typeof window.salvarPontuacao === "function"){
-      state.scoreSaved = true;
-      window.salvarPontuacao(player.name, hubPoints, GAME_NAME, player.school);
-    }
-  }catch(e){ console.warn("Pontuação não foi salva:", e); }
-
-  show("finalScreen");
-  if(reason==="stop"){
-    el("finalTitle").textContent = "💰 VOCÊ PAROU!";
-    el("finalMessage").textContent = `Estratégia inteligente! Você decidiu não arriscar e saiu com ${formatPoints(state.score)} em Smart Dollars.`;
-    el("finalStatus").textContent="Parou";
-    playVictoryMusic();
-  }else if(gameOver){
-    el("finalTitle").textContent = "💥 GAME OVER!";
-    el("finalMessage").textContent = reason==="wrong"
-      ? "No Smart Choice Show, errou, acaba! Mas você já treinou, aprendeu e pode tentar novamente para chegar mais longe."
-      : "O tempo acabou e os 3 pulos já foram usados. Não desista: tente novamente e avance mais!";
-    el("finalStatus").textContent="Game Over";
-    playTryAgainMusic();
-  }else{
-    el("finalTitle").textContent = state.corrects>=40 ? "🏆 YOU ARE THE ONE!" : "💪 TRY AGAIN!";
-    el("finalMessage").textContent = state.corrects>=40
-      ? "Congratulations! Você avançou muito bem nas missões do 7º ano. Continue praticando para ir ainda mais longe!"
-      : "Você chegou até o final, tentou e aprendeu. Jogue novamente para melhorar seu prêmio e fortalecer seu inglês.";
-    el("finalStatus").textContent=state.corrects>=40 ? "Top!" : "Continue!";
-    state.corrects>=40 ? playVictoryMusic() : playTryAgainMusic();
-  }
-  el("finalScore").textContent=formatPoints(state.score);
-  el("finalCorrects").textContent=`${state.corrects}/${TOTAL_ROUNDS}`;
-  el("finalCombo").textContent=state.maxCombo;
-  renderRanking();
-}
-function renderRanking(){
-  const rankList = el("rankList");
-
-  if(typeof window.carregarRanking === "function"){
-    rankList.innerHTML = '<div class="rank-row"><div class="rank-pos">...</div><div><div class="rank-name">Carregando ranking geral...</div><div class="rank-school">English Game Hub</div></div><div class="rank-score">...</div></div>';
-    window.carregarRanking(GAME_NAME, "rankList");
-    return;
-  }
-
-  const player=getPlayerInfo();
-  const fake=[
-    ["Ana Clara","Escola Municipal Frei Fabiano Merz — 602",850000],
-    ["Miguel Santos","Escola Municipal Fluminense — 601",500000],
-    ["Lívia Beatriz","Escola Municipal Maria Amália Queiroz de Sousa — 603",180000],
-    ["Gabriel Silva","Escola Municipal Rotary — 601",65000]
-  ];
-  const rows=[...fake, [player.name, `${player.school} — ${player.klass}`, state.score, true]].sort((a,b)=>b[2]-a[2]).slice(0,5);
-  el("rankList").innerHTML = rows.map((r,i)=>`<div class="rank-row ${r[3]?'player':''}"><div class="rank-pos">${i+1}º</div><div><div class="rank-name">${r[3]?'⭐ ':''}${escapeHtml(r[0])}</div><div class="rank-school">${escapeHtml(r[1])}</div></div><div class="rank-score">${formatPoints(r[2])}</div></div>`).join("");
-}
-function escapeHtml(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
-
-let audioCtx=null, musicTimer=null;
-function ensureAudio(){try{if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)(); if(audioCtx.state==="suspended") audioCtx.resume();}catch(e){}}
-function tone(freq=440,dur=.12,type="sine",gain=.055,delay=0){ensureAudio(); if(!audioCtx)return; const t=audioCtx.currentTime+delay; const osc=audioCtx.createOscillator(); const g=audioCtx.createGain(); osc.type=type; osc.frequency.setValueAtTime(freq,t); g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(gain,t+.02); g.gain.exponentialRampToValueAtTime(0.0001,t+dur); osc.connect(g); g.connect(audioCtx.destination); osc.start(t); osc.stop(t+dur+.03);}
-function stopMusic(){if(musicTimer){clearInterval(musicTimer); musicTimer=null;}}
-
-function stopTimer(){
-  if(state.timer){clearInterval(state.timer); state.timer=null;}
-}
-function startQuestionTimer(){
-  stopTimer();
-  state.timeLeft = 20;
-  updateTimerVisual();
-  state.timer = setInterval(()=>{
-    state.timeLeft -= .1;
-    if(state.timeLeft <= 0){
-      state.timeLeft = 0;
-      updateTimerVisual();
-      stopTimer();
-      timeOutQuestion();
-      return;
-    }
-    updateTimerVisual();
-  },100);
-}
-function updateTimerVisual(){
-  const pct = Math.max(0,(state.timeLeft/20)*100);
-  if(el("timerBar")) el("timerBar").style.width = pct + "%";
-  if(el("timerText")) el("timerText").textContent = "Tempo: " + Math.ceil(state.timeLeft) + "s";
-}
-function playSuspenseMusic(){
-  stopMusic();
-  ensureAudio();
-  let i=0;
-  const notes=[196,220,247,262,247,220,196,175];
-  // volume mais alto para criar clima de show
-  musicTimer=setInterval(()=>{
-    tone(notes[i%notes.length],.16,i%2===0?"sine":"triangle",.060);
-    if(i%2===0) tone(notes[i%notes.length]/2,.18,"sine",.030,.02);
-    i++;
-  },230);
-}
-function timeOutQuestion(){
-  if(state.answered) return;
-  stopMusic();
-
-  if(state.skips > 0){
-    state.skips--;
-    updateHelpButtons();
-    el("feedback").className="feedback good";
-    el("feedback").innerHTML=`⏰ O tempo acabou. Esta questão contou como pulo. Pulos restantes: <b>${state.skips}</b>.`;
-    setTimeout(()=>{
-      if(state.round>=TOTAL_ROUNDS){finishGame(); return;}
-      state.round++;
-      loadQuestion();
-    },900);
-    return;
-  }
-
-  // Se não há mais pulos, mostra a correta piscando em verde, a tela pisca em vermelho e vai para game over.
-  state.answered = true;
-  document.querySelectorAll(".option").forEach(b=>{
-    b.disabled=true;
-    if(b.dataset.value===state.current.answer) b.classList.add("correct");
-  });
-  state.combo=0;
-  el("combo").textContent=state.combo;
-  el("feedback").className="feedback bad";
-  el("feedback").innerHTML=`⏰ Tempo esgotado! Você já usou os 3 pulos. Resposta correta: <b>${state.current.answer}</b>.`;
-  playWrong();
-  const card = document.querySelector(".question-card");
-  if(card) card.classList.add("gameover-flash");
-  setTimeout(()=>{
-    if(card) card.classList.remove("gameover-flash");
-    finishGame(true, "time");
-  },1900);
-}
-
-function playCorrect(){tone(659,.10,"triangle",.05);tone(880,.10,"triangle",.04,.10)}
-function playApplause(){
-  ensureAudio(); 
-  if(!audioCtx) return;
-
-  // Palmas sintéticas: ruído curto em rajadas + estalos graves, para ficar mais parecido com aplausos.
-  for(let i=0;i<26;i++){
-    const start = audioCtx.currentTime + i*0.045 + Math.random()*0.025;
-    const bufferSize = Math.floor(audioCtx.sampleRate * 0.045);
-    const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-    const data = buffer.getChannelData(0);
-    for(let j=0;j<bufferSize;j++){
-      data[j] = (Math.random()*2-1) * Math.pow(1-j/bufferSize, 2.2);
-    }
-    const noise = audioCtx.createBufferSource();
-    noise.buffer = buffer;
-    const filter = audioCtx.createBiquadFilter();
-    filter.type = "bandpass";
-    filter.frequency.setValueAtTime(1200 + Math.random()*1200, start);
-    filter.Q.setValueAtTime(0.9, start);
-    const gain = audioCtx.createGain();
-    gain.gain.setValueAtTime(0.0001, start);
-    gain.gain.exponentialRampToValueAtTime(0.18, start+0.006);
-    gain.gain.exponentialRampToValueAtTime(0.0001, start+0.055);
-    noise.connect(filter);
-    filter.connect(gain);
-    gain.connect(audioCtx.destination);
-    noise.start(start);
-    noise.stop(start+0.06);
-
-    if(i%3===0) tone(160+Math.random()*80,.035,"square",.025,i*0.045);
   }
 }
-function playCorrectCelebration(){
-  playCorrect();
-  setTimeout(()=>{tone(1046,.16,"triangle",.080);tone(1318,.22,"triangle",.070,.12);tone(1568,.22,"sine",.045,.24);},110);
-  setTimeout(playApplause,300);
+function openRankingModal(){el("rankingModal").classList.add("active"); carregarRanking(true)}
+function closeRankingModal(){el("rankingModal").classList.remove("active")}
+function rateGame(avaliacao){
+  const p = state.player || getPlayerInfo();
+  if(window.salvarAvaliacao) window.salvarAvaliacao(avaliacao,GAME_NAME,p.nome,p.escola);
+  el("ratingMessage").textContent = "Obrigado pela avaliação!";
 }
-function playWrong(){tone(220,.14,"sine",.035);tone(180,.18,"sine",.03,.14)}
-function playMissionMusic(){stopMusic(); [523,659,784,1046,1318].forEach((f,i)=>tone(f,.16,"triangle",.065,i*.14)); let i=0; const melody=[523,659,784,1046,880,1046,1318]; musicTimer=setInterval(()=>{tone(melody[i%melody.length],.14,"triangle",.045); i++;},180)}
-function playVictoryMusic(){stopMusic(); let i=0; const melody=[523,659,784,1046,1174,1318,1568]; musicTimer=setInterval(()=>{tone(melody[i%melody.length],.16,"triangle",.055); i++;},190)}
-function playTryAgainMusic(){stopMusic(); let i=0; const melody=[392,440,523,494,523,659,784]; musicTimer=setInterval(()=>{tone(melody[i%melody.length],.18,"sine",.045); i++;},230)}
-
-function avaliarJogo(avaliacao, buttonElement){
-  try{
-    const player = getPlayerInfo();
-
-    if(typeof window.salvarAvaliacao === "function"){
-      window.salvarAvaliacao(avaliacao, GAME_NAME, player.name, player.school);
-    }
-
-    const msg = el("ratingMessage");
-    if(msg) msg.textContent = "Obrigado! Sua avaliação foi registrada.";
-
-    const box = buttonElement ? buttonElement.closest(".firebase-rating") : null;
-    if(box){
-      box.querySelectorAll("button").forEach(btn=>{
-        btn.disabled = true;
-        btn.style.filter = "none";
-      });
-    }
-
-    if(buttonElement) buttonElement.style.filter = "brightness(1.2)";
-  }catch(e){
-    console.warn("Erro ao registrar avaliação:", e);
-  }
-}
-
-document.addEventListener("click",ensureAudio,{once:true});
-document.addEventListener("touchstart",ensureAudio,{once:true});
 </script>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-import { getFirestore, collection, addDoc, serverTimestamp, query, limit, onSnapshot } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
-
+import { getFirestore, collection, addDoc, serverTimestamp, query, orderBy, onSnapshot, getDocs } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 const firebaseConfig = {
   apiKey: "AIzaSyCVTR3nnyo5mYTF28TJisgTUe-Xyjk1upg",
   authDomain: "english-game-hub.firebaseapp.com",
@@ -1183,140 +340,41 @@ const firebaseConfig = {
   messagingSenderId: "131880771426",
   appId: "1:131880771426:web:cf29a6f34ca86be527d63b"
 };
-
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-
-window.registrarAcesso = async function registrarAcesso(jogo = "7ano-smart-choice") {
-  try {
-    const agora = new Date();
-
-    await addDoc(collection(db, "acessos"), {
-      nome_do_jogo: jogo,
-      data: agora.toLocaleDateString("pt-BR"),
-      hora: agora.toLocaleTimeString("pt-BR"),
-      timestamp: serverTimestamp()
-    });
-  } catch (error) {
-    console.error("Erro ao registrar acesso:", error);
-  }
+window.salvarPontuacao = async function(jogo,nome,turma,escola,pontos,acertos,erros,status){
+  try{ await addDoc(collection(db,"pontuacoes"),{jogo,nome,turma,escola,pontos:Number(pontos)||0,acertos:Number(acertos)||0,erros:Number(erros)||0,status,timestamp:serverTimestamp(),dataLocal:new Date().toISOString()}); }
+  catch(e){ console.error("Erro ao salvar pontuação:",e); }
 };
-
-window.salvarPontuacao = async function salvarPontuacao(nome, pontos, jogo = "7ano-smart-choice", escola = "Escola não informada") {
-  try {
-    const nomeLimpo = String(nome || "").trim().slice(0, 24);
-    const escolaLimpa = String(escola || "Escola não informada").trim().slice(0, 42);
-    const pontosNumero = Number(pontos);
-
-    if (!nomeLimpo) return;
-    if (!Number.isInteger(pontosNumero) || pontosNumero < 0 || pontosNumero > 100) return;
-
-    await addDoc(collection(db, "pontuacoes"), {
-      nome: nomeLimpo,
-      escola: escolaLimpa || "Escola não informada",
-      pontos: pontosNumero,
-      jogo: jogo,
-      tipo: "real",
-      timestamp: serverTimestamp()
-    });
-  } catch (error) {
-    console.error("Erro ao salvar pontuação:", error);
-  }
+window.salvarAvaliacao = async function(avaliacao,jogo,nome,escola){
+  try{ await addDoc(collection(db,"avaliacoes"),{jogo,avaliacao,nome,escola,timestamp:serverTimestamp()}); }catch(e){console.warn("Erro ao salvar avaliação:",e)}
 };
-
-window.salvarAvaliacao = async function salvarAvaliacao(avaliacao, jogo = "7ano-smart-choice", nome = "Não informado", escola = "Escola não informada") {
-  try {
-    if (!["ruim", "neutro", "bom"].includes(avaliacao)) return;
-
-    await addDoc(collection(db, "avaliacoes"), {
-      jogo: jogo,
-      avaliacao: avaliacao,
-      nome: String(nome || "Não informado").trim().slice(0, 24),
-      escola: String(escola || "Escola não informada").trim().slice(0, 42),
-      timestamp: serverTimestamp()
+window.carregarRanking = function(modal=false){
+  const target = modal ? document.getElementById("rankingModalList") : document.getElementById("rankingContainer");
+  target.innerHTML = '<div class="rank-note">Carregando ranking...</div>';
+  const q = query(collection(db,"pontuacoes"), orderBy("timestamp","desc"));
+  getDocs(q).then(snapshot=>{
+    const map = new Map();
+    snapshot.forEach(doc=>{
+      const d = doc.data();
+      if(d.jogo !== GAME_NAME) return;
+      const nome = String(d.nome||"Aluno(a)").trim();
+      const escola = String(d.escola||"Escola não informada").trim();
+      const pontos = Number(d.pontos||0);
+      if(!nome || !Number.isFinite(pontos)) return;
+      const key = nome.toLowerCase()+"|"+escola.toLowerCase();
+      const item = map.get(key) || {nome, escola, pontos:0};
+      item.pontos += pontos;
+      map.set(key,item);
     });
-  } catch (error) {
-    console.error("Erro ao salvar avaliação:", error);
-  }
-};
-
-const rankingMotivacionalInicial = [
-  { nome: "Ana Clara", escola: "Escola Delfina de Jesus Amorim", pontos: 85, tipo: "motivacional" },
-  { nome: "Pedro Lucas", escola: "Escola Frei Fabiano Merz", pontos: 74, tipo: "motivacional" },
-  { nome: "Maria Eduarda", escola: "Escola Maria Amália Queiroz", pontos: 68, tipo: "motivacional" },
-  { nome: "João Miguel", escola: "Escola São Francisco", pontos: 61, tipo: "motivacional" },
-  { nome: "Lívia Vitória", escola: "Escola Nossa Senhora de Fátima", pontos: 55, tipo: "motivacional" }
-];
-
-window.carregarRanking = function carregarRanking(jogo = "7ano-smart-choice", containerId = "rankList") {
-  const rankingContainer = document.getElementById(containerId);
-  if (!rankingContainer) return;
-
-  const rankingQuery = query(collection(db, "pontuacoes"), limit(500));
-
-  onSnapshot(rankingQuery, (snapshot) => {
-    rankingContainer.innerHTML = "";
-    const somaPorAluno = new Map();
-
-    rankingMotivacionalInicial.forEach(item => {
-      const chave = `${item.nome.toLowerCase()}|${item.escola.toLowerCase()}|motivacional`;
-      somaPorAluno.set(chave, { ...item });
-    });
-
-    snapshot.forEach((doc) => {
-      const item = doc.data();
-      if (!item || item.tipo === "motivacional") return;
-
-      const nome = String(item.nome || "").trim();
-      const escola = String(item.escola || "Escola não informada").trim();
-      const pontos = Number(item.pontos || 0);
-      if (!nome || !Number.isFinite(pontos)) return;
-
-      const chave = `${nome.toLowerCase()}|${escola.toLowerCase()}|real`;
-      const atual = somaPorAluno.get(chave) || { nome, escola, pontos: 0, tipo: "real" };
-      atual.pontos += pontos;
-      somaPorAluno.set(chave, atual);
-    });
-
-    const rankingItems = Array.from(somaPorAluno.values())
-      .sort((a, b) => b.pontos - a.pontos)
-      .slice(0, 10);
-
-    if (!rankingItems.length) {
-      rankingContainer.innerHTML = '<div class="rank-row"><div class="rank-pos">--</div><div><div class="rank-name">Nenhuma pontuação registrada ainda.</div><div class="rank-school">English Game Hub</div></div><div class="rank-score">0 pts</div></div>';
-      return;
-    }
-
-    rankingItems.forEach((item, index) => {
-      const row = document.createElement("div");
-      const playerNameInput = document.getElementById("playerName");
-      const currentName = playerNameInput ? playerNameInput.value.trim() : "";
-      const selo = item.tipo === "motivacional" ? " ⭐" : "";
-
-      row.className = "rank-row";
-      if (currentName && item.nome.toLowerCase() === currentName.toLowerCase() && item.tipo === "real") {
-        row.classList.add("player");
-      }
-
-      row.innerHTML = `
-        <div class="rank-pos">${index + 1}º</div>
-        <div>
-          <div class="rank-name">${item.nome}${selo}</div>
-          <div class="rank-school">${item.escola}</div>
-        </div>
-        <div class="rank-score">${item.pontos} pts</div>
-      `;
-
-      rankingContainer.appendChild(row);
-    });
-  }, (error) => {
-    console.error("Erro ao carregar ranking:", error);
-    rankingContainer.innerHTML = '<div class="rank-row"><div class="rank-pos">!</div><div><div class="rank-name">Não foi possível carregar o ranking.</div><div class="rank-school">Verifique a conexão/Firebase</div></div><div class="rank-score">--</div></div>';
+    renderRanking(target, Array.from(map.values()));
+  }).catch(err=>{
+    console.error("Erro ao carregar ranking:",err);
+    const current = state.lastResult;
+    renderRanking(target, current ? [{nome:current.nome, escola:current.escola, pontos:current.pontos}] : []);
   });
 };
-
-window.registrarAcesso("7ano-smart-choice");
+try{ await addDoc(collection(db,"acessos"),{jogo:GAME_NAME,timestamp:serverTimestamp(),dataLocal:new Date().toISOString()}); }catch(e){}
 </script>
-
 </body>
 </html>
