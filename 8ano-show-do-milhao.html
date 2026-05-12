@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<title>Show do Milhão - 8º Ano</title>
+<style>
+*{box-sizing:border-box}
+:root{--bg1:#06081f;--bg2:#12043b;--panel:rgba(9,13,50,.94);--gold:#ffe66d;--gold2:#ffb703;--blue:#2563eb;--pink:#e11d48;--green:#22c55e;--red:#ef4444;--text:#f8fafc}
+html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;color:var(--text)}
+body{min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:8px;background:linear-gradient(180deg,rgba(4,7,25,.50),rgba(18,4,59,.72)),url('8ano-show-do-milhao-fundo.png') center/cover no-repeat fixed}
+.app{width:min(100%,1060px);height:min(770px,calc(100dvh - 16px));background:linear-gradient(180deg,rgba(7,10,40,.82),rgba(11,8,48,.88)),url('8ano-show-do-milhao-fundo.png') center/cover no-repeat;border:1px solid rgba(255,230,109,.22);border-radius:22px;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.45);display:flex;flex-direction:column}
+header{padding:10px 14px;text-align:center;background:linear-gradient(135deg,#1d4ed8,#7c3aed 50%,#e11d48);border-bottom:1px solid rgba(255,255,255,.16)}
+.topbar{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:4px}
+.back,.pill{color:#fff;text-decoration:none;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.28);border-radius:999px;padding:6px 10px;font-weight:900;font-size:12px}
+h1{margin:0;font-size:clamp(26px,5.8vw,48px);line-height:1;text-shadow:0 3px 10px rgba(0,0,0,.2)}
+.subtitle{margin:4px 0 0;font-weight:800;color:#fff7c2;font-size:13px}
+main{flex:1;min-height:0;padding:10px;overflow:hidden}
+.screen{display:none;height:100%;min-height:0} .screen.active{display:flex}
+.card{background:linear-gradient(180deg,rgba(15,20,70,.90),rgba(9,13,50,.88));backdrop-filter:blur(3px);border:1px solid rgba(255,255,255,.16);border-radius:18px;padding:12px;box-shadow:0 12px 30px rgba(0,0,0,.25)}
+.btn,.start-btn{border:0;border-radius:16px;padding:13px 18px;cursor:pointer;width:100%;background:linear-gradient(135deg,var(--gold),var(--gold2) 35%,#ff4d9e 78%,#7c3aed);color:#172033;font-weight:1000;font-size:16px;box-shadow:0 10px 22px rgba(255,183,3,.22)}
+.btn.secondary{background:linear-gradient(135deg,#dbeafe,#a7f3d0);box-shadow:none}
+.brand,.final-brand{font-weight:900;color:#fff3b0;text-align:center;font-size:12px;margin-top:10px}
+#startScreen{align-items:center;justify-content:center;overflow:hidden}
+.start-wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:14px;width:100%;height:100%;min-height:0;align-items:stretch}
+.start-card{overflow:auto;display:flex;flex-direction:column;justify-content:flex-start;min-height:100%}
+.start-card h2,.info-card h3{margin:0 0 10px;color:#fff;font-size:30px;line-height:1.1}
+.motivation{background:rgba(255,230,109,.12);border:1px solid rgba(255,230,109,.32);color:#fff7c2;padding:14px;border-radius:16px;font-weight:900;line-height:1.38;margin:10px 0 12px;font-size:15px}
+.player-form{display:grid;gap:8px;text-align:left;margin:12px 0 0}
+.player-form label{font-weight:900;color:var(--gold);font-size:15px}
+.player-form input{width:100%;border:2px solid rgba(96,165,250,.42);border-radius:14px;padding:12px 13px;font-size:16px;font-weight:800;outline:none;background:rgba(255,255,255,.96);color:#172033}
+.review-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;max-height:300px;overflow:auto;padding-right:3px}
+.review-block{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);border-radius:14px;padding:10px}
+.review-block b{display:block;color:#ffe66d;font-size:14px;margin-bottom:6px;line-height:1.15}
+.review-block span{display:block;color:#eaf2ff;font-weight:800;font-size:12px;line-height:1.3;margin:3px 0}
+.info-list{display:grid;gap:10px} .info-item{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);border-radius:15px;padding:12px;font-weight:900;line-height:1.32;color:#eaf2ff;font-size:14px} .info-item b{color:var(--gold);font-size:16px}
+#gameScreen.active{display:flex;flex-direction:column}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin-bottom:8px}
+.stat{background:linear-gradient(180deg,rgba(13,20,72,.96),rgba(13,10,50,.96));border:1.5px solid rgba(255,230,109,.28);border-radius:14px;padding:8px 4px;text-align:center}
+.stat b{display:block;font-size:18px;color:var(--gold);line-height:1} .stat span{font-size:10px;font-weight:900;color:#dbeafe;text-transform:uppercase;letter-spacing:.4px}
+.progress-card{text-align:center;padding:9px 12px;margin-bottom:8px;border-radius:14px;background:linear-gradient(90deg,rgba(255,230,109,.16),rgba(56,189,248,.13),rgba(225,29,72,.16));border:1.5px solid rgba(255,230,109,.38);font-weight:1000;color:#fff3b0;font-size:15px}
+.question-card{flex:1;min-height:0;overflow:hidden;display:flex;flex-direction:column;gap:6px;justify-content:flex-start}
+.mission-box{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 12px;border-radius:16px;background:linear-gradient(135deg,rgba(255,230,109,.26),rgba(37,99,235,.20),rgba(225,29,72,.14));border:1px solid rgba(255,230,109,.46);color:#fff7c2;font-weight:1000}
+.theme-chip{align-self:flex-start;background:linear-gradient(135deg,rgba(255,230,109,.24),rgba(255,183,3,.15));color:#fff3b0;border:1px solid rgba(255,230,109,.48);border-radius:999px;padding:7px 12px;font-weight:1000;font-size:15px}
+.visual{display:flex;align-items:center;justify-content:center;min-height:56px;border-radius:18px;background:linear-gradient(135deg,rgba(239,246,255,.95),rgba(236,254,255,.92));border:1px dashed #93c5fd;font-size:38px}
+.prompt{font-size:21px;line-height:1.25;font-weight:900;color:#fff;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-left:5px solid var(--gold);padding:12px;border-radius:15px}
+.timer-wrap{width:100%;height:12px;border-radius:999px;overflow:hidden;background:rgba(255,255,255,.12);border:1px solid rgba(255,230,109,.28)} .timer-bar{width:100%;height:100%;background:linear-gradient(90deg,#22c55e,#ffe66d,#ef4444);transition:width .15s linear} .timer-text{text-align:center;font-weight:1000;color:#fff7c2;font-size:13px}
+.options{display:grid;grid-template-columns:1fr;gap:7px;min-height:0;overflow:hidden}
+.option{border:2px solid rgba(96,165,250,.32);background:linear-gradient(180deg,#ffffff,#eaf2ff);border-radius:14px;padding:10px 12px;text-align:left;font-weight:1000;font-size:15.5px;cursor:pointer;color:#172033;box-shadow:0 4px 10px rgba(0,0,0,.10);display:flex;gap:9px;align-items:center}
+.option-letter{flex:0 0 31px;width:31px;height:31px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:1000;background:linear-gradient(135deg,#1d4ed8,#7c3aed);color:#fff}
+.option.correct{background:#dcfce7;border-color:#22c55e;color:#14532d;box-shadow:0 0 22px rgba(34,197,94,.75)} .option.wrong{background:#fee2e2;border-color:#ef4444;color:#7f1d1d}
+.option.hide-option{opacity:.18;pointer-events:none;filter:grayscale(1);text-decoration:line-through}
+.feedback{display:none;border-radius:13px;padding:8px;font-weight:900;line-height:1.22;font-size:12px} .feedback.good{display:block;background:#dcfce7;border:1px solid #86efac;color:#14532d} .feedback.bad{display:block;background:#fee2e2;border:1px solid #fca5a5;color:#7f1d1d}
+.lifelines{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:3px}
+.help-btn{border:1px solid rgba(255,230,109,.36);border-radius:14px;padding:10px 8px;background:linear-gradient(135deg,rgba(255,230,109,.18),rgba(37,99,235,.18),rgba(225,29,72,.12));color:#fff7c2;font-weight:1000;cursor:pointer} .help-btn:disabled{opacity:.45;cursor:not-allowed;filter:grayscale(.5)} .stop-btn{background:linear-gradient(135deg,rgba(34,197,94,.22),rgba(255,230,109,.20),rgba(37,99,235,.14))!important;color:#dcfce7!important}
+#finalScreen{align-items:center;justify-content:center} .final-card{width:100%;max-width:720px;text-align:center;max-height:100%;overflow:auto} .big-title{font-size:34px;color:var(--gold);margin:0 0 8px;text-shadow:0 0 16px rgba(255,230,109,.18)} .win-emoji{font-size:54px;margin:4px 0}
+.final-message{font-weight:900;line-height:1.35;margin:8px 0 12px;background:linear-gradient(135deg,#fff7ed,#dbeafe);border:2px solid var(--gold);color:#172033;border-radius:15px;padding:10px}
+.result-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:10px 0} .result-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:8px;text-align:center;font-weight:900} .result-box span{display:block;color:#64748b;font-size:9px;text-transform:uppercase} .result-box b{display:block;color:#e11d48;font-size:18px;margin-top:2px}
+.current-score-box{background:linear-gradient(135deg,#fff7ed,#dbeafe);border:2px solid #ffe66d;border-radius:16px;padding:10px;margin:10px 0;color:#172033;font-weight:1000;box-shadow:0 0 18px rgba(255,230,109,.28)}
+.rank-list{display:grid;gap:6px;margin:8px 0} .rank-row{display:grid;grid-template-columns:34px 1fr auto;gap:7px;align-items:center;padding:8px;border-radius:12px;background:#f8fafc;border:1px solid #e2e8f0;color:#172033} .rank-row.player{border:3px solid #00e5ff;box-shadow:0 0 18px rgba(0,229,255,.85);animation:pulsePlayer 1s infinite alternate} @keyframes pulsePlayer{from{filter:brightness(1)}to{filter:brightness(1.12)}}
+.rank-row.rank-1{background:linear-gradient(135deg,#ffd700,#fff3a0);border:3px solid #ffcc00;box-shadow:0 0 18px rgba(255,215,0,.8)} .rank-row.rank-2{background:linear-gradient(135deg,#c0c0c0,#f4f4f4);border:3px solid #b0b0b0} .rank-row.rank-3{background:linear-gradient(135deg,#cd7f32,#ffd2a0);border:3px solid #b87333}
+.rank-pos{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;background:#dbeafe;color:#1d4ed8;font-size:11px} .rank-name{font-weight:900;line-height:1.05;font-size:12px;text-align:left} .rank-school{font-size:9px;font-weight:800;color:#64748b;margin-top:2px;text-align:left} .rank-score{font-weight:900;color:#e11d48;text-align:right;font-size:12px} .champion-badge{display:block;color:#92400e;font-size:10px;margin-top:2px} .rank-note{text-align:center;font-size:12px;color:#fff7c2;font-weight:900;margin:8px 0 4px}
+.rank-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:9px}
+.modal{position:fixed;inset:0;z-index:50;display:none;align-items:center;justify-content:center;background:rgba(2,6,23,.78);backdrop-filter:blur(4px);padding:15px} .modal.active{display:flex} .modal-card{width:min(100%,620px);max-height:88dvh;overflow:auto;background:linear-gradient(180deg,rgba(15,20,70,.98),rgba(9,13,50,.98));border:1.5px solid rgba(255,230,109,.4);border-radius:22px;padding:16px;box-shadow:0 24px 60px rgba(0,0,0,.48);text-align:center} .modal-card h2{margin:0 0 8px;color:#ffe66d;font-size:28px}
+.firebase-rating{margin:10px 0 8px;padding:10px;border-radius:16px;background:rgba(255,255,255,.07);border:1px solid rgba(255,230,109,.24);text-align:center} .firebase-rating h3{margin:0 0 7px;color:#ffe66d;font-size:16px} .rating-buttons{display:grid;grid-template-columns:repeat(3,1fr);gap:7px} .rating-buttons button{border:0;border-radius:14px;padding:8px 5px;background:linear-gradient(135deg,#fff7ad,#ffb703);color:#172033;font-weight:1000;cursor:pointer} #ratingMessage{margin:7px 0 0;color:#fff7c2;font-weight:900;font-size:12px}
+@media(max-width:860px){body{padding:5px;align-items:flex-start}.app{height:calc(100dvh - 10px);border-radius:16px}header{padding:5px 7px}.back,.pill{font-size:9px;padding:4px 7px}h1{font-size:22px}.subtitle{display:none}main{padding:5px}.start-wrap{grid-template-columns:1fr;overflow:auto}.info-card{display:none}.start-card h2{font-size:24px}.motivation{font-size:13px;padding:11px}.review-grid{grid-template-columns:1fr;max-height:250px}.stats{gap:5px;margin-bottom:5px}.stat{padding:6px 3px;border-radius:11px}.stat b{font-size:14px}.stat span{font-size:8px}.progress-card{font-size:12px;padding:7px 8px;margin-bottom:5px}.question-card{gap:4px;padding:7px;border-radius:13px}.mission-box{padding:7px 8px}.mission-box span{font-size:12px}.mission-box small{font-size:9px}.theme-chip{font-size:12px;padding:5px 9px}.visual{min-height:32px;font-size:23px}.prompt{font-size:14.5px;line-height:1.18;padding:7px 8px}.timer-wrap{height:9px}.timer-text{font-size:11px}.options{gap:5px}.option{font-size:12.3px;line-height:1.13;padding:7px 8px;min-height:32px}.option-letter{width:25px;height:25px;flex-basis:25px;font-size:12px}.feedback{font-size:10.5px;padding:5px}.lifelines{grid-template-columns:repeat(2,1fr);gap:4px}.help-btn{font-size:10.5px;padding:6px 5px}.result-grid{grid-template-columns:repeat(2,1fr)}.big-title{font-size:27px}.win-emoji{font-size:42px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+  <div class="topbar"><a class="back" href="8ano.html">← 8º ano</a><span class="pill">Alinhado à BNCC</span></div>
+  <h1>Show do Milhão</h1>
+  <p class="subtitle">Quiz show para revisar Life Experiences, Present Perfect e conteúdos do 1º bimestre.</p>
+</header>
+<main>
+<section id="startScreen" class="screen active">
+  <div class="start-wrap">
+    <div class="card start-card">
+      <h2>🌽 Show do Milhão — 8º Ano</h2>
+      <div class="motivation">Esta revisão transforma o conteúdo do 8º ano em um desafio divertido. Leia a situação em português, observe a frase em inglês e escolha a melhor resposta para avançar no Show do Milhão.</div>
+      <div class="review-grid">
+        <div class="review-block"><b>Life Experiences</b><span>I have visited...</span><span>I have traveled...</span><span>She has eaten...</span><span>They have played...</span></div>
+        <div class="review-block"><b>Have you ever...?</b><span>Have you ever visited...?</span><span>Yes, I have.</span><span>No, I haven't.</span></div>
+        <div class="review-block"><b>Ever / Never</b><span>ever = já, em perguntas</span><span>never = nunca</span><span>I have never...</span></div>
+        <div class="review-block"><b>Revisão do 1º bimestre</b><span>Physical appearance</span><span>Comparative</span><span>Superlative</span></div>
+      </div>
+      <div class="player-form">
+        <label>Nome do aluno</label><input id="playerName" placeholder="Digite seu nome"/>
+        <label>Turma</label><input id="playerClass" placeholder="Ex.: 701"/>
+        <label>Escola</label><input id="playerSchool" value="Escola Delfina de Jesus Amorim"/>
+        <button class="start-btn" onclick="startGame()">COMEÇAR O SHOW 🌽</button>
+      </div>
+      <div class="brand">Jogo idealizado pelo professor Jasson Bruno.</div>
+    </div>
+    <div class="card info-card">
+      <h3>Como funciona?</h3>
+      <div class="info-list">
+        <div class="info-item"><b>🎯 50 questões</b><br/>A cada 10 rodadas, 8 questões são do 2º bimestre e 2 são revisão do 1º bimestre.</div>
+        <div class="info-item"><b>⏱️ 20 segundos</b><br/>Leia a situação em português e escolha a melhor alternativa em inglês.</div>
+        <div class="info-item"><b>🏆 Ranking</b><br/>Ao terminar, veja sua pontuação e o Ranking Geral do jogo.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="gameScreen" class="screen">
+  <div class="stats">
+    <div class="stat"><b id="mission">1/5</b><span>Missão</span></div>
+    <div class="stat"><b id="round">1/50</b><span>Rodada</span></div>
+    <div class="stat"><b id="score">0</b><span>Pontos</span></div>
+    <div class="stat"><b id="correct">0</b><span>Acertos</span></div>
+    <div class="stat"><b id="lives">5</b><span>Vidas</span></div>
+  </div>
+  <div class="progress-card" id="progressText">Missão 1 • Rodada 1 de 10</div>
+  <div class="card question-card">
+    <div class="mission-box"><span id="missionName">Missão 1 — Warm-up</span><small id="missionProgress">Rodada 1/10</small></div>
+    <div id="theme" class="theme-chip">Tema</div>
+    <div id="visual" class="visual">🧠</div>
+    <div id="prompt" class="prompt">Pergunta</div>
+    <div class="timer-wrap"><div id="timerBar" class="timer-bar"></div></div>
+    <div id="timerText" class="timer-text">20 segundos</div>
+    <div id="options" class="options"></div>
+    <div class="lifelines">
+      <button id="fiftyBtn" class="help-btn" onclick="useFifty()">50/50</button>
+      <button id="skipBtn" class="help-btn" onclick="useSkip()">Pular: 3</button>
+      <button id="tipBtn" class="help-btn" onclick="useTip()">Dica</button>
+      <button class="help-btn stop-btn" onclick="finishGame('parou')">Parar</button>
+    </div>
+    <div id="feedback" class="feedback"></div>
+    <div class="brand">Jogo idealizado pelo professor Jasson Bruno.</div>
+  </div>
+</section>
+
+<section id="finalScreen" class="screen">
+  <div class="card final-card">
+    <div class="win-emoji" id="finalEmoji">🏆</div>
+    <h2 class="big-title" id="finalTitle">RESULTADO FINAL</h2>
+    <p class="final-message" id="finalMessage">Parabéns por participar!</p>
+    <div class="current-score-box" id="currentScoreBox"></div>
+    <div class="result-grid">
+      <div class="result-box"><span>Pontos</span><b id="finalScore">0</b></div>
+      <div class="result-box"><span>Acertos</span><b id="finalCorrect">0</b></div>
+      <div class="result-box"><span>Erros</span><b id="finalWrong">0</b></div>
+      <div class="result-box"><span>Status</span><b id="finalStatus">OK</b></div>
+    </div>
+    <h3 style="color:#ffe66d;margin:8px 0 4px">🏆 Ranking rápido</h3>
+    <div id="rankingContainer" class="rank-list"><div class="rank-note">Carregando ranking...</div></div>
+    <div class="firebase-rating">
+      <h3>Como foi jogar?</h3>
+      <div class="rating-buttons">
+        <button onclick="rateGame('ruim')"><span class="emoji">😕</span>Difícil</button>
+        <button onclick="rateGame('neutro')"><span class="emoji">🙂</span>Legal</button>
+        <button onclick="rateGame('bom')"><span class="emoji">🤩</span>Muito bom</button>
+      </div>
+      <p id="ratingMessage"></p>
+    </div>
+    <div class="rank-actions">
+      <button class="btn" onclick="openRankingModal()">🏆 Ranking Geral</button>
+      <button class="btn secondary" onclick="restartGame()">Jogar novamente</button>
+    </div>
+    <button class="btn secondary" style="margin-top:7px" onclick="location.href='8ano.html'">Voltar ao 8º ano</button>
+    <div class="final-brand">Jogo idealizado pelo professor Jasson Bruno.</div>
+  </div>
+</section>
+
+<section id="rankingModal" class="modal">
+  <div class="modal-card">
+    <h2>🏆 Ranking Geral — Show do Milhão 8º Ano</h2>
+    <p class="rank-note">Pontuação acumulada deste jogo.</p>
+    <div id="rankingModalList" class="rank-list"><div class="rank-note">Carregando ranking...</div></div>
+    <button class="btn secondary" onclick="closeRankingModal()">Fechar</button>
+  </div>
+</section>
+</main>
+</div>
+
+<script>
+const GAME_NAME = "8ano-show-do-milhao";
+const TOTAL_ROUNDS = 50;
+const SECOND_BANK = [{"theme": "Life Experiences", "visual": "🌎", "prompt": "No telão do Show do Milhão, Ana aparece mostrando fotos de Alter do Chão. Ela quer dizer que já visitou esse lugar. Escolha a frase correta em inglês:", "answer": "I have visited Alter do Chão.", "options": ["I has visited Alter do Chão.", "I have visit Alter do Chão.", "I visited have Alter do Chão.", "I am visited Alter do Chão.", "I have visited Alter do Chão."], "tip": "Com I, usamos have + particípio: have visited.", "bimester": "2"}, {"theme": "Life Experiences", "visual": "📸", "prompt": "Marcelo abriu a galeria do celular e mostrou muitas fotos de uma viagem. Para dizer que ele já tirou fotos em inglês, escolha a frase correta:", "answer": "He has taken pictures.", "options": ["He have taken pictures.", "He has take pictures.", "He is taken pictures.", "He taken has pictures.", "He has taken pictures."], "tip": "Com he, usamos has + particípio. Take vira taken.", "bimester": "2"}, {"theme": "Life Experiences", "visual": "🍣", "prompt": "No desafio do milho gigante, Murilo conta que já comeu sushi. Qual frase em inglês combina com essa experiência?", "answer": "I have eaten sushi.", "options": ["I have eat sushi.", "I has eaten sushi.", "I have ate sushi.", "I am eaten sushi.", "I have eaten sushi."], "tip": "Eat vira eaten no Present Perfect.", "bimester": "2"}, {"theme": "Life Experiences", "visual": "🎬", "prompt": "Lara quer contar que já assistiu a um filme em inglês. Escolha a frase correta:", "answer": "She has watched a movie in English.", "options": ["She have watched a movie in English.", "She has watch a movie in English.", "She watched has a movie in English.", "She is watched a movie in English.", "She has watched a movie in English."], "tip": "Com she, usamos has watched.", "bimester": "2"}, {"theme": "Life Experiences", "visual": "🏖️", "prompt": "A turma fala sobre lugares que já conheceu. Um aluno quer dizer: 'Eu já fui à praia'. Escolha a opção correta:", "answer": "I have gone to the beach.", "options": ["I have go to the beach.", "I has gone to the beach.", "I have went to the beach.", "I am gone to the beach.", "I have gone to the beach."], "tip": "Go vira gone no Present Perfect.", "bimester": "2"}, {"theme": "Life Experiences", "visual": "🚌", "prompt": "Durante uma conversa no ônibus, um aluno diz que já viajou de ônibus. Qual frase está correta?", "answer": "I have traveled by bus.", "options": ["I has traveled by bus.", "I have travel by bus.", "I traveled have by bus.", "I am traveled by bus.", "I have traveled by bus."], "tip": "Travel é regular: traveled.", "bimester": "2"}, {"theme": "Life Experiences", "visual": "🧳", "prompt": "No jogo, aparece a missão: falar sobre uma experiência de viagem. Qual frase significa 'Nós já viajamos para Santarém'?", "answer": "We have traveled to Santarém.", "options": ["We has traveled to Santarém.", "We have travel to Santarém.", "We are traveled to Santarém.", "We traveled have to Santarém.", "We have traveled to Santarém."], "tip": "Com we, usamos have traveled.", "bimester": "2"}, {"theme": "Life Experiences", "visual": "🍕", "prompt": "Um aluno ganha a rodada porque sabe dizer que já experimentou uma comida diferente. Escolha a frase correta:", "answer": "I have tried different food.", "options": ["I has tried different food.", "I have try different food.", "I tried have different food.", "I am tried different food.", "I have tried different food."], "tip": "Try vira tried no particípio.", "bimester": "2"}, {"theme": "Life Experiences", "visual": "🎮", "prompt": "Dois colegas falam sobre games. Eles querem dizer que já jogaram um jogo novo. Qual frase está correta?", "answer": "They have played a new game.", "options": ["They has played a new game.", "They have play a new game.", "They are played a new game.", "They played have a new game.", "They have played a new game."], "tip": "Com they, usamos have played.", "bimester": "2"}, {"theme": "Life Experiences", "visual": "🐬", "prompt": "No telão aparece uma cena de passeio. A frase correta para dizer 'Ela já viu um boto' é:", "answer": "She has seen a dolphin.", "options": ["She have seen a dolphin.", "She has see a dolphin.", "She has saw a dolphin.", "She is seen a dolphin.", "She has seen a dolphin."], "tip": "See vira seen no Present Perfect.", "bimester": "2"}, {"theme": "Have you ever...?", "visual": "❓", "prompt": "Murilo quer perguntar a Marcelo se ele já visitou Belterra. Qual pergunta em inglês deve aparecer no telão?", "answer": "Have you ever visited Belterra?", "options": ["Do you ever visited Belterra?", "Have you never visit Belterra?", "Are you visited Belterra?", "Have you visit Belterra?", "Have you ever visited Belterra?"], "tip": "A pergunta começa com Have you ever + particípio.", "bimester": "2"}, {"theme": "Have you ever...?", "visual": "❓", "prompt": "No Show do Milhão, o apresentador pergunta se a aluna já comeu açaí. Escolha a pergunta correta em inglês:", "answer": "Have you ever eaten açaí?", "options": ["Have you ever eat açaí?", "Do you ever eaten açaí?", "Are you eaten açaí?", "Have you never ate açaí?", "Have you ever eaten açaí?"], "tip": "Eat vira eaten: Have you ever eaten...?", "bimester": "2"}, {"theme": "Have you ever...?", "visual": "❓", "prompt": "Um aluno quer perguntar ao colega se ele já tirou fotos na orla. Qual opção está correta?", "answer": "Have you ever taken pictures at the riverfront?", "options": ["Have you ever take pictures at the riverfront?", "Do you ever taken pictures at the riverfront?", "Have you taken ever pictures at the riverfront?", "Are you ever taken pictures at the riverfront?", "Have you ever taken pictures at the riverfront?"], "tip": "Take vira taken e ever vem depois de you.", "bimester": "2"}, {"theme": "Have you ever...?", "visual": "❓", "prompt": "A roleta caiu em experiências. A pergunta é: 'Você já assistiu a um filme em inglês?' Qual frase está correta?", "answer": "Have you ever watched a movie in English?", "options": ["Have you ever watch a movie in English?", "Do you ever watched a movie in English?", "Have you watched ever a movie in English?", "Are you ever watched a movie in English?", "Have you ever watched a movie in English?"], "tip": "Usamos Have you ever watched...?", "bimester": "2"}, {"theme": "Have you ever...?", "visual": "❓", "prompt": "A turma conversa sobre viagens. Como perguntar: 'Você já viajou de barco?'", "answer": "Have you ever traveled by boat?", "options": ["Have you ever travel by boat?", "Do you ever traveled by boat?", "Are you ever traveled by boat?", "Have you traveled ever by boat?", "Have you ever traveled by boat?"], "tip": "Have you ever + particípio: traveled.", "bimester": "2"}, {"theme": "Have you ever...?", "visual": "❓", "prompt": "No telão aparece a foto de uma praia. Como perguntar: 'Você já foi à praia?'", "answer": "Have you ever gone to the beach?", "options": ["Have you ever go to the beach?", "Have you ever went to the beach?", "Do you ever gone to the beach?", "Are you ever gone to the beach?", "Have you ever gone to the beach?"], "tip": "Go vira gone.", "bimester": "2"}, {"theme": "Have you ever...?", "visual": "❓", "prompt": "Uma estudante quer perguntar se o amigo já jogou beach tennis. Escolha a pergunta correta:", "answer": "Have you ever played beach tennis?", "options": ["Have you ever play beach tennis?", "Do you ever played beach tennis?", "Have you played ever beach tennis?", "Are you ever played beach tennis?", "Have you ever played beach tennis?"], "tip": "Play é regular: played.", "bimester": "2"}, {"theme": "Have you ever...?", "visual": "❓", "prompt": "No quadro de perguntas, aparece: 'Você já conheceu uma pessoa famosa?' Qual alternativa está correta?", "answer": "Have you ever met a famous person?", "options": ["Have you ever meet a famous person?", "Do you ever met a famous person?", "Have you met ever a famous person?", "Are you ever met a famous person?", "Have you ever met a famous person?"], "tip": "Meet vira met.", "bimester": "2"}, {"theme": "Have you ever...?", "visual": "❓", "prompt": "O aluno quer perguntar se alguém já leu um livro em inglês. Qual pergunta está correta?", "answer": "Have you ever read a book in English?", "options": ["Have you ever reading a book in English?", "Do you ever readed a book in English?", "Are you ever read a book in English?", "Have you ever readed a book in English?", "Have you ever read a book in English?"], "tip": "Read no particípio continua escrito read.", "bimester": "2"}, {"theme": "Have you ever...?", "visual": "❓", "prompt": "No desafio final da fase, a pergunta é: 'Você já fez uma apresentação em inglês?' Escolha a opção correta:", "answer": "Have you ever made a presentation in English?", "options": ["Have you ever make a presentation in English?", "Do you ever made a presentation in English?", "Have you made ever a presentation in English?", "Are you ever made a presentation in English?", "Have you ever made a presentation in English?"], "tip": "Make vira made.", "bimester": "2"}, {"theme": "Ever / Never", "visual": "🚦", "prompt": "Marcelo nunca viajou de avião. Para dizer isso em inglês, qual frase ele deve escolher?", "answer": "I have never traveled by plane.", "options": ["I have ever traveled by plane.", "I never have travel by plane.", "I has never traveled by plane.", "I have never travel by plane.", "I have never traveled by plane."], "tip": "Never indica 'nunca' e vem entre have e o particípio.", "bimester": "2"}, {"theme": "Ever / Never", "visual": "🚦", "prompt": "A aluna responde que nunca comeu comida japonesa. Qual frase está correta?", "answer": "I have never eaten Japanese food.", "options": ["I have never eat Japanese food.", "I has never eaten Japanese food.", "I never have ate Japanese food.", "I have ever eaten Japanese food.", "I have never eaten Japanese food."], "tip": "Never + eaten: nunca comeu.", "bimester": "2"}, {"theme": "Ever / Never", "visual": "🚦", "prompt": "No telão aparece: 'Você já visitou Manaus?' O aluno quer responder: 'Sim, já.' Qual resposta curta está correta?", "answer": "Yes, I have.", "options": ["Yes, I do.", "Yes, I am.", "Yes, I has.", "Yes, I did.", "Yes, I have."], "tip": "Para Have you ever...?, a resposta curta é Yes, I have.", "bimester": "2"}, {"theme": "Ever / Never", "visual": "🚦", "prompt": "A pergunta foi: 'Have you ever gone to the beach?' O aluno quer responder: 'Não, nunca.' Qual resposta está correta?", "answer": "No, I haven't.", "options": ["No, I don't.", "No, I am not.", "No, I hasn't.", "No, I didn't.", "No, I haven't."], "tip": "A resposta curta negativa é No, I haven't.", "bimester": "2"}, {"theme": "Ever / Never", "visual": "🚦", "prompt": "Lara já viu um filme em inglês, mas quer usar 'ever' em uma pergunta. Qual frase está correta?", "answer": "Have you ever seen a movie in English?", "options": ["Have you never seen a movie in English?", "Do you ever saw a movie in English?", "Have you ever saw a movie in English?", "Are you ever seen a movie in English?", "Have you ever seen a movie in English?"], "tip": "Ever é usado em perguntas de experiência.", "bimester": "2"}, {"theme": "Ever / Never", "visual": "🚦", "prompt": "O milho gigante ficou surpreso: João nunca tirou foto na praia. Qual frase mostra essa ideia?", "answer": "João has never taken pictures at the beach.", "options": ["João have never taken pictures at the beach.", "João has never take pictures at the beach.", "João never has took pictures at the beach.", "João has ever taken pictures at the beach.", "João has never taken pictures at the beach."], "tip": "Com João/he, usamos has never taken.", "bimester": "2"}, {"theme": "Ever / Never", "visual": "🚦", "prompt": "A apresentadora pergunta: 'Have you ever played volleyball?' A resposta positiva correta é:", "answer": "Yes, I have.", "options": ["Yes, I play.", "Yes, I am.", "Yes, I do.", "Yes, I has.", "Yes, I have."], "tip": "A pergunta com Have pede resposta com have.", "bimester": "2"}, {"theme": "Ever / Never", "visual": "🚦", "prompt": "Uma aluna quer dizer que nunca conheceu Belterra. Qual alternativa está correta?", "answer": "She has never visited Belterra.", "options": ["She have never visited Belterra.", "She has never visit Belterra.", "She never has visit Belterra.", "She has ever visited Belterra.", "She has never visited Belterra."], "tip": "Com she, usamos has never visited.", "bimester": "2"}, {"theme": "Ever / Never", "visual": "🚦", "prompt": "No placar aparece a frase: 'They have never traveled by boat.' O que ela indica?", "answer": "Eles nunca viajaram de barco.", "options": ["Eles sempre viajam de barco.", "Eles estão viajando de barco agora.", "Eles gostam de viajar de barco.", "Eles viajarão de barco amanhã.", "Eles nunca viajaram de barco."], "tip": "Have never traveled indica uma experiência que nunca aconteceu.", "bimester": "2"}, {"theme": "Ever / Never", "visual": "🚦", "prompt": "A frase 'Have you ever eaten tacacá?' pergunta sobre:", "answer": "uma experiência que a pessoa já viveu ou não viveu.", "options": ["uma ação que está acontecendo agora.", "uma obrigação da escola.", "uma aparência física.", "uma comparação entre duas pessoas.", "uma experiência que a pessoa já viveu ou não viveu."], "tip": "Have you ever...? pergunta sobre experiências de vida.", "bimester": "2"}, {"theme": "Past Participle", "visual": "🧩", "prompt": "O telão mostra: 'I have ___ a new song.' A ideia é: 'Eu já ouvi uma música nova.' Escolha a palavra correta:", "answer": "listened to", "options": ["listen to", "listening to", "listens to", "am listened to", "listened to"], "tip": "Listen é regular: have listened to.", "bimester": "2"}, {"theme": "Past Participle", "visual": "🧩", "prompt": "Complete a frase do jogo: 'She has ___ a beautiful place.' A ideia é 'Ela já viu um lugar bonito'.", "answer": "seen", "options": ["see", "saw", "seeing", "sees", "seen"], "tip": "See vira seen.", "bimester": "2"}, {"theme": "Past Participle", "visual": "🧩", "prompt": "O milho gigante apagou uma palavra: 'I have ___ breakfast at the bakery.' Qual opção completa melhor?", "answer": "eaten", "options": ["eat", "ate", "eating", "eats", "eaten"], "tip": "Eat vira eaten.", "bimester": "2"}, {"theme": "Past Participle", "visual": "🧩", "prompt": "Na frase 'They have ___ to Alter do Chão', a palavra correta para 'ir' é:", "answer": "gone", "options": ["go", "went", "going", "goes", "gone"], "tip": "Go vira gone.", "bimester": "2"}, {"theme": "Past Participle", "visual": "🧩", "prompt": "Complete: 'We have ___ many pictures.'", "answer": "taken", "options": ["take", "took", "taking", "takes", "taken"], "tip": "Take vira taken.", "bimester": "2"}, {"theme": "Past Participle", "visual": "🧩", "prompt": "O apresentador mostra o verbo 'visit'. No Present Perfect, a forma correta é:", "answer": "visited", "options": ["visiting", "visits", "visit", "visiten", "visited"], "tip": "Visit é regular: visited.", "bimester": "2"}, {"theme": "Past Participle", "visual": "🧩", "prompt": "No telão aparece o verbo 'travel'. Para completar 'I have ___ to Belterra', escolha:", "answer": "traveled", "options": ["travel", "travels", "traveling", "travelsed", "traveled"], "tip": "Travel é regular: traveled.", "bimester": "2"}, {"theme": "Past Participle", "visual": "🧩", "prompt": "A frase é: 'He has ___ a famous singer.' A ideia é que ele já conheceu um cantor famoso. Escolha:", "answer": "met", "options": ["meet", "meeted", "meeting", "meets", "met"], "tip": "Meet vira met.", "bimester": "2"}, {"theme": "Past Participle", "visual": "🧩", "prompt": "Complete: 'I have ___ a video about Santarém.'", "answer": "watched", "options": ["watch", "watching", "watches", "watchen", "watched"], "tip": "Watch é regular: watched.", "bimester": "2"}, {"theme": "Past Participle", "visual": "🧩", "prompt": "A frase é: 'She has ___ a cake.' A ideia é que ela já fez um bolo. Qual palavra completa?", "answer": "made", "options": ["make", "maked", "making", "makes", "made"], "tip": "Make vira made.", "bimester": "2"}, {"theme": "Travel and Leisure", "visual": "🎒", "prompt": "Na fase das experiências, aparece a palavra 'trip'. Em uma conversa sobre férias, o que ela significa?", "answer": "viagem", "options": ["janela", "caderno", "óculos", "resposta", "viagem"], "tip": "Trip significa viagem.", "bimester": "2"}, {"theme": "Travel and Leisure", "visual": "🎒", "prompt": "O aluno viu a palavra 'beach' em uma frase sobre Alter do Chão. Qual é o significado?", "answer": "praia", "options": ["mercado", "escola", "ônibus", "prova", "praia"], "tip": "Beach significa praia.", "bimester": "2"}, {"theme": "Travel and Leisure", "visual": "🎒", "prompt": "No telão aparece: 'take pictures'. O que essa expressão significa?", "answer": "tirar fotos", "options": ["fazer tarefa", "pegar ônibus", "comer peixe", "abrir o livro", "tirar fotos"], "tip": "Take pictures significa tirar fotos.", "bimester": "2"}, {"theme": "Travel and Leisure", "visual": "🎒", "prompt": "A frase fala de 'different food'. No contexto de viagem, essa expressão quer dizer:", "answer": "comida diferente", "options": ["aula difícil", "praia bonita", "ônibus novo", "amigo famoso", "comida diferente"], "tip": "Food significa comida.", "bimester": "2"}, {"theme": "Travel and Leisure", "visual": "🎒", "prompt": "No jogo, Marcelo diz que quer 'try local food'. O que ele quer fazer?", "answer": "experimentar comida local", "options": ["comprar material escolar", "visitar uma escola", "tirar foto do quadro", "correr na quadra", "experimentar comida local"], "tip": "Try pode significar experimentar.", "bimester": "2"}, {"theme": "Travel and Leisure", "visual": "🎒", "prompt": "A palavra 'museum' aparece em uma missão sobre Santarém. Qual é a tradução correta?", "answer": "museu", "options": ["mercado", "praia", "parque", "ônibus", "museu"], "tip": "Museum significa museu.", "bimester": "2"}, {"theme": "Travel and Leisure", "visual": "🎒", "prompt": "A turma lê a frase: 'I have traveled by boat.' A expressão 'by boat' significa:", "answer": "de barco", "options": ["de avião", "de bicicleta", "a pé", "de ônibus", "de barco"], "tip": "By boat significa de barco.", "bimester": "2"}, {"theme": "Travel and Leisure", "visual": "🎒", "prompt": "Em uma conversa sobre lazer, a palavra 'leisure' se aproxima mais de:", "answer": "lazer", "options": ["prova", "altura", "idade", "cabelo", "lazer"], "tip": "Leisure está ligado a lazer e tempo livre.", "bimester": "2"}, {"theme": "Travel and Leisure", "visual": "🎒", "prompt": "No telão aparece 'park' em uma frase sobre passeio. Qual tradução combina melhor?", "answer": "parque", "options": ["padaria", "praia", "mercado", "sala", "parque"], "tip": "Park significa parque.", "bimester": "2"}, {"theme": "Travel and Leisure", "visual": "🎒", "prompt": "A frase 'I have visited a new place' fala sobre:", "answer": "conhecer ou visitar um lugar novo", "options": ["descrever o cabelo de alguém", "comparar duas pessoas", "dizer a idade de um aluno", "dar uma ordem de sala", "conhecer ou visitar um lugar novo"], "tip": "Visited a new place indica experiência de visita.", "bimester": "2"}];
+const REVIEW_BANK = [{"theme": "1st Bimester Review", "visual": "🧑", "prompt": "No telão aparecem dois personagens. Ana tem cabelo longo e preto. Qual frase descreve Ana em inglês?", "answer": "She has long black hair.", "options": ["She is long black hair.", "She has visited black hair.", "She have long black hair.", "She is hair long black.", "She has long black hair."], "tip": "Para cabelo, usamos has/have: She has long black hair.", "bimester": "1"}, {"theme": "1st Bimester Review", "visual": "🧑", "prompt": "Murilo perdeu Marcelo no meio da turma e precisa descrevê-lo: ele é alto e usa óculos. Qual frase ajuda melhor?", "answer": "He is tall and wears glasses.", "options": ["He has tall and glasses.", "He is glasses and tall.", "He have tall and wears glasses.", "He is traveled and glasses.", "He is tall and wears glasses."], "tip": "Para aparência, usamos he is + característica e wears glasses.", "bimester": "1"}, {"theme": "1st Bimester Review", "visual": "🧑", "prompt": "A foto mostra uma menina de cabelo cacheado. Escolha a frase correta em inglês:", "answer": "She has curly hair.", "options": ["She is curly hair.", "She have curly hair.", "She has hair curly?", "She is has curly hair.", "She has curly hair."], "tip": "Curly hair significa cabelo cacheado.", "bimester": "1"}, {"theme": "Comparative", "visual": "📏", "prompt": "No desafio do milho gigante, Pedro alcança a prateleira mais alta e Lucas não consegue. Como dizer que Pedro é mais alto que Lucas?", "answer": "Pedro is taller than Lucas.", "options": ["Pedro is the tallest than Lucas.", "Pedro has taller Lucas.", "Pedro is more tall Lucas.", "Pedro taller is than Lucas.", "Pedro is taller than Lucas."], "tip": "Comparativo curto: taller than.", "bimester": "1"}, {"theme": "Comparative", "visual": "📏", "prompt": "Dois celulares aparecem no telão. Um custa R$ 800 e o outro R$ 1.500. Como dizer que o segundo é mais caro?", "answer": "The second phone is more expensive than the first.", "options": ["The second phone is expensiver than the first.", "The second phone is the expensive than the first.", "The second phone has more expensive first.", "The second phone more expensive is first.", "The second phone is more expensive than the first."], "tip": "Adjetivo longo usa more + adjective + than.", "bimester": "1"}, {"theme": "Comparative", "visual": "📏", "prompt": "Marcelo tem 14 anos e Murilo tem 8 anos. Qual frase compara corretamente os dois?", "answer": "Marcelo is older than Murilo.", "options": ["Marcelo is the oldest than Murilo.", "Marcelo has older Murilo.", "Marcelo is more old Murilo.", "Marcelo older is Murilo.", "Marcelo is older than Murilo."], "tip": "Older than significa mais velho que.", "bimester": "1"}, {"theme": "Comparative", "visual": "📏", "prompt": "No jogo, uma mochila pesa 2 kg e outra pesa 5 kg. Como dizer que a segunda é mais pesada?", "answer": "The second backpack is heavier than the first.", "options": ["The second backpack is more heavy than the first.", "The second backpack is heaviest than the first.", "The second backpack has heavier the first.", "The second backpack heavy than first.", "The second backpack is heavier than the first."], "tip": "Heavy vira heavier no comparativo.", "bimester": "1"}, {"theme": "Superlative", "visual": "👑", "prompt": "Na turma, três alunos mediram a altura. João é maior que todos. Como dizer que ele é o mais alto?", "answer": "João is the tallest.", "options": ["João is taller than.", "João is more tall.", "João has the tallest.", "João is tallest than.", "João is the tallest."], "tip": "Superlativo curto: the tallest.", "bimester": "1"}, {"theme": "Superlative", "visual": "👑", "prompt": "Três vídeos aparecem no telão. A turma escolhe um como o mais interessante. Qual frase está correta?", "answer": "This is the most interesting video.", "options": ["This is more interesting video.", "This is the interestingest video.", "This is most interesting than video.", "This has the most interesting video.", "This is the most interesting video."], "tip": "Adjetivo longo usa the most + adjective.", "bimester": "1"}, {"theme": "Superlative", "visual": "👑", "prompt": "Na rodada final, Maria chegou primeiro na corrida. Como dizer que ela foi a mais rápida?", "answer": "Maria is the fastest.", "options": ["Maria is faster than.", "Maria is more fast.", "Maria has the faster.", "Maria is fastest than.", "Maria is the fastest."], "tip": "Fast vira the fastest no superlativo.", "bimester": "1"}, {"theme": "Superlative", "visual": "👑", "prompt": "A turma comparou três livros. Um deles foi escolhido como o mais difícil. Qual frase está correta?", "answer": "This is the most difficult book.", "options": ["This is more difficult book.", "This is the difficultest book.", "This is most difficult than book.", "This has the most difficult book.", "This is the most difficult book."], "tip": "Difficult usa the most difficult.", "bimester": "1"}, {"theme": "1st Bimester Review", "visual": "🧑", "prompt": "O apresentador mostra uma foto: o menino é baixo, tem cabelo curto e usa boné. Qual frase combina melhor?", "answer": "He is short, has short hair and wears a cap.", "options": ["He has short and is cap.", "He is short hair and wears short.", "He have short hair and wear a cap.", "He is visited short hair and cap.", "He is short, has short hair and wears a cap."], "tip": "Podemos combinar is + característica, has + cabelo e wears + acessório.", "bimester": "1"}, {"theme": "Comparative", "visual": "📏", "prompt": "No mercado do jogo, uma fila tem 5 pessoas e outra tem 12. Como dizer que a segunda fila é maior?", "answer": "The second line is longer than the first.", "options": ["The second line is the longest than the first.", "The second line has longer first.", "The second line is more long than the first.", "The second line longer is first.", "The second line is longer than the first."], "tip": "Long vira longer than.", "bimester": "1"}, {"theme": "Superlative", "visual": "👑", "prompt": "Entre três comidas do desafio, a turma escolheu o açaí como o mais delicioso. Qual frase está correta?", "answer": "Açaí is the most delicious.", "options": ["Açaí is more delicious than.", "Açaí is the deliciousest.", "Açaí has the most delicious.", "Açaí is most delicious than.", "Açaí is the most delicious."], "tip": "Delicious é longo: the most delicious.", "bimester": "1"}, {"theme": "1st Bimester Review", "visual": "🧑", "prompt": "No telão aparece a pergunta 'What does she look like?' O jogo quer saber sobre:", "answer": "a aparência física dela.", "options": ["as experiências de vida dela.", "a comida preferida dela.", "a idade da escola.", "a resposta curta com have.", "a aparência física dela."], "tip": "What does she look like? pergunta sobre aparência física.", "bimester": "1"}];
+let state = {
+  deck: [], index: 0, score: 0, correct: 0, wrong: 0, lives: 5,
+  skipLeft: 3, tipUsed: false, fiftyUsed: false, timer: null, timeLeft: 20,
+  player: null, finished: false, lastResult: null
+};
+function el(id){return document.getElementById(id)}
+function showScreen(id){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));el(id).classList.add("active");document.body.classList.toggle("playing",id==="gameScreen")}
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function makeDeck(){
+  let second = shuffle(SECOND_BANK), review = shuffle(REVIEW_BANK), deck = [];
+  for(let block=0; block<5; block++){
+    let part = [];
+    for(let i=0;i<8;i++) part.push(second[(block*8+i)%second.length]);
+    for(let i=0;i<2;i++) part.push(review[(block*2+i)%review.length]);
+    deck.push(...shuffle(part));
+  }
+  return deck;
+}
+function getPlayerInfo(){
+  return {
+    nome:(el("playerName").value||"Aluno(a)").trim().slice(0,24),
+    turma:(el("playerClass").value||"7º ano").trim().slice(0,20),
+    escola:(el("playerSchool").value||"Escola Delfina de Jesus Amorim").trim().slice(0,40)
+  };
+}
+function startGame(){
+  state = {...state, deck: makeDeck(), index:0, score:0, correct:0, wrong:0, lives:5, skipLeft:3, tipUsed:false, fiftyUsed:false, finished:false, player:getPlayerInfo(), lastResult:null};
+  showScreen("gameScreen");
+  loadQuestion();
+}
+function currentQuestion(){return state.deck[state.index]}
+function loadQuestion(){
+  clearInterval(state.timer);
+  if(state.index >= TOTAL_ROUNDS) return finishGame("venceu");
+  if(state.lives <= 0) return finishGame("gameover");
+  const q=currentQuestion();
+  const mission=Math.floor(state.index/10)+1, roundInMission=(state.index%10)+1;
+  el("mission").textContent = mission + "/5";
+  el("round").textContent = (state.index+1) + "/" + TOTAL_ROUNDS;
+  el("score").textContent = state.score;
+  el("correct").textContent = state.correct;
+  el("lives").textContent = "❤️".repeat(state.lives) || "0";
+  el("progressText").textContent = `Missão ${mission} • Rodada ${roundInMission} de 10`;
+  el("missionName").textContent = `Missão ${mission} — ${missionTitle(mission)}`;
+  el("missionProgress").textContent = `Rodada ${roundInMission}/10`;
+  el("theme").textContent = q.theme + (q.bimester==="2" ? " • 2º bimestre" : " • Revisão");
+  el("visual").textContent = q.visual;
+  el("prompt").textContent = q.prompt;
+  el("feedback").className="feedback"; el("feedback").textContent="";
+  el("fiftyBtn").disabled = state.fiftyUsed; el("skipBtn").disabled = state.skipLeft<=0; el("skipBtn").textContent = "Pular: " + state.skipLeft; el("tipBtn").disabled = state.tipUsed;
+  const opts = shuffle(q.options);
+  el("options").innerHTML = opts.map((op,i)=>`<button class="option" onclick="answerQuestion(this, ${JSON.stringify(op)})"><span class="option-letter">${String.fromCharCode(65+i)}</span><span class="option-text">${op}</span></button>`).join("");
+  startTimer();
+}
+function missionTitle(n){return ["Experiências de Vida","Have you ever...?","Ever / Never","Past Participle","Final do Milhão"][n-1] || "Show do Milhão"}
+function startTimer(){
+  state.timeLeft=20;
+  el("timerBar").style.width="100%"; el("timerText").textContent="20 segundos";
+  state.timer=setInterval(()=>{
+    state.timeLeft-=0.2;
+    const pct=Math.max(0,(state.timeLeft/20)*100);
+    el("timerBar").style.width=pct+"%";
+    el("timerText").textContent=Math.ceil(Math.max(0,state.timeLeft))+" segundos";
+    if(state.timeLeft<=0){clearInterval(state.timer); timeoutQuestion();}
+  },200);
+}
+function lockOptions(){document.querySelectorAll(".option").forEach(b=>b.disabled=true)}
+function answerQuestion(btn, selected){
+  clearInterval(state.timer); lockOptions();
+  const q=currentQuestion();
+  const ok = selected === q.answer;
+  document.querySelectorAll(".option").forEach(b=>{if(b.innerText.includes(q.answer)) b.classList.add("correct")});
+  if(ok){
+    state.correct++; state.score += q.bimester==="2" ? 20 : 10;
+    btn.classList.add("correct");
+    el("feedback").className="feedback good"; el("feedback").textContent="✅ Very good! Você escolheu a alternativa correta.";
+  } else {
+    state.wrong++; state.lives--; btn.classList.add("wrong");
+    el("feedback").className="feedback bad"; el("feedback").textContent="❌ Atenção: a resposta correta é “"+q.answer+"”. "+q.tip;
+  }
+  setTimeout(()=>{state.index++; loadQuestion()}, ok ? 900 : 1700);
+}
+function timeoutQuestion(){
+  lockOptions();
+  const q=currentQuestion(); state.wrong++; state.lives--;
+  document.querySelectorAll(".option").forEach(b=>{if(b.innerText.includes(q.answer)) b.classList.add("correct")});
+  el("feedback").className="feedback bad"; el("feedback").textContent="⏰ O tempo acabou. A resposta correta é “"+q.answer+"”. "+q.tip;
+  setTimeout(()=>{state.index++; loadQuestion()},1700);
+}
+function useFifty(){
+  if(state.fiftyUsed) return; state.fiftyUsed=true; el("fiftyBtn").disabled=true;
+  const q=currentQuestion(); const wrong=[...document.querySelectorAll(".option")].filter(b=>!b.innerText.includes(q.answer));
+  shuffle(wrong).slice(0,2).forEach(b=>b.classList.add("hide-option"));
+}
+function useSkip(){ if(state.skipLeft<=0) return; state.skipLeft--; state.index++; loadQuestion(); }
+function useTip(){
+  if(state.tipUsed) return; state.tipUsed=true; el("tipBtn").disabled=true;
+  const q=currentQuestion(); el("feedback").className="feedback good"; el("feedback").textContent="💡 Dica: "+q.tip;
+}
+function finishGame(status){
+  if(state.finished) return; state.finished=true; clearInterval(state.timer);
+  const pontosRanking = state.score;
+  const p = state.player || getPlayerInfo();
+  state.lastResult = {...p, pontos:pontosRanking, score:state.score, acertos:state.correct, erros:state.wrong, jogo:GAME_NAME, status};
+  const won = status==="venceu";
+  el("finalEmoji").textContent = won ? "🏆🌟" : status==="parou" ? "🛑" : "💪";
+  el("finalTitle").textContent = won ? "CONGRATULATIONS!" : status==="parou" ? "VOCÊ PAROU COM SEGURANÇA" : "GAME OVER";
+  el("finalMessage").textContent = won ? "Você concluiu o Show do Milhão!" : status==="parou" ? "Você decidiu parar e guardar sua pontuação." : "Você chegou ao fim da rodada. Continue treinando!";
+  el("finalScore").textContent=state.score; el("finalCorrect").textContent=state.correct; el("finalWrong").textContent=state.wrong; el("finalStatus").textContent=status.toUpperCase();
+  el("currentScoreBox").innerHTML = `✨ SUA PONTUAÇÃO AGORA ✨<br><b>${p.nome}</b> — ${state.score} pontos<br><small>Turma: ${p.turma} • ${p.escola}</small>`;
+  showScreen("finalScreen");
+  if(window.salvarPontuacao) window.salvarPontuacao(GAME_NAME, p.nome, p.turma, p.escola, pontosRanking, state.correct, state.wrong, status);
+  carregarRanking();
+}
+function restartGame(){showScreen("startScreen")}
+function rankRowHTML(item, idx, current=false){
+  const pos=idx+1; const cls = current ? " player" : pos<=3 ? " rank-"+pos : "";
+  const medal = pos===1?"🥇":pos===2?"🥈":pos===3?"🥉":pos+"º";
+  const badge = pos===1 ? `<span class="champion-badge">🏆 Campeão do dia</span>` : "";
+  const you = current ? " ⭐ Você" : "";
+  return `<div class="rank-row${cls}"><div class="rank-pos">${medal}</div><div><div class="rank-name">${escapeHtml(item.nome)}${you}</div><div class="rank-school">${escapeHtml(item.escola||"Escola")}</div></div><div class="rank-score">${item.pontos} pts${badge}</div></div>`;
+}
+function escapeHtml(s){return String(s||"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m]))}
+function renderRanking(container, rows){
+  const current = state.lastResult;
+  let list = rows || [];
+  const keyCur = current ? `${current.nome.toLowerCase()}|${current.escola.toLowerCase()}` : "";
+  if(current && !list.some(x=>`${x.nome.toLowerCase()}|${(x.escola||"").toLowerCase()}`===keyCur)){
+    list = [...list, {nome:current.nome, escola:current.escola, pontos:current.pontos, local:true}];
+  }
+  list.sort((a,b)=>b.pontos-a.pontos);
+  const top10 = list.slice(0,10);
+  container.innerHTML = top10.map((item,i)=>rankRowHTML(item,i,current && `${item.nome.toLowerCase()}|${(item.escola||"").toLowerCase()}`===keyCur)).join("");
+  if(current){
+    const pos = list.findIndex(x=>`${x.nome.toLowerCase()}|${(x.escola||"").toLowerCase()}`===keyCur);
+    if(pos>=10){
+      container.insertAdjacentHTML("beforeend", `<div class="rank-note">✨ Sua posição nesta rodada</div>` + rankRowHTML(list[pos], pos, true));
+    }
+  }
+}
+function openRankingModal(){el("rankingModal").classList.add("active"); carregarRanking(true)}
+function closeRankingModal(){el("rankingModal").classList.remove("active")}
+function rateGame(avaliacao){
+  const p = state.player || getPlayerInfo();
+  if(window.salvarAvaliacao) window.salvarAvaliacao(avaliacao,GAME_NAME,p.nome,p.escola);
+  el("ratingMessage").textContent = "Obrigado pela avaliação!";
+}
+</script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+import { getFirestore, collection, addDoc, serverTimestamp, query, orderBy, onSnapshot, getDocs } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+const firebaseConfig = {
+  apiKey: "AIzaSyCVTR3nnyo5mYTF28TJisgTUe-Xyjk1upg",
+  authDomain: "english-game-hub.firebaseapp.com",
+  projectId: "english-game-hub",
+  storageBucket: "english-game-hub.firebasestorage.app",
+  messagingSenderId: "131880771426",
+  appId: "1:131880771426:web:cf29a6f34ca86be527d63b"
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+window.salvarPontuacao = async function(jogo,nome,turma,escola,pontos,acertos,erros,status){
+  try{ await addDoc(collection(db,"pontuacoes"),{jogo,nome,turma,escola,pontos:Number(pontos)||0,acertos:Number(acertos)||0,erros:Number(erros)||0,status,timestamp:serverTimestamp(),dataLocal:new Date().toISOString()}); }
+  catch(e){ console.error("Erro ao salvar pontuação:",e); }
+};
+window.salvarAvaliacao = async function(avaliacao,jogo,nome,escola){
+  try{ await addDoc(collection(db,"avaliacoes"),{jogo,avaliacao,nome,escola,timestamp:serverTimestamp()}); }catch(e){console.warn("Erro ao salvar avaliação:",e)}
+};
+window.carregarRanking = function(modal=false){
+  const target = modal ? document.getElementById("rankingModalList") : document.getElementById("rankingContainer");
+  target.innerHTML = '<div class="rank-note">Carregando ranking...</div>';
+  const q = query(collection(db,"pontuacoes"), orderBy("timestamp","desc"));
+  getDocs(q).then(snapshot=>{
+    const map = new Map();
+    snapshot.forEach(doc=>{
+      const d = doc.data();
+      if(d.jogo !== GAME_NAME) return;
+      const nome = String(d.nome||"Aluno(a)").trim();
+      const escola = String(d.escola||"Escola não informada").trim();
+      const pontos = Number(d.pontos||0);
+      if(!nome || !Number.isFinite(pontos)) return;
+      const key = nome.toLowerCase()+"|"+escola.toLowerCase();
+      const item = map.get(key) || {nome, escola, pontos:0};
+      item.pontos += pontos;
+      map.set(key,item);
+    });
+    renderRanking(target, Array.from(map.values()));
+  }).catch(err=>{
+    console.error("Erro ao carregar ranking:",err);
+    const current = state.lastResult;
+    renderRanking(target, current ? [{nome:current.nome, escola:current.escola, pontos:current.pontos}] : []);
+  });
+};
+try{ await addDoc(collection(db,"acessos"),{jogo:GAME_NAME,timestamp:serverTimestamp(),dataLocal:new Date().toISOString()}); }catch(e){}
+</script>
+</body>
+</html>
