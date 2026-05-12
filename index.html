@@ -1,521 +1,211 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>English Game Hub</title>
-  <style>
-    :root{
-      --bg:#071229;
-      --text:#ffffff;
-      --soft:#eaf2ff;
-      --glass:rgba(8,18,44,.52);
-      --glass2:rgba(8,18,44,.72);
-      --yellow:#ffd84d;
-      --green:#67e36a;
-      --blue:#63b6ff;
-      --red:#ff6b6b;
-    }
-    *{box-sizing:border-box}
-    html,body{margin:0;height:100%}
-    body{
-      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
-      color:var(--text);
-      min-height:100dvh;
-      overflow-x:hidden;
-      overflow-y:auto;
-      background:
-        linear-gradient(rgba(4,10,25,.10), rgba(7,12,30,.22)),
-        url('fundo-dia-das-maes-mobile-v2.png') center center / cover no-repeat fixed;
-      position:relative;
-    }
-    body::before, body::after{
-      content:"";
-      position:fixed;
-      inset:0;
-      pointer-events:none;
-      z-index:0;
-    }
-    body::before{
-      background-image:
-        radial-gradient(circle, rgba(255,255,255,.95) 0 1.2px, transparent 1.5px),
-        radial-gradient(circle, rgba(255,255,255,.8) 0 1px, transparent 1.4px),
-        radial-gradient(circle, rgba(255,214,77,.72) 0 1.2px, transparent 1.6px);
-      background-size:90px 90px, 150px 150px, 220px 220px;
-      background-position:0 0, 35px 65px, 90px 120px;
-      opacity:.72;
-      animation:twinkle 2.8s ease-in-out infinite alternate;
-    }
-    body::after{
-      background:
-        radial-gradient(circle at 18% 20%, rgba(255,216,77,.12), transparent 20%),
-        radial-gradient(circle at 82% 18%, rgba(99,182,255,.12), transparent 22%),
-        radial-gradient(circle at 20% 78%, rgba(103,227,106,.1), transparent 20%),
-        radial-gradient(circle at 78% 76%, rgba(255,107,107,.11), transparent 20%);
-      animation:floatGlow 10s linear infinite alternate;
-    }
-    @keyframes twinkle{
-      0%,100%{opacity:.52;filter:brightness(.95)}
-      35%{opacity:.9;filter:brightness(1.15)}
-      70%{opacity:.68;filter:brightness(1.05)}
-    }
-    @keyframes floatGlow{
-      0%{transform:translateY(0px)}
-      100%{transform:translateY(-10px)}
-    }
-    .wrap{
-      position:relative;
-      z-index:1;
-      width:min(1100px,100%);
-      min-height:100dvh;
-      margin:0 auto;
-      padding:10px 12px 16px;
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-    }
-    .topbar{
-      display:flex;
-      justify-content:flex-end;
-      align-items:center;
-    }
-    .music-btn{
-      border:none;
-      border-radius:999px;
-      padding:8px 13px;
-      font-weight:900;
-      font-size:12px;
-      color:#fff;
-      background:rgba(7,18,41,.72);
-      border:1px solid rgba(255,255,255,.38);
-      backdrop-filter:blur(10px);
-      box-shadow:0 8px 18px rgba(0,0,0,.22);
-      cursor:pointer;
-    }
-    .music-btn.playing{background:rgba(35,149,76,.78)}
-    .hero{
-      text-align:center;
-      padding:0 4px 2px;
-      margin-top:-2px;
-    }
-    .title{
-      margin:0;
-      font-size:clamp(34px,8vw,64px);
-      line-height:.95;
-      font-weight:1000;
-      letter-spacing:.5px;
-      text-shadow:0 4px 16px rgba(0,0,0,.35);
-    }
-    .subtitle{
-      margin:6px auto 0;
-      max-width:780px;
-      font-size:clamp(14px,3.3vw,18px);
-      line-height:1.25;
-      font-weight:800;
-      color:#f6f7ff;
-      text-shadow:0 2px 10px rgba(0,0,0,.28);
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>English Game Hub</title>
 
-    .level-legend{
-      display:flex;
-      justify-content:center;
-      gap:6px;
-      flex-wrap:wrap;
-      margin-top:7px;
-    }
-    .level-dot{
-      display:inline-flex;
-      align-items:center;
-      gap:5px;
-      padding:4px 8px;
-      border-radius:999px;
-      background:rgba(5,12,32,.38);
-      border:1px solid rgba(255,255,255,.16);
-      color:#fff;
-      font-size:10.5px;
-      font-weight:1000;
-      backdrop-filter:blur(6px);
-    }
-    .level-dot i{
-      width:9px;
-      height:9px;
-      border-radius:50%;
-      display:inline-block;
-      background:var(--dot);
-      box-shadow:0 0 8px var(--dot);
-    }
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-    .intro{
-      background:linear-gradient(90deg, rgba(5,12,32,.24), rgba(5,12,32,.46), rgba(5,12,32,.24));
-      border:1px solid rgba(255,255,255,.16);
-      border-radius:16px;
-      padding:8px 12px;
-      backdrop-filter:blur(4px);
-      box-shadow:0 8px 16px rgba(0,0,0,.10);
-      text-align:center;
-      font-size:12.3px;
-      line-height:1.28;
-      font-weight:850;
-      color:var(--soft);
-      display:block;
-      width:100%;
-      text-shadow:0 2px 8px rgba(0,0,0,.35);
-    }
-    .levels{
-      display:grid;
-      grid-template-columns:repeat(2,minmax(0,1fr));
-      gap:10px;
-      align-content:stretch;
-      margin-top:4px;
-    }
-    .card{
-      position:relative;
-      overflow:hidden;
-      border-radius:22px;
-      padding:11px;
-      background:linear-gradient(180deg, rgba(10,20,52,.66), rgba(9,16,38,.82));
-      border:1px solid rgba(255,255,255,.15);
-      box-shadow:0 12px 22px rgba(0,0,0,.22), inset 0 0 0 1px rgba(255,255,255,.04);
-      display:flex;
-      flex-direction:column;
-      justify-content:space-between;
-      min-height:134px;
-    }
-    .card::before{
-      content:"";
-      position:absolute;
-      inset:auto -10% -20% -10%;
-      height:58%;
-      background:radial-gradient(ellipse at center, var(--glow), transparent 62%);
-      opacity:.24;
-      pointer-events:none;
-    }
-    .badge{
-      display:inline-flex;
-      width:max-content;
-      padding:5px 10px;
-      border-radius:999px;
-      font-size:11px;
-      font-weight:1000;
-      color:#14213d;
-      background:var(--main);
-      box-shadow:0 4px 12px rgba(0,0,0,.18);
-      margin-bottom:8px;
-    }
-    .card h2{
-      margin:0;
-      font-size:clamp(18px,4.2vw,28px);
-      line-height:1;
-      font-weight:1000;
-    }
-    .level-name{
-      margin-top:4px;
-      font-size:13px;
-      font-weight:1000;
-      color:var(--main);
-      text-transform:uppercase;
-      letter-spacing:.4px;
-    }
-    .desc{
-      margin:8px 0 0;
-      font-size:11.8px;
-      line-height:1.3;
-      font-weight:780;
-      color:#eaf2ff;
-      max-width:95%;
-    }
-    .enter{
-      margin-top:8px;
-      text-decoration:none;
-      color:#fff;
-      background:rgba(255,255,255,.12);
-      border:1px solid rgba(255,255,255,.22);
-      border-radius:14px;
-      padding:9px 10px;
-      text-align:center;
-      font-size:12px;
-      margin-top:2px;
-      font-weight:1000;
-      backdrop-filter:blur(8px);
-    }
-    .card.yellow{--main:var(--yellow);--glow:rgba(255,216,77,.5)}
-    .card.green{--main:var(--green);--glow:rgba(103,227,106,.45)}
-    .card.blue{--main:var(--blue);--glow:rgba(99,182,255,.45)}
-    .card.red{--main:var(--red);--glow:rgba(255,107,107,.44)}
-    .santarem-window{
-      height:88px;
-      margin:2px 0 2px;
-      border-radius:16px;
-      background:transparent;
-    }
-    @media (max-width:420px){
-      .santarem-window{height:84px}
-    }
-    .footer{
-      text-align:center;
-      font-size:12px;
-      margin-top:2px;
-      font-weight:900;
-      color:#eef4ff;
-      text-shadow:0 2px 10px rgba(0,0,0,.3);
-    }
-    @media (min-width: 900px){
-      .levels{grid-template-columns:repeat(4,minmax(0,1fr))}
-      .card{min-height:172px}
-      .intro{font-size:13px}
-      .desc{font-size:12.2px}
-    }
-    @media (max-width: 420px){
-      .wrap{padding:8px 10px 12px;gap:7px}
-      .card{min-height:128px;padding:10px}
-      .enter{padding:8px 9px;font-size:11.5px}
-      .desc{font-size:11.1px}
-      .intro{padding:9px 10px;font-size:12px}
-    }
-  
-    /* MODO HOMENAGEM DIA DAS MÃES - usar somente hoje */
-    .hero h1,
-    .hero .subtitle,
-    .hero p,
-    .intro,
-    .description,
-    .game-card p,
-    .level-card p,
-    .card p,
-    .tagline,
-    .motivational,
-    .motivation,
-    .info-text{
-      display:none !important;
-    }
+html, body {
+  width: 100%;
+  min-height: 100%;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #052b78;
+  overflow: hidden;
+}
 
-    .hero{
-      min-height:18vh !important;
-      padding-top:8px !important;
-      padding-bottom:4px !important;
-    }
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-    .hub-title,
-    .main-title,
-    .page-title,
-    .subtitle{
-      display:none !important;
-    }
+/* Tela principal */
+.hub-screen {
+  position: relative;
+  width: min(100vw, 520px);
+  height: 100dvh;
+  overflow: hidden;
+  background: #052b78;
+}
 
-    .levels,
-    .level-grid,
-    .cards,
-    .series-grid,
-    .games-grid{
-      margin-top:auto !important;
-    }
+/* Imagem principal do hub */
+.hub-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  background: #052b78;
+}
 
-    .level-card,
-    .game-card,
-    .card{
-      background:rgba(255,255,255,.18) !important;
-      backdrop-filter:blur(8px) !important;
-      -webkit-backdrop-filter:blur(8px) !important;
-      border:1px solid rgba(255,255,255,.42) !important;
-    }
+/* Botões invisíveis sobre os botões da imagem */
+.grade-link {
+  position: absolute;
+  display: block;
+  z-index: 5;
+  border-radius: 24px;
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
 
-    footer,
-    .signature,
-    .teacher{
-      margin-top:auto !important;
-      color:#fff !important;
-      text-shadow:0 2px 6px rgba(0,0,0,.75) !important;
-    }
+/* Efeito discreto ao tocar/clicar */
+.grade-link:active {
+  background: rgba(255, 255, 255, 0.16);
+  box-shadow: 0 0 18px rgba(255,255,255,.45);
+}
 
-  
-    /* AJUSTE CORRETO - HOMENAGEM DIA DAS MÃES
-       Esconde apenas textos do topo e descrições, mantendo os botões das séries. */
-    .hero h1,
-    .hero .subtitle,
-    .hero p,
-    .hub-title,
-    .main-title,
-    .page-title,
-    .tagline,
-    .motivational,
-    .motivation,
-    .intro,
-    .description,
-    .info-text{
-      display:none !important;
-    }
+/*
+  Posição dos botões baseada na imagem vertical 9:16.
+  Se precisar ajustar depois, mexemos só nesses números.
+*/
 
-    /* Esconde só as descrições pequenas dos cards, mas mantém nomes/botões */
-    .level-card p,
-    .game-card p,
-    .card p{
-      display:none !important;
-    }
+.btn-6 {
+  left: 4%;
+  top: 68.8%;
+  width: 44%;
+  height: 9.1%;
+}
 
-    /* Abre espaço no centro para a mensagem da imagem aparecer */
-    .hero{
-      min-height:42vh !important;
-      padding:6px 10px 0 !important;
-    }
+.btn-7 {
+  left: 52%;
+  top: 68.8%;
+  width: 44%;
+  height: 9.1%;
+}
 
-    main,
-    .main,
-    .container{
-      justify-content:flex-end !important;
-    }
+.btn-8 {
+  left: 4%;
+  top: 80.2%;
+  width: 44%;
+  height: 9.1%;
+}
 
-    .levels,
-    .level-grid,
-    .cards,
-    .series-grid,
-    .games-grid{
-      margin-top:auto !important;
-      margin-bottom:18px !important;
-    }
+.btn-9 {
+  left: 52%;
+  top: 80.2%;
+  width: 44%;
+  height: 9.1%;
+}
 
-    /* Mantém os cards/botões visíveis, mas mais discretos */
-    .level-card,
-    .game-card,
-    .card{
-      background:rgba(255,255,255,.20) !important;
-      backdrop-filter:blur(8px) !important;
-      -webkit-backdrop-filter:blur(8px) !important;
-      border:1px solid rgba(255,255,255,.45) !important;
-    }
+/* Botão pequeno de música */
+.sound-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 8;
+  border: 1px solid rgba(255,255,255,.5);
+  background: rgba(0, 30, 90, .58);
+  color: white;
+  font-weight: 900;
+  font-size: 12px;
+  padding: 8px 10px;
+  border-radius: 999px;
+  backdrop-filter: blur(4px);
+  cursor: pointer;
+  box-shadow: 0 8px 18px rgba(0,0,0,.25);
+}
 
-    .level-card h2,
-    .level-card h3,
-    .game-card h2,
-    .game-card h3,
-    .card h2,
-    .card h3,
-    .level-name,
-    .level-title,
-    .level-label{
-      display:block !important;
-      visibility:visible !important;
-    }
+/* Acessibilidade: textos dos links ficam ocultos visualmente */
+.grade-link span {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
 
-    footer,
-    .signature,
-    .teacher{
-      color:#fff !important;
-      text-shadow:0 2px 6px rgba(0,0,0,.75) !important;
-    }
+/* Ajustes para telas muito largas no computador */
+@media (min-width: 700px) {
+  body {
+    background:
+      radial-gradient(circle at top, rgba(59,130,246,.35), transparent 35%),
+      linear-gradient(180deg, #031a4b, #052b78);
+  }
 
-  
-    /* Ajuste final Dia das Mães:
-       esconder SOMENTE a legenda do topo */
-    .level-legend{
-      display:none !important;
-    }
+  .hub-screen {
+    box-shadow: 0 0 40px rgba(0,0,0,.35);
+  }
+}
 
-    /* Abrir mais espaço central para a mensagem da arte aparecer linda */
-    .hero{
-      min-height:50vh !important;
-      padding:4px 10px 0 !important;
-    }
-
-    .topbar{
-      margin-bottom:2px !important;
-    }
-
-    .levels{
-      margin-top:auto !important;
-      margin-bottom:20px !important;
-    }
-
-  </style>
+/* Ajuste para celulares muito baixos */
+@media (max-height: 690px) {
+  .sound-btn {
+    font-size: 10px;
+    padding: 6px 8px;
+  }
+}
+</style>
 </head>
+
 <body>
-  <audio id="hubMusic" src="musica-hub-principal.m4a" loop preload="auto"></audio>
-  <main class="wrap">
-    <div class="topbar">
-      <button id="musicToggle" class="music-btn" onclick="toggleHubMusic()">🎵 Ativar trilha</button>
-    </div>
 
-    <section class="hero">
-      <h1 class="title">English Game Hub</h1>
-      <p class="subtitle">Escolha sua série, reconheça seu nível e entre no desafio.</p>
-      <div class="level-legend">
-        <span class="level-dot" style="--dot:#ffd84d"><i></i>Yellow</span>
-        <span class="level-dot" style="--dot:#67e36a"><i></i>Green</span>
-        <span class="level-dot" style="--dot:#63b6ff"><i></i>Blue</span>
-        <span class="level-dot" style="--dot:#ff6b6b"><i></i>Red</span>
-      </div>
-    </section>
+<main class="hub-screen">
 
-    <section class="intro">
-      Cada série representa um nível de evolução no inglês, como uma jornada de conquista. A cor de cada etapa mostra o avanço do aluno ao longo da aprendizagem — do iniciante ao nível mais desafiador.
-    </section>
+  <img
+    class="hub-image"
+    src="english-game-hub-tela-inicial.png?v=1"
+    alt="English Game Hub - Escolha sua série e jogue"
+  />
 
-    <div class="santarem-window" aria-hidden="true"></div>
+  <button class="sound-btn" onclick="toggleMusic()">🎵 Música</button>
 
-    <section class="levels">
-      <article class="card yellow">
-        <div>
-          <span class="badge">Nível 1</span>
-          <h2>6º Ano</h2>
-          <div class="level-name">Yellow Level</div>
-          <p class="desc">Primeiros passos no inglês: vocabulário inicial, comandos, apresentações e missões de base.</p>
-        </div>
-        <a class="enter" href="6ano.html">Entrar no nível amarelo</a>
-      </article>
+  <a class="grade-link btn-6" href="6ano.html" aria-label="Entrar no 6º Ano">
+    <span>6º Ano</span>
+  </a>
 
-      <article class="card green">
-        <div>
-          <span class="badge">Nível 2</span>
-          <h2>7º Ano</h2>
-          <div class="level-name">Green Level</div>
-          <p class="desc">Mais interação e opinião: rotina, gostos, frequência e novos desafios de comunicação.</p>
-        </div>
-        <a class="enter" href="7ano.html">Entrar no nível verde</a>
-      </article>
+  <a class="grade-link btn-7" href="7ano.html" aria-label="Entrar no 7º Ano">
+    <span>7º Ano</span>
+  </a>
 
-      <article class="card blue">
-        <div>
-          <span class="badge">Nível 3</span>
-          <h2>8º Ano</h2>
-          <div class="level-name">Blue Level</div>
-          <p class="desc">Experiências, leitura e ampliação de repertório para usar o inglês com mais confiança.</p>
-        </div>
-        <a class="enter" href="8ano.html">Entrar no nível azul</a>
-      </article>
+  <a class="grade-link btn-8" href="8ano.html" aria-label="Entrar no 8º Ano">
+    <span>8º Ano</span>
+  </a>
 
-      <article class="card red">
-        <div>
-          <span class="badge">Nível 4</span>
-          <h2>9º Ano</h2>
-          <div class="level-name">Red Level</div>
-          <p class="desc">Etapa final: estruturas mais avançadas, conexão de ideias e desafios de maior complexidade.</p>
-        </div>
-        <a class="enter" href="9ano.html">Entrar no nível vermelho</a>
-      </article>
-    </section>
+  <a class="grade-link btn-9" href="9ano.html" aria-label="Entrar no 9º Ano">
+    <span>9º Ano</span>
+  </a>
 
-    <div class="footer">Jogo idealizado pelo professor Jasson Bruno.</div>
-  </main>
+</main>
 
-  <script>
-    const hubMusic = document.getElementById('hubMusic');
-    const musicToggle = document.getElementById('musicToggle');
-    if(hubMusic) hubMusic.volume = 0.28;
+<audio id="bgMusic" loop>
+  <source src="musica-fundo.mp3.mp3" type="audio/mpeg">
+  <source src="musica-fundo.mp3" type="audio/mpeg">
+</audio>
 
-    async function toggleHubMusic(){
-      try{
-        if(hubMusic.paused){
-          await hubMusic.play();
-          musicToggle.textContent = '⏸️ Pausar trilha';
-          musicToggle.classList.add('playing');
-        } else {
-          hubMusic.pause();
-          musicToggle.textContent = '🎵 Ativar trilha';
-          musicToggle.classList.remove('playing');
-        }
-      } catch(err){
-        alert('Toque novamente para ativar a música. Alguns celulares bloqueiam o áudio no primeiro toque.');
-      }
-    }
-  </script>
+<script>
+let musicOn = false;
+
+function toggleMusic() {
+  const audio = document.getElementById("bgMusic");
+  const btn = document.querySelector(".sound-btn");
+
+  if (!audio) return;
+
+  if (!musicOn) {
+    audio.volume = 0.35;
+    audio.play()
+      .then(() => {
+        musicOn = true;
+        btn.textContent = "🔇 Pausar";
+      })
+      .catch(() => {
+        btn.textContent = "🎵 Música";
+      });
+  } else {
+    audio.pause();
+    musicOn = false;
+    btn.textContent = "🎵 Música";
+  }
+}
+</script>
+
 </body>
 </html>
