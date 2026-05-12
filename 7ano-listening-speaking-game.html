@@ -533,6 +533,97 @@
       margin-bottom: 12px;
     }
 
+
+    /* ===== Ranking com pódio e modal ===== */
+    .current-player-score {
+      background: linear-gradient(180deg, #fff7ad, #facc15);
+      color: #422006;
+      border: 3px solid #fff7ad;
+      border-radius: 22px;
+      padding: 12px;
+      margin: 12px 0;
+      text-align: center;
+      font-weight: 900;
+      box-shadow: 0 0 18px rgba(250, 204, 21, 0.55), 0 6px 0 #a16207;
+    }
+
+    .current-player-score strong {
+      display: block;
+      font-size: 1.15rem;
+      margin-top: 4px;
+    }
+
+    .ranking-list li.rank-1 {
+      background: linear-gradient(135deg, #fff7ad, #f59e0b);
+      color: #422006;
+      border-color: #fff7ad;
+      box-shadow: 0 0 18px rgba(250, 204, 21, 0.75);
+    }
+
+    .ranking-list li.rank-2 {
+      background: linear-gradient(135deg, #f8fafc, #94a3b8);
+      color: #0f172a;
+      border-color: #e2e8f0;
+      box-shadow: 0 0 14px rgba(226, 232, 240, 0.55);
+    }
+
+    .ranking-list li.rank-3 {
+      background: linear-gradient(135deg, #fed7aa, #c2410c);
+      color: #431407;
+      border-color: #fdba74;
+      box-shadow: 0 0 14px rgba(251, 146, 60, 0.55);
+    }
+
+    .ranking-list li.you,
+    .ranking-list li.you-extra {
+      background: linear-gradient(135deg, #67e8f9, #fef08a);
+      color: #0f172a;
+      border-color: #fff7ad;
+      animation: playerGlow 1.25s infinite alternate;
+    }
+
+    @keyframes playerGlow {
+      from { box-shadow: 0 0 10px rgba(34, 211, 238, 0.55); transform: scale(1); }
+      to { box-shadow: 0 0 24px rgba(250, 204, 21, 0.9); transform: scale(1.015); }
+    }
+
+    .ranking-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 14px;
+      background: rgba(2, 6, 23, 0.82);
+      backdrop-filter: blur(6px);
+    }
+
+    .ranking-modal.active {
+      display: flex;
+    }
+
+    .ranking-modal-card {
+      width: min(100%, 430px);
+      max-height: 88vh;
+      overflow: auto;
+      background: linear-gradient(180deg, #0f172a, #312e81);
+      border: 3px solid #facc15;
+      border-radius: 26px;
+      padding: 16px;
+      box-shadow: 0 0 35px rgba(250, 204, 21, 0.45);
+      color: #fff;
+    }
+
+    .ranking-modal-card h2 {
+      color: #fef08a;
+      margin-top: 0;
+    }
+
+    .ranking-modal .button-grid {
+      margin-top: 12px;
+    }
+
     @media (max-height: 720px) {
       .screen { padding: 12px; }
       h1 { font-size: 1.35rem; margin: 8px 0 5px; }
@@ -661,6 +752,11 @@
 
         <div class="phase-result" id="gameOverScore">Pontuação: 0/100</div>
 
+        <div id="gameOverPlayerScoreBox" class="current-player-score">
+          ✨ SUA PONTUAÇÃO AGORA ✨
+          <strong>0 pontos</strong>
+        </div>
+
         <p>💪 Não desista! Cada tentativa melhora sua escuta e sua pronúncia.</p>
       </div>
 
@@ -689,12 +785,13 @@
       </div>
 
       <div class="button-grid">
+        <button class="btn-yellow" onclick="openRankingModal()">🏆 Ranking Geral</button>
         <button class="btn-orange" onclick="retryCurrentPhase()">🔁 Tentar esta fase novamente</button>
         <button class="btn-gray" onclick="restartGame()">🏠 Voltar ao início</button>
       </div>
 
-      <h2>🏆 Ranking Geral do English Game Hub</h2>
-      <p class="mini-note">A pontuação soma os desafios jogados no Hub.</p>
+      <h2>🏆 Ranking Geral deste jogo</h2>
+      <p class="mini-note">A pontuação soma apenas as partidas deste Listening Game.</p>
       <ol id="rankingGameOver" class="ranking-list">
         <li>Carregando ranking...</li>
       </ol>
@@ -707,6 +804,10 @@
       <h1>Journey Completed!</h1>
 
       <div id="finalScore" class="final-score">Pontuação: 0/100</div>
+      <div id="endPlayerScoreBox" class="current-player-score">
+        ✨ SUA PONTUAÇÃO AGORA ✨
+        <strong>0 pontos</strong>
+      </div>
       <div id="motivationText" class="motivation"></div>
 
       <div class="rating-box">
@@ -733,8 +834,10 @@
         <p id="ratingMessage"></p>
       </div>
 
-      <h2>🏆 Ranking Geral do English Game Hub</h2>
-      <p class="mini-note">A pontuação soma os desafios jogados no Hub.</p>
+      <button class="btn-yellow" onclick="openRankingModal()">🏆 Ranking Geral</button>
+
+      <h2>🏆 Ranking Geral deste jogo</h2>
+      <p class="mini-note">A pontuação soma apenas as partidas deste Listening Game.</p>
       <ol id="rankingOnline" class="ranking-list">
         <li>Carregando ranking...</li>
       </ol>
@@ -743,6 +846,24 @@
 
       <p class="teacher">Jogo idealizado pelo Prof. Jasson Bruno.</p>
     </section>
+
+    <section id="rankingModal" class="ranking-modal" aria-hidden="true">
+      <div class="ranking-modal-card">
+        <h2>🏆 Ranking Geral — Listening Game</h2>
+        <div id="modalPlayerScoreBox" class="current-player-score">
+          ✨ SUA PONTUAÇÃO AGORA ✨
+          <strong>0 pontos</strong>
+        </div>
+        <p class="mini-note">Ranking somatório somente deste jogo. O 1º lugar recebe o selo de Campeão do dia.</p>
+        <ol id="rankingModalList" class="ranking-list">
+          <li>Carregando ranking...</li>
+        </ol>
+        <div class="button-grid">
+          <button class="btn-gray" onclick="closeRankingModal()">Fechar ranking</button>
+        </div>
+      </div>
+    </section>
+
   </main>
 
   <script>
@@ -1834,9 +1955,45 @@
       loadQuestion();
     }
 
+
+    function getScorePercent() {
+      return Math.max(0, Math.min(100, Math.round((score / totalQuestions) * 100)));
+    }
+
+    function updateCurrentPlayerScoreBoxes() {
+      const points = getScorePercent();
+      const html = `✨ SUA PONTUAÇÃO AGORA ✨<strong>⭐ ${playerName} — ${points} pontos</strong><small>${playerSchool}</small>`;
+      ["gameOverPlayerScoreBox", "endPlayerScoreBox", "modalPlayerScoreBox"].forEach(id => {
+        const box = document.getElementById(id);
+        if (box) box.innerHTML = html;
+      });
+    }
+
+    function openRankingModal() {
+      updateCurrentPlayerScoreBoxes();
+      const modal = document.getElementById("rankingModal");
+      if (modal) {
+        modal.classList.add("active");
+        modal.setAttribute("aria-hidden", "false");
+      }
+      if (typeof window.carregarRanking === "function") {
+        window.carregarRanking(NOME_DO_JOGO, "rankingModalList");
+      }
+    }
+
+    function closeRankingModal() {
+      const modal = document.getElementById("rankingModal");
+      if (modal) {
+        modal.classList.remove("active");
+        modal.setAttribute("aria-hidden", "true");
+      }
+    }
+
+
     function showGameOver() {
       document.getElementById("gameOverScore").textContent =
         `Pontuação: ${score}/${totalQuestions} | Você chegou até a Fase ${currentPhase + 1}`;
+      updateCurrentPlayerScoreBoxes();
 
       showScreen(gameOverScreen);
 
@@ -1844,7 +2001,7 @@
         gameOverSaved = true;
 
         if (typeof window.salvarPontuacao === "function") {
-          window.salvarPontuacao(playerName, score, NOME_DO_JOGO, playerSchool);
+          window.salvarPontuacao(playerName, getScorePercent(), NOME_DO_JOGO, playerSchool);
         }
       }
 
@@ -1867,6 +2024,7 @@
       showScreen(endScreen);
 
       document.getElementById("finalScore").textContent = `Pontuação: ${score}/${totalQuestions}`;
+      updateCurrentPlayerScoreBoxes();
 
       const percent = score / totalQuestions;
       const motivationText = document.getElementById("motivationText");
@@ -1881,7 +2039,7 @@
         finalScoreSaved = true;
 
         if (typeof window.salvarPontuacao === "function") {
-          window.salvarPontuacao(playerName, score, NOME_DO_JOGO, playerSchool);
+          window.salvarPontuacao(playerName, getScorePercent(), NOME_DO_JOGO, playerSchool);
         }
       }
 
@@ -2137,11 +2295,15 @@
           somaPorAluno.set(chave, { ...item });
         });
 
-        // Dados reais do Firebase: somam todos os jogos do English Game Hub.
+        // Dados reais do Firebase: soma somente as partidas deste jogo.
         snapshot.forEach((doc) => {
           const item = doc.data();
 
           if (!item || item.tipo === "motivacional") {
+            return;
+          }
+
+          if (item.jogo !== jogo) {
             return;
           }
 
@@ -2165,29 +2327,73 @@
           somaPorAluno.set(chave, atual);
         });
 
-        const rankingItems = Array.from(somaPorAluno.values())
-          .sort((a, b) => b.pontos - a.pontos)
-          .slice(0, 10);
+        const currentKey = `${String(playerName || "").toLowerCase()}|${String(playerSchool || "").toLowerCase()}|real`;
+        const currentLocalPoints = typeof getScorePercent === "function" ? getScorePercent() : Number(score || 0);
+
+        if (playerName && playerName !== "Você" && !somaPorAluno.has(currentKey)) {
+          somaPorAluno.set(currentKey, {
+            nome: playerName,
+            escola: playerSchool || "Escola não informada",
+            pontos: currentLocalPoints,
+            tipo: "real",
+            currentOnly: true
+          });
+        }
+
+        const allItems = Array.from(somaPorAluno.values())
+          .sort((a, b) => b.pontos - a.pontos);
+
+        const rankingItems = allItems.slice(0, 10);
+        const currentItem = allItems.find(item =>
+          item.tipo === "real" &&
+          String(item.nome || "").toLowerCase() === String(playerName || "").toLowerCase() &&
+          String(item.escola || "").toLowerCase() === String(playerSchool || "").toLowerCase()
+        );
 
         if (rankingItems.length === 0) {
           rankingContainer.innerHTML = "<li>Nenhuma pontuação registrada ainda.</li>";
           return;
         }
 
+        const currentInTop = rankingItems.some(item =>
+          item.tipo === "real" &&
+          String(item.nome || "").toLowerCase() === String(playerName || "").toLowerCase() &&
+          String(item.escola || "").toLowerCase() === String(playerSchool || "").toLowerCase()
+        );
+
         rankingItems.forEach((item, index) => {
           const li = document.createElement("li");
+          const isCurrent = item.tipo === "real" &&
+            String(item.nome || "").toLowerCase() === String(playerName || "").toLowerCase() &&
+            String(item.escola || "").toLowerCase() === String(playerSchool || "").toLowerCase();
+
+          li.classList.add(`rank-${index + 1}`);
+          if (isCurrent) li.classList.add("you");
+
+          const medal = index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : `${index + 1}º`;
+          const champion = index === 0 ? " 🏆 Campeão do dia" : "";
+          const youMark = isCurrent ? " ⭐ Você" : "";
           const selo = item.tipo === "motivacional" ? " ⭐" : "";
-          li.textContent = `${index + 1}º ${item.nome} - ${item.escola} - ${item.pontos} pontos${selo}`;
 
-          if (item.nome === playerName && item.tipo === "real") {
-            li.classList.add("you");
-          }
-
+          li.textContent = `${medal} ${item.nome}${youMark}${selo} - ${item.escola} - ${item.pontos} pontos${champion}`;
           rankingContainer.appendChild(li);
         });
+
+        if (currentItem && !currentInTop) {
+          const pos = allItems.findIndex(item =>
+            item.tipo === "real" &&
+            String(item.nome || "").toLowerCase() === String(playerName || "").toLowerCase() &&
+            String(item.escola || "").toLowerCase() === String(playerSchool || "").toLowerCase()
+          ) + 1;
+
+          const li = document.createElement("li");
+          li.className = "you-extra";
+          li.textContent = `✨ Sua posição nesta rodada: ${pos}º ${currentItem.nome} ⭐ Você - ${currentItem.escola} - ${currentItem.pontos} pontos`;
+          rankingContainer.appendChild(li);
+        }
       }, (error) => {
         console.error("Erro ao carregar ranking:", error);
-        rankingContainer.innerHTML = "<li>Não foi possível carregar o ranking.</li>";
+        rankingContainer.innerHTML = "<li>Não foi possível carregar o ranking. Sua pontuação desta rodada aparece acima.</li>";
       });
     };
 
