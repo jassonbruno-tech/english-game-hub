@@ -93,7 +93,7 @@ main{padding:14px;color:#fff}
 .rank-school{font-size:8.2px;font-weight:800;color:#64748b;margin-top:1px}
 .rank-score{font-weight:900;color:#e11d48;text-align:right;font-size:10.5px}
 .rank-note{text-align:center;font-size:9px;color:#475569;font-weight:800;line-height:1.15;margin-top:5px}
-.rank-actions{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}
+.rank-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}
 .final-ranking .btn{padding:9px 8px;font-size:11px;width:100%}
 
 
@@ -996,6 +996,127 @@ body.playing .key{
   font-size:12px;
 }
 
+
+/* --- Ranking com pódio e destaque obrigatório do aluno atual --- */
+.current-score-card{
+  margin:8px 0 10px;
+  padding:10px;
+  border-radius:16px;
+  background:linear-gradient(135deg,#fff7ed,#dbeafe);
+  border:2px solid #f8d36b;
+  color:#172033;
+  text-align:center;
+  font-weight:1000;
+  box-shadow:0 0 18px rgba(255,230,109,.18);
+}
+.current-score-title{font-size:13px;color:#1d4ed8;margin-bottom:4px;text-transform:uppercase;letter-spacing:.3px}
+.current-score-main{font-size:16px;color:#e11d48;line-height:1.2}
+.current-score-sub{font-size:10px;color:#475569;margin-top:3px}
+.rank-row.rank-1{
+  background:linear-gradient(135deg,#fff7ad,#ffd700 45%,#fff3b0) !important;
+  border:2px solid #facc15 !important;
+  box-shadow:0 0 18px rgba(250,204,21,.42) !important;
+}
+.rank-row.rank-2{
+  background:linear-gradient(135deg,#f8fafc,#cbd5e1 48%,#ffffff) !important;
+  border:2px solid #cbd5e1 !important;
+  box-shadow:0 0 14px rgba(203,213,225,.36) !important;
+}
+.rank-row.rank-3{
+  background:linear-gradient(135deg,#ffedd5,#d97706 42%,#fed7aa) !important;
+  border:2px solid #fb923c !important;
+  box-shadow:0 0 14px rgba(251,146,60,.34) !important;
+}
+.rank-row.rank-1 .rank-name,.rank-row.rank-1 .rank-school,.rank-row.rank-1 .rank-score,
+.rank-row.rank-2 .rank-name,.rank-row.rank-2 .rank-school,.rank-row.rank-2 .rank-score,
+.rank-row.rank-3 .rank-name,.rank-row.rank-3 .rank-school,.rank-row.rank-3 .rank-score{color:#172033 !important}
+.rank-row.current-player{
+  border:3px solid #22c55e !important;
+  background:linear-gradient(135deg,#dcfce7,#e0f2fe) !important;
+  box-shadow:0 0 18px rgba(34,197,94,.55),0 0 0 3px rgba(255,230,109,.18) !important;
+  animation:playerGlow 1.1s ease-in-out infinite alternate;
+}
+@keyframes playerGlow{from{filter:brightness(1)}to{filter:brightness(1.12)}}
+.champion-badge{
+  display:inline-block;
+  margin-left:5px;
+  padding:2px 6px;
+  border-radius:999px;
+  background:#172033;
+  color:#ffe66d;
+  font-size:9px;
+  font-weight:1000;
+  white-space:nowrap;
+}
+.rank-separator{
+  text-align:center;
+  color:#fff7c2;
+  font-weight:1000;
+  font-size:11px;
+  margin:5px 0;
+}
+
+/* --- Modal Ranking Geral dentro do jogo --- */
+.ranking-modal{
+  position:fixed;
+  inset:0;
+  z-index:999;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:12px;
+  background:rgba(3,7,18,.82);
+  backdrop-filter:blur(8px);
+}
+.ranking-modal.show{display:flex}
+.ranking-modal-card{
+  width:min(100%,560px);
+  max-height:92dvh;
+  overflow:auto;
+  border-radius:24px;
+  padding:14px;
+  background:linear-gradient(180deg,rgba(8,14,50,.98),rgba(16,9,55,.98));
+  border:2px solid rgba(255,230,109,.38);
+  box-shadow:0 22px 55px rgba(0,0,0,.55),0 0 38px rgba(255,230,109,.14);
+  color:#fff;
+}
+.ranking-modal-title{
+  margin:0 0 6px;
+  text-align:center;
+  color:#ffe66d;
+  font-size:24px;
+  text-shadow:0 0 16px rgba(255,230,109,.18);
+}
+.ranking-modal-subtitle{
+  margin:0 0 10px;
+  text-align:center;
+  color:#eaf2ff;
+  font-weight:900;
+  font-size:12px;
+  line-height:1.3;
+}
+.modal-rank-list{
+  display:grid;
+  gap:6px;
+  margin:8px 0 10px;
+}
+.ranking-modal .rank-row{padding:8px}
+.ranking-modal .rank-name{font-size:12px}
+.ranking-modal .rank-school{font-size:9.5px}
+.ranking-modal .rank-score{font-size:11.5px}
+.ranking-modal-close{
+  width:100%;
+  margin-top:8px;
+}
+@media(max-width:430px){
+  .ranking-modal-card{padding:10px;border-radius:18px}
+  .ranking-modal-title{font-size:20px}
+  .ranking-modal .rank-row{grid-template-columns:28px 1fr auto;gap:5px;padding:6px}
+  .ranking-modal .rank-name{font-size:10.8px}
+  .ranking-modal .rank-school{font-size:8.4px}
+  .ranking-modal .rank-score{font-size:10px}
+}
+
 </style>
 </head>
 <body>
@@ -1219,6 +1340,11 @@ body.playing .key{
   <div class="card final final-ranking">
     <h2 id="finalTitle">💪 TRY AGAIN!</h2>
     <div id="finalMsg" class="final-message"></div>
+    <div id="currentScoreCard" class="current-score-card">
+      <div class="current-score-title">✨ Sua pontuação agora ✨</div>
+      <div id="currentScoreMain" class="current-score-main">Aluno(a) — 0 pontos</div>
+      <div id="currentScoreSub" class="current-score-sub">Seu resultado aparecerá aqui mesmo se o ranking online demorar.</div>
+    </div>
     <div class="player-summary">
       <div class="summary-box"><span>Pontuação</span><b id="fScore">0</b></div>
       <div class="summary-box"><span>Acertos</span><b id="fCorrects">0/30</b></div>
@@ -1227,7 +1353,7 @@ body.playing .key{
     </div>
     <h3 class="ranking-title">🏆 Ranking Geral — English Game Hub</h3>
     <div id="rankList" class="rank-list"></div>
-    <div class="rank-note">Ranking geral somatório do English Game Hub. A pontuação do ranking é somada entre os jogos.</div>
+    <div class="rank-note">Ranking geral deste jogo. Clique em “Ranking Geral” para abrir o Top 10 em destaque.</div>
 
     <div class="firebase-rating">
       <h3>Como foi jogar?</h3>
@@ -1240,12 +1366,24 @@ body.playing .key{
     </div>
 
     <div class="rank-actions">
+      <button class="btn" onclick="openGeneralRankingModal()">🏆 Ranking Geral</button>
       <button class="btn" onclick="restart()">Jogar novamente</button>
       <button class="btn" onclick="location.href='6ano.html'">Voltar ao 6º ano</button>
     </div>
   </div>
 </section>
 </main>
+</div>
+
+<div id="generalRankingModal" class="ranking-modal" role="dialog" aria-modal="true" aria-label="Ranking geral do jogo">
+  <div class="ranking-modal-card">
+    <h2 class="ranking-modal-title">🏆 Ranking Geral do Hangman</h2>
+    <p class="ranking-modal-subtitle">Top 10 deste jogo. O pódio mostra os três primeiros e o 1º lugar aparece como Campeão do dia.</p>
+    <div id="generalRankList" class="modal-rank-list">
+      <div class="rank-note">Clique no botão para carregar o ranking geral.</div>
+    </div>
+    <button class="btn ranking-modal-close" onclick="closeGeneralRankingModal()">Fechar ranking</button>
+  </div>
 </div>
 
 <script>
@@ -2152,16 +2290,20 @@ function renderRanking(){
   }
 
   const rows = buildMotivationalRanking();
-  list.innerHTML = rows.map((r,i)=>`
-    <div class="rank-row ${r.isPlayer ? "player" : ""}">
-      <div class="rank-pos">${i+1}º</div>
+  list.innerHTML = rows.map((r,i)=>{
+    const podiumClass = i === 0 ? "rank-1" : i === 1 ? "rank-2" : i === 2 ? "rank-3" : "";
+    const medal = i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : `${i+1}º`;
+    const champion = i === 0 ? '<span class="champion-badge">🏆 Campeão do dia</span>' : '';
+    return `
+    <div class="rank-row ${podiumClass} ${r.isPlayer ? "player current-player" : ""}">
+      <div class="rank-pos">${medal}</div>
       <div>
-        <div class="rank-name">${r.isPlayer ? "⭐ " : ""}${r.name}</div>
+        <div class="rank-name">${r.isPlayer ? "⭐ Você — " : ""}${r.name}</div>
         <div class="rank-school">${r.school}</div>
       </div>
-      <div class="rank-score">${r.score} pts</div>
-    </div>
-  `).join("");
+      <div class="rank-score">${r.score} pts ${champion}</div>
+    </div>`;
+  }).join("");
 }
 
 function finishGame(completed){
@@ -2170,9 +2312,18 @@ function finishGame(completed){
     else playFinalTryAgainSound();
   }catch(e){}
 
+  const player = getPlayerInfo();
+  const hubPoints = Math.max(0, Math.min(100, Math.round((state.corrects / TOTAL_ROUNDS) * 100)));
+
   try{
-    const player = getPlayerInfo();
-    const hubPoints = Math.max(0, Math.min(100, Math.round((state.corrects / TOTAL_ROUNDS) * 100)));
+    window.currentPlayerRanking = {
+      nome: player.name,
+      escola: player.school,
+      turma: player.klass,
+      pontos: hubPoints,
+      gameScore: state.score,
+      jogo: GAME_NAME
+    };
 
     if(!state.scoreSaved && typeof window.salvarPontuacao === "function"){
       state.scoreSaved = true;
@@ -2190,6 +2341,12 @@ function finishGame(completed){
   el("fCorrects").textContent = `${state.corrects}/${TOTAL_ROUNDS}`;
   el("fCombo").textContent = state.maxCombo;
   el("fLives").textContent = `${state.lives}/${MAX_LIVES}`;
+
+  const currentMain = el("currentScoreMain");
+  const currentSub = el("currentScoreSub");
+  if(currentMain) currentMain.textContent = `${player.name} — ${state.score} pontos no jogo`;
+  if(currentSub) currentSub.textContent = `Turma: ${player.klass} | Escola: ${player.school} | Pontos para o ranking: ${hubPoints}`;
+
   renderRanking();
 }
 
@@ -2217,6 +2374,35 @@ function avaliarJogo(avaliacao, buttonElement){
   }catch(e){
     console.warn("Erro ao registrar avaliação:", e);
   }
+}
+
+
+function openGeneralRankingModal(){
+  const modal = el("generalRankingModal");
+  if(!modal) return;
+  modal.classList.add("show");
+  const box = el("generalRankList");
+  if(box){
+    box.innerHTML = '<div class="rank-note">Carregando ranking geral deste jogo...</div>';
+  }
+  if(typeof window.carregarRanking === "function"){
+    window.carregarRanking(GAME_NAME, "generalRankList");
+  }else{
+    const rows = buildMotivationalRanking();
+    if(box){
+      box.innerHTML = rows.map((r,i)=>{
+        const podiumClass = i === 0 ? "rank-1" : i === 1 ? "rank-2" : i === 2 ? "rank-3" : "";
+        const medal = i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : `${i+1}º`;
+        const champion = i === 0 ? '<span class="champion-badge">🏆 Campeão do dia</span>' : '';
+        return `<div class="rank-row ${podiumClass} ${r.isPlayer ? "player current-player" : ""}"><div class="rank-pos">${medal}</div><div><div class="rank-name">${r.isPlayer ? "⭐ Você — " : ""}${r.name}</div><div class="rank-school">${r.school}</div></div><div class="rank-score">${r.score} pts ${champion}</div></div>`;
+      }).join("");
+    }
+  }
+}
+
+function closeGeneralRankingModal(){
+  const modal = el("generalRankingModal");
+  if(modal) modal.classList.remove("show");
 }
 
 show("startScreen");
@@ -2472,6 +2658,64 @@ const rankingMotivacionalInicial = [
   { nome: "Lívia Vitória", escola: "Escola Nossa Senhora de Fátima", pontos: 55, tipo: "motivacional" }
 ];
 
+function escapeHtmlRanking(value){
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
+
+function renderRankingRows(rankingContainer, rankingItems, currentPlayer){
+  rankingContainer.innerHTML = "";
+
+  const currentName = String(currentPlayer?.nome || "").trim().toLowerCase();
+  const currentSchool = String(currentPlayer?.escola || "").trim().toLowerCase();
+  const isCurrent = item => currentName && currentSchool &&
+    String(item.nome || "").trim().toLowerCase() === currentName &&
+    String(item.escola || "").trim().toLowerCase() === currentSchool &&
+    item.tipo === "real";
+
+  const makeRow = (item, index, forceCurrent=false) => {
+    const row = document.createElement("div");
+    const podiumClass = index === 0 ? "rank-1" : index === 1 ? "rank-2" : index === 2 ? "rank-3" : "";
+    const currentClass = (forceCurrent || isCurrent(item)) ? "current-player player" : "";
+    row.className = `rank-row ${podiumClass} ${currentClass}`.trim();
+
+    const medal = index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : `${index + 1}º`;
+    const champion = index === 0 ? '<span class="champion-badge">🏆 Campeão do dia</span>' : '';
+    const you = (forceCurrent || isCurrent(item)) ? "⭐ Você — " : "";
+    const selo = item.tipo === "motivacional" ? " ⭐" : "";
+
+    row.innerHTML = `
+      <div class="rank-pos">${medal}</div>
+      <div>
+        <div class="rank-name">${you}${escapeHtmlRanking(item.nome)}${selo}</div>
+        <div class="rank-school">${escapeHtmlRanking(item.escola)}</div>
+      </div>
+      <div class="rank-score">${Number(item.pontos || 0)} pts ${champion}</div>
+    `;
+    rankingContainer.appendChild(row);
+  };
+
+  rankingItems.forEach((item, index) => makeRow(item, index));
+
+  const currentInTop = rankingItems.some(item => isCurrent(item));
+  if(currentPlayer && currentPlayer.nome && !currentInTop){
+    const separator = document.createElement("div");
+    separator.className = "rank-separator";
+    separator.textContent = "✨ Sua posição nesta rodada";
+    rankingContainer.appendChild(separator);
+    makeRow({
+      nome: currentPlayer.nome,
+      escola: currentPlayer.escola || "Escola não informada",
+      pontos: Number(currentPlayer.pontos || 0),
+      tipo: "real"
+    }, rankingItems.length, true);
+  }
+}
+
 window.carregarRanking = function carregarRanking(jogo = "6ano-hangman-challenge", containerId = "rankList") {
   const rankingContainer = document.getElementById(containerId);
   if (!rankingContainer) return;
@@ -2479,7 +2723,6 @@ window.carregarRanking = function carregarRanking(jogo = "6ano-hangman-challenge
   const rankingQuery = query(collection(db, "pontuacoes"), limit(500));
 
   onSnapshot(rankingQuery, (snapshot) => {
-    rankingContainer.innerHTML = "";
     const somaPorAluno = new Map();
 
     rankingMotivacionalInicial.forEach(item => {
@@ -2490,6 +2733,7 @@ window.carregarRanking = function carregarRanking(jogo = "6ano-hangman-challenge
     snapshot.forEach((doc) => {
       const item = doc.data();
       if (!item || item.tipo === "motivacional") return;
+      if (jogo && item.jogo && String(item.jogo).trim() !== String(jogo).trim()) return;
 
       const nome = String(item.nome || "").trim();
       const escola = String(item.escola || "Escola não informada").trim();
@@ -2502,6 +2746,19 @@ window.carregarRanking = function carregarRanking(jogo = "6ano-hangman-challenge
       somaPorAluno.set(chave, atual);
     });
 
+    const current = window.currentPlayerRanking;
+    if(current && current.nome){
+      const chaveAtual = `${String(current.nome).toLowerCase()}|${String(current.escola || "Escola não informada").toLowerCase()}|real`;
+      if(!somaPorAluno.has(chaveAtual)){
+        somaPorAluno.set(chaveAtual, {
+          nome: current.nome,
+          escola: current.escola || "Escola não informada",
+          pontos: Number(current.pontos || 0),
+          tipo: "real"
+        });
+      }
+    }
+
     const rankingItems = Array.from(somaPorAluno.values())
       .sort((a, b) => b.pontos - a.pontos)
       .slice(0, 10);
@@ -2511,31 +2768,16 @@ window.carregarRanking = function carregarRanking(jogo = "6ano-hangman-challenge
       return;
     }
 
-    rankingItems.forEach((item, index) => {
-      const row = document.createElement("div");
-      const playerNameInput = document.getElementById("playerName");
-      const currentName = playerNameInput ? playerNameInput.value.trim() : "";
-      const selo = item.tipo === "motivacional" ? " ⭐" : "";
-
-      row.className = "rank-row";
-      if (currentName && item.nome.toLowerCase() === currentName.toLowerCase() && item.tipo === "real") {
-        row.classList.add("player");
-      }
-
-      row.innerHTML = `
-        <div class="rank-pos">${index + 1}º</div>
-        <div>
-          <div class="rank-name">${item.nome}${selo}</div>
-          <div class="rank-school">${item.escola}</div>
-        </div>
-        <div class="rank-score">${item.pontos} pts</div>
-      `;
-
-      rankingContainer.appendChild(row);
-    });
+    renderRankingRows(rankingContainer, rankingItems, current);
   }, (error) => {
     console.error("Erro ao carregar ranking:", error);
-    rankingContainer.innerHTML = '<div class="rank-row"><div class="rank-pos">!</div><div><div class="rank-name">Não foi possível carregar o ranking.</div><div class="rank-school">Verifique a conexão/Firebase</div></div><div class="rank-score">--</div></div>';
+    const current = window.currentPlayerRanking;
+    if(current && current.nome){
+      rankingContainer.innerHTML = '<div class="rank-note">Ranking online indisponível no momento. Sua pontuação desta rodada aparece abaixo.</div>';
+      renderRankingRows(rankingContainer, [], current);
+    }else{
+      rankingContainer.innerHTML = '<div class="rank-row"><div class="rank-pos">!</div><div><div class="rank-name">Não foi possível carregar o ranking.</div><div class="rank-school">Verifique a conexão/Firebase</div></div><div class="rank-score">--</div></div>';
+    }
   });
 };
 
