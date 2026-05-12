@@ -3,7 +3,23 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
 <title>English Game Hub</title>
+
+<!-- Prévia do link no WhatsApp / Facebook -->
+<meta property="og:title" content="English Game Hub" />
+<meta property="og:description" content="Aprender inglês pode ser divertido, lúdico e cheio de descobertas. Escolha sua série, jogue e avance um desafio de cada vez!" />
+<meta property="og:image" content="https://jassonbruno-tech.github.io/english-game-hub/english-game-hub-tela-inicial.png" />
+<meta property="og:image:secure_url" content="https://jassonbruno-tech.github.io/english-game-hub/english-game-hub-tela-inicial.png" />
+<meta property="og:url" content="https://jassonbruno-tech.github.io/english-game-hub/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="English Game Hub" />
+
+<!-- Prévia para outros aplicativos -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="English Game Hub" />
+<meta name="twitter:description" content="Aprender inglês pode ser divertido, lúdico e cheio de descobertas. Escolha sua série, jogue e avance um desafio de cada vez!" />
+<meta name="twitter:image" content="https://jassonbruno-tech.github.io/english-game-hub/english-game-hub-tela-inicial.png" />
 
 <style>
 * {
@@ -26,7 +42,6 @@ body {
   justify-content: center;
 }
 
-/* Tela principal */
 .hub-screen {
   position: relative;
   width: min(100vw, 520px);
@@ -35,7 +50,6 @@ body {
   background: #052b78;
 }
 
-/* Imagem principal do hub */
 .hub-image {
   width: 100%;
   height: 100%;
@@ -44,7 +58,6 @@ body {
   background: #052b78;
 }
 
-/* Botões invisíveis sobre os botões da imagem */
 .grade-link {
   position: absolute;
   display: block;
@@ -55,16 +68,10 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Efeito discreto ao tocar/clicar */
 .grade-link:active {
   background: rgba(255, 255, 255, 0.16);
   box-shadow: 0 0 18px rgba(255,255,255,.45);
 }
-
-/*
-  Posição dos botões baseada na imagem vertical 9:16.
-  Se precisar ajustar depois, mexemos só nesses números.
-*/
 
 .btn-6 {
   left: 4%;
@@ -94,7 +101,6 @@ body {
   height: 9.1%;
 }
 
-/* Botão pequeno de música */
 .sound-btn {
   position: absolute;
   top: 10px;
@@ -112,7 +118,6 @@ body {
   box-shadow: 0 8px 18px rgba(0,0,0,.25);
 }
 
-/* Acessibilidade: textos dos links ficam ocultos visualmente */
 .grade-link span {
   position: absolute;
   width: 1px;
@@ -122,7 +127,6 @@ body {
   white-space: nowrap;
 }
 
-/* Ajustes para telas muito largas no computador */
 @media (min-width: 700px) {
   body {
     background:
@@ -135,7 +139,6 @@ body {
   }
 }
 
-/* Ajuste para celulares muito baixos */
 @media (max-height: 690px) {
   .sound-btn {
     font-size: 10px;
