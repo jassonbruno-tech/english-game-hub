@@ -89,6 +89,18 @@
   .rankSchool{font-size:.7rem;color:#bfdbfe}
   .rankPts{font-weight:1000;color:#86efac;font-size:.84rem}
   .rankNote{text-align:center;color:#bfdbfe;font-size:.72rem;margin-top:5px}
+  .currentScoreBox{display:none;margin:8px 0 10px;padding:10px;border-radius:16px;text-align:center;background:linear-gradient(135deg,#0ea5e9,#22c55e);border:2px solid #fff;box-shadow:0 0 18px rgba(34,197,94,.75);color:#fff;animation:pulsePlayer 1.25s ease-in-out infinite alternate}
+  .currentScoreBox .label{font-size:.72rem;letter-spacing:.5px;font-weight:1000;color:#fff7c2;margin-bottom:3px}
+  .currentScoreBox .name{font-size:.96rem;font-weight:1000}
+  .currentScoreBox .points{font-size:.86rem;font-weight:1000;color:#ecfeff;margin-top:2px}
+  .rankRow.rank-1{background:linear-gradient(135deg,#ffd700,#fff3a0);border:2px solid #ffcc00;color:#2b1a00;box-shadow:0 0 18px rgba(255,215,0,.82)}
+  .rankRow.rank-2{background:linear-gradient(135deg,#c0c0c0,#f8fafc);border:2px solid #e5e7eb;color:#111827;box-shadow:0 0 14px rgba(229,231,235,.72)}
+  .rankRow.rank-3{background:linear-gradient(135deg,#cd7f32,#fed7aa);border:2px solid #fb923c;color:#2b1606;box-shadow:0 0 14px rgba(251,146,60,.72)}
+  .rankRow.current-player{outline:3px solid #22c55e;box-shadow:0 0 20px rgba(34,197,94,.85);animation:pulsePlayer 1.1s ease-in-out infinite alternate}
+  .rankRow.rank-1 .rankPos,.rankRow.rank-2 .rankPos,.rankRow.rank-3 .rankPos{color:#111827}
+  .rankRow.rank-1 .rankPts,.rankRow.rank-2 .rankPts,.rankRow.rank-3 .rankPts{color:#064e3b}
+  .championTag{display:block;margin-top:2px;font-size:.68rem;font-weight:1000;color:#7c2d12;background:rgba(255,255,255,.72);border-radius:999px;padding:2px 6px;text-align:center}
+  @keyframes pulsePlayer{from{transform:scale(1);filter:brightness(1)}to{transform:scale(1.018);filter:brightness(1.13)}}
 
   @media(max-height:700px){
     .app{gap:3px;padding:4px}
@@ -166,6 +178,7 @@
 
       <div class="rankingBox">
         <h3>🏆 TOP 10 Geral</h3>
+        <div id="currentPlayerScore" class="currentScoreBox"></div>
         <div id="rankingList"><div class="rankNote">Carregando ranking em tempo real...</div></div>
         <div class="rankNote">Ranking somatório: soma pontos deste e dos outros jogos integrados.</div>
       </div>
@@ -1082,7 +1095,7 @@ const QUESTIONS = [
   },
   {
     "theme": "Days of the Week",
-    "q": "No desafio do calendário, Marcelo viu a sequência: Monday, Tuesday, ______. Para continuar corretamente, qual cartão ele deve escolher?",
+    "q": "Marcelo começou a semana de estudos e já passou pelos dois primeiros dias úteis. Qual dia vem logo depois deles em inglês?",
     "a": [
       "Sunday",
       "Friday",
@@ -1104,7 +1117,7 @@ const QUESTIONS = [
   },
   {
     "theme": "Days of the Week",
-    "q": "A professora mostrou três cartões na ordem: Wednesday, Thursday, ______. Qual opção completa a sequência sem quebrar a ordem dos dias?",
+    "q": "A professora perguntou qual dia vem logo depois de Thursday na rotina escolar. Qual cartão completa corretamente?",
     "a": [
       "Monday",
       "Sunday",
@@ -1115,7 +1128,7 @@ const QUESTIONS = [
   },
   {
     "theme": "Days of the Week",
-    "q": "No placar da corrida apareceu: Sunday, Monday, ______. Marcelo precisa escolher o próximo dia para avançar. Qual é a resposta correta?",
+    "q": "Depois do começo da semana, Marcelo precisa marcar o dia que vem logo após Monday. Qual opção está correta?",
     "a": [
       "Saturday",
       "Tuesday",
@@ -1126,7 +1139,7 @@ const QUESTIONS = [
   },
   {
     "theme": "Days of the Week",
-    "q": "A turma começou a semana de desafios com Monday. O próximo cartão do calendário precisa vir logo depois. Qual opção mantém a ordem?",
+    "q": "A primeira aula da semana já aconteceu. Qual é o próximo dia da semana em inglês?",
     "a": [
       "Tuesday",
       "Sunday",
@@ -1137,7 +1150,7 @@ const QUESTIONS = [
   },
   {
     "theme": "Days of the Week",
-    "q": "No jogo, o calendário mostrava: Tuesday, Wednesday, ______. Murilo precisa completar a sequência para liberar o dado. Qual palavra encaixa?",
+    "q": "Murilo já passou por Tuesday e Wednesday no calendário. Qual dia vem logo depois?",
     "a": [
       "Saturday",
       "January",
@@ -1148,7 +1161,7 @@ const QUESTIONS = [
   },
   {
     "theme": "Days of the Week",
-    "q": "A missão da semana mostra dois cartões: Friday, Saturday, ______. Qual opção completa a sequência até o último dia?",
+    "q": "O fim de semana já começou. Depois de Saturday, qual é o próximo dia em inglês?",
     "a": [
       "Monday",
       "Sunday",
@@ -1170,7 +1183,7 @@ const QUESTIONS = [
   },
   {
     "theme": "Days of the Week",
-    "q": "O painel da corrida exibiu: Monday, Tuesday, Wednesday, Thursday, ______. Qual cartão continua a ordem da semana?",
+    "q": "A semana de aulas está quase chegando ao último dia útil. Qual dia vem depois de Thursday?",
     "a": [
       "Friday",
       "Sunday",
@@ -1192,7 +1205,7 @@ const QUESTIONS = [
   },
   {
     "theme": "Days of the Week",
-    "q": "Murilo observou a sequência: Saturday, Sunday, Monday, ______. Qual dia vem depois para a semana continuar?",
+    "q": "A semana recomeçou depois do fim de semana. Qual dia vem logo após Monday?",
     "a": [
       "Friday",
       "December",
@@ -1203,7 +1216,7 @@ const QUESTIONS = [
   },
   {
     "theme": "Days of the Week",
-    "q": "O jogo pediu para organizar os cartões: Wednesday, Thursday, Friday, ______. Qual opção vem depois?",
+    "q": "Depois do último dia útil da semana escolar, qual dia aparece no calendário em inglês?",
     "a": [
       "Monday",
       "April",
@@ -1258,7 +1271,7 @@ const QUESTIONS = [
   },
   {
     "theme": "Months of the Year",
-    "q": "No mural do ano, apareceu a sequência: January, February, ______. Qual mês continua corretamente?",
+    "q": "O ano começou e dois meses já passaram no calendário. Qual é o terceiro mês em inglês?",
     "a": [
       "March",
       "Monday",
@@ -1269,7 +1282,7 @@ const QUESTIONS = [
   },
   {
     "theme": "Months of the Year",
-    "q": "Marcelo viu no calendário: March, April, ______. Para avançar na corrida, ele precisa completar a sequência. Qual opção está correta?",
+    "q": "Depois de April, Marcelo precisa escolher o próximo mês do calendário. Qual opção está correta?",
     "a": [
       "January",
       "May",
@@ -1280,7 +1293,7 @@ const QUESTIONS = [
   },
   {
     "theme": "Months of the Year",
-    "q": "O jogo mostrou a sequência: September, October, ______. Qual cartão vem depois?",
+    "q": "O calendário está no final do ano. Qual mês vem logo depois de October?",
     "a": [
       "June",
       "Sunday",
@@ -1291,7 +1304,7 @@ const QUESTIONS = [
   },
   {
     "theme": "Months of the Year",
-    "q": "Na missão do calendário, Murilo encontrou: May, June, ______. Qual mês completa a ordem?",
+    "q": "Murilo já passou por May e June. Qual é o próximo mês em inglês?",
     "a": [
       "January",
       "Monday",
@@ -1324,7 +1337,7 @@ const QUESTIONS = [
   },
   {
     "theme": "Months of the Year",
-    "q": "No quadro da turma apareceu: June, July, ______. Qual mês vem depois para manter a sequência?",
+    "q": "Depois de July, qual mês aparece no calendário em inglês?",
     "a": [
       "February",
       "Sunday",
@@ -1346,7 +1359,7 @@ const QUESTIONS = [
   },
   {
     "theme": "Months of the Year",
-    "q": "A professora mostrou os cartões: April, May, June, ______. Qual mês continua a sequência?",
+    "q": "A professora perguntou qual mês vem logo depois de June. Qual cartão deve ser escolhido?",
     "a": [
       "July",
       "January",
@@ -1357,7 +1370,7 @@ const QUESTIONS = [
   },
   {
     "theme": "Months of the Year",
-    "q": "No calendário da corrida apareceu: October, November, ______. Qual cartão completa o fim da sequência?",
+    "q": "O calendário está chegando ao último mês do ano. Qual mês vem depois de November?",
     "a": [
       "March",
       "December",
@@ -1379,7 +1392,7 @@ const QUESTIONS = [
   },
   {
     "theme": "Months of the Year",
-    "q": "A fase do jogo trouxe a sequência: July, August, ______. Qual mês deve aparecer em seguida?",
+    "q": "Depois de August, qual mês aparece no calendário em inglês?",
     "a": [
       "May",
       "Monday",
@@ -1390,7 +1403,7 @@ const QUESTIONS = [
   },
   {
     "theme": "Months of the Year",
-    "q": "No desafio anual, apareceu: February, March, ______. Qual mês mantém a ordem correta?",
+    "q": "Depois de March, qual mês vem no calendário?",
     "a": [
       "April",
       "January",
@@ -1412,7 +1425,7 @@ const QUESTIONS = [
   },
   {
     "theme": "Months of the Year",
-    "q": "No mural da escola, os cartões estavam assim: August, September, ______. Qual opção completa a sequência?",
+    "q": "Depois de September, qual mês vem no calendário em inglês?",
     "a": [
       "July",
       "Monday",
@@ -1423,7 +1436,7 @@ const QUESTIONS = [
   },
   {
     "theme": "Months of the Year",
-    "q": "A missão pediu o mês que vem depois de January. Qual cartão deve ser escolhido para continuar o ano?",
+    "q": "O ano acabou de começar. Qual é o segundo mês em inglês?",
     "a": [
       "March",
       "Friday",
@@ -1692,6 +1705,8 @@ const SECOND_BIMESTER_THEMES = [
 const ALL_QUESTIONS = QUESTIONS.concat(EXTRA_SECOND_BIMESTER_QUESTIONS);
 let secondBimesterQueue = [];
 let reviewQueue = [];
+let questionCycle = [];
+let cycleCounter = 0;
 
 function shuffleArray(arr){
   const copy = arr.slice();
@@ -1711,10 +1726,22 @@ function getQuestionPool(termType){
   return pool.length ? pool : ALL_QUESTIONS;
 }
 
-function drawWeightedQuestion(){
-  const useSecondBimester = Math.random() < 0.8;
+function refillQuestionCycle(){
+  // Regra pedagógica fixa: a cada 10 questões, 8 são do 2º bimestre e 2 são revisão do 1º bimestre.
+  // Assim evitamos depender de sorteio probabilístico, que poderia gerar muitas questões antigas seguidas.
+  questionCycle = shuffleArray(["second","second","second","second","second","second","second","second","review","review"]);
+  cycleCounter = 0;
+}
 
-  if(useSecondBimester){
+function drawWeightedQuestion(){
+  if(questionCycle.length === 0){
+    refillQuestionCycle();
+  }
+
+  const termType = questionCycle.pop();
+  cycleCounter++;
+
+  if(termType === "second"){
     if(secondBimesterQueue.length === 0){
       secondBimesterQueue = shuffleArray(getQuestionPool("second"));
     }
@@ -1790,6 +1817,7 @@ function startGame(){
   playerSchool = school.slice(0,42);
   position = 0; pendingMove = 0; score = 0; right = 0; errors = 0; lives = MAX_LIVES;
   extraTurn = false; skipTurn = false; yellowFlag = false; canRoll = true; moving = false; scoreSaved = false; ultimaPontuacaoLocal = null;
+  secondBimesterQueue = []; reviewQueue = []; questionCycle = []; cycleCounter = 0; refillQuestionCycle();
   updateHud();
   show("gameScreen");
   setTimeout(()=>placeCar(false), 120);
@@ -2088,6 +2116,39 @@ function releaseTurn(){
   }
 }
 
+function isCurrentPlayer(item){
+  return String(item?.nome || "").toLowerCase() === String(window.ultimaPontuacaoLocalRef?.nome || "").toLowerCase()
+    && String(item?.escola || "").toLowerCase() === String(window.ultimaPontuacaoLocalRef?.escola || "").toLowerCase();
+}
+
+function renderCurrentPlayerScore(){
+  const box = $("currentPlayerScore");
+  if(!box || !window.ultimaPontuacaoLocalRef) return;
+  const p = window.ultimaPontuacaoLocalRef;
+  box.style.display = "block";
+  box.innerHTML = `
+    <div class="label">✨ SUA PONTUAÇÃO AGORA ✨</div>
+    <div class="name">${p.nome}</div>
+    <div class="points">${Number(p.pontos || 0)} pts nesta partida</div>
+  `;
+}
+
+function buildRankRow(item, index){
+  const row = document.createElement("div");
+  const medal = index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : `${index + 1}º`;
+  const current = isCurrentPlayer(item);
+  row.className = `rankRow ${index === 0 ? "rank-1" : index === 1 ? "rank-2" : index === 2 ? "rank-3" : ""} ${current ? "current-player" : ""}`.trim();
+  row.innerHTML = `
+    <div class="rankPos">${medal}</div>
+    <div>
+      <div class="rankName">${item.nome}${current ? " ⭐ Você" : ""}</div>
+      <div class="rankSchool">${item.escola || "Escola não informada"}</div>
+    </div>
+    <div class="rankPts">${item.pontos} pts${index === 0 ? '<span class="championTag">🏆 Campeão do dia</span>' : ""}</div>
+  `;
+  return row;
+}
+
 function finishGame(won){
   canRoll = false;
   $("diceBtn").disabled = true;
@@ -2109,6 +2170,7 @@ function finishGame(won){
       pontos: score
     };
     window.ultimaPontuacaoLocalRef = ultimaPontuacaoLocal;
+    renderCurrentPlayerScore();
 
     if(window.salvarPontuacao){
       window.salvarPontuacao(playerName, score, "6ano-board-game-formula-race", playerSchool);
@@ -2274,9 +2336,12 @@ window.carregarRanking = function(){
       }
     }
 
-    const top10 = Array.from(acumulado.values())
-      .sort((a,b) => b.pontos - a.pontos)
-      .slice(0,10);
+    renderCurrentPlayerScore();
+
+    const ordered = Array.from(acumulado.values())
+      .sort((a,b) => b.pontos - a.pontos);
+
+    const top10 = ordered.slice(0,10);
 
     if(top10.length === 0){
       container.innerHTML = '<div class="rankNote">Ainda não há pontuações no ranking.</div>';
@@ -2285,26 +2350,23 @@ window.carregarRanking = function(){
 
     container.innerHTML = "";
     top10.forEach((item, index) => {
-      const row = document.createElement("div");
-      row.className = "rankRow";
-      if(String(item.nome).toLowerCase() === String(window.ultimaPontuacaoLocalRef?.nome || "").toLowerCase()
-        && String(item.escola).toLowerCase() === String(window.ultimaPontuacaoLocalRef?.escola || "").toLowerCase()){
-        row.style.border = "2px solid #22c55e";
-        row.style.background = "rgba(34,197,94,.18)";
-      }
-      row.innerHTML = `
-        <div class="rankPos">${index + 1}º</div>
-        <div>
-          <div class="rankName">${item.nome}${(String(item.nome).toLowerCase() === String(window.ultimaPontuacaoLocalRef?.nome || "").toLowerCase() && String(item.escola).toLowerCase() === String(window.ultimaPontuacaoLocalRef?.escola || "").toLowerCase()) ? " ⭐ Você" : ""}</div>
-          <div class="rankSchool">${item.escola}</div>
-        </div>
-        <div class="rankPts">${item.pontos} pts</div>
-      `;
-      container.appendChild(row);
+      container.appendChild(buildRankRow(item, index));
     });
+
+    // Se o aluno atual não entrou no TOP 10, ele ainda aparece para não se sentir invisível.
+    if(window.ultimaPontuacaoLocalRef && !top10.some(isCurrentPlayer)){
+      const localRankIndex = ordered.findIndex(isCurrentPlayer);
+      const localItem = ordered.find(isCurrentPlayer) || window.ultimaPontuacaoLocalRef;
+      const sep = document.createElement("div");
+      sep.className = "rankNote";
+      sep.textContent = "Sua posição nesta partida aparece em destaque abaixo:";
+      container.appendChild(sep);
+      container.appendChild(buildRankRow(localItem, localRankIndex >= 0 ? localRankIndex : top10.length));
+    }
   }, (error) => {
     console.error("Erro ao carregar ranking:", error);
-    container.innerHTML = '<div class="rankNote">Ranking indisponível no momento.</div>';
+    renderCurrentPlayerScore();
+    container.innerHTML = '<div class="rankNote">Ranking online indisponível no momento, mas sua pontuação desta partida ficou registrada na tela.</div>';
   });
 };
 
