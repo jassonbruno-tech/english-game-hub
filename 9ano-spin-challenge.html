@@ -442,20 +442,23 @@ function player(){return {name:($('playerName').value||'Aluno(a)').trim()||'Alun
 function makeBag(){
   const phase=Number(state.phase||1);
   const source=QUESTIONS.filter(q=>Number(q.phase)===phase);
-  const byTheme={};
-  THEMES.forEach(t=>byTheme[t]=shuffle(source.filter(q=>q.theme===t)));
-  const activeThemes=THEMES.filter(t=>byTheme[t]&&byTheme[t].length);
-  const bag=[];
-  let cycle=shuffle(activeThemes),last='';
-  for(let i=0;i<TOTAL_ROUNDS;i++){
-    if(!cycle.length)cycle=shuffle(activeThemes);
-    let theme=cycle.shift();
-    if(theme===last&&cycle.length){cycle.push(theme);theme=cycle.shift()}
-    if(!byTheme[theme].length)byTheme[theme]=shuffle(source.filter(q=>q.theme===theme));
-    bag.push(byTheme[theme].pop());
-    last=theme;
+  const pool=shuffle(source);
+  const selected=[];
+  const used=new Set();
+  let lastType='';
+  while(selected.length<TOTAL_ROUNDS && used.size<pool.length){
+    let pickIndex=pool.findIndex((q,i)=>!used.has(i) && q.type!==lastType);
+    if(pickIndex<0) pickIndex=pool.findIndex((q,i)=>!used.has(i));
+    if(pickIndex<0) break;
+    const item=pool[pickIndex];
+    used.add(pickIndex);
+    selected.push(item);
+    lastType=item.type||'';
   }
-  return bag;
+  while(selected.length<TOTAL_ROUNDS && source.length){
+    selected.push(shuffle(source)[0]);
+  }
+  return selected;
 }
 function renderPhases(){
   const grid=$('phaseGrid');
