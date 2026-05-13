@@ -465,18 +465,22 @@ function finish(completed){
   const phase=state.phase||1;
   const phaseInfo=PHASES.find(p=>p.id===phase)||PHASES[0];
   show('finalScreen');
-  completed?playVictory():playGameOver();
+  const completedAll=completed && phase>=6;
+  const willUnlockNext=completed && phase<6 && unlockedPhase<phase+1;
+  if(completedAll)playVictory();
+  else if(willUnlockNext)playPhaseUnlock();
+  else if(completed)playCorrect();
+  else playGameOver();
   if(completed)confettiBurst(220);
-  if(completed && phase<6 && unlockedPhase<phase+1){
+  if(willUnlockNext){
     unlockedPhase=phase+1;
     localStorage.setItem('spin9UnlockedPhase',String(unlockedPhase));
   }
-  const completedAll=completed && phase>=6;
   $('finalTitle').textContent=completedAll?'🏆 YOU ARE THE ONE!':completed?'🎉 PHASE COMPLETE!':'💪 TRY AGAIN!';
   $('finalMsg').innerHTML=completedAll
     ?'Parabéns! Você concluiu todas as fases do desafio. <b>Congratulations!</b>'
     : completed
-      ?`Você concluiu a <b>Fase ${phase} — ${phaseInfo.title}</b>. ${phase<6?'A próxima fase foi desbloqueada e seus corações voltam na nova fase.':'Desafio final concluído!'}`
+      ?`Você concluiu a <b>Fase ${phase} — ${phaseInfo.title}</b>. ${phase<6?'🔓 Nova fase desbloqueada! Seus corações voltam na nova fase.':'Desafio final concluído!'}`
       :`Você perdeu os 3 corações da <b>Fase ${phase} — ${phaseInfo.title}</b>. Leia as dicas e tente novamente.`;
   $('fScore').textContent=state.score;
   $('fCorrects').textContent=`${state.corrects}/${TOTAL_ROUNDS}`;
@@ -509,7 +513,8 @@ const soundFiles={
   error:'error.wav',
   combo:'combo.wav',
   victory:'victory.wav',
-  gameover:'game-over.wav'
+  gameover:'game-over.wav',
+  phaseUnlock:'phase-unlock.aac'
 };
 const sounds={};
 let audioReady=false,ctx=null,soundOn=true;
@@ -524,7 +529,7 @@ function unlockAudio(){
     if(!sounds[k]){
       const a=new Audio(src);
       a.preload='auto';
-      a.volume=k==='spin'?.38:k==='victory'?.72:.62;
+      a.volume=k==='spin'?.38:(k==='victory'||k==='phaseUnlock')?.72:.62;
       if(k==='spin')a.loop=true;
       sounds[k]=a;
     }
@@ -604,6 +609,11 @@ function playWrong(){
 function playCombo(){
   if(tryFile('combo'))return;
   [659,784,988,1318].forEach((n,i)=>tone(n,.14,'triangle',.05,i*.045));
+}
+
+function playPhaseUnlock(){
+  if(tryFile('phaseUnlock'))return;
+  [784,988,1174,1568].forEach((n,i)=>tone(n,.18,'triangle',.05,i*.075));
 }
 
 function playVictory(){
