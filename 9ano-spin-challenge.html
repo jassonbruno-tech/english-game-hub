@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Spin Challenge 9º Ano - Etapa 1</title>
+<title>Spin Challenge 9º Ano - Etapa 2</title>
 <style>
 *{box-sizing:border-box} :root{--bg:#070818;--panel:#111637;--panel2:#17104a;--cyan:#00e5ff;--pink:#ff2bd6;--yellow:#ffe66d;--green:#35ff8a;--red:#ff4d6d;--white:#f8fbff;--muted:#a8b3cf}
 html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--white);overflow-x:hidden} body{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:10px;background:radial-gradient(circle at 20% 10%,rgba(255,43,214,.25),transparent 25%),radial-gradient(circle at 80% 25%,rgba(0,229,255,.20),transparent 28%),radial-gradient(circle at 50% 100%,rgba(255,230,109,.12),transparent 35%),linear-gradient(180deg,#050713,#09092b 50%,#190733)}
@@ -129,12 +129,177 @@ header{padding:14px 18px 12px;text-align:center;background:linear-gradient(135de
   .start-main-btn{min-height:46px}
 }
 
+
+/* ===== ETAPA 2 — Tela de fases + ajuste mobile da roleta ===== */
+.phase-screen-wrap{
+  min-height:calc(100dvh - 118px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:8px 0;
+}
+.phase-panel{
+  width:min(96vw,780px);
+  padding:clamp(16px,3vw,26px);
+  text-align:center;
+}
+.phase-panel h2{
+  margin:0 0 6px;
+  font-size:clamp(30px,7vw,50px);
+  line-height:1;
+  color:var(--yellow);
+}
+.phase-panel p{
+  margin:0 0 14px;
+  font-weight:1000;
+  color:#dbeafe;
+}
+.phase-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+  margin-top:12px;
+}
+.phase-card{
+  min-height:92px;
+  border:2px solid rgba(0,229,255,.24);
+  background:linear-gradient(135deg,rgba(5,12,48,.92),rgba(28,12,72,.92));
+  color:#fff;
+  border-radius:22px;
+  padding:14px;
+  text-align:left;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  box-shadow:0 12px 26px rgba(0,0,0,.28);
+}
+.phase-icon{
+  width:48px;
+  height:48px;
+  border-radius:18px;
+  display:grid;
+  place-items:center;
+  flex:0 0 auto;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.14);
+  font-size:25px;
+}
+.phase-card b{
+  display:block;
+  font-size:17px;
+  color:#fff;
+  margin-bottom:3px;
+}
+.phase-card span{
+  display:block;
+  color:#b9c3dd;
+  font-size:12px;
+  font-weight:900;
+}
+.phase-card.unlocked{
+  cursor:pointer;
+  border-color:rgba(255,230,109,.72);
+  box-shadow:0 0 0 1px rgba(255,230,109,.18),0 16px 30px rgba(255,230,109,.10);
+}
+.phase-card.unlocked .phase-icon{
+  background:linear-gradient(135deg,#ff2bd6,#00e5ff);
+  box-shadow:0 0 22px rgba(0,229,255,.25);
+}
+.phase-card.locked{
+  opacity:.64;
+  filter:saturate(.7);
+}
+.phase-card.locked .phase-icon{font-size:23px}
+.phase-actions{
+  margin-top:14px;
+  display:flex;
+  justify-content:center;
+}
+.phase-note{
+  margin-top:12px;
+  font-size:12px;
+  color:#a8b3cf;
+  font-weight:900;
+}
+@media(max-width:860px){
+  #phaseScreen.active{
+    min-height:calc(100dvh - 94px);
+    overflow-y:auto;
+  }
+  .phase-screen-wrap{
+    min-height:calc(100dvh - 94px);
+    align-items:stretch;
+    padding:6px 0;
+  }
+  .phase-panel{
+    width:96vw;
+    padding:14px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+  }
+  .phase-panel h2{font-size:clamp(32px,10vw,44px)}
+  .phase-panel p{font-size:13px;margin-bottom:10px}
+  .phase-grid{
+    grid-template-columns:1fr;
+    gap:8px;
+  }
+  .phase-card{
+    min-height:74px;
+    border-radius:19px;
+    padding:11px 12px;
+  }
+  .phase-icon{width:42px;height:42px;border-radius:15px;font-size:22px}
+  .phase-card b{font-size:15px}
+  .phase-card span{font-size:11px}
+}
+@media(max-height:670px) and (max-width:860px){
+  #phaseScreen.active{min-height:calc(100dvh - 58px)}
+  .phase-screen-wrap{min-height:calc(100dvh - 58px)}
+  .phase-panel{justify-content:flex-start;padding:10px 12px}
+  .phase-panel h2{font-size:30px}
+  .phase-panel p{display:none}
+  .phase-card{min-height:62px;padding:8px 10px}
+  .phase-icon{width:36px;height:36px;font-size:19px;border-radius:13px}
+  .phase-note{display:none}
+}
+
+/* Quando estiver na roleta, a tela vira game mode: sem rolagem e com SPIN sempre visível. */
+@media(max-width:860px){
+  body.game-mode{overflow:hidden;}
+  body.game-mode .app{height:100dvh;min-height:100dvh;overflow:hidden;}
+  body.game-mode header{display:none;}
+  body.game-mode main{height:100dvh;overflow:hidden;padding:6px;}
+  body.game-mode #gameScreen.active{height:100%;display:flex;flex-direction:column;overflow:hidden;}
+  body.game-mode .stats{flex:0 0 auto;gap:5px;margin-bottom:5px;}
+  body.game-mode .stat{padding:6px 3px;border-radius:13px;}
+  body.game-mode .stat b{font-size:18px;}
+  body.game-mode .stat span{font-size:8px;}
+  body.game-mode .mission{flex:0 0 auto;margin-bottom:5px;padding:7px 9px;font-size:12px;border-radius:15px;}
+  body.game-mode .lives{flex:0 0 auto;margin-bottom:4px;font-size:13px;}
+  body.game-mode .heart{font-size:20px;}
+  body.game-mode .game-grid{flex:1;min-height:0;display:flex;flex-direction:column;gap:0;}
+  body.game-mode .wheel-card{flex:1;min-height:0;padding:6px;display:flex;align-items:center;justify-content:center;}
+  body.game-mode .wheel-wrap{height:100%;justify-content:space-evenly;gap:4px;}
+  body.game-mode .wheel-stage{width:min(93vw,390px,calc(100dvh - 190px));height:min(93vw,390px,calc(100dvh - 190px));}
+  body.game-mode .wheel-label{width:80px;margin-left:-40px;font-size:12px;transform:rotate(var(--r)) translateY(calc(-1 * min(37vw,150px,calc((100dvh - 190px)/2 - 24px)))) rotate(calc(-1 * var(--r)));}
+  body.game-mode .pointer{top:-4px;border-left-width:16px;border-right-width:16px;border-top-width:38px;}
+  body.game-mode #spinBtn{min-height:48px;padding:10px 20px;font-size:17px;width:min(86vw,360px);}
+  body.game-mode .sorted{padding:7px 9px;font-size:12px;}
+}
+@media(max-height:640px) and (max-width:860px){
+  body.game-mode .stats{display:none;}
+  body.game-mode .mission{margin-bottom:4px;}
+  body.game-mode .wheel-stage{width:min(92vw,370px,calc(100dvh - 142px));height:min(92vw,370px,calc(100dvh - 142px));}
+  body.game-mode .wheel-label{font-size:11px;transform:rotate(var(--r)) translateY(calc(-1 * min(36vw,140px,calc((100dvh - 142px)/2 - 24px)))) rotate(calc(-1 * var(--r)));}
+}
+
 </style>
 </head>
 <body>
 <canvas id="confettiCanvas" class="confetti-canvas"></canvas>
 <div class="app">
-<header><div class="topbar"><a class="back" href="9ano.html">← Voltar ao 9º ano</a><div class="pill">🎮 Etapa 1</div></div><h1 class="title">Spin Challenge</h1><p class="subtitle">Tela de cadastro separada • roleta preservada.</p><div class="signature">Jogo idealizado pelo professor Jasson Bruno.</div></header>
+<header><div class="topbar"><a class="back" href="9ano.html">← Voltar ao 9º ano</a><div class="pill">🎮 Etapa 2</div></div><h1 class="title">Spin Challenge</h1><p class="subtitle">Cadastro • Fases • Roleta preservada.</p><div class="signature">Jogo idealizado pelo professor Jasson Bruno.</div></header>
 <main>
 <section id="startScreen" class="screen active">
   <div class="card start-card start-card-clean">
@@ -149,10 +314,32 @@ header{padding:14px 18px 12px;text-align:center;background:linear-gradient(135de
       <label>Escola</label>
       <input id="playerSchool" placeholder="Escola Delfina de Jesus Amorim" maxlength="42" autocomplete="off">
     </div>
-    <button class="btn start-main-btn" onclick="startGame()">▶ JOGAR</button>
+    <button class="btn start-main-btn" onclick="goToPhases()">▶ JOGAR</button>
     <div class="start-footer">Jogo idealizado pelo Prof. Jasson Bruno</div>
   </div>
 </section>
+
+<section id="phaseScreen" class="screen">
+  <div class="phase-screen-wrap">
+    <div class="card phase-panel">
+      <h2>🔓 Escolha sua fase</h2>
+      <p>Comece pela Fase 1. As próximas fases serão desbloqueadas depois.</p>
+      <div class="phase-grid">
+        <button class="phase-card unlocked" onclick="startGame()" type="button">
+          <div class="phase-icon">🎡</div>
+          <div><b>Fase 1 — Warm-up Challenge</b><span>Desbloqueada • clique para jogar</span></div>
+        </button>
+        <div class="phase-card locked"><div class="phase-icon">🔒</div><div><b>Fase 2 — Connectors Mission</b><span>Bloqueada nesta etapa de teste</span></div></div>
+        <div class="phase-card locked"><div class="phase-icon">🔒</div><div><b>Fase 3 — Feelings Arena</b><span>Bloqueada nesta etapa de teste</span></div></div>
+        <div class="phase-card locked"><div class="phase-icon">🔒</div><div><b>Fase 4 — Prefix Power</b><span>Bloqueada nesta etapa de teste</span></div></div>
+        <div class="phase-card locked"><div class="phase-icon">🔒</div><div><b>Fase 5 — Suffix Battle</b><span>Bloqueada nesta etapa de teste</span></div></div>
+        <div class="phase-card locked"><div class="phase-icon">🔒</div><div><b>Fase 6 — Final Boss</b><span>Bloqueada nesta etapa de teste</span></div></div>
+      </div>
+      <div class="phase-note">Nesta etapa, estamos testando tela de fases + roleta sem rolagem.</div>
+    </div>
+  </div>
+</section>
+
 <section id="gameScreen" class="screen"><div class="stats"><div class="stat"><b id="score">0</b><span>Pontos</span></div><div class="stat"><b id="corrects">0</b><span>Acertos</span></div><div class="stat"><b id="combo">0</b><span>Combo</span></div><div class="stat"><b id="round">1/20</b><span>Rodada</span></div></div><div class="mission"><span id="missionLabel">Mission 1</span><span id="statusLabel">Spin the wheel!</span></div><div class="lives" id="lives"></div><div class="game-grid"><div class="card wheel-card"><div class="wheel-wrap"><div class="pointer"></div><div class="wheel-stage"><div id="wheel" class="wheel" data-theme="SPIN"><div class="wheel-label" style="--r:25.7deg">Numbers</div><div class="wheel-label" style="--r:77.1deg">Days of<br>the Week</div><div class="wheel-label" style="--r:128.6deg">Months of<br>the Year</div><div class="wheel-label" style="--r:180deg">Verb to be</div><div class="wheel-label" style="--r:231.4deg">School<br>Vocabulary</div><div class="wheel-label" style="--r:282.9deg">Family /<br>Feelings</div><div class="wheel-label" style="--r:334.3deg">Review<br>1st Bimester</div></div></div><button id="spinBtn" class="btn" onclick="spinWheel()">🎡 SPIN</button><div id="sorted" class="sorted">Clique em SPIN para começar.</div></div></div><div id="questionCard" class="card question-card"><div class="inner-modal"><div id="theme" class="theme-chip">Tema</div><p id="prompt" class="prompt">Gire a roleta para liberar a pergunta.</p><div id="options" class="options"></div><div id="feedback" class="feedback"></div></div></div></div></section>
 <section id="finalScreen" class="screen"><div class="card final"><h2 id="finalTitle">🏆 Mission Complete!</h2><div id="finalMsg" class="final-message"></div><div class="summary"><div class="summary-box"><span>Pontuação</span><b id="fScore">0</b></div><div class="summary-box"><span>Acertos</span><b id="fCorrects">0/20</b></div><div class="summary-box"><span>Combo</span><b id="fCombo">0</b></div><div class="summary-box"><span>Vidas</span><b id="fLives">0/5</b></div></div><h3>🏆 Ranking motivacional</h3><div id="rankList" class="rank-list"></div><div class="actions"><button class="btn" onclick="startGame()">Jogar novamente</button><button class="btn btn-secondary" onclick="playClick();setTimeout(()=>location.href='6ano.html',120)">Voltar ao 6º ano</button></div></div></section>
 </main></div>
@@ -163,10 +350,11 @@ const TOTAL_ROUNDS=20, MAX_LIVES=5, SEGMENT=360/THEMES.length;
 let state={};
 const $=id=>document.getElementById(id);
 function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
-function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active');closeQuestionMobile()}
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active');document.body.classList.toggle('game-mode',id==='gameScreen');closeQuestionMobile();window.scrollTo(0,0)}
 function isMobile(){return innerWidth<=860}
-function player(){return {name:($('playerName').value||'Aluno(a)').trim()||'Aluno(a)',klass:($('playerClass').value||'6º ano').trim()||'6º ano',school:($('playerSchool').value||'Escola Delfina de Jesus Amorim').trim()||'Escola Delfina de Jesus Amorim'}}
+function player(){return {name:($('playerName').value||'Aluno(a)').trim()||'Aluno(a)',klass:($('playerClass').value||'9º ano').trim()||'9º ano',school:($('playerSchool').value||'Escola Delfina de Jesus Amorim').trim()||'Escola Delfina de Jesus Amorim'}}
 function makeBag(){const byTheme={};THEMES.forEach(t=>byTheme[t]=shuffle(QUESTIONS.filter(q=>q.theme===t)));const bag=[];let cycle=shuffle(THEMES),last='';for(let i=0;i<TOTAL_ROUNDS;i++){if(!cycle.length)cycle=shuffle(THEMES);let theme=cycle.shift();if(theme===last&&cycle.length){cycle.push(theme);theme=cycle.shift()}if(!byTheme[theme].length)byTheme[theme]=shuffle(QUESTIONS.filter(q=>q.theme===theme));bag.push(byTheme[theme].pop());last=theme}return bag}
+function goToPhases(){unlockAudio();playClick();show('phaseScreen');toast('Escolha a fase para começar!')}
 function startGame(){unlockAudio();playClick();state={score:0,corrects:0,combo:0,maxCombo:0,round:1,lives:MAX_LIVES,bag:makeBag(),current:null,answered:false,spinning:false,rotation:0};$('wheel').style.transform='rotate(0deg)';$('wheel').dataset.theme='SPIN';$('sorted').textContent='Clique em SPIN para começar.';$('prompt').textContent='Gire a roleta para liberar a pergunta.';$('theme').textContent='Tema';$('options').innerHTML='';$('feedback').className='feedback';$('feedback').innerHTML='';$('spinBtn').disabled=false;updateStats();show('gameScreen');toast('Let’s go! Boa sorte no desafio!')}
 function updateStats(){$('score').textContent=state.score;$('corrects').textContent=state.corrects;$('combo').textContent=state.combo;$('round').textContent=`${state.round}/${TOTAL_ROUNDS}`;$('missionLabel').textContent=`Mission ${Math.ceil(state.round/5)} / 4`;$('lives').innerHTML='Vidas: '+Array.from({length:MAX_LIVES},(_,i)=>`<span class="heart ${i>=state.lives?'lost':''}">♥</span>`).join('')}
 function spinWheel(){if(state.spinning||state.answered)return;if(state.round>TOTAL_ROUNDS)return finish(true);playClick();state.current=state.bag[state.round-1];const q=state.current;const idx=THEMES.indexOf(q.theme), center=idx*SEGMENT+SEGMENT/2, target=360-center;closeQuestionMobile();state.spinning=true;$('spinBtn').disabled=true;$('wheel').classList.add('spinning');$('statusLabel').textContent='Wheel spinning...';$('sorted').textContent='Girando... atenção!';$('prompt').textContent='A roleta está girando...';$('options').innerHTML='';$('feedback').className='feedback';$('feedback').innerHTML='';$('wheel').dataset.theme='SPIN';startSpinSound();const currentNorm=((state.rotation%360)+360)%360;const delta=((target-currentNorm)+360)%360;const turns=8+Math.floor(Math.random()*4);const overshoot=(10+Math.random()*16)*(Math.random()>.5?1:-1);const first=state.rotation+turns*360+delta+overshoot;const final=state.rotation+turns*360+delta;$('wheel').style.transition='transform 5.4s cubic-bezier(.06,.88,.07,1)';state.rotation=first;$('wheel').style.transform=`rotate(${state.rotation}deg)`;setTimeout(()=>$('sorted').textContent='Quase parando...',2400);setTimeout(()=>{state.rotation=final;$('wheel').style.transition='transform .75s cubic-bezier(.2,.95,.18,1)';$('wheel').style.transform=`rotate(${state.rotation}deg)`},5450);setTimeout(()=>{state.spinning=false;stopSpinSound();$('wheel').classList.remove('spinning');$('wheel').style.transition='transform 5.4s cubic-bezier(.06,.88,.07,1)';$('wheel').dataset.theme=q.theme;$('sorted').textContent=`Tema sorteado: ${q.theme}`;$('statusLabel').textContent='Answer the question!';renderQuestion(q)},6300)}
