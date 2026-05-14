@@ -6,20 +6,18 @@
 
 <title>9º Ano - English Game Hub</title>
 
-<!-- Prévia do link no WhatsApp / Facebook -->
 <meta property="og:title" content="9º Ano - English Game Hub" />
 <meta property="og:description" content="Jogos de Inglês para o 9º ano: Spin Challenge, Hangman, Listening & Speaking, Smart Choice Grammar e Vocab Match Challenge." />
-<meta property="og:image" content="https://jassonbruno-tech.github.io/english-game-hub/9ano-tela-inicial-laranja-assinada.png" />
-<meta property="og:image:secure_url" content="https://jassonbruno-tech.github.io/english-game-hub/9ano-tela-inicial-laranja-assinada.png" />
+<meta property="og:image" content="https://jassonbruno-tech.github.io/english-game-hub/9ano-tela-inicial-fundo-laranja.png" />
+<meta property="og:image:secure_url" content="https://jassonbruno-tech.github.io/english-game-hub/9ano-tela-inicial-fundo-laranja.png" />
 <meta property="og:url" content="https://jassonbruno-tech.github.io/english-game-hub/9ano.html" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="English Game Hub" />
 
-<!-- Prévia para outros aplicativos -->
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="9º Ano - English Game Hub" />
 <meta name="twitter:description" content="Aprenda inglês de forma divertida com jogos de gramática, vocabulário, listening e desafios." />
-<meta name="twitter:image" content="https://jassonbruno-tech.github.io/english-game-hub/9ano-tela-inicial-laranja-assinada.png" />
+<meta name="twitter:image" content="https://jassonbruno-tech.github.io/english-game-hub/9ano-tela-inicial-fundo-laranja.png" />
 
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -49,11 +47,14 @@ body{
 }
 
 .bg{
+  position:absolute;
+  inset:0;
   width:100%;
   height:100%;
-  object-fit:contain;
+  object-fit:cover;
   display:block;
   background:#ff6a00;
+  z-index:0;
 }
 
 .back{
@@ -90,97 +91,99 @@ body{
   cursor:pointer;
 }
 
-.game-link{
+.games-panel{
   position:absolute;
   z-index:10;
-  display:block;
-  border-radius:22px;
-  text-decoration:none;
-  cursor:pointer;
-  -webkit-tap-highlight-color:transparent;
+  left:6.5%;
+  right:6.5%;
+  bottom:4.5%;
+  display:grid;
+  gap:10px;
 }
 
-.game-link:active{
-  background:rgba(255,255,255,.14);
-  box-shadow:0 0 22px rgba(255,255,255,.65), inset 0 0 18px rgba(255,255,255,.18);
-}
-
-.game-link span{
-  position:absolute;
-  width:1px;
-  height:1px;
-  overflow:hidden;
-  clip-path:inset(50%);
-  white-space:nowrap;
-}
-
-/* Áreas clicáveis ajustadas para não sobrepor os cards */
-.btn-spin{
-  left:7.6%;
-  top:48.9%;
-  width:39.8%;
-  height:18.9%;
-}
-
-.btn-hangman{
-  left:52.5%;
-  top:48.9%;
-  width:39.8%;
-  height:18.9%;
-}
-
-.btn-listening{
-  left:7.6%;
-  top:72.0%;
-  width:39.8%;
-  height:18.9%;
-}
-
-.btn-smart{
-  left:52.5%;
-  top:72.0%;
-  width:39.8%;
-  height:18.9%;
-}
-
-.vocab-btn{
-  position:absolute;
-  z-index:18;
-  left:13%;
-  bottom:1.6%;
-  width:74%;
-  min-height:42px;
+.game-btn{
+  min-height:58px;
   display:flex;
   align-items:center;
-  justify-content:center;
-  gap:8px;
-  text-align:center;
+  gap:10px;
   text-decoration:none;
   color:#fff;
-  font-size:13px;
-  font-weight:950;
-  letter-spacing:.2px;
-  border-radius:999px;
-  border:1px solid rgba(255,255,255,.58);
-  background:linear-gradient(135deg, rgba(0,0,0,.62), rgba(255,106,0,.70));
-  backdrop-filter:blur(6px);
-  box-shadow:0 0 18px rgba(255,255,255,.38), 0 8px 18px rgba(0,0,0,.30);
-  text-shadow:0 2px 8px rgba(0,0,0,.45);
+  border-radius:22px;
+  padding:10px 12px;
+  border:1px solid rgba(255,255,255,.50);
+  background:linear-gradient(135deg, rgba(0,0,0,.62), rgba(255,106,0,.64));
+  backdrop-filter:blur(7px);
+  box-shadow:0 10px 20px rgba(0,0,0,.28), inset 0 0 16px rgba(255,255,255,.08);
+  text-shadow:0 2px 8px rgba(0,0,0,.48);
   -webkit-tap-highlight-color:transparent;
+  overflow:hidden;
+  position:relative;
 }
 
-.vocab-btn:active{
+.game-btn::after{
+  content:"";
+  position:absolute;
+  inset:0 auto 0 -80%;
+  width:42%;
+  background:linear-gradient(90deg, transparent, rgba(255,255,255,.22), transparent);
+  transform:skewX(-20deg);
+  transition:.35s ease;
+}
+
+.game-btn:active{
   transform:scale(.97);
-  box-shadow:0 0 28px rgba(255,255,255,.72), inset 0 0 16px rgba(255,255,255,.22);
+  box-shadow:0 0 26px rgba(255,255,255,.70), inset 0 0 16px rgba(255,255,255,.22);
 }
 
-.vocab-btn small{
-  display:block;
-  font-size:10px;
-  font-weight:800;
-  color:#ffe6b6;
-  margin-left:2px;
+.game-btn:hover::after{left:120%;}
+
+.game-icon{
+  width:42px;
+  height:42px;
+  min-width:42px;
+  border-radius:16px;
+  display:grid;
+  place-items:center;
+  font-size:24px;
+  background:rgba(255,255,255,.18);
+  border:1px solid rgba(255,255,255,.34);
+  box-shadow:inset 0 0 12px rgba(255,255,255,.10);
 }
+
+.game-text{
+  flex:1;
+  min-width:0;
+}
+
+.game-title{
+  display:block;
+  font-size:14px;
+  font-weight:950;
+  line-height:1.05;
+  letter-spacing:.1px;
+}
+
+.game-desc{
+  display:block;
+  margin-top:3px;
+  font-size:10.5px;
+  line-height:1.15;
+  font-weight:800;
+  color:#ffe7bd;
+}
+
+.game-arrow{
+  color:#fff4bd;
+  font-size:26px;
+  font-weight:1000;
+  text-shadow:0 0 14px rgba(255,224,120,.75);
+}
+
+.spin{background:linear-gradient(135deg, rgba(45,14,0,.72), rgba(255,106,0,.68));}
+.hangman{background:linear-gradient(135deg, rgba(35,11,0,.70), rgba(255,147,35,.66));}
+.listening{background:linear-gradient(135deg, rgba(38,10,0,.70), rgba(255,191,67,.58));}
+.smart{background:linear-gradient(135deg, rgba(40,11,0,.72), rgba(255,120,0,.64));}
+.vocab{background:linear-gradient(135deg, rgba(0,0,0,.70), rgba(255,106,0,.76)); border-color:rgba(255,244,180,.70);}
 
 @media(min-width:700px){
   body{
@@ -190,21 +193,43 @@ body{
   }
 }
 
-@media(max-height:720px){
-  .back,.sound-btn{
-    font-size:10px;
-    padding:6px 8px;
+@media(max-height:760px){
+  .games-panel{
+    gap:8px;
+    bottom:3.2%;
   }
 
-  .vocab-btn{
-    min-height:36px;
-    font-size:12px;
-    bottom:1.1%;
+  .game-btn{
+    min-height:50px;
+    padding:8px 10px;
+    border-radius:18px;
   }
 
-  .vocab-btn small{
-    display:none;
+  .game-icon{
+    width:36px;
+    height:36px;
+    min-width:36px;
+    border-radius:13px;
+    font-size:21px;
   }
+
+  .game-title{
+    font-size:12.5px;
+  }
+
+  .game-desc{
+    font-size:9.5px;
+  }
+
+  .game-arrow{
+    font-size:22px;
+  }
+}
+
+@media(max-height:650px){
+  .game-desc{display:none;}
+  .game-btn{min-height:43px;}
+  .games-panel{gap:7px; bottom:2.5%;}
 }
 </style>
 </head>
@@ -214,32 +239,59 @@ body{
 <main class="stage">
   <img
     class="bg"
-    src="9ano-tela-inicial-laranja-assinada.png?v=3"
+    src="9ano-tela-inicial-fundo-laranja.png?v=1"
     alt="English Game Hub - 9º Ano"
   />
 
   <a class="back" href="index.html">← Hub</a>
   <button class="sound-btn" onclick="toggleMusic()">🎵 Música</button>
 
-  <a class="game-link btn-spin" href="9ano-spin-challenge.html?v=230" aria-label="Entrar no Spin Challenge">
-    <span>Spin Challenge</span>
-  </a>
+  <nav class="games-panel" aria-label="Jogos do 9º ano">
+    <a class="game-btn spin" href="9ano-spin-challenge.html?v=230" aria-label="Entrar no Spin Challenge">
+      <span class="game-icon">🎡</span>
+      <span class="game-text">
+        <span class="game-title">Spin Challenge</span>
+        <span class="game-desc">Roleta com fases, conectivos, emoções, prefixos e sufixos.</span>
+      </span>
+      <span class="game-arrow">›</span>
+    </a>
 
-  <a class="game-link btn-hangman" href="9ano-hangman-challenge.html?v=230" aria-label="Entrar no Hangman Challenge">
-    <span>Hangman Challenge</span>
-  </a>
+    <a class="game-btn hangman" href="9ano-hangman-challenge.html?v=230" aria-label="Entrar no Hangman Challenge">
+      <span class="game-icon">🔤</span>
+      <span class="game-text">
+        <span class="game-title">Hangman Challenge</span>
+        <span class="game-desc">Descubra palavras importantes do vocabulário do 9º ano.</span>
+      </span>
+      <span class="game-arrow">›</span>
+    </a>
 
-  <a class="game-link btn-listening" href="9ano-listening-speaking-game.html?v=230" aria-label="Entrar no Listening and Speaking">
-    <span>Listening and Speaking</span>
-  </a>
+    <a class="game-btn listening" href="9ano-listening-speaking-game.html?v=230" aria-label="Entrar no Listening and Speaking">
+      <span class="game-icon">🎧</span>
+      <span class="game-text">
+        <span class="game-title">Listening & Speaking</span>
+        <span class="game-desc">Ouça, repita e treine pronúncia em inglês.</span>
+      </span>
+      <span class="game-arrow">›</span>
+    </a>
 
-  <a class="game-link btn-smart" href="9ano-smart-choice-grammar.html?v=230" aria-label="Entrar no Smart Choice Grammar">
-    <span>Smart Choice Grammar</span>
-  </a>
+    <a class="game-btn smart" href="9ano-smart-choice-grammar.html?v=230" aria-label="Entrar no Smart Choice Grammar">
+      <span class="game-icon">🧠</span>
+      <span class="game-text">
+        <span class="game-title">Smart Choice Grammar</span>
+        <span class="game-desc">Escolha a melhor opção em desafios de gramática e leitura.</span>
+      </span>
+      <span class="game-arrow">›</span>
+    </a>
 
-  <a class="vocab-btn" href="9ano-vocab-match.html?v=1" aria-label="Entrar no Vocab Match Challenge">
-    🧠⚡ Vocab Match Challenge <small>novo treino de vocabulário</small>
-  </a>
+    <a class="game-btn vocab" href="9ano-vocab-match.html?v=1" aria-label="Entrar no Vocab Match Challenge">
+      <span class="game-icon">🧠⚡</span>
+      <span class="game-text">
+        <span class="game-title">Vocab Match Challenge</span>
+        <span class="game-desc">Associe inglês e português com vocabulário do 2º bimestre.</span>
+      </span>
+      <span class="game-arrow">›</span>
+    </a>
+  </nav>
 </main>
 
 <audio id="bgMusic" loop preload="auto">
