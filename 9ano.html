@@ -8,291 +8,152 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 
-:root{
-  --bg1:#06111f;
-  --bg2:#12143d;
-  --card:rgba(9,13,45,.86);
-  --card2:rgba(15,23,70,.92);
-  --line:rgba(255,255,255,.18);
-  --gold:#ffe66d;
-  --gold2:#ffb703;
-  --blue:#38bdf8;
-  --pink:#e11d48;
-  --green:#22c55e;
-  --text:#f8fafc;
-  --muted:#dbeafe;
-}
-
 html,body{
   width:100%;
   min-height:100%;
   font-family:Arial,Helvetica,sans-serif;
-  color:var(--text);
-  background:
-    radial-gradient(circle at 16% 14%, rgba(56,189,248,.25) 0 8%, transparent 9%),
-    radial-gradient(circle at 84% 10%, rgba(255,230,109,.18) 0 8%, transparent 9%),
-    radial-gradient(circle at 50% 92%, rgba(225,29,72,.20) 0 12%, transparent 13%),
-    linear-gradient(180deg,var(--bg1),var(--bg2));
+  background:#ff6a00;
+  overflow:hidden;
 }
 
 body{
   min-height:100dvh;
   display:flex;
+  align-items:center;
   justify-content:center;
-  padding:10px;
 }
 
-.page{
-  width:min(100%,760px);
-  min-height:calc(100dvh - 20px);
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-}
-
-.header{
+.stage{
   position:relative;
+  width:min(100vw,520px);
+  height:100dvh;
   overflow:hidden;
-  border:1px solid rgba(255,230,109,.26);
-  border-radius:24px;
-  padding:18px 14px 16px;
-  text-align:center;
-  background:
-    linear-gradient(135deg,rgba(29,78,216,.86),rgba(124,58,237,.80) 50%,rgba(225,29,72,.82));
-  box-shadow:0 18px 34px rgba(0,0,0,.30),0 0 28px rgba(255,230,109,.08);
+  background:#ff6a00;
+  box-shadow:0 0 40px rgba(0,0,0,.35);
+}
+
+.bg{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  display:block;
+  background:#ff6a00;
 }
 
 .back{
   position:absolute;
-  left:10px;
-  top:10px;
+  z-index:10;
+  left:3.2%;
+  top:1.2%;
   text-decoration:none;
   color:#fff;
-  font-size:12px;
-  font-weight:900;
+  background:rgba(0,0,0,.42);
+  border:1px solid rgba(255,255,255,.45);
+  border-radius:999px;
   padding:7px 10px;
-  border-radius:999px;
-  background:rgba(255,255,255,.13);
-  border:1px solid rgba(255,255,255,.28);
-}
-
-.badge{
-  display:inline-block;
-  margin-bottom:8px;
-  padding:6px 12px;
-  border-radius:999px;
   font-size:12px;
-  font-weight:1000;
-  color:#172033;
-  background:linear-gradient(135deg,var(--gold),var(--gold2));
-  box-shadow:0 8px 18px rgba(255,183,3,.18);
-}
-
-h1{
-  font-size:clamp(32px,9vw,54px);
-  line-height:1;
-  margin:4px 0 6px;
-  text-shadow:0 4px 12px rgba(0,0,0,.28);
-}
-
-.subtitle{
-  max-width:620px;
-  margin:0 auto;
-  color:#fff7c2;
   font-weight:900;
-  font-size:15px;
-  line-height:1.35;
+  backdrop-filter:blur(4px);
+  box-shadow:0 6px 14px rgba(0,0,0,.25);
 }
 
-.motivation{
-  border:1px solid rgba(255,230,109,.30);
-  border-radius:20px;
-  padding:13px;
-  background:rgba(255,230,109,.10);
-  color:#fff7c2;
-  font-weight:900;
-  line-height:1.42;
-  text-align:center;
-  box-shadow:0 10px 24px rgba(0,0,0,.18);
-}
-
-.grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
-}
-
-.game-card{
-  position:relative;
-  overflow:hidden;
-  min-height:174px;
+.game-link{
+  position:absolute;
+  z-index:8;
+  display:block;
+  border-radius:24px;
   text-decoration:none;
-  color:var(--text);
-  padding:15px;
-  border-radius:22px;
-  background:linear-gradient(180deg,var(--card2),var(--card));
-  border:1px solid var(--line);
-  box-shadow:0 14px 28px rgba(0,0,0,.25);
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-  transform:translateY(0);
-  transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  cursor:pointer;
   -webkit-tap-highlight-color:transparent;
 }
 
-.game-card:active{
-  transform:scale(.985);
-  box-shadow:0 0 26px rgba(255,230,109,.28);
-  border-color:rgba(255,230,109,.55);
+.game-link:active{
+  background:rgba(255,255,255,.14);
+  box-shadow:0 0 22px rgba(255,255,255,.65), inset 0 0 18px rgba(255,255,255,.18);
 }
 
-.game-card::before{
-  content:"";
+.game-link span{
   position:absolute;
-  inset:-40%;
-  background:radial-gradient(circle,rgba(255,230,109,.12),transparent 46%);
-  transform:translate(32%,-24%);
-  pointer-events:none;
+  width:1px;
+  height:1px;
+  overflow:hidden;
+  clip-path:inset(50%);
+  white-space:nowrap;
 }
 
-.icon{
-  width:54px;
-  height:54px;
-  border-radius:18px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:30px;
-  background:linear-gradient(135deg,rgba(255,230,109,.22),rgba(56,189,248,.16),rgba(225,29,72,.13));
-  border:1px solid rgba(255,230,109,.32);
-  box-shadow:0 8px 18px rgba(0,0,0,.20);
+/* Posições dos quatro cards na imagem vertical */
+.btn-spin{
+  left:7.2%;
+  top:49.2%;
+  width:40.8%;
+  height:20.8%;
 }
 
-.game-title{
-  margin-top:10px;
-  color:#fff;
-  font-size:21px;
-  line-height:1.08;
-  font-weight:1000;
+.btn-hangman{
+  left:52.2%;
+  top:49.2%;
+  width:40.8%;
+  height:20.8%;
 }
 
-.game-desc{
-  margin-top:7px;
-  color:#dbeafe;
-  font-size:13px;
-  line-height:1.28;
-  font-weight:800;
+.btn-listening{
+  left:7.2%;
+  top:72.3%;
+  width:40.8%;
+  height:20.8%;
 }
 
-.tag{
-  margin-top:10px;
-  align-self:flex-start;
-  padding:6px 10px;
-  border-radius:999px;
-  color:#172033;
-  background:linear-gradient(135deg,#dbeafe,#a7f3d0);
-  font-size:11px;
-  font-weight:1000;
+.btn-smart{
+  left:52.2%;
+  top:72.3%;
+  width:40.8%;
+  height:20.8%;
 }
 
-.card-spin{border-left:5px solid #ffe66d}
-.card-hangman{border-left:5px solid #fb7185}
-.card-listening{border-left:5px solid #38bdf8}
-.card-smart{border-left:5px solid #22c55e}
-
-.footer{
-  text-align:center;
-  color:#fff3b0;
-  font-size:12px;
-  font-weight:900;
-  padding:4px 0 8px;
+@media(min-width:700px){
+  body{
+    background:
+      radial-gradient(circle at top,rgba(255,230,109,.22),transparent 38%),
+      linear-gradient(180deg,#561200,#ff6a00);
+  }
 }
 
-@media(max-width:680px){
-  body{padding:8px}
-  .page{min-height:calc(100dvh - 16px);gap:10px}
-  .header{border-radius:20px;padding:42px 12px 14px}
-  .back{font-size:11px;padding:6px 9px}
-  .subtitle{font-size:13px}
-  .motivation{font-size:12.5px;padding:11px}
-  .grid{grid-template-columns:1fr;gap:10px}
-  .game-card{min-height:138px;padding:13px;border-radius:18px}
-  .icon{width:46px;height:46px;font-size:25px;border-radius:15px}
-  .game-title{font-size:18px;margin-top:8px}
-  .game-desc{font-size:12.2px}
-  .tag{font-size:10.5px;margin-top:8px}
-}
-
-@media(max-height:720px) and (max-width:680px){
-  .header{padding-top:36px;padding-bottom:10px}
-  h1{font-size:31px}
-  .subtitle{font-size:12px}
-  .motivation{display:none}
-  .game-card{min-height:118px}
-  .game-desc{font-size:11.5px}
+@media(max-height:720px){
+  .back{
+    font-size:10px;
+    padding:6px 8px;
+  }
 }
 </style>
 </head>
 
 <body>
-<main class="page">
 
-  <section class="header">
-    <a class="back" href="index.html">← Hub</a>
-    <div class="badge">English Game Hub</div>
-    <h1>9º Ano</h1>
-    <p class="subtitle">Jogos de revisão e prática para fortalecer gramática, vocabulário, listening e conteúdos do bimestre.</p>
-  </section>
+<main class="stage">
+  <img
+    class="bg"
+    src="9ano-tela-inicial-laranja.png?v=1"
+    alt="English Game Hub - 9º Ano"
+  />
 
-  <section class="motivation">
-    Aprender inglês fica mais leve quando você pratica em desafios curtos, erra, entende o motivo e tenta de novo. Escolha um jogo e comece sua missão!
-  </section>
+  <a class="back" href="index.html">← Hub</a>
 
-  <section class="grid">
+  <a class="game-link btn-spin" href="9ano-spin-challenge.html?v=170" aria-label="Entrar no Spin Challenge">
+    <span>Spin Challenge</span>
+  </a>
 
-    <a class="game-card card-spin" href="9ano-spin-challenge.html?v=160">
-      <div>
-        <div class="icon">🎡</div>
-        <h2 class="game-title">Spin Challenge</h2>
-        <p class="game-desc">Roleta com fases, corações e perguntas contextualizadas sobre connectors, prefixes, suffixes, feelings e revisão.</p>
-      </div>
-      <span class="tag">Jogar roleta</span>
-    </a>
+  <a class="game-link btn-hangman" href="9ano-hangman-challenge.html?v=170" aria-label="Entrar no Hangman Challenge">
+    <span>Hangman Challenge</span>
+  </a>
 
-    <a class="game-card card-hangman" href="9ano-hangman-challenge.html?v=160">
-      <div>
-        <div class="icon">🎃</div>
-        <h2 class="game-title">Hangman Challenge</h2>
-        <p class="game-desc">Treino de vocabulário com palavras do 9º ano: emotions, connectors, word formation, prefixes, suffixes e past memories.</p>
-      </div>
-      <span class="tag">Treinar vocabulário</span>
-    </a>
+  <a class="game-link btn-listening" href="9ano-listening-speaking-game.html?v=170" aria-label="Entrar no Listening and Speaking">
+    <span>Listening and Speaking</span>
+  </a>
 
-    <a class="game-card card-listening" href="9ano-listening-speaking-game.html?v=160">
-      <div>
-        <div class="icon">🎧</div>
-        <h2 class="game-title">Listening & Speaking</h2>
-        <p class="game-desc">Ouvir, repetir e reconhecer frases em inglês com foco em pronúncia, compreensão e prática oral guiada.</p>
-      </div>
-      <span class="tag">Ouvir e falar</span>
-    </a>
-
-    <a class="game-card card-smart" href="9ano-smart-choice-grammar.html?v=160">
-      <div>
-        <div class="icon">💡</div>
-        <h2 class="game-title">Smart Choice Grammar</h2>
-        <p class="game-desc">Quiz de gramática com pronomes, verb to be, do/does, did/didn’t, negativas, perguntas e correção de erros.</p>
-      </div>
-      <span class="tag">Desafio gramatical</span>
-    </a>
-
-  </section>
-
-  <footer class="footer">
-    Jogo idealizado pelo professor Jasson Bruno.
-  </footer>
-
+  <a class="game-link btn-smart" href="9ano-smart-choice-grammar.html?v=170" aria-label="Entrar no Smart Choice Grammar">
+    <span>Smart Choice Grammar</span>
+  </a>
 </main>
+
 </body>
 </html>
