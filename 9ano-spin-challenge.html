@@ -294,6 +294,59 @@ header{padding:14px 18px 12px;text-align:center;background:linear-gradient(135de
   body.game-mode .wheel-label{font-size:11px;transform:rotate(var(--r)) translateY(calc(-1 * min(36vw,140px,calc((100dvh - 142px)/2 - 24px)))) rotate(calc(-1 * var(--r)));}
 }
 
+
+/* ===== CORREÇÃO — Dica destacada e separada da pergunta ===== */
+.hint-box{
+  display:none;
+  width:100%;
+  margin:4px 0 12px;
+  padding:12px 14px;
+  border-radius:18px;
+  background:linear-gradient(135deg,rgba(255,230,109,.24),rgba(255,184,0,.12));
+  border:2px solid rgba(255,230,109,.72);
+  color:#fff8d6;
+  font-weight:1000;
+  line-height:1.35;
+  box-shadow:0 0 18px rgba(255,230,109,.16), inset 0 0 0 1px rgba(255,255,255,.06);
+}
+.hint-box.show{display:block;}
+.hint-title{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  margin-bottom:6px;
+  color:var(--yellow);
+  font-size:15px;
+  text-transform:uppercase;
+  letter-spacing:.4px;
+}
+.hint-text{
+  font-size:15px;
+  color:#fff7cc;
+}
+.question-card .prompt{
+  margin-top:2px;
+  padding-top:6px;
+}
+@media(max-width:860px){
+  .question-card .inner-modal{
+    max-height:92dvh;
+    padding:16px;
+  }
+  .hint-box{
+    margin:4px 0 14px;
+    padding:12px;
+    border-radius:17px;
+  }
+  .hint-title{font-size:14px;}
+  .hint-text{font-size:14px;}
+  .question-card .prompt{
+    font-size:19px;
+    line-height:1.25;
+    margin-bottom:4px;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -330,7 +383,7 @@ header{padding:14px 18px 12px;text-align:center;background:linear-gradient(135de
   </div>
 </section>
 
-<section id="gameScreen" class="screen"><div class="stats"><div class="stat"><b id="score">0</b><span>Pontos</span></div><div class="stat"><b id="corrects">0</b><span>Acertos</span></div><div class="stat"><b id="combo">0</b><span>Combo</span></div><div class="stat"><b id="round">1/20</b><span>Rodada</span></div></div><div class="mission"><span id="missionLabel">Mission 1</span><span id="statusLabel">Spin the wheel!</span></div><div class="lives" id="lives"></div><div class="game-grid"><div class="card wheel-card"><div class="wheel-wrap"><div class="pointer"></div><div class="wheel-stage"><div id="wheel" class="wheel" data-theme="SPIN"><div class="wheel-label" style="--r:25.7deg">Connectors</div><div class="wheel-label" style="--r:77.1deg">Feelings</div><div class="wheel-label" style="--r:128.6deg">Prefixes</div><div class="wheel-label" style="--r:180deg">Suffixes</div><div class="wheel-label" style="--r:231.4deg">Word<br>Formation</div><div class="wheel-label" style="--r:282.9deg">Grammar</div><div class="wheel-label" style="--r:334.3deg">Review</div></div></div><button id="spinBtn" class="btn" onclick="spinWheel()">🎡 SPIN</button><div id="sorted" class="sorted">Clique em SPIN para começar.</div></div></div><div id="questionCard" class="card question-card"><div class="inner-modal"><div id="theme" class="theme-chip">Tema</div><p id="prompt" class="prompt">Gire a roleta para liberar a pergunta.</p><div id="options" class="options"></div><div id="feedback" class="feedback"></div></div></div></div></section>
+<section id="gameScreen" class="screen"><div class="stats"><div class="stat"><b id="score">0</b><span>Pontos</span></div><div class="stat"><b id="corrects">0</b><span>Acertos</span></div><div class="stat"><b id="combo">0</b><span>Combo</span></div><div class="stat"><b id="round">1/20</b><span>Rodada</span></div></div><div class="mission"><span id="missionLabel">Mission 1</span><span id="statusLabel">Spin the wheel!</span></div><div class="lives" id="lives"></div><div class="game-grid"><div class="card wheel-card"><div class="wheel-wrap"><div class="pointer"></div><div class="wheel-stage"><div id="wheel" class="wheel" data-theme="SPIN"><div class="wheel-label" style="--r:25.7deg">Connectors</div><div class="wheel-label" style="--r:77.1deg">Feelings</div><div class="wheel-label" style="--r:128.6deg">Prefixes</div><div class="wheel-label" style="--r:180deg">Suffixes</div><div class="wheel-label" style="--r:231.4deg">Word<br>Formation</div><div class="wheel-label" style="--r:282.9deg">Grammar</div><div class="wheel-label" style="--r:334.3deg">Review</div></div></div><button id="spinBtn" class="btn" onclick="spinWheel()">🎡 SPIN</button><div id="sorted" class="sorted">Clique em SPIN para começar.</div></div></div><div id="questionCard" class="card question-card"><div class="inner-modal"><div id="theme" class="theme-chip">Tema</div><div id="hintBox" class="hint-box"></div><p id="prompt" class="prompt">Gire a roleta para liberar a pergunta.</p><div id="options" class="options"></div><div id="feedback" class="feedback"></div></div></div></div></section>
 <section id="finalScreen" class="screen"><div class="card final"><h2 id="finalTitle">🏆 Mission Complete!</h2><div id="finalMsg" class="final-message"></div><div class="summary"><div class="summary-box"><span>Pontuação</span><b id="fScore">0</b></div><div class="summary-box"><span>Acertos</span><b id="fCorrects">0/10</b></div><div class="summary-box"><span>Combo</span><b id="fCombo">0</b></div><div class="summary-box"><span>Vidas</span><b id="fLives">0/3</b></div></div><h3>🏆 Ranking motivacional</h3><div id="rankList" class="rank-list"></div><div class="actions"><button id="nextPhaseBtn" class="btn" onclick="goNextPhase()">Ir para a próxima fase</button><button id="retryPhaseBtn" class="btn" onclick="startGame(state.phase||1)">Repetir fase</button><button class="btn btn-secondary" onclick="goToPhases()">Voltar às fases</button></div></div></section>
 </main></div>
 <script>
@@ -391,7 +444,7 @@ function startGame(phase=1){
   if(phase>unlockedPhase){toast('Essa fase ainda está bloqueada.');renderPhases();show('phaseScreen');return;}
   const phaseInfo=PHASES.find(p=>p.id===phase)||PHASES[0];
   state={phase,phaseTitle:phaseInfo.title,score:0,corrects:0,combo:0,maxCombo:0,round:1,lives:MAX_LIVES,bag:makeBag(phase),current:null,answered:false,spinning:false,rotation:0,completed:false};
-  $('wheel').style.transform='rotate(0deg)';$('wheel').dataset.theme='SPIN';$('sorted').textContent='Clique em SPIN para começar.';$('prompt').textContent='Gire a roleta para liberar a pergunta.';$('theme').textContent='Tema';$('options').innerHTML='';$('feedback').className='feedback';$('feedback').innerHTML='';$('spinBtn').disabled=false;updateStats();show('gameScreen');toast(`Fase ${phase}: ${phaseInfo.title}`)}
+  $('wheel').style.transform='rotate(0deg)';$('wheel').dataset.theme='SPIN';$('sorted').textContent='Clique em SPIN para começar.';$('prompt').textContent='Gire a roleta para liberar a pergunta.';$('theme').textContent='Tema';$('options').innerHTML='';clearHintBox();$('feedback').className='feedback';$('feedback').innerHTML='';$('spinBtn').disabled=false;updateStats();show('gameScreen');toast(`Fase ${phase}: ${phaseInfo.title}`)}
 function updateStats(){
   $('score').textContent=state.score;
   $('corrects').textContent=state.corrects;
@@ -400,8 +453,36 @@ function updateStats(){
   $('missionLabel').textContent=`Fase ${state.phase||1}/6 — ${state.phaseTitle||'Warm-up Challenge'}`;
   $('lives').innerHTML='Vidas: '+Array.from({length:MAX_LIVES},(_,i)=>`<span class="heart ${i>=state.lives?'lost':''}">♥</span>`).join('')
 }
-function spinWheel(){if(state.spinning||state.answered)return;if(state.round>TOTAL_ROUNDS)return finish(true);playClick();state.current=state.bag[state.round-1];const q=state.current;const idx=THEMES.indexOf(q.theme), center=idx*SEGMENT+SEGMENT/2, target=360-center;closeQuestionMobile();state.spinning=true;$('spinBtn').disabled=true;$('wheel').classList.add('spinning');$('statusLabel').textContent='Wheel spinning...';$('sorted').textContent='Girando... atenção!';$('prompt').textContent='A roleta está girando...';$('options').innerHTML='';$('feedback').className='feedback';$('feedback').innerHTML='';$('wheel').dataset.theme='SPIN';startSpinSound();const currentNorm=((state.rotation%360)+360)%360;const delta=((target-currentNorm)+360)%360;const turns=8+Math.floor(Math.random()*4);const overshoot=(10+Math.random()*16)*(Math.random()>.5?1:-1);const first=state.rotation+turns*360+delta+overshoot;const final=state.rotation+turns*360+delta;$('wheel').style.transition='transform 5.4s cubic-bezier(.06,.88,.07,1)';state.rotation=first;$('wheel').style.transform=`rotate(${state.rotation}deg)`;setTimeout(()=>$('sorted').textContent='Quase parando...',2400);setTimeout(()=>{state.rotation=final;$('wheel').style.transition='transform .75s cubic-bezier(.2,.95,.18,1)';$('wheel').style.transform=`rotate(${state.rotation}deg)`},5450);setTimeout(()=>{state.spinning=false;stopSpinSound();$('wheel').classList.remove('spinning');$('wheel').style.transition='transform 5.4s cubic-bezier(.06,.88,.07,1)';$('wheel').dataset.theme=q.theme;$('sorted').textContent=`Tema sorteado: ${q.theme}`;$('statusLabel').textContent='Answer the question!';renderQuestion(q)},6300)}
-function renderQuestion(q){state.answered=false;$('theme').textContent=q.theme;$('prompt').textContent=q.q;$('options').innerHTML='';shuffle(q.o).forEach((opt,i)=>{const b=document.createElement('button');b.className='option';b.dataset.letter='ABCD'[i];b.type='button';b.textContent=opt;b.onclick=()=>answer(opt);$('options').appendChild(b)});$('feedback').className='feedback';$('feedback').innerHTML='';if(isMobile())setTimeout(()=>$('questionCard').classList.add('show-mobile'),180)}
+function spinWheel(){if(state.spinning||state.answered)return;if(state.round>TOTAL_ROUNDS)return finish(true);playClick();state.current=state.bag[state.round-1];const q=state.current;const idx=THEMES.indexOf(q.theme), center=idx*SEGMENT+SEGMENT/2, target=360-center;closeQuestionMobile();state.spinning=true;$('spinBtn').disabled=true;$('wheel').classList.add('spinning');$('statusLabel').textContent='Wheel spinning...';$('sorted').textContent='Girando... atenção!';$('prompt').textContent='A roleta está girando...';$('options').innerHTML='';clearHintBox();$('feedback').className='feedback';$('feedback').innerHTML='';$('wheel').dataset.theme='SPIN';startSpinSound();const currentNorm=((state.rotation%360)+360)%360;const delta=((target-currentNorm)+360)%360;const turns=8+Math.floor(Math.random()*4);const overshoot=(10+Math.random()*16)*(Math.random()>.5?1:-1);const first=state.rotation+turns*360+delta+overshoot;const final=state.rotation+turns*360+delta;$('wheel').style.transition='transform 5.4s cubic-bezier(.06,.88,.07,1)';state.rotation=first;$('wheel').style.transform=`rotate(${state.rotation}deg)`;setTimeout(()=>$('sorted').textContent='Quase parando...',2400);setTimeout(()=>{state.rotation=final;$('wheel').style.transition='transform .75s cubic-bezier(.2,.95,.18,1)';$('wheel').style.transform=`rotate(${state.rotation}deg)`},5450);setTimeout(()=>{state.spinning=false;stopSpinSound();$('wheel').classList.remove('spinning');$('wheel').style.transition='transform 5.4s cubic-bezier(.06,.88,.07,1)';$('wheel').dataset.theme=q.theme;$('sorted').textContent=`Tema sorteado: ${q.theme}`;$('statusLabel').textContent='Answer the question!';renderQuestion(q)},6300)}
+
+function splitHintAndPrompt(text){
+  const raw=String(text||'');
+  if(!raw.trim().startsWith('💡 Dica:')){
+    return {hint:'', prompt:raw};
+  }
+  const withoutIcon=raw.replace(/^💡\s*Dica:\s*/,'').trim();
+  const parts=withoutIcon.split(/\n\s*\n/);
+  const hint=(parts.shift()||'').trim();
+  const prompt=parts.join('\n\n').trim();
+  return {hint, prompt: prompt || raw};
+}
+function clearHintBox(){
+  const h=$('hintBox');
+  if(!h)return;
+  h.className='hint-box';
+  h.innerHTML='';
+}
+function showHintBox(text){
+  const h=$('hintBox');
+  if(!h)return;
+  if(!text){clearHintBox();return;}
+  h.className='hint-box show';
+  h.innerHTML=`<div class="hint-title">💡 Dica</div><div class="hint-text">${escapeHtml(text)}</div>`;
+}
+function escapeHtml(text){
+  return String(text||'').replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m]));
+}
+function renderQuestion(q){state.answered=false;$('theme').textContent=q.theme;const qp=splitHintAndPrompt(q.q);showHintBox(qp.hint);$('prompt').textContent=qp.prompt;$('options').innerHTML='';shuffle(q.o).forEach((opt,i)=>{const b=document.createElement('button');b.className='option';b.dataset.letter='ABCD'[i];b.type='button';b.textContent=opt;b.onclick=()=>answer(opt);$('options').appendChild(b)});$('feedback').className='feedback';$('feedback').innerHTML='';if(isMobile())setTimeout(()=>$('questionCard').classList.add('show-mobile'),180)}
 const good=['Great job!','Excellent!','Amazing answer!','Fantastic!','You got it!','Super!'];const tryMsgs=['Almost there!','Nice try!','Keep going!','Don’t give up!','You can do it!'];
 function answer(selected){
   if(state.answered||state.spinning)return;
@@ -457,7 +538,7 @@ function continueAfterFeedback(){
   if(state.round>=TOTAL_ROUNDS)return finish(true);
   nextRound();
 }
-function nextRound(){state.round++;state.answered=false;$('spinBtn').disabled=false;$('theme').textContent='Tema';$('prompt').textContent='Gire a roleta para liberar a próxima pergunta.';$('options').innerHTML='';$('feedback').className='feedback';$('feedback').innerHTML='';$('sorted').textContent='Clique em SPIN para continuar.';$('statusLabel').textContent='Spin the wheel!';closeQuestionMobile();updateStats()}
+function nextRound(){state.round++;state.answered=false;$('spinBtn').disabled=false;$('theme').textContent='Tema';$('prompt').textContent='Gire a roleta para liberar a próxima pergunta.';$('options').innerHTML='';clearHintBox();$('feedback').className='feedback';$('feedback').innerHTML='';$('sorted').textContent='Clique em SPIN para continuar.';$('statusLabel').textContent='Spin the wheel!';closeQuestionMobile();updateStats()}
 function closeQuestionMobile(){$('questionCard').classList.remove('show-mobile')}
 function finish(completed){
   closeQuestionMobile();
@@ -507,7 +588,7 @@ function toast(text){const old=document.querySelector('.toast');if(old)old.remov
 // Se algum arquivo não carregar, o jogo mantém um som simples gerado pelo navegador.
 const soundFiles={
   click:'click.wav',
-  spin:'spin.wav',
+  spin:'spin-wheel-new.wav',
   success:'success.wav',
   error:'error.wav',
   combo:'combo.wav',
