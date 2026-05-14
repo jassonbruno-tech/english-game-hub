@@ -97,7 +97,7 @@ main{flex:1;min-height:0;padding:10px;overflow:hidden}
       <h3>Como funciona?</h3>
       <div class="info-list">
         <div class="info-item"><b>🎯 50 questões</b><br/>A cada 10 rodadas, 8 questões são do 2º bimestre e 2 são revisão.</div>
-        <div class="info-item"><b>⏱️ 20 segundos</b><br/>Leia o comando em português e escolha a frase correta em inglês.</div>
+        <div class="info-item"><b>⏱️ 30 segundos</b><br/>Leia o comando em português e escolha a frase correta em inglês.</div>
         <div class="info-item"><b>🏆 Ranking</b><br/>Ao terminar, veja sua pontuação e o Ranking Geral do jogo.</div>
       </div>
     </div>
@@ -119,7 +119,7 @@ main{flex:1;min-height:0;padding:10px;overflow:hidden}
     <div id="visual" class="visual">🧠</div>
     <div id="prompt" class="prompt">Pergunta</div>
     <div class="timer-wrap"><div id="timerBar" class="timer-bar"></div></div>
-    <div id="timerText" class="timer-text">20 segundos</div>
+    <div id="timerText" class="timer-text">30 segundos</div>
     <div id="options" class="options"></div>
     <div class="lifelines">
       <button id="fiftyBtn" class="help-btn" onclick="useFifty()">50/50</button>
@@ -182,7 +182,7 @@ const SECOND_BANK = [{"theme": "Likes and Dislikes", "visual": "❤️", "prompt
 const REVIEW_BANK = [{"theme": "Review", "visual": "👋", "prompt": "Ao chegar à escola pela manhã, qual expressão combina melhor?", "answer": "Good morning!", "options": ["Goodbye!", "Good night!", "See you!", "Good morning!", "I am ten."], "tip": "Good morning é usado pela manhã.", "bimester": "1"}, {"theme": "Review", "visual": "👋", "prompt": "Ao se despedir de um colega, qual expressão combina melhor?", "answer": "Goodbye!", "options": ["What is your name?", "I like pizza.", "She is happy.", "Good morning!", "Goodbye!"], "tip": "Goodbye é usado para despedida.", "bimester": "1"}, {"theme": "Review", "visual": "🧑", "prompt": "Qual pronome substitui uma menina?", "answer": "She", "options": ["She", "They", "We", "He", "It"], "tip": "She é usado para menina/mulher.", "bimester": "1"}, {"theme": "Review", "visual": "🧑", "prompt": "Qual pronome substitui dois amigos?", "answer": "They", "options": ["They", "It", "She", "I", "He"], "tip": "They é usado para eles/elas.", "bimester": "1"}, {"theme": "Review", "visual": "🎒", "prompt": "Qual comando combina com abrir o livro?", "answer": "Open your book.", "options": ["Open your book.", "Listen to music.", "Close the door.", "Stand up.", "Sit down."], "tip": "Open your book significa abrir o livro.", "bimester": "1"}, {"theme": "Review", "visual": "🎒", "prompt": "Qual comando combina com sentar?", "answer": "Sit down.", "options": ["Repeat, please.", "Open your book.", "Good evening.", "Stand up.", "Sit down."], "tip": "Sit down significa sente-se.", "bimester": "1"}, {"theme": "Review", "visual": "🧩", "prompt": "Qual adjetivo possessivo combina com he?", "answer": "His", "options": ["Her", "Your", "Their", "His", "My"], "tip": "He combina com his.", "bimester": "1"}, {"theme": "Review", "visual": "🧩", "prompt": "Qual adjetivo possessivo combina com she?", "answer": "Her", "options": ["Our", "My", "Her", "His", "Your"], "tip": "She combina com her.", "bimester": "1"}, {"theme": "Review", "visual": "🔠", "prompt": "Uma pessoa pergunta seu nome. Qual resposta combina melhor?", "answer": "My name is Lucas.", "options": ["Open your book.", "Goodbye!", "They are ready.", "I am at school.", "My name is Lucas."], "tip": "My name is... responde ao nome.", "bimester": "1"}, {"theme": "Review", "visual": "🔠", "prompt": "Uma pessoa pergunta sua idade. Qual resposta está correta?", "answer": "I am twelve years old.", "options": ["I have twelve years old.", "I twelve years old.", "I like twelve years old.", "I am twelve years old.", "I are twelve years old."], "tip": "Em inglês, idade usa verb to be: I am.", "bimester": "1"}];
 let state = {
   deck: [], index: 0, score: 0, correct: 0, wrong: 0, lives: 5,
-  skipLeft: 3, tipUsed: false, fiftyUsed: false, timer: null, timeLeft: 20,
+  skipLeft: 3, tipUsed: false, fiftyUsed: false, timer: null, timeLeft: 30,
   player: null, finished: false, lastResult: null
 };
 function el(id){return document.getElementById(id)}
@@ -236,11 +236,11 @@ function loadQuestion(){
 }
 function missionTitle(n){return ["Likes and Dislikes","Frequency Challenge","Opinion Time","Grammar Focus","Final Review"][n-1] || "Smart Choice"}
 function startTimer(){
-  state.timeLeft=20;
-  el("timerBar").style.width="100%"; el("timerText").textContent="20 segundos";
+  state.timeLeft=30;
+  el("timerBar").style.width="100%"; el("timerText").textContent="30 segundos";
   state.timer=setInterval(()=>{
     state.timeLeft-=0.2;
-    const pct=Math.max(0,(state.timeLeft/20)*100);
+    const pct=Math.max(0,(state.timeLeft/30)*100);
     el("timerBar").style.width=pct+"%";
     el("timerText").textContent=Math.ceil(Math.max(0,state.timeLeft))+" segundos";
     if(state.timeLeft<=0){clearInterval(state.timer); timeoutQuestion();}
