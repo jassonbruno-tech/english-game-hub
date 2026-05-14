@@ -526,6 +526,7 @@
     </div>
   </div>
   <div class="confetti" id="confetti"></div>
+  <audio id="victoryAudio" src="victory.wav" preload="auto"></audio>
 
   <script>
     const TOTAL_PHASES = 10;
@@ -553,6 +554,8 @@
     let englishItems = [];
     let portugueseItems = [];
     let usedPairIds = new Set();
+    let phaseRoundIds = [];
+    let nextPairPointer = 0;
     let locked = false;
 
     const homeScreen = document.getElementById("homeScreen");
@@ -572,6 +575,7 @@
     const resultText = document.getElementById("resultText");
     const mainResultBtn = document.getElementById("mainResultBtn");
     const confettiBox = document.getElementById("confetti");
+    const victoryAudio = document.getElementById("victoryAudio");
 
     function showOnly(screen){
       [homeScreen, phaseScreen, gameScreen].forEach(s => s.classList.remove("active"));
@@ -630,12 +634,24 @@
     function restartCurrentPhase(){ startPhase(currentPhase); }
 
     function buildInitialBoard(){
-      const ids = getRandomAvailableIds(5);
-      ids.forEach(id => usedPairIds.add(id));
-      englishItems = ids.map(id => makeItem(id, "en"));
-      portugueseItems = ids.map(id => makeItem(id, "pt"));
+      phaseRoundIds = getRoundPairIds(10);
+      nextPairPointer = 0;
+
+      const initialIds = phaseRoundIds.slice(nextPairPointer, nextPairPointer + 5);
+      nextPairPointer += initialIds.length;
+
+      initialIds.forEach(id => usedPairIds.add(id));
+      englishItems = initialIds.map(id => makeItem(id, "en"));
+      portugueseItems = initialIds.map(id => makeItem(id, "pt"));
+
       shuffle(englishItems);
       shufflePortugueseAvoidRows();
+    }
+
+    function getRoundPairIds(count){
+      const all = phases[currentPhase].words.map((_, i) => i);
+      shuffle(all);
+      return all.slice(0, count);
     }
 
     function makeItem(pairId, lang){
@@ -805,10 +821,9 @@
     }
 
     function refillBoardToFivePairsRandom(){
-      while(englishItems.length < 5 && portugueseItems.length < 5){
-        const ids = getRandomAvailableIds(1);
-        if(ids.length === 0) break;
-        const id = ids[0];
+      while(englishItems.length < 5 && portugueseItems.length < 5 && nextPairPointer < phaseRoundIds.length){
+        const id = phaseRoundIds[nextPairPointer];
+        nextPairPointer++;
         usedPairIds.add(id);
         englishItems.push(makeItem(id, "en"));
         portugueseItems.push(makeItem(id, "pt"));
@@ -857,13 +872,25 @@
 
     function playVictoryMelody(){
       try{
+        victoryAudio.currentTime = 0;
+        victoryAudio.volume = 0.85;
+        const playPromise = victoryAudio.play();
+        if(playPromise && typeof playPromise.catch === "function"){
+          playPromise.catch(() => playVictoryFallback());
+        }
+      }catch(e){
+        playVictoryFallback();
+      }
+    }
+
+    function playVictoryFallback(){
+      try{
         const ctx = makeAudioContext();
         const master = ctx.createGain();
         master.gain.setValueAtTime(0.0001, ctx.currentTime);
         master.gain.exponentialRampToValueAtTime(0.25, ctx.currentTime + 0.03);
         master.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 1.55);
         master.connect(ctx.destination);
-
         const notes = [523.25, 659.25, 783.99, 1046.5, 783.99, 1046.5];
         notes.forEach((freq, i) => {
           const osc = ctx.createOscillator();
