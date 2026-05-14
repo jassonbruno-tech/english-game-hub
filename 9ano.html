@@ -114,13 +114,7 @@ body{
   white-space:nowrap;
 }
 
-/*
-  Áreas clicáveis ajustadas para a imagem assinada.
-  Correção: antes a área do Hangman estava grande demais e podia invadir
-  a região do Listening em algumas telas. Agora cada card tem uma área
-  menor e mais segura, sem sobreposição.
-*/
-
+/* Áreas clicáveis ajustadas para não sobrepor os cards */
 .btn-spin{
   left:7.6%;
   top:48.9%;
@@ -171,26 +165,26 @@ body{
 <main class="stage">
   <img
     class="bg"
-    src="9ano-tela-inicial-laranja-assinada.png?v=2"
+    src="9ano-tela-inicial-laranja-assinada.png?v=3"
     alt="English Game Hub - 9º Ano"
   />
 
   <a class="back" href="index.html">← Hub</a>
   <button class="sound-btn" onclick="toggleMusic()">🎵 Música</button>
 
-  <a class="game-link btn-spin" href="9ano-spin-challenge.html?v=190" aria-label="Entrar no Spin Challenge">
+  <a class="game-link btn-spin" href="9ano-spin-challenge.html?v=230" aria-label="Entrar no Spin Challenge">
     <span>Spin Challenge</span>
   </a>
 
-  <a class="game-link btn-hangman" href="9ano-hangman-challenge.html?v=190" aria-label="Entrar no Hangman Challenge">
+  <a class="game-link btn-hangman" href="9ano-hangman-challenge.html?v=230" aria-label="Entrar no Hangman Challenge">
     <span>Hangman Challenge</span>
   </a>
 
-  <a class="game-link btn-listening" href="9ano-listening-speaking-game.html?v=190" aria-label="Entrar no Listening and Speaking">
+  <a class="game-link btn-listening" href="9ano-listening-speaking-game.html?v=230" aria-label="Entrar no Listening and Speaking">
     <span>Listening and Speaking</span>
   </a>
 
-  <a class="game-link btn-smart" href="9ano-smart-choice-grammar.html?v=190" aria-label="Entrar no Smart Choice Grammar">
+  <a class="game-link btn-smart" href="9ano-smart-choice-grammar.html?v=230" aria-label="Entrar no Smart Choice Grammar">
     <span>Smart Choice Grammar</span>
   </a>
 </main>
