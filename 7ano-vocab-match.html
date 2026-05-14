@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>7º Ano - Vocab Match Challenge</title>
+  <style>
+    :root{
+      --bg1:#070718;
+      --bg2:#12002b;
+      --cyan:#00eaff;
+      --purple:#a855f7;
+      --green:#30ff9a;
+      --pink:#ff3df2;
+      --gold:#ffd166;
+      --red:#ff466d;
+      --text:#f5f7ff;
+      --muted:#a7b0d8;
+      --card:rgba(13, 18, 47, .82);
+      --glass:rgba(255,255,255,.07);
+    }
+
+    *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+
+    html, body{
+      margin:0;
+      width:100%;
+      min-height:100%;
+      font-family:Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at 15% 8%, rgba(0,234,255,.22), transparent 32%),
+        radial-gradient(circle at 85% 18%, rgba(168,85,247,.26), transparent 34%),
+        radial-gradient(circle at 50% 90%, rgba(255,61,242,.15), transparent 30%),
+        linear-gradient(160deg, var(--bg1), var(--bg2));
+      overflow-x:hidden;
+    }
+
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      background-image:
+        linear-gradient(rgba(0,234,255,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,234,255,.035) 1px, transparent 1px);
+      background-size:28px 28px;
+      mask-image:linear-gradient(to bottom, rgba(0,0,0,.85), rgba(0,0,0,.22));
+      pointer-events:none;
+    }
+
+    .app{
+      position:relative;
+      width:min(100%, 480px);
+      min-height:100dvh;
+      margin:0 auto;
+      padding:12px 12px 18px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .screen{
+      display:none;
+      min-height:calc(100dvh - 30px);
+      animation:fadeIn .35s ease both;
+    }
+
+    .screen.active{display:flex; flex-direction:column;}
+
+    #gameScreen.active{
+      height:calc(100dvh - 30px);
+      min-height:0;
+      overflow:hidden;
+    }
+
+    @keyframes fadeIn{
+      from{opacity:0; transform:translateY(8px)}
+      to{opacity:1; transform:translateY(0)}
+    }
+
+    .title-card{
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      text-align:center;
+      padding:28px 16px;
+    }
+
+    #homeScreen .title-card{
+      justify-content:flex-start;
+      padding:6px 6px 10px;
+      gap:8px;
+    }
+
+    .splash-image{
+      width:100%;
+      max-width:430px;
+      height:auto;
+      max-height:73dvh;
+      object-fit:contain;
+      object-position:center center;
+      border-radius:22px;
+      border:1px solid rgba(255,255,255,.18);
+      box-shadow:0 0 35px rgba(0,234,255,.22), 0 0 55px rgba(168,85,247,.14);
+      margin:0;
+      background:rgba(255,255,255,.04);
+      display:block;
+    }
+
+    .logo{
+      width:118px;
+      height:118px;
+      display:grid;
+      place-items:center;
+      border-radius:34px;
+      background:linear-gradient(145deg, rgba(0,234,255,.22), rgba(168,85,247,.22));
+      border:1px solid rgba(255,255,255,.20);
+      box-shadow:0 0 35px rgba(0,234,255,.25), inset 0 0 22px rgba(255,255,255,.08);
+      font-size:56px;
+      margin-bottom:18px;
+      animation:float 2.8s ease-in-out infinite;
+    }
+
+    @keyframes float{
+      0%,100%{transform:translateY(0)}
+      50%{transform:translateY(-8px)}
+    }
+
+    h1{
+      margin:0;
+      font-size:clamp(2rem, 9vw, 3.2rem);
+      line-height:.95;
+      letter-spacing:-1px;
+      text-shadow:0 0 18px rgba(0,234,255,.45);
+    }
+
+    .subtitle{
+      margin:14px 0 0;
+      color:var(--muted);
+      font-size:1rem;
+      line-height:1.45;
+      max-width:360px;
+    }
+
+    .teacher{
+      color:var(--gold);
+      font-weight:800;
+      margin-top:8px;
+      text-shadow:0 0 10px rgba(255,209,102,.25);
+    }
+
+    .primary-btn, .secondary-btn{
+      width:100%;
+      border:0;
+      border-radius:20px;
+      padding:16px 18px;
+      color:#07111f;
+      font-weight:950;
+      font-size:1rem;
+      letter-spacing:.3px;
+      cursor:pointer;
+      background:linear-gradient(135deg, var(--cyan), var(--green));
+      box-shadow:0 0 24px rgba(0,234,255,.34), 0 8px 18px rgba(0,0,0,.25);
+      transition:.18s ease;
+    }
+
+    .primary-btn:active, .secondary-btn:active, .word-btn:active{transform:scale(.97)}
+
+    .secondary-btn{
+      background:rgba(255,255,255,.08);
+      color:var(--text);
+      border:1px solid rgba(255,255,255,.18);
+      box-shadow:none;
+    }
+
+    .phase-grid{
+      display:grid;
+      grid-template-columns:repeat(2, 1fr);
+      gap:12px;
+      width:100%;
+      margin-top:22px;
+    }
+
+    .phase-btn{
+      min-height:72px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.16);
+      background:linear-gradient(145deg, rgba(0,234,255,.13), rgba(168,85,247,.14));
+      color:var(--text);
+      font-weight:900;
+      box-shadow:inset 0 0 18px rgba(255,255,255,.05), 0 0 18px rgba(168,85,247,.14);
+      cursor:pointer;
+      font-size:.92rem;
+    }
+
+    .phase-btn.locked{
+      opacity:.48;
+      filter:grayscale(.4);
+      cursor:not-allowed;
+    }
+
+    .phase-small{
+      display:block;
+      margin-top:4px;
+      color:var(--muted);
+      font-size:.76rem;
+      font-weight:700;
+    }
+
+    .hud{
+      display:grid;
+      grid-template-columns:1fr auto 1fr;
+      align-items:center;
+      gap:8px;
+      padding:10px;
+      border-radius:22px;
+      background:rgba(3, 8, 28, .72);
+      border:1px solid rgba(255,255,255,.13);
+      box-shadow:0 0 24px rgba(0,234,255,.14), inset 0 0 16px rgba(255,255,255,.04);
+      backdrop-filter:blur(10px);
+      flex:0 0 auto;
+    }
+
+    .pill{
+      border-radius:999px;
+      padding:9px 10px;
+      background:rgba(255,255,255,.07);
+      border:1px solid rgba(255,255,255,.10);
+      font-size:.82rem;
+      font-weight:850;
+      text-align:center;
+      white-space:nowrap;
+    }
+
+    .hearts{
+      letter-spacing:1px;
+      font-size:1.05rem;
+      text-shadow:0 0 10px rgba(255,70,109,.4);
+    }
+
+    .game-title{
+      text-align:center;
+      padding:4px 4px 0;
+      flex:0 0 auto;
+    }
+
+    .game-title h2{
+      margin:0;
+      font-size:1.14rem;
+      text-shadow:0 0 14px rgba(0,234,255,.36);
+    }
+
+    .game-title p{
+      margin:5px auto 0;
+      max-width:390px;
+      font-size:.82rem;
+      line-height:1.35;
+      color:var(--muted);
+    }
+
+    .board-wrap{
+      flex:1 1 auto;
+      min-height:0;
+      display:flex;
+      align-items:center;
+    }
+
+    .board{
+      width:100%;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+      position:relative;
+    }
+
+    .col-label{
+      text-align:center;
+      font-size:.72rem;
+      color:var(--gold);
+      font-weight:950;
+      letter-spacing:.8px;
+      text-transform:uppercase;
+      margin-bottom:-4px;
+      text-shadow:0 0 10px rgba(255,209,102,.22);
+    }
+
+    .column{
+      display:grid;
+      gap:9px;
+    }
+
+    .word-btn{
+      min-height:62px;
+      border:1px solid rgba(255,255,255,.14);
+      border-radius:18px;
+      padding:10px 8px;
+      color:var(--text);
+      background:linear-gradient(145deg, rgba(255,255,255,.08), rgba(0,234,255,.06));
+      box-shadow:0 0 18px rgba(0,234,255,.10), inset 0 0 18px rgba(255,255,255,.04);
+      font-size:clamp(.88rem, 3.7vw, 1.03rem);
+      font-weight:950;
+      cursor:pointer;
+      position:relative;
+      overflow:hidden;
+      transition:transform .18s ease, border-color .18s ease, box-shadow .18s ease, opacity .24s ease;
+    }
+
+    .word-btn.pt{
+      background:linear-gradient(145deg, rgba(168,85,247,.16), rgba(255,61,242,.07));
+    }
+
+    .word-btn::after{
+      content:"";
+      position:absolute;
+      inset:-70% auto auto -30%;
+      width:40%;
+      height:220%;
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,.18), transparent);
+      transform:rotate(25deg);
+      transition:.35s ease;
+    }
+
+    .word-btn:hover::after, .word-btn.selected::after{left:115%;}
+
+    .word-btn.selected{
+      border-color:var(--gold);
+      box-shadow:0 0 22px rgba(255,209,102,.42), inset 0 0 20px rgba(255,209,102,.08);
+      transform:translateY(-2px);
+    }
+
+    .word-btn.correct{
+      border-color:var(--green);
+      background:linear-gradient(145deg, rgba(48,255,154,.32), rgba(0,234,255,.14));
+      box-shadow:0 0 26px rgba(48,255,154,.55);
+      animation:popCorrect .62s ease both;
+    }
+
+    @keyframes popCorrect{
+      0%{transform:scale(1)}
+      42%{transform:scale(1.06)}
+      100%{transform:scale(.88); opacity:0}
+    }
+
+    .word-btn.wrong{
+      border-color:var(--red);
+      background:linear-gradient(145deg, rgba(255,70,109,.32), rgba(255,61,242,.10));
+      box-shadow:0 0 22px rgba(255,70,109,.45);
+      animation:shake .42s ease;
+    }
+
+    @keyframes shake{
+      0%,100%{transform:translateX(0)}
+      20%{transform:translateX(-5px)}
+      40%{transform:translateX(5px)}
+      60%{transform:translateX(-4px)}
+      80%{transform:translateX(4px)}
+    }
+
+    .empty-slot{
+      min-height:62px;
+      border:1px dashed rgba(255,255,255,.12);
+      border-radius:18px;
+      background:rgba(255,255,255,.025);
+      opacity:.65;
+    }
+
+    .footer-actions{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+      margin-top:2px;
+      flex:0 0 auto;
+    }
+
+    .status-line{
+      min-height:28px;
+      text-align:center;
+      color:var(--gold);
+      font-size:.82rem;
+      font-weight:850;
+      padding:3px 8px;
+      flex:0 0 auto;
+    }
+
+    .overlay{
+      position:fixed;
+      inset:0;
+      z-index:20;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+      background:rgba(0,0,0,.72);
+      backdrop-filter:blur(8px);
+    }
+
+    .overlay.show{display:flex; animation:fadeIn .25s ease both;}
+
+    .modal{
+      width:min(100%, 420px);
+      border-radius:28px;
+      padding:24px 18px;
+      text-align:center;
+      background:linear-gradient(160deg, rgba(8,13,42,.98), rgba(30,8,72,.98));
+      border:1px solid rgba(255,255,255,.18);
+      box-shadow:0 0 38px rgba(0,234,255,.25), inset 0 0 26px rgba(255,255,255,.05);
+    }
+
+    .modal .big{
+      font-size:4rem;
+      margin:0 0 8px;
+      filter:drop-shadow(0 0 14px rgba(0,234,255,.45));
+    }
+
+    .modal h2{
+      margin:0;
+      font-size:1.75rem;
+    }
+
+    .modal p{
+      color:var(--muted);
+      line-height:1.45;
+      margin:10px 0 18px;
+    }
+
+    .confetti{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      overflow:hidden;
+      z-index:30;
+    }
+
+    .piece{
+      position:absolute;
+      top:-12px;
+      width:9px;
+      height:16px;
+      border-radius:3px;
+      animation:fall linear forwards;
+    }
+
+    @keyframes fall{
+      to{transform:translateY(110vh) rotate(720deg); opacity:.1}
+    }
+
+    @media (max-height:720px){$1.splash-image{max-height:72dvh; width:100%; max-width:390px;}
+    }
+
+    @media (max-height:660px){
+      .word-btn,.empty-slot{min-height:48px; font-size:.78rem;}
+      .column{gap:6px;}
+      .game-title p{display:none;}
+      .status-line{font-size:.72rem; min-height:22px;}
+      .footer-actions .secondary-btn{padding:12px 14px;}
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <section id="homeScreen" class="screen active">
+      <div class="title-card">
+        <img class="splash-image" src="vocab-match-tela-inicial.png" alt="Vocab Match Challenge" onerror="this.style.display='none'; document.getElementById('fallbackLogo').style.display='grid';" />
+        <div id="fallbackLogo" class="logo" style="display:none;">⚡</div>
+        <div style="width:100%; max-width:380px; margin-top:6px; display:grid; gap:10px;">
+          <button class="primary-btn" onclick="showPhases()">COMEÇAR</button>
+          <button class="secondary-btn" onclick="showHomeInfo()">COMO JOGAR</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="phaseScreen" class="screen">
+      <div class="title-card" style="justify-content:flex-start; padding-top:18px;">
+        <div class="logo" style="width:82px;height:82px;font-size:38px;border-radius:26px;margin-bottom:12px;">🔓</div>
+        <h1 style="font-size:2.1rem;">Escolha a fase</h1>
+        <p class="subtitle">Complete 10 pares para liberar a próxima fase. O progresso vale apenas enquanto o jogo estiver aberto.</p>
+        <div id="phaseGrid" class="phase-grid"></div>
+        <div style="width:100%; max-width:380px; margin-top:18px;">
+          <button class="secondary-btn" onclick="showHome()">VOLTAR</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="gameScreen" class="screen">
+      <div class="hud">
+        <div class="pill" id="phaseHud">Fase 1</div>
+        <div class="pill hearts" id="heartsHud">❤️❤️❤️❤️❤️</div>
+        <div class="pill" id="progressHud">Pares: 0/10</div>
+      </div>
+
+      <div class="game-title">
+        <h2 id="phaseTitle">School Objects</h2>
+        <p>Clique em uma palavra em inglês para ouvir. Depois clique na tradução correta em português.</p>
+      </div>
+
+      <div class="status-line" id="statusLine">Leia com calma. Os pares não aparecem alinhados.</div>
+
+      <div class="board-wrap">
+        <div style="width:100%;">
+          <div class="board">
+            <div class="col-label">English</div>
+            <div class="col-label">Português</div>
+            <div class="column" id="englishColumn"></div>
+            <div class="column" id="portugueseColumn"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-actions">
+        <button class="secondary-btn" onclick="backToPhases()">FASES</button>
+        <button class="secondary-btn" onclick="restartCurrentPhase()">REINICIAR</button>
+      </div>
+    </section>
+  </main>
+
+  <div class="overlay" id="resultOverlay">
+    <div class="modal">
+      <div class="big" id="resultIcon">🏆</div>
+      <h2 id="resultTitle">Parabéns!</h2>
+      <p id="resultText">Você completou a fase.</p>
+      <div style="display:grid; gap:10px;">
+        <button class="primary-btn" id="mainResultBtn">PRÓXIMA FASE</button>
+        <button class="secondary-btn" onclick="closeOverlay(); showPhases();">VER FASES</button>
+      </div>
+    </div>
+  </div>
+  <div class="confetti" id="confetti"></div>
+  <audio id="victoryAudio" src="victory.wav" preload="auto"></audio>
+
+  <script>
+    const TOTAL_PHASES = 10;
+    const PAIRS_TO_WIN = 10;
+    const INITIAL_LIVES = 5;
+
+    const phaseNames = [
+      {name:"Warm-up Review", short:"Revisão inicial"},
+      {name:"Opinion Mix", short:"Opiniões"},
+      {name:"Likes Mission", short:"Likes/dislikes"},
+      {name:"Frequency Power", short:"Frequência"},
+      {name:"Action Time", short:"Present continuous"},
+      {name:"Invitation Zone", short:"Convites"},
+      {name:"Excuse Challenge", short:"Desculpas e respostas"},
+      {name:"Daily English", short:"Inglês do dia a dia"},
+      {name:"Smart Review", short:"Revisão inteligente"},
+      {name:"Final Challenge", short:"Desafio final"}
+    ];
+
+    const vocabBank = [
+      {en:"I", pt:"eu", group:"review"},
+      {en:"you", pt:"você", group:"review"},
+      {en:"he", pt:"ele", group:"review"},
+      {en:"she", pt:"ela", group:"review"},
+      {en:"it", pt:"ele/ela para coisa ou animal", group:"review"},
+      {en:"we", pt:"nós", group:"review"},
+      {en:"they", pt:"eles/elas", group:"review"},
+      {en:"my", pt:"meu/minha", group:"review"},
+      {en:"your", pt:"seu/sua", group:"review"},
+      {en:"his", pt:"dele", group:"review"},
+      {en:"her", pt:"dela", group:"review"},
+      {en:"our", pt:"nosso/nossa", group:"review"},
+      {en:"their", pt:"deles/delas", group:"review"},
+      {en:"am", pt:"sou/estou", group:"review"},
+      {en:"is", pt:"é/está", group:"review"},
+      {en:"are", pt:"são/estão", group:"review"},
+      {en:"am not", pt:"não sou/não estou", group:"review"},
+      {en:"is not", pt:"não é/não está", group:"review"},
+      {en:"are not", pt:"não são/não estão", group:"review"},
+      {en:"teacher", pt:"professor", group:"review"},
+      {en:"student", pt:"aluno", group:"review"},
+      {en:"school", pt:"escola", group:"review"},
+      {en:"classroom", pt:"sala de aula", group:"review"},
+      {en:"friend", pt:"amigo", group:"review"},
+      {en:"family", pt:"família", group:"review"},
+      {en:"home", pt:"casa", group:"review"},
+      {en:"book", pt:"livro", group:"review"},
+      {en:"notebook", pt:"caderno", group:"review"},
+      {en:"pencil", pt:"lápis", group:"review"},
+      {en:"pen", pt:"caneta", group:"review"},
+      {en:"backpack", pt:"mochila", group:"review"},
+      {en:"happy", pt:"feliz", group:"review"},
+      {en:"sad", pt:"triste", group:"review"},
+      {en:"tired", pt:"cansado", group:"review"},
+      {en:"hungry", pt:"com fome", group:"review"},
+      {en:"thirsty", pt:"com sede", group:"review"},
+      {en:"good", pt:"bom", group:"review"},
+      {en:"bad", pt:"ruim", group:"review"},
+      {en:"beautiful", pt:"bonito", group:"review"},
+      {en:"big", pt:"grande", group:"review"},
+      {en:"small", pt:"pequeno", group:"review"},
+      {en:"new", pt:"novo", group:"review"},
+      {en:"old", pt:"velho/antigo", group:"review"},
+      {en:"today", pt:"hoje", group:"review"},
+      {en:"tomorrow", pt:"amanhã", group:"review"},
+      {en:"yesterday", pt:"ontem", group:"review"},
+      {en:"Monday", pt:"segunda-feira", group:"review"},
+      {en:"Friday", pt:"sexta-feira", group:"review"},
+      {en:"morning", pt:"manhã", group:"review"},
+      {en:"afternoon", pt:"tarde", group:"review"},
+      {en:"night", pt:"noite", group:"review"},
+      {en:"water", pt:"água", group:"review"},
+      {en:"food", pt:"comida", group:"review"},
+      {en:"soccer", pt:"futebol", group:"review"},
+      {en:"music", pt:"música", group:"review"},
+      {en:"game", pt:"jogo", group:"review"},
+      {en:"movie", pt:"filme", group:"review"},
+      {en:"phone", pt:"celular", group:"review"},
+      {en:"homework", pt:"tarefa de casa", group:"review"},
+      {en:"English", pt:"inglês", group:"review"},
+      {en:"like", pt:"gostar", group:"current"},
+      {en:"likes", pt:"gosta", group:"current"},
+      {en:"love", pt:"amar/adorar", group:"current"},
+      {en:"enjoy", pt:"curtir/aproveitar", group:"current"},
+      {en:"prefer", pt:"preferir", group:"current"},
+      {en:"dislike", pt:"não gostar", group:"current"},
+      {en:"hate", pt:"odiar", group:"current"},
+      {en:"don't like", pt:"não gosto", group:"current"},
+      {en:"doesn't like", pt:"não gosta", group:"current"},
+      {en:"favorite", pt:"favorito", group:"current"},
+      {en:"hobby", pt:"passatempo", group:"current"},
+      {en:"sport", pt:"esporte", group:"current"},
+      {en:"volleyball", pt:"vôlei", group:"current"},
+      {en:"basketball", pt:"basquete", group:"current"},
+      {en:"swimming", pt:"natação", group:"current"},
+      {en:"running", pt:"corrida/correndo", group:"current"},
+      {en:"dancing", pt:"dança/dançando", group:"current"},
+      {en:"singing", pt:"canto/cantando", group:"current"},
+      {en:"drawing", pt:"desenho/desenhando", group:"current"},
+      {en:"reading", pt:"leitura/lendo", group:"current"},
+      {en:"watching TV", pt:"assistindo TV", group:"current"},
+      {en:"playing games", pt:"jogando jogos", group:"current"},
+      {en:"listening to music", pt:"ouvindo música", group:"current"},
+      {en:"studying English", pt:"estudando inglês", group:"current"},
+      {en:"eating pizza", pt:"comendo pizza", group:"current"},
+      {en:"drinking juice", pt:"bebendo suco", group:"current"},
+      {en:"I like", pt:"eu gosto", group:"current"},
+      {en:"I love", pt:"eu amo/adoro", group:"current"},
+      {en:"I prefer", pt:"eu prefiro", group:"current"},
+      {en:"I don't like", pt:"eu não gosto", group:"current"},
+      {en:"Do you like?", pt:"Você gosta?", group:"current"},
+      {en:"Does he like?", pt:"Ele gosta?", group:"current"},
+      {en:"Does she like?", pt:"Ela gosta?", group:"current"},
+      {en:"What do you like?", pt:"Do que você gosta?", group:"current"},
+      {en:"I think", pt:"eu acho", group:"current"},
+      {en:"in my opinion", pt:"na minha opinião", group:"current"},
+      {en:"I agree", pt:"eu concordo", group:"current"},
+      {en:"I disagree", pt:"eu discordo", group:"current"},
+      {en:"I believe", pt:"eu acredito", group:"current"},
+      {en:"I feel", pt:"eu sinto/acho", group:"current"},
+      {en:"I guess", pt:"eu acho/suponho", group:"current"},
+      {en:"opinion", pt:"opinião", group:"current"},
+      {en:"idea", pt:"ideia", group:"current"},
+      {en:"reason", pt:"razão/motivo", group:"current"},
+      {en:"because", pt:"porque", group:"current"},
+      {en:"interesting", pt:"interessante", group:"current"},
+      {en:"boring", pt:"chato", group:"current"},
+      {en:"fun", pt:"divertido", group:"current"},
+      {en:"cool", pt:"legal", group:"current"},
+      {en:"easy", pt:"fácil", group:"current"},
+      {en:"difficult", pt:"difícil", group:"current"},
+      {en:"important", pt:"importante", group:"current"},
+      {en:"amazing", pt:"incrível", group:"current"},
+      {en:"terrible", pt:"terrível", group:"current"},
+      {en:"delicious", pt:"delicioso", group:"current"},
+      {en:"expensive", pt:"caro", group:"current"},
+      {en:"cheap", pt:"barato", group:"current"},
+      {en:"popular", pt:"popular", group:"current"},
+      {en:"always", pt:"sempre", group:"current"},
+      {en:"usually", pt:"geralmente", group:"current"},
+      {en:"often", pt:"frequentemente", group:"current"},
+      {en:"sometimes", pt:"às vezes", group:"current"},
+      {en:"never", pt:"nunca", group:"current"},
+      {en:"every day", pt:"todos os dias", group:"current"},
+      {en:"every week", pt:"toda semana", group:"current"},
+      {en:"on weekends", pt:"nos fins de semana", group:"current"},
+      {en:"once a week", pt:"uma vez por semana", group:"current"},
+      {en:"twice a week", pt:"duas vezes por semana", group:"current"},
+      {en:"frequency", pt:"frequência", group:"current"},
+      {en:"routine", pt:"rotina", group:"current"},
+      {en:"habit", pt:"hábito", group:"current"},
+      {en:"usually study", pt:"geralmente estudo", group:"current"},
+      {en:"always play", pt:"sempre jogo", group:"current"},
+      {en:"sometimes watch", pt:"às vezes assisto", group:"current"},
+      {en:"never eat", pt:"nunca como", group:"current"},
+      {en:"often listen", pt:"frequentemente ouço", group:"current"},
+      {en:"am studying", pt:"estou estudando", group:"current"},
+      {en:"is playing", pt:"está jogando", group:"current"},
+      {en:"are watching", pt:"estão assistindo", group:"current"},
+      {en:"am reading", pt:"estou lendo", group:"current"},
+      {en:"is writing", pt:"está escrevendo", group:"current"},
+      {en:"are listening", pt:"estão ouvindo", group:"current"},
+      {en:"is dancing", pt:"está dançando", group:"current"},
+      {en:"are singing", pt:"estão cantando", group:"current"},
+      {en:"is running", pt:"está correndo", group:"current"},
+      {en:"are walking", pt:"estão caminhando", group:"current"},
+      {en:"am talking", pt:"estou conversando", group:"current"},
+      {en:"is eating", pt:"está comendo", group:"current"},
+      {en:"are drinking", pt:"estão bebendo", group:"current"},
+      {en:"right now", pt:"agora mesmo", group:"current"},
+      {en:"at the moment", pt:"no momento", group:"current"},
+      {en:"now", pt:"agora", group:"current"},
+      {en:"currently", pt:"atualmente/agora", group:"current"},
+      {en:"What are you doing?", pt:"O que você está fazendo?", group:"current"},
+      {en:"Are you studying?", pt:"Você está estudando?", group:"current"},
+      {en:"Is he playing?", pt:"Ele está jogando?", group:"current"},
+      {en:"Is she reading?", pt:"Ela está lendo?", group:"current"},
+      {en:"Yes, I am", pt:"Sim, eu estou", group:"current"},
+      {en:"No, I'm not", pt:"Não, eu não estou", group:"current"},
+      {en:"Yes, he is", pt:"Sim, ele está", group:"current"},
+      {en:"No, she isn't", pt:"Não, ela não está", group:"current"},
+      {en:"invite", pt:"convidar", group:"current"},
+      {en:"invitation", pt:"convite", group:"current"},
+      {en:"party", pt:"festa", group:"current"},
+      {en:"movie theater", pt:"cinema", group:"current"},
+      {en:"park", pt:"parque", group:"current"},
+      {en:"mall", pt:"shopping", group:"current"},
+      {en:"beach", pt:"praia", group:"current"},
+      {en:"restaurant", pt:"restaurante", group:"current"},
+      {en:"Let's go", pt:"vamos", group:"current"},
+      {en:"Would you like to?", pt:"Você gostaria de?", group:"current"},
+      {en:"Do you want to?", pt:"Você quer?", group:"current"},
+      {en:"How about?", pt:"Que tal?", group:"current"},
+      {en:"Great idea", pt:"ótima ideia", group:"current"},
+      {en:"Sure", pt:"claro", group:"current"},
+      {en:"Of course", pt:"com certeza", group:"current"},
+      {en:"I'd love to", pt:"eu adoraria", group:"current"},
+      {en:"Maybe", pt:"talvez", group:"current"},
+      {en:"Sorry, I can't", pt:"desculpe, não posso", group:"current"},
+      {en:"I'm busy", pt:"estou ocupado", group:"current"},
+      {en:"I have homework", pt:"tenho tarefa de casa", group:"current"},
+      {en:"I have to study", pt:"tenho que estudar", group:"current"},
+      {en:"another time", pt:"outra hora", group:"current"},
+      {en:"next time", pt:"na próxima vez", group:"current"},
+      {en:"excuse", pt:"desculpa/justificativa", group:"current"},
+      {en:"response", pt:"resposta", group:"current"},
+      {en:"accept", pt:"aceitar", group:"current"},
+      {en:"refuse", pt:"recusar", group:"current"},
+      {en:"plan", pt:"plano", group:"current"},
+      {en:"free time", pt:"tempo livre", group:"current"},
+      {en:"weekend plan", pt:"plano do fim de semana", group:"current"},
+      {en:"school trip", pt:"passeio escolar", group:"current"},
+      {en:"snack", pt:"lanche", group:"current"},
+      {en:"break time", pt:"hora do intervalo", group:"current"},
+      {en:"practice", pt:"praticar", group:"current"},
+      {en:"match", pt:"combinar/associar", group:"current"},
+      {en:"challenge", pt:"desafio", group:"current"},
+      {en:"win", pt:"vencer", group:"current"},
+      {en:"try again", pt:"tentar novamente", group:"current"},
+      {en:"good choice", pt:"boa escolha", group:"current"}
+    ];
+
+    let currentPhase = 0;
+    let unlockedPhase = 1;
+    let lives = INITIAL_LIVES;
+    let correctPairs = 0;
+    let selected = null;
+    let englishItems = [];
+    let portugueseItems = [];
+    let usedPairIds = new Set();
+    let phaseRoundIds = [];
+    let nextPairPointer = 0;
+    let locked = false;
+    let audioUnlocked = false;
+    let sharedAudioCtx = null;
+
+    const homeScreen = document.getElementById("homeScreen");
+    const phaseScreen = document.getElementById("phaseScreen");
+    const gameScreen = document.getElementById("gameScreen");
+    const phaseGrid = document.getElementById("phaseGrid");
+    const englishColumn = document.getElementById("englishColumn");
+    const portugueseColumn = document.getElementById("portugueseColumn");
+    const phaseHud = document.getElementById("phaseHud");
+    const heartsHud = document.getElementById("heartsHud");
+    const progressHud = document.getElementById("progressHud");
+    const phaseTitle = document.getElementById("phaseTitle");
+    const statusLine = document.getElementById("statusLine");
+    const overlay = document.getElementById("resultOverlay");
+    const resultIcon = document.getElementById("resultIcon");
+    const resultTitle = document.getElementById("resultTitle");
+    const resultText = document.getElementById("resultText");
+    const mainResultBtn = document.getElementById("mainResultBtn");
+    const confettiBox = document.getElementById("confetti");
+    const victoryAudio = document.getElementById("victoryAudio");
+
+    function showOnly(screen){
+      [homeScreen, phaseScreen, gameScreen].forEach(s => s.classList.remove("active"));
+      screen.classList.add("active");
+    }
+
+    function showHome(){ showOnly(homeScreen); }
+
+    function showHomeInfo(){
+      resultIcon.textContent = "🎮";
+      resultTitle.textContent = "Como jogar";
+      resultText.textContent = "Clique em uma palavra em inglês para ouvir a pronúncia. Depois encontre a tradução correta em português. Complete 10 pares para vencer a fase.";
+      mainResultBtn.textContent = "ENTENDI";
+      mainResultBtn.onclick = closeOverlay;
+      overlay.classList.add("show");
+    }
+
+    function showPhases(){
+      renderPhaseGrid();
+      showOnly(phaseScreen);
+    }
+
+    function backToPhases(){
+      renderPhaseGrid();
+      showOnly(phaseScreen);
+    }
+
+    function renderPhaseGrid(){
+      phaseGrid.innerHTML = "";
+      phaseNames.forEach((phase, index) => {
+        const btn = document.createElement("button");
+        btn.className = "phase-btn" + (index + 1 > unlockedPhase ? " locked" : "");
+        btn.innerHTML = `${index + 1 > unlockedPhase ? "🔒" : "⚡"} Fase ${index + 1}<span class="phase-small">${phase.short}</span>`;
+        btn.onclick = () => {
+          if(index + 1 <= unlockedPhase){ startPhase(index); }
+        };
+        phaseGrid.appendChild(btn);
+      });
+    }
+
+    function startPhase(index){
+      currentPhase = index;
+      lives = INITIAL_LIVES;
+      correctPairs = 0;
+      selected = null;
+      usedPairIds.clear();
+      locked = false;
+      buildInitialBoard();
+      updateHud();
+      phaseTitle.textContent = phaseNames[currentPhase].name;
+      statusLine.textContent = "Leia com calma. Os pares não aparecem alinhados.";
+      showOnly(gameScreen);
+      renderBoard();
+    }
+
+    function restartCurrentPhase(){ startPhase(currentPhase); }
+
+    function buildInitialBoard(){
+      phaseRoundIds = getRoundPairIds(10);
+      nextPairPointer = 0;
+
+      const initialIds = phaseRoundIds.slice(nextPairPointer, nextPairPointer + 5);
+      nextPairPointer += initialIds.length;
+
+      initialIds.forEach(id => usedPairIds.add(id));
+      englishItems = initialIds.map(id => makeItem(id, "en"));
+      portugueseItems = initialIds.map(id => makeItem(id, "pt"));
+
+      shuffle(englishItems);
+      shufflePortugueseAvoidRows();
+    }
+
+    function getRoundPairIds(count){
+      const currentTarget = 7;
+      const reviewTarget = 3;
+      const currentIds = vocabBank.map((w, i) => w.group === "current" ? i : -1).filter(i => i >= 0);
+      const reviewIds = vocabBank.map((w, i) => w.group === "review" ? i : -1).filter(i => i >= 0);
+      shuffle(currentIds);
+      shuffle(reviewIds);
+      const selected = [...currentIds.slice(0, currentTarget), ...reviewIds.slice(0, reviewTarget)];
+      if(selected.length < count){
+        const remaining = vocabBank.map((_, i) => i).filter(i => !selected.includes(i));
+        shuffle(remaining);
+        selected.push(...remaining.slice(0, count - selected.length));
+      }
+      shuffle(selected);
+      return selected.slice(0, count);
+    }
+
+    function makeItem(pairId, lang){
+      const pair = vocabBank[pairId];
+      return {
+        pairId,
+        lang,
+        text: lang === "en" ? pair.en : pair.pt,
+        uid: `${lang}-${pairId}-${Date.now()}-${Math.random()}`
+      };
+    }
+
+    function getRandomAvailableIds(count){
+      const all = vocabBank.map((_, i) => i).filter(i => !usedPairIds.has(i));
+      shuffle(all);
+      return all.slice(0, count);
+    }
+
+    function shuffle(arr){
+      for(let i = arr.length - 1; i > 0; i--){
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function shufflePortugueseAvoidRows(){
+      let attempts = 0;
+      do{
+        shuffle(portugueseItems);
+        attempts++;
+      } while(hasRowPair() && attempts < 120);
+    }
+
+    function hasRowPair(){
+      const max = Math.min(englishItems.length, portugueseItems.length);
+      for(let i = 0; i < max; i++){
+        if(englishItems[i] && portugueseItems[i] && englishItems[i].pairId === portugueseItems[i].pairId) return true;
+      }
+      return false;
+    }
+
+    function updateHud(){
+      phaseHud.textContent = `Fase ${currentPhase + 1}`;
+      heartsHud.textContent = "❤️".repeat(lives) + "🖤".repeat(INITIAL_LIVES - lives);
+      progressHud.textContent = `Pares: ${correctPairs}/${PAIRS_TO_WIN}`;
+    }
+
+    function renderBoard(){
+      englishColumn.innerHTML = "";
+      portugueseColumn.innerHTML = "";
+      renderColumn(englishColumn, englishItems, "en");
+      renderColumn(portugueseColumn, portugueseItems, "pt");
+    }
+
+    function renderColumn(column, items, lang){
+      for(let i = 0; i < 5; i++){
+        const item = items[i];
+        if(!item){
+          const empty = document.createElement("div");
+          empty.className = "empty-slot";
+          column.appendChild(empty);
+          continue;
+        }
+        const btn = document.createElement("button");
+        btn.className = `word-btn ${lang}`;
+        btn.textContent = item.text;
+        btn.dataset.uid = item.uid;
+        btn.onclick = () => selectItem(item, btn);
+        column.appendChild(btn);
+      }
+    }
+
+    function selectItem(item, btn){
+      unlockGameAudio();
+      if(locked) return;
+      if(item.lang === "en") speakEnglish(item.text);
+
+      if(selected && selected.item.uid === item.uid){
+        clearSelection();
+        return;
+      }
+
+      if(!selected){
+        selected = { item, btn };
+        btn.classList.add("selected");
+        return;
+      }
+
+      if(selected.item.lang === item.lang){
+        selected.btn.classList.remove("selected");
+        selected = { item, btn };
+        btn.classList.add("selected");
+        return;
+      }
+
+      const first = selected;
+      const second = { item, btn };
+      checkPair(first, second);
+    }
+
+    function checkPair(a, b){
+      locked = true;
+      const isCorrect = a.item.pairId === b.item.pairId;
+      if(isCorrect){ handleCorrect(a, b); }
+      else{ handleWrong(a, b); }
+    }
+
+    function handleCorrect(a, b){
+      a.btn.classList.remove("selected");
+      b.btn.classList.remove("selected");
+      a.btn.classList.add("correct");
+      b.btn.classList.add("correct");
+      playSuccessChime();
+      correctPairs++;
+      updateHud();
+      statusLine.textContent = getMotivation();
+
+      setTimeout(() => {
+        removeItem(a.item);
+        removeItem(b.item);
+
+        if(correctPairs >= PAIRS_TO_WIN){
+          renderBoard();
+          winPhase();
+          return;
+        }
+
+        if(correctPairs >= 3){
+          refillBoardToFivePairsRandom();
+          randomizeBoardPositions();
+          statusLine.textContent = "Novas palavras entraram no desafio. Continue lendo com atenção.";
+        }else{
+          randomizeBoardPositions();
+          statusLine.textContent = `Muito bem! A reposição começa depois do 3º par. Faltam ${3 - correctPairs} para mudar o ritmo.`;
+        }
+
+        selected = null;
+        locked = false;
+        renderBoard();
+      }, 650);
+    }
+
+    function handleWrong(a, b){
+      a.btn.classList.add("wrong");
+      b.btn.classList.add("wrong");
+      lives--;
+      updateHud();
+      statusLine.textContent = "Quase! Observe as palavras novamente.";
+
+      setTimeout(() => {
+        a.btn.classList.remove("selected", "wrong");
+        b.btn.classList.remove("wrong");
+        selected = null;
+        locked = false;
+        if(lives <= 0){ gameOver(); }
+      }, 900);
+    }
+
+    function clearSelection(){
+      if(selected){ selected.btn.classList.remove("selected"); }
+      selected = null;
+    }
+
+    function removeItem(item){
+      if(item.lang === "en") englishItems = englishItems.filter(x => x.uid !== item.uid);
+      else portugueseItems = portugueseItems.filter(x => x.uid !== item.uid);
+    }
+
+    function refillBoardToFivePairsRandom(){
+      while(englishItems.length < 5 && portugueseItems.length < 5 && nextPairPointer < phaseRoundIds.length){
+        const id = phaseRoundIds[nextPairPointer];
+        nextPairPointer++;
+        usedPairIds.add(id);
+        englishItems.push(makeItem(id, "en"));
+        portugueseItems.push(makeItem(id, "pt"));
+      }
+    }
+
+    function randomizeBoardPositions(){
+      shuffle(englishItems);
+      shufflePortugueseAvoidRows();
+    }
+
+    function speakEnglish(text){
+      if(!("speechSynthesis" in window)) return;
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = "en-US";
+      utterance.rate = .88;
+      utterance.pitch = 1;
+      utterance.volume = 1;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function makeAudioContext(){
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if(!sharedAudioCtx){
+        sharedAudioCtx = new AudioCtx();
+      }
+      if(sharedAudioCtx.state === "suspended"){
+        sharedAudioCtx.resume();
+      }
+      return sharedAudioCtx;
+    }
+
+    function unlockGameAudio(){
+      if(audioUnlocked) return;
+      audioUnlocked = true;
+      try{
+        makeAudioContext();
+      }catch(e){}
+      try{
+        victoryAudio.volume = 1;
+        victoryAudio.muted = true;
+        const p = victoryAudio.play();
+        if(p && typeof p.then === "function"){
+          p.then(() => {
+            victoryAudio.pause();
+            victoryAudio.currentTime = 0;
+            victoryAudio.muted = false;
+          }).catch(() => {
+            victoryAudio.muted = false;
+          });
+        }else{
+          victoryAudio.pause();
+          victoryAudio.currentTime = 0;
+          victoryAudio.muted = false;
+        }
+      }catch(e){
+        victoryAudio.muted = false;
+      }
+    }
+
+    function playSuccessChime(){
+      try{
+        const ctx = makeAudioContext();
+        const gain = ctx.createGain();
+        gain.gain.setValueAtTime(0.0001, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.20, ctx.currentTime + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.42);
+        gain.connect(ctx.destination);
+        [523.25, 659.25, 783.99].forEach((freq, i) => {
+          const osc = ctx.createOscillator();
+          osc.type = "sine";
+          osc.frequency.setValueAtTime(freq, ctx.currentTime + i * 0.08);
+          osc.connect(gain);
+          osc.start(ctx.currentTime + i * 0.08);
+          osc.stop(ctx.currentTime + 0.45);
+        });
+      }catch(e){}
+    }
+
+    function playVictoryMelody(){
+      unlockGameAudio();
+      let fallbackTimer = null;
+      let startedRealAudio = false;
+
+      const startFallbackOnce = () => {
+        if(startedRealAudio) return;
+        startedRealAudio = true;
+        if(fallbackTimer) clearTimeout(fallbackTimer);
+        playVictoryFallback();
+      };
+
+      try{
+        victoryAudio.pause();
+        victoryAudio.currentTime = 0;
+        victoryAudio.volume = 1;
+        victoryAudio.muted = false;
+        victoryAudio.onerror = startFallbackOnce;
+        victoryAudio.onstalled = startFallbackOnce;
+        victoryAudio.onabort = startFallbackOnce;
+        victoryAudio.onplaying = () => {
+          startedRealAudio = true;
+          if(fallbackTimer) clearTimeout(fallbackTimer);
+        };
+
+        const playPromise = victoryAudio.play();
+        if(playPromise && typeof playPromise.catch === "function"){
+          playPromise.catch(startFallbackOnce);
+        }
+
+        fallbackTimer = setTimeout(() => {
+          if(!startedRealAudio || victoryAudio.paused || victoryAudio.currentTime < 0.05){
+            startFallbackOnce();
+          }
+        }, 500);
+      }catch(e){
+        startFallbackOnce();
+      }
+    }
+
+    function playVictoryFallback(){
+      try{
+        const ctx = makeAudioContext();
+        const master = ctx.createGain();
+        master.gain.setValueAtTime(0.0001, ctx.currentTime);
+        master.gain.exponentialRampToValueAtTime(0.55, ctx.currentTime + 0.03);
+        master.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 2.35);
+        master.connect(ctx.destination);
+
+        const notes = [523.25, 659.25, 783.99, 1046.5, 1318.5, 1046.5, 1568.0];
+        notes.forEach((freq, i) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          const start = ctx.currentTime + i * 0.18;
+          osc.type = i % 2 === 0 ? "triangle" : "sine";
+          osc.frequency.setValueAtTime(freq, start);
+          gain.gain.setValueAtTime(0.0001, start);
+          gain.gain.exponentialRampToValueAtTime(0.75, start + 0.025);
+          gain.gain.exponentialRampToValueAtTime(0.0001, start + 0.32);
+          osc.connect(gain);
+          gain.connect(master);
+          osc.start(start);
+          osc.stop(start + 0.36);
+        });
+      }catch(e){}
+    }
+
+    function getMotivation(){
+      const lines = ["Great job! Você encontrou o par correto.","Excellent! Continue com foco.","Nice match! A leitura fez diferença.","Very good! Você está avançando.","Amazing! Mais um par completo."];
+      return lines[Math.floor(Math.random() * lines.length)];
+    }
+
+    function winPhase(){
+      locked = true;
+      const next = currentPhase + 2;
+      if(next > unlockedPhase) unlockedPhase = Math.min(next, TOTAL_PHASES);
+      playVictoryMelody();
+      launchConfetti();
+      resultIcon.textContent = currentPhase + 1 === TOTAL_PHASES ? "👑" : "🏆";
+      resultTitle.textContent = currentPhase + 1 === TOTAL_PHASES ? "Você venceu o desafio!" : "Parabéns!";
+      resultText.textContent = currentPhase + 1 === TOTAL_PHASES ? "Você concluiu todas as fases do Vocab Match Challenge." : `Você completou a Fase ${currentPhase + 1} e liberou a próxima fase.`;
+      mainResultBtn.textContent = currentPhase + 1 === TOTAL_PHASES ? "VOLTAR ÀS FASES" : "PRÓXIMA FASE";
+      mainResultBtn.onclick = () => {
+        closeOverlay();
+        if(currentPhase + 1 < TOTAL_PHASES) startPhase(currentPhase + 1);
+        else showPhases();
+      };
+      overlay.classList.add("show");
+    }
+
+    function gameOver(){
+      locked = true;
+      resultIcon.textContent = "💔";
+      resultTitle.textContent = "Game Over";
+      resultText.textContent = "As vidas acabaram. Tente novamente e observe melhor as palavras.";
+      mainResultBtn.textContent = "TENTAR DE NOVO";
+      mainResultBtn.onclick = () => {
+        closeOverlay();
+        restartCurrentPhase();
+      };
+      overlay.classList.add("show");
+    }
+
+    function closeOverlay(){ overlay.classList.remove("show"); }
+
+    function launchConfetti(){
+      confettiBox.innerHTML = "";
+      const colors = ["#00eaff", "#30ff9a", "#a855f7", "#ff3df2", "#ffd166"];
+      for(let i = 0; i < 70; i++){
+        const piece = document.createElement("div");
+        piece.className = "piece";
+        piece.style.left = Math.random() * 100 + "vw";
+        piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+        piece.style.animationDuration = (1.6 + Math.random() * 1.6) + "s";
+        piece.style.animationDelay = (Math.random() * .25) + "s";
+        confettiBox.appendChild(piece);
+      }
+      setTimeout(() => confettiBox.innerHTML = "", 3400);
+    }
+
+    document.addEventListener("visibilitychange", () => {
+      if(document.hidden && "speechSynthesis" in window) window.speechSynthesis.cancel();
+    });
+  </script>
+</body>
+</html>
