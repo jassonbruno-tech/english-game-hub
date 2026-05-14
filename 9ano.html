@@ -58,7 +58,7 @@ body{
 
 .back{
   position:absolute;
-  z-index:10;
+  z-index:20;
   left:3.2%;
   top:1.2%;
   text-decoration:none;
@@ -75,7 +75,7 @@ body{
 
 .sound-btn{
   position:absolute;
-  z-index:10;
+  z-index:20;
   right:3.2%;
   top:1.2%;
   border:1px solid rgba(255,255,255,.48);
@@ -92,9 +92,9 @@ body{
 
 .game-link{
   position:absolute;
-  z-index:8;
+  z-index:10;
   display:block;
-  border-radius:24px;
+  border-radius:22px;
   text-decoration:none;
   cursor:pointer;
   -webkit-tap-highlight-color:transparent;
@@ -114,33 +114,39 @@ body{
   white-space:nowrap;
 }
 
-/* Posições dos quatro cards na imagem vertical */
+/*
+  Áreas clicáveis ajustadas para a imagem assinada.
+  Correção: antes a área do Hangman estava grande demais e podia invadir
+  a região do Listening em algumas telas. Agora cada card tem uma área
+  menor e mais segura, sem sobreposição.
+*/
+
 .btn-spin{
-  left:7.2%;
-  top:49.2%;
-  width:40.8%;
-  height:20.8%;
+  left:7.6%;
+  top:48.9%;
+  width:39.8%;
+  height:18.9%;
 }
 
 .btn-hangman{
-  left:52.2%;
-  top:49.2%;
-  width:40.8%;
-  height:20.8%;
+  left:52.5%;
+  top:48.9%;
+  width:39.8%;
+  height:18.9%;
 }
 
 .btn-listening{
-  left:7.2%;
-  top:72.3%;
-  width:40.8%;
-  height:20.8%;
+  left:7.6%;
+  top:72.0%;
+  width:39.8%;
+  height:18.9%;
 }
 
 .btn-smart{
-  left:52.2%;
-  top:72.3%;
-  width:40.8%;
-  height:20.8%;
+  left:52.5%;
+  top:72.0%;
+  width:39.8%;
+  height:18.9%;
 }
 
 @media(min-width:700px){
@@ -165,26 +171,26 @@ body{
 <main class="stage">
   <img
     class="bg"
-    src="9ano-tela-inicial-laranja-assinada.png?v=1"
+    src="9ano-tela-inicial-laranja-assinada.png?v=2"
     alt="English Game Hub - 9º Ano"
   />
 
   <a class="back" href="index.html">← Hub</a>
   <button class="sound-btn" onclick="toggleMusic()">🎵 Música</button>
 
-  <a class="game-link btn-spin" href="9ano-spin-challenge.html?v=180" aria-label="Entrar no Spin Challenge">
+  <a class="game-link btn-spin" href="9ano-spin-challenge.html?v=190" aria-label="Entrar no Spin Challenge">
     <span>Spin Challenge</span>
   </a>
 
-  <a class="game-link btn-hangman" href="9ano-hangman-challenge.html?v=180" aria-label="Entrar no Hangman Challenge">
+  <a class="game-link btn-hangman" href="9ano-hangman-challenge.html?v=190" aria-label="Entrar no Hangman Challenge">
     <span>Hangman Challenge</span>
   </a>
 
-  <a class="game-link btn-listening" href="9ano-listening-speaking-game.html?v=180" aria-label="Entrar no Listening and Speaking">
+  <a class="game-link btn-listening" href="9ano-listening-speaking-game.html?v=190" aria-label="Entrar no Listening and Speaking">
     <span>Listening and Speaking</span>
   </a>
 
-  <a class="game-link btn-smart" href="9ano-smart-choice-grammar.html?v=180" aria-label="Entrar no Smart Choice Grammar">
+  <a class="game-link btn-smart" href="9ano-smart-choice-grammar.html?v=190" aria-label="Entrar no Smart Choice Grammar">
     <span>Smart Choice Grammar</span>
   </a>
 </main>
