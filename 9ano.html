@@ -9,8 +9,8 @@
 <!-- Prévia do link no WhatsApp / Facebook -->
 <meta property="og:title" content="9º Ano - English Game Hub" />
 <meta property="og:description" content="Jogos de Inglês para o 9º ano: Spin Challenge, Hangman, Listening & Speaking e Smart Choice Grammar." />
-<meta property="og:image" content="https://jassonbruno-tech.github.io/english-game-hub/9ano-tela-inicial-laranja.png" />
-<meta property="og:image:secure_url" content="https://jassonbruno-tech.github.io/english-game-hub/9ano-tela-inicial-laranja.png" />
+<meta property="og:image" content="https://jassonbruno-tech.github.io/english-game-hub/9ano-tela-inicial-laranja-assinada.png" />
+<meta property="og:image:secure_url" content="https://jassonbruno-tech.github.io/english-game-hub/9ano-tela-inicial-laranja-assinada.png" />
 <meta property="og:url" content="https://jassonbruno-tech.github.io/english-game-hub/9ano.html" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="English Game Hub" />
@@ -19,7 +19,7 @@
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="9º Ano - English Game Hub" />
 <meta name="twitter:description" content="Aprenda inglês de forma divertida com jogos de gramática, vocabulário, listening e desafios." />
-<meta name="twitter:image" content="https://jassonbruno-tech.github.io/english-game-hub/9ano-tela-inicial-laranja.png" />
+<meta name="twitter:image" content="https://jassonbruno-tech.github.io/english-game-hub/9ano-tela-inicial-laranja-assinada.png" />
 
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -71,6 +71,23 @@ body{
   font-weight:900;
   backdrop-filter:blur(4px);
   box-shadow:0 6px 14px rgba(0,0,0,.25);
+}
+
+.sound-btn{
+  position:absolute;
+  z-index:10;
+  right:3.2%;
+  top:1.2%;
+  border:1px solid rgba(255,255,255,.48);
+  background:rgba(0,0,0,.42);
+  color:#fff;
+  border-radius:999px;
+  padding:7px 10px;
+  font-size:12px;
+  font-weight:900;
+  backdrop-filter:blur(4px);
+  box-shadow:0 6px 14px rgba(0,0,0,.25);
+  cursor:pointer;
 }
 
 .game-link{
@@ -135,7 +152,7 @@ body{
 }
 
 @media(max-height:720px){
-  .back{
+  .back,.sound-btn{
     font-size:10px;
     padding:6px 8px;
   }
@@ -148,28 +165,60 @@ body{
 <main class="stage">
   <img
     class="bg"
-    src="9ano-tela-inicial-laranja.png?v=2"
+    src="9ano-tela-inicial-laranja-assinada.png?v=1"
     alt="English Game Hub - 9º Ano"
   />
 
   <a class="back" href="index.html">← Hub</a>
+  <button class="sound-btn" onclick="toggleMusic()">🎵 Música</button>
 
-  <a class="game-link btn-spin" href="9ano-spin-challenge.html?v=170" aria-label="Entrar no Spin Challenge">
+  <a class="game-link btn-spin" href="9ano-spin-challenge.html?v=180" aria-label="Entrar no Spin Challenge">
     <span>Spin Challenge</span>
   </a>
 
-  <a class="game-link btn-hangman" href="9ano-hangman-challenge.html?v=170" aria-label="Entrar no Hangman Challenge">
+  <a class="game-link btn-hangman" href="9ano-hangman-challenge.html?v=180" aria-label="Entrar no Hangman Challenge">
     <span>Hangman Challenge</span>
   </a>
 
-  <a class="game-link btn-listening" href="9ano-listening-speaking-game.html?v=170" aria-label="Entrar no Listening and Speaking">
+  <a class="game-link btn-listening" href="9ano-listening-speaking-game.html?v=180" aria-label="Entrar no Listening and Speaking">
     <span>Listening and Speaking</span>
   </a>
 
-  <a class="game-link btn-smart" href="9ano-smart-choice-grammar.html?v=170" aria-label="Entrar no Smart Choice Grammar">
+  <a class="game-link btn-smart" href="9ano-smart-choice-grammar.html?v=180" aria-label="Entrar no Smart Choice Grammar">
     <span>Smart Choice Grammar</span>
   </a>
 </main>
+
+<audio id="bgMusic" loop preload="auto">
+  <source src="9ano-musica-tela-inicial.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+let musicOn = false;
+
+function toggleMusic(){
+  const audio = document.getElementById("bgMusic");
+  const btn = document.querySelector(".sound-btn");
+
+  if(!audio || !btn) return;
+
+  if(!musicOn){
+    audio.volume = 0.35;
+    audio.play()
+      .then(() => {
+        musicOn = true;
+        btn.textContent = "🔇 Pausar";
+      })
+      .catch(() => {
+        btn.textContent = "🎵 Música";
+      });
+  }else{
+    audio.pause();
+    musicOn = false;
+    btn.textContent = "🎵 Música";
+  }
+}
+</script>
 
 </body>
 </html>
