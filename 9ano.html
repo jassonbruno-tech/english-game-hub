@@ -2,21 +2,297 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>9º Ano - Em breve</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<title>9º Ano - English Game Hub</title>
+
 <style>
-body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;font-family:Arial;background:linear-gradient(135deg,#102a63,#0f8fbd);padding:20px;color:#172033}
-.card{max-width:620px;background:white;border-radius:28px;padding:28px;text-align:center;box-shadow:0 14px 30px rgba(0,0,0,.18)}
-h1{font-size:40px;margin:0 0 10px;color:#1d4ed8}
-p{font-size:18px;line-height:1.4}
-a{display:inline-block;margin-top:14px;padding:12px 18px;background:#1d4ed8;color:white;text-decoration:none;border-radius:14px;font-weight:800}
+*{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg1:#06111f;
+  --bg2:#12143d;
+  --card:rgba(9,13,45,.86);
+  --card2:rgba(15,23,70,.92);
+  --line:rgba(255,255,255,.18);
+  --gold:#ffe66d;
+  --gold2:#ffb703;
+  --blue:#38bdf8;
+  --pink:#e11d48;
+  --green:#22c55e;
+  --text:#f8fafc;
+  --muted:#dbeafe;
+}
+
+html,body{
+  width:100%;
+  min-height:100%;
+  font-family:Arial,Helvetica,sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(circle at 16% 14%, rgba(56,189,248,.25) 0 8%, transparent 9%),
+    radial-gradient(circle at 84% 10%, rgba(255,230,109,.18) 0 8%, transparent 9%),
+    radial-gradient(circle at 50% 92%, rgba(225,29,72,.20) 0 12%, transparent 13%),
+    linear-gradient(180deg,var(--bg1),var(--bg2));
+}
+
+body{
+  min-height:100dvh;
+  display:flex;
+  justify-content:center;
+  padding:10px;
+}
+
+.page{
+  width:min(100%,760px);
+  min-height:calc(100dvh - 20px);
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.header{
+  position:relative;
+  overflow:hidden;
+  border:1px solid rgba(255,230,109,.26);
+  border-radius:24px;
+  padding:18px 14px 16px;
+  text-align:center;
+  background:
+    linear-gradient(135deg,rgba(29,78,216,.86),rgba(124,58,237,.80) 50%,rgba(225,29,72,.82));
+  box-shadow:0 18px 34px rgba(0,0,0,.30),0 0 28px rgba(255,230,109,.08);
+}
+
+.back{
+  position:absolute;
+  left:10px;
+  top:10px;
+  text-decoration:none;
+  color:#fff;
+  font-size:12px;
+  font-weight:900;
+  padding:7px 10px;
+  border-radius:999px;
+  background:rgba(255,255,255,.13);
+  border:1px solid rgba(255,255,255,.28);
+}
+
+.badge{
+  display:inline-block;
+  margin-bottom:8px;
+  padding:6px 12px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:1000;
+  color:#172033;
+  background:linear-gradient(135deg,var(--gold),var(--gold2));
+  box-shadow:0 8px 18px rgba(255,183,3,.18);
+}
+
+h1{
+  font-size:clamp(32px,9vw,54px);
+  line-height:1;
+  margin:4px 0 6px;
+  text-shadow:0 4px 12px rgba(0,0,0,.28);
+}
+
+.subtitle{
+  max-width:620px;
+  margin:0 auto;
+  color:#fff7c2;
+  font-weight:900;
+  font-size:15px;
+  line-height:1.35;
+}
+
+.motivation{
+  border:1px solid rgba(255,230,109,.30);
+  border-radius:20px;
+  padding:13px;
+  background:rgba(255,230,109,.10);
+  color:#fff7c2;
+  font-weight:900;
+  line-height:1.42;
+  text-align:center;
+  box-shadow:0 10px 24px rgba(0,0,0,.18);
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.game-card{
+  position:relative;
+  overflow:hidden;
+  min-height:174px;
+  text-decoration:none;
+  color:var(--text);
+  padding:15px;
+  border-radius:22px;
+  background:linear-gradient(180deg,var(--card2),var(--card));
+  border:1px solid var(--line);
+  box-shadow:0 14px 28px rgba(0,0,0,.25);
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  transform:translateY(0);
+  transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  -webkit-tap-highlight-color:transparent;
+}
+
+.game-card:active{
+  transform:scale(.985);
+  box-shadow:0 0 26px rgba(255,230,109,.28);
+  border-color:rgba(255,230,109,.55);
+}
+
+.game-card::before{
+  content:"";
+  position:absolute;
+  inset:-40%;
+  background:radial-gradient(circle,rgba(255,230,109,.12),transparent 46%);
+  transform:translate(32%,-24%);
+  pointer-events:none;
+}
+
+.icon{
+  width:54px;
+  height:54px;
+  border-radius:18px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:30px;
+  background:linear-gradient(135deg,rgba(255,230,109,.22),rgba(56,189,248,.16),rgba(225,29,72,.13));
+  border:1px solid rgba(255,230,109,.32);
+  box-shadow:0 8px 18px rgba(0,0,0,.20);
+}
+
+.game-title{
+  margin-top:10px;
+  color:#fff;
+  font-size:21px;
+  line-height:1.08;
+  font-weight:1000;
+}
+
+.game-desc{
+  margin-top:7px;
+  color:#dbeafe;
+  font-size:13px;
+  line-height:1.28;
+  font-weight:800;
+}
+
+.tag{
+  margin-top:10px;
+  align-self:flex-start;
+  padding:6px 10px;
+  border-radius:999px;
+  color:#172033;
+  background:linear-gradient(135deg,#dbeafe,#a7f3d0);
+  font-size:11px;
+  font-weight:1000;
+}
+
+.card-spin{border-left:5px solid #ffe66d}
+.card-hangman{border-left:5px solid #fb7185}
+.card-listening{border-left:5px solid #38bdf8}
+.card-smart{border-left:5px solid #22c55e}
+
+.footer{
+  text-align:center;
+  color:#fff3b0;
+  font-size:12px;
+  font-weight:900;
+  padding:4px 0 8px;
+}
+
+@media(max-width:680px){
+  body{padding:8px}
+  .page{min-height:calc(100dvh - 16px);gap:10px}
+  .header{border-radius:20px;padding:42px 12px 14px}
+  .back{font-size:11px;padding:6px 9px}
+  .subtitle{font-size:13px}
+  .motivation{font-size:12.5px;padding:11px}
+  .grid{grid-template-columns:1fr;gap:10px}
+  .game-card{min-height:138px;padding:13px;border-radius:18px}
+  .icon{width:46px;height:46px;font-size:25px;border-radius:15px}
+  .game-title{font-size:18px;margin-top:8px}
+  .game-desc{font-size:12.2px}
+  .tag{font-size:10.5px;margin-top:8px}
+}
+
+@media(max-height:720px) and (max-width:680px){
+  .header{padding-top:36px;padding-bottom:10px}
+  h1{font-size:31px}
+  .subtitle{font-size:12px}
+  .motivation{display:none}
+  .game-card{min-height:118px}
+  .game-desc{font-size:11.5px}
+}
 </style>
 </head>
+
 <body>
-<div class="card">
-<h1>9º Ano</h1>
-<p>Esta página será organizada na próxima etapa do English Game Hub.</p>
-<a href="index.html">Voltar</a>
-</div>
+<main class="page">
+
+  <section class="header">
+    <a class="back" href="index.html">← Hub</a>
+    <div class="badge">English Game Hub</div>
+    <h1>9º Ano</h1>
+    <p class="subtitle">Jogos de revisão e prática para fortalecer gramática, vocabulário, listening e conteúdos do bimestre.</p>
+  </section>
+
+  <section class="motivation">
+    Aprender inglês fica mais leve quando você pratica em desafios curtos, erra, entende o motivo e tenta de novo. Escolha um jogo e comece sua missão!
+  </section>
+
+  <section class="grid">
+
+    <a class="game-card card-spin" href="9ano-spin-challenge.html?v=160">
+      <div>
+        <div class="icon">🎡</div>
+        <h2 class="game-title">Spin Challenge</h2>
+        <p class="game-desc">Roleta com fases, corações e perguntas contextualizadas sobre connectors, prefixes, suffixes, feelings e revisão.</p>
+      </div>
+      <span class="tag">Jogar roleta</span>
+    </a>
+
+    <a class="game-card card-hangman" href="9ano-hangman-challenge.html?v=160">
+      <div>
+        <div class="icon">🎃</div>
+        <h2 class="game-title">Hangman Challenge</h2>
+        <p class="game-desc">Treino de vocabulário com palavras do 9º ano: emotions, connectors, word formation, prefixes, suffixes e past memories.</p>
+      </div>
+      <span class="tag">Treinar vocabulário</span>
+    </a>
+
+    <a class="game-card card-listening" href="9ano-listening-speaking-game.html?v=160">
+      <div>
+        <div class="icon">🎧</div>
+        <h2 class="game-title">Listening & Speaking</h2>
+        <p class="game-desc">Ouvir, repetir e reconhecer frases em inglês com foco em pronúncia, compreensão e prática oral guiada.</p>
+      </div>
+      <span class="tag">Ouvir e falar</span>
+    </a>
+
+    <a class="game-card card-smart" href="9ano-smart-choice-grammar.html?v=160">
+      <div>
+        <div class="icon">💡</div>
+        <h2 class="game-title">Smart Choice Grammar</h2>
+        <p class="game-desc">Quiz de gramática com pronomes, verb to be, do/does, did/didn’t, negativas, perguntas e correção de erros.</p>
+      </div>
+      <span class="tag">Desafio gramatical</span>
+    </a>
+
+  </section>
+
+  <footer class="footer">
+    Jogo idealizado pelo professor Jasson Bruno.
+  </footer>
+
+</main>
 </body>
 </html>
