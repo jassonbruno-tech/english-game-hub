@@ -1,367 +1,340 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>6º Ano — English Game Hub</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>6º Ano - English Game Hub</title>
+  <style>
+    :root{
+      --bg1:#071326;
+      --bg2:#0b2545;
+      --blue:#38bdf8;
+      --cyan:#22d3ee;
+      --green:#34d399;
+      --gold:#facc15;
+      --orange:#fb923c;
+      --text:#f8fafc;
+      --muted:#cbd5e1;
+      --glass:rgba(15,23,42,.72);
+      --border:rgba(255,255,255,.18);
+    }
 
-<style>
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-}
+    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 
-:root{
-  --yellow1:#fff7ad;
-  --yellow2:#facc15;
-  --yellow3:#f59e0b;
-  --blue1:#1d4ed8;
-  --blue2:#0f2f7a;
-  --white:#ffffff;
-  --text:#1e293b;
-}
+    html,body{
+      margin:0;
+      min-height:100%;
+      font-family:Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color:var(--text);
+      background:
+        linear-gradient(rgba(3,7,18,.72), rgba(3,7,18,.82)),
+        url('fundo-mobile.jpg.jpeg') center/cover no-repeat fixed,
+        radial-gradient(circle at 20% 10%, rgba(56,189,248,.30), transparent 30%),
+        radial-gradient(circle at 80% 10%, rgba(52,211,153,.22), transparent 28%),
+        linear-gradient(160deg, var(--bg1), var(--bg2));
+      overflow-x:hidden;
+    }
 
-html,body{
-  width:100%;
-  height:100%;
-  font-family:Arial, Helvetica, sans-serif;
-  overflow:hidden;
-}
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background-image:
+        linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+      background-size:28px 28px;
+      mask-image:linear-gradient(to bottom, rgba(0,0,0,.75), rgba(0,0,0,.2));
+    }
 
-body{
-  background:
-    radial-gradient(circle at top left, rgba(255,255,255,.55), transparent 22%),
-    radial-gradient(circle at top right, rgba(29,78,216,.18), transparent 20%),
-    linear-gradient(180deg,var(--yellow1) 0%, var(--yellow2) 48%, var(--yellow3) 100%);
-  color:var(--text);
-}
+    .app{
+      width:min(100%, 520px);
+      margin:0 auto;
+      min-height:100dvh;
+      padding:16px 14px 22px;
+      position:relative;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
 
-.page{
-  width:100%;
-  height:100dvh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  padding:8px;
-}
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding:10px 12px;
+      border-radius:22px;
+      background:rgba(15,23,42,.58);
+      border:1px solid var(--border);
+      backdrop-filter:blur(12px);
+      box-shadow:0 10px 28px rgba(0,0,0,.22), inset 0 0 18px rgba(255,255,255,.04);
+    }
 
-.container{
-  width:min(100%, 1100px);
-  height:calc(100dvh - 16px);
-  background:rgba(255,255,255,.18);
-  border-radius:24px;
-  backdrop-filter:blur(6px);
-  border:2px solid rgba(255,255,255,.45);
-  box-shadow:0 18px 40px rgba(120,53,15,.18);
-  padding:10px;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-  overflow:hidden;
-}
+    .back{
+      text-decoration:none;
+      color:var(--text);
+      font-weight:900;
+      font-size:.86rem;
+      padding:10px 12px;
+      border-radius:999px;
+      background:rgba(255,255,255,.10);
+      border:1px solid rgba(255,255,255,.14);
+    }
 
-.topbar{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:8px;
-  flex:0 0 auto;
-}
+    .badge{
+      padding:10px 12px;
+      border-radius:999px;
+      background:linear-gradient(135deg, rgba(56,189,248,.30), rgba(52,211,153,.24));
+      color:#e0f2fe;
+      font-weight:950;
+      font-size:.82rem;
+      border:1px solid rgba(255,255,255,.18);
+      text-shadow:0 0 10px rgba(56,189,248,.25);
+    }
 
-.back-btn{
-  text-decoration:none;
-  background:linear-gradient(135deg,var(--blue2),var(--blue1));
-  color:white;
-  font-weight:900;
-  border-radius:999px;
-  padding:10px 14px;
-  font-size:13px;
-  box-shadow:0 8px 16px rgba(15,47,122,.24);
-  white-space:nowrap;
-}
+    .hero{
+      text-align:center;
+      padding:18px 14px 16px;
+      border-radius:30px;
+      background:linear-gradient(155deg, rgba(15,23,42,.78), rgba(8,47,73,.64));
+      border:1px solid rgba(255,255,255,.18);
+      backdrop-filter:blur(12px);
+      box-shadow:0 16px 35px rgba(0,0,0,.28), inset 0 0 28px rgba(255,255,255,.05);
+      overflow:hidden;
+      position:relative;
+    }
 
-.level-pill{
-  background:linear-gradient(135deg,#f59e0b,#facc15);
-  color:#78350f;
-  font-weight:900;
-  border-radius:999px;
-  padding:8px 12px;
-  font-size:12px;
-  box-shadow:0 6px 14px rgba(180,83,9,.16);
-  white-space:nowrap;
-}
+    .hero::after{
+      content:"";
+      position:absolute;
+      inset:-30% -20% auto auto;
+      width:180px;
+      height:180px;
+      background:radial-gradient(circle, rgba(34,211,238,.28), transparent 65%);
+      filter:blur(2px);
+      pointer-events:none;
+    }
 
-.hero-wrap{
-  flex:1 1 42%;
-  min-height:0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:rgba(255,255,255,.72);
-  border-radius:22px;
-  padding:8px;
-  overflow:hidden;
-}
+    .icon{
+      width:82px;
+      height:82px;
+      display:grid;
+      place-items:center;
+      border-radius:28px;
+      margin:0 auto 12px;
+      font-size:42px;
+      background:linear-gradient(145deg, rgba(56,189,248,.32), rgba(52,211,153,.26));
+      border:1px solid rgba(255,255,255,.20);
+      box-shadow:0 0 30px rgba(56,189,248,.26), inset 0 0 18px rgba(255,255,255,.06);
+      animation:float 3s ease-in-out infinite;
+    }
 
-.hero-image{
-  width:100%;
-  height:100%;
-  object-fit:contain;
-  border-radius:18px;
-  display:block;
-}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
 
-.games-section{
-  flex:1 1 58%;
-  min-height:0;
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-}
+    h1{
+      margin:0;
+      font-size:clamp(2.05rem, 9vw, 3.2rem);
+      line-height:.95;
+      letter-spacing:-1px;
+      text-shadow:0 0 18px rgba(56,189,248,.32);
+    }
 
-.section-title{
-  text-align:center;
-  font-size:20px;
-  font-weight:900;
-  color:var(--blue2);
-  text-shadow:2px 2px 0 rgba(250,204,21,.55);
-  flex:0 0 auto;
-}
+    .subtitle{
+      margin:12px auto 0;
+      max-width:420px;
+      color:var(--muted);
+      line-height:1.42;
+      font-size:.95rem;
+    }
 
-.games-grid{
-  flex:1 1 auto;
-  min-height:0;
-  display:grid;
-  grid-template-columns:repeat(3, 1fr);
-  gap:10px;
-}
+    .quote{
+      margin:12px auto 0;
+      padding:12px;
+      border-radius:20px;
+      color:#fef3c7;
+      background:rgba(250,204,21,.10);
+      border:1px solid rgba(250,204,21,.22);
+      font-weight:750;
+      font-size:.84rem;
+      line-height:1.35;
+      max-width:430px;
+    }
 
-.game-btn{
-  text-decoration:none;
-  border-radius:20px;
-  padding:12px 10px;
-  background:
-    radial-gradient(circle at top right, rgba(255,255,255,.45), transparent 28%),
-    linear-gradient(145deg,#ffffff 0%, #fff7d6 52%, #fde68a 100%);
-  border:2px solid rgba(255,255,255,.9);
-  box-shadow:0 10px 20px rgba(120,53,15,.13);
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:6px;
-  text-align:center;
-  transition:.18s ease;
-  min-height:92px;
-}
+    .section-title{
+      margin:0 2px -2px;
+      color:#e0f2fe;
+      font-size:1.02rem;
+      font-weight:950;
+      letter-spacing:.2px;
+      text-shadow:0 0 12px rgba(56,189,248,.22);
+    }
 
-.game-btn:hover{
-  transform:translateY(-2px) scale(1.01);
-}
+    .games{
+      display:grid;
+      gap:12px;
+      padding-bottom:6px;
+    }
 
-.game-icon{
-  width:42px;
-  height:42px;
-  border-radius:14px;
-  background:linear-gradient(135deg,var(--blue1),var(--blue2));
-  color:white;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:21px;
-  box-shadow:0 8px 16px rgba(29,78,216,.22);
-  flex:0 0 auto;
-}
+    .game-card{
+      display:flex;
+      align-items:center;
+      gap:13px;
+      text-decoration:none;
+      color:var(--text);
+      min-height:88px;
+      padding:13px;
+      border-radius:24px;
+      background:linear-gradient(145deg, rgba(15,23,42,.82), rgba(8,47,73,.58));
+      border:1px solid rgba(255,255,255,.17);
+      box-shadow:0 10px 24px rgba(0,0,0,.22), inset 0 0 18px rgba(255,255,255,.04);
+      backdrop-filter:blur(10px);
+      transition:.18s ease;
+      position:relative;
+      overflow:hidden;
+    }
 
-.game-name{
-  font-size:15px;
-  font-weight:900;
-  color:var(--blue2);
-  line-height:1.08;
-}
+    .game-card::after{
+      content:"";
+      position:absolute;
+      inset:0 auto 0 -80%;
+      width:45%;
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,.10), transparent);
+      transform:skewX(-20deg);
+      transition:.35s ease;
+    }
 
-.footer{
-  flex:0 0 auto;
-  text-align:center;
-  font-size:12px;
-  font-weight:900;
-  color:#78350f;
-  opacity:.95;
-  padding-top:2px;
-}
+    .game-card:active{transform:scale(.98)}
+    .game-card:hover::after{left:120%;}
 
-/* Tablet/mobile */
-@media(max-width:850px){
-  .container{
-    border-radius:18px;
-    padding:8px;
-    gap:8px;
-  }
+    .game-emoji{
+      flex:0 0 56px;
+      width:56px;
+      height:56px;
+      border-radius:20px;
+      display:grid;
+      place-items:center;
+      font-size:30px;
+      background:linear-gradient(145deg, rgba(56,189,248,.24), rgba(52,211,153,.18));
+      border:1px solid rgba(255,255,255,.18);
+      box-shadow:0 0 18px rgba(34,211,238,.16);
+    }
 
-  .topbar{
-    gap:6px;
-  }
+    .game-card h2{
+      margin:0;
+      font-size:1.05rem;
+      line-height:1.15;
+    }
 
-  .back-btn,
-  .level-pill{
-    font-size:11px;
-    padding:8px 10px;
-  }
+    .game-card p{
+      margin:5px 0 0;
+      color:var(--muted);
+      font-size:.82rem;
+      line-height:1.28;
+    }
 
-  .hero-wrap{
-    flex:1 1 40%;
-    border-radius:16px;
-    padding:6px;
-  }
+    .new-tag{
+      display:inline-block;
+      margin-left:6px;
+      padding:2px 7px;
+      border-radius:999px;
+      color:#052e16;
+      background:linear-gradient(135deg, var(--gold), var(--orange));
+      font-size:.64rem;
+      font-weight:950;
+      vertical-align:middle;
+    }
 
-  .hero-image{
-    border-radius:14px;
-  }
+    .footer{
+      text-align:center;
+      color:#fef3c7;
+      font-weight:850;
+      font-size:.82rem;
+      padding:4px 8px 0;
+      text-shadow:0 0 10px rgba(250,204,21,.22);
+    }
 
-  .section-title{
-    font-size:17px;
-  }
-
-  .games-grid{
-    grid-template-columns:repeat(2, 1fr);
-    gap:8px;
-  }
-
-  .game-btn{
-    min-height:78px;
-    padding:10px 8px;
-    border-radius:16px;
-  }
-
-  .game-icon{
-    width:36px;
-    height:36px;
-    font-size:18px;
-    border-radius:12px;
-  }
-
-  .game-name{
-    font-size:13px;
-  }
-
-  .footer{
-    font-size:10.5px;
-  }
-}
-
-/* celulares menores */
-@media(max-width:420px){
-  .page{
-    padding:6px;
-  }
-
-  .container{
-    height:calc(100dvh - 12px);
-    gap:6px;
-    padding:6px;
-  }
-
-  .back-btn,
-  .level-pill{
-    font-size:10px;
-    padding:7px 9px;
-  }
-
-  .hero-wrap{
-    flex:1 1 38%;
-    padding:5px;
-  }
-
-  .section-title{
-    font-size:15px;
-  }
-
-  .games-grid{
-    gap:6px;
-  }
-
-  .game-btn{
-    min-height:72px;
-    padding:8px 6px;
-  }
-
-  .game-icon{
-    width:32px;
-    height:32px;
-    font-size:16px;
-  }
-
-  .game-name{
-    font-size:12px;
-  }
-
-  .footer{
-    font-size:9.5px;
-  }
-}
-</style>
+    @media (max-height:720px){
+      .app{padding:10px 12px 16px; gap:10px;}
+      .hero{padding:12px; border-radius:24px;}
+      .icon{width:64px; height:64px; font-size:34px; margin-bottom:8px; border-radius:22px;}
+      h1{font-size:2rem;}
+      .subtitle{font-size:.84rem; margin-top:8px;}
+      .quote{font-size:.76rem; padding:9px; margin-top:8px;}
+      .game-card{min-height:78px; padding:11px; border-radius:20px;}
+      .game-emoji{width:50px; height:50px; flex-basis:50px; font-size:27px;}
+      .game-card h2{font-size:.98rem;}
+      .game-card p{font-size:.76rem;}
+    }
+  </style>
 </head>
 <body>
-
-<div class="page">
-  <div class="container">
-
+  <main class="app">
     <div class="topbar">
-      <a class="back-btn" href="index.html">← Voltar ao Hub</a>
-      <div class="level-pill">6º Ano • Yellow Level</div>
+      <a class="back" href="index.html">← Hub</a>
+      <div class="badge">6º Ano</div>
     </div>
 
-    <div class="hero-wrap">
-      <img
-        class="hero-image"
-        src="6ano-tela-inicial-amarela.png?v=1"
-        alt="6º Ano - English Game Hub"
-      >
-    </div>
+    <section class="hero">
+      <div class="icon">🎮</div>
+      <h1>English Games<br>6º Ano</h1>
+      <p class="subtitle">Escolha um jogo para revisar e praticar Inglês de forma leve, divertida e interativa.</p>
+      <div class="quote">Aprender inglês pode ser mais divertido quando você aceita o desafio, tenta, erra, aprende e continua jogando.</div>
+    </section>
 
-    <div class="games-section">
-      <div class="section-title">Escolha seu jogo</div>
+    <h2 class="section-title">Jogos disponíveis</h2>
 
-      <div class="games-grid">
-        <a class="game-btn" href="6ano-spin-and-answer.html">
-          <div class="game-icon">🎡</div>
-          <div class="game-name">Spin and Answer</div>
-        </a>
+    <section class="games">
+      <a class="game-card" href="6ano-vocab-match.html">
+        <div class="game-emoji">🧠⚡</div>
+        <div>
+          <h2>Vocab Match Challenge <span class="new-tag">NOVO</span></h2>
+          <p>Associe palavras em inglês e português. Treino do 2º bimestre com revisão do 1º.</p>
+        </div>
+      </a>
 
-        <a class="game-btn" href="6ano-hangman-challenge.html">
-          <div class="game-icon">🌻</div>
-          <div class="game-name">Hangman Challenge</div>
-        </a>
+      <a class="game-card" href="6ano-smart-choice.html">
+        <div class="game-emoji">🎯</div>
+        <div>
+          <h2>Smart Choice</h2>
+          <p>Escolha a alternativa correta e revise vocabulário, comandos e estruturas básicas.</p>
+        </div>
+      </a>
 
-        <a class="game-btn" href="6ano-smart-choice.html">
-          <div class="game-icon">💡</div>
-          <div class="game-name">Smart Choice</div>
-        </a>
+      <a class="game-card" href="6ano-spin-and-answer.html">
+        <div class="game-emoji">🎡</div>
+        <div>
+          <h2>Spin and Answer</h2>
+          <p>Gire a roleta, veja o tema e responda aos desafios de Inglês.</p>
+        </div>
+      </a>
 
-        <a class="game-btn" href="6ano-board-game.html">
-          <div class="game-icon">🏁</div>
-          <div class="game-name">Board Game</div>
-        </a>
+      <a class="game-card" href="6ano-hangman-challenge.html">
+        <div class="game-emoji">🔤</div>
+        <div>
+          <h2>Hangman Challenge</h2>
+          <p>Descubra a palavra secreta com dicas de vocabulário em Inglês.</p>
+        </div>
+      </a>
 
-        <a class="game-btn" href="6ano-listening-speaking-game.html">
-          <div class="game-icon">🎧</div>
-          <div class="game-name">Listening & Speaking</div>
-        </a>
+      <a class="game-card" href="6ano-board-game.html">
+        <div class="game-emoji">🎲</div>
+        <div>
+          <h2>Board Game</h2>
+          <p>Avance pelo tabuleiro respondendo perguntas e cumprindo desafios.</p>
+        </div>
+      </a>
 
-        <a class="game-btn" href="6ano-mission-game.html">
-          <div class="game-icon">🗺️</div>
-          <div class="game-name">Mission Game</div>
-        </a>
-      </div>
-    </div>
+      <a class="game-card" href="6ano-mission-game.html">
+        <div class="game-emoji">🚀</div>
+        <div>
+          <h2>Mission Game</h2>
+          <p>Cumpra missões, ganhe pontos e avance etapa por etapa.</p>
+        </div>
+      </a>
+    </section>
 
-    <div class="footer">
-      Jogo idealizado pelo professor Jasson Bruno.
-    </div>
-
-  </div>
-</div>
-
+    <div class="footer">Jogo idealizado pelo professor Jasson Bruno.</div>
+  </main>
 </body>
 </html>
