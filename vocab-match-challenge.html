@@ -6,73 +6,71 @@
   <title>Vocab Match Challenge</title>
   <style>
     :root{
-      --bg1:#050816;
-      --bg2:#12002e;
+      --bg1:#070718;
+      --bg2:#12002b;
       --cyan:#00eaff;
-      --purple:#9d4dff;
+      --purple:#a855f7;
       --green:#30ff9a;
       --pink:#ff3df2;
       --gold:#ffd166;
-      --red:#ff4a6d;
-      --text:#f7f9ff;
-      --muted:#aab4da;
-      --panel:rgba(10,14,40,.88);
+      --red:#ff466d;
+      --text:#f5f7ff;
+      --muted:#a7b0d8;
+      --card:rgba(13, 18, 47, .82);
       --glass:rgba(255,255,255,.07);
-      --border:rgba(255,255,255,.14);
     }
 
-    *{
-      box-sizing:border-box;
-      -webkit-tap-highlight-color:transparent;
-    }
+    *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
 
-    html,body{
+    html, body{
       margin:0;
       width:100%;
-      height:100%;
-      overflow:hidden;
-      font-family:Inter, Arial, Helvetica, sans-serif;
+      min-height:100%;
+      font-family:Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color:var(--text);
       background:
         radial-gradient(circle at 15% 8%, rgba(0,234,255,.22), transparent 32%),
-        radial-gradient(circle at 85% 18%, rgba(157,77,255,.25), transparent 34%),
-        radial-gradient(circle at 50% 88%, rgba(255,61,242,.14), transparent 28%),
-        linear-gradient(165deg, var(--bg1), var(--bg2));
-      color:var(--text);
+        radial-gradient(circle at 85% 18%, rgba(168,85,247,.26), transparent 34%),
+        radial-gradient(circle at 50% 90%, rgba(255,61,242,.15), transparent 30%),
+        linear-gradient(160deg, var(--bg1), var(--bg2));
+      overflow-x:hidden;
     }
 
     body::before{
       content:"";
       position:fixed;
       inset:0;
-      pointer-events:none;
       background-image:
-        linear-gradient(rgba(0,234,255,.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,234,255,.03) 1px, transparent 1px);
-      background-size:26px 26px;
-      mask-image:linear-gradient(to bottom, rgba(0,0,0,.95), rgba(0,0,0,.25));
+        linear-gradient(rgba(0,234,255,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,234,255,.035) 1px, transparent 1px);
+      background-size:28px 28px;
+      mask-image:linear-gradient(to bottom, rgba(0,0,0,.85), rgba(0,0,0,.22));
+      pointer-events:none;
     }
 
     .app{
+      position:relative;
       width:min(100%, 480px);
-      height:100dvh;
+      min-height:100dvh;
       margin:0 auto;
-      padding:10px;
-      overflow:hidden;
+      padding:12px 12px 18px;
       display:flex;
       flex-direction:column;
+      gap:10px;
     }
 
     .screen{
       display:none;
-      width:100%;
-      height:100%;
-      animation:fadeIn .25s ease;
-      overflow:hidden;
+      min-height:calc(100dvh - 30px);
+      animation:fadeIn .35s ease both;
     }
 
-    .screen.active{
-      display:flex;
-      flex-direction:column;
+    .screen.active{display:flex; flex-direction:column;}
+
+    #gameScreen.active{
+      height:calc(100dvh - 30px);
+      min-height:0;
+      overflow:hidden;
     }
 
     @keyframes fadeIn{
@@ -80,398 +78,281 @@
       to{opacity:1; transform:translateY(0)}
     }
 
-    /* HOME */
-    .home-wrap{
+    .title-card{
       flex:1;
       display:flex;
       flex-direction:column;
-      justify-content:space-between;
-      gap:12px;
-      overflow:hidden;
-    }
-
-    .hero-panel{
-      flex:1;
-      min-height:0;
-      border-radius:26px;
-      position:relative;
-      overflow:hidden;
-      border:1px solid rgba(255,255,255,.16);
-      background:
-        radial-gradient(circle at 20% 25%, rgba(0,234,255,.28), transparent 32%),
-        radial-gradient(circle at 82% 22%, rgba(157,77,255,.28), transparent 30%),
-        radial-gradient(circle at 50% 100%, rgba(48,255,154,.18), transparent 30%),
-        linear-gradient(160deg, rgba(7,12,34,.96), rgba(20,6,52,.98));
-      box-shadow:
-        0 0 30px rgba(0,234,255,.16),
-        inset 0 0 22px rgba(255,255,255,.04);
-      display:flex;
-      align-items:center;
       justify-content:center;
-      padding:18px;
-    }
-
-    .hero-panel::before{
-      content:"";
-      position:absolute;
-      inset:0;
-      background:
-        linear-gradient(120deg, transparent 0%, rgba(255,255,255,.07) 35%, transparent 70%);
-      transform:translateX(-100%);
-      animation:shine 4s linear infinite;
-    }
-
-    @keyframes shine{
-      to{transform:translateX(100%)}
-    }
-
-    .hero-content{
-      position:relative;
-      z-index:1;
+      align-items:center;
       text-align:center;
-      width:100%;
-      max-width:340px;
+      padding:28px 16px;
     }
 
-    .hero-badge{
-      display:inline-block;
-      padding:7px 14px;
-      border-radius:999px;
-      background:rgba(255,255,255,.08);
-      border:1px solid rgba(255,255,255,.16);
-      color:var(--gold);
-      font-weight:900;
-      font-size:.78rem;
-      letter-spacing:.7px;
-      margin-bottom:12px;
-      text-transform:uppercase;
-      box-shadow:0 0 14px rgba(255,209,102,.12);
+    .splash-image{
+      width:min(100%, 330px);
+      max-height:62dvh;
+      object-fit:contain;
+      border-radius:28px;
+      border:1px solid rgba(255,255,255,.18);
+      box-shadow:0 0 35px rgba(0,234,255,.22), 0 0 55px rgba(168,85,247,.14);
+      margin-bottom:16px;
+      background:rgba(255,255,255,.04);
     }
 
-    .hero-icon{
-      font-size:62px;
-      filter:drop-shadow(0 0 14px rgba(0,234,255,.32));
-      margin-bottom:8px;
-      animation:float 3s ease-in-out infinite;
+    .logo{
+      width:118px;
+      height:118px;
+      display:grid;
+      place-items:center;
+      border-radius:34px;
+      background:linear-gradient(145deg, rgba(0,234,255,.22), rgba(168,85,247,.22));
+      border:1px solid rgba(255,255,255,.20);
+      box-shadow:0 0 35px rgba(0,234,255,.25), inset 0 0 22px rgba(255,255,255,.08);
+      font-size:56px;
+      margin-bottom:18px;
+      animation:float 2.8s ease-in-out infinite;
     }
 
     @keyframes float{
       0%,100%{transform:translateY(0)}
-      50%{transform:translateY(-7px)}
+      50%{transform:translateY(-8px)}
     }
 
-    .hero-title{
+    h1{
       margin:0;
-      font-size:clamp(2rem, 8vw, 3.1rem);
+      font-size:clamp(2rem, 9vw, 3.2rem);
       line-height:.95;
       letter-spacing:-1px;
-      text-shadow:0 0 16px rgba(0,234,255,.30);
+      text-shadow:0 0 18px rgba(0,234,255,.45);
     }
 
-    .hero-subtitle{
-      margin:12px 0 0;
+    .subtitle{
+      margin:14px 0 0;
       color:var(--muted);
-      font-size:.95rem;
-      line-height:1.38;
-    }
-
-    .hero-note{
-      margin-top:10px;
-      font-size:.8rem;
-      color:var(--gold);
-      font-weight:800;
-      opacity:.95;
+      font-size:1rem;
+      line-height:1.45;
+      max-width:360px;
     }
 
     .teacher{
-      text-align:center;
       color:var(--gold);
-      font-weight:900;
-      font-size:.84rem;
-      text-shadow:0 0 10px rgba(255,209,102,.20);
-      margin-top:4px;
+      font-weight:800;
+      margin-top:8px;
+      text-shadow:0 0 10px rgba(255,209,102,.25);
     }
 
-    .home-actions{
-      display:grid;
-      gap:10px;
-    }
-
-    .btn{
+    .primary-btn, .secondary-btn{
       width:100%;
       border:0;
-      border-radius:18px;
-      padding:14px 16px;
-      cursor:pointer;
+      border-radius:20px;
+      padding:16px 18px;
+      color:#07111f;
       font-weight:950;
-      font-size:.98rem;
+      font-size:1rem;
       letter-spacing:.3px;
-      transition:.16s ease;
-    }
-
-    .btn:active{transform:scale(.97)}
-
-    .btn-primary{
-      color:#06111e;
+      cursor:pointer;
       background:linear-gradient(135deg, var(--cyan), var(--green));
-      box-shadow:0 0 20px rgba(0,234,255,.28), 0 8px 18px rgba(0,0,0,.22);
+      box-shadow:0 0 24px rgba(0,234,255,.34), 0 8px 18px rgba(0,0,0,.25);
+      transition:.18s ease;
     }
 
-    .btn-secondary{
-      color:var(--text);
+    .primary-btn:active, .secondary-btn:active, .word-btn:active{transform:scale(.97)}
+
+    .secondary-btn{
       background:rgba(255,255,255,.08);
-      border:1px solid rgba(255,255,255,.15);
-      box-shadow:inset 0 0 14px rgba(255,255,255,.03);
-    }
-
-    /* PHASE SCREEN */
-    .phase-wrap{
-      flex:1;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      overflow:hidden;
-    }
-
-    .phase-header{
-      padding:8px 6px 0;
-      text-align:center;
-    }
-
-    .phase-header h1{
-      margin:0;
-      font-size:1.95rem;
-      text-shadow:0 0 14px rgba(0,234,255,.28);
-    }
-
-    .phase-header p{
-      margin:6px auto 0;
-      color:var(--muted);
-      font-size:.85rem;
-      max-width:340px;
-      line-height:1.3;
+      color:var(--text);
+      border:1px solid rgba(255,255,255,.18);
+      box-shadow:none;
     }
 
     .phase-grid{
-      flex:1;
-      min-height:0;
       display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:9px;
-      overflow:hidden;
-      align-content:start;
+      grid-template-columns:repeat(2, 1fr);
+      gap:12px;
+      width:100%;
+      margin-top:22px;
     }
 
     .phase-btn{
-      min-height:58px;
-      border-radius:16px;
-      border:1px solid rgba(255,255,255,.14);
-      background:linear-gradient(145deg, rgba(0,234,255,.11), rgba(157,77,255,.15));
+      min-height:72px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.16);
+      background:linear-gradient(145deg, rgba(0,234,255,.13), rgba(168,85,247,.14));
       color:var(--text);
-      cursor:pointer;
       font-weight:900;
-      font-size:.9rem;
-      box-shadow:inset 0 0 14px rgba(255,255,255,.04), 0 0 14px rgba(157,77,255,.12);
+      box-shadow:inset 0 0 18px rgba(255,255,255,.05), 0 0 18px rgba(168,85,247,.14);
+      cursor:pointer;
+      font-size:.92rem;
     }
 
     .phase-btn.locked{
-      opacity:.45;
-      filter:grayscale(.35);
+      opacity:.48;
+      filter:grayscale(.4);
       cursor:not-allowed;
     }
 
     .phase-small{
       display:block;
-      margin-top:3px;
+      margin-top:4px;
       color:var(--muted);
-      font-size:.73rem;
+      font-size:.76rem;
       font-weight:700;
-    }
-
-    /* GAME */
-    .game-layout{
-      flex:1;
-      display:grid;
-      grid-template-rows:auto auto auto 1fr auto;
-      gap:8px;
-      overflow:hidden;
-      min-height:0;
     }
 
     .hud{
       display:grid;
       grid-template-columns:1fr auto 1fr;
-      gap:8px;
       align-items:center;
-      padding:8px;
-      border-radius:18px;
-      background:rgba(3,8,28,.75);
-      border:1px solid rgba(255,255,255,.12);
-      box-shadow:0 0 18px rgba(0,234,255,.12), inset 0 0 12px rgba(255,255,255,.04);
-      backdrop-filter:blur(8px);
+      gap:8px;
+      padding:10px;
+      border-radius:22px;
+      background:rgba(3, 8, 28, .72);
+      border:1px solid rgba(255,255,255,.13);
+      box-shadow:0 0 24px rgba(0,234,255,.14), inset 0 0 16px rgba(255,255,255,.04);
+      backdrop-filter:blur(10px);
+      flex:0 0 auto;
     }
 
     .pill{
-      padding:8px 9px;
       border-radius:999px;
+      padding:9px 10px;
       background:rgba(255,255,255,.07);
       border:1px solid rgba(255,255,255,.10);
-      text-align:center;
-      font-size:.78rem;
+      font-size:.82rem;
       font-weight:850;
+      text-align:center;
       white-space:nowrap;
     }
 
     .hearts{
       letter-spacing:1px;
-      font-size:.98rem;
-      text-shadow:0 0 10px rgba(255,74,109,.30);
+      font-size:1.05rem;
+      text-shadow:0 0 10px rgba(255,70,109,.4);
     }
 
     .game-title{
       text-align:center;
-      padding:2px 6px 0;
+      padding:4px 4px 0;
+      flex:0 0 auto;
     }
 
     .game-title h2{
       margin:0;
-      font-size:1.04rem;
-      text-shadow:0 0 12px rgba(0,234,255,.24);
+      font-size:1.14rem;
+      text-shadow:0 0 14px rgba(0,234,255,.36);
     }
 
     .game-title p{
       margin:5px auto 0;
+      max-width:390px;
+      font-size:.82rem;
+      line-height:1.35;
       color:var(--muted);
-      font-size:.76rem;
-      line-height:1.25;
-      max-width:360px;
     }
 
-    .status-line{
-      min-height:22px;
-      text-align:center;
-      color:var(--gold);
-      font-size:.78rem;
-      font-weight:850;
-      padding:2px 6px;
-    }
-
-    .board-shell{
+    .board-wrap{
+      flex:1 1 auto;
       min-height:0;
-      height:100%;
-      display:grid;
-      grid-template-rows:auto 1fr;
-      gap:6px;
-      overflow:hidden;
+      display:flex;
+      align-items:center;
     }
 
-    .labels{
+    .board{
+      width:100%;
       display:grid;
       grid-template-columns:1fr 1fr;
       gap:10px;
+      position:relative;
     }
 
     .col-label{
       text-align:center;
+      font-size:.72rem;
       color:var(--gold);
-      font-size:.7rem;
       font-weight:950;
-      letter-spacing:.7px;
+      letter-spacing:.8px;
       text-transform:uppercase;
-      text-shadow:0 0 8px rgba(255,209,102,.18);
-    }
-
-    .board{
-      min-height:0;
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:10px;
-      overflow:hidden;
+      margin-bottom:-4px;
+      text-shadow:0 0 10px rgba(255,209,102,.22);
     }
 
     .column{
-      min-height:0;
       display:grid;
-      grid-template-rows:repeat(5, 1fr);
-      gap:7px;
+      gap:9px;
     }
 
     .word-btn{
-      width:100%;
-      min-height:0;
+      min-height:62px;
       border:1px solid rgba(255,255,255,.14);
-      border-radius:16px;
+      border-radius:18px;
+      padding:10px 8px;
       color:var(--text);
       background:linear-gradient(145deg, rgba(255,255,255,.08), rgba(0,234,255,.06));
-      box-shadow:0 0 14px rgba(0,234,255,.10), inset 0 0 12px rgba(255,255,255,.04);
-      font-size:clamp(.84rem, 3.5vw, 1rem);
+      box-shadow:0 0 18px rgba(0,234,255,.10), inset 0 0 18px rgba(255,255,255,.04);
+      font-size:clamp(.88rem, 3.7vw, 1.03rem);
       font-weight:950;
-      padding:8px 6px;
       cursor:pointer;
       position:relative;
       overflow:hidden;
-      transition:transform .16s ease, border-color .16s ease, box-shadow .16s ease, opacity .22s ease;
-      line-height:1.1;
+      transition:transform .18s ease, border-color .18s ease, box-shadow .18s ease, opacity .24s ease;
     }
 
     .word-btn.pt{
-      background:linear-gradient(145deg, rgba(157,77,255,.16), rgba(255,61,242,.07));
+      background:linear-gradient(145deg, rgba(168,85,247,.16), rgba(255,61,242,.07));
     }
 
     .word-btn::after{
       content:"";
       position:absolute;
-      inset:-70% auto auto -35%;
+      inset:-70% auto auto -30%;
       width:40%;
       height:220%;
-      background:linear-gradient(90deg, transparent, rgba(255,255,255,.16), transparent);
-      transform:rotate(24deg);
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,.18), transparent);
+      transform:rotate(25deg);
       transition:.35s ease;
     }
 
-    .word-btn:hover::after,
-    .word-btn.selected::after{
-      left:115%;
-    }
+    .word-btn:hover::after, .word-btn.selected::after{left:115%;}
 
     .word-btn.selected{
       border-color:var(--gold);
-      box-shadow:0 0 20px rgba(255,209,102,.35), inset 0 0 14px rgba(255,209,102,.07);
-      transform:translateY(-1px);
+      box-shadow:0 0 22px rgba(255,209,102,.42), inset 0 0 20px rgba(255,209,102,.08);
+      transform:translateY(-2px);
     }
 
     .word-btn.correct{
       border-color:var(--green);
-      background:linear-gradient(145deg, rgba(48,255,154,.34), rgba(0,234,255,.14));
-      box-shadow:0 0 24px rgba(48,255,154,.42);
+      background:linear-gradient(145deg, rgba(48,255,154,.32), rgba(0,234,255,.14));
+      box-shadow:0 0 26px rgba(48,255,154,.55);
       animation:popCorrect .62s ease both;
     }
 
     @keyframes popCorrect{
-      0%{transform:scale(1); opacity:1}
-      40%{transform:scale(1.05); opacity:1}
+      0%{transform:scale(1)}
+      42%{transform:scale(1.06)}
       100%{transform:scale(.88); opacity:0}
     }
 
     .word-btn.wrong{
       border-color:var(--red);
-      background:linear-gradient(145deg, rgba(255,74,109,.30), rgba(255,61,242,.10));
-      box-shadow:0 0 20px rgba(255,74,109,.38);
+      background:linear-gradient(145deg, rgba(255,70,109,.32), rgba(255,61,242,.10));
+      box-shadow:0 0 22px rgba(255,70,109,.45);
       animation:shake .42s ease;
     }
 
     @keyframes shake{
       0%,100%{transform:translateX(0)}
-      20%{transform:translateX(-4px)}
-      40%{transform:translateX(4px)}
-      60%{transform:translateX(-3px)}
-      80%{transform:translateX(3px)}
+      20%{transform:translateX(-5px)}
+      40%{transform:translateX(5px)}
+      60%{transform:translateX(-4px)}
+      80%{transform:translateX(4px)}
     }
 
     .empty-slot{
-      border:1px dashed rgba(255,255,255,.11);
-      border-radius:16px;
-      background:rgba(255,255,255,.02);
+      min-height:62px;
+      border:1px dashed rgba(255,255,255,.12);
+      border-radius:18px;
+      background:rgba(255,255,255,.025);
       opacity:.65;
     }
 
@@ -479,9 +360,20 @@
       display:grid;
       grid-template-columns:1fr 1fr;
       gap:10px;
+      margin-top:2px;
+      flex:0 0 auto;
     }
 
-    /* OVERLAY */
+    .status-line{
+      min-height:28px;
+      text-align:center;
+      color:var(--gold);
+      font-size:.82rem;
+      font-weight:850;
+      padding:3px 8px;
+      flex:0 0 auto;
+    }
+
     .overlay{
       position:fixed;
       inset:0;
@@ -491,176 +383,133 @@
       justify-content:center;
       padding:18px;
       background:rgba(0,0,0,.72);
-      backdrop-filter:blur(7px);
+      backdrop-filter:blur(8px);
     }
 
-    .overlay.show{
-      display:flex;
-      animation:fadeIn .25s ease;
-    }
+    .overlay.show{display:flex; animation:fadeIn .25s ease both;}
 
     .modal{
-      width:min(100%, 400px);
-      border-radius:24px;
-      padding:22px 16px;
+      width:min(100%, 420px);
+      border-radius:28px;
+      padding:24px 18px;
       text-align:center;
       background:linear-gradient(160deg, rgba(8,13,42,.98), rgba(30,8,72,.98));
-      border:1px solid rgba(255,255,255,.16);
-      box-shadow:0 0 34px rgba(0,234,255,.20), inset 0 0 20px rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.18);
+      box-shadow:0 0 38px rgba(0,234,255,.25), inset 0 0 26px rgba(255,255,255,.05);
     }
 
     .modal .big{
-      font-size:3.7rem;
+      font-size:4rem;
       margin:0 0 8px;
-      filter:drop-shadow(0 0 12px rgba(0,234,255,.32));
+      filter:drop-shadow(0 0 14px rgba(0,234,255,.45));
     }
 
     .modal h2{
       margin:0;
-      font-size:1.65rem;
+      font-size:1.75rem;
     }
 
     .modal p{
-      margin:10px 0 16px;
       color:var(--muted);
-      line-height:1.35;
-      font-size:.92rem;
-    }
-
-    .modal-actions{
-      display:grid;
-      gap:10px;
+      line-height:1.45;
+      margin:10px 0 18px;
     }
 
     .confetti{
       position:fixed;
       inset:0;
-      z-index:30;
       pointer-events:none;
       overflow:hidden;
+      z-index:30;
     }
 
     .piece{
       position:absolute;
-      top:-15px;
-      width:8px;
+      top:-12px;
+      width:9px;
       height:16px;
       border-radius:3px;
       animation:fall linear forwards;
     }
 
     @keyframes fall{
-      to{
-        transform:translateY(110vh) rotate(720deg);
-        opacity:.08;
-      }
+      to{transform:translateY(110vh) rotate(720deg); opacity:.1}
     }
 
-    @media (max-height:740px){
-      .app{padding:8px}
-      .hero-panel{padding:14px}
-      .hero-icon{font-size:54px}
-      .hero-title{font-size:2rem}
-      .hero-subtitle{font-size:.88rem}
-      .btn{padding:12px 14px}
-      .phase-btn{min-height:54px; font-size:.84rem}
-      .phase-small{font-size:.69rem}
-      .hud{padding:7px}
-      .pill{padding:7px 8px; font-size:.74rem}
-      .game-title h2{font-size:.98rem}
-      .game-title p{font-size:.72rem}
-      .status-line{font-size:.74rem; min-height:20px}
-      .column{gap:6px}
-      .word-btn, .empty-slot{border-radius:14px}
-      .word-btn{font-size:.82rem; padding:7px 5px}
+    @media (max-height:720px){
+      .word-btn,.empty-slot{min-height:54px; font-size:.86rem; border-radius:16px;}
+      .column{gap:7px;}
+      .board{gap:8px;}
+      .game-title p{font-size:.76rem;}
+      .hud{padding:8px;}
+      .pill{padding:7px 8px; font-size:.76rem;}
+      .splash-image{max-height:58dvh; width:min(100%, 305px);}
     }
 
     @media (max-height:660px){
-      .hero-title{font-size:1.85rem}
-      .hero-subtitle{font-size:.82rem}
-      .teacher{font-size:.78rem}
-      .phase-header h1{font-size:1.7rem}
-      .phase-header p{font-size:.78rem}
-      .phase-grid{gap:8px}
-      .phase-btn{min-height:50px}
-      .game-layout{gap:6px}
-      .word-btn{font-size:.78rem}
+      .word-btn,.empty-slot{min-height:48px; font-size:.78rem;}
+      .column{gap:6px;}
+      .game-title p{display:none;}
+      .status-line{font-size:.72rem; min-height:22px;}
+      .footer-actions .secondary-btn{padding:12px 14px;}
     }
   </style>
 </head>
 <body>
   <main class="app">
-    <!-- HOME -->
     <section id="homeScreen" class="screen active">
-      <div class="home-wrap">
-        <div class="hero-panel">
-          <div class="hero-content">
-            <div class="hero-badge">Novo desafio</div>
-            <div class="hero-icon">🧠⚡</div>
-            <h1 class="hero-title">Vocab Match<br>Challenge</h1>
-            <p class="hero-subtitle">
-              Associe palavras em inglês às traduções em português.
-              Ouça a pronúncia, leia com atenção e avance pelas fases.
-            </p>
-            <div class="hero-note">Área pronta para receber a imagem oficial da tela inicial.</div>
-          </div>
-        </div>
-
-        <div class="teacher">Jogo idealizado pelo professor Jasson Bruno.</div>
-
-        <div class="home-actions">
-          <button class="btn btn-primary" onclick="showPhases()">COMEÇAR</button>
-          <button class="btn btn-secondary" onclick="resetProgressConfirm()">ZERAR PROGRESSO</button>
+      <div class="title-card">
+        <img class="splash-image" src="vocab-match-tela-inicial.png" alt="Vocab Match Challenge" onerror="this.style.display='none'; document.getElementById('fallbackLogo').style.display='grid';" />
+        <div id="fallbackLogo" class="logo" style="display:none;">⚡</div>
+        <h1 style="font-size:1.55rem; line-height:1.05;">Vocab Match Challenge</h1>
+        <p class="subtitle" style="font-size:.9rem; margin-top:8px;">Associe palavras em inglês às traduções em português.</p>
+        <div style="width:100%; max-width:380px; margin-top:18px; display:grid; gap:10px;">
+          <button class="primary-btn" onclick="showPhases()">COMEÇAR</button>
+          <button class="secondary-btn" onclick="showHomeInfo()">COMO JOGAR</button>
         </div>
       </div>
     </section>
 
-    <!-- PHASES -->
     <section id="phaseScreen" class="screen">
-      <div class="phase-wrap">
-        <div class="phase-header">
-          <h1>Escolha a fase</h1>
-          <p>Complete 10 pares corretos para liberar a próxima fase.</p>
-        </div>
-
+      <div class="title-card" style="justify-content:flex-start; padding-top:18px;">
+        <div class="logo" style="width:82px;height:82px;font-size:38px;border-radius:26px;margin-bottom:12px;">🔓</div>
+        <h1 style="font-size:2.1rem;">Escolha a fase</h1>
+        <p class="subtitle">Complete 10 pares para liberar a próxima fase. O progresso vale apenas enquanto o jogo estiver aberto.</p>
         <div id="phaseGrid" class="phase-grid"></div>
-
-        <button class="btn btn-secondary" onclick="showHome()">VOLTAR</button>
+        <div style="width:100%; max-width:380px; margin-top:18px;">
+          <button class="secondary-btn" onclick="showHome()">VOLTAR</button>
+        </div>
       </div>
     </section>
 
-    <!-- GAME -->
     <section id="gameScreen" class="screen">
-      <div class="game-layout">
-        <div class="hud">
-          <div class="pill" id="phaseHud">Fase 1</div>
-          <div class="pill hearts" id="heartsHud">❤️❤️❤️❤️❤️</div>
-          <div class="pill" id="progressHud">Pares: 0/10</div>
-        </div>
+      <div class="hud">
+        <div class="pill" id="phaseHud">Fase 1</div>
+        <div class="pill hearts" id="heartsHud">❤️❤️❤️❤️❤️</div>
+        <div class="pill" id="progressHud">Pares: 0/10</div>
+      </div>
 
-        <div class="game-title">
-          <h2 id="phaseTitle">School Objects</h2>
-          <p>Clique em uma palavra em inglês para ouvir. Depois clique na tradução correta.</p>
-        </div>
+      <div class="game-title">
+        <h2 id="phaseTitle">School Objects</h2>
+        <p>Clique em uma palavra em inglês para ouvir. Depois clique na tradução correta em português.</p>
+      </div>
 
-        <div class="status-line" id="statusLine">Leia com calma. Os pares não aparecem alinhados.</div>
+      <div class="status-line" id="statusLine">Leia com calma. Os pares não aparecem alinhados.</div>
 
-        <div class="board-shell">
-          <div class="labels">
+      <div class="board-wrap">
+        <div style="width:100%;">
+          <div class="board">
             <div class="col-label">English</div>
             <div class="col-label">Português</div>
-          </div>
-
-          <div class="board">
             <div class="column" id="englishColumn"></div>
             <div class="column" id="portugueseColumn"></div>
           </div>
         </div>
+      </div>
 
-        <div class="footer-actions">
-          <button class="btn btn-secondary" onclick="backToPhases()">FASES</button>
-          <button class="btn btn-secondary" onclick="restartCurrentPhase()">REINICIAR</button>
-        </div>
+      <div class="footer-actions">
+        <button class="secondary-btn" onclick="backToPhases()">FASES</button>
+        <button class="secondary-btn" onclick="restartCurrentPhase()">REINICIAR</button>
       </div>
     </section>
   </main>
@@ -670,125 +519,34 @@
       <div class="big" id="resultIcon">🏆</div>
       <h2 id="resultTitle">Parabéns!</h2>
       <p id="resultText">Você completou a fase.</p>
-      <div class="modal-actions">
-        <button class="btn btn-primary" id="mainResultBtn">PRÓXIMA FASE</button>
-        <button class="btn btn-secondary" onclick="closeOverlay(); showPhases();">VER FASES</button>
+      <div style="display:grid; gap:10px;">
+        <button class="primary-btn" id="mainResultBtn">PRÓXIMA FASE</button>
+        <button class="secondary-btn" onclick="closeOverlay(); showPhases();">VER FASES</button>
       </div>
     </div>
   </div>
-
   <div class="confetti" id="confetti"></div>
 
   <script>
     const TOTAL_PHASES = 10;
     const PAIRS_TO_WIN = 10;
     const INITIAL_LIVES = 5;
-    const STORAGE_KEY = "vocabMatchUnlockedPhase";
 
     const phases = [
-      {
-        name:"School Objects",
-        short:"Objetos escolares",
-        words:[
-          ["book","livro"], ["pencil","lápis"], ["pen","caneta"], ["notebook","caderno"], ["eraser","borracha"],
-          ["ruler","régua"], ["backpack","mochila"], ["desk","carteira"], ["chair","cadeira"], ["board","quadro"],
-          ["paper","papel"], ["glue","cola"], ["scissors","tesoura"], ["marker","marcador"], ["sharpener","apontador"],
-          ["folder","pasta"], ["classroom","sala de aula"], ["teacher","professor"], ["student","aluno"], ["lesson","aula"]
-        ]
-      },
-      {
-        name:"Animals",
-        short:"Animais",
-        words:[
-          ["dog","cachorro"], ["cat","gato"], ["bird","pássaro"], ["fish","peixe"], ["horse","cavalo"],
-          ["cow","vaca"], ["pig","porco"], ["duck","pato"], ["chicken","galinha"], ["rabbit","coelho"],
-          ["monkey","macaco"], ["lion","leão"], ["tiger","tigre"], ["elephant","elefante"], ["snake","cobra"],
-          ["frog","sapo"], ["bee","abelha"], ["butterfly","borboleta"], ["shark","tubarão"], ["turtle","tartaruga"]
-        ]
-      },
-      {
-        name:"Food",
-        short:"Comidas",
-        words:[
-          ["rice","arroz"], ["beans","feijão"], ["bread","pão"], ["cheese","queijo"], ["egg","ovo"],
-          ["milk","leite"], ["water","água"], ["juice","suco"], ["apple","maçã"], ["banana","banana"],
-          ["orange","laranja"], ["cake","bolo"], ["pizza","pizza"], ["fish","peixe"], ["chicken","frango"],
-          ["meat","carne"], ["soup","sopa"], ["salad","salada"], ["coffee","café"], ["breakfast","café da manhã"]
-        ]
-      },
-      {
-        name:"Colors",
-        short:"Cores",
-        words:[
-          ["red","vermelho"], ["blue","azul"], ["green","verde"], ["yellow","amarelo"], ["black","preto"],
-          ["white","branco"], ["pink","rosa"], ["purple","roxo"], ["orange","laranja"], ["brown","marrom"],
-          ["gray","cinza"], ["gold","dourado"], ["silver","prata"], ["dark","escuro"], ["light","claro"],
-          ["colorful","colorido"], ["violet","violeta"], ["beige","bege"], ["navy blue","azul-marinho"], ["sky blue","azul-claro"]
-        ]
-      },
-      {
-        name:"Numbers",
-        short:"Números",
-        words:[
-          ["eleven","onze"], ["twelve","doze"], ["thirteen","treze"], ["fourteen","quatorze"], ["fifteen","quinze"],
-          ["sixteen","dezesseis"], ["seventeen","dezessete"], ["eighteen","dezoito"], ["nineteen","dezenove"], ["twenty","vinte"],
-          ["thirty","trinta"], ["forty","quarenta"], ["fifty","cinquenta"], ["sixty","sessenta"], ["seventy","setenta"],
-          ["eighty","oitenta"], ["ninety","noventa"], ["one hundred","cem"], ["one thousand","mil"], ["first","primeiro"]
-        ]
-      },
-      {
-        name:"Places",
-        short:"Lugares",
-        words:[
-          ["school","escola"], ["home","casa"], ["park","parque"], ["market","mercado"], ["beach","praia"],
-          ["river","rio"], ["street","rua"], ["church","igreja"], ["hospital","hospital"], ["store","loja"],
-          ["library","biblioteca"], ["restaurant","restaurante"], ["bakery","padaria"], ["farm","fazenda"], ["city","cidade"],
-          ["village","vila"], ["airport","aeroporto"], ["museum","museu"], ["gym","academia"], ["bus stop","parada de ônibus"]
-        ]
-      },
-      {
-        name:"Actions",
-        short:"Ações",
-        words:[
-          ["study","estudar"], ["read","ler"], ["write","escrever"], ["listen","ouvir"], ["speak","falar"],
-          ["play","jogar"], ["run","correr"], ["walk","andar"], ["eat","comer"], ["drink","beber"],
-          ["sleep","dormir"], ["watch","assistir"], ["open","abrir"], ["close","fechar"], ["go","ir"],
-          ["come","vir"], ["make","fazer"], ["take","pegar"], ["help","ajudar"], ["learn","aprender"]
-        ]
-      },
-      {
-        name:"Feelings",
-        short:"Sentimentos",
-        words:[
-          ["happy","feliz"], ["sad","triste"], ["angry","com raiva"], ["tired","cansado"], ["hungry","com fome"],
-          ["thirsty","com sede"], ["scared","assustado"], ["excited","animado"], ["calm","calmo"], ["nervous","nervoso"],
-          ["proud","orgulhoso"], ["bored","entediado"], ["worried","preocupado"], ["sleepy","com sono"], ["strong","forte"],
-          ["weak","fraco"], ["kind","gentil"], ["funny","engraçado"], ["brave","corajoso"], ["quiet","quieto"]
-        ]
-      },
-      {
-        name:"Daily Life",
-        short:"Dia a dia",
-        words:[
-          ["morning","manhã"], ["afternoon","tarde"], ["night","noite"], ["family","família"], ["friend","amigo"],
-          ["mother","mãe"], ["father","pai"], ["brother","irmão"], ["sister","irmã"], ["homework","tarefa de casa"],
-          ["game","jogo"], ["phone","celular"], ["music","música"], ["movie","filme"], ["soccer","futebol"],
-          ["break","intervalo"], ["week","semana"], ["today","hoje"], ["tomorrow","amanhã"], ["yesterday","ontem"]
-        ]
-      },
-      {
-        name:"Final Challenge",
-        short:"Desafio final",
-        words:[
-          ["always","sempre"], ["usually","geralmente"], ["sometimes","às vezes"], ["never","nunca"], ["like","gostar"],
-          ["dislike","não gostar"], ["beautiful","bonito"], ["important","importante"], ["easy","fácil"], ["difficult","difícil"],
-          ["question","pergunta"], ["answer","resposta"], ["correct","correto"], ["wrong","errado"], ["challenge","desafio"],
-          ["winner","vencedor"], ["team","equipe"], ["dream","sonho"], ["future","futuro"], ["knowledge","conhecimento"]
-        ]
-      }
+      { name:"School Objects", short:"Objetos escolares", words:[["book","livro"],["pencil","lápis"],["pen","caneta"],["notebook","caderno"],["eraser","borracha"],["ruler","régua"],["backpack","mochila"],["desk","carteira"],["chair","cadeira"],["board","quadro"],["paper","papel"],["glue","cola"],["scissors","tesoura"],["marker","marcador"],["sharpener","apontador"],["folder","pasta"],["classroom","sala de aula"],["teacher","professor"],["student","aluno"],["lesson","aula"]] },
+      { name:"Animals", short:"Animais", words:[["dog","cachorro"],["cat","gato"],["bird","pássaro"],["fish","peixe"],["horse","cavalo"],["cow","vaca"],["pig","porco"],["duck","pato"],["chicken","galinha"],["rabbit","coelho"],["monkey","macaco"],["lion","leão"],["tiger","tigre"],["elephant","elefante"],["snake","cobra"],["frog","sapo"],["bee","abelha"],["butterfly","borboleta"],["shark","tubarão"],["turtle","tartaruga"]] },
+      { name:"Food", short:"Comidas", words:[["rice","arroz"],["beans","feijão"],["bread","pão"],["cheese","queijo"],["egg","ovo"],["milk","leite"],["water","água"],["juice","suco"],["apple","maçã"],["banana","banana"],["orange","laranja"],["cake","bolo"],["pizza","pizza"],["fish","peixe"],["chicken","frango"],["meat","carne"],["soup","sopa"],["salad","salada"],["coffee","café"],["breakfast","café da manhã"]] },
+      { name:"Colors", short:"Cores", words:[["red","vermelho"],["blue","azul"],["green","verde"],["yellow","amarelo"],["black","preto"],["white","branco"],["pink","rosa"],["purple","roxo"],["orange","laranja"],["brown","marrom"],["gray","cinza"],["gold","dourado"],["silver","prata"],["dark","escuro"],["light","claro"],["colorful","colorido"],["violet","violeta"],["beige","bege"],["navy blue","azul-marinho"],["sky blue","azul-claro"]] },
+      { name:"Numbers", short:"Números", words:[["eleven","onze"],["twelve","doze"],["thirteen","treze"],["fourteen","quatorze"],["fifteen","quinze"],["sixteen","dezesseis"],["seventeen","dezessete"],["eighteen","dezoito"],["nineteen","dezenove"],["twenty","vinte"],["thirty","trinta"],["forty","quarenta"],["fifty","cinquenta"],["sixty","sessenta"],["seventy","setenta"],["eighty","oitenta"],["ninety","noventa"],["one hundred","cem"],["one thousand","mil"],["first","primeiro"]] },
+      { name:"Places", short:"Lugares", words:[["school","escola"],["home","casa"],["park","parque"],["market","mercado"],["beach","praia"],["river","rio"],["street","rua"],["church","igreja"],["hospital","hospital"],["store","loja"],["library","biblioteca"],["restaurant","restaurante"],["bakery","padaria"],["farm","fazenda"],["city","cidade"],["village","vila"],["airport","aeroporto"],["museum","museu"],["gym","academia"],["bus stop","parada de ônibus"]] },
+      { name:"Actions", short:"Ações", words:[["study","estudar"],["read","ler"],["write","escrever"],["listen","ouvir"],["speak","falar"],["play","jogar"],["run","correr"],["walk","andar"],["eat","comer"],["drink","beber"],["sleep","dormir"],["watch","assistir"],["open","abrir"],["close","fechar"],["go","ir"],["come","vir"],["make","fazer"],["take","pegar"],["help","ajudar"],["learn","aprender"]] },
+      { name:"Feelings", short:"Sentimentos", words:[["happy","feliz"],["sad","triste"],["angry","com raiva"],["tired","cansado"],["hungry","com fome"],["thirsty","com sede"],["scared","assustado"],["excited","animado"],["calm","calmo"],["nervous","nervoso"],["proud","orgulhoso"],["bored","entediado"],["worried","preocupado"],["sleepy","com sono"],["strong","forte"],["weak","fraco"],["kind","gentil"],["funny","engraçado"],["brave","corajoso"],["quiet","quieto"]] },
+      { name:"Daily Life", short:"Dia a dia", words:[["morning","manhã"],["afternoon","tarde"],["night","noite"],["family","família"],["friend","amigo"],["mother","mãe"],["father","pai"],["brother","irmão"],["sister","irmã"],["homework","tarefa de casa"],["game","jogo"],["phone","celular"],["music","música"],["movie","filme"],["soccer","futebol"],["break","intervalo"],["week","semana"],["today","hoje"],["tomorrow","amanhã"],["yesterday","ontem"]] },
+      { name:"Final Challenge", short:"Desafio final", words:[["always","sempre"],["usually","geralmente"],["sometimes","às vezes"],["never","nunca"],["like","gostar"],["dislike","não gostar"],["beautiful","bonito"],["important","importante"],["easy","fácil"],["difficult","difícil"],["question","pergunta"],["answer","resposta"],["correct","correto"],["wrong","errado"],["challenge","desafio"],["winner","vencedor"],["team","equipe"],["dream","sonho"],["future","futuro"],["knowledge","conhecimento"]] }
     ];
 
     let currentPhase = 0;
+    let unlockedPhase = 1;
     let lives = INITIAL_LIVES;
     let correctPairs = 0;
     let selected = null;
@@ -820,8 +578,15 @@
       screen.classList.add("active");
     }
 
-    function showHome(){
-      showOnly(homeScreen);
+    function showHome(){ showOnly(homeScreen); }
+
+    function showHomeInfo(){
+      resultIcon.textContent = "🎮";
+      resultTitle.textContent = "Como jogar";
+      resultText.textContent = "Clique em uma palavra em inglês para ouvir a pronúncia. Depois encontre a tradução correta em português. Complete 10 pares para vencer a fase.";
+      mainResultBtn.textContent = "ENTENDI";
+      mainResultBtn.onclick = closeOverlay;
+      overlay.classList.add("show");
     }
 
     function showPhases(){
@@ -834,30 +599,14 @@
       showOnly(phaseScreen);
     }
 
-    function getUnlockedPhase(){
-      return Math.min(parseInt(localStorage.getItem(STORAGE_KEY) || "1", 10), TOTAL_PHASES);
-    }
-
-    function setUnlockedPhase(n){
-      localStorage.setItem(STORAGE_KEY, String(Math.min(n, TOTAL_PHASES)));
-    }
-
-    function resetProgressConfirm(){
-      if(confirm("Deseja zerar as fases desbloqueadas?")){
-        localStorage.setItem(STORAGE_KEY, "1");
-        renderPhaseGrid();
-      }
-    }
-
     function renderPhaseGrid(){
-      const unlocked = getUnlockedPhase();
       phaseGrid.innerHTML = "";
       phases.forEach((phase, index) => {
         const btn = document.createElement("button");
-        btn.className = "phase-btn" + (index + 1 > unlocked ? " locked" : "");
-        btn.innerHTML = `${index + 1 > unlocked ? "🔒" : "⚡"} Fase ${index + 1}<span class="phase-small">${phase.short}</span>`;
+        btn.className = "phase-btn" + (index + 1 > unlockedPhase ? " locked" : "");
+        btn.innerHTML = `${index + 1 > unlockedPhase ? "🔒" : "⚡"} Fase ${index + 1}<span class="phase-small">${phase.short}</span>`;
         btn.onclick = () => {
-          if(index + 1 <= unlocked) startPhase(index);
+          if(index + 1 <= unlockedPhase){ startPhase(index); }
         };
         phaseGrid.appendChild(btn);
       });
@@ -868,11 +617,8 @@
       lives = INITIAL_LIVES;
       correctPairs = 0;
       selected = null;
-      englishItems = [];
-      portugueseItems = [];
       usedPairIds.clear();
       locked = false;
-
       buildInitialBoard();
       updateHud();
       phaseTitle.textContent = phases[currentPhase].name;
@@ -881,17 +627,13 @@
       renderBoard();
     }
 
-    function restartCurrentPhase(){
-      startPhase(currentPhase);
-    }
+    function restartCurrentPhase(){ startPhase(currentPhase); }
 
     function buildInitialBoard(){
       const ids = getRandomAvailableIds(5);
       ids.forEach(id => usedPairIds.add(id));
-
       englishItems = ids.map(id => makeItem(id, "en"));
       portugueseItems = ids.map(id => makeItem(id, "pt"));
-
       shuffle(englishItems);
       shufflePortugueseAvoidRows();
     }
@@ -907,9 +649,7 @@
     }
 
     function getRandomAvailableIds(count){
-      const all = phases[currentPhase].words
-        .map((_, i) => i)
-        .filter(i => !usedPairIds.has(i));
+      const all = phases[currentPhase].words.map((_, i) => i).filter(i => !usedPairIds.has(i));
       shuffle(all);
       return all.slice(0, count);
     }
@@ -927,15 +667,13 @@
       do{
         shuffle(portugueseItems);
         attempts++;
-      } while(hasRowPair() && attempts < 100);
+      } while(hasRowPair() && attempts < 120);
     }
 
     function hasRowPair(){
       const max = Math.min(englishItems.length, portugueseItems.length);
       for(let i = 0; i < max; i++){
-        if(englishItems[i] && portugueseItems[i] && englishItems[i].pairId === portugueseItems[i].pairId){
-          return true;
-        }
+        if(englishItems[i] && portugueseItems[i] && englishItems[i].pairId === portugueseItems[i].pairId) return true;
       }
       return false;
     }
@@ -962,7 +700,6 @@
           column.appendChild(empty);
           continue;
         }
-
         const btn = document.createElement("button");
         btn.className = `word-btn ${lang}`;
         btn.textContent = item.text;
@@ -974,10 +711,7 @@
 
     function selectItem(item, btn){
       if(locked) return;
-
-      if(item.lang === "en"){
-        speakEnglish(item.text);
-      }
+      if(item.lang === "en") speakEnglish(item.text);
 
       if(selected && selected.item.uid === item.uid){
         clearSelection();
@@ -1005,11 +739,8 @@
     function checkPair(a, b){
       locked = true;
       const isCorrect = a.item.pairId === b.item.pairId;
-      if(isCorrect){
-        handleCorrect(a, b);
-      } else {
-        handleWrong(a, b);
-      }
+      if(isCorrect){ handleCorrect(a, b); }
+      else{ handleWrong(a, b); }
     }
 
     function handleCorrect(a, b){
@@ -1017,9 +748,7 @@
       b.btn.classList.remove("selected");
       a.btn.classList.add("correct");
       b.btn.classList.add("correct");
-
       playSuccessChime();
-
       correctPairs++;
       updateHud();
       statusLine.textContent = getMotivation();
@@ -1035,11 +764,11 @@
         }
 
         if(correctPairs >= 3){
-          refillBoardToFivePairs();
-          shuffle(englishItems);
-          shufflePortugueseAvoidRows();
+          refillBoardToFivePairsRandom();
+          randomizeBoardPositions();
           statusLine.textContent = "Novas palavras entraram no desafio. Continue lendo com atenção.";
-        } else {
+        }else{
+          randomizeBoardPositions();
           statusLine.textContent = `Muito bem! A reposição começa depois do 3º par. Faltam ${3 - correctPairs} para mudar o ritmo.`;
         }
 
@@ -1052,43 +781,33 @@
     function handleWrong(a, b){
       a.btn.classList.add("wrong");
       b.btn.classList.add("wrong");
-
       lives--;
       updateHud();
-      statusLine.textContent = "Quase! Observe melhor as palavras e tente novamente.";
+      statusLine.textContent = "Quase! Observe as palavras novamente.";
 
       setTimeout(() => {
         a.btn.classList.remove("selected", "wrong");
         b.btn.classList.remove("wrong");
         selected = null;
         locked = false;
-
-        if(lives <= 0){
-          gameOver();
-        }
-      }, 950);
+        if(lives <= 0){ gameOver(); }
+      }, 900);
     }
 
     function clearSelection(){
-      if(selected){
-        selected.btn.classList.remove("selected");
-      }
+      if(selected){ selected.btn.classList.remove("selected"); }
       selected = null;
     }
 
     function removeItem(item){
-      if(item.lang === "en"){
-        englishItems = englishItems.filter(x => x.uid !== item.uid);
-      } else {
-        portugueseItems = portugueseItems.filter(x => x.uid !== item.uid);
-      }
+      if(item.lang === "en") englishItems = englishItems.filter(x => x.uid !== item.uid);
+      else portugueseItems = portugueseItems.filter(x => x.uid !== item.uid);
     }
 
-    function refillBoardToFivePairs(){
+    function refillBoardToFivePairsRandom(){
       while(englishItems.length < 5 && portugueseItems.length < 5){
         const ids = getRandomAvailableIds(1);
         if(ids.length === 0) break;
-
         const id = ids[0];
         usedPairIds.add(id);
         englishItems.push(makeItem(id, "en"));
@@ -1096,155 +815,128 @@
       }
     }
 
+    function randomizeBoardPositions(){
+      shuffle(englishItems);
+      shufflePortugueseAvoidRows();
+    }
+
     function speakEnglish(text){
       if(!("speechSynthesis" in window)) return;
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = "en-US";
-      utterance.rate = 0.88;
+      utterance.rate = .88;
       utterance.pitch = 1;
       utterance.volume = 1;
       window.speechSynthesis.speak(utterance);
     }
 
+    function makeAudioContext(){
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      return new AudioCtx();
+    }
+
     function playSuccessChime(){
       try{
-        const AudioCtx = window.AudioContext || window.webkitAudioContext;
-        const ctx = new AudioCtx();
+        const ctx = makeAudioContext();
         const gain = ctx.createGain();
         gain.gain.setValueAtTime(0.0001, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.18, ctx.currentTime + 0.02);
-        gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.38);
+        gain.gain.exponentialRampToValueAtTime(0.20, ctx.currentTime + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.42);
         gain.connect(ctx.destination);
-
         [523.25, 659.25, 783.99].forEach((freq, i) => {
           const osc = ctx.createOscillator();
           osc.type = "sine";
-          osc.frequency.setValueAtTime(freq, ctx.currentTime + i * 0.07);
+          osc.frequency.setValueAtTime(freq, ctx.currentTime + i * 0.08);
           osc.connect(gain);
-          osc.start(ctx.currentTime + i * 0.07);
-          osc.stop(ctx.currentTime + 0.42);
+          osc.start(ctx.currentTime + i * 0.08);
+          osc.stop(ctx.currentTime + 0.45);
         });
-      } catch(e){}
+      }catch(e){}
     }
 
     function playVictoryMelody(){
       try{
-        const AudioCtx = window.AudioContext || window.webkitAudioContext;
-        const ctx = new AudioCtx();
+        const ctx = makeAudioContext();
         const master = ctx.createGain();
-        master.gain.value = 0.18;
+        master.gain.setValueAtTime(0.0001, ctx.currentTime);
+        master.gain.exponentialRampToValueAtTime(0.25, ctx.currentTime + 0.03);
+        master.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 1.55);
         master.connect(ctx.destination);
 
-        const notes = [
-          {f:523.25,d:0.16,t:"triangle"},
-          {f:659.25,d:0.16,t:"triangle"},
-          {f:783.99,d:0.18,t:"triangle"},
-          {f:1046.5,d:0.32,t:"sine"}
-        ];
-
-        let time = ctx.currentTime;
-        notes.forEach(n => {
+        const notes = [523.25, 659.25, 783.99, 1046.5, 783.99, 1046.5];
+        notes.forEach((freq, i) => {
           const osc = ctx.createOscillator();
           const gain = ctx.createGain();
-          osc.type = n.t;
-          osc.frequency.setValueAtTime(n.f, time);
-          gain.gain.setValueAtTime(0.0001, time);
-          gain.gain.exponentialRampToValueAtTime(0.55, time + 0.03);
-          gain.gain.exponentialRampToValueAtTime(0.0001, time + n.d);
+          const start = ctx.currentTime + i * 0.16;
+          osc.type = i < 3 ? "triangle" : "sine";
+          osc.frequency.setValueAtTime(freq, start);
+          gain.gain.setValueAtTime(0.0001, start);
+          gain.gain.exponentialRampToValueAtTime(0.65, start + 0.03);
+          gain.gain.exponentialRampToValueAtTime(0.0001, start + 0.26);
           osc.connect(gain);
           gain.connect(master);
-          osc.start(time);
-          osc.stop(time + n.d + 0.03);
-          time += n.d * 0.9;
+          osc.start(start);
+          osc.stop(start + 0.32);
         });
-      } catch(e){}
+      }catch(e){}
     }
 
     function getMotivation(){
-      const lines = [
-        "Great job! Você encontrou o par correto.",
-        "Excellent! Continue com foco.",
-        "Nice match! A leitura fez diferença.",
-        "Very good! Você está avançando.",
-        "Amazing! Mais um par completo."
-      ];
+      const lines = ["Great job! Você encontrou o par correto.","Excellent! Continue com foco.","Nice match! A leitura fez diferença.","Very good! Você está avançando.","Amazing! Mais um par completo."];
       return lines[Math.floor(Math.random() * lines.length)];
     }
 
     function winPhase(){
       locked = true;
-
       const next = currentPhase + 2;
-      if(next > getUnlockedPhase()){
-        setUnlockedPhase(next);
-      }
-
+      if(next > unlockedPhase) unlockedPhase = Math.min(next, TOTAL_PHASES);
       playVictoryMelody();
       launchConfetti();
-
       resultIcon.textContent = currentPhase + 1 === TOTAL_PHASES ? "👑" : "🏆";
       resultTitle.textContent = currentPhase + 1 === TOTAL_PHASES ? "Você venceu o desafio!" : "Parabéns!";
-      resultText.textContent = currentPhase + 1 === TOTAL_PHASES
-        ? "Você concluiu todas as fases do Vocab Match Challenge."
-        : `Você completou a Fase ${currentPhase + 1} e liberou a próxima fase.`;
-
+      resultText.textContent = currentPhase + 1 === TOTAL_PHASES ? "Você concluiu todas as fases do Vocab Match Challenge." : `Você completou a Fase ${currentPhase + 1} e liberou a próxima fase.`;
       mainResultBtn.textContent = currentPhase + 1 === TOTAL_PHASES ? "VOLTAR ÀS FASES" : "PRÓXIMA FASE";
       mainResultBtn.onclick = () => {
         closeOverlay();
-        if(currentPhase + 1 < TOTAL_PHASES){
-          startPhase(currentPhase + 1);
-        } else {
-          showPhases();
-        }
+        if(currentPhase + 1 < TOTAL_PHASES) startPhase(currentPhase + 1);
+        else showPhases();
       };
-
       overlay.classList.add("show");
     }
 
     function gameOver(){
       locked = true;
-
       resultIcon.textContent = "💔";
       resultTitle.textContent = "Game Over";
       resultText.textContent = "As vidas acabaram. Tente novamente e observe melhor as palavras.";
-
       mainResultBtn.textContent = "TENTAR DE NOVO";
       mainResultBtn.onclick = () => {
         closeOverlay();
         restartCurrentPhase();
       };
-
       overlay.classList.add("show");
     }
 
-    function closeOverlay(){
-      overlay.classList.remove("show");
-    }
+    function closeOverlay(){ overlay.classList.remove("show"); }
 
     function launchConfetti(){
       confettiBox.innerHTML = "";
-      const colors = ["#00eaff", "#30ff9a", "#9d4dff", "#ff3df2", "#ffd166"];
-
+      const colors = ["#00eaff", "#30ff9a", "#a855f7", "#ff3df2", "#ffd166"];
       for(let i = 0; i < 70; i++){
         const piece = document.createElement("div");
         piece.className = "piece";
         piece.style.left = Math.random() * 100 + "vw";
         piece.style.background = colors[Math.floor(Math.random() * colors.length)];
-        piece.style.animationDuration = (1.5 + Math.random() * 1.6) + "s";
-        piece.style.animationDelay = (Math.random() * .22) + "s";
+        piece.style.animationDuration = (1.6 + Math.random() * 1.6) + "s";
+        piece.style.animationDelay = (Math.random() * .25) + "s";
         confettiBox.appendChild(piece);
       }
-
-      setTimeout(() => {
-        confettiBox.innerHTML = "";
-      }, 3400);
+      setTimeout(() => confettiBox.innerHTML = "", 3400);
     }
 
     document.addEventListener("visibilitychange", () => {
-      if(document.hidden && "speechSynthesis" in window){
-        window.speechSynthesis.cancel();
-      }
+      if(document.hidden && "speechSynthesis" in window) window.speechSynthesis.cancel();
     });
   </script>
 </body>
