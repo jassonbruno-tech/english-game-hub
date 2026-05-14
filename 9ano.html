@@ -8,7 +8,7 @@
 
 <!-- Prévia do link no WhatsApp / Facebook -->
 <meta property="og:title" content="9º Ano - English Game Hub" />
-<meta property="og:description" content="Jogos de Inglês para o 9º ano: Spin Challenge, Hangman, Listening & Speaking e Smart Choice Grammar." />
+<meta property="og:description" content="Jogos de Inglês para o 9º ano: Spin Challenge, Hangman, Listening & Speaking, Smart Choice Grammar e Vocab Match Challenge." />
 <meta property="og:image" content="https://jassonbruno-tech.github.io/english-game-hub/9ano-tela-inicial-laranja-assinada.png" />
 <meta property="og:image:secure_url" content="https://jassonbruno-tech.github.io/english-game-hub/9ano-tela-inicial-laranja-assinada.png" />
 <meta property="og:url" content="https://jassonbruno-tech.github.io/english-game-hub/9ano.html" />
@@ -143,6 +143,45 @@ body{
   height:18.9%;
 }
 
+.vocab-btn{
+  position:absolute;
+  z-index:18;
+  left:13%;
+  bottom:1.6%;
+  width:74%;
+  min-height:42px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  text-align:center;
+  text-decoration:none;
+  color:#fff;
+  font-size:13px;
+  font-weight:950;
+  letter-spacing:.2px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.58);
+  background:linear-gradient(135deg, rgba(0,0,0,.62), rgba(255,106,0,.70));
+  backdrop-filter:blur(6px);
+  box-shadow:0 0 18px rgba(255,255,255,.38), 0 8px 18px rgba(0,0,0,.30);
+  text-shadow:0 2px 8px rgba(0,0,0,.45);
+  -webkit-tap-highlight-color:transparent;
+}
+
+.vocab-btn:active{
+  transform:scale(.97);
+  box-shadow:0 0 28px rgba(255,255,255,.72), inset 0 0 16px rgba(255,255,255,.22);
+}
+
+.vocab-btn small{
+  display:block;
+  font-size:10px;
+  font-weight:800;
+  color:#ffe6b6;
+  margin-left:2px;
+}
+
 @media(min-width:700px){
   body{
     background:
@@ -155,6 +194,16 @@ body{
   .back,.sound-btn{
     font-size:10px;
     padding:6px 8px;
+  }
+
+  .vocab-btn{
+    min-height:36px;
+    font-size:12px;
+    bottom:1.1%;
+  }
+
+  .vocab-btn small{
+    display:none;
   }
 }
 </style>
@@ -186,6 +235,10 @@ body{
 
   <a class="game-link btn-smart" href="9ano-smart-choice-grammar.html?v=230" aria-label="Entrar no Smart Choice Grammar">
     <span>Smart Choice Grammar</span>
+  </a>
+
+  <a class="vocab-btn" href="9ano-vocab-match.html?v=1" aria-label="Entrar no Vocab Match Challenge">
+    🧠⚡ Vocab Match Challenge <small>novo treino de vocabulário</small>
   </a>
 </main>
 
