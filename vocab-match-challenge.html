@@ -98,9 +98,9 @@
       width:100%;
       max-width:430px;
       height:auto;
-      max-height:76dvh;
-      object-fit:cover;
-      object-position:center top;
+      max-height:73dvh;
+      object-fit:contain;
+      object-position:center center;
       border-radius:22px;
       border:1px solid rgba(255,255,255,.18);
       box-shadow:0 0 35px rgba(0,234,255,.22), 0 0 55px rgba(168,85,247,.14);
@@ -558,6 +558,8 @@
     let phaseRoundIds = [];
     let nextPairPointer = 0;
     let locked = false;
+    let audioUnlocked = false;
+    let sharedAudioCtx = null;
 
     const homeScreen = document.getElementById("homeScreen");
     const phaseScreen = document.getElementById("phaseScreen");
@@ -727,6 +729,7 @@
     }
 
     function selectItem(item, btn){
+      unlockGameAudio();
       if(locked) return;
       if(item.lang === "en") speakEnglish(item.text);
 
@@ -849,7 +852,41 @@
 
     function makeAudioContext(){
       const AudioCtx = window.AudioContext || window.webkitAudioContext;
-      return new AudioCtx();
+      if(!sharedAudioCtx){
+        sharedAudioCtx = new AudioCtx();
+      }
+      if(sharedAudioCtx.state === "suspended"){
+        sharedAudioCtx.resume();
+      }
+      return sharedAudioCtx;
+    }
+
+    function unlockGameAudio(){
+      if(audioUnlocked) return;
+      audioUnlocked = true;
+      try{
+        makeAudioContext();
+      }catch(e){}
+      try{
+        victoryAudio.volume = 1;
+        victoryAudio.muted = true;
+        const p = victoryAudio.play();
+        if(p && typeof p.then === "function"){
+          p.then(() => {
+            victoryAudio.pause();
+            victoryAudio.currentTime = 0;
+            victoryAudio.muted = false;
+          }).catch(() => {
+            victoryAudio.muted = false;
+          });
+        }else{
+          victoryAudio.pause();
+          victoryAudio.currentTime = 0;
+          victoryAudio.muted = false;
+        }
+      }catch(e){
+        victoryAudio.muted = false;
+      }
     }
 
     function playSuccessChime(){
@@ -872,35 +909,42 @@
     }
 
     function playVictoryMelody(){
+      unlockGameAudio();
+      let fallbackTimer = null;
+      let startedRealAudio = false;
+
+      const startFallbackOnce = () => {
+        if(startedRealAudio) return;
+        startedRealAudio = true;
+        if(fallbackTimer) clearTimeout(fallbackTimer);
+        playVictoryFallback();
+      };
+
       try{
         victoryAudio.pause();
         victoryAudio.currentTime = 0;
         victoryAudio.volume = 1;
         victoryAudio.muted = false;
-
-        let fallbackStarted = false;
-        const startFallbackOnce = () => {
-          if(fallbackStarted) return;
-          fallbackStarted = true;
-          playVictoryFallback();
-        };
-
         victoryAudio.onerror = startFallbackOnce;
         victoryAudio.onstalled = startFallbackOnce;
         victoryAudio.onabort = startFallbackOnce;
+        victoryAudio.onplaying = () => {
+          startedRealAudio = true;
+          if(fallbackTimer) clearTimeout(fallbackTimer);
+        };
 
         const playPromise = victoryAudio.play();
         if(playPromise && typeof playPromise.catch === "function"){
           playPromise.catch(startFallbackOnce);
         }
 
-        setTimeout(() => {
-          if(victoryAudio.paused || victoryAudio.currentTime < 0.05){
+        fallbackTimer = setTimeout(() => {
+          if(!startedRealAudio || victoryAudio.paused || victoryAudio.currentTime < 0.05){
             startFallbackOnce();
           }
-        }, 450);
+        }, 500);
       }catch(e){
-        playVictoryFallback();
+        startFallbackOnce();
       }
     }
 
@@ -909,23 +953,24 @@
         const ctx = makeAudioContext();
         const master = ctx.createGain();
         master.gain.setValueAtTime(0.0001, ctx.currentTime);
-        master.gain.exponentialRampToValueAtTime(0.25, ctx.currentTime + 0.03);
-        master.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 1.55);
+        master.gain.exponentialRampToValueAtTime(0.55, ctx.currentTime + 0.03);
+        master.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 2.35);
         master.connect(ctx.destination);
-        const notes = [523.25, 659.25, 783.99, 1046.5, 783.99, 1046.5];
+
+        const notes = [523.25, 659.25, 783.99, 1046.5, 1318.5, 1046.5, 1568.0];
         notes.forEach((freq, i) => {
           const osc = ctx.createOscillator();
           const gain = ctx.createGain();
-          const start = ctx.currentTime + i * 0.16;
-          osc.type = i < 3 ? "triangle" : "sine";
+          const start = ctx.currentTime + i * 0.18;
+          osc.type = i % 2 === 0 ? "triangle" : "sine";
           osc.frequency.setValueAtTime(freq, start);
           gain.gain.setValueAtTime(0.0001, start);
-          gain.gain.exponentialRampToValueAtTime(0.65, start + 0.03);
-          gain.gain.exponentialRampToValueAtTime(0.0001, start + 0.26);
+          gain.gain.exponentialRampToValueAtTime(0.75, start + 0.025);
+          gain.gain.exponentialRampToValueAtTime(0.0001, start + 0.32);
           osc.connect(gain);
           gain.connect(master);
           osc.start(start);
-          osc.stop(start + 0.32);
+          osc.stop(start + 0.36);
         });
       }catch(e){}
     }
