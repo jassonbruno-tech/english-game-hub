@@ -43,41 +43,48 @@
     .app{
       width:min(100%, 520px);
       min-height:100dvh;
-      padding:14px 14px 20px;
+      padding:10px 12px 14px;
       display:flex;
       flex-direction:column;
-      gap:14px;
+      gap:10px;
     }
 
     .hero{
       width:100%;
-      border-radius:28px;
+      height:50dvh;
+      min-height:345px;
+      max-height:430px;
+      border-radius:26px;
       overflow:hidden;
       border:1px solid rgba(255,255,255,.18);
       box-shadow:0 0 28px rgba(255,255,255,.08), var(--shadow);
       background:rgba(255,255,255,.05);
+      flex:0 0 auto;
     }
 
     .hero img{
       display:block;
       width:100%;
-      height:auto;
+      height:100%;
+      object-fit:cover;
+      object-position:top center;
     }
 
     .panel{
       background:var(--panel);
       border:1px solid var(--panel-border);
-      border-radius:24px;
+      border-radius:22px;
       backdrop-filter:blur(10px);
       box-shadow:var(--shadow);
-      padding:18px 16px;
+      padding:12px 12px;
+      margin-top:-4px;
     }
 
     .title{
       margin:0;
       text-align:center;
-      font-size:1.45rem;
-      line-height:1.15;
+      font-size:1.12rem;
+      line-height:1.18;
       font-weight:900;
       letter-spacing:.2px;
       color:#fff;
@@ -85,32 +92,32 @@
     }
 
     .subtitle{
-      margin:8px 0 0;
+      margin:5px 0 0;
       text-align:center;
-      font-size:.96rem;
-      line-height:1.45;
+      font-size:.82rem;
+      line-height:1.25;
       color:var(--muted);
     }
 
     .games{
       display:grid;
-      gap:12px;
-      margin-top:16px;
+      gap:8px;
+      margin-top:10px;
     }
 
     .game-btn{
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap:10px;
+      gap:9px;
       width:100%;
       text-decoration:none;
       color:#fff;
-      padding:16px 16px;
-      border-radius:18px;
+      padding:11px 12px;
+      border-radius:16px;
       border:1px solid rgba(255,255,255,.18);
-      background:linear-gradient(135deg, rgba(255,255,255,.16), rgba(255,255,255,.08));
-      box-shadow:0 6px 18px rgba(0,0,0,.18);
+      background:linear-gradient(135deg, rgba(255,255,255,.17), rgba(255,255,255,.08));
+      box-shadow:0 5px 14px rgba(0,0,0,.16);
       transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
     }
 
@@ -119,25 +126,25 @@
     }
 
     .game-btn:hover{
-      background:linear-gradient(135deg, rgba(255,255,255,.22), rgba(255,255,255,.10));
+      background:linear-gradient(135deg, rgba(255,255,255,.23), rgba(255,255,255,.10));
       box-shadow:0 8px 22px rgba(0,0,0,.22);
     }
 
     .game-left{
       display:flex;
       align-items:center;
-      gap:12px;
+      gap:10px;
       min-width:0;
     }
 
     .icon{
-      width:46px;
-      height:46px;
-      border-radius:14px;
+      width:39px;
+      height:39px;
+      border-radius:13px;
       display:flex;
       align-items:center;
       justify-content:center;
-      font-size:1.35rem;
+      font-size:1.12rem;
       background:linear-gradient(135deg, rgba(255,209,102,.30), rgba(255,255,255,.14));
       border:1px solid rgba(255,255,255,.20);
       flex:0 0 auto;
@@ -149,71 +156,114 @@
 
     .game-title{
       margin:0;
-      font-size:1rem;
+      font-size:.92rem;
       font-weight:900;
       color:#fff;
+      line-height:1.1;
     }
 
     .game-desc{
-      margin:4px 0 0;
-      font-size:.84rem;
+      margin:3px 0 0;
+      font-size:.73rem;
       color:var(--muted);
-      line-height:1.3;
+      line-height:1.2;
     }
 
     .arrow{
-      font-size:1.15rem;
+      font-size:1.05rem;
       font-weight:900;
       color:var(--gold);
       flex:0 0 auto;
     }
 
     .footer{
-      margin-top:auto;
       text-align:center;
-      font-size:.88rem;
-      line-height:1.4;
+      font-size:.76rem;
+      line-height:1.25;
       color:#ffe7eb;
-      padding:4px 6px 0;
+      padding:0 6px;
+      margin-top:0;
     }
 
     .footer b{
       color:var(--gold);
     }
 
-    @media (max-width: 420px){
-      .app{
-        padding:12px 12px 18px;
-      }
-
-      .panel{
-        padding:16px 14px;
-      }
-
-      .title{
-        font-size:1.28rem;
+    @media (max-height: 760px){
+      .hero{
+        height:43dvh;
+        min-height:285px;
+        max-height:345px;
       }
 
       .subtitle{
-        font-size:.92rem;
+        display:none;
+      }
+
+      .panel{
+        padding:10px;
+      }
+
+      .games{
+        gap:7px;
       }
 
       .game-btn{
-        padding:14px 14px;
-      }
-
-      .icon{
-        width:42px;
-        height:42px;
-        font-size:1.2rem;
-      }
-
-      .game-title{
-        font-size:.96rem;
+        padding:10px 11px;
       }
 
       .game-desc{
-        font-size:.8rem;
+        display:none;
+      }
+
+      .footer{
+        font-size:.72rem;
+      }
+    }
+
+    @media (max-height: 660px){
+      .hero{
+        height:38dvh;
+        min-height:235px;
+        max-height:285px;
+      }
+
+      .title{
+        font-size:1rem;
+      }
+
+      .icon{
+        width:34px;
+        height:34px;
+        font-size:1rem;
+      }
+
+      .game-btn{
+        padding:8px 10px;
+        border-radius:14px;
+      }
+
+      .game-title{
+        font-size:.86rem;
+      }
+
+      .footer{
+        display:none;
+      }
+    }
+
+    @media (max-width: 420px){
+      .app{
+        padding:9px 10px 12px;
+        gap:9px;
+      }
+
+      .hero{
+        border-radius:22px;
+      }
+
+      .panel{
+        border-radius:20px;
       }
     }
   </style>
@@ -227,8 +277,7 @@
     <section class="panel">
       <h1 class="title">Escolha seu desafio e pratique inglês de forma divertida</h1>
       <p class="subtitle">
-        Aqui você encontra jogos para revisar <b>Present Perfect</b>, <b>Life Experiences</b>,
-        vocabulário, escuta, fala e outros conteúdos do 8º ano.
+        Revise <b>Present Perfect</b>, <b>Life Experiences</b>, vocabulário, escuta e fala.
       </p>
 
       <div class="games">
@@ -248,7 +297,7 @@
             <div class="icon">🎡</div>
             <div class="game-text">
               <p class="game-title">Spin and Answer</p>
-              <p class="game-desc">Gire a roleta e responda desafios dos conteúdos do 8º ano.</p>
+              <p class="game-desc">Gire a roleta e responda desafios do 8º ano.</p>
             </div>
           </div>
           <div class="arrow">›</div>
@@ -259,7 +308,7 @@
             <div class="icon">🔤</div>
             <div class="game-text">
               <p class="game-title">Hangman Challenge</p>
-              <p class="game-desc">Descubra palavras e expressões do conteúdo estudado.</p>
+              <p class="game-desc">Descubra palavras e expressões do conteúdo.</p>
             </div>
           </div>
           <div class="arrow">›</div>
@@ -281,7 +330,7 @@
             <div class="icon">🧩</div>
             <div class="game-text">
               <p class="game-title">Vocab Match</p>
-              <p class="game-desc">Combine palavras e traduções no menor tempo possível.</p>
+              <p class="game-desc">Combine palavras e traduções no desafio.</p>
             </div>
           </div>
           <div class="arrow">›</div>
@@ -290,8 +339,7 @@
     </section>
 
     <div class="footer">
-      Aprender inglês pode ser mais divertido quando você aceita o desafio,
-      tenta, erra, aprende e continua jogando.<br>
+      Aprender inglês pode ser mais divertido quando você aceita o desafio, tenta, erra e continua jogando.<br>
       <b>Jogo idealizado pelo professor Jasson Bruno.</b>
     </div>
   </main>
