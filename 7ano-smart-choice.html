@@ -231,7 +231,29 @@ function loadQuestion(){
   el("feedback").className="feedback"; el("feedback").textContent="";
   el("fiftyBtn").disabled = state.fiftyUsed; el("skipBtn").disabled = state.skipLeft<=0; el("skipBtn").textContent = "Pular: " + state.skipLeft; el("tipBtn").disabled = state.tipUsed;
   const opts = shuffle(q.options);
-  el("options").innerHTML = opts.map((op,i)=>`<button class="option" onclick="answerQuestion(this, ${JSON.stringify(op)})"><span class="option-letter">${String.fromCharCode(65+i)}</span><span class="option-text">${op}</span></button>`).join("");
+  const optionsBox = el("options");
+  optionsBox.innerHTML = "";
+  opts.forEach((op,i)=>{
+    const btn = document.createElement("button");
+    btn.className = "option";
+    btn.type = "button";
+    btn._answerValue = op;
+
+    const letter = document.createElement("span");
+    letter.className = "option-letter";
+    letter.textContent = String.fromCharCode(65+i);
+
+    const text = document.createElement("span");
+    text.className = "option-text";
+    text.textContent = op;
+
+    btn.appendChild(letter);
+    btn.appendChild(text);
+    btn.addEventListener("click", function(){
+      answerQuestion(btn, op);
+    });
+    optionsBox.appendChild(btn);
+  });
   startTimer();
 }
 function missionTitle(n){return ["Likes and Dislikes","Frequency Challenge","Opinion Time","Grammar Focus","Final Review"][n-1] || "Smart Choice"}
@@ -251,7 +273,7 @@ function answerQuestion(btn, selected){
   clearInterval(state.timer); lockOptions();
   const q=currentQuestion();
   const ok = selected === q.answer;
-  document.querySelectorAll(".option").forEach(b=>{if(b.innerText.includes(q.answer)) b.classList.add("correct")});
+  document.querySelectorAll(".option").forEach(b=>{if(b._answerValue === q.answer) b.classList.add("correct")});
   if(ok){
     state.correct++; state.score += q.bimester==="2" ? 20 : 10;
     btn.classList.add("correct");
@@ -265,13 +287,13 @@ function answerQuestion(btn, selected){
 function timeoutQuestion(){
   lockOptions();
   const q=currentQuestion(); state.wrong++; state.lives--;
-  document.querySelectorAll(".option").forEach(b=>{if(b.innerText.includes(q.answer)) b.classList.add("correct")});
+  document.querySelectorAll(".option").forEach(b=>{if(b._answerValue === q.answer) b.classList.add("correct")});
   el("feedback").className="feedback bad"; el("feedback").textContent="⏰ O tempo acabou. A resposta correta é “"+q.answer+"”. "+q.tip;
   setTimeout(()=>{state.index++; loadQuestion()},1700);
 }
 function useFifty(){
   if(state.fiftyUsed) return; state.fiftyUsed=true; el("fiftyBtn").disabled=true;
-  const q=currentQuestion(); const wrong=[...document.querySelectorAll(".option")].filter(b=>!b.innerText.includes(q.answer));
+  const q=currentQuestion(); const wrong=[...document.querySelectorAll(".option")].filter(b=>b._answerValue !== q.answer);
   shuffle(wrong).slice(0,2).forEach(b=>b.classList.add("hide-option"));
 }
 function useSkip(){ if(state.skipLeft<=0) return; state.skipLeft--; state.index++; loadQuestion(); }
@@ -292,7 +314,7 @@ function finishGame(status){
   el("currentScoreBox").innerHTML = `✨ SUA PONTUAÇÃO AGORA ✨<br><b>${p.nome}</b> — ${state.score} pontos<br><small>Turma: ${p.turma} • ${p.escola}</small>`;
   showScreen("finalScreen");
   if(window.salvarPontuacao) window.salvarPontuacao(GAME_NAME, p.nome, p.turma, p.escola, pontosRanking, state.correct, state.wrong, status);
-  carregarRanking();
+  if(window.carregarRanking) window.carregarRanking();
 }
 function restartGame(){showScreen("startScreen")}
 function rankRowHTML(item, idx, current=false){
@@ -327,6 +349,11 @@ function rateGame(avaliacao){
   if(window.salvarAvaliacao) window.salvarAvaliacao(avaliacao,GAME_NAME,p.nome,p.escola);
   el("ratingMessage").textContent = "Obrigado pela avaliação!";
 }
+window.carregarRanking = window.carregarRanking || function(modal=false){
+  const target = modal ? document.getElementById("rankingModalList") : document.getElementById("rankingContainer");
+  const current = state.lastResult;
+  renderRanking(target, current ? [{nome:current.nome, escola:current.escola, pontos:current.pontos}] : []);
+};
 </script>
 
 <script type="module">
