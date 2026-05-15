@@ -706,7 +706,7 @@ function renderRank(){
   if(!box)return;
   box.innerHTML='<div class="rank-row"><div class="rank-pos">⏳</div><div><div class="rank-name">Carregando ranking...</div><div class="rank-school">Buscando pontuações online</div></div><div class="rank-score">Firebase</div></div>';
   if(typeof window.carregarRankingFirebase==='function'){
-    window.carregarRankingFirebase('9ano-spin-challenge','rankList');
+    window.carregarRankingFirebase('8ano-spin-challenge','rankList');
     return;
   }
   renderRankingRowsFallback('rankList');
@@ -870,7 +870,7 @@ window.salvarPontuacaoFirebase = async function(rec){
       corrects: Number(rec.corrects || 0),
       combo: Number(rec.combo || 0),
       status: limitarTexto(rec.status || "Finalizado", 30),
-      jogo: "9ano-spin-challenge",
+      jogo: "8ano-spin-challenge",
       data: serverTimestamp(),
       origem: "spin-challenge-9ano"
     });
@@ -884,7 +884,7 @@ window.salvarAvaliacaoFirebase = async function(payload){
     const valor = payload && payload.valor ? payload.valor : String(payload || "");
     const p = payload && payload.player ? payload.player : {};
     await addDoc(collection(dbFirebase, "avaliacoes"), {
-      jogo: "9ano-spin-challenge",
+      jogo: "8ano-spin-challenge",
       avaliacao: limitarTexto(valor, 20),
       nome: limitarTexto(p.name || "Aluno(a)", 60),
       turma: limitarTexto(p.className || "8º ano", 30),
@@ -904,7 +904,7 @@ window.salvarAvaliacaoFirebase = async function(payload){
 window.registrarAcessoFirebase = async function(){
   try{
     await addDoc(collection(dbFirebase, "acessos"), {
-      jogo: "9ano-spin-challenge",
+      jogo: "8ano-spin-challenge",
       data: serverTimestamp(),
       origem: "spin-challenge-9ano"
     });
@@ -913,7 +913,7 @@ window.registrarAcessoFirebase = async function(){
   }
 };
 
-window.carregarRankingFirebase = function(jogo="9ano-spin-challenge", containerId="rankList"){
+window.carregarRankingFirebase = function(jogo="8ano-spin-challenge", containerId="rankList"){
   const box=document.getElementById(containerId);
   if(!box)return;
   const q=query(collection(dbFirebase,"pontuacoes"),limit(700));
