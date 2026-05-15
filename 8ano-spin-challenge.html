@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Spin Challenge 8º Ano</title>
+<style>
+*{box-sizing:border-box} :root{--bg:#070818;--panel:#111637;--panel2:#17104a;--cyan:#00e5ff;--pink:#ff2bd6;--yellow:#ffe66d;--green:#35ff8a;--red:#ff4d6d;--white:#f8fbff;--muted:#a8b3cf}
+html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--white);overflow-x:hidden} body{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:10px;background:radial-gradient(circle at 20% 10%,rgba(255,43,214,.25),transparent 25%),radial-gradient(circle at 80% 25%,rgba(0,229,255,.20),transparent 28%),radial-gradient(circle at 50% 100%,rgba(255,230,109,.12),transparent 35%),linear-gradient(180deg,#050713,#09092b 50%,#190733)}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;background-image:radial-gradient(circle,rgba(255,255,255,.8) 0 1px,transparent 1.4px),radial-gradient(circle,rgba(0,229,255,.8) 0 1px,transparent 1.4px),radial-gradient(circle,rgba(255,230,109,.7) 0 1px,transparent 1.4px);background-size:120px 120px,180px 180px,260px 260px;background-position:0 0,50px 80px,90px 20px;opacity:.5}.app{position:relative;z-index:1;width:min(100%,1120px);min-height:min(760px,96vh);border-radius:28px;overflow:hidden;background:linear-gradient(180deg,rgba(12,17,56,.96),rgba(16,9,59,.96));border:1px solid rgba(0,229,255,.34);box-shadow:0 0 0 1px rgba(255,43,214,.18),0 30px 80px rgba(0,0,0,.55),0 0 45px rgba(0,229,255,.12)}
+header{padding:14px 18px 12px;text-align:center;background:linear-gradient(135deg,rgba(0,229,255,.14),rgba(255,43,214,.15));border-bottom:1px solid rgba(255,255,255,.10)}.topbar{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:4px}.back,.pill{color:#fff;text-decoration:none;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:7px 11px;font-size:12px;font-weight:900}.title{font-size:clamp(34px,6vw,58px);line-height:.95;margin:0;background:linear-gradient(180deg,#fff 10%,var(--yellow) 50%,#ff8a00);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 18px rgba(255,230,109,.20);letter-spacing:.5px}.subtitle{margin:6px 0 0;color:#dbeafe;font-weight:900}.signature{font-size:12px;color:#b9c3dd;font-weight:900;margin-top:4px}main{padding:14px}.screen{display:none}.screen.active{display:block}.card{border-radius:24px;background:linear-gradient(180deg,rgba(17,27,77,.92),rgba(23,16,74,.92));border:1px solid rgba(125,211,252,.22);box-shadow:inset 0 0 0 1px rgba(255,255,255,.04),0 16px 32px rgba(0,0,0,.30)}
+.start-card{max-width:620px;margin:14px auto;padding:22px;text-align:center}.start-card h2{font-size:38px;margin:0 0 8px;color:var(--yellow)}.start-card p{color:#dbeafe;font-weight:900;line-height:1.35}.player-form{display:grid;gap:10px;margin:16px 0;text-align:left}.player-form label{font-size:13px;color:#8bdfff;font-weight:900}.player-form input{width:100%;border:2px solid rgba(0,229,255,.35);background:rgba(3,7,30,.74);color:#fff;border-radius:16px;padding:13px;font-size:16px;font-weight:900;outline:none}.player-form input:focus{border-color:var(--yellow);box-shadow:0 0 0 3px rgba(255,230,109,.18)}.start-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;margin:14px 0}.mini-feature{padding:12px;border-radius:18px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);font-weight:900;color:#e2e8f0}.mini-feature b{display:block;color:var(--yellow);font-size:20px;margin-bottom:3px}.btn{border:0;border-radius:18px;padding:13px 22px;background:linear-gradient(135deg,#ff2bd6,#7c3aed 55%,#00e5ff);color:#fff;font-weight:1000;font-size:17px;cursor:pointer;box-shadow:0 0 0 1px rgba(255,255,255,.12),0 14px 26px rgba(255,43,214,.24);transition:transform .12s ease,filter .12s ease,box-shadow .12s ease}.btn:hover{transform:translateY(-2px);filter:brightness(1.08);box-shadow:0 0 18px rgba(0,229,255,.25),0 15px 28px rgba(255,43,214,.28)}.btn:active{transform:scale(.97)}.btn:disabled{opacity:.55;cursor:not-allowed;transform:none}.btn-secondary{background:linear-gradient(135deg,#172554,#0e7490)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:10px}.stat{padding:9px;text-align:center;border-radius:18px;background:rgba(4,9,38,.72);border:1px solid rgba(0,229,255,.26)}.stat b{display:block;font-size:24px;color:#fff}.stat span{font-size:10px;text-transform:uppercase;color:#a8b3cf;font-weight:1000}.mission{display:flex;justify-content:space-between;gap:8px;align-items:center;padding:10px 12px;margin-bottom:9px;border-radius:18px;background:linear-gradient(135deg,rgba(255,230,109,.14),rgba(255,43,214,.12));border:1px solid rgba(255,230,109,.28);font-weight:1000}.lives{margin-bottom:10px;text-align:center;font-weight:1000;color:#fff}.heart{display:inline-block;margin:0 2px;font-size:24px;color:#ff3b7a;filter:drop-shadow(0 0 8px rgba(255,59,122,.55))}.heart.lost{opacity:.18;filter:none}.game-grid{display:grid;grid-template-columns:minmax(390px,.95fr) minmax(420px,1.05fr);gap:12px}.wheel-card{padding:16px;min-height:550px;display:flex;align-items:center;justify-content:center}.wheel-wrap{position:relative;display:flex;flex-direction:column;align-items:center;gap:12px;width:100%}.pointer{position:absolute;top:-6px;left:50%;transform:translateX(-50%);z-index:5;width:0;height:0;border-left:18px solid transparent;border-right:18px solid transparent;border-top:44px solid #fff;filter:drop-shadow(0 0 8px rgba(255,255,255,.55))}.pointer::after{content:"";position:absolute;left:-7px;top:-30px;width:14px;height:14px;border-radius:50%;background:var(--yellow);box-shadow:0 0 12px var(--yellow)}.wheel-stage{position:relative;width:min(82vw,420px);height:min(82vw,420px);max-width:420px;max-height:420px;border-radius:50%;display:grid;place-items:center}.wheel-stage::before{content:"";position:absolute;inset:-14px;border-radius:50%;background:conic-gradient(from 0deg,var(--pink),var(--cyan),var(--yellow),var(--green),var(--pink));filter:blur(13px);opacity:.58;animation:hue 4s linear infinite}.wheel{position:relative;width:100%;height:100%;border-radius:50%;border:8px solid #fff;background:conic-gradient(#00d4ff 0deg 51.43deg,#35ff8a 51.43deg 102.86deg,#ffb703 102.86deg 154.29deg,#a855f7 154.29deg 205.72deg,#fb7185 205.72deg 257.15deg,#22c55e 257.15deg 308.58deg,#f97316 308.58deg 360deg);box-shadow:inset 0 0 26px rgba(0,0,0,.28),0 18px 40px rgba(0,0,0,.45);transition:transform 5.8s cubic-bezier(.07,.86,.08,1)}.wheel::after{content:attr(data-theme);position:absolute;inset:31%;border-radius:50%;display:flex;align-items:center;justify-content:center;text-align:center;padding:8px;background:radial-gradient(circle,#fff,#e0f2fe);border:7px solid #0f172a;color:#0f172a;font-weight:1000;font-size:clamp(18px,4vw,26px);box-shadow:0 0 0 3px rgba(255,255,255,.55),0 0 22px rgba(255,255,255,.35)}.wheel.spinning{animation:wheelGlow .22s ease-in-out infinite alternate}.wheel-label{position:absolute;left:50%;top:50%;width:96px;margin-left:-48px;margin-top:-10px;transform:rotate(var(--r)) translateY(-160px) rotate(calc(-1 * var(--r)));transform-origin:center;text-align:center;color:#fff;font-weight:1000;font-size:15px;line-height:1;text-shadow:0 2px 6px rgba(0,0,0,.7),0 0 10px rgba(255,255,255,.18);pointer-events:none}.sorted{width:100%;border-radius:16px;padding:10px;text-align:center;background:rgba(255,255,255,.07);border:1px solid rgba(255,230,109,.28);color:var(--yellow);font-weight:1000}.question-card{padding:16px;display:flex;flex-direction:column;gap:12px}.theme-chip{align-self:flex-start;border-radius:999px;padding:8px 12px;background:rgba(0,229,255,.12);border:1px solid rgba(0,229,255,.42);color:#b7f8ff;font-weight:1000}.prompt{font-size:25px;line-height:1.2;font-weight:1000;margin:0;color:#fff}.options{display:grid;gap:10px}.option{position:relative;border:2px solid rgba(0,229,255,.28);background:rgba(4,9,38,.88);border-radius:18px;padding:14px 14px 14px 58px;text-align:left;color:#fff;font-size:18px;font-weight:1000;cursor:pointer;box-shadow:0 8px 15px rgba(0,0,0,.22);transition:transform .1s ease,box-shadow .12s ease,border-color .12s ease,background .12s ease}.option:hover{transform:translateY(-2px);border-color:rgba(255,230,109,.65)}.option:active{transform:scale(.98)}.option::before{content:attr(data-letter);position:absolute;left:13px;top:50%;transform:translateY(-50%);width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#ff2bd6,#00e5ff);font-weight:1000}.option.correct{background:rgba(10,90,45,.75);border-color:var(--green);box-shadow:0 0 22px rgba(53,255,138,.35);animation:correctPop .65s ease}.option.wrong{background:rgba(115,17,38,.78);border-color:var(--red);animation:shake .32s ease}.option:disabled{cursor:not-allowed}.feedback{display:none;border-radius:18px;padding:12px;font-weight:1000;line-height:1.28}.feedback.ok{display:block;background:rgba(20,130,72,.26);border:1px solid rgba(53,255,138,.44);color:#d9ffe9}.feedback.bad{display:block;background:rgba(156,31,62,.26);border:1px solid rgba(255,77,109,.48);color:#ffe2e8}.feedback-title{font-size:18px;margin-bottom:8px}.continue-btn{margin-top:12px;width:100%;min-height:48px}.feedback div{margin:5px 0}@media(max-width:860px){.feedback{max-height:42dvh;overflow:auto}.continue-btn{position:sticky;bottom:0}}.floating-points{position:fixed;z-index:50;left:50%;top:50%;font-size:34px;font-weight:1000;color:var(--yellow);pointer-events:none;text-shadow:0 0 15px rgba(255,230,109,.65);animation:floatUp 1.1s ease forwards}.toast{position:fixed;left:50%;top:18px;transform:translateX(-50%);z-index:80;max-width:min(92vw,560px);padding:13px 18px;border-radius:999px;background:linear-gradient(135deg,rgba(255,230,109,.96),rgba(255,43,214,.96));color:#12071f;font-weight:1000;text-align:center;box-shadow:0 18px 34px rgba(0,0,0,.38);animation:toastIn .35s ease}.final{max-width:760px;margin:0 auto;padding:18px;text-align:center}.final h2{font-size:40px;margin:0 0 8px;color:var(--yellow)}.final-message{padding:12px;border-radius:18px;background:rgba(255,230,109,.13);border:1px solid rgba(255,230,109,.35);font-weight:1000;line-height:1.35}.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin:14px 0}.summary-box{padding:12px;border-radius:18px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.11);font-weight:1000}.summary-box span{display:block;color:#b9c3dd;font-size:10px;text-transform:uppercase}.summary-box b{display:block;color:var(--yellow);font-size:23px}.rank-list{display:grid;gap:7px;margin:10px 0}.rank-row{display:grid;grid-template-columns:36px 1fr auto;gap:8px;align-items:center;padding:8px;border-radius:16px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);text-align:left}.rank-pos{width:31px;height:31px;border-radius:50%;display:grid;place-items:center;background:rgba(0,229,255,.14);font-weight:1000}.rank-row.player{border-color:var(--yellow);box-shadow:0 0 18px rgba(255,230,109,.20);background:rgba(255,230,109,.10)}.rank-name{font-weight:1000}.rank-school{font-size:11px;color:#a8b3cf;font-weight:900}.rank-score{font-weight:1000;color:var(--yellow)}.actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}.confetti-canvas{position:fixed;inset:0;pointer-events:none;z-index:70}@keyframes hue{to{filter:blur(13px) hue-rotate(360deg)}}@keyframes wheelGlow{from{filter:saturate(1)}to{filter:saturate(1.5) brightness(1.1)}}@keyframes correctPop{0%{transform:scale(1)}50%{transform:scale(1.035)}100%{transform:scale(1)}}@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}@keyframes floatUp{0%{opacity:0;transform:translate(-50%,0) scale(.7)}20%{opacity:1}100%{opacity:0;transform:translate(-50%,-95px) scale(1.2)}}@keyframes toastIn{from{opacity:0;transform:translate(-50%,-20px)}to{opacity:1;transform:translate(-50%,0)}}
+@media(max-width:860px){body{padding:0;align-items:stretch}.app{width:100%;min-height:100dvh;border-radius:0;border:0}header{padding:10px 8px}.back,.pill{font-size:10px;padding:6px 8px}.title{font-size:34px}.subtitle{font-size:12px}main{padding:8px}.start-card{margin:4px auto;padding:16px}.start-row{grid-template-columns:1fr}.stats{gap:5px}.stat{padding:6px 3px}.stat b{font-size:18px}.stat span{font-size:8px}.mission{font-size:12px;padding:8px}.game-grid{grid-template-columns:1fr;gap:8px}.wheel-card{min-height:calc(100dvh - 205px);padding:8px}.wheel-stage{width:min(90vw,345px);height:min(90vw,345px)}.wheel-label{width:74px;margin-left:-37px;font-size:11.5px;transform:rotate(var(--r)) translateY(-130px) rotate(calc(-1 * var(--r)))}.question-card{position:fixed;inset:0;z-index:60;display:none;justify-content:center;padding:16px;background:rgba(2,6,23,.70);backdrop-filter:blur(3px);border-radius:0;border:0}.question-card.show-mobile{display:flex}.question-card .inner-modal{width:min(94vw,440px);max-height:88dvh;overflow:auto;padding:14px;border-radius:24px;background:linear-gradient(180deg,rgba(7,12,49,.98),rgba(23,7,59,.98));border:2px solid rgba(255,43,214,.52);box-shadow:0 0 30px rgba(255,43,214,.24)}.prompt{font-size:20px}.option{font-size:16px;min-height:54px}.summary{grid-template-columns:repeat(2,1fr)}.actions{grid-template-columns:1fr}.final h2{font-size:30px}}
+@media(min-width:861px){.question-card .inner-modal{display:contents}}
+
+/* ===== ETAPA 1 — Tela de cadastro separada, sem mexer na roleta ===== */
+#startScreen.active{
+  min-height:calc(100dvh - 118px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow-y:auto;
+  padding:8px 0;
+}
+.start-card-clean{
+  width:min(94vw,560px);
+  margin:0 auto;
+  padding:clamp(18px,4vw,30px);
+  text-align:center;
+}
+.start-badge{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:8px 13px;
+  border-radius:999px;
+  background:rgba(0,229,255,.12);
+  border:1px solid rgba(0,229,255,.36);
+  color:#b7f8ff;
+  font-weight:1000;
+  font-size:13px;
+  margin-bottom:10px;
+}
+.start-card-clean h2{
+  font-size:clamp(34px,8vw,54px);
+  line-height:.95;
+  margin:0 0 8px;
+}
+.start-subtitle{
+  margin:0 0 14px !important;
+  color:#dbeafe;
+  font-weight:1000;
+  font-size:clamp(14px,3.8vw,18px);
+}
+.clean-form{
+  gap:9px;
+  margin:12px 0 14px;
+}
+.clean-form label{
+  font-size:13px;
+  margin-top:2px;
+}
+.clean-form input{
+  min-height:48px;
+  font-size:16px;
+  padding:12px 14px;
+}
+.start-main-btn{
+  width:100%;
+  min-height:54px;
+  font-size:18px;
+  letter-spacing:.5px;
+}
+.start-footer{
+  margin-top:10px;
+  color:#b9c3dd;
+  font-size:12px;
+  font-weight:900;
+}
+@media(max-width:860px){
+  main{padding:8px}
+  #startScreen.active{
+    min-height:calc(100dvh - 94px);
+    padding:6px 0;
+  }
+  .start-card-clean{
+    width:94vw;
+    padding:18px 16px;
+    border-radius:24px;
+  }
+  .start-badge{
+    font-size:12px;
+    padding:7px 11px;
+    margin-bottom:8px;
+  }
+  .start-card-clean h2{
+    font-size:clamp(34px,11vw,48px);
+  }
+  .start-subtitle{
+    font-size:13px;
+    margin-bottom:12px !important;
+  }
+  .clean-form{
+    gap:8px;
+    margin:10px 0 12px;
+  }
+  .clean-form input{
+    min-height:46px;
+    border-radius:15px;
+  }
+  .start-main-btn{
+    min-height:52px;
+  }
+  .start-footer{
+    font-size:11px;
+    margin-top:8px;
+  }
+}
+@media(max-height:650px) and (max-width:860px){
+  header{padding:7px 8px}
+  .title{font-size:28px}
+  .subtitle,.signature{display:none}
+  #startScreen.active{min-height:calc(100dvh - 58px)}
+  .start-card-clean{padding:12px 14px}
+  .start-card-clean h2{font-size:32px}
+  .start-subtitle{display:none}
+  .clean-form input{min-height:42px}
+  .start-main-btn{min-height:46px}
+}
+
+
+/* ===== ETAPA 2 — Tela de fases + ajuste mobile da roleta ===== */
+.phase-screen-wrap{
+  min-height:calc(100dvh - 118px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:8px 0;
+}
+.phase-panel{
+  width:min(96vw,780px);
+  padding:clamp(16px,3vw,26px);
+  text-align:center;
+}
+.phase-panel h2{
+  margin:0 0 6px;
+  font-size:clamp(30px,7vw,50px);
+  line-height:1;
+  color:var(--yellow);
+}
+.phase-panel p{
+  margin:0 0 14px;
+  font-weight:1000;
+  color:#dbeafe;
+}
+.phase-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+  margin-top:12px;
+}
+.phase-card{
+  min-height:92px;
+  border:2px solid rgba(0,229,255,.24);
+  background:linear-gradient(135deg,rgba(5,12,48,.92),rgba(28,12,72,.92));
+  color:#fff;
+  border-radius:22px;
+  padding:14px;
+  text-align:left;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  box-shadow:0 12px 26px rgba(0,0,0,.28);
+}
+.phase-icon{
+  width:48px;
+  height:48px;
+  border-radius:18px;
+  display:grid;
+  place-items:center;
+  flex:0 0 auto;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.14);
+  font-size:25px;
+}
+.phase-card b{
+  display:block;
+  font-size:17px;
+  color:#fff;
+  margin-bottom:3px;
+}
+.phase-card span{
+  display:block;
+  color:#b9c3dd;
+  font-size:12px;
+  font-weight:900;
+}
+.phase-card.unlocked{
+  cursor:pointer;
+  border-color:rgba(255,230,109,.72);
+  box-shadow:0 0 0 1px rgba(255,230,109,.18),0 16px 30px rgba(255,230,109,.10);
+}
+.phase-card.unlocked .phase-icon{
+  background:linear-gradient(135deg,#ff2bd6,#00e5ff);
+  box-shadow:0 0 22px rgba(0,229,255,.25);
+}
+.phase-card.locked{
+  opacity:.64;
+  filter:saturate(.7);
+}
+.phase-card.locked .phase-icon{font-size:23px}
+.phase-actions{
+  margin-top:14px;
+  display:flex;
+  justify-content:center;
+}
+.phase-note{
+  margin-top:12px;
+  font-size:12px;
+  color:#a8b3cf;
+  font-weight:900;
+}
+@media(max-width:860px){
+  #phaseScreen.active{
+    min-height:calc(100dvh - 94px);
+    overflow-y:auto;
+  }
+  .phase-screen-wrap{
+    min-height:calc(100dvh - 94px);
+    align-items:stretch;
+    padding:6px 0;
+  }
+  .phase-panel{
+    width:96vw;
+    padding:14px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+  }
+  .phase-panel h2{font-size:clamp(32px,10vw,44px)}
+  .phase-panel p{font-size:13px;margin-bottom:10px}
+  .phase-grid{
+    grid-template-columns:1fr;
+    gap:8px;
+  }
+  .phase-card{
+    min-height:74px;
+    border-radius:19px;
+    padding:11px 12px;
+  }
+  .phase-icon{width:42px;height:42px;border-radius:15px;font-size:22px}
+  .phase-card b{font-size:15px}
+  .phase-card span{font-size:11px}
+}
+@media(max-height:670px) and (max-width:860px){
+  #phaseScreen.active{min-height:calc(100dvh - 58px)}
+  .phase-screen-wrap{min-height:calc(100dvh - 58px)}
+  .phase-panel{justify-content:flex-start;padding:10px 12px}
+  .phase-panel h2{font-size:30px}
+  .phase-panel p{display:none}
+  .phase-card{min-height:62px;padding:8px 10px}
+  .phase-icon{width:36px;height:36px;font-size:19px;border-radius:13px}
+  .phase-note{display:none}
+}
+
+/* Quando estiver na roleta, a tela vira game mode: sem rolagem e com SPIN sempre visível. */
+@media(max-width:860px){
+  body.game-mode{overflow:hidden;}
+  body.game-mode .app{height:100dvh;min-height:100dvh;overflow:hidden;}
+  body.game-mode header{display:none;}
+  body.game-mode main{height:100dvh;overflow:hidden;padding:6px;}
+  body.game-mode #gameScreen.active{height:100%;display:flex;flex-direction:column;overflow:hidden;}
+  body.game-mode .stats{flex:0 0 auto;gap:5px;margin-bottom:5px;}
+  body.game-mode .stat{padding:6px 3px;border-radius:13px;}
+  body.game-mode .stat b{font-size:18px;}
+  body.game-mode .stat span{font-size:8px;}
+  body.game-mode .mission{flex:0 0 auto;margin-bottom:5px;padding:7px 9px;font-size:12px;border-radius:15px;}
+  body.game-mode .lives{flex:0 0 auto;margin-bottom:4px;font-size:13px;}
+  body.game-mode .heart{font-size:20px;}
+  body.game-mode .game-grid{flex:1;min-height:0;display:flex;flex-direction:column;gap:0;}
+  body.game-mode .wheel-card{flex:1;min-height:0;padding:6px;display:flex;align-items:center;justify-content:center;}
+  body.game-mode .wheel-wrap{height:100%;justify-content:space-evenly;gap:4px;}
+  body.game-mode .wheel-stage{width:min(93vw,390px,calc(100dvh - 190px));height:min(93vw,390px,calc(100dvh - 190px));}
+  body.game-mode .wheel-label{width:80px;margin-left:-40px;font-size:12px;transform:rotate(var(--r)) translateY(calc(-1 * min(37vw,150px,calc((100dvh - 190px)/2 - 24px)))) rotate(calc(-1 * var(--r)));}
+  body.game-mode .pointer{top:-4px;border-left-width:16px;border-right-width:16px;border-top-width:38px;}
+  body.game-mode #spinBtn{min-height:48px;padding:10px 20px;font-size:17px;width:min(86vw,360px);}
+  body.game-mode .sorted{padding:7px 9px;font-size:12px;}
+}
+@media(max-height:640px) and (max-width:860px){
+  body.game-mode .stats{display:none;}
+  body.game-mode .mission{margin-bottom:4px;}
+  body.game-mode .wheel-stage{width:min(92vw,370px,calc(100dvh - 142px));height:min(92vw,370px,calc(100dvh - 142px));}
+  body.game-mode .wheel-label{font-size:11px;transform:rotate(var(--r)) translateY(calc(-1 * min(36vw,140px,calc((100dvh - 142px)/2 - 24px)))) rotate(calc(-1 * var(--r)));}
+}
+
+
+/* ===== CORREÇÃO — Dica destacada e separada da pergunta ===== */
+.hint-box{
+  display:none;
+  width:100%;
+  margin:4px 0 12px;
+  padding:12px 14px;
+  border-radius:18px;
+  background:linear-gradient(135deg,rgba(255,230,109,.24),rgba(255,184,0,.12));
+  border:2px solid rgba(255,230,109,.72);
+  color:#fff8d6;
+  font-weight:1000;
+  line-height:1.35;
+  box-shadow:0 0 18px rgba(255,230,109,.16), inset 0 0 0 1px rgba(255,255,255,.06);
+}
+.hint-box.show{display:block;}
+.hint-title{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  margin-bottom:6px;
+  color:var(--yellow);
+  font-size:15px;
+  text-transform:uppercase;
+  letter-spacing:.4px;
+}
+.hint-text{
+  font-size:15px;
+  color:#fff7cc;
+}
+.question-card .prompt{
+  margin-top:2px;
+  padding-top:6px;
+}
+@media(max-width:860px){
+  .question-card .inner-modal{
+    max-height:92dvh;
+    padding:16px;
+  }
+  .hint-box{
+    margin:4px 0 14px;
+    padding:12px;
+    border-radius:17px;
+  }
+  .hint-title{font-size:14px;}
+  .hint-text{font-size:14px;}
+  .question-card .prompt{
+    font-size:19px;
+    line-height:1.25;
+    margin-bottom:4px;
+  }
+}
+
+
+.rating-box{
+  margin:14px 0 10px;
+  padding:13px;
+  border-radius:20px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,230,109,.30);
+  text-align:center;
+}
+.rating-box h3{
+  margin:0 0 8px;
+  color:var(--gold);
+  font-size:16px;
+}
+.rating-buttons{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+}
+.rating-buttons button{
+  min-height:60px;
+  padding:7px 5px;
+  font-size:12px;
+  line-height:1.1;
+  border-radius:16px;
+}
+.rating-buttons .emoji{
+  display:block;
+  font-size:24px;
+  margin-bottom:2px;
+}
+.rating-message{
+  margin:8px 0 0;
+  font-weight:900;
+  color:#fff3b0;
+  font-size:12px;
+}
+.rank-row.player{
+  outline:3px solid #22c55e;
+  box-shadow:0 0 18px rgba(34,197,94,.35);
+}
+
+</style>
+</head>
+<body>
+<canvas id="confettiCanvas" class="confetti-canvas"></canvas>
+<div class="app">
+<header><div class="topbar"><a class="back" href="8ano.html">← Voltar ao 8º ano</a><div class="pill">🎮 8º Ano</div></div><h1 class="title">Spin Challenge</h1><p class="subtitle">Cadastro • Fases • Roleta preservada.</p><div class="signature">Jogo idealizado pelo professor Jasson Bruno.</div></header>
+<main>
+<section id="startScreen" class="screen active">
+  <div class="card start-card start-card-clean">
+    <div class="start-badge">🎮 8º Ano • 2º Bimestre</div>
+    <h2>🎡 Spin Challenge</h2>
+    <p class="start-subtitle">Present Perfect • Life Experiences • Review</p>
+    <div class="player-form clean-form">
+      <label>Nome do aluno</label>
+      <input id="playerName" placeholder="Digite seu primeiro nome" maxlength="28" autocomplete="off">
+      <label>Série / Turma</label>
+      <input id="playerClass" placeholder="Ex.: 8º ano A" maxlength="18" autocomplete="off">
+      <label>Escola</label>
+      <input id="playerSchool" placeholder="Escola Delfina de Jesus Amorim" maxlength="42" autocomplete="off">
+    </div>
+    <button class="btn start-main-btn" onclick="goToPhases()">▶ JOGAR</button>
+    <div class="start-footer">Jogo idealizado pelo Prof. Jasson Bruno</div>
+  </div>
+</section>
+
+<section id="phaseScreen" class="screen">
+  <div class="phase-screen-wrap">
+    <div class="card phase-panel">
+      <h2>🔓 Escolha sua fase</h2>
+      <p id="phaseIntro">A Fase 1 começa liberada. As próximas abrem quando você vence.</p>
+      <div class="phase-grid" id="phaseGrid"></div>
+      <div class="phase-note">Cada fase tem 10 questões e 3 corações. Ao avançar, os corações voltam.</div>
+    </div>
+  </div>
+</section>
+
+<section id="gameScreen" class="screen"><div class="stats"><div class="stat"><b id="score">0</b><span>Pontos</span></div><div class="stat"><b id="corrects">0</b><span>Acertos</span></div><div class="stat"><b id="combo">0</b><span>Combo</span></div><div class="stat"><b id="round">1/20</b><span>Rodada</span></div></div><div class="mission"><span id="missionLabel">Mission 1</span><span id="statusLabel">Spin the wheel!</span></div><div class="lives" id="lives"></div><div class="game-grid"><div class="card wheel-card"><div class="wheel-wrap"><div class="pointer"></div><div class="wheel-stage"><div id="wheel" class="wheel" data-theme="SPIN"><div class="wheel-label" style="--r:25.7deg">Life<br>XP</div><div class="wheel-label" style="--r:77.1deg">Have<br>Has</div><div class="wheel-label" style="--r:128.6deg">Time<br>Words</div><div class="wheel-label" style="--r:180deg">Verb<br>Power</div><div class="wheel-label" style="--r:231.4deg">Fix<br>It</div><div class="wheel-label" style="--r:282.9deg">Review</div><div class="wheel-label" style="--r:334.3deg">Review<br>Mix</div></div></div></div><button id="spinBtn" class="btn" onclick="spinWheel()">🎡 SPIN</button><div id="sorted" class="sorted">Clique em SPIN para começar.</div></div></div><div id="questionCard" class="card question-card"><div class="inner-modal"><div id="theme" class="theme-chip">Tema</div><div id="hintBox" class="hint-box"></div><p id="prompt" class="prompt">Gire a roleta para liberar a pergunta.</p><div id="options" class="options"></div><div id="feedback" class="feedback"></div></div></div></div></section>
+<section id="finalScreen" class="screen"><div class="card final"><h2 id="finalTitle">🏆 Mission Complete!</h2><div id="finalMsg" class="final-message"></div><div class="summary"><div class="summary-box"><span>Pontuação</span><b id="fScore">0</b></div><div class="summary-box"><span>Acertos</span><b id="fCorrects">0/10</b></div><div class="summary-box"><span>Combo</span><b id="fCombo">0</b></div><div class="summary-box"><span>Vidas</span><b id="fLives">0/3</b></div></div><h3>🏆 Ranking Geral</h3><div id="rankList" class="rank-list"></div><div class="rating-box">
+  <h3>Como foi jogar?</h3>
+  <div class="rating-buttons">
+    <button class="btn btn-secondary" onclick="avaliarJogo('dificil', this)"><span class="emoji">😡</span>Difícil</button>
+    <button class="btn btn-secondary" onclick="avaliarJogo('medio', this)"><span class="emoji">😐</span>Mais ou menos</button>
+    <button class="btn btn-secondary" onclick="avaliarJogo('bom', this)"><span class="emoji">😀</span>Gostei</button>
+  </div>
+  <p id="ratingMessage" class="rating-message"></p>
+</div><div class="actions"><button id="nextPhaseBtn" class="btn" onclick="goNextPhase()">Ir para a próxima fase</button><button id="retryPhaseBtn" class="btn" onclick="startGame(state.phase||1)">Repetir fase</button><button class="btn btn-secondary" onclick="goToPhases()">Voltar às fases</button></div></div></section>
+</main></div>
+<script>
+const THEMES = ["Life XP", "Have or Has", "Time Words", "Verb Power", "Fix It", "Review", "Review Mix"];
+const TOTAL_ROUNDS = 10;
+const MAX_LIVES = 3;
+const SEGMENT = 360 / THEMES.length;
+const QUESTIONS = [{"phase":1,"theme":"Life XP","q":"💡 Dica: Pense em experiência já vivida.\n\nPedro contou no recreio que já viveu esta experiência: assistir a um filme do Homem-Aranha. Qual frase transforma essa ideia em inglês?","o":["Pedro has watched a Spider-Man movie.","Pedro is watched a Spider-Man movie.","Pedro has watched .","Pedro have watched a Spider-Man movie."],"a":"Pedro has watched a Spider-Man movie.","e":"<div><b>Feedback:</b><br>Com Pedro/he, usamos <b>has</b> + particípio. Tradução: Pedro já viveu essa experiência.</div>"},{"phase":1,"theme":"Life XP","q":"💡 Dica: 'nunca' combina com never, sem dupla negação.\n\nLara nunca viveu a experiência de comer tacacá. Que frase diz isso corretamente?","o":["Lara is never eaten tacacá.","Lara have never eaten tacacá.","Lara has never eaten tacacá.","Lara hasn’t never eaten tacacá."],"a":"Lara has never eaten tacacá.","e":"<div><b>Feedback:</b><br>Never significa nunca. Não usamos hasn’t never como resposta correta.</div>"},{"phase":1,"theme":"Life XP","q":"💡 Dica: Em perguntas com he/she, o Present Perfect começa com Has.\n\nNo grupo da turma, alguém quer perguntar se Gabriel já teve essa experiência alguma vez: comer sushi. Qual pergunta funciona?","o":["Have Gabriel ever eaten sushi?","Does Gabriel ever eaten sushi?","Is Gabriel ever eaten sushi?","Has Gabriel ever eaten sushi?"],"a":"Has Gabriel ever eaten sushi?","e":"<div><b>Feedback:</b><br>Com he/she, a pergunta fica <b>Has + sujeito + ever + particípio?</b></div>"},{"phase":1,"theme":"Life XP","q":"💡 Dica: A resposta curta acompanha o auxiliar da pergunta.\n\nA pergunta foi: “Has Júlia ever drunk açaí?”\nA resposta deve confirmar: “Sim, já.”","o":["Yes, she does.","Yes, she has.","Yes, she is.","Yes, she have."],"a":"Yes, she has.","e":"<div><b>Feedback:</b><br>Pergunta com Has responde com <b>Yes, he/she has</b>.</div>"},{"phase":1,"theme":"Have or Has","q":"💡 Dica: Primeiro identifique o sujeito.\n\nNa conversa sobre jogar Roblox, qual frase usa have/has corretamente?","o":["You have played Roblox.","You is played Roblox.","You has played Roblox.","You do played Roblox."],"a":"You have played Roblox.","e":"<div><b>Feedback:</b><br>Com <b>you</b>, usamos <b>have</b>.</div>"},{"phase":1,"theme":"Have or Has","q":"💡 Dica: Na negativa, have vira haven’t e has vira hasn’t.\n\nA pessoa ainda não viveu esta experiência: assistir a um filme do Homem-Aranha. Qual frase fica certa?","o":["We isn’t watched a Spider-Man movie yet.","We haven’t watched a Spider-Man movie yet.","We hasn’t watched a Spider-Man movie yet.","We doesn’t watched a Spider-Man movie yet."],"a":"We haven’t watched a Spider-Man movie yet.","e":"<div><b>Feedback:</b><br>Com <b>we</b>, a negativa correta é <b>haven’t</b>.</div>"},{"phase":1,"theme":"Have or Has","q":"💡 Dica: Perguntas no Present Perfect começam com Have ou Has.\n\nComo perguntar se <b>they</b> já viveu a experiência de comer sushi?","o":["Do they ever eaten sushi?","Has they ever eaten sushi?","Have they ever eaten sushi?","Is they ever eaten sushi?"],"a":"Have they ever eaten sushi?","e":"<div><b>Feedback:</b><br>A pergunta correta começa com <b>Have</b> para o sujeito <b>they</b>.</div>"},{"phase":1,"theme":"Have or Has","q":"💡 Dica: Resposta curta usa o mesmo auxiliar da pergunta.\n\nA pergunta foi: “Has he finished the activity?”\nA resposta deve ser afirmativa.","o":["Yes, he does.","Yes, I am.","Yes, he has.","Yes, he have."],"a":"Yes, he has.","e":"<div><b>Feedback:</b><br>A resposta curta correta acompanha Have/Has.</div>"},{"phase":1,"theme":"Time Words","q":"💡 Dica: Observe se a frase é pergunta, negativa ou afirmativa.\n\nGabriel nunca viajou de avião.\n\nQual frase combina com a situação?","o":["I have never traveled by plane.","I have yet traveled by plane.","I have already traveled by plane.","I have already not traveled by plane."],"a":"I have never traveled by plane.","e":"<div><b>Feedback:</b><br>A palavra-chave é <b>never</b>, que combina com a ideia de nunca viajou de avião.</div>"},{"phase":1,"theme":"Time Words","q":"💡 Dica: Traduza o sentido, não palavra por palavra.\n\nNo status apareceu:\n\n“I have already finished the homework.”\n\nO que a frase mostra?","o":["A pessoa faz isso todos os dias.","A pessoa está fazendo isso agora.","A pessoa fará isso amanhã.","A pessoa já terminou a tarefa."],"a":"A pessoa já terminou a tarefa.","e":"<div><b>Feedback:</b><br>Em contexto, <b>already</b> ajuda a indicar: já terminou a tarefa.</div>"},{"phase":1,"theme":"Time Words","q":"💡 Dica: Veja se a palavra combina com a intenção.\n\nNo caderno apareceu:\n\n“I have yet finished the homework.”\n\nA ideia era: “Eu já terminei a tarefa.”\nQual correção resolve?","o":["Have I ever finished the homework?","I haven’t finished the homework yet.","I have already not traveled by boat.","I have already finished the homework."],"a":"I have already finished the homework.","e":"<div><b>Feedback:</b><br>Para 'já' em afirmativa use already. Para 'nunca' use never sem dupla negação.</div>"},{"phase":1,"theme":"Time Words","q":"💡 Dica: Never e not... yet não têm exatamente o mesmo efeito.\n\nCompare:\n1. I have never played Minecraft.\n2. I haven’t played Minecraft yet.\n\nQual diferença faz sentido?","o":["As duas frases dizem que a pessoa está jogando agora.","A frase 1 é pergunta; a frase 2 é futuro.","A frase 1 indica “nunca”; a frase 2 indica “ainda não”.","As duas frases indicam que a pessoa já jogou."],"a":"A frase 1 indica “nunca”; a frase 2 indica “ainda não”.","e":"<div><b>Feedback:</b><br>Never = nunca. Not... yet = ainda não.</div>"},{"phase":1,"theme":"Verb Power","q":"💡 Dica: Depois de have/has, use o particípio.\n\nNo desafio apareceu o verbo <b>watch</b>. Qual forma entra em Present Perfect?","o":["watch","watching","watched","watched"],"a":"watched","e":"<div><b>Feedback:</b><br>O particípio de <b>watch</b> é <b>watched</b>.</div>"},{"phase":1,"theme":"Verb Power","q":"💡 Dica: O passado simples nem sempre serve depois de have.\n\nApareceu a frase errada:\n\n“I have traveled this before.”\n\nQual correção usa particípio?","o":["I have traveled this before.","I have traveled this before.","I have travel this before.","I have traveling this before."],"a":"I have traveled this before.","e":"<div><b>Feedback:</b><br>Depois de have, usamos particípio: <b>traveled</b>.</div>"},{"phase":1,"theme":"Verb Power","q":"💡 Dica: Escolha a frase com have + particípio.\n\nA turma concluiu uma atividade. Qual frase fica correta?","o":["They are completed the activity.","They have completed the activity.","They have completed the activity.","They have complete the activity."],"a":"They have completed the activity.","e":"<div><b>Feedback:</b><br>Present Perfect usa have/has + past participle.</div>"},{"phase":1,"theme":"Verb Power","q":"💡 Dica: Procure apenas formas de particípio.\n\nQual grupo combina com Present Perfect?","o":["went / ate / saw","going / eating / seeing","go / eat / see","gone / eaten / seen"],"a":"gone / eaten / seen","e":"<div><b>Feedback:</b><br>Gone, eaten e seen são particípios.</div>"},{"phase":1,"theme":"Fix It","q":"💡 Dica: Ache o erro antes de escolher.\n\nNo Spin apareceu a frase:\n\n“I have went to the beach.”\n\nQual correção deixa a frase adequada?","o":["I have gone to the beach.","I have gone to the beach.","I do gone to the beach.","I have went to the beach."],"a":"I have gone to the beach.","e":"<div><b>Feedback:</b><br>O particípio de go é gone.</div>"},{"phase":1,"theme":"Fix It","q":"💡 Dica: Ache o erro antes de escolher.\n\nNo Spin apareceu a frase:\n\n“I haven’t never traveled by boat.”\n\nQual correção deixa a frase adequada?","o":["I have never traveled by boat.","I do never traveled by boat.","I haven’t never traveled by boat.","I have never traveled by boat."],"a":"I have never traveled by boat.","e":"<div><b>Feedback:</b><br>Não usamos dupla negação.</div>"},{"phase":1,"theme":"Fix It","q":"💡 Dica: Ache o erro antes de escolher.\n\nNo Spin apareceu a frase:\n\n“I have yet finished the activity.”\n\nQual correção deixa a frase adequada?","o":["I have yet finished the activity.","I do already finished the activity.","I have already finished the activity.","I have already finish the activity."],"a":"I have already finished the activity.","e":"<div><b>Feedback:</b><br>Para “já” em afirmativa, use already.</div>"},{"phase":1,"theme":"Fix It","q":"💡 Dica: Ache o erro antes de escolher.\n\nNo Spin apareceu a frase:\n\n“I am visited the Orla.”\n\nQual correção deixa a frase adequada?","o":["I have visit the Orla.","I am visited the Orla.","I do visited the Orla.","I have visited the Orla."],"a":"I have visited the Orla.","e":"<div><b>Feedback:</b><br>Present Perfect usa have/has, não am/is/are.</div>"},{"phase":1,"theme":"Review","q":"💡 Dica: Essa pergunta não é sobre gosto; é sobre aparência.\n\nUm aluno quer perguntar: “Como ela é fisicamente?”","o":["What does she look like?","What does she likes?","How she has hair?","What she is wearing?"],"a":"What does she look like?","e":"<div><b>Feedback:</b><br>Para perguntar aparência física, usamos What does she look like?</div>"},{"phase":1,"theme":"Review","q":"💡 Dica: Em comparações, observe se a frase compara duas pessoas ou coisas.\n\nNo contexto do jogo, a ideia é: “Lucas é mais rápido que Pedro.”\nQual frase transmite isso?","o":["Lucas is faster that Pedro.","Lucas is faster than Pedro.","Lucas is faster the Pedro.","Lucas is more fast than Pedro."],"a":"Lucas is faster than Pedro.","e":"<div><b>Feedback:</b><br>Comparative compara dois elementos. Use -er than ou more + adjective + than.</div>"},{"phase":1,"theme":"Review","q":"💡 Dica: Em comparações, observe se a frase compara duas pessoas ou coisas.\n\nNo contexto do jogo, a ideia é: “Ana é mais alta que Bia.”\nQual frase transmite isso?","o":["Ana is taller than Bia.","Ana is more tall than Bia.","Ana is taller the Bia.","Ana is taller that Bia."],"a":"Ana is taller than Bia.","e":"<div><b>Feedback:</b><br>Comparative compara dois elementos. Use -er than ou more + adjective + than.</div>"},{"phase":1,"theme":"Review","q":"💡 Dica: Em comparações, observe se a frase compara duas pessoas ou coisas.\n\nNo contexto do jogo, a ideia é: “Este celular é mais caro que aquele.”\nQual frase transmite isso?","o":["This phone is expensiver than that phone.","This phone is more expensive the that phone.","This phone is more expensive that that phone.","This phone is more expensive than that phone."],"a":"This phone is more expensive than that phone.","e":"<div><b>Feedback:</b><br>Comparative compara dois elementos. Use -er than ou more + adjective + than.</div>"},{"phase":1,"theme":"Review","q":"💡 Dica: Em comparações, observe se a frase compara duas pessoas ou coisas.\n\nNo contexto do jogo, a ideia é: “Esta atividade é mais fácil que a prova.”\nQual frase transmite isso?","o":["This activity is more easy than the test.","This activity is easier the the test.","This activity is easier than the test.","This activity is easier that the test."],"a":"This activity is easier than the test.","e":"<div><b>Feedback:</b><br>Comparative compara dois elementos. Use -er than ou more + adjective + than.</div>"},{"phase":1,"theme":"Review Mix","q":"💡 Dica: Superlative destaca alguém ou algo dentro de um grupo.\n\nA frase em português é: “Julia é a aluna mais alta da turma.”\nQual versão está correta?","o":["Julia is taller student in the class.","Julia is the tallest student in the class.","Julia is the most tall student in the class.","Julia is tallest student than class."],"a":"Julia is the tallest student in the class.","e":"<div><b>Feedback:</b><br>Superlative usa the + -est ou the most + adjective.</div>"},{"phase":1,"theme":"Review Mix","q":"💡 Dica: Superlative destaca alguém ou algo dentro de um grupo.\n\nA frase em português é: “Este é o vestido mais elegante da loja.”\nQual versão está correta?","o":["This is more elegant dress in the store.","This is the elegantest dress in the store.","This is the most elegant dress in the store.","This is most elegant dress than store."],"a":"This is the most elegant dress in the store.","e":"<div><b>Feedback:</b><br>Superlative usa the + -est ou the most + adjective.</div>"},{"phase":1,"theme":"Review Mix","q":"💡 Dica: Superlative destaca alguém ou algo dentro de um grupo.\n\nA frase em português é: “Lara é a mais jovem da família.”\nQual versão está correta?","o":["Lara is the youngest in her family.","Lara is younger in her family.","Lara is the most young in her family.","Lara is youngest than her family."],"a":"Lara is the youngest in her family.","e":"<div><b>Feedback:</b><br>Superlative usa the + -est ou the most + adjective.</div>"},{"phase":1,"theme":"Review Mix","q":"💡 Dica: Superlative destaca alguém ou algo dentro de um grupo.\n\nA frase em português é: “Alter do Chão é o lugar mais bonito da cidade.”\nQual versão está correta?","o":["Alter do Chão is most beautiful place than city.","Alter do Chão is the beautifulest place in the city.","Alter do Chão is the most beautiful place in the city.","Alter do Chão is more beautiful place in the city."],"a":"Alter do Chão is the most beautiful place in the city.","e":"<div><b>Feedback:</b><br>Superlative usa the + -est ou the most + adjective.</div>"},{"phase":1,"theme":"Review Mix","q":"💡 Dica: Para altura usamos is; para cabelo usamos has.\n\nO avatar do jogo precisa da descrição: “Ela é alta e tem cabelo cacheado.”","o":["She has tall and has curly hair.","She is tall and is curly hair.","She wearing tall and has curly hair.","She is tall and has curly hair."],"a":"She is tall and has curly hair.","e":"<div><b>Feedback:</b><br>Aparência usa is para características e has para cabelo/olhos.</div>"},{"phase":2,"theme":"Life XP","q":"💡 Dica: Pense em experiência já vivida.\n\nLara contou no recreio que já viveu esta experiência: beber açaí. Qual frase transforma essa ideia em inglês?","o":["Lara is drunk açaí.","Lara has drunk .","Lara has drunk açaí.","Lara have drunk açaí."],"a":"Lara has drunk açaí.","e":"<div><b>Feedback:</b><br>Com Lara/she, usamos <b>has</b> + particípio. Tradução: Lara já viveu essa experiência.</div>"},{"phase":2,"theme":"Life XP","q":"💡 Dica: 'nunca' combina com never, sem dupla negação.\n\nGabriel nunca viveu a experiência de tirar fotos na Orla. Que frase diz isso corretamente?","o":["Gabriel have never taken pictures at the Orla.","Gabriel hasn’t never taken pictures at the Orla.","Gabriel is never taken pictures at the Orla.","Gabriel has never taken pictures at the Orla."],"a":"Gabriel has never taken pictures at the Orla.","e":"<div><b>Feedback:</b><br>Never significa nunca. Não usamos hasn’t never como resposta correta.</div>"},{"phase":2,"theme":"Life XP","q":"💡 Dica: Em perguntas com he/she, o Present Perfect começa com Has.\n\nNo grupo da turma, alguém quer perguntar se Júlia já teve essa experiência alguma vez: completar uma missão difícil. Qual pergunta funciona?","o":["Is Júlia ever completed a difficult mission?","Have Júlia ever completed a difficult mission?","Has Júlia ever completed a difficult mission?","Does Júlia ever completed a difficult mission?"],"a":"Has Júlia ever completed a difficult mission?","e":"<div><b>Feedback:</b><br>Com he/she, a pergunta fica <b>Has + sujeito + ever + particípio?</b></div>"},{"phase":2,"theme":"Life XP","q":"💡 Dica: A resposta curta acompanha o auxiliar da pergunta.\n\nA pergunta foi: “Has Lucas ever finished the homework?”\nA resposta deve confirmar: “Sim, já.”","o":["Yes, he does.","Yes, he is.","Yes, he has.","Yes, he have."],"a":"Yes, he has.","e":"<div><b>Feedback:</b><br>Pergunta com Has responde com <b>Yes, he/she has</b>.</div>"},{"phase":2,"theme":"Have or Has","q":"💡 Dica: Primeiro identifique o sujeito.\n\nNa conversa sobre assistir a um vídeo em inglês, qual frase usa have/has corretamente?","o":["We have watched a video in English.","We is watched a video in English.","We has watched a video in English.","We do watched a video in English."],"a":"We have watched a video in English.","e":"<div><b>Feedback:</b><br>Com <b>we</b>, usamos <b>have</b>.</div>"},{"phase":2,"theme":"Have or Has","q":"💡 Dica: Na negativa, have vira haven’t e has vira hasn’t.\n\nA pessoa ainda não viveu esta experiência: comer tacacá. Qual frase fica certa?","o":["They hasn’t eaten tacacá yet.","They doesn’t eaten tacacá yet.","They isn’t eaten tacacá yet.","They haven’t eaten tacacá yet."],"a":"They haven’t eaten tacacá yet.","e":"<div><b>Feedback:</b><br>Com <b>they</b>, a negativa correta é <b>haven’t</b>.</div>"},{"phase":2,"theme":"Have or Has","q":"💡 Dica: Perguntas no Present Perfect começam com Have ou Has.\n\nComo perguntar se <b>he</b> já viveu a experiência de beber açaí?","o":["Have he ever drunk açaí?","Has he ever drunk açaí?","Is he ever drunk açaí?","Do he ever drunk açaí?"],"a":"Has he ever drunk açaí?","e":"<div><b>Feedback:</b><br>A pergunta correta começa com <b>Has</b> para o sujeito <b>he</b>.</div>"},{"phase":2,"theme":"Have or Has","q":"💡 Dica: Resposta curta usa o mesmo auxiliar da pergunta.\n\nA pergunta foi: “Has she finished the activity?”\nA resposta deve ser afirmativa.","o":["Yes, she have.","Yes, she does.","Yes, I am.","Yes, she has."],"a":"Yes, she has.","e":"<div><b>Feedback:</b><br>A resposta curta correta acompanha Have/Has.</div>"},{"phase":2,"theme":"Time Words","q":"💡 Dica: Observe se a frase é pergunta, negativa ou afirmativa.\n\nMariana terminou a tarefa antes do recreio.\n\nQual frase combina com a situação?","o":["I have already not finished the homework.","I have never finished the homework.","I have already finished the homework.","I have yet finished the homework."],"a":"I have already finished the homework.","e":"<div><b>Feedback:</b><br>A palavra-chave é <b>already</b>, que combina com a ideia de já terminou a tarefa.</div>"},{"phase":2,"theme":"Time Words","q":"💡 Dica: Traduza o sentido, não palavra por palavra.\n\nNo status apareceu:\n\n“I haven’t watched the movie yet.”\n\nO que a frase mostra?","o":["A pessoa faz isso todos os dias.","A pessoa ainda não assistiu ao filme.","A pessoa fará isso amanhã.","A pessoa está fazendo isso agora."],"a":"A pessoa ainda não assistiu ao filme.","e":"<div><b>Feedback:</b><br>Em contexto, <b>yet</b> ajuda a indicar: ainda não assistiu ao filme.</div>"},{"phase":2,"theme":"Time Words","q":"💡 Dica: Veja se a palavra combina com a intenção.\n\nNo caderno apareceu:\n\n“I have yet finished the homework.”\n\nA ideia era: “Eu já terminei a tarefa.”\nQual correção resolve?","o":["I have already not traveled by boat.","Have I ever finished the homework?","I have already finished the homework.","I haven’t finished the homework yet."],"a":"I have already finished the homework.","e":"<div><b>Feedback:</b><br>Para 'já' em afirmativa use already. Para 'nunca' use never sem dupla negação.</div>"},{"phase":2,"theme":"Time Words","q":"💡 Dica: Never e not... yet não têm exatamente o mesmo efeito.\n\nCompare:\n1. I have never played Minecraft.\n2. I haven’t played Minecraft yet.\n\nQual diferença faz sentido?","o":["As duas frases indicam que a pessoa já jogou.","A frase 1 indica “nunca”; a frase 2 indica “ainda não”.","As duas frases dizem que a pessoa está jogando agora.","A frase 1 é pergunta; a frase 2 é futuro."],"a":"A frase 1 indica “nunca”; a frase 2 indica “ainda não”.","e":"<div><b>Feedback:</b><br>Never = nunca. Not... yet = ainda não.</div>"},{"phase":2,"theme":"Verb Power","q":"💡 Dica: Depois de have/has, use o particípio.\n\nNo desafio apareceu o verbo <b>complete</b>. Qual forma entra em Present Perfect?","o":["completed","completeing","complete","completed"],"a":"completed","e":"<div><b>Feedback:</b><br>O particípio de <b>complete</b> é <b>completed</b>.</div>"},{"phase":2,"theme":"Verb Power","q":"💡 Dica: O passado simples nem sempre serve depois de have.\n\nApareceu a frase errada:\n\n“I have finished this before.”\n\nQual correção usa particípio?","o":["I have finishing this before.","I have finished this before.","I have finished this before.","I have finish this before."],"a":"I have finished this before.","e":"<div><b>Feedback:</b><br>Depois de have, usamos particípio: <b>finished</b>.</div>"},{"phase":2,"theme":"Verb Power","q":"💡 Dica: Escolha a frase com have + particípio.\n\nA turma concluiu uma atividade. Qual frase fica correta?","o":["They are helped the activity.","They have helped the activity.","They have helped the activity.","They have help the activity."],"a":"They have helped the activity.","e":"<div><b>Feedback:</b><br>Present Perfect usa have/has + past participle.</div>"},{"phase":2,"theme":"Verb Power","q":"💡 Dica: Procure apenas formas de particípio.\n\nQual grupo combina com Present Perfect?","o":["went / ate / saw","going / eating / seeing","gone / eaten / seen","go / eat / see"],"a":"gone / eaten / seen","e":"<div><b>Feedback:</b><br>Gone, eaten e seen são particípios.</div>"},{"phase":2,"theme":"Fix It","q":"💡 Dica: Ache o erro antes de escolher.\n\nNo Spin apareceu a frase:\n\n“I am visited the Orla.”\n\nQual correção deixa a frase adequada?","o":["I do visited the Orla.","I have visited the Orla.","I am visited the Orla.","I have visit the Orla."],"a":"I have visited the Orla.","e":"<div><b>Feedback:</b><br>Present Perfect usa have/has, não am/is/are.</div>"},{"phase":2,"theme":"Fix It","q":"💡 Dica: Ache o erro antes de escolher.\n\nNo Spin apareceu a frase:\n\n“Yes, I has.”\n\nQual correção deixa a frase adequada?","o":["Yes, I has.","Yes, I do.","Yes, I have.","Yes, I have."],"a":"Yes, I have.","e":"<div><b>Feedback:</b><br>Have you...? responde Yes, I have.</div>"},{"phase":2,"theme":"Fix It","q":"💡 Dica: Ache o erro antes de escolher.\n\nNo Spin apareceu a frase:\n\n“No, she haven’t.”\n\nQual correção deixa a frase adequada?","o":["No, she isn’t.","No, she hasn’t.","No, she haven’t.","No, she hasn’t."],"a":"No, she hasn’t.","e":"<div><b>Feedback:</b><br>Has she...? responde No, she hasn’t.</div>"},{"phase":2,"theme":"Fix It","q":"💡 Dica: Ache o erro antes de escolher.\n\nNo Spin apareceu a frase:\n\n“They hasn’t finished the project yet.”\n\nQual correção deixa a frase adequada?","o":["They hasn’t finished the project yet.","They don’t finished the project yet.","They haven’t finished the project yet.","They haven’t finish the project yet."],"a":"They haven’t finished the project yet.","e":"<div><b>Feedback:</b><br>Com they, usamos haven’t.</div>"},{"phase":2,"theme":"Review","q":"💡 Dica: Superlative destaca alguém ou algo dentro de um grupo.\n\nA frase em português é: “Julia é a aluna mais alta da turma.”\nQual versão está correta?","o":["Julia is the most tall student in the class.","Julia is the tallest student in the class.","Julia is tallest student than class.","Julia is taller student in the class."],"a":"Julia is the tallest student in the class.","e":"<div><b>Feedback:</b><br>Superlative usa the + -est ou the most + adjective.</div>"},{"phase":2,"theme":"Review","q":"💡 Dica: Superlative destaca alguém ou algo dentro de um grupo.\n\nA frase em português é: “Este é o vestido mais elegante da loja.”\nQual versão está correta?","o":["This is the elegantest dress in the store.","This is the most elegant dress in the store.","This is most elegant dress than store.","This is more elegant dress in the store."],"a":"This is the most elegant dress in the store.","e":"<div><b>Feedback:</b><br>Superlative usa the + -est ou the most + adjective.</div>"},{"phase":2,"theme":"Review","q":"💡 Dica: Superlative destaca alguém ou algo dentro de um grupo.\n\nA frase em português é: “Lara é a mais jovem da família.”\nQual versão está correta?","o":["Lara is the youngest in her family.","Lara is the most young in her family.","Lara is youngest than her family.","Lara is younger in her family."],"a":"Lara is the youngest in her family.","e":"<div><b>Feedback:</b><br>Superlative usa the + -est ou the most + adjective.</div>"},{"phase":2,"theme":"Review","q":"💡 Dica: Superlative destaca alguém ou algo dentro de um grupo.\n\nA frase em português é: “Alter do Chão é o lugar mais bonito da cidade.”\nQual versão está correta?","o":["Alter do Chão is more beautiful place in the city.","Alter do Chão is the most beautiful place in the city.","Alter do Chão is the beautifulest place in the city.","Alter do Chão is most beautiful place than city."],"a":"Alter do Chão is the most beautiful place in the city.","e":"<div><b>Feedback:</b><br>Superlative usa the + -est ou the most + adjective.</div>"},{"phase":2,"theme":"Review","q":"💡 Dica: Para altura usamos is; para cabelo usamos has.\n\nO avatar do jogo precisa da descrição: “Ela é alta e tem cabelo cacheado.”","o":["She has tall and has curly hair.","She is tall and is curly hair.","She wearing tall and has curly hair.","She is tall and has curly hair."],"a":"She is tall and has curly hair.","e":"<div><b>Feedback:</b><br>Aparência usa is para características e has para cabelo/olhos.</div>"},{"phase":2,"theme":"Review Mix","q":"💡 Dica: Para altura usamos is; para cabelo usamos has.\n\nO avatar do jogo precisa da descrição: “Ele é baixo e tem cabelo preto.”","o":["He has short and has black hair.","He is short and is black hair.","He is short and has black hair.","He wearing short and has black hair."],"a":"He is short and has black hair.","e":"<div><b>Feedback:</b><br>Aparência usa is para características e has para cabelo/olhos.</div>"},{"phase":2,"theme":"Review Mix","q":"💡 Dica: Roupa no momento usa is wearing/are wearing.\n\nNa foto da turma, a descrição é: “Ana está usando uma jaqueta vermelha.”\nQual legenda combina?","o":["Ana is wears a red jacket.","Ana is wearing a red jacket.","Ana is a red jacket.","Ana has wearing a red jacket."],"a":"Ana is wearing a red jacket.","e":"<div><b>Feedback:</b><br>Para roupa no momento, usamos is wearing.</div>"},{"phase":2,"theme":"Review Mix","q":"💡 Dica: Roupa no momento usa is wearing/are wearing.\n\nNa foto da turma, a descrição é: “Lara está usando um vestido preto.”\nQual legenda combina?","o":["Lara is wears a black dress.","Lara has wearing a black dress.","Lara is a black dress.","Lara is wearing a black dress."],"a":"Lara is wearing a black dress.","e":"<div><b>Feedback:</b><br>Para roupa no momento, usamos is wearing.</div>"},{"phase":2,"theme":"Review Mix","q":"💡 Dica: Roupa no momento usa is wearing/are wearing.\n\nNa foto da turma, a descrição é: “Pedro está usando jeans e tênis.”\nQual legenda combina?","o":["Pedro has wearing jeans and sneakers.","Pedro is wearing jeans and sneakers.","Pedro is jeans and sneakers.","Pedro is wears jeans and sneakers."],"a":"Pedro is wearing jeans and sneakers.","e":"<div><b>Feedback:</b><br>Para roupa no momento, usamos is wearing.</div>"},{"phase":2,"theme":"Review Mix","q":"💡 Dica: Essa pergunta não é sobre gosto; é sobre aparência.\n\nUm aluno quer perguntar: “Como ela é fisicamente?”","o":["How she has hair?","What does she look like?","What she is wearing?","What does she likes?"],"a":"What does she look like?","e":"<div><b>Feedback:</b><br>Para perguntar aparência física, usamos What does she look like?</div>"},{"phase":3,"theme":"Life XP","q":"💡 Dica: Pense em experiência já vivida.\n\nGabriel contou no recreio que já viveu esta experiência: terminar a tarefa. Qual frase transforma essa ideia em inglês?","o":["Gabriel has finished the homework.","Gabriel have finished the homework.","Gabriel has finished .","Gabriel is finished the homework."],"a":"Gabriel has finished the homework.","e":"<div><b>Feedback:</b><br>Com Gabriel/he, usamos <b>has</b> + particípio. Tradução: Gabriel já viveu essa experiência.</div>"},{"phase":3,"theme":"Life XP","q":"💡 Dica: 'nunca' combina com never, sem dupla negação.\n\nJúlia nunca viveu a experiência de fazer uma atividade online. Que frase diz isso corretamente?","o":["Júlia have never done an online activity.","Júlia is never done an online activity.","Júlia has never done an online activity.","Júlia hasn’t never done an online activity."],"a":"Júlia has never done an online activity.","e":"<div><b>Feedback:</b><br>Never significa nunca. Não usamos hasn’t never como resposta correta.</div>"},{"phase":3,"theme":"Life XP","q":"💡 Dica: Em perguntas com he/she, o Present Perfect começa com Has.\n\nNo grupo da turma, alguém quer perguntar se Lucas já teve essa experiência alguma vez: ouvir uma música internacional. Qual pergunta funciona?","o":["Is Lucas ever heard an international song?","Have Lucas ever heard an international song?","Has Lucas ever heard an international song?","Does Lucas ever heard an international song?"],"a":"Has Lucas ever heard an international song?","e":"<div><b>Feedback:</b><br>Com he/she, a pergunta fica <b>Has + sujeito + ever + particípio?</b></div>"},{"phase":3,"theme":"Life XP","q":"💡 Dica: A resposta curta acompanha o auxiliar da pergunta.\n\nA pergunta foi: “Has Mariana ever sung a song in English?”\nA resposta deve confirmar: “Sim, já.”","o":["Yes, she does.","Yes, she have.","Yes, she has.","Yes, she is."],"a":"Yes, she has.","e":"<div><b>Feedback:</b><br>Pergunta com Has responde com <b>Yes, he/she has</b>.</div>"},{"phase":3,"theme":"Have or Has","q":"💡 Dica: Primeiro identifique o sujeito.\n\nNa conversa sobre assistir a um filme do Homem-Aranha, qual frase usa have/has corretamente?","o":["They do watched a Spider-Man movie.","They has watched a Spider-Man movie.","They is watched a Spider-Man movie.","They have watched a Spider-Man movie."],"a":"They have watched a Spider-Man movie.","e":"<div><b>Feedback:</b><br>Com <b>they</b>, usamos <b>have</b>.</div>"},{"phase":3,"theme":"Have or Has","q":"💡 Dica: Na negativa, have vira haven’t e has vira hasn’t.\n\nA pessoa ainda não viveu esta experiência: comer sushi. Qual frase fica certa?","o":["He hasn’t eaten sushi yet.","He haven’t eaten sushi yet.","He doesn’t eaten sushi yet.","He isn’t eaten sushi yet."],"a":"He hasn’t eaten sushi yet.","e":"<div><b>Feedback:</b><br>Com <b>he</b>, a negativa correta é <b>hasn’t</b>.</div>"},{"phase":3,"theme":"Have or Has","q":"💡 Dica: Perguntas no Present Perfect começam com Have ou Has.\n\nComo perguntar se <b>she</b> já viveu a experiência de tirar fotos na Orla?","o":["Has she ever taken pictures at the Orla?","Have she ever taken pictures at the Orla?","Is she ever taken pictures at the Orla?","Do she ever taken pictures at the Orla?"],"a":"Has she ever taken pictures at the Orla?","e":"<div><b>Feedback:</b><br>A pergunta correta começa com <b>Has</b> para o sujeito <b>she</b>.</div>"},{"phase":3,"theme":"Have or Has","q":"💡 Dica: Resposta curta usa o mesmo auxiliar da pergunta.\n\nA pergunta foi: “Have I finished the activity?”\nA resposta deve ser afirmativa.","o":["Yes, I has.","Yes, I have.","Yes, I am.","Yes, I do."],"a":"Yes, I have.","e":"<div><b>Feedback:</b><br>A resposta curta correta acompanha Have/Has.</div>"},{"phase":3,"theme":"Time Words","q":"💡 Dica: Observe se a frase é pergunta, negativa ou afirmativa.\n\nPedro quer ver o filme, mas ainda não assistiu.\n\nQual frase combina com a situação?","o":["I haven’t watched the movie yet.","I haven’t watched the movie ever.","I haven’t watched the movie already not.","I haven’t watched the movie never."],"a":"I haven’t watched the movie yet.","e":"<div><b>Feedback:</b><br>A palavra-chave é <b>yet</b>, que combina com a ideia de ainda não assistiu ao filme.</div>"},{"phase":3,"theme":"Time Words","q":"💡 Dica: Traduza o sentido, não palavra por palavra.\n\nNo status apareceu:\n\n“The school team hasn’t won the championship yet.”\n\nO que a frase mostra?","o":["A pessoa ainda não venceu.","A pessoa está fazendo isso agora.","A pessoa fará isso amanhã.","A pessoa faz isso todos os dias."],"a":"A pessoa ainda não venceu.","e":"<div><b>Feedback:</b><br>Em contexto, <b>yet</b> ajuda a indicar: ainda não venceu.</div>"},{"phase":3,"theme":"Time Words","q":"💡 Dica: Veja se a palavra combina com a intenção.\n\nNo caderno apareceu:\n\n“I have yet finished the homework.”\n\nA ideia era: “Eu já terminei a tarefa.”\nQual correção resolve?","o":["I have already finished the homework.","Have I ever finished the homework?","I have already not traveled by boat.","I haven’t finished the homework yet."],"a":"I have already finished the homework.","e":"<div><b>Feedback:</b><br>Para 'já' em afirmativa use already. Para 'nunca' use never sem dupla negação.</div>"},{"phase":3,"theme":"Time Words","q":"💡 Dica: Never e not... yet não têm exatamente o mesmo efeito.\n\nCompare:\n1. I have never played Minecraft.\n2. I haven’t played Minecraft yet.\n\nQual diferença faz sentido?","o":["A frase 1 indica “nunca”; a frase 2 indica “ainda não”.","As duas frases dizem que a pessoa está jogando agora.","A frase 1 é pergunta; a frase 2 é futuro.","As duas frases indicam que a pessoa já jogou."],"a":"A frase 1 indica “nunca”; a frase 2 indica “ainda não”.","e":"<div><b>Feedback:</b><br>Never = nunca. Not... yet = ainda não.</div>"},{"phase":3,"theme":"Verb Power","q":"💡 Dica: Depois de have/has, use o particípio.\n\nNo desafio apareceu o verbo <b>help</b>. Qual forma entra em Present Perfect?","o":["helped","help","helping","helped"],"a":"helped","e":"<div><b>Feedback:</b><br>O particípio de <b>help</b> é <b>helped</b>.</div>"},{"phase":3,"theme":"Verb Power","q":"💡 Dica: O passado simples nem sempre serve depois de have.\n\nApareceu a frase errada:\n\n“I have went to the beach.”\n\nQual correção usa particípio?","o":["I have go this before.","I have gone to the beach.","I have going this before.","I have went to the beach."],"a":"I have gone to the beach.","e":"<div><b>Feedback:</b><br>Depois de have, usamos particípio: <b>gone</b>.</div>"},{"phase":3,"theme":"Verb Power","q":"💡 Dica: Escolha a frase com have + particípio.\n\nA turma concluiu uma atividade. Qual frase fica correta?","o":["They have eat the activity.","They are eaten the activity.","They have eaten the activity.","They have ate the activity."],"a":"They have eaten the activity.","e":"<div><b>Feedback:</b><br>Present Perfect usa have/has + past participle.</div>"},{"phase":3,"theme":"Verb Power","q":"💡 Dica: Procure apenas formas de particípio.\n\nQual grupo combina com Present Perfect?","o":["gone / eaten / seen","go / eat / see","went / ate / saw","going / eating / seeing"],"a":"gone / eaten / seen","e":"<div><b>Feedback:</b><br>Gone, eaten e seen são particípios.</div>"},{"phase":3,"theme":"Fix It","q":"💡 Dica: Ache o erro antes de escolher.\n\nNo Spin apareceu a frase:\n\n“They hasn’t finished the project yet.”\n\nQual correção deixa a frase adequada?","o":["They don’t finished the project yet.","They hasn’t finished the project yet.","They haven’t finished the project yet.","They haven’t finish the project yet."],"a":"They haven’t finished the project yet.","e":"<div><b>Feedback:</b><br>Com they, usamos haven’t.</div>"},{"phase":3,"theme":"Fix It","q":"💡 Dica: Ache o erro antes de escolher.\n\nNo Spin apareceu a frase:\n\n“Has they ever played Roblox?”\n\nQual correção deixa a frase adequada?","o":["Have they ever played Roblox?","Have they ever played Roblox?","Has they ever played Roblox?","Have they ever played Roblox?"],"a":"Have they ever played Roblox?","e":"<div><b>Feedback:</b><br>Com they, a pergunta começa com Have.</div>"},{"phase":3,"theme":"Fix It","q":"💡 Dica: Ache o erro antes de escolher.\n\nNo Spin apareceu a frase:\n\n“He has saw a Spider-Man movie.”\n\nQual correção deixa a frase adequada?","o":["He has seen a Spider-Man movie.","He has saw a Spider-Man movie.","He has seen a Spider-Man movie.","He is seen a Spider-Man movie."],"a":"He has seen a Spider-Man movie.","e":"<div><b>Feedback:</b><br>O particípio de see é seen.</div>"},{"phase":3,"theme":"Fix It","q":"💡 Dica: Ache o erro antes de escolher.\n\nNo Spin apareceu a frase:\n\n“She have visited Alter do Chão.”\n\nQual correção deixa a frase adequada?","o":["She is visited Alter do Chão.","She has visited Alter do Chão.","She has visit Alter do Chão.","She have visited Alter do Chão."],"a":"She has visited Alter do Chão.","e":"<div><b>Feedback:</b><br>Com she, usamos has.</div>"},{"phase":3,"theme":"Review","q":"💡 Dica: Para altura usamos is; para cabelo usamos has.\n\nO avatar do jogo precisa da descrição: “Ele é baixo e tem cabelo preto.”","o":["He is short and has black hair.","He wearing short and has black hair.","He is short and is black hair.","He has short and has black hair."],"a":"He is short and has black hair.","e":"<div><b>Feedback:</b><br>Aparência usa is para características e has para cabelo/olhos.</div>"},{"phase":3,"theme":"Review","q":"💡 Dica: Roupa no momento usa is wearing/are wearing.\n\nNa foto da turma, a descrição é: “Ana está usando uma jaqueta vermelha.”\nQual legenda combina?","o":["Ana is wears a red jacket.","Ana is a red jacket.","Ana is wearing a red jacket.","Ana has wearing a red jacket."],"a":"Ana is wearing a red jacket.","e":"<div><b>Feedback:</b><br>Para roupa no momento, usamos is wearing.</div>"},{"phase":3,"theme":"Review","q":"💡 Dica: Roupa no momento usa is wearing/are wearing.\n\nNa foto da turma, a descrição é: “Lara está usando um vestido preto.”\nQual legenda combina?","o":["Lara is wears a black dress.","Lara is wearing a black dress.","Lara has wearing a black dress.","Lara is a black dress."],"a":"Lara is wearing a black dress.","e":"<div><b>Feedback:</b><br>Para roupa no momento, usamos is wearing.</div>"},{"phase":3,"theme":"Review","q":"💡 Dica: Roupa no momento usa is wearing/are wearing.\n\nNa foto da turma, a descrição é: “Pedro está usando jeans e tênis.”\nQual legenda combina?","o":["Pedro is jeans and sneakers.","Pedro is wears jeans and sneakers.","Pedro has wearing jeans and sneakers.","Pedro is wearing jeans and sneakers."],"a":"Pedro is wearing jeans and sneakers.","e":"<div><b>Feedback:</b><br>Para roupa no momento, usamos is wearing.</div>"},{"phase":3,"theme":"Review","q":"💡 Dica: Essa pergunta não é sobre gosto; é sobre aparência.\n\nUm aluno quer perguntar: “Como ela é fisicamente?”","o":["What does she look like?","How she has hair?","What she is wearing?","What does she likes?"],"a":"What does she look like?","e":"<div><b>Feedback:</b><br>Para perguntar aparência física, usamos What does she look like?</div>"},{"phase":3,"theme":"Review Mix","q":"💡 Dica: Em comparações, observe se a frase compara duas pessoas ou coisas.\n\nNo contexto do jogo, a ideia é: “Lucas é mais rápido que Pedro.”\nQual frase transmite isso?","o":["Lucas is more fast than Pedro.","Lucas is faster that Pedro.","Lucas is faster the Pedro.","Lucas is faster than Pedro."],"a":"Lucas is faster than Pedro.","e":"<div><b>Feedback:</b><br>Comparative compara dois elementos. Use -er than ou more + adjective + than.</div>"},{"phase":3,"theme":"Review Mix","q":"💡 Dica: Em comparações, observe se a frase compara duas pessoas ou coisas.\n\nNo contexto do jogo, a ideia é: “Ana é mais alta que Bia.”\nQual frase transmite isso?","o":["Ana is taller than Bia.","Ana is taller the Bia.","Ana is taller that Bia.","Ana is more tall than Bia."],"a":"Ana is taller than Bia.","e":"<div><b>Feedback:</b><br>Comparative compara dois elementos. Use -er than ou more + adjective + than.</div>"},{"phase":3,"theme":"Review Mix","q":"💡 Dica: Em comparações, observe se a frase compara duas pessoas ou coisas.\n\nNo contexto do jogo, a ideia é: “Este celular é mais caro que aquele.”\nQual frase transmite isso?","o":["This phone is more expensive that that phone.","This phone is expensiver than that phone.","This phone is more expensive the that phone.","This phone is more expensive than that phone."],"a":"This phone is more expensive than that phone.","e":"<div><b>Feedback:</b><br>Comparative compara dois elementos. Use -er than ou more + adjective + than.</div>"},{"phase":3,"theme":"Review Mix","q":"💡 Dica: Em comparações, observe se a frase compara duas pessoas ou coisas.\n\nNo contexto do jogo, a ideia é: “Esta atividade é mais fácil que a prova.”\nQual frase transmite isso?","o":["This activity is easier than the test.","This activity is more easy than the test.","This activity is easier that the test.","This activity is easier the the test."],"a":"This activity is easier than the test.","e":"<div><b>Feedback:</b><br>Comparative compara dois elementos. Use -er than ou more + adjective + than.</div>"},{"phase":3,"theme":"Review Mix","q":"💡 Dica: Superlative destaca alguém ou algo dentro de um grupo.\n\nA frase em português é: “Julia é a aluna mais alta da turma.”\nQual versão está correta?","o":["Julia is tallest student than class.","Julia is the most tall student in the class.","Julia is taller student in the class.","Julia is the tallest student in the class."],"a":"Julia is the tallest student in the class.","e":"<div><b>Feedback:</b><br>Superlative usa the + -est ou the most + adjective.</div>"},{"phase":4,"theme":"Life XP","q":"💡 Dica: Pense em experiência já vivida.\n\nJúlia contou no recreio que já viveu esta experiência: cantar uma música em inglês. Qual frase transforma essa ideia em inglês?","o":["Júlia is sung a song in English.","Júlia has sung .","Júlia have sung a song in English.","Júlia has sung a song in English."],"a":"Júlia has sung a song in English.","e":"<div><b>Feedback:</b><br>Com Júlia/she, usamos <b>has</b> + particípio. Tradução: Júlia já viveu essa experiência.</div>"},{"phase":4,"theme":"Life XP","q":"💡 Dica: 'nunca' combina com never, sem dupla negação.\n\nLucas nunca viveu a experiência de ganhar uma partida. Que frase diz isso corretamente?","o":["Lucas have never won a match.","Lucas hasn’t never won a match.","Lucas is never won a match.","Lucas has never won a match."],"a":"Lucas has never won a match.","e":"<div><b>Feedback:</b><br>Never significa nunca. Não usamos hasn’t never como resposta correta.</div>"},{"phase":4,"theme":"Life XP","q":"💡 Dica: Em perguntas com he/she, o Present Perfect começa com Has.\n\nNo grupo da turma, alguém quer perguntar se Mariana já teve essa experiência alguma vez: falar inglês em sala. Qual pergunta funciona?","o":["Have Mariana ever spoken English in class?","Does Mariana ever spoken English in class?","Is Mariana ever spoken English in class?","Has Mariana ever spoken English in class?"],"a":"Has Mariana ever spoken English in class?","e":"<div><b>Feedback:</b><br>Com he/she, a pergunta fica <b>Has + sujeito + ever + particípio?</b></div>"},{"phase":4,"theme":"Life XP","q":"💡 Dica: A resposta curta acompanha o auxiliar da pergunta.\n\nA pergunta foi: “Has Rafael ever played Free Fire?”\nA resposta deve confirmar: “Sim, já.”","o":["Yes, he is.","Yes, he have.","Yes, he has.","Yes, he does."],"a":"Yes, he has.","e":"<div><b>Feedback:</b><br>Pergunta com Has responde com <b>Yes, he/she has</b>.</div>"},{"phase":4,"theme":"Have or Has","q":"💡 Dica: Primeiro identifique o sujeito.\n\nNa conversa sobre comer tacacá, qual frase usa have/has corretamente?","o":["He do eaten tacacá.","He has eaten tacacá.","He have eaten tacacá.","He is eaten tacacá."],"a":"He has eaten tacacá.","e":"<div><b>Feedback:</b><br>Com <b>he</b>, usamos <b>has</b>.</div>"},{"phase":4,"theme":"Have or Has","q":"💡 Dica: Na negativa, have vira haven’t e has vira hasn’t.\n\nA pessoa ainda não viveu esta experiência: beber açaí. Qual frase fica certa?","o":["She doesn’t drunk açaí yet.","She haven’t drunk açaí yet.","She isn’t drunk açaí yet.","She hasn’t drunk açaí yet."],"a":"She hasn’t drunk açaí yet.","e":"<div><b>Feedback:</b><br>Com <b>she</b>, a negativa correta é <b>hasn’t</b>.</div>"},{"phase":4,"theme":"Have or Has","q":"💡 Dica: Perguntas no Present Perfect começam com Have ou Has.\n\nComo perguntar se <b>I</b> já viveu a experiência de completar uma missão difícil?","o":["Has I ever completed a difficult mission?","Do I ever completed a difficult mission?","Have I ever completed a difficult mission?","Is I ever completed a difficult mission?"],"a":"Have I ever completed a difficult mission?","e":"<div><b>Feedback:</b><br>A pergunta correta começa com <b>Have</b> para o sujeito <b>I</b>.</div>"},{"phase":4,"theme":"Have or Has","q":"💡 Dica: Resposta curta usa o mesmo auxiliar da pergunta.\n\nA pergunta foi: “Have you finished the activity?”\nA resposta deve ser afirmativa.","o":["Yes, I am.","Yes, I have.","Yes, I has.","Yes, I do."],"a":"Yes, I have.","e":"<div><b>Feedback:</b><br>A resposta curta correta acompanha Have/Has.</div>"},{"phase":4,"theme":"Time Words","q":"💡 Dica: Observe se a frase é pergunta, negativa ou afirmativa.\n\nO time da escola ainda não venceu o campeonato.\n\nQual frase combina com a situação?","o":["The school team hasn’t won the championship never.","The school team hasn’t won the championship yet.","The school team hasn’t won the championship ever.","The school team hasn’t won the championship already not."],"a":"The school team hasn’t won the championship yet.","e":"<div><b>Feedback:</b><br>A palavra-chave é <b>yet</b>, que combina com a ideia de ainda não venceu.</div>"},{"phase":4,"theme":"Time Words","q":"💡 Dica: Traduza o sentido, não palavra por palavra.\n\nNo status apareceu:\n\n“I have already visited the museum.”\n\nO que a frase mostra?","o":["A pessoa está fazendo isso agora.","A pessoa faz isso todos os dias.","A pessoa fará isso amanhã.","A pessoa já visitou o museu."],"a":"A pessoa já visitou o museu.","e":"<div><b>Feedback:</b><br>Em contexto, <b>already</b> ajuda a indicar: já visitou o museu.</div>"},{"phase":4,"theme":"Time Words","q":"💡 Dica: Veja se a palavra combina com a intenção.\n\nNo caderno apareceu:\n\n“I haven’t never traveled by boat.”\n\nA ideia era: “Eu nunca viajei de barco.”\nQual correção resolve?","o":["Have I ever finished the homework?","I have already not traveled by boat.","I haven’t finished the homework yet.","I have never traveled by boat."],"a":"I have never traveled by boat.","e":"<div><b>Feedback:</b><br>Para 'já' em afirmativa use already. Para 'nunca' use never sem dupla negação.</div>"},{"phase":4,"theme":"Time Words","q":"💡 Dica: Never e not... yet não têm exatamente o mesmo efeito.\n\nCompare:\n1. I have never played Minecraft.\n2. I haven’t played Minecraft yet.\n\nQual diferença faz sentido?","o":["As duas frases dizem que a pessoa está jogando agora.","A frase 1 indica “nunca”; a frase 2 indica “ainda não”.","As duas frases indicam que a pessoa já jogou.","A frase 1 é pergunta; a frase 2 é futuro."],"a":"A frase 1 indica “nunca”; a frase 2 indica “ainda não”.","e":"<div><b>Feedback:</b><br>Never = nunca. Not... yet = ainda não.</div>"},{"phase":4,"theme":"Verb Power","q":"💡 Dica: Depois de have/has, use o particípio.\n\nNo desafio apareceu o verbo <b>eat</b>. Qual forma entra em Present Perfect?","o":["eat","ate","eating","eaten"],"a":"eaten","e":"<div><b>Feedback:</b><br>O particípio de <b>eat</b> é <b>eaten</b>.</div>"},{"phase":4,"theme":"Verb Power","q":"💡 Dica: O passado simples nem sempre serve depois de have.\n\nApareceu a frase errada:\n\n“I have saw this before.”\n\nQual correção usa particípio?","o":["I have see this before.","I have seeing this before.","I have seen this before.","I have saw this before."],"a":"I have seen this before.","e":"<div><b>Feedback:</b><br>Depois de have, usamos particípio: <b>seen</b>.</div>"},{"phase":4,"theme":"Verb Power","q":"💡 Dica: Escolha a frase com have + particípio.\n\nA turma concluiu uma atividade. Qual frase fica correta?","o":["They are taken the activity.","They have take the activity.","They have taken the activity.","They have took the activity."],"a":"They have taken the activity.","e":"<div><b>Feedback:</b><br>Present Perfect usa have/has + past participle.</div>"},{"phase":4,"theme":"Verb Power","q":"💡 Dica: Procure apenas formas de particípio.\n\nQual grupo combina com Present Perfect?","o":["go / eat / see","going / eating / seeing","went / ate / saw","gone / eaten / seen"],"a":"gone / eaten / seen","e":"<div><b>Feedback:</b><br>Gone, eaten e seen são particípios.</div>"},{"phase":4,"theme":"Fix It","q":"💡 Dica: Ache o erro antes de escolher.\n\nNo Spin apareceu a frase:\n\n“She have visited Alter do Chão.”\n\nQual correção deixa a frase adequada?","o":["She has visit Alter do Chão.","She has visited Alter do Chão.","She is visited Alter do Chão.","She have visited Alter do Chão."],"a":"She has visited Alter do Chão.","e":"<div><b>Feedback:</b><br>Com she, usamos has.</div>"},{"phase":4,"theme":"Fix It","q":"💡 Dica: Ache o erro antes de escolher.\n\nNo Spin apareceu a frase:\n\n“They has completed the mission.”\n\nQual correção deixa a frase adequada?","o":["They do completed the mission.","They have completed the mission.","They have complete the mission.","They has completed the mission."],"a":"They have completed the mission.","e":"<div><b>Feedback:</b><br>Com they, usamos have.</div>"},{"phase":4,"theme":"Fix It","q":"💡 Dica: Ache o erro antes de escolher.\n\nNo Spin apareceu a frase:\n\n“Have he ever eaten tacacá?”\n\nQual correção deixa a frase adequada?","o":["Have he ever eaten tacacá?","Has he ever eaten tacacá?","Has he ever eaten tacacá?","Has he ever eaten tacacá?"],"a":"Has he ever eaten tacacá?","e":"<div><b>Feedback:</b><br>Com he, a pergunta começa com Has.</div>"},{"phase":4,"theme":"Fix It","q":"💡 Dica: Ache o erro antes de escolher.\n\nNo Spin apareceu a frase:\n\n“I have went to the beach.”\n\nQual correção deixa a frase adequada?","o":["I do gone to the beach.","I have gone to the beach.","I have gone to the beach.","I have went to the beach."],"a":"I have gone to the beach.","e":"<div><b>Feedback:</b><br>O particípio de go é gone.</div>"},{"phase":4,"theme":"Review","q":"💡 Dica: Em comparações, observe se a frase compara duas pessoas ou coisas.\n\nNo contexto do jogo, a ideia é: “Lucas é mais rápido que Pedro.”\nQual frase transmite isso?","o":["Lucas is faster than Pedro.","Lucas is more fast than Pedro.","Lucas is faster that Pedro.","Lucas is faster the Pedro."],"a":"Lucas is faster than Pedro.","e":"<div><b>Feedback:</b><br>Comparative compara dois elementos. Use -er than ou more + adjective + than.</div>"},{"phase":4,"theme":"Review","q":"💡 Dica: Em comparações, observe se a frase compara duas pessoas ou coisas.\n\nNo contexto do jogo, a ideia é: “Ana é mais alta que Bia.”\nQual frase transmite isso?","o":["Ana is taller than Bia.","Ana is taller that Bia.","Ana is more tall than Bia.","Ana is taller the Bia."],"a":"Ana is taller than Bia.","e":"<div><b>Feedback:</b><br>Comparative compara dois elementos. Use -er than ou more + adjective + than.</div>"},{"phase":4,"theme":"Review","q":"💡 Dica: Em comparações, observe se a frase compara duas pessoas ou coisas.\n\nNo contexto do jogo, a ideia é: “Este celular é mais caro que aquele.”\nQual frase transmite isso?","o":["This phone is more expensive that that phone.","This phone is more expensive than that phone.","This phone is expensiver than that phone.","This phone is more expensive the that phone."],"a":"This phone is more expensive than that phone.","e":"<div><b>Feedback:</b><br>Comparative compara dois elementos. Use -er than ou more + adjective + than.</div>"},{"phase":4,"theme":"Review","q":"💡 Dica: Em comparações, observe se a frase compara duas pessoas ou coisas.\n\nNo contexto do jogo, a ideia é: “Esta atividade é mais fácil que a prova.”\nQual frase transmite isso?","o":["This activity is easier than the test.","This activity is easier the the test.","This activity is more easy than the test.","This activity is easier that the test."],"a":"This activity is easier than the test.","e":"<div><b>Feedback:</b><br>Comparative compara dois elementos. Use -er than ou more + adjective + than.</div>"},{"phase":4,"theme":"Review","q":"💡 Dica: Superlative destaca alguém ou algo dentro de um grupo.\n\nA frase em português é: “Julia é a aluna mais alta da turma.”\nQual versão está correta?","o":["Julia is the tallest student in the class.","Julia is tallest student than class.","Julia is taller student in the class.","Julia is the most tall student in the class."],"a":"Julia is the tallest student in the class.","e":"<div><b>Feedback:</b><br>Superlative usa the + -est ou the most + adjective.</div>"},{"phase":4,"theme":"Review Mix","q":"💡 Dica: Superlative destaca alguém ou algo dentro de um grupo.\n\nA frase em português é: “Este é o vestido mais elegante da loja.”\nQual versão está correta?","o":["This is more elegant dress in the store.","This is the elegantest dress in the store.","This is the most elegant dress in the store.","This is most elegant dress than store."],"a":"This is the most elegant dress in the store.","e":"<div><b>Feedback:</b><br>Superlative usa the + -est ou the most + adjective.</div>"},{"phase":4,"theme":"Review Mix","q":"💡 Dica: Superlative destaca alguém ou algo dentro de um grupo.\n\nA frase em português é: “Lara é a mais jovem da família.”\nQual versão está correta?","o":["Lara is the youngest in her family.","Lara is youngest than her family.","Lara is younger in her family.","Lara is the most young in her family."],"a":"Lara is the youngest in her family.","e":"<div><b>Feedback:</b><br>Superlative usa the + -est ou the most + adjective.</div>"},{"phase":4,"theme":"Review Mix","q":"💡 Dica: Superlative destaca alguém ou algo dentro de um grupo.\n\nA frase em português é: “Alter do Chão é o lugar mais bonito da cidade.”\nQual versão está correta?","o":["Alter do Chão is more beautiful place in the city.","Alter do Chão is most beautiful place than city.","Alter do Chão is the beautifulest place in the city.","Alter do Chão is the most beautiful place in the city."],"a":"Alter do Chão is the most beautiful place in the city.","e":"<div><b>Feedback:</b><br>Superlative usa the + -est ou the most + adjective.</div>"},{"phase":4,"theme":"Review Mix","q":"💡 Dica: Para altura usamos is; para cabelo usamos has.\n\nO avatar do jogo precisa da descrição: “Ela é alta e tem cabelo cacheado.”","o":["She is tall and is curly hair.","She has tall and has curly hair.","She wearing tall and has curly hair.","She is tall and has curly hair."],"a":"She is tall and has curly hair.","e":"<div><b>Feedback:</b><br>Aparência usa is para características e has para cabelo/olhos.</div>"},{"phase":4,"theme":"Review Mix","q":"💡 Dica: Para altura usamos is; para cabelo usamos has.\n\nO avatar do jogo precisa da descrição: “Ele é baixo e tem cabelo preto.”","o":["He is short and has black hair.","He wearing short and has black hair.","He has short and has black hair.","He is short and is black hair."],"a":"He is short and has black hair.","e":"<div><b>Feedback:</b><br>Aparência usa is para características e has para cabelo/olhos.</div>"},{"phase":5,"theme":"Life XP","q":"💡 Dica: Pense em experiência já vivida.\n\nLucas contou no recreio que já viveu esta experiência: jogar Free Fire. Qual frase transforma essa ideia em inglês?","o":["Lucas have played Free Fire.","Lucas has played .","Lucas is played Free Fire.","Lucas has played Free Fire."],"a":"Lucas has played Free Fire.","e":"<div><b>Feedback:</b><br>Com Lucas/he, usamos <b>has</b> + particípio. Tradução: Lucas já viveu essa experiência.</div>"},{"phase":5,"theme":"Life XP","q":"💡 Dica: 'nunca' combina com never, sem dupla negação.\n\nMariana nunca viveu a experiência de jogar Roblox. Que frase diz isso corretamente?","o":["Mariana hasn’t never played Roblox.","Mariana have never played Roblox.","Mariana is never played Roblox.","Mariana has never played Roblox."],"a":"Mariana has never played Roblox.","e":"<div><b>Feedback:</b><br>Never significa nunca. Não usamos hasn’t never como resposta correta.</div>"},{"phase":5,"theme":"Life XP","q":"💡 Dica: Em perguntas com he/she, o Present Perfect começa com Has.\n\nNo grupo da turma, alguém quer perguntar se Rafael já teve essa experiência alguma vez: assistir a um vídeo em inglês. Qual pergunta funciona?","o":["Have Rafael ever watched a video in English?","Has Rafael ever watched a video in English?","Does Rafael ever watched a video in English?","Is Rafael ever watched a video in English?"],"a":"Has Rafael ever watched a video in English?","e":"<div><b>Feedback:</b><br>Com he/she, a pergunta fica <b>Has + sujeito + ever + particípio?</b></div>"},{"phase":5,"theme":"Life XP","q":"💡 Dica: A resposta curta acompanha o auxiliar da pergunta.\n\nA pergunta foi: “Has Camila ever watched a Spider-Man movie?”\nA resposta deve confirmar: “Sim, já.”","o":["Yes, she have.","Yes, she has.","Yes, she does.","Yes, she is."],"a":"Yes, she has.","e":"<div><b>Feedback:</b><br>Pergunta com Has responde com <b>Yes, he/she has</b>.</div>"},{"phase":5,"theme":"Have or Has","q":"💡 Dica: Primeiro identifique o sujeito.\n\nNa conversa sobre comer sushi, qual frase usa have/has corretamente?","o":["She have eaten sushi.","She has eaten sushi.","She do eaten sushi.","She is eaten sushi."],"a":"She has eaten sushi.","e":"<div><b>Feedback:</b><br>Com <b>she</b>, usamos <b>has</b>.</div>"},{"phase":5,"theme":"Have or Has","q":"💡 Dica: Na negativa, have vira haven’t e has vira hasn’t.\n\nA pessoa ainda não viveu esta experiência: tirar fotos na Orla. Qual frase fica certa?","o":["I doesn’t taken pictures at the Orla yet.","I haven’t taken pictures at the Orla yet.","I hasn’t taken pictures at the Orla yet.","I isn’t taken pictures at the Orla yet."],"a":"I haven’t taken pictures at the Orla yet.","e":"<div><b>Feedback:</b><br>Com <b>I</b>, a negativa correta é <b>haven’t</b>.</div>"},{"phase":5,"theme":"Have or Has","q":"💡 Dica: Perguntas no Present Perfect começam com Have ou Has.\n\nComo perguntar se <b>you</b> já viveu a experiência de terminar a tarefa?","o":["Has you ever finished the homework?","Have you ever finished the homework?","Is you ever finished the homework?","Do you ever finished the homework?"],"a":"Have you ever finished the homework?","e":"<div><b>Feedback:</b><br>A pergunta correta começa com <b>Have</b> para o sujeito <b>you</b>.</div>"},{"phase":5,"theme":"Have or Has","q":"💡 Dica: Resposta curta usa o mesmo auxiliar da pergunta.\n\nA pergunta foi: “Have we finished the activity?”\nA resposta deve ser afirmativa.","o":["Yes, we has.","Yes, we do.","Yes, we have.","Yes, I am."],"a":"Yes, we have.","e":"<div><b>Feedback:</b><br>A resposta curta correta acompanha Have/Has.</div>"},{"phase":5,"theme":"Time Words","q":"💡 Dica: Observe se a frase é pergunta, negativa ou afirmativa.\n\nBia confirma que já visitou o museu.\n\nQual frase combina com a situação?","o":["I have already visited the museum.","I have yet visited the museum.","I have never visited the museum.","I have already not visited the museum."],"a":"I have already visited the museum.","e":"<div><b>Feedback:</b><br>A palavra-chave é <b>already</b>, que combina com a ideia de já visitou o museu.</div>"},{"phase":5,"theme":"Time Words","q":"💡 Dica: Traduza o sentido, não palavra por palavra.\n\nNo status apareceu:\n\n“Have you ever visited Alter do Chão?”\n\nO que a frase mostra?","o":["A pessoa já foi alguma vez.","A pessoa faz isso todos os dias.","A pessoa está fazendo isso agora.","A pessoa fará isso amanhã."],"a":"A pessoa já foi alguma vez.","e":"<div><b>Feedback:</b><br>Em contexto, <b>ever</b> ajuda a indicar: já foi alguma vez.</div>"},{"phase":5,"theme":"Time Words","q":"💡 Dica: Veja se a palavra combina com a intenção.\n\nNo caderno apareceu:\n\n“I haven’t never traveled by boat.”\n\nA ideia era: “Eu nunca viajei de barco.”\nQual correção resolve?","o":["I haven’t finished the homework yet.","I have already not traveled by boat.","Have I ever finished the homework?","I have never traveled by boat."],"a":"I have never traveled by boat.","e":"<div><b>Feedback:</b><br>Para 'já' em afirmativa use already. Para 'nunca' use never sem dupla negação.</div>"},{"phase":5,"theme":"Time Words","q":"💡 Dica: Never e not... yet não têm exatamente o mesmo efeito.\n\nCompare:\n1. I have never played Minecraft.\n2. I haven’t played Minecraft yet.\n\nQual diferença faz sentido?","o":["As duas frases dizem que a pessoa está jogando agora.","As duas frases indicam que a pessoa já jogou.","A frase 1 indica “nunca”; a frase 2 indica “ainda não”.","A frase 1 é pergunta; a frase 2 é futuro."],"a":"A frase 1 indica “nunca”; a frase 2 indica “ainda não”.","e":"<div><b>Feedback:</b><br>Never = nunca. Not... yet = ainda não.</div>"},{"phase":5,"theme":"Verb Power","q":"💡 Dica: Depois de have/has, use o particípio.\n\nNo desafio apareceu o verbo <b>take</b>. Qual forma entra em Present Perfect?","o":["taken","takeing","took","take"],"a":"taken","e":"<div><b>Feedback:</b><br>O particípio de <b>take</b> é <b>taken</b>.</div>"},{"phase":5,"theme":"Verb Power","q":"💡 Dica: O passado simples nem sempre serve depois de have.\n\nApareceu a frase errada:\n\n“I have did this before.”\n\nQual correção usa particípio?","o":["I have done this before.","I have do this before.","I have did this before.","I have doing this before."],"a":"I have done this before.","e":"<div><b>Feedback:</b><br>Depois de have, usamos particípio: <b>done</b>.</div>"},{"phase":5,"theme":"Verb Power","q":"💡 Dica: Escolha a frase com have + particípio.\n\nA turma concluiu uma atividade. Qual frase fica correta?","o":["They have made the activity.","They have made the activity.","They are made the activity.","They have make the activity."],"a":"They have made the activity.","e":"<div><b>Feedback:</b><br>Present Perfect usa have/has + past participle.</div>"},{"phase":5,"theme":"Verb Power","q":"💡 Dica: Procure apenas formas de particípio.\n\nQual grupo combina com Present Perfect?","o":["going / eating / seeing","go / eat / see","gone / eaten / seen","went / ate / saw"],"a":"gone / eaten / seen","e":"<div><b>Feedback:</b><br>Gone, eaten e seen são particípios.</div>"},{"phase":5,"theme":"Fix It","q":"💡 Dica: Ache o erro antes de escolher.\n\nNo Spin apareceu a frase:\n\n“I have went to the beach.”\n\nQual correção deixa a frase adequada?","o":["I have gone to the beach.","I have went to the beach.","I have gone to the beach.","I do gone to the beach."],"a":"I have gone to the beach.","e":"<div><b>Feedback:</b><br>O particípio de go é gone.</div>"},{"phase":5,"theme":"Fix It","q":"💡 Dica: Ache o erro antes de escolher.\n\nNo Spin apareceu a frase:\n\n“I haven’t never traveled by boat.”\n\nQual correção deixa a frase adequada?","o":["I have never traveled by boat.","I do never traveled by boat.","I haven’t never traveled by boat.","I have never traveled by boat."],"a":"I have never traveled by boat.","e":"<div><b>Feedback:</b><br>Não usamos dupla negação.</div>"},{"phase":5,"theme":"Fix It","q":"💡 Dica: Ache o erro antes de escolher.\n\nNo Spin apareceu a frase:\n\n“I have yet finished the activity.”\n\nQual correção deixa a frase adequada?","o":["I have already finished the activity.","I do already finished the activity.","I have yet finished the activity.","I have already finish the activity."],"a":"I have already finished the activity.","e":"<div><b>Feedback:</b><br>Para “já” em afirmativa, use already.</div>"},{"phase":5,"theme":"Fix It","q":"💡 Dica: Ache o erro antes de escolher.\n\nNo Spin apareceu a frase:\n\n“I am visited the Orla.”\n\nQual correção deixa a frase adequada?","o":["I have visit the Orla.","I do visited the Orla.","I am visited the Orla.","I have visited the Orla."],"a":"I have visited the Orla.","e":"<div><b>Feedback:</b><br>Present Perfect usa have/has, não am/is/are.</div>"},{"phase":5,"theme":"Review","q":"💡 Dica: Superlative destaca alguém ou algo dentro de um grupo.\n\nA frase em português é: “Este é o vestido mais elegante da loja.”\nQual versão está correta?","o":["This is the elegantest dress in the store.","This is more elegant dress in the store.","This is the most elegant dress in the store.","This is most elegant dress than store."],"a":"This is the most elegant dress in the store.","e":"<div><b>Feedback:</b><br>Superlative usa the + -est ou the most + adjective.</div>"},{"phase":5,"theme":"Review","q":"💡 Dica: Superlative destaca alguém ou algo dentro de um grupo.\n\nA frase em português é: “Lara é a mais jovem da família.”\nQual versão está correta?","o":["Lara is the youngest in her family.","Lara is the most young in her family.","Lara is younger in her family.","Lara is youngest than her family."],"a":"Lara is the youngest in her family.","e":"<div><b>Feedback:</b><br>Superlative usa the + -est ou the most + adjective.</div>"},{"phase":5,"theme":"Review","q":"💡 Dica: Superlative destaca alguém ou algo dentro de um grupo.\n\nA frase em português é: “Alter do Chão é o lugar mais bonito da cidade.”\nQual versão está correta?","o":["Alter do Chão is the most beautiful place in the city.","Alter do Chão is more beautiful place in the city.","Alter do Chão is the beautifulest place in the city.","Alter do Chão is most beautiful place than city."],"a":"Alter do Chão is the most beautiful place in the city.","e":"<div><b>Feedback:</b><br>Superlative usa the + -est ou the most + adjective.</div>"},{"phase":5,"theme":"Review","q":"💡 Dica: Para altura usamos is; para cabelo usamos has.\n\nO avatar do jogo precisa da descrição: “Ela é alta e tem cabelo cacheado.”","o":["She wearing tall and has curly hair.","She is tall and has curly hair.","She is tall and is curly hair.","She has tall and has curly hair."],"a":"She is tall and has curly hair.","e":"<div><b>Feedback:</b><br>Aparência usa is para características e has para cabelo/olhos.</div>"},{"phase":5,"theme":"Review","q":"💡 Dica: Para altura usamos is; para cabelo usamos has.\n\nO avatar do jogo precisa da descrição: “Ele é baixo e tem cabelo preto.”","o":["He wearing short and has black hair.","He is short and has black hair.","He is short and is black hair.","He has short and has black hair."],"a":"He is short and has black hair.","e":"<div><b>Feedback:</b><br>Aparência usa is para características e has para cabelo/olhos.</div>"},{"phase":5,"theme":"Review Mix","q":"💡 Dica: Roupa no momento usa is wearing/are wearing.\n\nNa foto da turma, a descrição é: “Ana está usando uma jaqueta vermelha.”\nQual legenda combina?","o":["Ana is wears a red jacket.","Ana has wearing a red jacket.","Ana is a red jacket.","Ana is wearing a red jacket."],"a":"Ana is wearing a red jacket.","e":"<div><b>Feedback:</b><br>Para roupa no momento, usamos is wearing.</div>"},{"phase":5,"theme":"Review Mix","q":"💡 Dica: Roupa no momento usa is wearing/are wearing.\n\nNa foto da turma, a descrição é: “Lara está usando um vestido preto.”\nQual legenda combina?","o":["Lara is a black dress.","Lara is wears a black dress.","Lara is wearing a black dress.","Lara has wearing a black dress."],"a":"Lara is wearing a black dress.","e":"<div><b>Feedback:</b><br>Para roupa no momento, usamos is wearing.</div>"},{"phase":5,"theme":"Review Mix","q":"💡 Dica: Roupa no momento usa is wearing/are wearing.\n\nNa foto da turma, a descrição é: “Pedro está usando jeans e tênis.”\nQual legenda combina?","o":["Pedro has wearing jeans and sneakers.","Pedro is wears jeans and sneakers.","Pedro is wearing jeans and sneakers.","Pedro is jeans and sneakers."],"a":"Pedro is wearing jeans and sneakers.","e":"<div><b>Feedback:</b><br>Para roupa no momento, usamos is wearing.</div>"},{"phase":5,"theme":"Review Mix","q":"💡 Dica: Essa pergunta não é sobre gosto; é sobre aparência.\n\nUm aluno quer perguntar: “Como ela é fisicamente?”","o":["What she is wearing?","What does she likes?","How she has hair?","What does she look like?"],"a":"What does she look like?","e":"<div><b>Feedback:</b><br>Para perguntar aparência física, usamos What does she look like?</div>"},{"phase":5,"theme":"Review Mix","q":"💡 Dica: Em comparações, observe se a frase compara duas pessoas ou coisas.\n\nNo contexto do jogo, a ideia é: “Lucas é mais rápido que Pedro.”\nQual frase transmite isso?","o":["Lucas is faster than Pedro.","Lucas is faster that Pedro.","Lucas is faster the Pedro.","Lucas is more fast than Pedro."],"a":"Lucas is faster than Pedro.","e":"<div><b>Feedback:</b><br>Comparative compara dois elementos. Use -er than ou more + adjective + than.</div>"},{"phase":6,"theme":"Life XP","q":"💡 Dica: Pense em experiência já vivida.\n\nMariana contou no recreio que já viveu esta experiência: assistir a um filme do Homem-Aranha. Qual frase transforma essa ideia em inglês?","o":["Mariana have watched a Spider-Man movie.","Mariana is watched a Spider-Man movie.","Mariana has watched .","Mariana has watched a Spider-Man movie."],"a":"Mariana has watched a Spider-Man movie.","e":"<div><b>Feedback:</b><br>Com Mariana/she, usamos <b>has</b> + particípio. Tradução: Mariana já viveu essa experiência.</div>"},{"phase":6,"theme":"Life XP","q":"💡 Dica: 'nunca' combina com never, sem dupla negação.\n\nRafael nunca viveu a experiência de comer tacacá. Que frase diz isso corretamente?","o":["Rafael has never eaten tacacá.","Rafael is never eaten tacacá.","Rafael have never eaten tacacá.","Rafael hasn’t never eaten tacacá."],"a":"Rafael has never eaten tacacá.","e":"<div><b>Feedback:</b><br>Never significa nunca. Não usamos hasn’t never como resposta correta.</div>"},{"phase":6,"theme":"Life XP","q":"💡 Dica: Em perguntas com he/she, o Present Perfect começa com Has.\n\nNo grupo da turma, alguém quer perguntar se Camila já teve essa experiência alguma vez: comer sushi. Qual pergunta funciona?","o":["Have Camila ever eaten sushi?","Is Camila ever eaten sushi?","Has Camila ever eaten sushi?","Does Camila ever eaten sushi?"],"a":"Has Camila ever eaten sushi?","e":"<div><b>Feedback:</b><br>Com he/she, a pergunta fica <b>Has + sujeito + ever + particípio?</b></div>"},{"phase":6,"theme":"Life XP","q":"💡 Dica: A resposta curta acompanha o auxiliar da pergunta.\n\nA pergunta foi: “Has João ever drunk açaí?”\nA resposta deve confirmar: “Sim, já.”","o":["Yes, he has.","Yes, he does.","Yes, he is.","Yes, he have."],"a":"Yes, he has.","e":"<div><b>Feedback:</b><br>Pergunta com Has responde com <b>Yes, he/she has</b>.</div>"},{"phase":6,"theme":"Have or Has","q":"💡 Dica: Primeiro identifique o sujeito.\n\nNa conversa sobre beber açaí, qual frase usa have/has corretamente?","o":["I is drunk açaí.","I do drunk açaí.","I has drunk açaí.","I have drunk açaí."],"a":"I have drunk açaí.","e":"<div><b>Feedback:</b><br>Com <b>I</b>, usamos <b>have</b>.</div>"},{"phase":6,"theme":"Have or Has","q":"💡 Dica: Na negativa, have vira haven’t e has vira hasn’t.\n\nA pessoa ainda não viveu esta experiência: completar uma missão difícil. Qual frase fica certa?","o":["You hasn’t completed a difficult mission yet.","You doesn’t completed a difficult mission yet.","You isn’t completed a difficult mission yet.","You haven’t completed a difficult mission yet."],"a":"You haven’t completed a difficult mission yet.","e":"<div><b>Feedback:</b><br>Com <b>you</b>, a negativa correta é <b>haven’t</b>.</div>"},{"phase":6,"theme":"Have or Has","q":"💡 Dica: Perguntas no Present Perfect começam com Have ou Has.\n\nComo perguntar se <b>we</b> já viveu a experiência de fazer uma atividade online?","o":["Have we ever done an online activity?","Do we ever done an online activity?","Is we ever done an online activity?","Has we ever done an online activity?"],"a":"Have we ever done an online activity?","e":"<div><b>Feedback:</b><br>A pergunta correta começa com <b>Have</b> para o sujeito <b>we</b>.</div>"},{"phase":6,"theme":"Have or Has","q":"💡 Dica: Resposta curta usa o mesmo auxiliar da pergunta.\n\nA pergunta foi: “Have they finished the activity?”\nA resposta deve ser afirmativa.","o":["Yes, they do.","Yes, I am.","Yes, they has.","Yes, they have."],"a":"Yes, they have.","e":"<div><b>Feedback:</b><br>A resposta curta correta acompanha Have/Has.</div>"},{"phase":6,"theme":"Time Words","q":"💡 Dica: Observe se a frase é pergunta, negativa ou afirmativa.\n\nAna quer perguntar se o colega já foi a Alter do Chão alguma vez.\n\nQual frase combina com a situação?","o":["Have you yet visited Alter do Chão?","Have you never visited Alter do Chão?","Have you already not visited Alter do Chão?","Have you ever visited Alter do Chão?"],"a":"Have you ever visited Alter do Chão?","e":"<div><b>Feedback:</b><br>A palavra-chave é <b>ever</b>, que combina com a ideia de já foi alguma vez.</div>"},{"phase":6,"theme":"Time Words","q":"💡 Dica: Traduza o sentido, não palavra por palavra.\n\nNo status apareceu:\n\n“I have never traveled by plane.”\n\nO que a frase mostra?","o":["A pessoa está fazendo isso agora.","A pessoa nunca viajou de avião.","A pessoa fará isso amanhã.","A pessoa faz isso todos os dias."],"a":"A pessoa nunca viajou de avião.","e":"<div><b>Feedback:</b><br>Em contexto, <b>never</b> ajuda a indicar: nunca viajou de avião.</div>"},{"phase":6,"theme":"Time Words","q":"💡 Dica: Veja se a palavra combina com a intenção.\n\nNo caderno apareceu:\n\n“I have yet finished the homework.”\n\nA ideia era: “Eu já terminei a tarefa.”\nQual correção resolve?","o":["I have already not traveled by boat.","I have already finished the homework.","I haven’t finished the homework yet.","Have I ever finished the homework?"],"a":"I have already finished the homework.","e":"<div><b>Feedback:</b><br>Para 'já' em afirmativa use already. Para 'nunca' use never sem dupla negação.</div>"},{"phase":6,"theme":"Time Words","q":"💡 Dica: Never e not... yet não têm exatamente o mesmo efeito.\n\nCompare:\n1. I have never played Minecraft.\n2. I haven’t played Minecraft yet.\n\nQual diferença faz sentido?","o":["A frase 1 é pergunta; a frase 2 é futuro.","As duas frases indicam que a pessoa já jogou.","As duas frases dizem que a pessoa está jogando agora.","A frase 1 indica “nunca”; a frase 2 indica “ainda não”."],"a":"A frase 1 indica “nunca”; a frase 2 indica “ainda não”.","e":"<div><b>Feedback:</b><br>Never = nunca. Not... yet = ainda não.</div>"},{"phase":6,"theme":"Verb Power","q":"💡 Dica: Depois de have/has, use o particípio.\n\nNo desafio apareceu o verbo <b>make</b>. Qual forma entra em Present Perfect?","o":["made","made","make","makeing"],"a":"made","e":"<div><b>Feedback:</b><br>O particípio de <b>make</b> é <b>made</b>.</div>"},{"phase":6,"theme":"Verb Power","q":"💡 Dica: O passado simples nem sempre serve depois de have.\n\nApareceu a frase errada:\n\n“I have wrote this before.”\n\nQual correção usa particípio?","o":["I have write this before.","I have writeing this before.","I have written this before.","I have wrote this before."],"a":"I have written this before.","e":"<div><b>Feedback:</b><br>Depois de have, usamos particípio: <b>written</b>.</div>"},{"phase":6,"theme":"Verb Power","q":"💡 Dica: Escolha a frase com have + particípio.\n\nA turma concluiu uma atividade. Qual frase fica correta?","o":["They have spoken the activity.","They are spoken the activity.","They have speak the activity.","They have spoke the activity."],"a":"They have spoken the activity.","e":"<div><b>Feedback:</b><br>Present Perfect usa have/has + past participle.</div>"},{"phase":6,"theme":"Verb Power","q":"💡 Dica: Procure apenas formas de particípio.\n\nQual grupo combina com Present Perfect?","o":["go / eat / see","gone / eaten / seen","going / eating / seeing","went / ate / saw"],"a":"gone / eaten / seen","e":"<div><b>Feedback:</b><br>Gone, eaten e seen são particípios.</div>"},{"phase":6,"theme":"Fix It","q":"💡 Dica: Ache o erro antes de escolher.\n\nNo Spin apareceu a frase:\n\n“I am visited the Orla.”\n\nQual correção deixa a frase adequada?","o":["I am visited the Orla.","I do visited the Orla.","I have visited the Orla.","I have visit the Orla."],"a":"I have visited the Orla.","e":"<div><b>Feedback:</b><br>Present Perfect usa have/has, não am/is/are.</div>"},{"phase":6,"theme":"Fix It","q":"💡 Dica: Ache o erro antes de escolher.\n\nNo Spin apareceu a frase:\n\n“Yes, I has.”\n\nQual correção deixa a frase adequada?","o":["Yes, I do.","Yes, I have.","Yes, I have.","Yes, I has."],"a":"Yes, I have.","e":"<div><b>Feedback:</b><br>Have you...? responde Yes, I have.</div>"},{"phase":6,"theme":"Fix It","q":"💡 Dica: Ache o erro antes de escolher.\n\nNo Spin apareceu a frase:\n\n“No, she haven’t.”\n\nQual correção deixa a frase adequada?","o":["No, she hasn’t.","No, she hasn’t.","No, she isn’t.","No, she haven’t."],"a":"No, she hasn’t.","e":"<div><b>Feedback:</b><br>Has she...? responde No, she hasn’t.</div>"},{"phase":6,"theme":"Fix It","q":"💡 Dica: Ache o erro antes de escolher.\n\nNo Spin apareceu a frase:\n\n“They hasn’t finished the project yet.”\n\nQual correção deixa a frase adequada?","o":["They haven’t finish the project yet.","They haven’t finished the project yet.","They don’t finished the project yet.","They hasn’t finished the project yet."],"a":"They haven’t finished the project yet.","e":"<div><b>Feedback:</b><br>Com they, usamos haven’t.</div>"},{"phase":6,"theme":"Review","q":"💡 Dica: Roupa no momento usa is wearing/are wearing.\n\nNa foto da turma, a descrição é: “Ana está usando uma jaqueta vermelha.”\nQual legenda combina?","o":["Ana is wearing a red jacket.","Ana is a red jacket.","Ana has wearing a red jacket.","Ana is wears a red jacket."],"a":"Ana is wearing a red jacket.","e":"<div><b>Feedback:</b><br>Para roupa no momento, usamos is wearing.</div>"},{"phase":6,"theme":"Review","q":"💡 Dica: Roupa no momento usa is wearing/are wearing.\n\nNa foto da turma, a descrição é: “Lara está usando um vestido preto.”\nQual legenda combina?","o":["Lara is wearing a black dress.","Lara has wearing a black dress.","Lara is a black dress.","Lara is wears a black dress."],"a":"Lara is wearing a black dress.","e":"<div><b>Feedback:</b><br>Para roupa no momento, usamos is wearing.</div>"},{"phase":6,"theme":"Review","q":"💡 Dica: Roupa no momento usa is wearing/are wearing.\n\nNa foto da turma, a descrição é: “Pedro está usando jeans e tênis.”\nQual legenda combina?","o":["Pedro is wears jeans and sneakers.","Pedro is wearing jeans and sneakers.","Pedro is jeans and sneakers.","Pedro has wearing jeans and sneakers."],"a":"Pedro is wearing jeans and sneakers.","e":"<div><b>Feedback:</b><br>Para roupa no momento, usamos is wearing.</div>"},{"phase":6,"theme":"Review","q":"💡 Dica: Essa pergunta não é sobre gosto; é sobre aparência.\n\nUm aluno quer perguntar: “Como ela é fisicamente?”","o":["What does she likes?","What she is wearing?","What does she look like?","How she has hair?"],"a":"What does she look like?","e":"<div><b>Feedback:</b><br>Para perguntar aparência física, usamos What does she look like?</div>"},{"phase":6,"theme":"Review","q":"💡 Dica: Em comparações, observe se a frase compara duas pessoas ou coisas.\n\nNo contexto do jogo, a ideia é: “Lucas é mais rápido que Pedro.”\nQual frase transmite isso?","o":["Lucas is more fast than Pedro.","Lucas is faster than Pedro.","Lucas is faster the Pedro.","Lucas is faster that Pedro."],"a":"Lucas is faster than Pedro.","e":"<div><b>Feedback:</b><br>Comparative compara dois elementos. Use -er than ou more + adjective + than.</div>"},{"phase":6,"theme":"Review Mix","q":"💡 Dica: Em comparações, observe se a frase compara duas pessoas ou coisas.\n\nNo contexto do jogo, a ideia é: “Ana é mais alta que Bia.”\nQual frase transmite isso?","o":["Ana is taller that Bia.","Ana is taller the Bia.","Ana is taller than Bia.","Ana is more tall than Bia."],"a":"Ana is taller than Bia.","e":"<div><b>Feedback:</b><br>Comparative compara dois elementos. Use -er than ou more + adjective + than.</div>"},{"phase":6,"theme":"Review Mix","q":"💡 Dica: Em comparações, observe se a frase compara duas pessoas ou coisas.\n\nNo contexto do jogo, a ideia é: “Este celular é mais caro que aquele.”\nQual frase transmite isso?","o":["This phone is more expensive that that phone.","This phone is more expensive than that phone.","This phone is more expensive the that phone.","This phone is expensiver than that phone."],"a":"This phone is more expensive than that phone.","e":"<div><b>Feedback:</b><br>Comparative compara dois elementos. Use -er than ou more + adjective + than.</div>"},{"phase":6,"theme":"Review Mix","q":"💡 Dica: Em comparações, observe se a frase compara duas pessoas ou coisas.\n\nNo contexto do jogo, a ideia é: “Esta atividade é mais fácil que a prova.”\nQual frase transmite isso?","o":["This activity is easier the the test.","This activity is more easy than the test.","This activity is easier than the test.","This activity is easier that the test."],"a":"This activity is easier than the test.","e":"<div><b>Feedback:</b><br>Comparative compara dois elementos. Use -er than ou more + adjective + than.</div>"},{"phase":6,"theme":"Review Mix","q":"💡 Dica: Superlative destaca alguém ou algo dentro de um grupo.\n\nA frase em português é: “Julia é a aluna mais alta da turma.”\nQual versão está correta?","o":["Julia is the most tall student in the class.","Julia is the tallest student in the class.","Julia is taller student in the class.","Julia is tallest student than class."],"a":"Julia is the tallest student in the class.","e":"<div><b>Feedback:</b><br>Superlative usa the + -est ou the most + adjective.</div>"},{"phase":6,"theme":"Review Mix","q":"💡 Dica: Superlative destaca alguém ou algo dentro de um grupo.\n\nA frase em português é: “Este é o vestido mais elegante da loja.”\nQual versão está correta?","o":["This is the most elegant dress in the store.","This is more elegant dress in the store.","This is most elegant dress than store.","This is the elegantest dress in the store."],"a":"This is the most elegant dress in the store.","e":"<div><b>Feedback:</b><br>Superlative usa the + -est ou the most + adjective.</div>"}];
+const PHASES=[{"id":1,"title":"Warm-up 8º Ano","icon":"🎡"},{"id":2,"title":"Life Experiences","icon":"🌍"},{"id":3,"title":"Have or Has Mission","icon":"⚡"},{"id":4,"title":"Time Words Arena","icon":"⏳"},{"id":5,"title":"Verb Power","icon":"💪"},{"id":6,"title":"Final Review Boss","icon":"🔥"}];
+let unlockedPhase=1;
+let state={};
+let scoreSaved=false;
+let ultimaPontuacaoLocalRef=null;
+const $=id=>document.getElementById(id);
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active');document.body.classList.toggle('game-mode',id==='gameScreen');closeQuestionMobile();window.scrollTo(0,0)}
+function isMobile(){return innerWidth<=860}
+function player(){return {name:($('playerName').value||'Aluno(a)').trim()||'Aluno(a)',klass:($('playerClass').value||'8º ano').trim()||'8º ano',school:($('playerSchool').value||'Escola Delfina de Jesus Amorim').trim()||'Escola Delfina de Jesus Amorim'}}
+function makeBag(phaseArg){
+  const phase=Number(phaseArg||state.phase||1);
+  const source=QUESTIONS.filter(q=>Number(q.phase)===phase);
+  const byTheme={};
+  THEMES.forEach(t=>byTheme[t]=shuffle(source.filter(q=>q.theme===t)));
+  const activeThemes=THEMES.filter(t=>byTheme[t]&&byTheme[t].length);
+  const bag=[];
+  let cycle=shuffle(activeThemes),last='';
+  for(let i=0;i<TOTAL_ROUNDS;i++){
+    if(!cycle.length)cycle=shuffle(activeThemes);
+    let theme=cycle.shift();
+    if(theme===last&&cycle.length){cycle.push(theme);theme=cycle.shift()}
+    if(!byTheme[theme].length)byTheme[theme]=shuffle(source.filter(q=>q.theme===theme));
+    bag.push(byTheme[theme].pop());
+    last=theme;
+  }
+  return bag;
+}
+function renderPhases(){
+  const grid=$('phaseGrid');
+  if(!grid)return;
+  grid.innerHTML=PHASES.map(p=>{
+    const unlocked=p.id<=unlockedPhase;
+    const status=unlocked?(p.id===unlockedPhase?'Desbloqueada • clique para jogar':'Liberada • jogar novamente'):'Bloqueada';
+    const icon=unlocked?p.icon:'🔒';
+    const tag=unlocked?'button':'div';
+    const click=unlocked?` onclick="startGame(${p.id})" type="button"`:'';
+    return `<${tag} class="phase-card ${unlocked?'unlocked':'locked'}"${click}><div class="phase-icon">${icon}</div><div><b>Fase ${p.id} — ${p.title}</b><span>${status}</span></div></${tag}>`;
+  }).join('');
+}
+function goToPhases(){unlockAudio();playClick();renderPhases();show('phaseScreen');toast('Escolha a fase para começar!')}
+function startGame(phase=1){
+  unlockAudio();playClick();scoreSaved=false;if(window.registrarAcessoFirebase)window.registrarAcessoFirebase();
+  phase=Number(phase)||1;
+  if(phase>unlockedPhase){toast('Essa fase ainda está bloqueada.');renderPhases();show('phaseScreen');return;}
+  const phaseInfo=PHASES.find(p=>p.id===phase)||PHASES[0];
+  state={phase,phaseTitle:phaseInfo.title,score:0,corrects:0,combo:0,maxCombo:0,round:1,lives:MAX_LIVES,bag:makeBag(phase),current:null,answered:false,spinning:false,rotation:0,completed:false};
+  $('wheel').style.transform='rotate(0deg)';$('wheel').dataset.theme='SPIN';$('sorted').textContent='Clique em SPIN para começar.';$('prompt').textContent='Gire a roleta para liberar a pergunta.';$('theme').textContent='Tema';$('options').innerHTML='';clearHintBox();$('feedback').className='feedback';$('feedback').innerHTML='';$('spinBtn').disabled=false;updateStats();show('gameScreen');toast(`Fase ${phase}: ${phaseInfo.title}`)}
+function updateStats(){
+  $('score').textContent=state.score;
+  $('corrects').textContent=state.corrects;
+  $('combo').textContent=state.combo;
+  $('round').textContent=`${state.round}/${TOTAL_ROUNDS}`;
+  $('missionLabel').textContent=`Fase ${state.phase||1}/6 — ${state.phaseTitle||'Warm-up 8º Ano'}`;
+  $('lives').innerHTML='Vidas: '+Array.from({length:MAX_LIVES},(_,i)=>`<span class="heart ${i>=state.lives?'lost':''}">♥</span>`).join('')
+}
+function spinWheel(){if(state.spinning||state.answered)return;if(state.round>TOTAL_ROUNDS)return finish(true);playClick();state.current=state.bag[state.round-1];const q=state.current;const idx=THEMES.indexOf(q.theme), center=idx*SEGMENT+SEGMENT/2, target=360-center;closeQuestionMobile();state.spinning=true;$('spinBtn').disabled=true;$('wheel').classList.add('spinning');$('statusLabel').textContent='Wheel spinning...';$('sorted').textContent='Girando... atenção!';$('prompt').textContent='A roleta está girando...';$('options').innerHTML='';clearHintBox();$('feedback').className='feedback';$('feedback').innerHTML='';$('wheel').dataset.theme='SPIN';startSpinSound();const currentNorm=((state.rotation%360)+360)%360;const delta=((target-currentNorm)+360)%360;const turns=8+Math.floor(Math.random()*4);const overshoot=(10+Math.random()*16)*(Math.random()>.5?1:-1);const first=state.rotation+turns*360+delta+overshoot;const final=state.rotation+turns*360+delta;$('wheel').style.transition='transform 5.4s cubic-bezier(.06,.88,.07,1)';state.rotation=first;$('wheel').style.transform=`rotate(${state.rotation}deg)`;setTimeout(()=>$('sorted').textContent='Quase parando...',2400);setTimeout(()=>{state.rotation=final;$('wheel').style.transition='transform .75s cubic-bezier(.2,.95,.18,1)';$('wheel').style.transform=`rotate(${state.rotation}deg)`},5450);setTimeout(()=>{state.spinning=false;stopSpinSound();$('wheel').classList.remove('spinning');$('wheel').style.transition='transform 5.4s cubic-bezier(.06,.88,.07,1)';$('wheel').dataset.theme=q.theme;$('sorted').textContent=`Tema sorteado: ${q.theme}`;$('statusLabel').textContent='Answer the question!';renderQuestion(q)},6300)}
+
+function splitHintAndPrompt(text){
+  const raw=String(text||'');
+  if(!raw.trim().startsWith('💡 Dica:')){
+    return {hint:'', prompt:raw};
+  }
+  const withoutIcon=raw.replace(/^💡\s*Dica:\s*/,'').trim();
+  const parts=withoutIcon.split(/\n\s*\n/);
+  const hint=(parts.shift()||'').trim();
+  const prompt=parts.join('\n\n').trim();
+  return {hint, prompt: prompt || raw};
+}
+function clearHintBox(){
+  const h=$('hintBox');
+  if(!h)return;
+  h.className='hint-box';
+  h.innerHTML='';
+}
+function showHintBox(text){
+  const h=$('hintBox');
+  if(!h)return;
+  if(!text){clearHintBox();return;}
+  h.className='hint-box show';
+  h.innerHTML=`<div class="hint-title">💡 Dica</div><div class="hint-text">${escapeHtml(text)}</div>`;
+}
+function escapeHtml(text){
+  return String(text||'').replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m]));
+}
+function renderQuestion(q){state.answered=false;$('theme').textContent=q.theme;const qp=splitHintAndPrompt(q.q);showHintBox(qp.hint);$('prompt').textContent=qp.prompt;$('options').innerHTML='';shuffle(q.o).forEach((opt,i)=>{const b=document.createElement('button');b.className='option';b.dataset.letter='ABCD'[i];b.type='button';b.textContent=opt;b.onclick=()=>answer(opt);$('options').appendChild(b)});$('feedback').className='feedback';$('feedback').innerHTML='';if(isMobile())setTimeout(()=>$('questionCard').classList.add('show-mobile'),180)}
+const good=['Great job!','Excellent!','Amazing answer!','Fantastic!','You got it!','Super!'];const tryMsgs=['Almost there!','Nice try!','Keep going!','Don’t give up!','You can do it!'];
+function answer(selected){
+  if(state.answered||state.spinning)return;
+  playClick();
+  state.answered=true;
+  const q=state.current, ok=String(selected).trim()===String(q.a).trim();
+  document.querySelectorAll('.option').forEach(b=>{
+    b.disabled=true;
+    if(b.textContent.trim()===String(q.a).trim())b.classList.add('correct');
+    if(b.textContent.trim()===String(selected).trim()&&!ok)b.classList.add('wrong')
+  });
+  if(ok){
+    state.corrects++;
+    state.combo++;
+    state.maxCombo=Math.max(state.maxCombo,state.combo);
+    const bonus=state.combo>=3?30:0;
+    state.score+=100+bonus;
+    (bonus?playCombo():playCorrect());
+    confettiBurst(state.combo>=3?130:80);
+    floating(`+${100+bonus}`);
+    const msg=good[Math.floor(Math.random()*good.length)];
+    $('feedback').className='feedback ok';
+    $('feedback').innerHTML=`
+      <div class="feedback-title">✅ <b>${msg}</b></div>
+      <div><b>Resposta correta:</b> ${q.a}</div>
+      <div><b>Explicação:</b> ${q.e}</div>
+      ${bonus?'<div>🔥 <b>Combo bonus!</b> +30 pontos</div>':''}
+      <button class="btn continue-btn" type="button" onclick="continueAfterFeedback()">CONTINUAR</button>
+    `;
+    toast(`${msg} ${state.combo>=3?'Combo bonus!':''}`)
+  }else{
+    state.combo=0;
+    state.lives=Math.max(0,state.lives-1);
+    playWrong();
+    const msg=tryMsgs[Math.floor(Math.random()*tryMsgs.length)];
+    $('feedback').className='feedback bad';
+    $('feedback').innerHTML=`
+      <div class="feedback-title">❌ <b>${msg}</b></div>
+      <div><b>Resposta correta:</b> ${q.a}</div>
+      <div><b>Explicação para lembrar:</b> ${q.e}</div>
+      <button class="btn continue-btn" type="button" onclick="continueAfterFeedback()">CONTINUAR</button>
+    `;
+    toast(msg)
+  }
+  updateStats();
+  state.waitingFeedback=true;
+}
+function continueAfterFeedback(){
+  if(!state.waitingFeedback)return;
+  playClick();
+  state.waitingFeedback=false;
+  if(state.lives<=0)return finish(false);
+  if(state.round>=TOTAL_ROUNDS)return finish(true);
+  nextRound();
+}
+function nextRound(){state.round++;state.answered=false;$('spinBtn').disabled=false;$('theme').textContent='Tema';$('prompt').textContent='Gire a roleta para liberar a próxima pergunta.';$('options').innerHTML='';clearHintBox();$('feedback').className='feedback';$('feedback').innerHTML='';$('sorted').textContent='Clique em SPIN para continuar.';$('statusLabel').textContent='Spin the wheel!';closeQuestionMobile();updateStats()}
+function closeQuestionMobile(){$('questionCard').classList.remove('show-mobile')}
+function finish(completed){
+  closeQuestionMobile();
+  state.completed=completed;
+  const phase=state.phase||1;
+  const phaseInfo=PHASES.find(p=>p.id===phase)||PHASES[0];
+  show('finalScreen');
+  const completedAll=completed && phase>=6;
+  const willUnlockNext=completed && phase<6 && unlockedPhase<phase+1;
+  if(completedAll)playVictory();
+  else if(willUnlockNext)playPhaseUnlock();
+  else if(completed)playCorrect();
+  else playGameOver();
+  if(completed)confettiBurst(220);
+  if(willUnlockNext){
+    unlockedPhase=phase+1;
+  }
+  $('finalTitle').textContent=completedAll?'🏆 YOU ARE THE ONE!':completed?'🎉 PHASE COMPLETE!':'💪 TRY AGAIN!';
+  $('finalMsg').innerHTML=completedAll
+    ?'Parabéns! Você concluiu todas as fases do desafio. <b>Congratulations!</b>'
+    : completed
+      ?`Você concluiu a <b>Fase ${phase} — ${phaseInfo.title}</b>. ${phase<6?'🔓 Nova fase desbloqueada! Seus corações voltam na nova fase.':'Desafio final concluído!'}`
+      :`Você perdeu os 3 corações da <b>Fase ${phase} — ${phaseInfo.title}</b>. Leia as dicas e tente novamente.`;
+  $('fScore').textContent=state.score;
+  $('fCorrects').textContent=`${state.corrects}/${TOTAL_ROUNDS}`;
+  $('fCombo').textContent=state.maxCombo;
+  $('fLives').textContent=`${state.lives}/${MAX_LIVES}`;
+  const nextBtn=$('nextPhaseBtn');
+  const retryBtn=$('retryPhaseBtn');
+  if(nextBtn){
+    if(completed && phase<6){nextBtn.style.display='inline-flex';nextBtn.textContent='Ir para a próxima fase'}
+    else if(completedAll){nextBtn.style.display='inline-flex';nextBtn.textContent='Ver fases concluídas'}
+    else nextBtn.style.display='none';
+  }
+  if(retryBtn){retryBtn.style.display=completed?'none':'inline-flex';retryBtn.textContent='Repetir fase'}
+  saveScoreFirebase(completed?'Venceu':'Game Over');
+  renderRank()
+}
+function goNextPhase(){
+  playClick();
+  if(state.completed && (state.phase||1)<6)startGame((state.phase||1)+1);
+  else goToPhases();
+}
+
+function renderRankingRowsFallback(containerId,rows){
+  const box=$(containerId);
+  if(!box)return;
+  let base=Array.isArray(rows)?rows:[];
+  if(!base.length){
+    base=[
+      {nome:'Ana Clara',escola:'Escola Municipal Frei Fabiano Merz — 9º ano',pontos:820,corrects:46,combo:6,tipo:'motivacional'},
+      {nome:'Miguel Santos',escola:'Escola Municipal Fluminense — 9º ano',pontos:760,corrects:43,combo:5,tipo:'motivacional'},
+      {nome:'Lívia Beatriz',escola:'Escola Municipal Maria Amália — 9º ano',pontos:690,corrects:39,combo:4,tipo:'motivacional'},
+      {nome:'Gabriel Silva',escola:'Escola Municipal Rotary — 9º ano',pontos:610,corrects:36,combo:4,tipo:'motivacional'}
+    ];
+  }
+  if(ultimaPontuacaoLocalRef&&ultimaPontuacaoLocalRef.nome){
+    base=[...base,ultimaPontuacaoLocalRef];
+  }
+  base=base.sort((a,b)=>Number(b.pontos||0)-Number(a.pontos||0)).slice(0,10);
+  box.innerHTML=base.map((r,i)=>{
+    const isPlayer=ultimaPontuacaoLocalRef&&r.nome===ultimaPontuacaoLocalRef.nome&&Number(r.pontos||0)===Number(ultimaPontuacaoLocalRef.pontos||0);
+    return `<div class="rank-row ${isPlayer?'player':''}">
+      <div class="rank-pos">${i+1}</div>
+      <div>
+        <div class="rank-name">${escapeHtml(r.nome||r.name||'Aluno(a)')}${isPlayer?' ⭐ Você':''}</div>
+        <div class="rank-school">${escapeHtml(r.escola||r.school||'Escola não informada')}</div>
+      </div>
+      <div class="rank-score">${Number(r.pontos||r.score||0)} pts<br><small>${Number(r.corrects||0)} acertos</small></div>
+    </div>`;
+  }).join('');
+}
+
+function saveScoreFirebase(status){
+  if(scoreSaved)return;
+  scoreSaved=true;
+  const p=player();
+  ultimaPontuacaoLocalRef={
+    nome:p.name,
+    escola:p.school+' — '+p.className,
+    pontos:state.score||0,
+    corrects:state.corrects||0,
+    combo:state.maxCombo||0,
+    status:status||'Finalizado',
+    tipo:'real'
+  };
+  if(typeof window.salvarPontuacaoFirebase==='function'){
+    window.salvarPontuacaoFirebase({
+      name:p.name,
+      className:p.className,
+      school:p.school,
+      score:state.score||0,
+      corrects:state.corrects||0,
+      combo:state.maxCombo||0,
+      status:status||'Finalizado'
+    });
+  }
+}
+
+function avaliarJogo(valor,btn){
+  playClick();
+  document.querySelectorAll('.rating-buttons button').forEach(b=>b.disabled=true);
+  const msg=$('ratingMessage');
+  if(msg)msg.textContent='Obrigado por avaliar o jogo!';
+  const p=player();
+  if(typeof window.salvarAvaliacaoFirebase==='function'){
+    window.salvarAvaliacaoFirebase({
+      valor,
+      player:p,
+      score:state.score||0,
+      corrects:state.corrects||0,
+      combo:state.maxCombo||0,
+      status:state.completed?'Venceu':'Game Over'
+    });
+  }
+}
+
+function renderRank(){
+  const box=$('rankList');
+  if(!box)return;
+  box.innerHTML='<div class="rank-row"><div class="rank-pos">⏳</div><div><div class="rank-name">Carregando ranking...</div><div class="rank-school">Buscando pontuações online</div></div><div class="rank-score">Firebase</div></div>';
+  if(typeof window.carregarRankingFirebase==='function'){
+    window.carregarRankingFirebase('9ano-spin-challenge','rankList');
+    return;
+  }
+  renderRankingRowsFallback('rankList');
+}
+function floating(text){const d=document.createElement('div');d.className='floating-points';d.textContent=text;document.body.appendChild(d);setTimeout(()=>d.remove(),1150)}
+function toast(text){const old=document.querySelector('.toast');if(old)old.remove();const t=document.createElement('div');t.className='toast';t.textContent=text;document.body.appendChild(t);setTimeout(()=>t.remove(),1700)}
+// Sons do Spin 2.0: usa os arquivos .wav enviados para a raiz do GitHub.
+// Se algum arquivo não carregar, o jogo mantém um som simples gerado pelo navegador.
+const soundFiles={
+  click:'click.wav',
+  spin:'spin-wheel-new.wav',
+  success:'success.wav',
+  error:'error.wav',
+  combo:'combo.wav',
+  victory:'victory.wav',
+  gameover:'game-over.wav',
+  phaseUnlock:'phase-unlock.aac'
+};
+const sounds={};
+let audioReady=false,ctx=null,soundOn=true;
+
+function unlockAudio(){
+  audioReady=true;
+  try{
+    ctx=ctx||new (window.AudioContext||window.webkitAudioContext)();
+    if(ctx.state==='suspended')ctx.resume();
+  }catch(e){}
+  Object.entries(soundFiles).forEach(([k,src])=>{
+    if(!sounds[k]){
+      const a=new Audio(src);
+      a.preload='auto';
+      a.volume=k==='spin'?.38:(k==='victory'||k==='phaseUnlock')?.72:.62;
+      if(k==='spin')a.loop=true;
+      sounds[k]=a;
+    }
+  });
+  updateSoundButton();
+}
+
+function updateSoundButton(){
+  const b=$('soundToggle');
+  if(b)b.textContent=soundOn?'🔊 Som':'🔇 Som';
+}
+
+function toggleSound(){
+  unlockAudio();
+  soundOn=!soundOn;
+  if(!soundOn)stopSpinSound();
+  updateSoundButton();
+}
+
+function tryFile(k,restart=true){
+  if(!audioReady||!soundOn||!sounds[k])return false;
+  try{
+    if(restart)sounds[k].currentTime=0;
+    sounds[k].play().catch(()=>{});
+    return true;
+  }catch(e){return false}
+}
+
+function stopFile(k){
+  try{
+    if(sounds[k]){
+      sounds[k].pause();
+      sounds[k].currentTime=0;
+    }
+  }catch(e){}
+}
+
+function tone(f,d=.12,type='sine',v=.035,delay=0){
+  if(!soundOn)return;
+  try{
+    ctx=ctx||new (window.AudioContext||window.webkitAudioContext)();
+    const o=ctx.createOscillator(),g=ctx.createGain();
+    o.type=type;
+    o.frequency.value=f;
+    g.gain.setValueAtTime(.0001,ctx.currentTime+delay);
+    g.gain.exponentialRampToValueAtTime(v,ctx.currentTime+delay+.015);
+    g.gain.exponentialRampToValueAtTime(.0001,ctx.currentTime+delay+d);
+    o.connect(g);g.connect(ctx.destination);
+    o.start(ctx.currentTime+delay);
+    o.stop(ctx.currentTime+delay+d+.02);
+  }catch(e){}
+}
+
+function playClick(){
+  if(tryFile('click'))return;
+  tone(720,.05,'square',.018);
+}
+
+function startSpinSound(){
+  if(tryFile('spin'))return;
+  for(let i=0;i<35;i++)tone(300+i*12,.045,'square',.016,i*.065);
+}
+
+function stopSpinSound(){stopFile('spin')}
+
+function playCorrect(){
+  if(tryFile('success'))return;
+  [523,659,784,1046].forEach((n,i)=>tone(n,.17,'triangle',.045,i*.06));
+}
+
+function playWrong(){
+  if(tryFile('error'))return;
+  tone(220,.16,'sawtooth',.035);
+  tone(165,.22,'triangle',.03,.13);
+}
+
+function playCombo(){
+  if(tryFile('combo'))return;
+  [659,784,988,1318].forEach((n,i)=>tone(n,.14,'triangle',.05,i*.045));
+}
+
+function playPhaseUnlock(){
+  if(tryFile('phaseUnlock'))return;
+  [784,988,1174,1568].forEach((n,i)=>tone(n,.18,'triangle',.05,i*.075));
+}
+
+function playVictory(){
+  if(tryFile('victory'))return;
+  [523,659,784,1046,1318].forEach((n,i)=>tone(n,.22,'triangle',.045,i*.10));
+}
+
+function playGameOver(){
+  if(tryFile('gameover'))return;
+  tone(247,.18,'triangle',.035);
+  tone(196,.24,'sine',.03,.16);
+}
+
+// Confete leve em JS puro, sem biblioteca externa.
+function confettiBurst(amount=100){const c=$('confettiCanvas'),x=c.getContext('2d');c.width=innerWidth;c.height=innerHeight;const colors=['#00e5ff','#ff2bd6','#ffe66d','#35ff8a','#ffffff'];const parts=Array.from({length:amount},()=>({x:innerWidth/2,y:innerHeight*.35,vx:(Math.random()-.5)*10,vy:-Math.random()*8-2,g:.24+Math.random()*.1,r:3+Math.random()*5,a:1,rot:Math.random()*6,color:colors[Math.floor(Math.random()*colors.length)]}));let frame=0;function draw(){x.clearRect(0,0,c.width,c.height);parts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=p.g;p.rot+=.15;p.a-=.008;x.save();x.globalAlpha=Math.max(0,p.a);x.translate(p.x,p.y);x.rotate(p.rot);x.fillStyle=p.color;x.fillRect(-p.r,-p.r,p.r*2,p.r*1.1);x.restore()});frame++;if(frame<130)requestAnimationFrame(draw);else x.clearRect(0,0,c.width,c.height)}draw()}
+</script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+import { getFirestore, collection, addDoc, serverTimestamp, onSnapshot, query, limit } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCVTR3nnyo5mYTF28TJisgTUe-Xyjk1upg",
+  authDomain: "english-game-hub.firebaseapp.com",
+  projectId: "english-game-hub",
+  storageBucket: "english-game-hub.firebasestorage.app",
+  messagingSenderId: "131880771426",
+  appId: "1:131880771426:web:cf29a6f34ca86be527d63b"
+};
+
+const appFirebase = initializeApp(firebaseConfig);
+const dbFirebase = getFirestore(appFirebase);
+
+function limitarTexto(texto, limite){
+  return String(texto || "").trim().slice(0, limite);
+}
+
+window.salvarPontuacaoFirebase = async function(rec){
+  try{
+    await addDoc(collection(dbFirebase, "pontuacoes"), {
+      nome: limitarTexto(rec.name, 60),
+      turma: limitarTexto(rec.className, 30),
+      escola: limitarTexto(rec.school, 90),
+      pontos: Number(rec.score || 0),
+      corrects: Number(rec.corrects || 0),
+      combo: Number(rec.combo || 0),
+      status: limitarTexto(rec.status || "Finalizado", 30),
+      jogo: "9ano-spin-challenge",
+      data: serverTimestamp(),
+      origem: "spin-challenge-9ano"
+    });
+  }catch(e){
+    console.error("Erro ao salvar pontuação no Firebase:", e);
+  }
+};
+
+window.salvarAvaliacaoFirebase = async function(payload){
+  try{
+    const valor = payload && payload.valor ? payload.valor : String(payload || "");
+    const p = payload && payload.player ? payload.player : {};
+    await addDoc(collection(dbFirebase, "avaliacoes"), {
+      jogo: "9ano-spin-challenge",
+      avaliacao: limitarTexto(valor, 20),
+      nome: limitarTexto(p.name || "Aluno(a)", 60),
+      turma: limitarTexto(p.className || "9º ano", 30),
+      escola: limitarTexto(p.school || "Escola Delfina de Jesus Amorim", 90),
+      pontos: Number((payload && payload.score) || 0),
+      corrects: Number((payload && payload.corrects) || 0),
+      combo: Number((payload && payload.combo) || 0),
+      status: limitarTexto((payload && payload.status) || "Finalizado", 30),
+      data: serverTimestamp(),
+      origem: "spin-challenge-9ano"
+    });
+  }catch(e){
+    console.error("Erro ao salvar avaliação:", e);
+  }
+};
+
+window.registrarAcessoFirebase = async function(){
+  try{
+    await addDoc(collection(dbFirebase, "acessos"), {
+      jogo: "9ano-spin-challenge",
+      data: serverTimestamp(),
+      origem: "spin-challenge-9ano"
+    });
+  }catch(e){
+    console.error("Erro ao registrar acesso:", e);
+  }
+};
+
+window.carregarRankingFirebase = function(jogo="9ano-spin-challenge", containerId="rankList"){
+  const box=document.getElementById(containerId);
+  if(!box)return;
+  const q=query(collection(dbFirebase,"pontuacoes"),limit(700));
+  onSnapshot(q,(snap)=>{
+    const map=new Map();
+    snap.forEach(doc=>{
+      const item=doc.data();
+      if(!item || String(item.jogo||"")!==String(jogo))return;
+      const nome=String(item.nome||"").trim();
+      const escolaBase=String(item.escola||"Escola não informada").trim();
+      const turma=String(item.turma||"").trim();
+      const escola=turma && !escolaBase.includes(turma) ? `${escolaBase} — ${turma}` : escolaBase;
+      const pontos=Number(item.pontos||0);
+      const corrects=Number(item.corrects||0);
+      const combo=Number(item.combo||0);
+      if(!nome || !Number.isFinite(pontos))return;
+      const key=`${nome.toLowerCase()}|${escola.toLowerCase()}`;
+      const atual=map.get(key)||{nome,escola,pontos:0,corrects:0,combo:0,tipo:"real"};
+      atual.pontos+=pontos;
+      atual.corrects+=corrects;
+      atual.combo=Math.max(Number(atual.combo||0),combo);
+      map.set(key,atual);
+    });
+    const rows=Array.from(map.values()).sort((a,b)=>Number(b.pontos||0)-Number(a.pontos||0)).slice(0,10);
+    if(typeof renderRankingRowsFallback==="function"){
+      renderRankingRowsFallback(containerId,rows);
+    }
+  },(err)=>{
+    console.error("Erro ao carregar ranking Firebase:",err);
+    if(typeof renderRankingRowsFallback==="function"){
+      renderRankingRowsFallback(containerId);
+    }
+  });
+};
+
+window.registrarAcessoFirebase();
+</script>
+
+</body>
+</html>
