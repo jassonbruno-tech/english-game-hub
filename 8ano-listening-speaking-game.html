@@ -1,0 +1,2404 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>English Voice Challenge - 8º Ano</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top left, #fff176 0, transparent 28%),
+        radial-gradient(circle at top right, #ff80ab 0, transparent 25%),
+        linear-gradient(145deg, #4614b8, #0f8b8d 55%, #00c853);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 440px;
+      min-height: 92vh;
+      background: rgba(15, 23, 42, 0.93);
+      border: 3px solid rgba(255, 255, 255, 0.25);
+      border-radius: 28px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .screen {
+      display: none;
+      padding: 16px;
+      min-height: 92vh;
+    }
+
+    .screen.active {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .top-badge {
+      display: inline-block;
+      align-self: center;
+      background: linear-gradient(90deg, #ffeb3b, #ff9800);
+      color: #3b2600;
+      font-weight: 900;
+      padding: 7px 14px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      box-shadow: 0 4px 0 #a16207;
+    }
+
+    h1 {
+      margin: 12px 0 8px;
+      text-align: center;
+      font-size: 1.65rem;
+      line-height: 1.08;
+      color: #fff;
+      text-shadow: 0 3px 0 rgba(0, 0, 0, 0.25);
+    }
+
+    h2 {
+      margin: 8px 0;
+      text-align: center;
+      font-size: 1.18rem;
+    }
+
+    p {
+      margin: 8px 0;
+      line-height: 1.35;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #dbeafe;
+      font-size: 0.96rem;
+    }
+
+    .teacher {
+      text-align: center;
+      color: #cbd5e1;
+      font-size: 0.78rem;
+      margin-top: auto;
+      padding-top: 10px;
+    }
+
+    .mini-note {
+      color: #cbd5e1;
+      font-size: 0.78rem;
+      text-align: center;
+      line-height: 1.35;
+      margin-top: 10px;
+    }
+
+    label {
+      display: block;
+      font-weight: 800;
+      color: #fef08a;
+      margin: 12px 0 6px;
+      font-size: 0.92rem;
+    }
+
+    input {
+      width: 100%;
+      border: 2px solid #facc15;
+      border-radius: 16px;
+      padding: 14px;
+      font-size: 1rem;
+      outline: none;
+      background: #fff;
+      color: #111827;
+    }
+
+    input:focus {
+      border-color: #22c55e;
+      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.25);
+    }
+
+    button {
+      width: 100%;
+      border: none;
+      border-radius: 18px;
+      padding: 15px 12px;
+      font-size: 1.02rem;
+      font-weight: 900;
+      cursor: pointer;
+      min-height: 54px;
+      transition: transform 0.1s ease, filter 0.2s ease, opacity 0.2s ease;
+      box-shadow: 0 5px 0 rgba(0, 0, 0, 0.25);
+    }
+
+    button:active {
+      transform: translateY(3px);
+      box-shadow: 0 2px 0 rgba(0, 0, 0, 0.25);
+    }
+
+    button:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    .btn-green { background: linear-gradient(180deg, #4ade80, #16a34a); color: #052e16; }
+    .btn-blue { background: linear-gradient(180deg, #60a5fa, #2563eb); color: #fff; }
+    .btn-yellow { background: linear-gradient(180deg, #fde047, #f59e0b); color: #422006; }
+    .btn-purple { background: linear-gradient(180deg, #c084fc, #7c3aed); color: #fff; }
+    .btn-orange { background: linear-gradient(180deg, #fb923c, #ea580c); color: #fff; }
+    .btn-gray { background: linear-gradient(180deg, #94a3b8, #475569); color: #fff; }
+
+    .button-grid {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .button-grid.two {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .phase-map {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      margin: 14px 0;
+    }
+
+    .phase-tile {
+      min-height: 64px;
+      border-radius: 18px;
+      border: 2px solid rgba(255, 255, 255, 0.25);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-weight: 900;
+      text-align: center;
+      font-size: 0.75rem;
+    }
+
+    .phase-tile.open {
+      background: linear-gradient(180deg, #ffeb3b, #ff9800);
+      color: #422006;
+      border-color: #fff7ad;
+      animation: pulse 1.4s infinite;
+    }
+
+    .phase-tile.done {
+      background: linear-gradient(180deg, #4ade80, #16a34a);
+      color: #052e16;
+    }
+
+    .phase-tile.locked {
+      background: rgba(148, 163, 184, 0.25);
+      color: #cbd5e1;
+      opacity: 0.88;
+    }
+
+    .phase-number {
+      font-size: 1.2rem;
+      margin-bottom: 2px;
+    }
+
+    .lock {
+      font-size: 1.25rem;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.04); }
+      100% { transform: scale(1); }
+    }
+
+    .hud {
+      background: rgba(255, 255, 255, 0.12);
+      border: 2px solid rgba(255, 255, 255, 0.18);
+      border-radius: 20px;
+      padding: 10px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .hud-card {
+      background: rgba(15, 23, 42, 0.65);
+      border-radius: 14px;
+      padding: 8px;
+      text-align: center;
+      font-size: 0.84rem;
+      font-weight: 800;
+    }
+
+    .hud-card strong {
+      display: block;
+      color: #fef08a;
+      font-size: 1.05rem;
+      margin-top: 3px;
+    }
+
+    .life-row {
+      display: flex;
+      justify-content: center;
+      gap: 4px;
+      font-size: 1.4rem;
+      margin-top: 4px;
+      letter-spacing: 2px;
+    }
+
+    .progress-wrap {
+      height: 14px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.18);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #ffeb3b, #22c55e, #38bdf8);
+      transition: width 0.3s ease;
+    }
+
+    .phrase-card {
+      background: linear-gradient(180deg, #ffffff, #e0f2fe);
+      color: #0f172a;
+      border-radius: 24px;
+      padding: 14px;
+      margin-top: 12px;
+      border: 3px solid #facc15;
+      box-shadow: 0 7px 0 #a16207;
+      text-align: center;
+      transition: box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+
+    .phrase-card.correct-glow {
+      animation: correctGlow 0.9s ease;
+      border-color: #22c55e;
+      box-shadow:
+        0 0 18px #22c55e,
+        0 0 35px rgba(34, 197, 94, 0.75),
+        0 7px 0 #15803d;
+    }
+
+    .phrase-card.wrong-shake {
+      animation: wrongShake 0.45s ease;
+      border-color: #ef4444;
+      box-shadow:
+        0 0 16px #ef4444,
+        0 0 28px rgba(239, 68, 68, 0.55),
+        0 7px 0 #991b1b;
+    }
+
+    @keyframes correctGlow {
+      0% { transform: scale(1); filter: brightness(1); }
+      35% { transform: scale(1.04); filter: brightness(1.2); }
+      70% { transform: scale(1.02); filter: brightness(1.1); }
+      100% { transform: scale(1); filter: brightness(1); }
+    }
+
+    @keyframes wrongShake {
+      0% { transform: translateX(0); }
+      20% { transform: translateX(-6px); }
+      40% { transform: translateX(6px); }
+      60% { transform: translateX(-4px); }
+      80% { transform: translateX(4px); }
+      100% { transform: translateX(0); }
+    }
+
+    .content-tag {
+      display: inline-block;
+      background: #312e81;
+      color: #fff;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 900;
+      margin: 2px;
+    }
+
+    .sentence-type {
+      display: inline-block;
+      background: #fce7f3;
+      color: #9d174d;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 900;
+      margin: 2px;
+    }
+
+    .phrase {
+      font-size: 1.55rem;
+      line-height: 1.18;
+      font-weight: 900;
+      color: #111827;
+      margin: 8px 0;
+    }
+
+    .translation {
+      color: #334155;
+      font-size: 0.92rem;
+      font-weight: 700;
+    }
+
+    .tip {
+      background: #fef3c7;
+      color: #713f12;
+      border-radius: 14px;
+      padding: 8px;
+      margin-top: 9px;
+      font-size: 0.84rem;
+      font-weight: 700;
+    }
+
+    .spoken-box {
+      background: rgba(255, 255, 255, 0.12);
+      border: 2px dashed rgba(255, 255, 255, 0.28);
+      border-radius: 18px;
+      padding: 10px;
+      margin-top: 12px;
+      min-height: 66px;
+      font-size: 0.93rem;
+      color: #e0f2fe;
+    }
+
+    .spoken-box strong {
+      color: #fef08a;
+    }
+
+    .feedback {
+      display: none;
+      margin-top: 10px;
+      border-radius: 18px;
+      padding: 12px;
+      font-weight: 900;
+      text-align: center;
+      font-size: 1rem;
+    }
+
+    .feedback.show {
+      display: block;
+    }
+
+    .feedback.correct {
+      background: #dcfce7;
+      color: #14532d;
+      border: 3px solid #22c55e;
+    }
+
+    .feedback.wrong {
+      background: #fee2e2;
+      color: #991b1b;
+      border: 3px solid #ef4444;
+    }
+
+    .feedback.info {
+      background: #dbeafe;
+      color: #1e40af;
+      border: 3px solid #60a5fa;
+    }
+
+    .big-message-box {
+      background: linear-gradient(180deg, #ffffff, #e0f2fe);
+      color: #0f172a;
+      border-radius: 24px;
+      padding: 18px;
+      margin-top: 16px;
+      text-align: center;
+      border: 3px solid #facc15;
+      box-shadow: 0 7px 0 #a16207;
+    }
+
+    .big-message-box h1 {
+      color: #111827;
+      text-shadow: none;
+      margin-bottom: 10px;
+    }
+
+    .big-message-box p {
+      color: #334155;
+      font-weight: 700;
+    }
+
+    .game-over-title {
+      color: #dc2626 !important;
+      font-size: 2rem;
+    }
+
+    .victory-title {
+      color: #16a34a !important;
+      font-size: 1.8rem;
+    }
+
+    .phase-result {
+      background: #fef3c7;
+      color: #78350f;
+      border-radius: 16px;
+      padding: 12px;
+      font-weight: 900;
+      margin: 12px 0;
+    }
+
+    .rating-box {
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 2px solid rgba(255, 255, 255, 0.22);
+      text-align: center;
+    }
+
+    .rating-buttons {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .rating-buttons button {
+      min-height: 70px;
+      padding: 8px;
+      font-size: 0.82rem;
+      background: linear-gradient(180deg, #fef08a, #f59e0b);
+      color: #422006;
+    }
+
+    .emoji {
+      display: block;
+      font-size: 1.8rem;
+      margin-bottom: 3px;
+    }
+
+    #ratingMessage {
+      color: #bbf7d0;
+      font-weight: 900;
+      min-height: 22px;
+    }
+
+    .ranking-list {
+      list-style: none;
+      padding: 0;
+      margin: 12px 0;
+    }
+
+    .ranking-list li {
+      background: rgba(255, 255, 255, 0.12);
+      border: 2px solid rgba(255, 255, 255, 0.18);
+      padding: 10px;
+      border-radius: 16px;
+      margin-bottom: 8px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .ranking-list li.you {
+      background: linear-gradient(180deg, #fef08a, #f59e0b);
+      color: #422006;
+      border-color: #fff7ad;
+    }
+
+    .final-score {
+      background: #dcfce7;
+      color: #14532d;
+      border-radius: 20px;
+      padding: 14px;
+      text-align: center;
+      font-size: 1.35rem;
+      font-weight: 900;
+      margin: 12px 0;
+    }
+
+    .motivation {
+      background: #fef3c7;
+      color: #78350f;
+      border-radius: 18px;
+      padding: 12px;
+      font-weight: 900;
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+
+    /* ===== Ranking com pódio e modal ===== */
+    .current-player-score {
+      background: linear-gradient(180deg, #fff7ad, #facc15);
+      color: #422006;
+      border: 3px solid #fff7ad;
+      border-radius: 22px;
+      padding: 12px;
+      margin: 12px 0;
+      text-align: center;
+      font-weight: 900;
+      box-shadow: 0 0 18px rgba(250, 204, 21, 0.55), 0 6px 0 #a16207;
+    }
+
+    .current-player-score strong {
+      display: block;
+      font-size: 1.15rem;
+      margin-top: 4px;
+    }
+
+    .ranking-list li.rank-1 {
+      background: linear-gradient(135deg, #fff7ad, #f59e0b);
+      color: #422006;
+      border-color: #fff7ad;
+      box-shadow: 0 0 18px rgba(250, 204, 21, 0.75);
+    }
+
+    .ranking-list li.rank-2 {
+      background: linear-gradient(135deg, #f8fafc, #94a3b8);
+      color: #0f172a;
+      border-color: #e2e8f0;
+      box-shadow: 0 0 14px rgba(226, 232, 240, 0.55);
+    }
+
+    .ranking-list li.rank-3 {
+      background: linear-gradient(135deg, #fed7aa, #c2410c);
+      color: #431407;
+      border-color: #fdba74;
+      box-shadow: 0 0 14px rgba(251, 146, 60, 0.55);
+    }
+
+    .ranking-list li.you,
+    .ranking-list li.you-extra {
+      background: linear-gradient(135deg, #67e8f9, #fef08a);
+      color: #0f172a;
+      border-color: #fff7ad;
+      animation: playerGlow 1.25s infinite alternate;
+    }
+
+    @keyframes playerGlow {
+      from { box-shadow: 0 0 10px rgba(34, 211, 238, 0.55); transform: scale(1); }
+      to { box-shadow: 0 0 24px rgba(250, 204, 21, 0.9); transform: scale(1.015); }
+    }
+
+    .ranking-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 14px;
+      background: rgba(2, 6, 23, 0.82);
+      backdrop-filter: blur(6px);
+    }
+
+    .ranking-modal.active {
+      display: flex;
+    }
+
+    .ranking-modal-card {
+      width: min(100%, 430px);
+      max-height: 88vh;
+      overflow: auto;
+      background: linear-gradient(180deg, #0f172a, #312e81);
+      border: 3px solid #facc15;
+      border-radius: 26px;
+      padding: 16px;
+      box-shadow: 0 0 35px rgba(250, 204, 21, 0.45);
+      color: #fff;
+    }
+
+    .ranking-modal-card h2 {
+      color: #fef08a;
+      margin-top: 0;
+    }
+
+    .ranking-modal .button-grid {
+      margin-top: 12px;
+    }
+
+    @media (max-height: 720px) {
+      .screen { padding: 12px; }
+      h1 { font-size: 1.35rem; margin: 8px 0 5px; }
+      .subtitle { font-size: 0.85rem; }
+      .phase-tile { min-height: 54px; border-radius: 14px; }
+      .phrase { font-size: 1.32rem; }
+      button { min-height: 48px; padding: 12px 10px; font-size: 0.95rem; }
+      .phrase-card { padding: 11px; margin-top: 9px; }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="app">
+    <section id="startScreen" class="screen active">
+      <span class="top-badge">English Voice Challenge</span>
+      <h1>Listening & Speaking Game - 8º Ano</h1>
+      <p class="subtitle">Ouça, repita em inglês e treine Present Perfect, experiências de vida e revisão do 8º ano.</p>
+
+      <label for="playerName">Nome do aluno:</label>
+      <input id="playerName" type="text" maxlength="24" placeholder="Digite seu nome" />
+
+      <label for="playerSchool">Escola:</label>
+      <input id="playerSchool" type="text" maxlength="32" placeholder="Digite sua escola" />
+
+      <h2>Mapa das Fases</h2>
+      <div id="startPhaseMap" class="phase-map"></div>
+
+      <button class="btn-green" onclick="startGame()">▶ Começar Fase 1</button>
+
+      <p class="mini-note">
+        Dica: primeiro toque em “Ouvir”, depois toque em “Falar” e repita a frase.
+        No celular, o microfone funciona melhor no Chrome Android. Treine com calma: ouvir, repetir e tentar de novo faz parte do jogo.
+      </p>
+
+      <p class="teacher">Jogo idealizado pelo Prof. Jasson Bruno.</p>
+    </section>
+
+    <section id="gameScreen" class="screen">
+      <span class="top-badge" id="phaseTitle">Fase 1</span>
+
+      <div class="hud">
+        <div class="hud-card">
+          Pontuação
+          <strong id="scoreText">0/100</strong>
+        </div>
+
+        <div class="hud-card">
+          Frase
+          <strong id="questionText">1/10</strong>
+        </div>
+
+        <div class="hud-card" style="grid-column: 1 / 3;">
+          Vidas da fase
+          <div id="livesText" class="life-row">❤️❤️❤️❤️❤️</div>
+        </div>
+      </div>
+
+      <div class="progress-wrap">
+        <div id="progressBar" class="progress-bar"></div>
+      </div>
+
+      <div id="gamePhaseMap" class="phase-map"></div>
+
+      <div id="phraseCard" class="phrase-card">
+        <span id="contentTag" class="content-tag">Tema</span>
+        <span id="sentenceType" class="sentence-type">Tipo</span>
+
+        <div id="phraseText" class="phrase">I am happy.</div>
+        <div id="translationText" class="translation">Eu estou feliz.</div>
+        <div id="tipText" class="tip">Dica: I am = eu sou / estou.</div>
+      </div>
+
+      <div class="button-grid two">
+        <button class="btn-blue" onclick="speakPhrase()">🔊 Ouvir</button>
+        <button class="btn-yellow" onclick="startRecognition()">🎤 Falar</button>
+      </div>
+
+      <div class="spoken-box">
+        <strong>Você disse:</strong>
+        <div id="spokenText">Toque em “Falar” e repita a frase.</div>
+      </div>
+
+      <div id="feedbackBox" class="feedback"></div>
+
+      <div class="button-grid">
+        <button id="nextButton" class="btn-purple" onclick="nextQuestion()" disabled>Próxima ➜</button>
+      </div>
+    </section>
+
+    <section id="phaseCompleteScreen" class="screen">
+      <span class="top-badge">Fase concluída</span>
+
+      <div class="big-message-box">
+        <h1 class="victory-title">🎉 Parabéns!</h1>
+
+        <p id="phaseCompleteMessage">Você completou esta fase!</p>
+
+        <div class="phase-result" id="phaseCompleteScore">Pontuação atual: 0/100</div>
+
+        <p>
+          Sua escuta e sua pronúncia estão evoluindo.
+          Você está preparado para o próximo desafio?
+        </p>
+      </div>
+
+      <div class="button-grid">
+        <button id="nextPhaseButton" class="btn-green" onclick="continueToNextPhase()">
+          🚀 Começar próxima fase
+        </button>
+      </div>
+
+      <p class="teacher">Jogo idealizado pelo Prof. Jasson Bruno.</p>
+    </section>
+
+    <section id="gameOverScreen" class="screen">
+      <span class="top-badge">Fim da tentativa</span>
+
+      <div class="big-message-box">
+        <h1 class="game-over-title">GAME OVER</h1>
+
+        <p>
+          Você tentou, treinou e isso já é um passo importante!
+          Aprender inglês é assim: ouvir, repetir, errar, corrigir e tentar novamente.
+        </p>
+
+        <div class="phase-result" id="gameOverScore">Pontuação: 0/100</div>
+
+        <div id="gameOverPlayerScoreBox" class="current-player-score">
+          ✨ SUA PONTUAÇÃO AGORA ✨
+          <strong>0 pontos</strong>
+        </div>
+
+        <p>💪 Não desista! Cada tentativa melhora sua escuta e sua pronúncia.</p>
+      </div>
+
+      <div class="rating-box">
+        <h2>Como foi jogar?</h2>
+        <p>Antes de continuar, marque uma opção:</p>
+
+        <div class="rating-buttons">
+          <button onclick="avaliarJogo('ruim', this)">
+            <span class="emoji">😡</span>
+            Difícil
+          </button>
+
+          <button onclick="avaliarJogo('neutro', this)">
+            <span class="emoji">😐</span>
+            Mais ou menos
+          </button>
+
+          <button onclick="avaliarJogo('bom', this)">
+            <span class="emoji">😀</span>
+            Gostei
+          </button>
+        </div>
+
+        <p id="ratingMessageGameOver"></p>
+      </div>
+
+      <div class="button-grid">
+        <button class="btn-yellow" onclick="openRankingModal()">🏆 Ranking Geral</button>
+        <button class="btn-orange" onclick="retryCurrentPhase()">🔁 Tentar esta fase novamente</button>
+        <button class="btn-gray" onclick="restartGame()">🏠 Voltar ao início</button>
+      </div>
+
+      <h2>🏆 Ranking Geral deste jogo</h2>
+      <p class="mini-note">A pontuação soma apenas as partidas deste Listening Game do 8º ano.</p>
+      <ol id="rankingGameOver" class="ranking-list">
+        <li>Carregando ranking...</li>
+      </ol>
+
+      <p class="teacher">Jogo idealizado pelo Prof. Jasson Bruno.</p>
+    </section>
+
+    <section id="endScreen" class="screen">
+      <span class="top-badge">Resultado Final</span>
+      <h1>Journey Completed!</h1>
+
+      <div id="finalScore" class="final-score">Pontuação: 0/100</div>
+      <div id="endPlayerScoreBox" class="current-player-score">
+        ✨ SUA PONTUAÇÃO AGORA ✨
+        <strong>0 pontos</strong>
+      </div>
+      <div id="motivationText" class="motivation"></div>
+
+      <div class="rating-box">
+        <h2>Como foi jogar?</h2>
+        <p>Toque em uma opção:</p>
+
+        <div class="rating-buttons">
+          <button onclick="avaliarJogo('ruim', this)">
+            <span class="emoji">😡</span>
+            Difícil
+          </button>
+
+          <button onclick="avaliarJogo('neutro', this)">
+            <span class="emoji">😐</span>
+            Mais ou menos
+          </button>
+
+          <button onclick="avaliarJogo('bom', this)">
+            <span class="emoji">😀</span>
+            Gostei
+          </button>
+        </div>
+
+        <p id="ratingMessage"></p>
+      </div>
+
+      <button class="btn-yellow" onclick="openRankingModal()">🏆 Ranking Geral</button>
+
+      <h2>🏆 Ranking Geral deste jogo</h2>
+      <p class="mini-note">A pontuação soma apenas as partidas deste Listening Game do 8º ano.</p>
+      <ol id="rankingOnline" class="ranking-list">
+        <li>Carregando ranking...</li>
+      </ol>
+
+      <button class="btn-green" onclick="restartGame()">🔁 Jogar novamente</button>
+
+      <p class="teacher">Jogo idealizado pelo Prof. Jasson Bruno.</p>
+    </section>
+
+    <section id="rankingModal" class="ranking-modal" aria-hidden="true">
+      <div class="ranking-modal-card">
+        <h2>🏆 Ranking Geral — Listening Game 8º Ano</h2>
+        <div id="modalPlayerScoreBox" class="current-player-score">
+          ✨ SUA PONTUAÇÃO AGORA ✨
+          <strong>0 pontos</strong>
+        </div>
+        <p class="mini-note">Ranking somatório somente deste jogo. O 1º lugar recebe o selo de Campeão do dia.</p>
+        <ol id="rankingModalList" class="ranking-list">
+          <li>Carregando ranking...</li>
+        </ol>
+        <div class="button-grid">
+          <button class="btn-gray" onclick="closeRankingModal()">Fechar ranking</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    const NOME_DO_JOGO = "8ano-listening-speaking-game";
+    const phases = [
+  {
+    "title": "Fase 1 - Present Perfect Basics",
+    "items": [
+      {
+        "topic": "Present Perfect",
+        "type": "Afirmativa",
+        "phrase": "I have visited Santarem",
+        "pt": "Eu visitei Santarém.",
+        "tip": "Present Perfect: I have + particípio. visited = visitado/visitei."
+      },
+      {
+        "topic": "Present Perfect",
+        "type": "Negativa",
+        "phrase": "I have not finished yet",
+        "pt": "Eu ainda não terminei.",
+        "tip": "yet costuma aparecer em frases negativas ou perguntas."
+      },
+      {
+        "topic": "Present Perfect",
+        "type": "Interrogativa",
+        "phrase": "Have you studied today?",
+        "pt": "Você estudou hoje?",
+        "tip": "Pergunta: Have you + particípio...?"
+      },
+      {
+        "topic": "Present Perfect",
+        "type": "Afirmativa",
+        "phrase": "She has watched this movie",
+        "pt": "Ela assistiu a este filme.",
+        "tip": "Com she/he/it usamos has."
+      },
+      {
+        "topic": "Present Perfect",
+        "type": "Negativa",
+        "phrase": "He has not arrived yet",
+        "pt": "Ele ainda não chegou.",
+        "tip": "has not = hasn't."
+      },
+      {
+        "topic": "Present Perfect",
+        "type": "Interrogativa",
+        "phrase": "Has she tried acai?",
+        "pt": "Ela já experimentou açaí?",
+        "tip": "Com she, a pergunta começa com Has she...?"
+      },
+      {
+        "topic": "Present Perfect",
+        "type": "Afirmativa",
+        "phrase": "We have played this game",
+        "pt": "Nós já jogamos este jogo.",
+        "tip": "We have + particípio."
+      },
+      {
+        "topic": "Present Perfect",
+        "type": "Negativa",
+        "phrase": "They have not seen the video",
+        "pt": "Eles não viram o vídeo.",
+        "tip": "They have not = They haven't."
+      },
+      {
+        "topic": "Present Perfect",
+        "type": "Interrogativa",
+        "phrase": "Have they traveled by boat?",
+        "pt": "Eles já viajaram de barco?",
+        "tip": "Have they + particípio...?"
+      },
+      {
+        "topic": "Present Perfect",
+        "type": "Afirmativa",
+        "phrase": "I have learned new words",
+        "pt": "Eu aprendi palavras novas.",
+        "tip": "learned = aprendido."
+      }
+    ]
+  },
+  {
+    "title": "Fase 2 - Life Experiences",
+    "items": [
+      {
+        "topic": "Life Experiences",
+        "type": "Afirmativa",
+        "phrase": "I have eaten Japanese food",
+        "pt": "Eu já comi comida japonesa.",
+        "tip": "eaten é o particípio de eat."
+      },
+      {
+        "topic": "Life Experiences",
+        "type": "Negativa",
+        "phrase": "I have never flown on a plane",
+        "pt": "Eu nunca voei de avião.",
+        "tip": "never = nunca."
+      },
+      {
+        "topic": "Life Experiences",
+        "type": "Interrogativa",
+        "phrase": "Have you ever ridden a bike?",
+        "pt": "Você já andou de bicicleta?",
+        "tip": "Have you ever...? = Você já...?"
+      },
+      {
+        "topic": "Life Experiences",
+        "type": "Afirmativa",
+        "phrase": "She has taken many pictures",
+        "pt": "Ela tirou muitas fotos.",
+        "tip": "taken pictures = tirado fotos."
+      },
+      {
+        "topic": "Life Experiences",
+        "type": "Negativa",
+        "phrase": "He has never met a famous person",
+        "pt": "Ele nunca conheceu uma pessoa famosa.",
+        "tip": "met é o particípio de meet."
+      },
+      {
+        "topic": "Life Experiences",
+        "type": "Interrogativa",
+        "phrase": "Has she ever visited a museum?",
+        "pt": "Ela já visitou um museu?",
+        "tip": "Has she ever...? = Ela já...?"
+      },
+      {
+        "topic": "Life Experiences",
+        "type": "Afirmativa",
+        "phrase": "We have won a medal",
+        "pt": "Nós ganhamos uma medalha.",
+        "tip": "won é o particípio de win."
+      },
+      {
+        "topic": "Life Experiences",
+        "type": "Negativa",
+        "phrase": "They have never lost a game",
+        "pt": "Eles nunca perderam um jogo.",
+        "tip": "lost é o particípio de lose."
+      },
+      {
+        "topic": "Life Experiences",
+        "type": "Interrogativa",
+        "phrase": "Have they ever made a cake?",
+        "pt": "Eles já fizeram um bolo?",
+        "tip": "made é o particípio de make."
+      },
+      {
+        "topic": "Life Experiences",
+        "type": "Afirmativa",
+        "phrase": "I have tried new food",
+        "pt": "Eu experimentei comida nova.",
+        "tip": "tried = experimentado."
+      }
+    ]
+  },
+  {
+    "title": "Fase 3 - Ever and Never",
+    "items": [
+      {
+        "topic": "Ever / Never",
+        "type": "Afirmativa",
+        "phrase": "I have never been to Canada",
+        "pt": "Eu nunca estive no Canadá.",
+        "tip": "been = estado/sido."
+      },
+      {
+        "topic": "Ever / Never",
+        "type": "Negativa",
+        "phrase": "I have never seen snow",
+        "pt": "Eu nunca vi neve.",
+        "tip": "seen é o particípio de see."
+      },
+      {
+        "topic": "Ever / Never",
+        "type": "Interrogativa",
+        "phrase": "Have you ever seen a dolphin?",
+        "pt": "Você já viu um golfinho?",
+        "tip": "ever aparece muito em perguntas sobre experiências."
+      },
+      {
+        "topic": "Ever / Never",
+        "type": "Afirmativa",
+        "phrase": "She has never eaten sushi",
+        "pt": "Ela nunca comeu sushi.",
+        "tip": "Com she: has never + particípio."
+      },
+      {
+        "topic": "Ever / Never",
+        "type": "Negativa",
+        "phrase": "He has never traveled alone",
+        "pt": "Ele nunca viajou sozinho.",
+        "tip": "alone = sozinho."
+      },
+      {
+        "topic": "Ever / Never",
+        "type": "Interrogativa",
+        "phrase": "Has he ever played volleyball?",
+        "pt": "Ele já jogou vôlei?",
+        "tip": "Has he ever...?"
+      },
+      {
+        "topic": "Ever / Never",
+        "type": "Afirmativa",
+        "phrase": "We have never visited that city",
+        "pt": "Nós nunca visitamos aquela cidade.",
+        "tip": "visited = visitado."
+      },
+      {
+        "topic": "Ever / Never",
+        "type": "Negativa",
+        "phrase": "They have never watched this series",
+        "pt": "Eles nunca assistiram a esta série.",
+        "tip": "watched = assistido."
+      },
+      {
+        "topic": "Ever / Never",
+        "type": "Interrogativa",
+        "phrase": "Have they ever gone camping?",
+        "pt": "Eles já foram acampar?",
+        "tip": "gone camping = ido acampar."
+      },
+      {
+        "topic": "Ever / Never",
+        "type": "Afirmativa",
+        "phrase": "I have never tried skateboarding",
+        "pt": "Eu nunca tentei andar de skate.",
+        "tip": "tried = tentado/experimentado."
+      }
+    ]
+  },
+  {
+    "title": "Fase 4 - Already and Yet",
+    "items": [
+      {
+        "topic": "Already / Yet",
+        "type": "Afirmativa",
+        "phrase": "I have already done my homework",
+        "pt": "Eu já fiz minha tarefa.",
+        "tip": "already = já."
+      },
+      {
+        "topic": "Already / Yet",
+        "type": "Negativa",
+        "phrase": "I have not done my homework yet",
+        "pt": "Eu ainda não fiz minha tarefa.",
+        "tip": "not... yet = ainda não."
+      },
+      {
+        "topic": "Already / Yet",
+        "type": "Interrogativa",
+        "phrase": "Have you finished the activity yet?",
+        "pt": "Você já terminou a atividade?",
+        "tip": "yet no final da pergunta pode significar já."
+      },
+      {
+        "topic": "Already / Yet",
+        "type": "Afirmativa",
+        "phrase": "She has already arrived",
+        "pt": "Ela já chegou.",
+        "tip": "arrived = chegado."
+      },
+      {
+        "topic": "Already / Yet",
+        "type": "Negativa",
+        "phrase": "He has not called me yet",
+        "pt": "Ele ainda não me ligou.",
+        "tip": "not called yet = ainda não ligou."
+      },
+      {
+        "topic": "Already / Yet",
+        "type": "Interrogativa",
+        "phrase": "Has she opened the book yet?",
+        "pt": "Ela já abriu o livro?",
+        "tip": "opened = aberto."
+      },
+      {
+        "topic": "Already / Yet",
+        "type": "Afirmativa",
+        "phrase": "We have already started the class",
+        "pt": "Nós já começamos a aula.",
+        "tip": "started = começado."
+      },
+      {
+        "topic": "Already / Yet",
+        "type": "Negativa",
+        "phrase": "They have not answered yet",
+        "pt": "Eles ainda não responderam.",
+        "tip": "answered = respondido."
+      },
+      {
+        "topic": "Already / Yet",
+        "type": "Interrogativa",
+        "phrase": "Have they arrived yet?",
+        "pt": "Eles já chegaram?",
+        "tip": "arrived yet = já chegaram?"
+      },
+      {
+        "topic": "Already / Yet",
+        "type": "Afirmativa",
+        "phrase": "I have already read the message",
+        "pt": "Eu já li a mensagem.",
+        "tip": "read pode ser presente ou particípio; aqui é particípio."
+      }
+    ]
+  },
+  {
+    "title": "Fase 5 - Travel and Leisure",
+    "items": [
+      {
+        "topic": "Travel",
+        "type": "Afirmativa",
+        "phrase": "I have traveled by bus",
+        "pt": "Eu viajei de ônibus.",
+        "tip": "by bus = de ônibus."
+      },
+      {
+        "topic": "Travel",
+        "type": "Negativa",
+        "phrase": "I have not visited Alter do Chao yet",
+        "pt": "Eu ainda não visitei Alter do Chão.",
+        "tip": "visited = visitado."
+      },
+      {
+        "topic": "Travel",
+        "type": "Interrogativa",
+        "phrase": "Have you ever gone to the beach?",
+        "pt": "Você já foi à praia?",
+        "tip": "gone to the beach = ido à praia."
+      },
+      {
+        "topic": "Travel",
+        "type": "Afirmativa",
+        "phrase": "She has bought a souvenir",
+        "pt": "Ela comprou uma lembrança.",
+        "tip": "bought = comprado."
+      },
+      {
+        "topic": "Travel",
+        "type": "Negativa",
+        "phrase": "He has never stayed in a hotel",
+        "pt": "Ele nunca ficou em um hotel.",
+        "tip": "stayed = ficado/hospedado."
+      },
+      {
+        "topic": "Travel",
+        "type": "Interrogativa",
+        "phrase": "Has she ever taken a boat?",
+        "pt": "Ela já pegou um barco?",
+        "tip": "taken a boat = pegado um barco."
+      },
+      {
+        "topic": "Leisure",
+        "type": "Afirmativa",
+        "phrase": "We have watched a soccer game",
+        "pt": "Nós assistimos a um jogo de futebol.",
+        "tip": "watched = assistido."
+      },
+      {
+        "topic": "Leisure",
+        "type": "Negativa",
+        "phrase": "They have not played today",
+        "pt": "Eles não jogaram hoje.",
+        "tip": "have not played = não jogaram."
+      },
+      {
+        "topic": "Leisure",
+        "type": "Interrogativa",
+        "phrase": "Have they ever visited a waterfall?",
+        "pt": "Eles já visitaram uma cachoeira?",
+        "tip": "waterfall = cachoeira."
+      },
+      {
+        "topic": "Travel",
+        "type": "Afirmativa",
+        "phrase": "I have taken pictures at the river",
+        "pt": "Eu tirei fotos no rio.",
+        "tip": "at the river = no rio."
+      }
+    ]
+  },
+  {
+    "title": "Fase 6 - Past Participle Power",
+    "items": [
+      {
+        "topic": "Past Participle",
+        "type": "Afirmativa",
+        "phrase": "I have seen this movie",
+        "pt": "Eu vi este filme.",
+        "tip": "seen é o particípio de see."
+      },
+      {
+        "topic": "Past Participle",
+        "type": "Negativa",
+        "phrase": "I have not eaten lunch yet",
+        "pt": "Eu ainda não almocei.",
+        "tip": "eaten = comido."
+      },
+      {
+        "topic": "Past Participle",
+        "type": "Interrogativa",
+        "phrase": "Have you done the exercise?",
+        "pt": "Você fez o exercício?",
+        "tip": "done = feito."
+      },
+      {
+        "topic": "Past Participle",
+        "type": "Afirmativa",
+        "phrase": "She has gone to school",
+        "pt": "Ela foi para a escola.",
+        "tip": "gone = ido."
+      },
+      {
+        "topic": "Past Participle",
+        "type": "Negativa",
+        "phrase": "He has not written the answer",
+        "pt": "Ele não escreveu a resposta.",
+        "tip": "written = escrito."
+      },
+      {
+        "topic": "Past Participle",
+        "type": "Interrogativa",
+        "phrase": "Has he read the text?",
+        "pt": "Ele leu o texto?",
+        "tip": "read como particípio mantém a escrita, mas muda a pronúncia."
+      },
+      {
+        "topic": "Past Participle",
+        "type": "Afirmativa",
+        "phrase": "We have made a poster",
+        "pt": "Nós fizemos um cartaz.",
+        "tip": "made = feito."
+      },
+      {
+        "topic": "Past Participle",
+        "type": "Negativa",
+        "phrase": "They have not taken the test",
+        "pt": "Eles não fizeram a prova.",
+        "tip": "taken the test = feito a prova."
+      },
+      {
+        "topic": "Past Participle",
+        "type": "Interrogativa",
+        "phrase": "Have they met your teacher?",
+        "pt": "Eles conheceram seu professor?",
+        "tip": "met = conhecido."
+      },
+      {
+        "topic": "Past Participle",
+        "type": "Afirmativa",
+        "phrase": "I have bought a new notebook",
+        "pt": "Eu comprei um caderno novo.",
+        "tip": "bought = comprado."
+      }
+    ]
+  },
+  {
+    "title": "Fase 7 - Describing People Review",
+    "items": [
+      {
+        "topic": "Review",
+        "type": "Afirmativa",
+        "phrase": "She has curly hair",
+        "pt": "Ela tem cabelo cacheado.",
+        "tip": "curly hair = cabelo cacheado."
+      },
+      {
+        "topic": "Review",
+        "type": "Negativa",
+        "phrase": "He does not have long hair",
+        "pt": "Ele não tem cabelo longo.",
+        "tip": "long hair = cabelo longo."
+      },
+      {
+        "topic": "Review",
+        "type": "Interrogativa",
+        "phrase": "Does she have straight hair?",
+        "pt": "Ela tem cabelo liso?",
+        "tip": "straight hair = cabelo liso."
+      },
+      {
+        "topic": "Review",
+        "type": "Afirmativa",
+        "phrase": "He is taller than me",
+        "pt": "Ele é mais alto do que eu.",
+        "tip": "taller than = mais alto que."
+      },
+      {
+        "topic": "Review",
+        "type": "Negativa",
+        "phrase": "This jacket is not cheap",
+        "pt": "Esta jaqueta não é barata.",
+        "tip": "jacket = jaqueta."
+      },
+      {
+        "topic": "Review",
+        "type": "Interrogativa",
+        "phrase": "Is this dress more expensive?",
+        "pt": "Este vestido é mais caro?",
+        "tip": "more expensive = mais caro."
+      },
+      {
+        "topic": "Review",
+        "type": "Afirmativa",
+        "phrase": "These sneakers are comfortable",
+        "pt": "Estes tênis são confortáveis.",
+        "tip": "sneakers = tênis."
+      },
+      {
+        "topic": "Review",
+        "type": "Negativa",
+        "phrase": "This cap is not old",
+        "pt": "Este boné não é velho.",
+        "tip": "cap = boné."
+      },
+      {
+        "topic": "Review",
+        "type": "Interrogativa",
+        "phrase": "Are jeans more comfortable?",
+        "pt": "Jeans são mais confortáveis?",
+        "tip": "more comfortable = mais confortável."
+      },
+      {
+        "topic": "Review",
+        "type": "Afirmativa",
+        "phrase": "She is the best player",
+        "pt": "Ela é a melhor jogadora.",
+        "tip": "the best = o/a melhor."
+      }
+    ]
+  },
+  {
+    "title": "Fase 8 - Mixed Present Perfect",
+    "items": [
+      {
+        "topic": "Mixed",
+        "type": "Afirmativa",
+        "phrase": "I have already watched this video",
+        "pt": "Eu já assisti a este vídeo.",
+        "tip": "already = já."
+      },
+      {
+        "topic": "Mixed",
+        "type": "Negativa",
+        "phrase": "I have never played tennis",
+        "pt": "Eu nunca joguei tênis.",
+        "tip": "never = nunca."
+      },
+      {
+        "topic": "Mixed",
+        "type": "Interrogativa",
+        "phrase": "Have you ever tried tacaca?",
+        "pt": "Você já experimentou tacacá?",
+        "tip": "tried = experimentado."
+      },
+      {
+        "topic": "Mixed",
+        "type": "Afirmativa",
+        "phrase": "She has studied English this week",
+        "pt": "Ela estudou inglês esta semana.",
+        "tip": "this week pode combinar com Present Perfect."
+      },
+      {
+        "topic": "Mixed",
+        "type": "Negativa",
+        "phrase": "He has not cleaned his room yet",
+        "pt": "Ele ainda não limpou o quarto dele.",
+        "tip": "not... yet = ainda não."
+      },
+      {
+        "topic": "Mixed",
+        "type": "Interrogativa",
+        "phrase": "Has he finished the game?",
+        "pt": "Ele terminou o jogo?",
+        "tip": "Has he + particípio...?"
+      },
+      {
+        "topic": "Mixed",
+        "type": "Afirmativa",
+        "phrase": "We have visited the museum",
+        "pt": "Nós visitamos o museu.",
+        "tip": "visited the museum = visitamos o museu."
+      },
+      {
+        "topic": "Mixed",
+        "type": "Negativa",
+        "phrase": "They have not started the project",
+        "pt": "Eles não começaram o projeto.",
+        "tip": "started = começado."
+      },
+      {
+        "topic": "Mixed",
+        "type": "Interrogativa",
+        "phrase": "Have they ever sung in English?",
+        "pt": "Eles já cantaram em inglês?",
+        "tip": "sung = cantado."
+      },
+      {
+        "topic": "Mixed",
+        "type": "Afirmativa",
+        "phrase": "I have practiced pronunciation",
+        "pt": "Eu pratiquei pronúncia.",
+        "tip": "pronunciation = pronúncia."
+      }
+    ]
+  },
+  {
+    "title": "Fase 9 - Comparatives and Superlatives Review",
+    "items": [
+      {
+        "topic": "Review",
+        "type": "Afirmativa",
+        "phrase": "This phone is better than that one",
+        "pt": "Este celular é melhor que aquele.",
+        "tip": "better than = melhor que."
+      },
+      {
+        "topic": "Review",
+        "type": "Negativa",
+        "phrase": "This game is not worse",
+        "pt": "Este jogo não é pior.",
+        "tip": "worse = pior."
+      },
+      {
+        "topic": "Review",
+        "type": "Interrogativa",
+        "phrase": "Is English easier than math?",
+        "pt": "Inglês é mais fácil que matemática?",
+        "tip": "easier than = mais fácil que."
+      },
+      {
+        "topic": "Review",
+        "type": "Afirmativa",
+        "phrase": "This is the biggest city",
+        "pt": "Esta é a maior cidade.",
+        "tip": "the biggest = o/a maior."
+      },
+      {
+        "topic": "Review",
+        "type": "Negativa",
+        "phrase": "This is not the most expensive shirt",
+        "pt": "Esta não é a camisa mais cara.",
+        "tip": "the most expensive = o/a mais caro(a)."
+      },
+      {
+        "topic": "Review",
+        "type": "Interrogativa",
+        "phrase": "Is she the tallest student?",
+        "pt": "Ela é a aluna mais alta?",
+        "tip": "the tallest = a mais alta."
+      },
+      {
+        "topic": "Review",
+        "type": "Afirmativa",
+        "phrase": "This movie is more interesting",
+        "pt": "Este filme é mais interessante.",
+        "tip": "more interesting = mais interessante."
+      },
+      {
+        "topic": "Review",
+        "type": "Negativa",
+        "phrase": "These shoes are not cheaper",
+        "pt": "Estes sapatos não são mais baratos.",
+        "tip": "cheaper = mais barato."
+      },
+      {
+        "topic": "Review",
+        "type": "Interrogativa",
+        "phrase": "Are these sneakers the coolest?",
+        "pt": "Estes tênis são os mais legais?",
+        "tip": "the coolest = os mais legais."
+      },
+      {
+        "topic": "Review",
+        "type": "Afirmativa",
+        "phrase": "She is more friendly than him",
+        "pt": "Ela é mais amigável que ele.",
+        "tip": "more friendly than = mais amigável que."
+      }
+    ]
+  },
+  {
+    "title": "Fase 10 - Final Voice Challenge",
+    "items": [
+      {
+        "topic": "Final",
+        "type": "Afirmativa",
+        "phrase": "I have learned a lot today",
+        "pt": "Eu aprendi muito hoje.",
+        "tip": "learned a lot = aprendi muito."
+      },
+      {
+        "topic": "Final",
+        "type": "Negativa",
+        "phrase": "I have not given up",
+        "pt": "Eu não desisti.",
+        "tip": "given up = desistido."
+      },
+      {
+        "topic": "Final",
+        "type": "Interrogativa",
+        "phrase": "Have you ever spoken English in class?",
+        "pt": "Você já falou inglês na aula?",
+        "tip": "spoken = falado."
+      },
+      {
+        "topic": "Final",
+        "type": "Afirmativa",
+        "phrase": "She has improved her pronunciation",
+        "pt": "Ela melhorou a pronúncia dela.",
+        "tip": "improved = melhorado."
+      },
+      {
+        "topic": "Final",
+        "type": "Negativa",
+        "phrase": "He has never stopped trying",
+        "pt": "Ele nunca parou de tentar.",
+        "tip": "stopped trying = parado de tentar."
+      },
+      {
+        "topic": "Final",
+        "type": "Interrogativa",
+        "phrase": "Has she ever won a challenge?",
+        "pt": "Ela já venceu um desafio?",
+        "tip": "won = vencido."
+      },
+      {
+        "topic": "Final",
+        "type": "Afirmativa",
+        "phrase": "We have completed the mission",
+        "pt": "Nós completamos a missão.",
+        "tip": "completed = completado."
+      },
+      {
+        "topic": "Final",
+        "type": "Negativa",
+        "phrase": "They have not lost their confidence",
+        "pt": "Eles não perderam a confiança deles.",
+        "tip": "confidence = confiança."
+      },
+      {
+        "topic": "Final",
+        "type": "Interrogativa",
+        "phrase": "Have they practiced enough?",
+        "pt": "Eles praticaram o suficiente?",
+        "tip": "enough = suficiente."
+      },
+      {
+        "topic": "Final",
+        "type": "Afirmativa",
+        "phrase": "English has become part of my life",
+        "pt": "O inglês se tornou parte da minha vida.",
+        "tip": "has become = se tornou."
+      }
+    ]
+  }
+];
+
+    let currentPhase = 0;
+    let currentQuestion = 0;
+    let score = 0;
+    let totalQuestions = phases.reduce((total, phase) => total + phase.items.length, 0);
+    let answeredCurrent = false;
+    let playerName = "Você";
+    let playerSchool = "Sua escola";
+    let finalScoreSaved = false;
+
+    const MAX_LIVES = 5;
+    let lives = MAX_LIVES;
+    let gameOverSaved = false;
+
+    const startScreen = document.getElementById("startScreen");
+    const gameScreen = document.getElementById("gameScreen");
+    const phaseCompleteScreen = document.getElementById("phaseCompleteScreen");
+    const gameOverScreen = document.getElementById("gameOverScreen");
+    const endScreen = document.getElementById("endScreen");
+
+    const startPhaseMap = document.getElementById("startPhaseMap");
+    const gamePhaseMap = document.getElementById("gamePhaseMap");
+    const phaseTitle = document.getElementById("phaseTitle");
+    const scoreText = document.getElementById("scoreText");
+    const questionText = document.getElementById("questionText");
+    const progressBar = document.getElementById("progressBar");
+    const livesText = document.getElementById("livesText");
+
+    const contentTag = document.getElementById("contentTag");
+    const sentenceType = document.getElementById("sentenceType");
+    const phraseText = document.getElementById("phraseText");
+    const translationText = document.getElementById("translationText");
+    const tipText = document.getElementById("tipText");
+    const spokenText = document.getElementById("spokenText");
+    const feedbackBox = document.getElementById("feedbackBox");
+    const nextButton = document.getElementById("nextButton");
+    const phraseCard = document.getElementById("phraseCard");
+
+    renderPhaseMap(startPhaseMap, 0);
+
+    function startGame() {
+      const name = document.getElementById("playerName").value.trim();
+      const school = document.getElementById("playerSchool").value.trim();
+
+      if (!name) {
+        alert("Digite o nome do aluno para começar.");
+        return;
+      }
+
+      playerName = name.slice(0, 24);
+      playerSchool = school ? school.slice(0, 32) : "Sua escola";
+
+      currentPhase = 0;
+      currentQuestion = 0;
+      score = 0;
+      lives = MAX_LIVES;
+      finalScoreSaved = false;
+      gameOverSaved = false;
+
+      showScreen(gameScreen);
+      loadQuestion();
+    }
+
+    function showScreen(screen) {
+      startScreen.classList.remove("active");
+      gameScreen.classList.remove("active");
+      phaseCompleteScreen.classList.remove("active");
+      gameOverScreen.classList.remove("active");
+      endScreen.classList.remove("active");
+
+      screen.classList.add("active");
+    }
+
+    function renderPhaseMap(container, activePhase) {
+      container.innerHTML = "";
+
+      phases.forEach((phase, index) => {
+        const tile = document.createElement("div");
+        tile.className = "phase-tile";
+
+        if (index < activePhase) {
+          tile.classList.add("done");
+          tile.innerHTML = `<div class="phase-number">✓</div><div>Fase ${index + 1}</div>`;
+        } else if (index === activePhase) {
+          tile.classList.add("open");
+          tile.innerHTML = `<div class="phase-number">${index + 1}</div><div>Em andamento</div>`;
+        } else {
+          tile.classList.add("locked");
+          tile.innerHTML = `<div class="lock">🔒</div><div>Fase ${index + 1}</div>`;
+        }
+
+        container.appendChild(tile);
+      });
+    }
+
+    function loadQuestion() {
+      answeredCurrent = false;
+      nextButton.disabled = true;
+
+      const item = phases[currentPhase].items[currentQuestion];
+
+      phaseTitle.textContent = phases[currentPhase].title;
+      contentTag.textContent = item.topic;
+      sentenceType.textContent = item.type;
+      phraseText.textContent = item.phrase;
+      translationText.textContent = item.pt;
+      tipText.textContent = item.tip;
+
+      spokenText.textContent = "Toque em “Falar” e repita a frase.";
+      hideFeedback();
+
+      phraseCard.classList.remove("correct-glow", "wrong-shake");
+
+      renderPhaseMap(gamePhaseMap, currentPhase);
+      updateHud();
+    }
+
+    function updateHud() {
+      const answeredSoFar = currentPhase * 10 + currentQuestion;
+      const progress = (answeredSoFar / totalQuestions) * 100;
+
+      scoreText.textContent = `${score}/${totalQuestions}`;
+      questionText.textContent = `${currentQuestion + 1}/10`;
+      progressBar.style.width = `${progress}%`;
+
+      const hearts = "❤️".repeat(lives);
+      const lost = "🖤".repeat(MAX_LIVES - lives);
+      livesText.textContent = hearts + lost;
+    }
+
+    function speakPhrase() {
+      const item = phases[currentPhase].items[currentQuestion];
+
+      if (!("speechSynthesis" in window)) {
+        showFeedback("Seu navegador não suporta áudio de voz.", "wrong");
+        return;
+      }
+
+      window.speechSynthesis.cancel();
+
+      const utterance = new SpeechSynthesisUtterance(item.phrase);
+      utterance.lang = "en-US";
+      utterance.rate = 0.82;
+      utterance.pitch = 1;
+
+      const voices = window.speechSynthesis.getVoices();
+      const englishVoice = voices.find(voice => voice.lang && voice.lang.toLowerCase().startsWith("en"));
+
+      if (englishVoice) {
+        utterance.voice = englishVoice;
+      }
+
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function startRecognition() {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+      if (!SpeechRecognition) {
+        spokenText.textContent = "Seu navegador não suporta microfone.";
+        showFeedback("Seu navegador não suporta microfone. Continue ouvindo e repetindo oralmente.", "info");
+        nextButton.disabled = false;
+        return;
+      }
+
+      const recognition = new SpeechRecognition();
+      recognition.lang = "en-US";
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
+
+      spokenText.textContent = "Ouvindo... fale a frase em inglês.";
+      showFeedback("🎤 Pode falar agora!", "info");
+
+      recognition.start();
+
+      recognition.onresult = function(event) {
+        const spoken = event.results[0][0].transcript;
+        spokenText.textContent = spoken;
+        checkAnswer(spoken);
+      };
+
+      recognition.onerror = function() {
+        spokenText.textContent = "Não foi possível reconhecer sua fala.";
+        showFeedback("❌ Tente novamente ou toque em Próxima para continuar.", "wrong");
+        animateWrongCard();
+        playErrorSound();
+        nextButton.disabled = false;
+      };
+
+      recognition.onend = function() {
+        if (spokenText.textContent === "Ouvindo... fale a frase em inglês.") {
+          spokenText.textContent = "Nenhuma fala foi reconhecida.";
+          showFeedback("⚠️ Você não falou nada ou o áudio ficou baixo. Tente novamente.", "wrong");
+          animateWrongCard();
+          playErrorSound();
+          nextButton.disabled = false;
+        }
+      };
+    }
+
+    function checkAnswer(spoken) {
+      const expected = phases[currentPhase].items[currentQuestion].phrase;
+
+      const normalizedExpected = normalizeText(expected);
+      const normalizedSpoken = normalizeText(spoken);
+
+      const expectedWords = normalizedExpected.split(" ");
+      let matchedWords = 0;
+
+      expectedWords.forEach(word => {
+        if (normalizedSpoken.includes(word)) {
+          matchedWords++;
+        }
+      });
+
+      const similarity = matchedWords / expectedWords.length;
+      const isCorrect =
+        normalizedSpoken.includes(normalizedExpected) ||
+        normalizedExpected.includes(normalizedSpoken) ||
+        similarity >= 0.7;
+
+      if (isCorrect) {
+        if (!answeredCurrent) {
+          score++;
+          answeredCurrent = true;
+        }
+
+        showFeedback("✅ Muito bom! Great job!", "correct");
+        animateCorrectCard();
+        playSuccessSound();
+      } else {
+        lives--;
+
+        if (lives < 0) {
+          lives = 0;
+        }
+
+        showFeedback("❌ Tente novamente. Você perdeu 1 vida.", "wrong");
+        animateWrongCard();
+        playErrorSound();
+        updateHud();
+
+        if (lives <= 0) {
+          setTimeout(showGameOver, 700);
+          return;
+        }
+      }
+
+      nextButton.disabled = false;
+      updateHud();
+    }
+
+    function normalizeText(text) {
+      return text
+        .toLowerCase()
+        .replace(/[.,!?;:]/g, "")
+        .replace(/don't/g, "dont")
+        .replace(/doesn't/g, "doesnt")
+        .replace(/do not/g, "dont")
+        .replace(/does not/g, "doesnt")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    function showFeedback(message, type) {
+      feedbackBox.textContent = message;
+      feedbackBox.className = `feedback show ${type}`;
+    }
+
+    function hideFeedback() {
+      feedbackBox.textContent = "";
+      feedbackBox.className = "feedback";
+    }
+
+    function animateCorrectCard() {
+      phraseCard.classList.remove("correct-glow", "wrong-shake");
+      void phraseCard.offsetWidth;
+      phraseCard.classList.add("correct-glow");
+
+      setTimeout(() => {
+        phraseCard.classList.remove("correct-glow");
+      }, 900);
+    }
+
+    function animateWrongCard() {
+      phraseCard.classList.remove("correct-glow", "wrong-shake");
+      void phraseCard.offsetWidth;
+      phraseCard.classList.add("wrong-shake");
+
+      setTimeout(() => {
+        phraseCard.classList.remove("wrong-shake");
+      }, 500);
+    }
+
+    function nextQuestion() {
+      currentQuestion++;
+
+      if (currentQuestion >= 10) {
+        showPhaseComplete();
+        return;
+      }
+
+      loadQuestion();
+    }
+
+    function showPhaseComplete() {
+      const completedPhaseNumber = currentPhase + 1;
+
+      if (completedPhaseNumber >= phases.length) {
+        finishGame();
+        return;
+      }
+
+      document.getElementById("phaseCompleteMessage").textContent =
+        `Você completou a Fase ${completedPhaseNumber}!`;
+
+      document.getElementById("phaseCompleteScore").textContent =
+        `Pontuação atual: ${score}/${totalQuestions} | Vidas restantes: ${"❤️".repeat(lives)}${"🖤".repeat(MAX_LIVES - lives)}`;
+
+      document.getElementById("nextPhaseButton").textContent =
+        `🚀 Começar Fase ${completedPhaseNumber + 1}`;
+
+      showScreen(phaseCompleteScreen);
+    }
+
+    function continueToNextPhase() {
+      currentPhase++;
+      currentQuestion = 0;
+      lives = MAX_LIVES;
+      gameOverSaved = false;
+
+      showScreen(gameScreen);
+      loadQuestion();
+    }
+
+
+    function getScorePercent() {
+      return Math.max(0, Math.min(100, Math.round((score / totalQuestions) * 100)));
+    }
+
+    function updateCurrentPlayerScoreBoxes() {
+      const points = getScorePercent();
+      const html = `✨ SUA PONTUAÇÃO AGORA ✨<strong>⭐ ${playerName} — ${points} pontos</strong><small>${playerSchool}</small>`;
+      ["gameOverPlayerScoreBox", "endPlayerScoreBox", "modalPlayerScoreBox"].forEach(id => {
+        const box = document.getElementById(id);
+        if (box) box.innerHTML = html;
+      });
+    }
+
+    function openRankingModal() {
+      updateCurrentPlayerScoreBoxes();
+      const modal = document.getElementById("rankingModal");
+      if (modal) {
+        modal.classList.add("active");
+        modal.setAttribute("aria-hidden", "false");
+      }
+      if (typeof window.carregarRanking === "function") {
+        window.carregarRanking(NOME_DO_JOGO, "rankingModalList");
+      }
+    }
+
+    function closeRankingModal() {
+      const modal = document.getElementById("rankingModal");
+      if (modal) {
+        modal.classList.remove("active");
+        modal.setAttribute("aria-hidden", "true");
+      }
+    }
+
+
+    function showGameOver() {
+      document.getElementById("gameOverScore").textContent =
+        `Pontuação: ${score}/${totalQuestions} | Você chegou até a Fase ${currentPhase + 1}`;
+      updateCurrentPlayerScoreBoxes();
+
+      showScreen(gameOverScreen);
+
+      if (!gameOverSaved) {
+        gameOverSaved = true;
+
+        if (typeof window.salvarPontuacao === "function") {
+          window.salvarPontuacao(playerName, getScorePercent(), NOME_DO_JOGO, playerSchool);
+        }
+      }
+
+      if (typeof window.carregarRanking === "function") {
+        window.carregarRanking(NOME_DO_JOGO, "rankingGameOver");
+      }
+    }
+
+    function retryCurrentPhase() {
+      currentQuestion = 0;
+      lives = MAX_LIVES;
+      gameOverSaved = false;
+
+      showScreen(gameScreen);
+      loadQuestion();
+    }
+
+    function finishGame() {
+      progressBar.style.width = "100%";
+      showScreen(endScreen);
+
+      document.getElementById("finalScore").textContent = `Pontuação: ${score}/${totalQuestions}`;
+      updateCurrentPlayerScoreBoxes();
+
+      const percent = score / totalQuestions;
+      const motivationText = document.getElementById("motivationText");
+
+      if (percent >= 0.7) {
+        motivationText.textContent = "🔥 Você quase chegou ao topo!";
+      } else {
+        motivationText.textContent = "💪 Continue treinando para melhorar!";
+      }
+
+      if (!finalScoreSaved) {
+        finalScoreSaved = true;
+
+        if (typeof window.salvarPontuacao === "function") {
+          window.salvarPontuacao(playerName, getScorePercent(), NOME_DO_JOGO, playerSchool);
+        }
+      }
+
+      if (typeof window.carregarRanking === "function") {
+        window.carregarRanking(NOME_DO_JOGO, "rankingOnline");
+      }
+    }
+
+    function avaliarJogo(avaliacao, buttonElement) {
+      const ratingMessage = document.getElementById("ratingMessage");
+      const ratingMessageGameOver = document.getElementById("ratingMessageGameOver");
+
+      if (typeof window.salvarAvaliacao === "function") {
+        window.salvarAvaliacao(avaliacao, NOME_DO_JOGO);
+      }
+
+      if (ratingMessage) {
+        ratingMessage.textContent = "Obrigado! Sua avaliação foi registrada.";
+      }
+
+      if (ratingMessageGameOver) {
+        ratingMessageGameOver.textContent = "Obrigado! Sua avaliação foi registrada.";
+      }
+
+      const ratingBox = buttonElement ? buttonElement.closest(".rating-box") : null;
+      const buttons = ratingBox ? ratingBox.querySelectorAll("button") : document.querySelectorAll(".rating-buttons button");
+
+      buttons.forEach(btn => {
+        btn.disabled = true;
+        btn.style.filter = "none";
+      });
+
+      if (buttonElement) {
+        buttonElement.style.filter = "brightness(1.25)";
+      }
+    }
+
+    function restartGame() {
+      if ("speechSynthesis" in window) {
+        window.speechSynthesis.cancel();
+      }
+
+      document.getElementById("playerName").value = "";
+      document.getElementById("playerSchool").value = "";
+      document.getElementById("ratingMessage").textContent = "";
+      const ratingMessageGameOver = document.getElementById("ratingMessageGameOver");
+      if (ratingMessageGameOver) {
+        ratingMessageGameOver.textContent = "";
+      }
+
+      const buttons = document.querySelectorAll(".rating-buttons button");
+      buttons.forEach(btn => {
+        btn.disabled = false;
+        btn.style.filter = "none";
+      });
+
+      currentPhase = 0;
+      currentQuestion = 0;
+      score = 0;
+      lives = MAX_LIVES;
+      finalScoreSaved = false;
+      gameOverSaved = false;
+
+      renderPhaseMap(startPhaseMap, 0);
+      showScreen(startScreen);
+    }
+
+    function playSuccessSound() {
+      try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        const audioCtx = new AudioContext();
+
+        const notes = [
+          { frequency: 660, time: 0 },
+          { frequency: 880, time: 0.12 },
+          { frequency: 990, time: 0.24 }
+        ];
+
+        notes.forEach(note => {
+          const oscillator = audioCtx.createOscillator();
+          const gainNode = audioCtx.createGain();
+
+          oscillator.type = "sine";
+          oscillator.frequency.setValueAtTime(note.frequency, audioCtx.currentTime + note.time);
+
+          gainNode.gain.setValueAtTime(0.001, audioCtx.currentTime + note.time);
+          gainNode.gain.exponentialRampToValueAtTime(0.18, audioCtx.currentTime + note.time + 0.03);
+          gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + note.time + 0.22);
+
+          oscillator.connect(gainNode);
+          gainNode.connect(audioCtx.destination);
+
+          oscillator.start(audioCtx.currentTime + note.time);
+          oscillator.stop(audioCtx.currentTime + note.time + 0.24);
+        });
+      } catch (error) {
+        console.log("Som positivo não pôde ser reproduzido.");
+      }
+    }
+
+    function playErrorSound() {
+      try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        const audioCtx = new AudioContext();
+
+        const oscillator = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+
+        oscillator.type = "sawtooth";
+        oscillator.frequency.setValueAtTime(180, audioCtx.currentTime);
+        oscillator.frequency.exponentialRampToValueAtTime(95, audioCtx.currentTime + 0.22);
+
+        gainNode.gain.setValueAtTime(0.12, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.25);
+
+        oscillator.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+
+        oscillator.start();
+        oscillator.stop(audioCtx.currentTime + 0.25);
+      } catch (error) {
+        console.log("Som de erro não pôde ser reproduzido.");
+      }
+    }
+
+    if ("speechSynthesis" in window) {
+      window.speechSynthesis.onvoiceschanged = function() {
+        window.speechSynthesis.getVoices();
+      };
+    }
+  </script>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+
+    import {
+      getFirestore,
+      collection,
+      addDoc,
+      serverTimestamp,
+      query,
+      orderBy,
+      limit,
+      onSnapshot
+    } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCVTR3nnyo5mYTF28TJisgTUe-Xyjk1upg",
+      authDomain: "english-game-hub.firebaseapp.com",
+      projectId: "english-game-hub",
+      storageBucket: "english-game-hub.firebasestorage.app",
+      messagingSenderId: "131880771426",
+      appId: "1:131880771426:web:cf29a6f34ca86be527d63b"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    window.registrarAcesso = async function registrarAcesso(jogo = NOME_DO_JOGO) {
+      try {
+        const agora = new Date();
+
+        await addDoc(collection(db, "acessos"), {
+          nome_do_jogo: jogo,
+          data: agora.toLocaleDateString("pt-BR"),
+          hora: agora.toLocaleTimeString("pt-BR"),
+          timestamp: serverTimestamp()
+        });
+      } catch (error) {
+        console.error("Erro ao registrar acesso:", error);
+      }
+    };
+
+    window.salvarPontuacao = async function salvarPontuacao(nome, pontos, jogo = NOME_DO_JOGO, escola = "Escola não informada") {
+      try {
+        const nomeLimpo = String(nome || "").trim().slice(0, 24);
+        const escolaLimpa = String(escola || "Escola não informada").trim().slice(0, 42);
+        const pontosNumero = Number(pontos);
+
+        if (!nomeLimpo) {
+          console.warn("Nome vazio. Pontuação não salva.");
+          return;
+        }
+
+        if (!Number.isInteger(pontosNumero) || pontosNumero < 0 || pontosNumero > 100) {
+          console.warn("Pontuação inválida. Pontuação não salva.");
+          return;
+        }
+
+        await addDoc(collection(db, "pontuacoes"), {
+          nome: nomeLimpo,
+          escola: escolaLimpa || "Escola não informada",
+          pontos: pontosNumero,
+          jogo: jogo,
+          tipo: "real",
+          timestamp: serverTimestamp()
+        });
+      } catch (error) {
+        console.error("Erro ao salvar pontuação:", error);
+      }
+    };
+
+    window.salvarAvaliacao = async function salvarAvaliacao(avaliacao, jogo = NOME_DO_JOGO) {
+      try {
+        const avaliacoesPermitidas = ["ruim", "neutro", "bom"];
+
+        if (!avaliacoesPermitidas.includes(avaliacao)) {
+          console.warn("Avaliação inválida.");
+          return;
+        }
+
+        await addDoc(collection(db, "avaliacoes"), {
+          jogo: jogo,
+          avaliacao: avaliacao,
+          nome: playerName || "Não informado",
+          escola: playerSchool || "Escola não informada",
+          timestamp: serverTimestamp()
+        });
+      } catch (error) {
+        console.error("Erro ao salvar avaliação:", error);
+      }
+    };
+
+    const rankingMotivacionalInicial = [
+      { nome: "Ana Clara", escola: "Escola Delfina de Jesus Amorim", pontos: 85, tipo: "motivacional" },
+      { nome: "Pedro Lucas", escola: "Escola Frei Fabiano Merz", pontos: 74, tipo: "motivacional" },
+      { nome: "Maria Eduarda", escola: "Escola Maria Amália Queiroz", pontos: 68, tipo: "motivacional" },
+      { nome: "João Miguel", escola: "Escola São Francisco", pontos: 61, tipo: "motivacional" },
+      { nome: "Lívia Vitória", escola: "Escola Nossa Senhora de Fátima", pontos: 55, tipo: "motivacional" }
+    ];
+
+    window.carregarRanking = function carregarRanking(jogo = NOME_DO_JOGO, containerId = "rankingOnline") {
+      const rankingContainer = document.getElementById(containerId);
+
+      if (!rankingContainer) {
+        console.warn("Elemento de ranking não encontrado.");
+        return;
+      }
+
+      const rankingQuery = query(
+        collection(db, "pontuacoes"),
+        limit(500)
+      );
+
+      onSnapshot(rankingQuery, (snapshot) => {
+        rankingContainer.innerHTML = "";
+
+        const somaPorAluno = new Map();
+
+        // Ranking motivacional inicial: aparece na tela, mas não é salvo no banco.
+        rankingMotivacionalInicial.forEach(item => {
+          const chave = `${item.nome.toLowerCase()}|${item.escola.toLowerCase()}|motivacional`;
+          somaPorAluno.set(chave, { ...item });
+        });
+
+        // Dados reais do Firebase: soma somente as partidas deste jogo.
+        snapshot.forEach((doc) => {
+          const item = doc.data();
+
+          if (!item || item.tipo === "motivacional") {
+            return;
+          }
+
+          if (item.jogo !== jogo) {
+            return;
+          }
+
+          const nome = String(item.nome || "").trim();
+          const escola = String(item.escola || "Escola não informada").trim();
+          const pontos = Number(item.pontos || 0);
+
+          if (!nome || !Number.isFinite(pontos)) {
+            return;
+          }
+
+          const chave = `${nome.toLowerCase()}|${escola.toLowerCase()}|real`;
+          const atual = somaPorAluno.get(chave) || {
+            nome: nome,
+            escola: escola,
+            pontos: 0,
+            tipo: "real"
+          };
+
+          atual.pontos += pontos;
+          somaPorAluno.set(chave, atual);
+        });
+
+        const currentKey = `${String(playerName || "").toLowerCase()}|${String(playerSchool || "").toLowerCase()}|real`;
+        const currentLocalPoints = typeof getScorePercent === "function" ? getScorePercent() : Number(score || 0);
+
+        if (playerName && playerName !== "Você" && !somaPorAluno.has(currentKey)) {
+          somaPorAluno.set(currentKey, {
+            nome: playerName,
+            escola: playerSchool || "Escola não informada",
+            pontos: currentLocalPoints,
+            tipo: "real",
+            currentOnly: true
+          });
+        }
+
+        const allItems = Array.from(somaPorAluno.values())
+          .sort((a, b) => b.pontos - a.pontos);
+
+        const rankingItems = allItems.slice(0, 10);
+        const currentItem = allItems.find(item =>
+          item.tipo === "real" &&
+          String(item.nome || "").toLowerCase() === String(playerName || "").toLowerCase() &&
+          String(item.escola || "").toLowerCase() === String(playerSchool || "").toLowerCase()
+        );
+
+        if (rankingItems.length === 0) {
+          rankingContainer.innerHTML = "<li>Nenhuma pontuação registrada ainda.</li>";
+          return;
+        }
+
+        const currentInTop = rankingItems.some(item =>
+          item.tipo === "real" &&
+          String(item.nome || "").toLowerCase() === String(playerName || "").toLowerCase() &&
+          String(item.escola || "").toLowerCase() === String(playerSchool || "").toLowerCase()
+        );
+
+        rankingItems.forEach((item, index) => {
+          const li = document.createElement("li");
+          const isCurrent = item.tipo === "real" &&
+            String(item.nome || "").toLowerCase() === String(playerName || "").toLowerCase() &&
+            String(item.escola || "").toLowerCase() === String(playerSchool || "").toLowerCase();
+
+          li.classList.add(`rank-${index + 1}`);
+          if (isCurrent) li.classList.add("you");
+
+          const medal = index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : `${index + 1}º`;
+          const champion = index === 0 ? " 🏆 Campeão do dia" : "";
+          const youMark = isCurrent ? " ⭐ Você" : "";
+          const selo = item.tipo === "motivacional" ? " ⭐" : "";
+
+          li.textContent = `${medal} ${item.nome}${youMark}${selo} - ${item.escola} - ${item.pontos} pontos${champion}`;
+          rankingContainer.appendChild(li);
+        });
+
+        if (currentItem && !currentInTop) {
+          const pos = allItems.findIndex(item =>
+            item.tipo === "real" &&
+            String(item.nome || "").toLowerCase() === String(playerName || "").toLowerCase() &&
+            String(item.escola || "").toLowerCase() === String(playerSchool || "").toLowerCase()
+          ) + 1;
+
+          const li = document.createElement("li");
+          li.className = "you-extra";
+          li.textContent = `✨ Sua posição nesta rodada: ${pos}º ${currentItem.nome} ⭐ Você - ${currentItem.escola} - ${currentItem.pontos} pontos`;
+          rankingContainer.appendChild(li);
+        }
+      }, (error) => {
+        console.error("Erro ao carregar ranking:", error);
+        rankingContainer.innerHTML = "<li>Não foi possível carregar o ranking. Sua pontuação desta rodada aparece acima.</li>";
+      });
+    };
+
+    window.registrarAcesso(NOME_DO_JOGO);
+    window.carregarRanking(NOME_DO_JOGO, "rankingOnline");
+  </script>
+</body>
+</html>
