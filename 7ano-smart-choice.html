@@ -185,6 +185,33 @@ let state = {
   skipLeft: 3, tipUsed: false, fiftyUsed: false, timer: null, timeLeft: 30,
   player: null, finished: false, lastResult: null
 };
+const SOUND_FILES = {
+  click: "click.wav",
+  correct: "success.wav",
+  wrong: "error.wav",
+  victory: "victory.wav",
+  gameover: "game-over.wav"
+};
+const SOUND_BANK = {};
+function prepareSounds(){
+  Object.entries(SOUND_FILES).forEach(([key,src])=>{
+    if(SOUND_BANK[key]) return;
+    const audio = new Audio(src);
+    audio.preload = "auto";
+    audio.volume = key === "victory" || key === "gameover" ? 0.55 : 0.45;
+    SOUND_BANK[key] = audio;
+  });
+}
+function playSound(key){
+  try{
+    prepareSounds();
+    const base = SOUND_BANK[key];
+    if(!base) return;
+    const audio = base.cloneNode(true);
+    audio.volume = base.volume;
+    audio.play().catch(()=>{});
+  }catch(e){}
+}
 function el(id){return document.getElementById(id)}
 function showScreen(id){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));el(id).classList.add("active");document.body.classList.toggle("playing",id==="gameScreen")}
 function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
@@ -206,6 +233,8 @@ function getPlayerInfo(){
   };
 }
 function startGame(){
+  prepareSounds();
+  playSound("click");
   state = {...state, deck: makeDeck(), index:0, score:0, correct:0, wrong:0, lives:5, skipLeft:3, tipUsed:false, fiftyUsed:false, finished:false, player:getPlayerInfo(), lastResult:null};
   showScreen("gameScreen");
   loadQuestion();
@@ -270,21 +299,25 @@ function startTimer(){
 }
 function lockOptions(){document.querySelectorAll(".option").forEach(b=>b.disabled=true)}
 function answerQuestion(btn, selected){
+  playSound("click");
   clearInterval(state.timer); lockOptions();
   const q=currentQuestion();
   const ok = selected === q.answer;
   document.querySelectorAll(".option").forEach(b=>{if(b._answerValue === q.answer) b.classList.add("correct")});
   if(ok){
+    playSound("correct");
     state.correct++; state.score += q.bimester==="2" ? 20 : 10;
     btn.classList.add("correct");
     el("feedback").className="feedback good"; el("feedback").textContent="✅ Very good! Você escolheu a alternativa correta.";
   } else {
+    playSound("wrong");
     state.wrong++; state.lives--; btn.classList.add("wrong");
     el("feedback").className="feedback bad"; el("feedback").textContent="❌ Atenção: a resposta correta é “"+q.answer+"”. "+q.tip;
   }
   setTimeout(()=>{state.index++; loadQuestion()}, ok ? 900 : 1700);
 }
 function timeoutQuestion(){
+  playSound("wrong");
   lockOptions();
   const q=currentQuestion(); state.wrong++; state.lives--;
   document.querySelectorAll(".option").forEach(b=>{if(b._answerValue === q.answer) b.classList.add("correct")});
@@ -292,17 +325,20 @@ function timeoutQuestion(){
   setTimeout(()=>{state.index++; loadQuestion()},1700);
 }
 function useFifty(){
-  if(state.fiftyUsed) return; state.fiftyUsed=true; el("fiftyBtn").disabled=true;
+  if(state.fiftyUsed) return; playSound("click"); state.fiftyUsed=true; el("fiftyBtn").disabled=true;
   const q=currentQuestion(); const wrong=[...document.querySelectorAll(".option")].filter(b=>b._answerValue !== q.answer);
   shuffle(wrong).slice(0,2).forEach(b=>b.classList.add("hide-option"));
 }
-function useSkip(){ if(state.skipLeft<=0) return; state.skipLeft--; state.index++; loadQuestion(); }
+function useSkip(){ if(state.skipLeft<=0) return; playSound("click"); state.skipLeft--; state.index++; loadQuestion(); }
 function useTip(){
-  if(state.tipUsed) return; state.tipUsed=true; el("tipBtn").disabled=true;
+  if(state.tipUsed) return; playSound("click"); state.tipUsed=true; el("tipBtn").disabled=true;
   const q=currentQuestion(); el("feedback").className="feedback good"; el("feedback").textContent="💡 Dica: "+q.tip;
 }
 function finishGame(status){
   if(state.finished) return; state.finished=true; clearInterval(state.timer);
+  if(status === "venceu") playSound("victory");
+  else if(status === "gameover") playSound("gameover");
+  else playSound("click");
   const pontosRanking = state.score;
   const p = state.player || getPlayerInfo();
   state.lastResult = {...p, pontos:pontosRanking, score:state.score, acertos:state.correct, erros:state.wrong, jogo:GAME_NAME, status};
@@ -316,7 +352,7 @@ function finishGame(status){
   if(window.salvarPontuacao) window.salvarPontuacao(GAME_NAME, p.nome, p.turma, p.escola, pontosRanking, state.correct, state.wrong, status);
   if(window.carregarRanking) window.carregarRanking();
 }
-function restartGame(){showScreen("startScreen")}
+function restartGame(){playSound("click"); showScreen("startScreen")}
 function rankRowHTML(item, idx, current=false){
   const pos=idx+1; const cls = current ? " player" : pos<=3 ? " rank-"+pos : "";
   const medal = pos===1?"🥇":pos===2?"🥈":pos===3?"🥉":pos+"º";
@@ -342,9 +378,10 @@ function renderRanking(container, rows){
     }
   }
 }
-function openRankingModal(){el("rankingModal").classList.add("active"); carregarRanking(true)}
-function closeRankingModal(){el("rankingModal").classList.remove("active")}
+function openRankingModal(){playSound("click"); el("rankingModal").classList.add("active"); carregarRanking(true)}
+function closeRankingModal(){playSound("click"); el("rankingModal").classList.remove("active")}
 function rateGame(avaliacao){
+  playSound("click");
   const p = state.player || getPlayerInfo();
   if(window.salvarAvaliacao) window.salvarAvaliacao(avaliacao,GAME_NAME,p.nome,p.escola);
   el("ratingMessage").textContent = "Obrigado pela avaliação!";
