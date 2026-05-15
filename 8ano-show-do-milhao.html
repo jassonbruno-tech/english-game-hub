@@ -190,6 +190,15 @@ main{flex:1;min-height:0;padding:10px;overflow:hidden}
 </div>
 
 
+
+<audio id="audioClick" src="click.wav" preload="auto"></audio>
+<audio id="audioIntro" src="spin.wav" preload="auto"></audio>
+<audio id="audioSuspense" src="show-suspense.wav" preload="auto" loop></audio>
+<audio id="audioSuccess" src="success.wav" preload="auto"></audio>
+<audio id="audioError" src="error.wav" preload="auto"></audio>
+<audio id="audioVictory" src="victory.wav" preload="auto"></audio>
+<audio id="audioGameOver" src="game-over.wav" preload="auto"></audio>
+
 <div id="roundIntro" class="round-intro" aria-live="polite">
   <div class="round-intro-card">
     <div id="introKicker" class="round-intro-kicker">Vamos à próxima pergunta!</div>
@@ -212,6 +221,101 @@ let state = {
   skipLeft: 3, tipUsed: false, fiftyUsed: false, timer: null, timeLeft: 20,
   player: null, finished: false, lastResult: null
 };
+
+let gameAudioUnlocked = false;
+const REAL_AUDIO_IDS = {
+  click: "audioClick",
+  intro: "audioIntro",
+  suspense: "audioSuspense",
+  success: "audioSuccess",
+  error: "audioError",
+  victory: "audioVictory",
+  gameover: "audioGameOver"
+};
+
+function getRealAudio(name){
+  const id = REAL_AUDIO_IDS[name];
+  return id ? document.getElementById(id) : null;
+}
+
+function safePlayAudio(name, options={}){
+  const audio = getRealAudio(name);
+  if(!audio) return false;
+  try{
+    const volume = typeof options.volume === "number" ? options.volume : 1;
+    audio.volume = volume;
+    if(options.restart !== false){
+      audio.currentTime = 0;
+    }
+    const p = audio.play();
+    if(p && typeof p.catch === "function"){
+      p.catch(()=>{});
+    }
+    return true;
+  }catch(e){
+    return false;
+  }
+}
+
+function stopAudio(name){
+  const audio = getRealAudio(name);
+  if(!audio) return;
+  try{
+    audio.pause();
+    audio.currentTime = 0;
+  }catch(e){}
+}
+
+function stopSuspense(){
+  stopAudio("suspense");
+}
+
+function startSuspense(){
+  const audio = getRealAudio("suspense");
+  if(!audio) return;
+  try{
+    audio.loop = true;
+    audio.volume = 0.42;
+    audio.currentTime = 0;
+    const p = audio.play();
+    if(p && typeof p.catch === "function"){
+      p.catch(()=>{});
+    }
+  }catch(e){}
+}
+
+function unlockRealAudio(){
+  if(gameAudioUnlocked) return;
+  gameAudioUnlocked = true;
+
+  Object.keys(REAL_AUDIO_IDS).forEach(name=>{
+    const audio = getRealAudio(name);
+    if(!audio) return;
+    try{
+      const oldMuted = audio.muted;
+      audio.muted = true;
+      audio.volume = 0.01;
+      const p = audio.play();
+      if(p && typeof p.then === "function"){
+        p.then(()=>{
+          audio.pause();
+          audio.currentTime = 0;
+          audio.muted = oldMuted;
+          audio.volume = name === "suspense" ? 0.42 : 1;
+        }).catch(()=>{
+          audio.muted = oldMuted;
+          audio.volume = name === "suspense" ? 0.42 : 1;
+        });
+      }else{
+        audio.pause();
+        audio.currentTime = 0;
+        audio.muted = oldMuted;
+        audio.volume = name === "suspense" ? 0.42 : 1;
+      }
+    }catch(e){}
+  });
+}
+
 function el(id){return document.getElementById(id)}
 function showScreen(id){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));el(id).classList.add("active");document.body.classList.toggle("playing",id==="gameScreen")}
 function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
@@ -233,6 +337,8 @@ function getPlayerInfo(){
   };
 }
 function startGame(){
+  unlockRealAudio();
+  safePlayAudio("click", {volume:.65});
   state = {...state, deck: makeDeck(), index:0, score:0, correct:0, wrong:0, lives:5, skipLeft:3, tipUsed:false, fiftyUsed:false, finished:false, player:getPlayerInfo(), lastResult:null};
   showScreen("gameScreen");
   loadQuestion();
@@ -281,9 +387,11 @@ function loadQuestion(showIntro=true){
     btn.addEventListener("click",()=>answerQuestion(btn, op));
     optionsBox.appendChild(btn);
   });
+  startSuspense();
   startTimer();
 }
 function showRoundIntro(done){
+  stopSuspense();
   const q=currentQuestion();
   const n = state.index + 1;
   const value = milhoValue();
@@ -308,6 +416,8 @@ function startTimer(){
 }
 function lockOptions(){document.querySelectorAll(".option").forEach(b=>b.disabled=true)}
 function answerQuestion(btn, selected){
+  safePlayAudio("click", {volume:.55});
+  stopSuspense();
   clearInterval(state.timer); lockOptions();
   const q=currentQuestion();
   const ok = selected === q.answer;
@@ -325,6 +435,7 @@ function answerQuestion(btn, selected){
   setTimeout(()=>{state.index++; loadQuestion(true)}, ok ? 1400 : 1900);
 }
 function timeoutQuestion(){
+  stopSuspense();
   lockOptions();
   const q=currentQuestion(); state.wrong++; state.lives--;
   document.querySelectorAll(".option").forEach(b=>{if(b.dataset.answer === q.answer) b.classList.add("correct")});
@@ -333,12 +444,25 @@ function timeoutQuestion(){
   setTimeout(()=>{state.index++; loadQuestion(true)},1900);
 }
 function useFifty(){
+  unlockRealAudio();
+  safePlayAudio("click", {volume:.55});
   if(state.fiftyUsed) return; state.fiftyUsed=true; el("fiftyBtn").disabled=true;
   const q=currentQuestion(); const wrong=[...document.querySelectorAll(".option")].filter(b=>b.dataset.answer !== q.answer);
   shuffle(wrong).slice(0,2).forEach(b=>b.classList.add("hide-option"));
 }
-function useSkip(){ if(state.skipLeft<=0) return; clearInterval(state.timer); state.skipLeft--; state.index++; loadQuestion(true); }
+function useSkip(){
+  unlockRealAudio();
+  safePlayAudio("click", {volume:.55});
+  stopSuspense();
+  if(state.skipLeft<=0) return;
+  clearInterval(state.timer);
+  state.skipLeft--;
+  state.index++;
+  loadQuestion(true);
+}
 function useTip(){
+  unlockRealAudio();
+  safePlayAudio("click", {volume:.55});
   if(state.tipUsed) return; state.tipUsed=true; el("tipBtn").disabled=true;
   const q=currentQuestion(); el("feedback").className="feedback good"; el("feedback").textContent="💡 Dica: "+q.tip;
 }
@@ -356,9 +480,35 @@ function tone(freq=440,dur=.12,type="sine",gain=.05,delay=0){
     osc.start(t); osc.stop(t+dur+.03);
   }catch(e){}
 }
-function playIntroSound(){ tone(330,.10,"sine",.035,0); tone(440,.12,"sine",.035,.10); tone(660,.16,"triangle",.04,.22); }
-function playCorrectSound(){ tone(523,.10,"sine",.045,0); tone(659,.12,"sine",.045,.10); tone(784,.18,"triangle",.05,.22); setTimeout(()=>makeApplause(),120); }
-function playWrongSound(){ tone(190,.18,"sawtooth",.035,0); tone(145,.22,"sawtooth",.025,.16); }
+function playIntroSound(){
+  stopSuspense();
+  const ok = safePlayAudio("intro", {volume:.72});
+  if(!ok){
+    tone(330,.10,"sine",.035,0);
+    tone(440,.12,"sine",.035,.10);
+    tone(660,.16,"triangle",.04,.22);
+  }
+}
+
+function playCorrectSound(){
+  stopSuspense();
+  const ok = safePlayAudio("success", {volume:.92});
+  if(!ok){
+    tone(523,.10,"sine",.045,0);
+    tone(659,.12,"sine",.045,.10);
+    tone(784,.18,"triangle",.05,.22);
+    setTimeout(()=>makeApplause(),120);
+  }
+}
+
+function playWrongSound(){
+  stopSuspense();
+  const ok = safePlayAudio("error", {volume:.90});
+  if(!ok){
+    tone(190,.18,"sawtooth",.035,0);
+    tone(145,.22,"sawtooth",.025,.16);
+  }
+}
 function makeApplause(){
   try{
     const ctx=audioCtx();
@@ -372,6 +522,8 @@ function makeApplause(){
 }
 
 function finishGame(status){
+  stopSuspense();
+  if(status === "parou") safePlayAudio("click", {volume:.65});
   if(state.finished) return; state.finished=true; clearInterval(state.timer);
   const pontosRanking = state.score;
   const p = state.player || getPlayerInfo();
@@ -383,10 +535,16 @@ function finishGame(status){
   el("finalScore").textContent=state.score; el("finalCorrect").textContent=state.correct; el("finalWrong").textContent=state.wrong; el("finalStatus").textContent=status.toUpperCase();
   el("currentScoreBox").innerHTML = `✨ SUA PONTUAÇÃO AGORA ✨<br><b>${p.nome}</b> — ${state.score} pontos<br><small>Turma: ${p.turma} • ${p.escola}</small>`;
   showScreen("finalScreen");
+  if(status === "venceu") safePlayAudio("victory", {volume:1});
+  if(status === "gameover") safePlayAudio("gameover", {volume:1});
   if(window.salvarPontuacao) window.salvarPontuacao(GAME_NAME, p.nome, p.turma, p.escola, pontosRanking, state.correct, state.wrong, status);
   carregarRanking();
 }
-function restartGame(){showScreen("startScreen")}
+function restartGame(){
+  safePlayAudio("click", {volume:.6});
+  stopSuspense();
+  showScreen("startScreen");
+}
 function rankRowHTML(item, idx, current=false){
   const pos=idx+1; const cls = current ? " player" : pos<=3 ? " rank-"+pos : "";
   const medal = pos===1?"🥇":pos===2?"🥈":pos===3?"🥉":pos+"º";
@@ -412,13 +570,25 @@ function renderRanking(container, rows){
     }
   }
 }
-function openRankingModal(){el("rankingModal").classList.add("active"); carregarRanking(true)}
-function closeRankingModal(){el("rankingModal").classList.remove("active")}
+function openRankingModal(){
+  safePlayAudio("click", {volume:.6});
+  el("rankingModal").classList.add("active");
+  carregarRanking(true);
+}
+function closeRankingModal(){
+  safePlayAudio("click", {volume:.6});
+  el("rankingModal").classList.remove("active");
+}
 function rateGame(avaliacao){
+  safePlayAudio("click", {volume:.6});
   const p = state.player || getPlayerInfo();
   if(window.salvarAvaliacao) window.salvarAvaliacao(avaliacao,GAME_NAME,p.nome,p.escola);
   el("ratingMessage").textContent = "Obrigado pela avaliação!";
 }
+
+document.addEventListener("visibilitychange", ()=>{
+  if(document.hidden) stopSuspense();
+});
 </script>
 
 <script type="module">
