@@ -389,6 +389,97 @@ header{padding:14px 18px 12px;text-align:center;background:linear-gradient(135de
   box-shadow:0 0 18px rgba(34,197,94,.35);
 }
 
+
+/* === AJUSTES VISUAIS 8º ANO - SPIN CENTRALIZADO E TEXTOS DA ROLETA === */
+.spin-wrap,
+.wheel-wrap,
+.roulette-wrap,
+.wheel-area,
+.spin-area,
+.center-spin,
+.spin-center{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+#spinBtn,
+.spin-btn,
+.spinButton,
+button.spin,
+button[onclick*="spin"]{
+  position:relative;
+  left:auto !important;
+  right:auto !important;
+  margin-left:auto !important;
+  margin-right:auto !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  text-align:center !important;
+  transform-origin:center center !important;
+}
+
+.spin-controls,
+.action-area,
+.controls,
+.game-actions,
+.wheel-actions{
+  display:flex !important;
+  justify-content:center !important;
+  align-items:center !important;
+  width:100% !important;
+  text-align:center !important;
+}
+
+/* Textos dentro da roleta: mais visíveis, com sombra e destaque */
+.wheel text,
+.roulette text,
+svg text,
+.wheel-label,
+.segment-label,
+.slice-label,
+.theme-label{
+  font-size:clamp(13px, 3.8vw, 18px) !important;
+  font-weight:950 !important;
+  fill:#fff7d6 !important;
+  color:#fff7d6 !important;
+  letter-spacing:.25px !important;
+  paint-order:stroke fill !important;
+  stroke:rgba(70, 0, 18, .92) !important;
+  stroke-width:4px !important;
+  stroke-linejoin:round !important;
+  text-shadow:
+    0 2px 2px rgba(0,0,0,.70),
+    0 0 8px rgba(255,209,102,.75),
+    0 0 14px rgba(255,69,120,.55) !important;
+  filter:drop-shadow(0 2px 2px rgba(0,0,0,.75)) drop-shadow(0 0 6px rgba(255,209,102,.55));
+}
+
+/* Caso os nomes sejam escritos em divs posicionadas */
+.wheel-label span,
+.segment-label span,
+.slice-label span,
+.theme-label span{
+  font-size:inherit !important;
+  font-weight:950 !important;
+  color:#fff7d6 !important;
+  text-shadow:
+    0 2px 2px rgba(0,0,0,.75),
+    0 0 8px rgba(255,209,102,.75),
+    0 0 14px rgba(255,69,120,.55) !important;
+}
+
+/* Dá um brilho melhor ao botão, mas preserva a identidade */
+#spinBtn,
+.spin-btn,
+.spinButton{
+  box-shadow:
+    0 0 0 2px rgba(255,255,255,.16),
+    0 0 22px rgba(255,209,102,.48),
+    0 10px 24px rgba(0,0,0,.32) !important;
+}
+
 </style>
 </head>
 <body>
