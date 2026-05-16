@@ -593,7 +593,211 @@
     .summary-row{font-size:.86rem;padding:5px 6px;grid-template-columns:28px 1fr}
     .summary-row span:first-child{font-size:1rem}
   }
+
+  .game-shell{
+    flex:1;
+    min-height:0;
+    display:flex;
+    flex-direction:column;
+    gap:7px;
+  }
+
+  .game-hud{
+    flex:0 0 auto;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:5px;
+  }
+
+  .hud-card{
+    background:linear-gradient(180deg,rgba(0,0,0,.72),rgba(7,20,38,.80));
+    border:1px solid rgba(255,216,77,.42);
+    border-radius:14px;
+    padding:5px 3px;
+    text-align:center;
+    box-shadow:0 6px 14px rgba(0,0,0,.28), inset 0 0 14px rgba(255,255,255,.035);
+  }
+
+  .hud-card b{
+    display:block;
+    color:var(--gold);
+    font-size:.88rem;
+    line-height:1;
+    text-shadow:0 0 10px rgba(255,216,77,.35);
+  }
+
+  .hud-card span{
+    display:block;
+    margin-top:2px;
+    color:#dbeafe;
+    font-size:.56rem;
+    font-weight:1000;
+    text-transform:uppercase;
+    letter-spacing:.3px;
+  }
+
+  .track-panel{
+    position:relative;
+    flex:1;
+    min-height:0;
+    border-radius:26px;
+    overflow:hidden;
+    border:2px solid rgba(255,216,77,.50);
+    background:
+      radial-gradient(circle at 50% 12%,rgba(56,189,248,.16),transparent 35%),
+      linear-gradient(180deg,rgba(0,0,0,.72),rgba(7,20,38,.88));
+    box-shadow:0 12px 34px rgba(0,0,0,.42),0 0 25px rgba(255,122,0,.20);
+  }
+
+  #phaserGame{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+  }
+
+  .game-overlay-title{
+    position:absolute;
+    top:8px;
+    left:50%;
+    transform:translateX(-50%);
+    z-index:2;
+    padding:5px 10px;
+    border-radius:999px;
+    background:rgba(0,0,0,.52);
+    border:1px solid rgba(255,216,77,.36);
+    color:#fff7cc;
+    font-size:.68rem;
+    font-weight:1000;
+    letter-spacing:.4px;
+    text-transform:uppercase;
+    pointer-events:none;
+    box-shadow:0 0 16px rgba(255,216,77,.18);
+  }
+
+  .game-controls{
+    flex:0 0 auto;
+    display:grid;
+    grid-template-columns:.85fr 1.35fr;
+    gap:8px;
+    align-items:center;
+  }
+
+  .dice-panel{
+    min-height:58px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    border-radius:18px;
+    background:rgba(0,0,0,.58);
+    border:1px solid rgba(255,216,77,.42);
+    box-shadow:0 6px 16px rgba(0,0,0,.28), inset 0 0 16px rgba(255,255,255,.035);
+  }
+
+  .dice-face{
+    font-size:1.9rem;
+    line-height:1;
+    filter:drop-shadow(0 0 8px rgba(255,216,77,.42));
+  }
+
+  .dice-label{
+    margin-top:2px;
+    font-size:.63rem;
+    color:#dbeafe;
+    font-weight:1000;
+  }
+
+  .roll-btn{
+    min-height:58px;
+    border:2px solid rgba(255,216,77,.75);
+    border-radius:20px;
+    background:linear-gradient(180deg,#fff17a,#ffd000 45%,#ff8a00);
+    color:#2a1300;
+    font-size:1.08rem;
+    font-weight:1000;
+    box-shadow:0 6px 0 rgba(96,39,0,.9),0 0 20px rgba(255,122,0,.42);
+  }
+
+  .roll-btn:active{
+    transform:translateY(3px);
+    box-shadow:0 3px 0 rgba(96,39,0,.9),0 0 18px rgba(255,122,0,.38);
+  }
+
+  .roll-btn:disabled{
+    opacity:.55;
+    filter:grayscale(.2);
+  }
+
+  .phase-note{
+    flex:0 0 auto;
+    margin:0;
+    text-align:center;
+    min-height:20px;
+    color:#ffe066;
+    font-size:.75rem;
+    line-height:1.15;
+    font-weight:1000;
+    text-shadow:0 2px 0 rgba(0,0,0,.6);
+  }
+
+  .top-gamebar{
+    flex:0 0 auto;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+  }
+
+  .mini-back{
+    border:1px solid rgba(255,255,255,.20);
+    border-radius:999px;
+    background:rgba(0,0,0,.52);
+    color:#fff;
+    padding:7px 10px;
+    font-size:.72rem;
+    font-weight:1000;
+    text-decoration:none;
+    box-shadow:none;
+  }
+
+  .mini-title{
+    flex:1;
+    color:var(--gold);
+    text-align:center;
+    font-size:.82rem;
+    font-weight:1000;
+    text-shadow:0 2px 0 rgba(0,0,0,.75);
+  }
+
+  .mini-car{
+    color:#fff7cc;
+    text-align:right;
+    font-size:.68rem;
+    font-weight:1000;
+  }
+
+  @media(max-height:760px){
+    .game-shell{gap:5px}
+    .game-hud{gap:4px}
+    .hud-card{padding:4px 2px;border-radius:12px}
+    .hud-card b{font-size:.74rem}
+    .hud-card span{font-size:.48rem}
+    .game-controls{gap:6px}
+    .dice-panel,.roll-btn{min-height:50px}
+    .dice-face{font-size:1.55rem}
+    .roll-btn{font-size:.95rem}
+    .phase-note{font-size:.66rem;min-height:17px}
+  }
+
+  @media(max-height:650px){
+    .top-gamebar{display:none}
+    .game-overlay-title{font-size:.58rem}
+    .dice-panel,.roll-btn{min-height:45px}
+  }
+
 </style>
+<script src="https://cdn.jsdelivr.net/npm/phaser@3.80.1/dist/phaser.min.js"></script>
 </head>
 <body>
 <div class="app">
@@ -668,17 +872,53 @@
 
       <p class="small-note">
         Etapa 2.0 em construção: esta tela confirma os dados do piloto, a série e o carro escolhido.
-        A próxima atualização vai abrir a pista com dado e movimento.
+        Nesta etapa, o botão “Ir para a pista” já abre um protótipo com dado e movimento em Phaser.
       </p>
 
       <div class="ready-actions">
-        <button class="track-btn" type="button" onclick="showComingSoon()">🚀 Ir para a pista</button>
+        <button class="track-btn" type="button" onclick="openTrack()">🚀 Ir para a pista</button>
         <button class="secondary-btn" type="button" onclick="backToLogin()">⬅ Voltar e trocar escolhas</button>
       </div>
     </div>
 
     <p class="teacher">Jogo idealizado pelo professor Jasson Bruno.</p>
   </section>
+
+
+  <section id="gameScreen" class="screen">
+    <div class="top-gamebar">
+      <button class="mini-back" type="button" onclick="showScreen('readyScreen')">⬅ Voltar</button>
+      <div class="mini-title">Formula Race Board Game 2.0</div>
+      <div id="miniCarName" class="mini-car">Turbo Racer</div>
+    </div>
+
+    <div class="game-shell">
+      <div class="game-hud">
+        <div class="hud-card"><b id="hudPos">0/32</b><span>Progresso</span></div>
+        <div class="hud-card"><b id="hudDice">🎲</b><span>Dado</span></div>
+        <div class="hud-card"><b id="hudGrade">Série</b><span>Turma</span></div>
+        <div class="hud-card"><b id="hudCar">Carro</b><span>Skin</span></div>
+      </div>
+
+      <div class="track-panel">
+        <div class="game-overlay-title">Protótipo da pista • Movimento em Phaser</div>
+        <div id="phaserGame"></div>
+      </div>
+
+      <p id="phaseNote" class="phase-note">Toque em “Rolar dado” para testar o movimento do carro escolhido.</p>
+
+      <div class="game-controls">
+        <div class="dice-panel">
+          <div id="diceFaceGame" class="dice-face">🎲</div>
+          <div class="dice-label">Dado 1–4</div>
+        </div>
+        <button id="rollBtn" class="roll-btn" type="button" onclick="rollTrackDice()">🎲 Rolar dado</button>
+      </div>
+    </div>
+
+    <p class="teacher">Jogo idealizado pelo professor Jasson Bruno.</p>
+  </section>
+
 </div>
 
 <script>
@@ -808,8 +1048,276 @@
     showScreen("readyScreen");
   }
 
-  function showComingSoon(){
-    alert("🚧 A pista será construída na próxima etapa: dado, movimento do carro e perguntas por série.");
+  let selectedPlayerData = null;
+  let phaserGame = null;
+  let raceScene = null;
+  let trackPosition = 0;
+  const TOTAL_TRACK_POINTS = 32;
+
+  function openTrack(){
+    const raw = localStorage.getItem("formulaRace2Player");
+    selectedPlayerData = raw ? JSON.parse(raw) : null;
+
+    if(!selectedPlayerData){
+      showScreen("loginScreen");
+      return;
+    }
+
+    $("miniCarName").textContent = selectedPlayerData.carName.replace(/[🔥✨⚡🐉]/g,"").trim();
+    $("hudGrade").textContent = selectedPlayerData.grade.replace(" ano","");
+    $("hudCar").textContent = selectedPlayerData.carName.match(/[🔥✨⚡🐉]/)?.[0] || "🏎️";
+
+    showScreen("gameScreen");
+
+    setTimeout(() => {
+      if(!phaserGame){
+        createPhaserGame(selectedPlayerData.carFile);
+      }else if(raceScene){
+        raceScene.changeCar(selectedPlayerData.carFile);
+        raceScene.scale.resize($("phaserGame").clientWidth, $("phaserGame").clientHeight);
+      }
+      trackPosition = 0;
+      updateTrackHUD("🎲");
+      if(raceScene) raceScene.resetCar();
+    }, 80);
+  }
+
+  function createPhaserGame(carFile){
+    const container = $("phaserGame");
+    const config = {
+      type: Phaser.AUTO,
+      parent: "phaserGame",
+      width: Math.max(300, container.clientWidth),
+      height: Math.max(420, container.clientHeight),
+      backgroundColor: "#06101f",
+      transparent: true,
+      scale: {
+        mode: Phaser.Scale.RESIZE,
+        autoCenter: Phaser.Scale.CENTER_BOTH
+      },
+      scene: {
+        preload: function(){
+          this.load.image("selectedCar", carFile);
+        },
+        create: function(){
+          raceScene = this;
+          this.pathPoints = [];
+          this.canMove = true;
+
+          this.drawTrack = function(){
+            const w = this.scale.width;
+            const h = this.scale.height;
+            const g = this.add.graphics();
+            this.trackGraphics = g;
+
+            g.clear();
+
+            // Fundo futurista
+            g.fillGradientStyle(0x071427,0x071427,0x020617,0x020617,1);
+            g.fillRoundedRect(0,0,w,h,0);
+
+            // Luzes de estádio
+            for(let i=0;i<9;i++){
+              const x = (i/8)*w;
+              g.fillStyle(0x38bdf8, .12);
+              g.fillCircle(x, h*.08, 62);
+              g.lineStyle(1,0x38bdf8,.12);
+              g.lineBetween(x,h*.08,w/2,h*.48);
+            }
+
+            const cx = w/2;
+            const top = h*.13;
+            const bottom = h*.88;
+            const left = w*.20;
+            const right = w*.80;
+
+            const points = [];
+            const total = TOTAL_TRACK_POINTS;
+            for(let i=0;i<=total;i++){
+              const t = i/total;
+              const y = bottom - (bottom-top)*t;
+              const amp = w*.25*(.80 - .22*t);
+              const x = cx + Math.sin(t*Math.PI*3.05) * amp;
+              points.push({x,y});
+            }
+            this.pathPoints = points;
+
+            // Desenha pista em camadas
+            const drawPath = (width,color,alpha) => {
+              g.lineStyle(width,color,alpha);
+              g.beginPath();
+              g.moveTo(points[0].x,points[0].y);
+              for(let i=1;i<points.length;i++){
+                const p0 = points[i-1];
+                const p1 = points[i];
+                const mx = (p0.x + p1.x)/2;
+                const my = (p0.y + p1.y)/2;
+                g.lineTo(mx,my);
+                g.lineTo(p1.x,p1.y);
+              }
+              g.strokePath();
+            };
+
+            drawPath(52,0x000000,.55);
+            drawPath(44,0x263348,1);
+            drawPath(34,0x111827,1);
+            drawPath(4,0xffd84d,.82);
+
+            // Casas/checkpoints discretos
+            for(let i=0;i<points.length;i++){
+              const p = points[i];
+              const special = [4,8,12,16,20,24,28].includes(i);
+              g.fillStyle(special ? 0xffd84d : 0xffffff, special ? .95 : .52);
+              g.lineStyle(2, special ? 0xff7a00 : 0x38bdf8, special ? .95 : .35);
+              g.fillCircle(p.x,p.y,special ? 8 : 5);
+              g.strokeCircle(p.x,p.y,special ? 8 : 5);
+            }
+
+            // Start e finish
+            this.addTextLabel("START", points[0].x, points[0].y+30, 0x7cff4d);
+            this.addTextLabel("FINISH", points[points.length-1].x, points[points.length-1].y-30, 0xffd84d);
+          };
+
+          this.addTextLabel = function(text,x,y,color){
+            const label = this.add.text(x,y,text,{
+              fontFamily:"Arial",
+              fontSize:"16px",
+              fontStyle:"900",
+              color:"#ffffff",
+              stroke:"#000000",
+              strokeThickness:5
+            }).setOrigin(.5);
+            label.setTint(color);
+          };
+
+          this.drawTrack();
+
+          this.glow = this.add.circle(0,0,20,0xffd84d,.22);
+          this.glow.setStrokeStyle(2,0xffd84d,.55);
+
+          this.car = this.add.image(0,0,"selectedCar");
+          this.car.setOrigin(.5);
+          this.car.setDepth(5);
+          this.car.setScale(Math.min(this.scale.width/520, .58));
+          this.car.setAngle(-90);
+
+          this.resetCar = () => {
+            trackPosition = 0;
+            const p = this.pathPoints[0];
+            this.car.setPosition(p.x,p.y);
+            this.glow.setPosition(p.x,p.y);
+            this.car.setScale(Math.min(this.scale.width/520, .58));
+            updateTrackHUD("🎲");
+          };
+
+          this.changeCar = (file) => {
+            this.textures.remove("selectedCar");
+            this.load.image("selectedCar", file);
+            this.load.once("complete", () => {
+              this.car.setTexture("selectedCar");
+              this.resetCar();
+            });
+            this.load.start();
+          };
+
+          this.moveSteps = (steps) => {
+            if(!this.canMove) return;
+            this.canMove = false;
+
+            const start = trackPosition;
+            const end = Math.min(TOTAL_TRACK_POINTS, trackPosition + steps);
+            const sequence = [];
+            for(let i=start+1;i<=end;i++) sequence.push(i);
+
+            let idx = 0;
+            const moveNext = () => {
+              if(idx >= sequence.length){
+                trackPosition = end;
+                this.canMove = true;
+                updateTrackHUD(steps);
+                if(trackPosition >= TOTAL_TRACK_POINTS){
+                  $("phaseNote").textContent = "🏆 Protótipo concluído! O carro chegou ao FINISH.";
+                  $("rollBtn").disabled = true;
+                }else{
+                  $("phaseNote").textContent = "Movimento testado com sucesso. Na próxima etapa, a pergunta entra antes do avanço.";
+                  $("rollBtn").disabled = false;
+                }
+                return;
+              }
+
+              const targetIndex = sequence[idx];
+              const p = this.pathPoints[targetIndex];
+              const prev = this.pathPoints[targetIndex-1] || p;
+              const angle = Phaser.Math.RadToDeg(Math.atan2(p.y-prev.y,p.x-prev.x)) + 90;
+
+              this.tweens.add({
+                targets:[this.car,this.glow],
+                x:p.x,
+                y:p.y,
+                duration:380,
+                ease:"Sine.easeInOut"
+              });
+
+              this.tweens.add({
+                targets:this.car,
+                angle:angle,
+                duration:300,
+                ease:"Sine.easeInOut"
+              });
+
+              idx++;
+              this.time.delayedCall(430, moveNext);
+            };
+
+            moveNext();
+          };
+
+          this.scale.on("resize", () => {
+            this.children.removeAll();
+            this.drawTrack();
+            this.glow = this.add.circle(0,0,20,0xffd84d,.22);
+            this.glow.setStrokeStyle(2,0xffd84d,.55);
+            this.car = this.add.image(0,0,"selectedCar");
+            this.car.setOrigin(.5).setDepth(5).setScale(Math.min(this.scale.width/520, .58));
+            this.resetCar();
+          });
+
+          this.resetCar();
+        }
+      }
+    };
+
+    phaserGame = new Phaser.Game(config);
+  }
+
+  function rollTrackDice(){
+    if(!raceScene || !raceScene.canMove) return;
+
+    const btn = $("rollBtn");
+    btn.disabled = true;
+
+    let ticks = 0;
+    const faces = ["⚀","⚁","⚂","⚃"];
+    const timer = setInterval(() => {
+      const n = Math.floor(Math.random()*4);
+      $("diceFaceGame").textContent = faces[n];
+      $("hudDice").textContent = faces[n];
+      ticks++;
+
+      if(ticks >= 12){
+        clearInterval(timer);
+        const value = Math.floor(Math.random()*4) + 1;
+        $("diceFaceGame").textContent = faces[value-1];
+        $("hudDice").textContent = value;
+        $("phaseNote").textContent = `Você tirou ${value}. O carro vai avançar ${value} casa(s).`;
+        raceScene.moveSteps(value);
+      }
+    }, 65);
+  }
+
+  function updateTrackHUD(diceValue){
+    $("hudPos").textContent = `${trackPosition}/${TOTAL_TRACK_POINTS}`;
+    if(diceValue !== undefined) $("hudDice").textContent = diceValue;
   }
 
   function backToLogin(){
