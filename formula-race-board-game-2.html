@@ -489,7 +489,7 @@
 
   .summary-row{
     display:grid;
-    grid-template-columns:28px 1fr;
+    grid-template-columns:34px 1fr;
     align-items:center;
     gap:7px;
     background:rgba(255,255,255,.055);
@@ -497,7 +497,12 @@
     border-radius:13px;
     padding:7px 8px;
     color:#eaf6ff;
-    font-size:.88rem;
+    font-size:1.10rem;
+  }
+
+  .summary-row span:first-child{
+    font-size:1.28rem;
+    text-align:center;
   }
 
   .summary-row b{
@@ -571,8 +576,9 @@
     .chosen-car-wrap{min-height:130px;margin-bottom:6px}
     .chosen-car{max-height:170px}
     .summary{gap:5px;padding:8px;margin-bottom:8px}
-    .summary-row{font-size:.76rem;padding:6px 7px}
+    .summary-row{font-size:.95rem;padding:6px 7px;grid-template-columns:30px 1fr}
     .small-note{font-size:.68rem;margin-bottom:8px}
+    .summary-row span:first-child{font-size:1.12rem}
     .track-btn,.secondary-btn{min-height:42px;font-size:.88rem}
   }
 
@@ -584,6 +590,8 @@
     .ready-tag,.small-note{display:none}
     .chosen-car-wrap{min-height:105px}
     .chosen-car{max-height:135px}
+    .summary-row{font-size:.86rem;padding:5px 6px;grid-template-columns:28px 1fr}
+    .summary-row span:first-child{font-size:1rem}
   }
 </style>
 </head>
