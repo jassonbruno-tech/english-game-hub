@@ -639,7 +639,7 @@
   .track-panel{
     position:relative;
     flex:1;
-    min-height:0;
+    min-height:280px;
     border-radius:26px;
     overflow:hidden;
     border:2px solid rgba(255,216,77,.50);
@@ -901,7 +901,7 @@
       </div>
 
       <div class="track-panel">
-        <div class="game-overlay-title">Protótipo da pista • Movimento em Phaser</div>
+        <div class="game-overlay-title">Pista 2.0 • Teste de movimento</div>
         <div id="phaserGame"></div>
       </div>
 
@@ -1079,6 +1079,8 @@
       trackPosition = 0;
       updateTrackHUD("🎲");
       if(raceScene) raceScene.resetCar();
+      $("rollBtn").disabled = false;
+      $("phaseNote").textContent = "Toque em “Rolar dado” para testar o movimento do carro escolhido.";
     }, 80);
   }
 
@@ -1126,18 +1128,21 @@
             }
 
             const cx = w/2;
-            const top = h*.13;
-            const bottom = h*.88;
-            const left = w*.20;
-            const right = w*.80;
+            const top = h*.10;
+            const bottom = h*.90;
 
             const points = [];
             const total = TOTAL_TRACK_POINTS;
             for(let i=0;i<=total;i++){
               const t = i/total;
               const y = bottom - (bottom-top)*t;
-              const amp = w*.25*(.80 - .22*t);
-              const x = cx + Math.sin(t*Math.PI*3.05) * amp;
+
+              // Caminho em "S" suave, próprio para tela vertical.
+              // A amplitude diminui no topo para dar sensação de profundidade.
+              const depth = 1 - (t * .35);
+              const amp = w * .29 * depth;
+              const x = cx + Math.sin(t*Math.PI*3.2) * amp;
+
               points.push({x,y});
             }
             this.pathPoints = points;
@@ -1198,7 +1203,7 @@
           this.car = this.add.image(0,0,"selectedCar");
           this.car.setOrigin(.5);
           this.car.setDepth(5);
-          this.car.setScale(Math.min(this.scale.width/520, .58));
+          this.car.setScale(Math.min(this.scale.width/1350, .22));
           this.car.setAngle(-90);
 
           this.resetCar = () => {
@@ -1206,7 +1211,7 @@
             const p = this.pathPoints[0];
             this.car.setPosition(p.x,p.y);
             this.glow.setPosition(p.x,p.y);
-            this.car.setScale(Math.min(this.scale.width/520, .58));
+            this.car.setScale(Math.min(this.scale.width/1350, .22));
             updateTrackHUD("🎲");
           };
 
@@ -1278,7 +1283,7 @@
             this.glow = this.add.circle(0,0,20,0xffd84d,.22);
             this.glow.setStrokeStyle(2,0xffd84d,.55);
             this.car = this.add.image(0,0,"selectedCar");
-            this.car.setOrigin(.5).setDepth(5).setScale(Math.min(this.scale.width/520, .58));
+            this.car.setOrigin(.5).setDepth(5).setScale(Math.min(this.scale.width/1350, .22));
             this.resetCar();
           });
 
