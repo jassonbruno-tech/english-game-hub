@@ -796,6 +796,237 @@
     .dice-panel,.roll-btn{min-height:45px}
   }
 
+
+  /* ===== Formula Race 2.0 - Board + Fullscreen Race Cutscene ===== */
+  .track-panel.board-mode{
+    min-height:0;
+    background:
+      radial-gradient(circle at 50% 18%,rgba(56,189,248,.18),transparent 34%),
+      linear-gradient(180deg,rgba(0,0,0,.78),rgba(7,20,38,.92));
+  }
+
+  .board-map{
+    position:absolute;
+    inset:0;
+    display:block;
+    background:
+      radial-gradient(circle at 50% 0%,rgba(255,216,77,.10),transparent 30%),
+      radial-gradient(circle at 20% 50%,rgba(56,189,248,.14),transparent 36%),
+      radial-gradient(circle at 80% 70%,rgba(255,122,0,.12),transparent 40%),
+      #06101f;
+    overflow:hidden;
+  }
+
+  .board-map::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+      linear-gradient(120deg,transparent 0 48%,rgba(56,189,248,.08) 49% 50%,transparent 51% 100%),
+      linear-gradient(60deg,transparent 0 48%,rgba(255,216,77,.05) 49% 50%,transparent 51% 100%);
+    background-size:46px 46px;
+    opacity:.58;
+  }
+
+  .board-svg{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    z-index:1;
+  }
+
+  .board-car-token{
+    position:absolute;
+    z-index:3;
+    width:72px;
+    height:46px;
+    object-fit:contain;
+    transform:translate(-50%,-50%);
+    filter:drop-shadow(0 8px 8px rgba(0,0,0,.78)) drop-shadow(0 0 10px rgba(255,216,77,.45));
+    transition:left .45s ease, top .45s ease, transform .45s ease;
+  }
+
+  .board-label{
+    position:absolute;
+    z-index:2;
+    left:50%;
+    transform:translateX(-50%);
+    padding:4px 9px;
+    border-radius:999px;
+    background:rgba(0,0,0,.58);
+    border:1px solid rgba(255,216,77,.40);
+    color:#fff7cc;
+    font-weight:1000;
+    font-size:.62rem;
+    text-shadow:0 2px 0 rgba(0,0,0,.85);
+  }
+
+  .start-label{bottom:10px}
+  .finish-label{top:36px;color:#ffd84d}
+
+  .question-modal,
+  .race-cutscene{
+    position:fixed;
+    inset:0;
+    z-index:999;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:14px;
+    background:rgba(0,0,0,.78);
+    backdrop-filter:blur(5px);
+  }
+
+  .question-modal.active,
+  .race-cutscene.active{
+    display:flex;
+  }
+
+  .question-box{
+    width:min(440px,96vw);
+    border-radius:28px;
+    padding:16px;
+    background:
+      radial-gradient(circle at 50% 0%,rgba(255,216,77,.20),transparent 32%),
+      linear-gradient(180deg,rgba(8,20,41,.98),rgba(2,6,18,.98));
+    border:2px solid rgba(255,216,77,.64);
+    box-shadow:0 20px 55px rgba(0,0,0,.58),0 0 28px rgba(255,122,0,.32);
+    text-align:center;
+  }
+
+  .question-box h2{
+    margin:0 0 8px;
+    color:#ffd84d;
+    font-size:1.18rem;
+    text-shadow:0 2px 0 #000;
+  }
+
+  .question-box p{
+    margin:0 0 12px;
+    color:#eaf6ff;
+    font-size:1rem;
+    line-height:1.35;
+    font-weight:900;
+  }
+
+  .answers{
+    display:grid;
+    gap:8px;
+  }
+
+  .answer-btn{
+    min-height:48px;
+    border-radius:16px;
+    border:1.5px solid rgba(255,255,255,.18);
+    background:linear-gradient(180deg,rgba(56,189,248,.22),rgba(37,99,235,.40));
+    color:#fff;
+    font-size:.95rem;
+    font-weight:1000;
+    text-align:left;
+    padding:8px 12px;
+    box-shadow:0 5px 0 rgba(15,23,42,.85);
+  }
+
+  .answer-btn.correct{
+    background:linear-gradient(180deg,#bbf7d0,#22c55e);
+    color:#052e16;
+  }
+
+  .answer-btn.wrong{
+    background:linear-gradient(180deg,#fecaca,#ef4444);
+    color:#450a0a;
+  }
+
+  .answer-feedback{
+    min-height:22px;
+    margin-top:10px;
+    color:#ffe066;
+    font-size:.88rem;
+    font-weight:1000;
+  }
+
+  .cutscene-stage{
+    position:relative;
+    width:min(480px,100vw);
+    height:100dvh;
+    overflow:hidden;
+    background:
+      linear-gradient(180deg,rgba(2,6,18,.16),rgba(2,6,18,.64)),
+      url("formula-race-login-bg.png") center center / cover no-repeat;
+  }
+
+  .cutscene-stage::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+      repeating-linear-gradient(90deg,rgba(255,255,255,.00) 0 12px,rgba(255,255,255,.10) 13px 14px),
+      radial-gradient(circle at 50% 70%,rgba(255,216,77,.20),transparent 35%);
+    opacity:.7;
+    animation:speedLines .45s linear infinite;
+  }
+
+  @keyframes speedLines{
+    from{transform:translateY(-20px)}
+    to{transform:translateY(20px)}
+  }
+
+  .cutscene-car{
+    position:absolute;
+    left:50%;
+    bottom:12%;
+    width:92%;
+    max-width:430px;
+    object-fit:contain;
+    transform:translateX(-50%) scale(.92);
+    filter:drop-shadow(0 18px 16px rgba(0,0,0,.75)) drop-shadow(0 0 24px rgba(255,216,77,.45));
+    animation:raceCarRun 2.15s ease-in-out forwards;
+  }
+
+  @keyframes raceCarRun{
+    0%{transform:translateX(-50%) translateY(80px) scale(.70);opacity:.2}
+    20%{opacity:1}
+    55%{transform:translateX(-50%) translateY(-20px) scale(1.02)}
+    78%{transform:translateX(-45%) translateY(-5px) scale(1.04)}
+    100%{transform:translateX(-50%) translateY(-10px) scale(.95);opacity:1}
+  }
+
+  .cutscene-message{
+    position:absolute;
+    top:9%;
+    left:50%;
+    transform:translateX(-50%);
+    width:90%;
+    padding:12px 14px;
+    border-radius:22px;
+    background:rgba(0,0,0,.62);
+    border:2px solid rgba(255,216,77,.70);
+    color:#ffd84d;
+    font-size:1.22rem;
+    line-height:1.15;
+    font-weight:1000;
+    text-align:center;
+    text-shadow:0 2px 0 #000;
+    box-shadow:0 0 25px rgba(255,122,0,.35);
+  }
+
+  .cutscene-sub{
+    display:block;
+    margin-top:5px;
+    color:#eaf6ff;
+    font-size:.78rem;
+  }
+
+  @media(max-height:760px){
+    .board-car-token{width:60px;height:38px}
+    .question-box{padding:13px;border-radius:24px}
+    .question-box h2{font-size:1rem}
+    .question-box p{font-size:.88rem}
+    .answer-btn{min-height:42px;font-size:.84rem}
+    .cutscene-message{font-size:1rem}
+  }
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/phaser@3.80.1/dist/phaser.min.js"></script>
 </head>
@@ -900,12 +1131,22 @@
         <div class="hud-card"><b id="hudCar">Carro</b><span>Skin</span></div>
       </div>
 
-      <div class="track-panel">
-        <div class="game-overlay-title">Pista 2.0 • Teste de movimento</div>
-        <div id="phaserGame"></div>
+      <div class="track-panel board-mode">
+        <div class="game-overlay-title">Board Map • Pergunta + Corrida</div>
+        <div id="boardMap" class="board-map">
+          <svg class="board-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path id="boardRoadOuter" d="" fill="none" stroke="rgba(0,0,0,.62)" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/>
+            <path id="boardRoad" d="" fill="none" stroke="#1f2937" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+            <path id="boardRoadLine" d="" fill="none" stroke="#ffd84d" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="3 3"/>
+            <g id="boardCells"></g>
+          </svg>
+          <span class="board-label finish-label">FINISH</span>
+          <span class="board-label start-label">START</span>
+          <img id="boardCarToken" class="board-car-token" src="car-turbo-racer.png" alt="Carro no tabuleiro">
+        </div>
       </div>
 
-      <p id="phaseNote" class="phase-note">Toque em “Rolar dado” para testar o movimento do carro escolhido.</p>
+      <p id="phaseNote" class="phase-note">Toque em “Rolar dado”. A pergunta aparece primeiro; se acertar, vem a corrida em tela cheia.</p>
 
       <div class="game-controls">
         <div class="dice-panel">
@@ -919,6 +1160,25 @@
     <p class="teacher">Jogo idealizado pelo professor Jasson Bruno.</p>
   </section>
 
+</div>
+
+<div id="questionModal" class="question-modal">
+  <div class="question-box">
+    <h2>🎯 Desafio rápido</h2>
+    <p id="questionText">Qual é a tradução de “Good morning”?</p>
+    <div id="answers" class="answers"></div>
+    <div id="answerFeedback" class="answer-feedback"></div>
+  </div>
+</div>
+
+<div id="raceCutscene" class="race-cutscene">
+  <div class="cutscene-stage">
+    <div class="cutscene-message">
+      Great job! Turbo activated!
+      <span id="cutsceneSub" class="cutscene-sub">O carro vai avançar no tabuleiro.</span>
+    </div>
+    <img id="cutsceneCar" class="cutscene-car" src="car-turbo-racer.png" alt="Carro correndo">
+  </div>
 </div>
 
 <script>
@@ -1049,10 +1309,39 @@
   }
 
   let selectedPlayerData = null;
-  let phaserGame = null;
-  let raceScene = null;
   let trackPosition = 0;
+  let pendingDiceValue = 0;
   const TOTAL_TRACK_POINTS = 32;
+
+  const BOARD_POINTS = [
+    {x:50,y:91},{x:38,y:86},{x:29,y:78},{x:25,y:68},{x:32,y:59},{x:44,y:54},
+    {x:58,y:49},{x:70,y:42},{x:74,y:32},{x:65,y:24},{x:52,y:20},{x:39,y:16},
+    {x:32,y:10},{x:44,y:7},{x:58,y:9},{x:70,y:15},{x:76,y:25},{x:69,y:36},
+    {x:55,y:43},{x:41,y:49},{x:30,y:57},{x:24,y:68},{x:29,y:80},{x:42,y:86},
+    {x:55,y:82},{x:68,y:74},{x:75,y:63},{x:70,y:51},{x:58,y:43},{x:47,y:34},
+    {x:45,y:22},{x:53,y:12},{x:60,y:7}
+  ];
+
+  const SAMPLE_QUESTIONS = [
+    {
+      text:"Bob Esponja chegou à escola pela manhã. Qual expressão ele deve usar para cumprimentar a turma?",
+      options:["Good morning","Good night","See you","Goodbye"],
+      answer:0,
+      feedback:"Muito bem! Good morning é usado pela manhã."
+    },
+    {
+      text:"No jogo, o professor pediu: “Open your book”. O que o aluno deve fazer?",
+      options:["Fechar o caderno","Abrir o livro","Apagar o quadro","Levantar a mão"],
+      answer:1,
+      feedback:"Isso! Open your book significa abrir o livro."
+    },
+    {
+      text:"Cristiano Ronaldo falou: “I am happy”. Qual é a tradução correta?",
+      options:["Eu estou feliz","Ele está cansado","Nós somos amigos","Você está atrasado"],
+      answer:0,
+      feedback:"Perfeito! I am happy = Eu estou feliz."
+    }
+  ];
 
   function openTrack(){
     const raw = localStorage.getItem("formulaRace2Player");
@@ -1066,238 +1355,52 @@
     $("miniCarName").textContent = selectedPlayerData.carName.replace(/[🔥✨⚡🐉]/g,"").trim();
     $("hudGrade").textContent = selectedPlayerData.grade.replace(" ano","");
     $("hudCar").textContent = selectedPlayerData.carName.match(/[🔥✨⚡🐉]/)?.[0] || "🏎️";
+    $("boardCarToken").src = selectedPlayerData.carFile;
+    $("cutsceneCar").src = selectedPlayerData.carFile;
 
     showScreen("gameScreen");
 
     setTimeout(() => {
-      if(!phaserGame){
-        createPhaserGame(selectedPlayerData.carFile);
-      }else if(raceScene){
-        raceScene.changeCar(selectedPlayerData.carFile);
-        raceScene.scale.resize($("phaserGame").clientWidth, $("phaserGame").clientHeight);
-      }
       trackPosition = 0;
+      drawBoard();
+      placeBoardCar();
       updateTrackHUD("🎲");
-      if(raceScene) raceScene.resetCar();
       $("rollBtn").disabled = false;
-      $("phaseNote").textContent = "Toque em “Rolar dado” para testar o movimento do carro escolhido.";
+      $("phaseNote").textContent = "Toque em “Rolar dado”. A pergunta aparece primeiro; se acertar, vem a corrida em tela cheia.";
     }, 80);
   }
 
-  function createPhaserGame(carFile){
-    const container = $("phaserGame");
-    const config = {
-      type: Phaser.AUTO,
-      parent: "phaserGame",
-      width: Math.max(300, container.clientWidth),
-      height: Math.max(420, container.clientHeight),
-      backgroundColor: "#06101f",
-      transparent: true,
-      scale: {
-        mode: Phaser.Scale.RESIZE,
-        autoCenter: Phaser.Scale.CENTER_BOTH
-      },
-      scene: {
-        preload: function(){
-          this.load.image("selectedCar", carFile);
-        },
-        create: function(){
-          raceScene = this;
-          this.pathPoints = [];
-          this.canMove = true;
+  function drawBoard(){
+    const path = BOARD_POINTS.map((p,i) => `${i===0 ? "M" : "L"} ${p.x} ${p.y}`).join(" ");
+    $("boardRoadOuter").setAttribute("d", path);
+    $("boardRoad").setAttribute("d", path);
+    $("boardRoadLine").setAttribute("d", path);
 
-          this.drawTrack = function(){
-            const w = this.scale.width;
-            const h = this.scale.height;
-            const g = this.add.graphics();
-            this.trackGraphics = g;
+    const cells = $("boardCells");
+    cells.innerHTML = "";
+    BOARD_POINTS.forEach((p,index) => {
+      const special = [4,8,12,16,20,24,28].includes(index);
+      const c = document.createElementNS("http://www.w3.org/2000/svg","circle");
+      c.setAttribute("cx", p.x);
+      c.setAttribute("cy", p.y);
+      c.setAttribute("r", special ? "2.6" : "1.8");
+      c.setAttribute("fill", special ? "#ffd84d" : "#e5e7eb");
+      c.setAttribute("stroke", special ? "#ff7a00" : "#38bdf8");
+      c.setAttribute("stroke-width", special ? ".9" : ".55");
+      c.setAttribute("opacity", special ? "1" : ".82");
+      cells.appendChild(c);
+    });
+  }
 
-            g.clear();
-
-            // Fundo futurista
-            g.fillGradientStyle(0x071427,0x071427,0x020617,0x020617,1);
-            g.fillRoundedRect(0,0,w,h,0);
-
-            // Luzes de estádio
-            for(let i=0;i<9;i++){
-              const x = (i/8)*w;
-              g.fillStyle(0x38bdf8, .12);
-              g.fillCircle(x, h*.08, 62);
-              g.lineStyle(1,0x38bdf8,.12);
-              g.lineBetween(x,h*.08,w/2,h*.48);
-            }
-
-            const cx = w/2;
-            const top = h*.10;
-            const bottom = h*.90;
-
-            const points = [];
-            const total = TOTAL_TRACK_POINTS;
-            for(let i=0;i<=total;i++){
-              const t = i/total;
-              const y = bottom - (bottom-top)*t;
-
-              // Caminho em "S" suave, próprio para tela vertical.
-              // A amplitude diminui no topo para dar sensação de profundidade.
-              const depth = 1 - (t * .35);
-              const amp = w * .29 * depth;
-              const x = cx + Math.sin(t*Math.PI*3.2) * amp;
-
-              points.push({x,y});
-            }
-            this.pathPoints = points;
-
-            // Desenha pista em camadas
-            const drawPath = (width,color,alpha) => {
-              g.lineStyle(width,color,alpha);
-              g.beginPath();
-              g.moveTo(points[0].x,points[0].y);
-              for(let i=1;i<points.length;i++){
-                const p0 = points[i-1];
-                const p1 = points[i];
-                const mx = (p0.x + p1.x)/2;
-                const my = (p0.y + p1.y)/2;
-                g.lineTo(mx,my);
-                g.lineTo(p1.x,p1.y);
-              }
-              g.strokePath();
-            };
-
-            drawPath(52,0x000000,.55);
-            drawPath(44,0x263348,1);
-            drawPath(34,0x111827,1);
-            drawPath(4,0xffd84d,.82);
-
-            // Casas/checkpoints discretos
-            for(let i=0;i<points.length;i++){
-              const p = points[i];
-              const special = [4,8,12,16,20,24,28].includes(i);
-              g.fillStyle(special ? 0xffd84d : 0xffffff, special ? .95 : .52);
-              g.lineStyle(2, special ? 0xff7a00 : 0x38bdf8, special ? .95 : .35);
-              g.fillCircle(p.x,p.y,special ? 8 : 5);
-              g.strokeCircle(p.x,p.y,special ? 8 : 5);
-            }
-
-            // Start e finish
-            this.addTextLabel("START", points[0].x, points[0].y+30, 0x7cff4d);
-            this.addTextLabel("FINISH", points[points.length-1].x, points[points.length-1].y-30, 0xffd84d);
-          };
-
-          this.addTextLabel = function(text,x,y,color){
-            const label = this.add.text(x,y,text,{
-              fontFamily:"Arial",
-              fontSize:"16px",
-              fontStyle:"900",
-              color:"#ffffff",
-              stroke:"#000000",
-              strokeThickness:5
-            }).setOrigin(.5);
-            label.setTint(color);
-          };
-
-          this.drawTrack();
-
-          this.glow = this.add.circle(0,0,20,0xffd84d,.22);
-          this.glow.setStrokeStyle(2,0xffd84d,.55);
-
-          this.car = this.add.image(0,0,"selectedCar");
-          this.car.setOrigin(.5);
-          this.car.setDepth(5);
-          this.car.setScale(Math.min(this.scale.width/1350, .22));
-          this.car.setAngle(-90);
-
-          this.resetCar = () => {
-            trackPosition = 0;
-            const p = this.pathPoints[0];
-            this.car.setPosition(p.x,p.y);
-            this.glow.setPosition(p.x,p.y);
-            this.car.setScale(Math.min(this.scale.width/1350, .22));
-            updateTrackHUD("🎲");
-          };
-
-          this.changeCar = (file) => {
-            this.textures.remove("selectedCar");
-            this.load.image("selectedCar", file);
-            this.load.once("complete", () => {
-              this.car.setTexture("selectedCar");
-              this.resetCar();
-            });
-            this.load.start();
-          };
-
-          this.moveSteps = (steps) => {
-            if(!this.canMove) return;
-            this.canMove = false;
-
-            const start = trackPosition;
-            const end = Math.min(TOTAL_TRACK_POINTS, trackPosition + steps);
-            const sequence = [];
-            for(let i=start+1;i<=end;i++) sequence.push(i);
-
-            let idx = 0;
-            const moveNext = () => {
-              if(idx >= sequence.length){
-                trackPosition = end;
-                this.canMove = true;
-                updateTrackHUD(steps);
-                if(trackPosition >= TOTAL_TRACK_POINTS){
-                  $("phaseNote").textContent = "🏆 Protótipo concluído! O carro chegou ao FINISH.";
-                  $("rollBtn").disabled = true;
-                }else{
-                  $("phaseNote").textContent = "Movimento testado com sucesso. Na próxima etapa, a pergunta entra antes do avanço.";
-                  $("rollBtn").disabled = false;
-                }
-                return;
-              }
-
-              const targetIndex = sequence[idx];
-              const p = this.pathPoints[targetIndex];
-              const prev = this.pathPoints[targetIndex-1] || p;
-              const angle = Phaser.Math.RadToDeg(Math.atan2(p.y-prev.y,p.x-prev.x)) + 90;
-
-              this.tweens.add({
-                targets:[this.car,this.glow],
-                x:p.x,
-                y:p.y,
-                duration:380,
-                ease:"Sine.easeInOut"
-              });
-
-              this.tweens.add({
-                targets:this.car,
-                angle:angle,
-                duration:300,
-                ease:"Sine.easeInOut"
-              });
-
-              idx++;
-              this.time.delayedCall(430, moveNext);
-            };
-
-            moveNext();
-          };
-
-          this.scale.on("resize", () => {
-            this.children.removeAll();
-            this.drawTrack();
-            this.glow = this.add.circle(0,0,20,0xffd84d,.22);
-            this.glow.setStrokeStyle(2,0xffd84d,.55);
-            this.car = this.add.image(0,0,"selectedCar");
-            this.car.setOrigin(.5).setDepth(5).setScale(Math.min(this.scale.width/1350, .22));
-            this.resetCar();
-          });
-
-          this.resetCar();
-        }
-      }
-    };
-
-    phaserGame = new Phaser.Game(config);
+  function placeBoardCar(){
+    const p = BOARD_POINTS[Math.min(trackPosition, TOTAL_TRACK_POINTS)];
+    const car = $("boardCarToken");
+    car.style.left = p.x + "%";
+    car.style.top = p.y + "%";
+    car.style.transform = "translate(-50%,-50%) scale(1)";
   }
 
   function rollTrackDice(){
-    if(!raceScene || !raceScene.canMove) return;
-
     const btn = $("rollBtn");
     btn.disabled = true;
 
@@ -1311,13 +1414,85 @@
 
       if(ticks >= 12){
         clearInterval(timer);
-        const value = Math.floor(Math.random()*4) + 1;
-        $("diceFaceGame").textContent = faces[value-1];
-        $("hudDice").textContent = value;
-        $("phaseNote").textContent = `Você tirou ${value}. O carro vai avançar ${value} casa(s).`;
-        raceScene.moveSteps(value);
+        pendingDiceValue = Math.floor(Math.random()*4) + 1;
+        $("diceFaceGame").textContent = faces[pendingDiceValue-1];
+        $("hudDice").textContent = pendingDiceValue;
+        $("phaseNote").textContent = `Você tirou ${pendingDiceValue}. Responda para liberar a corrida.`;
+        openQuestion();
       }
     }, 65);
+  }
+
+  function openQuestion(){
+    const q = SAMPLE_QUESTIONS[Math.floor(Math.random()*SAMPLE_QUESTIONS.length)];
+    $("questionText").textContent = q.text;
+    $("answerFeedback").textContent = "";
+    const answers = $("answers");
+    answers.innerHTML = "";
+
+    q.options.forEach((option,index) => {
+      const btn = document.createElement("button");
+      btn.className = "answer-btn";
+      btn.type = "button";
+      btn.textContent = String.fromCharCode(65+index) + ") " + option;
+      btn.onclick = () => checkAnswer(btn, index, q);
+      answers.appendChild(btn);
+    });
+
+    $("questionModal").classList.add("active");
+  }
+
+  function checkAnswer(button, index, q){
+    document.querySelectorAll(".answer-btn").forEach(btn => btn.disabled = true);
+
+    if(index === q.answer){
+      button.classList.add("correct");
+      $("answerFeedback").textContent = q.feedback;
+      setTimeout(() => {
+        $("questionModal").classList.remove("active");
+        playRaceCutscene();
+      }, 850);
+    }else{
+      button.classList.add("wrong");
+      const correct = document.querySelectorAll(".answer-btn")[q.answer];
+      if(correct) correct.classList.add("correct");
+      $("answerFeedback").textContent = "Ainda não. Observe a resposta correta e tente novamente na próxima rodada.";
+      setTimeout(() => {
+        $("questionModal").classList.remove("active");
+        $("rollBtn").disabled = false;
+        $("phaseNote").textContent = "O carro não avançou. Role o dado para tentar outra vez.";
+      }, 1700);
+    }
+  }
+
+  function playRaceCutscene(){
+    $("cutsceneSub").textContent = `Você acertou! Avançando ${pendingDiceValue} casa(s).`;
+    $("raceCutscene").classList.add("active");
+
+    // Reinicia animação da imagem
+    const car = $("cutsceneCar");
+    car.style.animation = "none";
+    car.offsetHeight;
+    car.style.animation = "";
+
+    setTimeout(() => {
+      $("raceCutscene").classList.remove("active");
+      advanceBoard(pendingDiceValue);
+    }, 2300);
+  }
+
+  function advanceBoard(steps){
+    trackPosition = Math.min(TOTAL_TRACK_POINTS, trackPosition + steps);
+    placeBoardCar();
+    updateTrackHUD(pendingDiceValue);
+
+    if(trackPosition >= TOTAL_TRACK_POINTS){
+      $("phaseNote").textContent = "🏆 Protótipo concluído! O carro chegou ao FINISH.";
+      $("rollBtn").disabled = true;
+    }else{
+      $("phaseNote").textContent = `Corrida concluída! O carro parou na casa ${trackPosition}/${TOTAL_TRACK_POINTS}.`;
+      $("rollBtn").disabled = false;
+    }
   }
 
   function updateTrackHUD(diceValue){
