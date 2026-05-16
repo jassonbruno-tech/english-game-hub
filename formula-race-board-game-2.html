@@ -254,6 +254,12 @@
       drop-shadow(0 15px 14px rgba(0,0,0,.62))
       drop-shadow(0 0 18px var(--theme-glow,rgba(255,122,0,.45)));
     animation:floatCar 1.8s ease-in-out infinite alternate;
+    transition:opacity .14s ease, transform .14s ease;
+  }
+
+  .car-img.swapping{
+    opacity:.18;
+    transform:scale(.96);
   }
 
   @keyframes floatCar{
@@ -366,57 +372,181 @@
 
   .ready-box{
     margin:auto 0;
-    background:linear-gradient(180deg,rgba(255,255,255,.96),rgba(224,242,254,.94));
-    color:#0f172a;
-    border:3px solid var(--gold);
-    border-radius:28px;
-    padding:18px;
+    position:relative;
+    overflow:hidden;
+    background:
+      radial-gradient(circle at 50% 18%,rgba(255,216,77,.23),transparent 28%),
+      radial-gradient(circle at 20% 70%,rgba(56,189,248,.18),transparent 34%),
+      radial-gradient(circle at 84% 72%,rgba(255,122,0,.20),transparent 34%),
+      linear-gradient(180deg,rgba(0,0,0,.78),rgba(7,20,38,.92));
+    color:#fff;
+    border:2px solid rgba(255,216,77,.62);
+    border-radius:30px;
+    padding:16px;
     text-align:center;
-    box-shadow:0 18px 45px rgba(0,0,0,.45),0 0 28px rgba(255,216,77,.35);
+    box-shadow:
+      0 18px 45px rgba(0,0,0,.52),
+      0 0 34px rgba(255,122,0,.34),
+      inset 0 0 28px rgba(255,255,255,.055);
+  }
+
+  .ready-box::before{
+    content:"";
+    position:absolute;
+    inset:-40%;
+    background:
+      linear-gradient(115deg,transparent 35%,rgba(255,255,255,.10) 46%,transparent 57%);
+    transform:translateX(-45%);
+    animation:readyShine 3.4s ease-in-out infinite;
+    pointer-events:none;
+  }
+
+  @keyframes readyShine{
+    0%,42%{transform:translateX(-55%) rotate(6deg)}
+    75%,100%{transform:translateX(55%) rotate(6deg)}
   }
 
   .ready-box h2{
-    margin:0 0 10px;
-    font-size:1.7rem;
-    color:#7c2d12;
+    position:relative;
+    margin:0 0 8px;
+    font-size:clamp(1.55rem,8vw,2.15rem);
+    line-height:1;
+    color:var(--gold);
+    text-shadow:0 3px 0 rgba(0,0,0,.68),0 0 18px rgba(255,216,77,.58);
+  }
+
+  .ready-tag{
+    position:relative;
+    display:inline-block;
+    margin:0 0 8px;
+    padding:5px 10px;
+    border-radius:999px;
+    background:rgba(0,0,0,.48);
+    border:1px solid rgba(56,189,248,.55);
+    color:#dff8ff;
+    font-size:.72rem;
+    font-weight:1000;
+    letter-spacing:.6px;
+    text-transform:uppercase;
+    box-shadow:0 0 15px rgba(56,189,248,.25);
+  }
+
+  .chosen-car-wrap{
+    position:relative;
+    margin:2px auto 8px;
+    width:min(92%,360px);
+    min-height:160px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:24px;
+    background:
+      radial-gradient(ellipse at center,rgba(255,216,77,.18),transparent 62%),
+      linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.02));
+    border:1px solid rgba(255,255,255,.13);
+  }
+
+  .chosen-car-wrap::after{
+    content:"";
+    position:absolute;
+    left:12%;
+    right:12%;
+    bottom:12px;
+    height:18px;
+    border-radius:50%;
+    background:rgba(0,0,0,.55);
+    filter:blur(8px);
   }
 
   .chosen-car{
-    width:min(88%,330px);
+    position:relative;
+    z-index:1;
+    width:100%;
+    max-width:340px;
     max-height:220px;
     object-fit:contain;
-    margin:4px auto 8px;
     display:block;
-    filter:drop-shadow(0 14px 10px rgba(0,0,0,.38));
+    filter:
+      drop-shadow(0 16px 13px rgba(0,0,0,.62))
+      drop-shadow(0 0 18px rgba(255,216,77,.28));
+    animation:floatCar 1.8s ease-in-out infinite alternate;
   }
 
   .summary{
-    background:rgba(15,23,42,.08);
-    border-radius:16px;
+    position:relative;
+    display:grid;
+    gap:7px;
+    background:rgba(0,0,0,.48);
+    border:1px solid rgba(255,216,77,.34);
+    border-radius:18px;
     padding:10px;
     font-weight:1000;
-    line-height:1.45;
+    line-height:1.25;
     margin:8px 0 12px;
+    text-align:left;
+    box-shadow:inset 0 0 18px rgba(255,255,255,.035);
+  }
+
+  .summary-row{
+    display:grid;
+    grid-template-columns:28px 1fr;
+    align-items:center;
+    gap:7px;
+    background:rgba(255,255,255,.055);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:13px;
+    padding:7px 8px;
+    color:#eaf6ff;
+    font-size:.88rem;
+  }
+
+  .summary-row b{
+    color:var(--gold);
   }
 
   .small-note{
-    font-size:.82rem;
-    color:#334155;
+    position:relative;
+    font-size:.78rem;
+    color:#bfdbfe;
     font-weight:900;
-    line-height:1.3;
+    line-height:1.28;
     margin:6px 0 12px;
+  }
+
+  .ready-actions{
+    position:relative;
+    display:grid;
+    grid-template-columns:1fr;
+    gap:8px;
   }
 
   .secondary-btn{
     width:100%;
     min-height:48px;
-    border:0;
+    border:1.5px solid rgba(255,255,255,.24);
     border-radius:18px;
     background:linear-gradient(180deg,#38bdf8,#2563eb);
     color:#fff;
     font-size:1rem;
     font-weight:1000;
-    box-shadow:0 5px 0 #1e3a8a;
+    box-shadow:0 5px 0 #1e3a8a,0 0 18px rgba(56,189,248,.34);
+  }
+
+  .track-btn{
+    width:100%;
+    min-height:52px;
+    border:2px solid rgba(255,216,77,.78);
+    border-radius:20px;
+    background:linear-gradient(180deg,#fff17a,#ffd000 45%,#ff8a00);
+    color:#2a1300;
+    font-size:1.08rem;
+    font-weight:1000;
+    box-shadow:0 6px 0 rgba(96,39,0,.9),0 0 22px rgba(255,122,0,.44);
+  }
+
+  .secondary-btn:active,
+  .track-btn:active{
+    transform:translateY(3px);
   }
 
   @media(max-height:760px){
@@ -437,6 +567,13 @@
     .start-btn{min-height:50px;font-size:1.38rem;border-radius:18px}
     .msg{font-size:.68rem;min-height:15px}
     .teacher{font-size:.57rem}
+    .ready-box{padding:13px;border-radius:24px}
+    .chosen-car-wrap{min-height:130px;margin-bottom:6px}
+    .chosen-car{max-height:170px}
+    .summary{gap:5px;padding:8px;margin-bottom:8px}
+    .summary-row{font-size:.76rem;padding:6px 7px}
+    .small-note{font-size:.68rem;margin-bottom:8px}
+    .track-btn,.secondary-btn{min-height:42px;font-size:.88rem}
   }
 
   @media(max-height:650px){
@@ -444,6 +581,9 @@
     .description{display:none}
     .car-card{max-height:345px}
     .start-btn{min-height:45px}
+    .ready-tag,.small-note{display:none}
+    .chosen-car-wrap{min-height:105px}
+    .chosen-car{max-height:135px}
   }
 </style>
 </head>
@@ -509,14 +649,24 @@
     </div>
 
     <div class="ready-box">
+      <span class="ready-tag">Sistema de corrida ativado</span>
       <h2>🏁 Piloto preparado!</h2>
-      <img id="chosenCarImg" class="chosen-car" src="car-turbo-racer.png" alt="Carro escolhido">
+
+      <div class="chosen-car-wrap">
+        <img id="chosenCarImg" class="chosen-car" src="car-turbo-racer.png" alt="Carro escolhido">
+      </div>
+
       <div id="summary" class="summary"></div>
+
       <p class="small-note">
-        Esta é a primeira etapa funcional da versão 2.0: login, escolha de série e seleção de carro.
-        A próxima etapa será encaixar a pista, o dado e o movimento do carro.
+        Etapa 2.0 em construção: esta tela confirma os dados do piloto, a série e o carro escolhido.
+        A próxima atualização vai abrir a pista com dado e movimento.
       </p>
-      <button class="secondary-btn" type="button" onclick="backToLogin()">⬅ Voltar e trocar escolhas</button>
+
+      <div class="ready-actions">
+        <button class="track-btn" type="button" onclick="showComingSoon()">🚀 Ir para a pista</button>
+        <button class="secondary-btn" type="button" onclick="backToLogin()">⬅ Voltar e trocar escolhas</button>
+      </div>
     </div>
 
     <p class="teacher">Jogo idealizado pelo professor Jasson Bruno.</p>
@@ -568,24 +718,39 @@
     $(id).classList.add("active");
   }
 
+  function preloadCars(){
+    CARS.forEach(car => {
+      const img = new Image();
+      img.src = car.file;
+    });
+  }
+
   function updateCar(){
     const car = CARS[currentCarIndex];
-    $("carName").textContent = car.name;
-    $("carImg").src = car.file;
-    $("carImg").alt = car.name.replace(/[🔥✨⚡🐉]/g,"").trim();
-    $("carDescription").textContent = car.desc;
-    $("carProgress").textContent = `${currentCarIndex + 1}/4`;
+    const img = $("carImg");
 
-    const card = $("carCard");
-    card.style.setProperty("--theme-color", car.color);
-    card.style.setProperty("--theme-glow", car.glow);
+    img.classList.add("swapping");
 
-    $("dots").innerHTML = "";
-    CARS.forEach((_, index) => {
-      const dot = document.createElement("span");
-      dot.className = "dot" + (index === currentCarIndex ? " active" : "");
-      $("dots").appendChild(dot);
-    });
+    setTimeout(() => {
+      $("carName").textContent = car.name;
+      img.src = car.file;
+      img.alt = car.name.replace(/[🔥✨⚡🐉]/g,"").trim();
+      $("carDescription").textContent = car.desc;
+      $("carProgress").textContent = `${currentCarIndex + 1}/4`;
+
+      const card = $("carCard");
+      card.style.setProperty("--theme-color", car.color);
+      card.style.setProperty("--theme-glow", car.glow);
+
+      $("dots").innerHTML = "";
+      CARS.forEach((_, index) => {
+        const dot = document.createElement("span");
+        dot.className = "dot" + (index === currentCarIndex ? " active" : "");
+        $("dots").appendChild(dot);
+      });
+
+      requestAnimationFrame(() => img.classList.remove("swapping"));
+    }, 80);
   }
 
   function nextCar(){
@@ -626,13 +791,17 @@
     $("chosenCarImg").alt = car.name.replace(/[🔥✨⚡🐉]/g,"").trim();
 
     $("summary").innerHTML = `
-      👤 <b>Aluno:</b> ${escapeHTML(playerData.name)}<br>
-      🏫 <b>Escola:</b> ${escapeHTML(playerData.school)}<br>
-      📚 <b>Série:</b> ${escapeHTML(playerData.grade)}<br>
-      🏎️ <b>Carro:</b> ${escapeHTML(playerData.carName)}
+      <div class="summary-row"><span>👤</span><span><b>Aluno:</b> ${escapeHTML(playerData.name)}</span></div>
+      <div class="summary-row"><span>🏫</span><span><b>Escola:</b> ${escapeHTML(playerData.school)}</span></div>
+      <div class="summary-row"><span>📚</span><span><b>Série:</b> ${escapeHTML(playerData.grade)}</span></div>
+      <div class="summary-row"><span>🏎️</span><span><b>Carro:</b> ${escapeHTML(playerData.carName)}</span></div>
     `;
 
     showScreen("readyScreen");
+  }
+
+  function showComingSoon(){
+    alert("🚧 A pista será construída na próxima etapa: dado, movimento do carro e perguntas por série.");
   }
 
   function backToLogin(){
@@ -654,6 +823,7 @@
     if(event.key === "ArrowLeft") previousCar();
   });
 
+  preloadCars();
   updateCar();
 </script>
 </body>
