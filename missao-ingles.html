@@ -1,85 +1,593 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>Missão Inglês - Protótipo Fases 1 e 2</title>
-<style>
-:root{--bg:#081747;--bg2:#32136f;--card:#fff;--ink:#14213d;--gold:#ffd84d;--cyan:#5ee7ff;--ok:#22c55e;--bad:#ef4444;--violet:#8b5cf6}*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:radial-gradient(circle at 20% 0%,#4c1d95 0,#181058 38%,#06133e 100%);color:#fff;min-height:100vh}.app{width:min(470px,100%);min-height:100vh;margin:auto;padding:14px;display:flex;flex-direction:column;justify-content:center}.screen{display:none;gap:13px;animation:fade .22s ease}.screen.active{display:flex;flex-direction:column}@keyframes fade{from{opacity:.25;transform:translateY(7px)}to{opacity:1;transform:none}}.brand{text-align:center}.brand h1{font-size:34px;margin:0;text-shadow:0 4px 0 rgba(0,0,0,.22)}.brand p{margin:8px 0 0;color:#cfe7ff}.card{background:rgba(255,255,255,.97);color:var(--ink);border-radius:26px;padding:18px;box-shadow:0 18px 45px rgba(0,0,0,.35);border:3px solid rgba(255,255,255,.65)}.glass{background:rgba(255,255,255,.12);color:#fff;backdrop-filter:blur(8px);border-color:rgba(255,255,255,.22)}h2{margin:0 0 9px;font-size:24px}.btn{border:0;border-radius:18px;padding:15px 15px;font-size:16px;font-weight:900;width:100%;cursor:pointer;background:linear-gradient(135deg,var(--gold),#ff9d2e);color:#241400;box-shadow:0 8px 0 rgba(0,0,0,.25)}.btn:active{transform:translateY(3px);box-shadow:0 4px 0 rgba(0,0,0,.25)}.btn.secondary{background:linear-gradient(135deg,#75efff,#60a5fa);color:#06172e}.btn.dark{background:linear-gradient(135deg,#4338ca,#7c3aed);color:#fff}.btn.ghost{background:rgba(255,255,255,.14);color:#fff;border:2px solid rgba(255,255,255,.25);box-shadow:none}.row{display:flex;gap:9px}.row .btn{font-size:14px;padding:13px 8px}.center{text-align:center}label{font-weight:900;font-size:14px}input,select{width:100%;padding:14px;border:2px solid #d8e2ff;border-radius:16px;margin:7px 0 12px;font-size:16px;background:#f8fbff}.rule{display:flex;gap:10px;margin:9px 0}.rule b{background:#ffe681;color:#2b1a00;border-radius:999px;width:26px;height:26px;display:inline-flex;align-items:center;justify-content:center;flex:0 0 26px}.tip{background:#fff7cc;border:2px solid #facc15;border-radius:16px;padding:10px;margin-top:10px;font-size:14px;font-weight:800;color:#5c3d00}.phase-grid{display:grid;gap:10px}.phase{display:flex;align-items:center;gap:12px;padding:13px;border-radius:18px;background:rgba(255,255,255,.11);border:2px solid rgba(255,255,255,.18)}.phase.unlocked{background:linear-gradient(135deg,rgba(94,231,255,.25),rgba(139,92,246,.25));border-color:#74f0ff}.phase.done{background:linear-gradient(135deg,rgba(34,197,94,.25),rgba(94,231,255,.22));border-color:#4ade80}.phase .icon{font-size:25px}.phase .title{font-weight:900}.phase .status{font-size:12px;color:#dbeafe}.topbar,.scoreline{display:flex;justify-content:space-between;align-items:center;gap:8px}.pill{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:8px 10px;font-size:12px;font-weight:900}.progress{height:8px;background:rgba(255,255,255,.18);border-radius:99px;overflow:hidden}.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--cyan))}.emoji{font-size:78px;text-align:center;line-height:1;margin:5px 0 10px;filter:drop-shadow(0 10px 18px rgba(0,0,0,.25))}.lesson-title{font-size:25px;text-align:center;font-weight:900;margin-bottom:8px}.lesson-text{font-size:17px;line-height:1.36;text-align:center}.example{background:#eef5ff;border:2px dashed #93c5fd;border-radius:18px;padding:12px;margin:11px 0;text-align:center}.english{font-size:20px;font-weight:900;color:#1d4ed8}.pt{font-size:14px;color:#334155;margin-top:3px}.wrong{color:#dc2626;font-weight:900}.right{color:#16a34a;font-weight:900}.question{font-size:21px;font-weight:900;text-align:center;margin:4px 0 12px;color:#111827}.options{display:grid;gap:10px}.option{background:#f8fbff;border:2px solid #dbeafe;border-radius:18px;padding:14px;font-weight:800;font-size:16px;text-align:left;color:#111827;cursor:pointer}.option.correct{background:#dcfce7;border-color:#22c55e}.option.incorrect{background:#fee2e2;border-color:#ef4444}.feedback{display:none;border-radius:18px;padding:13px;margin-top:12px;font-weight:800}.feedback.show{display:block}.feedback.good{background:#dcfce7;color:#14532d}.feedback.bad{background:#fee2e2;color:#7f1d1d}.hearts{font-size:21px;letter-spacing:2px}.timer{font-weight:900;color:#ffe681}.challenge-title{font-size:14px;color:#5b6477;text-align:center;margin-bottom:6px;font-weight:900}.signature{text-align:center;color:#cde8ff;font-size:12px;margin-top:8px}.hidden{display:none!important}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Missão Inglês</title>
+  <style>
+    :root{
+      --bg1:#07002a; --bg2:#16006a; --blue:#0b6dff; --purple:#7b20ff;
+      --gold:#ffd447; --green:#20c55a; --red:#ff3b54; --card:#ffffff;
+      --ink:#101020; --muted:#e9ecff;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family:Arial, Helvetica, sans-serif; color:white;
+      background:radial-gradient(circle at top,#2a0b85 0%,#10003f 40%,#06001f 100%);
+      min-height:100vh; overflow-x:hidden;
+    }
+    button{font-family:inherit; cursor:pointer; border:0}
+    .screen{display:none; min-height:100vh; padding:16px}
+    .screen.active{display:block}
+    .wrap{max-width:480px; margin:0 auto}
+    .hero-img{width:100%; display:block; border-radius:22px; box-shadow:0 20px 60px rgba(0,0,0,.45)}
+    .panel{
+      background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.22);
+      border-radius:24px; padding:18px; box-shadow:0 16px 40px rgba(0,0,0,.25);
+      backdrop-filter: blur(10px); margin-top:14px;
+    }
+    .title{text-align:center; margin:8px 0 14px; font-size:28px; font-weight:900; text-shadow:0 3px 0 #000}
+    .subtitle{text-align:center; color:#fff4b8; font-weight:800}
+    .btn{
+      width:100%; min-height:56px; border-radius:18px; color:white; font-weight:900; font-size:18px;
+      background:linear-gradient(180deg,#39d95f,#0a902c); box-shadow:0 7px 0 #065d1d,0 16px 30px rgba(0,0,0,.3);
+      margin-top:12px; padding:12px 14px;
+    }
+    .btn.blue{background:linear-gradient(180deg,#1fa7ff,#0057dc); box-shadow:0 7px 0 #003889}
+    .btn.purple{background:linear-gradient(180deg,#b14dff,#6013d8); box-shadow:0 7px 0 #390b85}
+    .btn.red{background:linear-gradient(180deg,#ff6475,#d20027); box-shadow:0 7px 0 #880019}
+    .btn.gold{background:linear-gradient(180deg,#ffe36b,#f2a600); color:#391d00; box-shadow:0 7px 0 #9b6400}
+    .btn:disabled{filter:grayscale(.7); opacity:.55; cursor:not-allowed; box-shadow:none}
+    input,select{
+      width:100%; height:52px; border-radius:14px; border:2px solid rgba(255,255,255,.35);
+      margin:8px 0 12px; padding:0 14px; font-size:16px; font-weight:700;
+    }
+    label{font-weight:900; color:#fff4b8}
+    .rules li{margin:10px 0; line-height:1.35}
+    .map-grid{display:grid; gap:12px}
+    .phase-card{
+      border-radius:18px; padding:14px; background:rgba(255,255,255,.92); color:#111;
+      display:flex; align-items:center; gap:12px; border:3px solid transparent;
+    }
+    .phase-card.unlocked{border-color:#2fe36a}
+    .phase-card.locked{filter:grayscale(.8); opacity:.62}
+    .phase-card.done{border-color:#ffd447}
+    .badge{
+      width:46px;height:46px;border-radius:50%;display:grid;place-items:center;font-weight:900;color:white;
+      background:linear-gradient(#247dff,#003eac); flex:0 0 auto; font-size:20px;
+    }
+    .phase-card.done .badge{background:linear-gradient(#ffd447,#e28a00); color:#3b2200}
+    .phase-title{font-weight:900; font-size:16px}
+    .phase-sub{font-size:12px; opacity:.75; font-weight:700}
+    .topbar{
+      position:sticky; top:0; z-index:10; margin:-16px -16px 12px; padding:12px 16px;
+      background:rgba(6,0,31,.92); backdrop-filter:blur(10px); border-bottom:1px solid rgba(255,255,255,.15)
+    }
+    .topbar .wrap{display:flex; align-items:center; gap:8px; justify-content:space-between}
+    .pill{background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.22); border-radius:999px; padding:8px 10px; font-weight:900; font-size:13px}
+    .lesson-img{
+      width:100%; display:block; border-radius:18px; box-shadow:0 16px 40px rgba(0,0,0,.35); background:white;
+    }
+    .sticky-actions{
+      position:sticky; bottom:0; z-index:20; margin:12px -16px -16px; padding:10px 16px 14px;
+      background:linear-gradient(180deg,rgba(6,0,31,.15),rgba(6,0,31,.98) 30%);
+    }
+    .row{display:flex; gap:10px}
+    .row .btn{margin-top:0; font-size:15px; min-height:52px}
+    .timerbox{
+      background:#13013f;border:2px solid #8b5cff;border-radius:16px;padding:10px;text-align:center;margin:10px 0;
+      font-weight:900;
+    }
+    .timerbox .time{font-size:30px;color:#ffe95b}
+    .question-card{
+      background:white;color:#111;border-radius:24px;padding:18px;box-shadow:0 16px 40px rgba(0,0,0,.35);
+      margin-top:14px;
+    }
+    .question-card h2{margin:0 0 10px;color:#102fc0}
+    .option{
+      width:100%; text-align:left; padding:15px 14px; margin:9px 0; border-radius:16px;
+      background:#eef3ff; color:#111; border:3px solid #c8d8ff; font-size:16px; font-weight:900;
+    }
+    .option.correct{background:#dfffe8;border-color:#23c55a; animation:flashGreen .55s 2}
+    .option.wrong{background:#ffe2e7;border-color:#ff3b54; animation:flashRed .55s 2}
+    @keyframes flashGreen{50%{box-shadow:0 0 35px #2fff74; transform:scale(1.02)}}
+    @keyframes flashRed{50%{box-shadow:0 0 35px #ff4663; transform:scale(1.02)}}
+    .feedback{margin-top:10px;padding:12px;border-radius:14px;font-weight:900}
+    .feedback.good{background:#dfffe8;color:#07551d}
+    .feedback.bad{background:#ffe2e7;color:#8a0015}
+    .hearts{font-size:22px; letter-spacing:2px}
+    .progressline{height:12px;background:rgba(255,255,255,.18);border-radius:999px;overflow:hidden;margin:10px 0}
+    .progressline span{display:block;height:100%;background:linear-gradient(90deg,#20c55a,#ffe65a);width:0%}
+    .small{font-size:13px; opacity:.85; line-height:1.35}
+    .hidden{display:none!important}
+    .center{text-align:center}
+  </style>
 </head>
 <body>
-<div class="app">
-<section id="home" class="screen active"><div class="brand"><h1>Missão Inglês</h1><p>Estude, jogue e conquiste seus 10 pontos.</p></div><div class="card glass center"><div style="font-size:92px">🎮📚</div><h2>English Challenge</h2><p>Você vai estudar, ouvir, jogar e avançar por fases.</p><p><b>Para liberar os 10 pontos, conclua todas as missões até o final.</b></p></div><button class="btn" onclick="go('register')">Começar Missão</button><button class="btn ghost" onclick="continueGame()">Continuar progresso salvo</button><div class="signature">Jogo idealizado pelo professor Jasson Bruno.</div></section>
-<section id="register" class="screen"><div class="brand"><h1>Cadastro</h1><p>Preencha seus dados para iniciar.</p></div><div class="card"><label>Nome completo</label><input id="studentName" placeholder="Digite seu nome"><label>Turma</label><input id="studentClass" placeholder="Ex.: 7º A"><label>Série</label><select id="studentGrade"><option>6º ano</option><option>7º ano</option><option>8º ano</option><option>9º ano</option></select><label>Escola</label><input id="studentSchool" value="Escola Delfina de Jesus Amorim"></div><button class="btn" onclick="saveStudent()">Entrar na Missão</button><button class="btn ghost" onclick="go('home')">Voltar</button></section>
-<section id="rules" class="screen"><div class="brand"><h1>Regras</h1><p>Leia antes de começar.</p></div><div class="card"><h2>Regras da Missão</h2><div class="rule"><b>1</b><span>Estude o conteúdo de cada fase.</span></div><div class="rule"><b>2</b><span>Passe pelo Mini Check para liberar o jogo.</span></div><div class="rule"><b>3</b><span>Conclua o jogo da fase com pelo menos 1 vida.</span></div><div class="rule"><b>4</b><span>Chegue até a tela final <b>Mission Completed</b>.</span></div><div class="tip">Este desafio vale 10 pontos. Não existe pontuação parcial. Seu progresso será salvo, mas a nota só libera ao concluir tudo.</div></div><button class="btn" onclick="go('map'); renderMap();">Entendi. Começar.</button></section>
-<section id="map" class="screen"><div class="brand"><h1>Mapa da Missão</h1><p id="mapSub">Fase 1 liberada</p></div><div class="phase-grid" id="phaseGrid"></div><button class="btn ghost" onclick="go('home')">Sair</button></section>
-<section id="lesson" class="screen"><div class="topbar"><div class="pill" id="lessonPhaseLabel">Fase</div><div class="pill" id="cardCounter">Card</div></div><div class="progress"><span id="lessonProgress"></span></div><div class="card" id="lessonCard"></div><div class="row"><button class="btn secondary" onclick="speakCurrentLesson()">🔊 Ouvir</button><button class="btn" id="nextLessonBtn" onclick="nextLesson()">Próximo</button></div><button class="btn ghost" onclick="go('map'); renderMap();">Voltar ao mapa</button></section>
-<section id="mini" class="screen"><div class="topbar"><div class="pill" id="miniPhaseLabel">Mini Check</div><div class="pill" id="miniCounter">1/5</div></div><div class="progress"><span id="miniProgress"></span></div><div class="card"><div class="question" id="miniQuestion"></div><div class="options" id="miniOptions"></div><div id="miniFeedback" class="feedback"></div></div></section>
-<section id="game" class="screen"><div class="scoreline"><span id="gameTitle">Fase</span><span class="hearts" id="hearts">❤️❤️❤️</span></div><div class="scoreline"><span id="gameCounter">Desafio</span><span>Tempo: <span class="timer" id="timer">25</span>s</span></div><div class="progress"><span id="gameProgress"></span></div><div class="card"><div class="challenge-title" id="challengeType"></div><div class="question" id="gameQuestion"></div><button id="gameAudioBtn" class="btn secondary hidden" onclick="speak(gameCurrent.speak)">🔊 Ouvir</button><div class="options" id="gameOptions"></div><div id="gameFeedback" class="feedback"></div></div></section>
-<section id="tryagain" class="screen"><div class="brand"><h1>Try again!</h1><p>Você ainda não concluiu esta missão.</p></div><div class="card center"><div style="font-size:80px">💪📚</div><h2>Revise e tente novamente</h2><p>Você perdeu as 3 vidas. Volte aos cards da fase atual e tente outra vez.</p></div><button class="btn" onclick="startLesson(currentPhase)">Study Again</button><button class="btn ghost" onclick="go('map'); renderMap();">Voltar ao mapa</button></section>
-<section id="congrats" class="screen"><div class="brand"><h1>Congratulations!</h1><p id="congratsSub">Mission completed.</p></div><div class="card center"><div style="font-size:90px">🏆✨</div><h2 id="congratsTitle">Mission completed</h2><p id="congratsText"></p><div class="tip">Pontuação atual: <b>0 ponto</b>. Os 10 pontos só serão liberados no final de todas as fases.</div></div><button class="btn" onclick="go('map'); renderMap();">Go to Mission Map</button></section>
-<section id="final" class="screen"><div class="brand"><h1>Mission Completed</h1><p>Você concluiu todas as fases disponíveis neste protótipo.</p></div><div class="card center"><div style="font-size:92px">🎉🏆</div><h2>Protótipo concluído</h2><p>Nesta versão, as fases 1 e 2 já estão funcionais. No jogo completo, a pontuação só será liberada ao concluir até a Fase 8.</p></div><button class="btn" onclick="go('map'); renderMap();">Voltar ao mapa</button></section>
-</div>
+
+<section id="home" class="screen active">
+  <div class="wrap">
+    <img class="hero-img" src="missao-ingles-tela-inicial.png" alt="Missão Inglês - Tela Inicial" />
+    <div class="panel">
+      <div class="title">Missão Inglês</div>
+      <div class="subtitle">Estude, pratique e conquiste seus 10 pontos.</div>
+      <button class="btn gold" onclick="showScreen('register')">⭐ Começar missão</button>
+      <button class="btn purple" onclick="continueMission()">Continuar de onde parei</button>
+    </div>
+  </div>
+</section>
+
+<section id="register" class="screen">
+  <div class="wrap">
+    <div class="title">Cadastro do aluno</div>
+    <div class="panel">
+      <label>Nome completo</label>
+      <input id="studentName" placeholder="Digite seu nome" />
+      <label>Turma</label>
+      <input id="studentClass" placeholder="Ex.: 701, 801, 901" />
+      <label>Série</label>
+      <select id="studentGrade">
+        <option>6º ano</option><option>7º ano</option><option>8º ano</option><option>9º ano</option>
+      </select>
+      <label>Escola</label>
+      <input id="studentSchool" value="Escola Delfina de Jesus Amorim" />
+      <button class="btn" onclick="saveRegister()">Entrar na missão</button>
+      <button class="btn blue" onclick="showScreen('home')">Voltar</button>
+    </div>
+  </div>
+</section>
+
+<section id="rules" class="screen">
+  <div class="wrap">
+    <div class="title">Regras da Missão</div>
+    <div class="panel rules">
+      <p><b>Este desafio vale 10 pontos.</b></p>
+      <ol>
+        <li>Estude as imagens de cada fase com atenção.</li>
+        <li>Permaneça no estudo pelo tempo mínimo indicado.</li>
+        <li>Faça o mini check para liberar o jogo da fase.</li>
+        <li>Conclua todas as fases até o Final Boss.</li>
+      </ol>
+      <p><b>Atenção:</b> não existe pontuação parcial. O progresso fica salvo, mas os 10 pontos só aparecem ao concluir tudo.</p>
+      <button class="btn gold" onclick="showMap()">Entendi. Começar.</button>
+    </div>
+  </div>
+</section>
+
+<section id="map" class="screen">
+  <div class="wrap">
+    <div class="title">Mapa da Missão</div>
+    <div class="panel">
+      <div id="phaseMap" class="map-grid"></div>
+      <button class="btn blue" onclick="showScreen('home')">Voltar</button>
+    </div>
+  </div>
+</section>
+
+<section id="lesson" class="screen">
+  <div class="topbar">
+    <div class="wrap">
+      <button class="pill" onclick="showMap()">☰ Mapa</button>
+      <div class="pill" id="lessonPhaseLabel">Fase</div>
+      <div class="pill" id="lessonProgressLabel">1/4</div>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="timerbox">
+      <div>Tempo mínimo de estudo</div>
+      <div class="time" id="studyTimer">02:00</div>
+      <div id="studyStatus">Estude para liberar o mini check.</div>
+    </div>
+    <img id="lessonImage" class="lesson-img" src="" alt="Aula ilustrada" />
+    <div class="panel hidden" id="interactiveNote">
+      <b>Atividade na imagem?</b>
+      <p class="small">Quando a imagem mostrar linhas ou espaços para responder, a resposta real será feita no mini check ou no jogo com botões/campos interativos.</p>
+    </div>
+  </div>
+  <div class="sticky-actions">
+    <div class="wrap row">
+      <button class="btn blue" onclick="prevLesson()">◀ Voltar</button>
+      <button class="btn purple" onclick="speakCurrentLesson()">🔊 Ouvir</button>
+      <button class="btn" id="nextLessonBtn" onclick="nextLesson()">Próximo ▶</button>
+    </div>
+    <div class="wrap">
+      <button class="btn gold" id="miniCheckBtn" onclick="startMiniCheck()" disabled>⭐ Fazer mini check</button>
+    </div>
+  </div>
+</section>
+
+<section id="quiz" class="screen">
+  <div class="topbar">
+    <div class="wrap">
+      <button class="pill" onclick="showMap()">☰ Mapa</button>
+      <div class="pill" id="quizPhaseLabel">Mini Check</div>
+      <div class="pill" id="quizCountLabel">1/5</div>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="question-card">
+      <h2 id="quizQuestion"></h2>
+      <div id="quizOptions"></div>
+      <div id="quizFeedback"></div>
+    </div>
+  </div>
+</section>
+
+<section id="game" class="screen">
+  <div class="topbar">
+    <div class="wrap">
+      <button class="pill" onclick="showMap()">☰ Mapa</button>
+      <div class="pill hearts" id="gameHearts">❤️❤️❤️</div>
+      <div class="pill" id="gameTimer">25s</div>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="panel">
+      <div id="gamePhaseLabel" class="subtitle"></div>
+      <div class="progressline"><span id="gameProgressBar"></span></div>
+      <div class="small" id="gameProgressText"></div>
+    </div>
+    <div class="question-card">
+      <h2 id="gameQuestion"></h2>
+      <div id="gameOptions"></div>
+      <div id="gameFeedback"></div>
+    </div>
+  </div>
+</section>
+
+<section id="congrats" class="screen">
+  <div class="wrap">
+    <div class="panel center">
+      <div class="title">Congratulations!</div>
+      <h2 id="congratsTitle">Mission completed.</h2>
+      <p id="congratsText"></p>
+      <button class="btn gold" onclick="showMap()">Voltar ao mapa</button>
+      <button class="btn" id="nextPhaseButton" onclick="goNextPhase()">Próxima fase</button>
+    </div>
+  </div>
+</section>
+
+<section id="final" class="screen">
+  <div class="wrap">
+    <div class="panel center">
+      <div class="title">🏆 Mission Completed!</div>
+      <h2>Você concluiu a Missão Inglês.</h2>
+      <p><b>Pontuação liberada: 10 pontos</b></p>
+      <div id="finalData" class="panel"></div>
+      <button class="btn gold" onclick="window.print()">Print / salvar comprovante</button>
+      <button class="btn blue" onclick="showMap()">Voltar ao mapa</button>
+    </div>
+  </div>
+</section>
+
 <script>
-const STORAGE_KEY='missao_ingles_prototipo_f1f2_v1';
-const phaseNames=['Personal Pronouns','Verb to be','Possessive Adjectives','Possessive Pronouns','Do / Does','Have / Has','Did / Didn’t','Final Boss'];
-let state={student:null,unlocked:1,completed:[],score:0};
-let currentPhase=1, lessonIndex=0, miniIndex=0, miniScore=0, gameDeck=[], gameIndex=0, lives=3, timeLeft=25, timerId=null, gameCurrent=null;
-const DATA={
-1:{label:'Fase 1/8 — Personal Pronouns',gameTitle:'Fase 1 — Pronoun Match',next:'Verb to be — am, is, are',cards:[
-{emoji:'🕹️👋',title:'Mission 1: Personal Pronouns',html:'Antes de jogar, aprenda a reconhecer quem está falando, com quem estamos falando e de quem estamos falando.<div class="example"><b>Português:</b> eu, você, ele, ela, nós, eles/elas<br><b>Inglês:</b> I, you, he, she, it, we, they</div>',speak:'I, you, he, she, it, we, they.'},
-{emoji:'🙋➡️',title:'I = eu | You = você',html:'Quando falo de mim, uso <b>I</b>.<br>Quando falo com alguém, uso <b>you</b>.<div class="example"><div class="english">I am Lucas.</div><div class="pt">Eu sou Lucas.</div><br><div class="english">You are my friend.</div><div class="pt">Você é meu amigo.</div></div><div class="tip">I aponta para mim. You aponta para quem me escuta.</div>',speak:'I am Lucas. You are my friend.'},
-{emoji:'👦👧',title:'He = ele | She = ela',html:'Use <b>he</b> para falar de menino/homem.<br>Use <b>she</b> para falar de menina/mulher.<div class="example"><div class="english">He is Pedro.</div><div class="pt">Ele é Pedro.</div><br><div class="english">She is Ana.</div><div class="pt">Ela é Ana.</div></div>',speak:'He is Pedro. She is Ana.'},
-{emoji:'📱🐶⚽',title:'It = coisa, animal ou objeto',html:'Em português dizemos: <b>É meu celular.</b><br>Em inglês usamos <b>it</b>:<div class="example"><div class="english">It is my phone.</div><div class="pt">É meu celular.</div><br><div class="english">It is a dog.</div><div class="pt">É um cachorro.</div></div><div class="tip">Use it para animal, objeto, coisa, lugar ou situação.</div>',speak:'It is my phone. It is a dog.'},
-{emoji:'👥➡️👥',title:'We = nós | They = eles/elas',html:'Use <b>we</b> quando você faz parte do grupo.<br>Use <b>they</b> quando fala de um grupo sem se incluir.<div class="example"><div class="english">We are students.</div><div class="pt">Nós somos alunos.</div><br><div class="english">They are students.</div><div class="pt">Eles são alunos.</div></div>',speak:'We are students. They are students.'},
-{emoji:'🇧🇷🔁🇺🇸',title:'Pense em português para entender melhor',html:'O pronome mostra quem faz parte da frase.<div class="example"><b>Eu sou aluno.</b><br><span class="english">I am a student.</span><br><br><b>Ela está feliz.</b><br><span class="english">She is happy.</span><br><br><b>Eles são alunos.</b><br><span class="english">They are students.</span></div>',speak:'I am a student. She is happy. They are students.'},
-{emoji:'⚠️✅',title:'Cuidado com esses erros',html:'<div class="example"><span class="wrong">❌ I is happy.</span><br><span class="right">✅ I am happy.</span><br><br><span class="wrong">❌ She are Ana.</span><br><span class="right">✅ She is Ana.</span><br><br><span class="wrong">❌ He is my phone.</span><br><span class="right">✅ It is my phone.</span></div>',speak:'I am happy. She is Ana. It is my phone.'},
-{emoji:'🧠⭐',title:'Ready for the Mini Check?',html:'<div class="example"><b>I</b> = eu<br><b>You</b> = você/vocês<br><b>He</b> = ele<br><b>She</b> = ela<br><b>It</b> = coisa/animal/objeto<br><b>We</b> = nós<br><b>They</b> = eles/elas</div><div class="tip">Agora prove que entendeu para liberar o jogo da Fase 1.</div>',speak:'I means eu. You means você. He means ele. She means ela. It means coisa. We means nós. They means eles ou elas.'}
-],mini:[
-{q:'Uma pessoa aponta para si mesma. Qual pronome combina?',options:['I','She','They'],answer:0,exp:'I significa eu.'},{q:'Você está falando com um colega na sua frente. Qual pronome usa?',options:['He','You','It'],answer:1,exp:'You é usado para falar com alguém.'},{q:'Um aluno aponta para uma menina da turma. Qual frase está correta?',options:['He is Ana.','She is Ana.','It is Ana.'],answer:1,exp:'She significa ela.'},{q:'Um aluno mostra um celular. Qual frase combina melhor?',options:['He is my phone.','She is my phone.','It is my phone.'],answer:2,exp:'Use it para objeto, animal ou coisa.'},{q:'Você está dentro de um grupo e fala por todos. Qual frase está correta?',options:['We are students.','They are students.','It are students.'],answer:0,exp:'We significa nós.'}
-],game:[
-{type:'Inglês → Português',q:'She',options:['ela','nós','isso'],answer:0,exp:'She significa ela.',speak:'She'},{type:'Português → Inglês',q:'nós',options:['They','We','You'],answer:1,exp:'We significa nós.',speak:'We'},{type:'Frase → sentido',q:'It is a dog.',options:['É um cachorro.','Ela é Ana.','Nós somos alunos.'],answer:0,exp:'It pode ser usado para animal.',speak:'It is a dog.'},{type:'Áudio → palavra',q:'Clique em ouvir e escolha a palavra correta.',options:['We','They','You'],answer:1,exp:'They significa eles/elas.',speak:'They',audio:true},{type:'Complete a frase',q:'____ is Ana.',options:['He','She','It'],answer:1,exp:'Ana é uma menina, então usamos She.',speak:'She is Ana.'},{type:'Inglês → Português',q:'I',options:['eu','ela','eles'],answer:0,exp:'I significa eu.',speak:'I'},{type:'Imagem mental → pronome',q:'Um menino chamado Pedro. Qual pronome combina?',options:['She','He','It'],answer:1,exp:'He significa ele.',speak:'He is Pedro.'},{type:'Frase → sentido',q:'We are students.',options:['Nós somos alunos.','Eles são alunos.','Ela é aluna.'],answer:0,exp:'We significa nós.',speak:'We are students.'},{type:'Inglês → Português',q:'You',options:['você/vocês','nós','isso'],answer:0,exp:'You significa você/vocês.',speak:'You'},{type:'Frase correta',q:'Qual frase combina com um celular?',options:['He is my phone.','It is my phone.','She is my phone.'],answer:1,exp:'Para objeto, usamos it.',speak:'It is my phone.'}
-]},
-2:{label:'Fase 2/8 — Verb to be',gameTitle:'Fase 2 — To Be Challenge',next:'Possessive Adjectives — my, your, his, her...',cards:[
-{emoji:'✨📘',title:'Mission 2: Verb to be',html:'Agora você vai usar <b>am, is, are</b> para dizer quem alguém é ou como alguém está.<div class="example"><div class="english">I am happy.</div><div class="pt">Eu estou feliz.</div><br><div class="english">She is tired.</div><div class="pt">Ela está cansada.</div><br><div class="english">They are students.</div><div class="pt">Eles são alunos.</div></div>',speak:'I am happy. She is tired. They are students.'},
-{emoji:'🙋',title:'I + am',html:'Quando uso <b>I</b>, o verbo correto é <b>am</b>.<div class="example"><div class="english">I am Lucas.</div><div class="pt">Eu sou Lucas.</div><br><div class="english">I am happy.</div><div class="pt">Eu estou feliz.</div></div><div class="tip"><span class="wrong">❌ I is happy.</span><br><span class="right">✅ I am happy.</span></div>',speak:'I am Lucas. I am happy.'},
-{emoji:'👉🙂',title:'You + are',html:'Quando falo com alguém usando <b>you</b>, uso <b>are</b>.<div class="example"><div class="english">You are my friend.</div><div class="pt">Você é meu amigo.</div><br><div class="english">You are tired.</div><div class="pt">Você está cansado.</div></div><div class="tip"><span class="wrong">❌ You is my friend.</span><br><span class="right">✅ You are my friend.</span></div>',speak:'You are my friend. You are tired.'},
-{emoji:'👦👧🐶',title:'He, She, It + is',html:'Com <b>he</b>, <b>she</b> e <b>it</b>, usamos <b>is</b>.<div class="example"><div class="english">He is a student.</div><div class="pt">Ele é aluno.</div><br><div class="english">She is happy.</div><div class="pt">Ela está feliz.</div><br><div class="english">It is a dog.</div><div class="pt">É um cachorro.</div></div>',speak:'He is a student. She is happy. It is a dog.'},
-{emoji:'👥👥',title:'We, They + are',html:'Com <b>we</b> e <b>they</b>, usamos <b>are</b>.<div class="example"><div class="english">We are students.</div><div class="pt">Nós somos alunos.</div><br><div class="english">They are friends.</div><div class="pt">Eles são amigos.</div></div><div class="tip"><span class="wrong">❌ They is students.</span><br><span class="right">✅ They are students.</span></div>',speak:'We are students. They are friends.'},
-{emoji:'🇧🇷↔️🇺🇸',title:'Comparação com português',html:'Em português usamos <b>sou, é, estamos, são</b>. Em inglês, escolhemos <b>am, is, are</b>.<div class="example"><b>Eu sou aluno.</b><br><span class="english">I am a student.</span><br><br><b>Ela está feliz.</b><br><span class="english">She is happy.</span><br><br><b>Eles estão cansados.</b><br><span class="english">They are tired.</span></div>',speak:'I am a student. She is happy. They are tired.'},
-{emoji:'🚫',title:'Como dizer “não”',html:'Para negar com o verb to be, coloque <b>not</b> depois de <b>am, is, are</b>.<div class="example"><div class="english">I am not sad.</div><div class="pt">Eu não estou triste.</div><br><div class="english">She is not tired.</div><div class="pt">Ela não está cansada.</div><br><div class="english">They are not angry.</div><div class="pt">Eles não estão com raiva.</div></div><div class="tip">No verb to be, não precisa de <b>don’t</b>.</div>',speak:'I am not sad. She is not tired. They are not angry.'},
-{emoji:'❓',title:'Como fazer pergunta',html:'No verb to be, o próprio verbo vai para frente na pergunta.<div class="example"><b>Afirmativa:</b><br><span class="english">She is happy.</span><br><br><b>Pergunta:</b><br><span class="english">Is she happy?</span><br><br><b>Afirmativa:</b><br><span class="english">They are students.</span><br><br><b>Pergunta:</b><br><span class="english">Are they students?</span></div><div class="tip"><span class="wrong">❌ Do she is happy?</span><br><span class="right">✅ Is she happy?</span></div>',speak:'Is she happy? Are they students?'},
-{emoji:'✅❌',title:'Short answers',html:'Respostas curtas usam o mesmo verbo da pergunta.<div class="example"><span class="english">Are you happy?</span><br><b>Yes, I am.</b> / <b>No, I’m not.</b><br><br><span class="english">Is she tired?</span><br><b>Yes, she is.</b> / <b>No, she isn’t.</b></div>',speak:'Are you happy? Yes, I am. Is she tired? No, she isn’t.'},
-{emoji:'🧠⭐',title:'Ready for the Mini Check?',html:'<div class="example"><b>I → am</b><br><b>You → are</b><br><b>He / She / It → is</b><br><b>We / They → are</b><br><br><b>Negativa:</b> She is not happy.<br><b>Pergunta:</b> Is she happy?<br><b>Resposta curta:</b> Yes, she is.</div><div class="tip">Primeiro olhe o pronome. Depois escolha am, is ou are.</div>',speak:'I am. You are. He is. She is. It is. We are. They are.'}
-],mini:[
-{q:'Complete: I ____ happy today.',options:['am','is','are'],answer:0,exp:'I combina com am.'},{q:'Qual frase está correta?',options:['She are my friend.','She is my friend.','She am my friend.'],answer:1,exp:'She combina com is.'},{q:'Passe para a forma negativa: They are tired.',options:['They not are tired.','They are not tired.','They don’t are tired.'],answer:1,exp:'No verb to be, o not vem depois de are.'},{q:'Qual pergunta está correta?',options:['Is he a student?','He is a student?','Do he is a student?'],answer:0,exp:'No verb to be, is vai para frente.'},{q:'Escolha a resposta curta correta: Are you ready?',options:['Yes, I is.','Yes, I am.','Yes, I are.'],answer:1,exp:'Are you...? responde: Yes, I am.'}
-],game:[
-{type:'Escolha am/is/are',q:'She ____ happy.',options:['am','is','are'],answer:1,exp:'She combina com is.',speak:'She is happy.'},{type:'Frase correta',q:'Qual frase está correta?',options:['They is students.','They are students.','They am students.'],answer:1,exp:'They combina com are.',speak:'They are students.'},{type:'Negativa',q:'Ela não está triste.',options:['She is not sad.','She are not sad.','She don’t sad.'],answer:0,exp:'No verb to be, use is not.',speak:'She is not sad.'},{type:'Pergunta',q:'Eles são amigos?',options:['Are they friends?','Is they friends?','Do they are friends?'],answer:0,exp:'Com they usamos are. Na pergunta: Are they...?',speak:'Are they friends?'},{type:'Short answer',q:'Is he tired?',options:['Yes, he is.','Yes, he are.','Yes, he am.'],answer:0,exp:'Is he...? responde: Yes, he is.',speak:'Yes, he is.'},{type:'Escolha am/is/are',q:'I ____ a student.',options:['is','am','are'],answer:1,exp:'I combina com am.',speak:'I am a student.'},{type:'Frase correta',q:'Qual frase está correta?',options:['You is my friend.','You am my friend.','You are my friend.'],answer:2,exp:'You combina com are.',speak:'You are my friend.'},{type:'Pergunta',q:'Ela está feliz?',options:['Is she happy?','Are she happy?','Do she happy?'],answer:0,exp:'She combina com is. Na pergunta: Is she...?',speak:'Is she happy?'},{type:'Negativa',q:'Nós não estamos atrasados.',options:['We are not late.','We is not late.','We don’t are late.'],answer:0,exp:'We combina com are.',speak:'We are not late.'},{type:'Short answer',q:'Are they students?',options:['No, they isn’t.','No, they aren’t.','No, they am not.'],answer:1,exp:'Are they...? responde: No, they aren’t.',speak:'No, they aren’t.'}
-]}
+const TEST_MODE = new URLSearchParams(location.search).get('test') === '1';
+const STUDY_SECONDS = TEST_MODE ? 8 : 120;
+
+const phases = [
+  {id:1, title:'Personal Pronouns', sub:'Pronomes pessoais', imgBase:'missao-ingles-fase1-pronomes-aula', count:4},
+  {id:2, title:'Verb to be', sub:'am / is / are', imgBase:'missao-ingles-fase2-verb-to-be-aula', count:4},
+  {id:3, title:'Possessive Adjectives', sub:'my / your / his / her...', imgBase:'missao-ingles-fase3-possessive-adjectives-aula', count:4},
+  {id:4, title:'Possessive Pronouns', sub:'mine / yours / hers...', imgBase:'missao-ingles-fase4-possessive-pronouns-aula', count:4},
+  {id:5, title:'Do / Does', sub:'perguntas e negativas', imgBase:'missao-ingles-fase5-do-does-aula', count:4},
+  {id:6, title:'Have / Has', sub:'ter / possuir', imgBase:'missao-ingles-fase6-have-has-aula', count:4},
+  {id:7, title:"Did / Didn't", sub:'passado simples', imgBase:'missao-ingles-fase7-did-didnt-aula', count:4},
+  {id:8, title:'Final Boss', sub:'Grammar Mix', imgBase:'missao-ingles-fase8-final-boss-aula', count:3}
+];
+
+const quizBank = {
+  1:[
+    q('Uma pessoa aponta para si mesma. Qual pronome combina?', ['I','She','They'],0,'I significa eu.'),
+    q('Você está falando com um colega na sua frente. Qual pronome usa?', ['He','You','It'],1,'You é usado para você ou vocês.'),
+    q('Um aluno aponta para uma menina. Qual frase está correta?', ['He is Ana.','She is Ana.','It is Ana.'],1,'She é usado para ela.'),
+    q('Um aluno mostra um celular. Qual frase combina melhor?', ['He is my phone.','She is my phone.','It is my phone.'],2,'It é usado para objeto, coisa ou animal.'),
+    q('Você está dentro de um grupo e fala por todos. Qual frase está correta?', ['We are students.','They are students.','It are students.'],0,'We significa nós.')
+  ],
+  2:[
+    q('Qual frase está correta?', ['I is happy.','I am happy.','I are happy.'],1,'Com I usamos am.'),
+    q('Escolha a pergunta correta.', ['Is she happy?','She is happy?','Does she happy?'],0,'No verb to be, o verbo vai para frente.'),
+    q('Qual negativa está correta?', ['They not are students.','They are not students.','They is not students.'],1,'They combina com are.'),
+    q('Resposta curta: Are you ready?', ['Yes, I am.','Yes, I is.','Yes, I do.'],0,'Pergunta com are responde com am/are.'),
+    q('Qual combina com he?', ['am','are','is'],2,'He combina com is.')
+  ],
+  3:[
+    q('Complete: This is ____ book. (eu)', ['my','mine','me'],0,'Adjetivo possessivo vem antes do objeto: my book.'),
+    q('Complete: She has ____ notebook.', ['his','her','hers'],1,'Para she usamos her antes do objeto.'),
+    q('Complete: They love ____ school.', ['their','theirs','they'],0,'Their vem antes de school.'),
+    q('Qual está correta?', ['This is mine pencil.','This is my pencil.','This pencil is my.'],1,'Antes do objeto usamos my.'),
+    q('Complete: We have ____ English class.', ['our','ours','we'],0,'Our vem antes do objeto.')
+  ],
+  4:[
+    q('Complete: This book is ____.', ['my','mine','me'],1,'Mine substitui my book.'),
+    q('Qual frase usa pronome possessivo?', ['This is her notebook.','This notebook is hers.','She has her notebook.'],1,'Hers aparece sozinho, sem objeto depois.'),
+    q('Complete: The classroom is ____.', ['our','ours','we'],1,'Ours substitui our classroom.'),
+    q('Qual está correta?', ['This pencil is yours.','This is yours pencil.','This pencil is your.'],0,'Yours aparece sozinho.'),
+    q('Complete: The books are ____.', ['their','theirs','they'],1,'Theirs substitui their books.')
+  ],
+  5:[
+    q('Escolha a pergunta correta: ela gosta de música?', ['Does she like music?','Does she likes music?','Do she like music?'],0,'Depois de does, o verbo fica normal: like.'),
+    q('Escolha a negativa correta.', ['He don’t play soccer.','He doesn’t plays soccer.','He doesn’t play soccer.'],2,'He usa doesn’t e verbo normal.'),
+    q('Resposta curta: Do they study English?', ['Yes, they do.','Yes, they does.','Yes, they are.'],0,'Pergunta com do responde com do.'),
+    q('Complete: ____ you like pizza?', ['Do','Does','Are'],0,'You usa do.'),
+    q('Complete: ____ she watch TV?', ['Do','Does','Is'],1,'She usa does em perguntas com verbo comum.')
+  ],
+  6:[
+    q('Complete: She ____ a notebook.', ['have','has','does'],1,'She usa has na afirmativa.'),
+    q('Pergunta correta:', ['Does she has a pencil?','Does she have a pencil?','Do she have a pencil?'],1,'Com does, usamos have.'),
+    q('Negativa correta:', ['He doesn’t has a bike.','He don’t have a bike.','He doesn’t have a bike.'],2,'Com doesn’t, usamos have.'),
+    q('Resposta curta: Does he have a dog?', ['Yes, he does.','Yes, he has.','Yes, he do.'],0,'Resposta curta acompanha does.'),
+    q('Complete: I ____ a red pen.', ['have','has','does'],0,'I usa have.')
+  ],
+  7:[
+    q('Afirmativa correta no passado:', ['She play yesterday.','She played yesterday.','Did she played yesterday.'],1,'Na afirmativa, o verbo vai ao passado.'),
+    q('Pergunta correta:', ['Did he studied English?','Did he study English?','Does he studied English?'],1,'Com did, o verbo volta ao normal.'),
+    q('Negativa correta:', ['They didn’t went home.','They didn’t go home.','They don’t went home.'],1,'Com didn’t, usamos go.'),
+    q('Resposta curta: Did Ana watch TV?', ['Yes, she did.','Yes, she does.','Yes, she watched.'],0,'Pergunta com did responde com did.'),
+    q('Qual está correta?', ['He ate pizza yesterday.','Did he ate pizza?','He didn’t ate pizza.'],0,'A afirmativa usa ate; com did/didn’t usa eat.')
+  ],
+  8:[
+    q('Qual frase está correta?', ['She are happy.','She is happy.','She am happy.'],1,'She usa is.'),
+    q('Escolha a correta:', ['This book is mine.','This book is my.','This is mine book.'],0,'Mine aparece sozinho.'),
+    q('Pergunta correta:', ['Does she like music?','Does she likes music?','Do she like music?'],0,'Does + verbo normal.'),
+    q('Negativa no passado correta:', ['They didn’t went to school.','They don’t went to school.','They didn’t go to school.'],2,'Didn’t + verbo normal.'),
+    q('Resposta curta: Did he play soccer?', ['Yes, he does.','Yes, he did.','Yes, he played.'],1,'Did responde com did.'),
+    q('Have/Has correto:', ['She have a notebook.','She has a notebook.','She does has a notebook.'],1,'She usa has na afirmativa.')
+  ]
 };
-function loadState(){try{const s=JSON.parse(localStorage.getItem(STORAGE_KEY));if(s)state={...state,...s};}catch(e){}}
-function saveState(){localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}
-function go(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');saveState();}
-function saveStudent(){const name=document.getElementById('studentName').value.trim();if(!name){alert('Digite o nome do aluno.');return}state.student={name, class:document.getElementById('studentClass').value.trim(), grade:document.getElementById('studentGrade').value, school:document.getElementById('studentSchool').value.trim()};saveState();go('rules');}
-function continueGame(){loadState();if(!state.student){alert('Ainda não há progresso salvo neste aparelho.');return}go('map');renderMap();}
-function renderMap(){document.getElementById('mapSub').textContent=state.student?`${state.student.name} • Pontuação atual: ${state.completed.includes(8)?10:0}`:'Fase 1 liberada';const grid=document.getElementById('phaseGrid');grid.innerHTML='';phaseNames.forEach((p,i)=>{const n=i+1, done=state.completed.includes(n), unlocked=n<=state.unlocked;const div=document.createElement('div');div.className='phase '+(done?'done':unlocked?'unlocked':'');div.innerHTML=`<div class="icon">${done?'⭐':unlocked?'🔓':'🔒'}</div><div><div class="title">Fase ${n} — ${p}</div><div class="status">${done?'Concluída':unlocked?'Liberada':'Bloqueada'}</div></div>`;if(unlocked&&DATA[n])div.onclick=()=>startLesson(n);grid.appendChild(div);});}
-function startLesson(phase){currentPhase=phase;lessonIndex=0;renderLesson();go('lesson');}
-function renderLesson(){const d=DATA[currentPhase], l=d.cards[lessonIndex];document.getElementById('lessonPhaseLabel').textContent=d.label;document.getElementById('cardCounter').textContent=`Card ${lessonIndex+1}/${d.cards.length}`;document.getElementById('lessonProgress').style.width=((lessonIndex+1)/d.cards.length*100)+'%';document.getElementById('lessonCard').innerHTML=`<div class="emoji">${l.emoji}</div><div class="lesson-title">${l.title}</div><div class="lesson-text">${l.html}</div>`;document.getElementById('nextLessonBtn').textContent=lessonIndex===d.cards.length-1?'Start Mini Check':'Próximo';}
-function nextLesson(){const d=DATA[currentPhase];if(lessonIndex<d.cards.length-1){lessonIndex++;renderLesson();}else startMini();}
-function speakCurrentLesson(){speak(DATA[currentPhase].cards[lessonIndex].speak);}
-function speak(text){if(!('speechSynthesis'in window)){alert('A voz automática não está disponível neste navegador.');return}window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang='en-US';u.rate=.88;u.pitch=1;window.speechSynthesis.speak(u);}
-function startMini(){miniIndex=0;miniScore=0;renderMini();go('mini');}
-function renderMini(){const d=DATA[currentPhase], m=d.mini[miniIndex];document.getElementById('miniPhaseLabel').textContent=`Mini Check — Fase ${currentPhase}`;document.getElementById('miniCounter').textContent=`${miniIndex+1}/${d.mini.length}`;document.getElementById('miniProgress').style.width=((miniIndex+1)/d.mini.length*100)+'%';document.getElementById('miniQuestion').textContent=m.q;document.getElementById('miniFeedback').className='feedback';const opts=document.getElementById('miniOptions');opts.innerHTML='';m.options.forEach((o,i)=>{const b=document.createElement('button');b.className='option';b.textContent=String.fromCharCode(65+i)+') '+o;b.onclick=()=>answerMini(i,b);opts.appendChild(b);});}
-function answerMini(i,btn){const d=DATA[currentPhase], m=d.mini[miniIndex];document.querySelectorAll('#miniOptions .option').forEach((b,idx)=>{b.disabled=true;if(idx===m.answer)b.classList.add('correct');});const fb=document.getElementById('miniFeedback');if(i===m.answer){miniScore++;btn.classList.add('correct');fb.className='feedback good show';fb.textContent='Correct! '+m.exp;}else{btn.classList.add('incorrect');fb.className='feedback bad show';fb.textContent='A resposta correta é: '+m.options[m.answer]+'. '+m.exp;}setTimeout(()=>{miniIndex++;if(miniIndex<d.mini.length)renderMini();else finishMini();},1500);}
-function finishMini(){const total=DATA[currentPhase].mini.length, need=currentPhase===8?5:4;if(miniScore>=need){alert('Mission unlocked! Você liberou o jogo da fase.');startGame();}else{alert(`Quase lá! Você acertou ${miniScore} de ${total}. Volte aos cards e tente novamente.`);startLesson(currentPhase);}}
-function startGame(){gameDeck=shuffle([...DATA[currentPhase].game]).slice(0,currentPhase===1?8:10);gameIndex=0;lives=3;renderGame();go('game');}
-function renderGame(){clearInterval(timerId);timeLeft=25;gameCurrent=gameDeck[gameIndex];document.getElementById('gameTitle').textContent=DATA[currentPhase].gameTitle;document.getElementById('hearts').textContent='❤️'.repeat(lives)+'🖤'.repeat(3-lives);document.getElementById('gameCounter').textContent=`Desafio ${gameIndex+1}/${gameDeck.length}`;document.getElementById('gameProgress').style.width=((gameIndex+1)/gameDeck.length*100)+'%';document.getElementById('challengeType').textContent=gameCurrent.type;document.getElementById('gameQuestion').textContent=gameCurrent.q;document.getElementById('gameAudioBtn').classList.toggle('hidden',!gameCurrent.audio);document.getElementById('gameFeedback').className='feedback';const opts=document.getElementById('gameOptions');opts.innerHTML='';gameCurrent.options.forEach((o,i)=>{const b=document.createElement('button');b.className='option';b.textContent=String.fromCharCode(65+i)+') '+o;b.onclick=()=>answerGame(i,b);opts.appendChild(b);});document.getElementById('timer').textContent=timeLeft;timerId=setInterval(()=>{timeLeft--;document.getElementById('timer').textContent=timeLeft;if(timeLeft<=0){answerGame(-1,null)}},1000);}
-function answerGame(i,btn){clearInterval(timerId);const g=gameCurrent;document.querySelectorAll('#gameOptions .option').forEach((b,idx)=>{b.disabled=true;if(idx===g.answer)b.classList.add('correct');});const fb=document.getElementById('gameFeedback');if(i===g.answer){if(btn)btn.classList.add('correct');fb.className='feedback good show';fb.textContent='Great job! '+g.exp;}else{lives--;if(btn)btn.classList.add('incorrect');fb.className='feedback bad show';fb.textContent=(i===-1?'Tempo esgotado! ':'Try again! ')+'Resposta correta: '+g.options[g.answer]+'. '+g.exp;document.getElementById('hearts').textContent='❤️'.repeat(Math.max(lives,0))+'🖤'.repeat(3-Math.max(lives,0));}
-setTimeout(()=>{if(lives<=0){go('tryagain');return}gameIndex++;if(gameIndex<gameDeck.length)renderGame();else finishPhase();},1800);}
-function finishPhase(){if(!state.completed.includes(currentPhase))state.completed.push(currentPhase);if(state.unlocked<currentPhase+1)state.unlocked=currentPhase+1;saveState();document.getElementById('congratsSub').textContent=`Mission ${currentPhase} completed.`;document.getElementById('congratsTitle').textContent=`Fase ${currentPhase} concluída!`;document.getElementById('congratsText').innerHTML=`Você concluiu a missão <b>${phaseNames[currentPhase-1]}</b>.<br><br><b>Next mission:</b><br>${DATA[currentPhase].next||'Final Boss'}`;go('congrats');}
-function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a;}
-loadState();
+
+const gameBank = JSON.parse(JSON.stringify(quizBank));
+
+let state = loadState();
+let currentPhase = 1, currentLesson = 1, studyRemaining = STUDY_SECONDS, studyInterval=null;
+let quizIndex=0, quizCorrect=0, quizQuestions=[];
+let gameIndex=0, gameLives=3, gameQuestions=[], gameTimer=25, gameInterval=null;
+
+function q(text, options, answer, explain){ return {text, options, answer, explain}; }
+function defaultState(){
+  return {student:null, unlocked:1, completed:[], currentPhase:1, final:false};
+}
+function loadState(){
+  try{return JSON.parse(localStorage.getItem('missaoInglesState')) || defaultState()}catch(e){return defaultState()}
+}
+function saveState(){ localStorage.setItem('missaoInglesState', JSON.stringify(state)); }
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+function continueMission(){
+  if(!state.student){ showScreen('register'); return; }
+  showMap();
+}
+function saveRegister(){
+  const name=document.getElementById('studentName').value.trim();
+  if(!name){ alert('Digite o nome do aluno.'); return; }
+  state.student={
+    name,
+    className:document.getElementById('studentClass').value.trim(),
+    grade:document.getElementById('studentGrade').value,
+    school:document.getElementById('studentSchool').value.trim()
+  };
+  saveState(); showScreen('rules');
+}
+function showMap(){
+  const map=document.getElementById('phaseMap');
+  map.innerHTML='';
+  phases.forEach(ph=>{
+    const done=state.completed.includes(ph.id);
+    const unlocked=ph.id<=state.unlocked;
+    const div=document.createElement('div');
+    div.className='phase-card '+(done?'done':unlocked?'unlocked':'locked');
+    div.innerHTML=`<div class="badge">${done?'★':unlocked?ph.id:'🔒'}</div>
+      <div style="flex:1"><div class="phase-title">Fase ${ph.id} — ${ph.title}</div><div class="phase-sub">${ph.sub}</div></div>`;
+    if(unlocked) div.onclick=()=>startLesson(ph.id);
+    map.appendChild(div);
+  });
+  showScreen('map');
+}
+function startLesson(phaseId){
+  currentPhase=phaseId; currentLesson=1; studyRemaining=STUDY_SECONDS;
+  renderLesson(); showScreen('lesson'); startStudyTimer();
+}
+function renderLesson(){
+  const ph=phases[currentPhase-1];
+  document.getElementById('lessonPhaseLabel').textContent=`Fase ${ph.id}/8`;
+  document.getElementById('lessonProgressLabel').textContent=`Aula ${currentLesson}/${ph.count}`;
+  document.getElementById('lessonImage').src=`${ph.imgBase}${currentLesson}.png`;
+  document.getElementById('miniCheckBtn').disabled = studyRemaining > 0;
+  document.getElementById('nextLessonBtn').textContent = currentLesson === ph.count ? 'Finalizar aula' : 'Próximo ▶';
+  document.getElementById('interactiveNote').classList.toggle('hidden', !(currentPhase===6 && currentLesson===2));
+}
+function startStudyTimer(){
+  clearInterval(studyInterval);
+  updateStudyTimer();
+  studyInterval=setInterval(()=>{
+    studyRemaining--;
+    updateStudyTimer();
+    if(studyRemaining<=0){
+      clearInterval(studyInterval);
+      document.getElementById('miniCheckBtn').disabled=false;
+      document.getElementById('studyStatus').textContent='Mini check liberado!';
+      playTone(740,120);
+    }
+  },1000);
+}
+function updateStudyTimer(){
+  if(studyRemaining<0) studyRemaining=0;
+  const m=String(Math.floor(studyRemaining/60)).padStart(2,'0');
+  const s=String(studyRemaining%60).padStart(2,'0');
+  document.getElementById('studyTimer').textContent=`${m}:${s}`;
+  document.getElementById('studyStatus').textContent = studyRemaining>0 ? 'Estude para liberar o mini check.' : 'Mini check liberado!';
+}
+function nextLesson(){
+  const ph=phases[currentPhase-1];
+  if(currentLesson<ph.count){ currentLesson++; renderLesson(); window.scrollTo(0,0); playTone(500,70); }
+  else { document.getElementById('miniCheckBtn').scrollIntoView({behavior:'smooth',block:'center'}); }
+}
+function prevLesson(){
+  if(currentLesson>1){ currentLesson--; renderLesson(); window.scrollTo(0,0); }
+  else showMap();
+}
+function speakCurrentLesson(){
+  const ph=phases[currentPhase-1];
+  const text = `Missão Inglês. Fase ${ph.id}. ${ph.title}. Aula ${currentLesson}. Estude, observe os exemplos e prepare-se para o mini check.`;
+  speak(text);
+}
+function speak(text){
+  try{
+    speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(text);
+    u.lang='pt-BR'; u.rate=.92;
+    speechSynthesis.speak(u);
+  }catch(e){}
+}
+function startMiniCheck(){
+  clearInterval(studyInterval);
+  quizIndex=0; quizCorrect=0;
+  quizQuestions=[...quizBank[currentPhase]];
+  renderQuiz(); showScreen('quiz');
+}
+function renderQuiz(){
+  const item=quizQuestions[quizIndex];
+  document.getElementById('quizPhaseLabel').textContent=`Fase ${currentPhase} — Mini Check`;
+  document.getElementById('quizCountLabel').textContent=`${quizIndex+1}/${quizQuestions.length}`;
+  document.getElementById('quizQuestion').textContent=item.text;
+  renderOptions('quizOptions', item, handleQuizAnswer);
+  document.getElementById('quizFeedback').innerHTML='';
+}
+function renderOptions(containerId, item, handler){
+  const box=document.getElementById(containerId);
+  box.innerHTML='';
+  item.options.forEach((op,i)=>{
+    const b=document.createElement('button');
+    b.className='option';
+    b.innerHTML=`${String.fromCharCode(65+i)}) ${op}`;
+    b.onclick=()=>handler(i,b);
+    box.appendChild(b);
+  });
+}
+function handleQuizAnswer(i,btn){
+  const item=quizQuestions[quizIndex];
+  document.querySelectorAll('#quizOptions .option').forEach(b=>b.disabled=true);
+  if(i===item.answer){
+    quizCorrect++; btn.classList.add('correct'); playSuccess();
+    document.getElementById('quizFeedback').innerHTML=`<div class="feedback good">Great job! ${item.explain}</div>`;
+  }else{
+    btn.classList.add('wrong'); document.querySelectorAll('#quizOptions .option')[item.answer].classList.add('correct'); playError();
+    document.getElementById('quizFeedback').innerHTML=`<div class="feedback bad">Resposta correta: ${item.options[item.answer]}. ${item.explain}</div>`;
+  }
+  setTimeout(()=>{
+    quizIndex++;
+    if(quizIndex<quizQuestions.length) renderQuiz();
+    else finishQuiz();
+  },1600);
+}
+function finishQuiz(){
+  const needed = currentPhase===8 ? 5 : 4;
+  if(quizCorrect>=needed){
+    playUnlock();
+    startGame();
+  }else{
+    alert(`Você acertou ${quizCorrect}. Precisa acertar ${needed}. Estude novamente e tente outra vez.`);
+    startLesson(currentPhase);
+  }
+}
+function startGame(){
+  gameIndex=0; gameLives=3;
+  gameQuestions=[...gameBank[currentPhase]].sort(()=>Math.random()-.5);
+  if(currentPhase!==8) gameQuestions=gameQuestions.slice(0, Math.min(5, gameQuestions.length));
+  else gameQuestions=gameQuestions.slice(0, 6);
+  renderGame(); showScreen('game'); startGameTimer();
+}
+function renderGame(){
+  const ph=phases[currentPhase-1];
+  const item=gameQuestions[gameIndex];
+  document.getElementById('gamePhaseLabel').textContent=`Fase ${currentPhase} — ${ph.title}`;
+  document.getElementById('gameProgressText').textContent=`Desafio ${gameIndex+1}/${gameQuestions.length}`;
+  document.getElementById('gameProgressBar').style.width=`${(gameIndex/gameQuestions.length)*100}%`;
+  document.getElementById('gameHearts').textContent='❤️'.repeat(gameLives)+'🖤'.repeat(3-gameLives);
+  document.getElementById('gameQuestion').textContent=item.text;
+  renderOptions('gameOptions', item, handleGameAnswer);
+  document.getElementById('gameFeedback').innerHTML='';
+}
+function startGameTimer(){
+  clearInterval(gameInterval);
+  gameTimer = currentPhase>=7 ? 35 : 25;
+  updateGameTimer();
+  gameInterval=setInterval(()=>{
+    gameTimer--; updateGameTimer();
+    if(gameTimer<=0){ clearInterval(gameInterval); handleGameAnswer(-1,null); }
+  },1000);
+}
+function updateGameTimer(){ document.getElementById('gameTimer').textContent=`${gameTimer}s`; }
+function handleGameAnswer(i,btn){
+  clearInterval(gameInterval);
+  const item=gameQuestions[gameIndex];
+  document.querySelectorAll('#gameOptions .option').forEach(b=>b.disabled=true);
+  if(i===item.answer){
+    if(btn) btn.classList.add('correct'); playSuccess();
+    document.getElementById('gameFeedback').innerHTML=`<div class="feedback good">Correct! ${item.explain}</div>`;
+    setTimeout(nextGameQuestion,1500);
+  }else{
+    gameLives--; playError();
+    if(btn) btn.classList.add('wrong');
+    document.querySelectorAll('#gameOptions .option')[item.answer].classList.add('correct');
+    document.getElementById('gameHearts').textContent='❤️'.repeat(gameLives)+'🖤'.repeat(3-gameLives);
+    document.getElementById('gameFeedback').innerHTML=`<div class="feedback bad">A correta é: ${item.options[item.answer]}. ${item.explain}</div>`;
+    if(gameLives<=0) setTimeout(tryAgain,1800);
+    else setTimeout(()=>{ nextGameQuestion(); },1800);
+  }
+}
+function nextGameQuestion(){
+  gameIndex++;
+  if(gameIndex>=gameQuestions.length) completePhase();
+  else { renderGame(); startGameTimer(); }
+}
+function tryAgain(){
+  alert('Try again! Você perdeu as 3 vidas. Revise a aula desta fase e tente novamente.');
+  startLesson(currentPhase);
+}
+function completePhase(){
+  clearInterval(gameInterval);
+  if(!state.completed.includes(currentPhase)) state.completed.push(currentPhase);
+  if(currentPhase<8) state.unlocked=Math.max(state.unlocked,currentPhase+1);
+  if(currentPhase===8) state.final=true;
+  state.currentPhase=Math.min(8,currentPhase+1);
+  saveState();
+  playVictory();
+  if(currentPhase===8) showFinal();
+  else {
+    document.getElementById('congratsTitle').textContent=`Mission ${currentPhase} completed.`;
+    document.getElementById('congratsText').textContent=`Você concluiu a Fase ${currentPhase}. A próxima fase foi desbloqueada.`;
+    document.getElementById('nextPhaseButton').style.display='block';
+    showScreen('congrats');
+  }
+}
+function goNextPhase(){ startLesson(Math.min(8,currentPhase+1)); }
+function showFinal(){
+  const s=state.student||{};
+  document.getElementById('finalData').innerHTML=`
+    <p><b>Aluno:</b> ${s.name||''}</p>
+    <p><b>Turma:</b> ${s.className||''}</p>
+    <p><b>Série:</b> ${s.grade||''}</p>
+    <p><b>Escola:</b> ${s.school||''}</p>
+    <p><b>Status:</b> Mission Completed</p>
+    <p><b>Código:</b> MI-2026-${Math.floor(1000+Math.random()*9000)}</p>`;
+  showScreen('final');
+}
+function playTone(freq=440,duration=120){
+  try{
+    const ctx=new (window.AudioContext||window.webkitAudioContext)();
+    const o=ctx.createOscillator(); const g=ctx.createGain();
+    o.connect(g); g.connect(ctx.destination); o.frequency.value=freq; o.type='sine';
+    g.gain.setValueAtTime(.08,ctx.currentTime); g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+duration/1000);
+    o.start(); o.stop(ctx.currentTime+duration/1000);
+  }catch(e){}
+}
+function playSuccess(){ playTone(880,100); setTimeout(()=>playTone(1175,120),110); }
+function playError(){ playTone(180,220); }
+function playUnlock(){ playTone(660,100); setTimeout(()=>playTone(990,180),120); }
+function playVictory(){ playTone(523,120); setTimeout(()=>playTone(659,120),130); setTimeout(()=>playTone(784,220),260); }
 </script>
 </body>
 </html>
