@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Missão Inglês - Fase 1 Personal Pronouns</title>
+  <title>Missão Inglês - Fase 1 Personal Pronouns Corrigida</title>
   <style>
     :root{
       --bg1:#081229; --bg2:#210043; --card:#101b3dcc; --glass:rgba(255,255,255,.08);
@@ -24,7 +24,7 @@
     button{font:inherit}.btn{width:100%;border:0;border-radius:18px;padding:15px 16px;font-weight:950;color:#06101e;background:linear-gradient(135deg,var(--cyan),var(--green));box-shadow:0 0 22px rgba(0,234,255,.28);cursor:pointer;margin-top:10px}.btn:active,.option:active,.pill:active{transform:scale(.98)}
     .btn.secondary{background:rgba(255,255,255,.09);color:var(--text);border:1px solid rgba(255,255,255,.16);box-shadow:none}.btn.warning{background:linear-gradient(135deg,var(--gold),#ff9f1c)}
     .topbar{display:flex;gap:8px;align-items:center;justify-content:space-between;background:rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:10px;font-weight:900}.badge{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:7px 10px;color:var(--gold);font-size:.9rem}
-    .lesson-box{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:20px;padding:14px;margin:12px 0;text-align:left}.lesson-title{font-size:1.55rem;font-weight:1000;text-align:center;color:#fff;margin:4px 0 10px}.big-rule{font-size:1.15rem;font-weight:950;background:linear-gradient(135deg,rgba(0,234,255,.18),rgba(54,255,157,.14));border-radius:18px;padding:14px;text-align:center;color:#fff}.examples{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.ex{background:rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:12px;text-align:center;font-weight:900}.en{color:var(--cyan);font-size:1.35rem}.pt{display:block;color:var(--muted);font-size:.92rem;margin-top:2px}
+    .lesson-box{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:20px;padding:14px;margin:12px 0;text-align:left}.lesson-title{font-size:1.55rem;font-weight:1000;text-align:center;color:#fff;margin:4px 0 10px}.big-rule{font-size:1.15rem;font-weight:950;background:linear-gradient(135deg,rgba(0,234,255,.18),rgba(54,255,157,.14));border-radius:18px;padding:14px;text-align:center;color:#fff}.examples{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.ex{background:rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:12px;text-align:center;font-weight:900}.en{color:var(--cyan);font-size:1.35rem}.pt{display:block;color:var(--muted);font-size:.92rem;margin-top:2px}.sound{border:0;border-radius:999px;background:rgba(0,234,255,.18);color:#fff;font-weight:1000;padding:7px 10px;margin-top:8px;cursor:pointer;border:1px solid rgba(0,234,255,.35)}
     .progress{height:10px;border-radius:999px;background:rgba(255,255,255,.09);overflow:hidden;margin:8px 0 12px}.bar{height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--green));transition:.25s}
     .question{font-size:1.1rem;font-weight:900;margin:12px 0}.option{display:block;width:100%;text-align:left;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.08);color:var(--text);border-radius:16px;padding:14px;margin:10px 0;cursor:pointer;font-weight:850}.option.correct{background:rgba(54,255,157,.18);border-color:rgba(54,255,157,.55)}.option.wrong{background:rgba(255,77,109,.18);border-color:rgba(255,77,109,.55)}
     .feedback{min-height:48px;border-radius:16px;padding:12px;margin:12px 0;background:rgba(0,0,0,.18);color:#fff;display:none}.feedback.show{display:block}.feedback.ok{border:1px solid rgba(54,255,157,.45)}.feedback.bad{border:1px solid rgba(255,77,109,.45)}
@@ -40,7 +40,7 @@
         <div class="logo">🎮</div>
         <h1>Missão Inglês</h1>
         <p class="teacher">Base Forte • Fase 1</p>
-        <p>Hoje você vai aprender <b>Personal Pronouns</b> com uma aula curta, mini-check e jogo.</p>
+        <p>Hoje você vai aprender <b>Personal Pronouns</b> com explicação escrita, botões de pronúncia, mini-check e jogo.</p>
         <button class="btn" onclick="show('lesson')">Começar aula</button>
         <button class="btn secondary" onclick="resetAll()">Reiniciar progresso</button>
       </div>
@@ -51,7 +51,7 @@
       <div class="card" style="flex:1">
         <div class="progress"><div class="bar" id="lessonBar"></div></div>
         <div id="lessonContent"></div>
-        <button class="btn warning" onclick="speakCurrentLesson()">▶ Ouvir explicação</button>
+        <p class="small" style="text-align:center">Leia a explicação. Toque no botão 🔊 para ouvir somente a palavra em inglês.</p>
         <button class="btn" id="nextLessonBtn" onclick="nextLesson()">Próxima tela</button>
         <button class="btn secondary hidden" id="goCheckBtn" onclick="startCheck()">Ir para o mini-check</button>
       </div>
@@ -112,20 +112,16 @@
 <script>
 const lessons = [
   {
-    html:`<div class="lesson-title">PERSONAL PRONOUNS</div><div class="big-rule">Personal pronoun é <u>quem está na frase</u>.</div><div class="lesson-box"><b>Não é verbo.</b><br>Pronoun mostra a pessoa. Verb mostra ação ou estado.</div>`,
-    text:'Personal pronouns são as palavras que mostram quem está na frase. Pronoun não é verbo. Pronoun mostra a pessoa.'
+    html:`<div class="lesson-title">PERSONAL PRONOUNS</div><div class="big-rule">Personal pronoun é <u>quem está na frase</u>.</div><div class="lesson-box"><b>Guarde isso:</b><br>Pronoun mostra a pessoa. Verb mostra ação ou estado.<br><br>Exemplo: em <b>She is happy</b>, <b>She</b> é o pronome. <b>Is</b> é o verbo.</div>`
   },
   {
-    html:`<div class="lesson-title">Singular</div><div class="examples"><div class="ex"><span class="en">I</span><span class="pt">eu</span></div><div class="ex"><span class="en">You</span><span class="pt">você</span></div><div class="ex"><span class="en">He</span><span class="pt">ele</span></div><div class="ex"><span class="en">She</span><span class="pt">ela</span></div></div>`,
-    text:'I significa eu. You significa você. He significa ele. She significa ela.'
+    html:`<div class="lesson-title">Pronomes no singular</div><div class="examples"><div class="ex"><span class="en">I</span><span class="pt">eu</span><button class="sound" onclick="speakWord('I')">🔊 ouvir</button></div><div class="ex"><span class="en">You</span><span class="pt">você</span><button class="sound" onclick="speakWord('You')">🔊 ouvir</button></div><div class="ex"><span class="en">He</span><span class="pt">ele</span><button class="sound" onclick="speakWord('He')">🔊 ouvir</button></div><div class="ex"><span class="en">She</span><span class="pt">ela</span><button class="sound" onclick="speakWord('She')">🔊 ouvir</button></div></div><div class="lesson-box"><b>Atenção:</b> o botão fala só a palavra em inglês para treinar a pronúncia.</div>`
   },
   {
-    html:`<div class="lesson-title">Coisa, animal e plural</div><div class="examples"><div class="ex"><span class="en">It</span><span class="pt">coisa ou animal</span></div><div class="ex"><span class="en">We</span><span class="pt">nós</span></div><div class="ex"><span class="en">They</span><span class="pt">eles ou elas</span></div><div class="ex"><span class="en">Maria + João</span><span class="pt">They</span></div></div>`,
-    text:'It é usado para coisa, objeto ou animal. We significa nós. They significa eles ou elas.'
+    html:`<div class="lesson-title">Coisa, animal e plural</div><div class="examples"><div class="ex"><span class="en">It</span><span class="pt">coisa ou animal</span><button class="sound" onclick="speakWord('It')">🔊 ouvir</button></div><div class="ex"><span class="en">We</span><span class="pt">nós</span><button class="sound" onclick="speakWord('We')">🔊 ouvir</button></div><div class="ex"><span class="en">They</span><span class="pt">eles ou elas</span><button class="sound" onclick="speakWord('They')">🔊 ouvir</button></div><div class="ex"><span class="en">Maria + João</span><span class="pt">They</span><button class="sound" onclick="speakWord('They')">🔊 ouvir They</button></div></div>`
   },
   {
-    html:`<div class="lesson-title">Como pensar?</div><div class="big-rule">Primeiro descubra: quem aparece na frase?</div><div class="examples"><div class="ex"><span class="en">Maria</span><span class="pt">She</span></div><div class="ex"><span class="en">João</span><span class="pt">He</span></div><div class="ex"><span class="en">Ana e Pedro</span><span class="pt">They</span></div><div class="ex"><span class="en">Minha mãe e eu</span><span class="pt">We</span></div></div>`,
-    text:'Para responder, pense primeiro em quem aparece na frase. Maria é she. João é he. Ana e Pedro são they. Minha mãe e eu é we.'
+    html:`<div class="lesson-title">Como pensar?</div><div class="big-rule">Primeiro descubra: quem aparece na frase?</div><div class="examples"><div class="ex"><span class="en">Maria</span><span class="pt">She</span><button class="sound" onclick="speakWord('She')">🔊 She</button></div><div class="ex"><span class="en">João</span><span class="pt">He</span><button class="sound" onclick="speakWord('He')">🔊 He</button></div><div class="ex"><span class="en">Ana e Pedro</span><span class="pt">They</span><button class="sound" onclick="speakWord('They')">🔊 They</button></div><div class="ex"><span class="en">Minha mãe e eu</span><span class="pt">We</span><button class="sound" onclick="speakWord('We')">🔊 We</button></div></div>`
   }
 ];
 let lessonIndex=0, checkIndex=0, checkRight=0, selectedEn=null, matchRight=0, builderIndex=0, builderRight=0, currentBuild=[];
@@ -147,8 +143,8 @@ const builds=[
 function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');if(id==='lesson') renderLesson();}
 function renderLesson(){document.getElementById('lessonContent').innerHTML=lessons[lessonIndex].html;document.getElementById('slideBadge').textContent=(lessonIndex+1)+'/'+lessons.length;document.getElementById('lessonBar').style.width=((lessonIndex+1)/lessons.length*100)+'%';document.getElementById('nextLessonBtn').classList.toggle('hidden', lessonIndex===lessons.length-1);document.getElementById('goCheckBtn').classList.toggle('hidden', lessonIndex!==lessons.length-1)}
 function nextLesson(){if(lessonIndex<lessons.length-1){lessonIndex++;renderLesson();}}
-function speakText(text, lang='pt-BR'){window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang=lang;u.rate=.9;u.pitch=1.02;speechSynthesis.speak(u)}
-function speakCurrentLesson(){speakText(lessons[lessonIndex].text)}
+function speakText(text, lang='en-US'){window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang=lang;u.rate=.82;u.pitch=1;speechSynthesis.speak(u)}
+function speakWord(word){const pronunciation={I:'eye',You:'you',He:'he',She:'she',It:'it',We:'we',They:'they'};speakText(pronunciation[word]||word,'en-US')}
 function startCheck(){checkIndex=0;checkRight=0;show('check');renderCheck()}
 function renderCheck(){const c=checks[checkIndex];document.getElementById('checkBadge').textContent=(checkIndex+1)+'/'+checks.length;document.getElementById('checkBar').style.width=(checkIndex/checks.length*100)+'%';document.getElementById('checkQuestion').textContent=c.q;const opt=document.getElementById('checkOptions');opt.innerHTML='';document.getElementById('checkFeedback').className='feedback';document.getElementById('checkNextBtn').classList.add('hidden');c.opts.forEach(o=>{const b=document.createElement('button');b.className='option';b.textContent=o;b.onclick=()=>answerCheck(b,o);opt.appendChild(b)})}
 function answerCheck(btn,o){document.querySelectorAll('#checkOptions .option').forEach(b=>b.disabled=true);const c=checks[checkIndex], fb=document.getElementById('checkFeedback');if(o===c.a){btn.classList.add('correct');checkRight++;fb.className='feedback show ok';fb.innerHTML='✅ Isso mesmo!';}else{btn.classList.add('wrong');fb.className='feedback show bad';fb.innerHTML='❌ '+c.fb;}document.getElementById('checkNextBtn').classList.remove('hidden')}
@@ -156,7 +152,7 @@ function nextCheck(){checkIndex++;if(checkIndex<checks.length) renderCheck(); el
 function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
 function startMatch(){matchRight=0;selectedEn=null;show('match');renderMatch()}
 function renderMatch(){document.getElementById('matchScore').textContent=matchRight+'/'+pairs.length;document.getElementById('matchFeedback').className='feedback';const en=document.getElementById('englishCol'), pt=document.getElementById('portCol');en.innerHTML='';pt.innerHTML='';shuffle(pairs).forEach(([e,p])=>{let b=document.createElement('button');b.className='pill';b.textContent=e;b.dataset.en=e;b.dataset.pt=p;b.onclick=()=>selectEnglish(b);en.appendChild(b)});shuffle(pairs).forEach(([e,p])=>{let b=document.createElement('button');b.className='pill';b.textContent=p;b.dataset.pt=p;b.onclick=()=>selectPortuguese(b);pt.appendChild(b)});document.getElementById('goBuilderBtn').classList.add('hidden')}
-function selectEnglish(btn){if(btn.classList.contains('done')) return;document.querySelectorAll('#englishCol .pill').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');selectedEn=btn;speakText(btn.dataset.en,'en-US')}
+function selectEnglish(btn){if(btn.classList.contains('done')) return;document.querySelectorAll('#englishCol .pill').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');selectedEn=btn;speakWord(btn.dataset.en)}
 function selectPortuguese(btn){if(!selectedEn || btn.classList.contains('done')) return;const fb=document.getElementById('matchFeedback');if(selectedEn.dataset.pt===btn.dataset.pt){selectedEn.classList.add('done');selectedEn.classList.remove('selected');btn.classList.add('done');matchRight++;document.getElementById('matchScore').textContent=matchRight+'/'+pairs.length;fb.className='feedback show ok';fb.textContent='✅ Par correto!';selectedEn=null;if(matchRight===pairs.length){document.getElementById('goBuilderBtn').classList.remove('hidden');localStorage.setItem('fase1_match','ok')}}else{btn.classList.add('bad');setTimeout(()=>btn.classList.remove('bad'),260);fb.className='feedback show bad';fb.textContent='❌ Tente de novo. Toque na palavra em inglês e procure o português correto.'}}
 function startBuilder(){builderIndex=0;builderRight=0;show('builder');renderBuilder()}
 function renderBuilder(){currentBuild=[];const b=builds[builderIndex];document.getElementById('builderBadge').textContent=(builderIndex+1)+'/'+builds.length;document.getElementById('builderHint').textContent=b.hint;document.getElementById('answerZone').innerHTML='';document.getElementById('builderFeedback').className='feedback';document.getElementById('nextBuilderBtn').classList.add('hidden');const zone=document.getElementById('tileZone');zone.innerHTML='';b.words.forEach(w=>{const t=document.createElement('button');t.className='tile';t.textContent=w;t.onclick=()=>useTile(t,w);zone.appendChild(t)})}
