@@ -22,16 +22,22 @@ html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;backgr
 body{min-height:100dvh;display:flex;justify-content:center;background:radial-gradient(circle at 50% 0%,rgba(0,196,255,.18),transparent 34%),linear-gradient(180deg,#021a38,#06134f)}
 .hub{position:relative;width:min(100vw,941px);margin:0 auto;line-height:0;overflow:hidden;background:#063c76}
 .hub-image{display:block;width:100%;height:auto;user-select:none;-webkit-user-drag:none}
-.game-hotspot{position:absolute;left:14.3%;width:66.8%;height:7%;z-index:5;border-radius:999px;text-decoration:none;cursor:pointer;background:rgba(255,255,255,0);outline:none;transition:background .16s ease,box-shadow .16s ease,transform .12s ease}
-.game-hotspot:hover,.game-hotspot:focus-visible{background:rgba(255,255,255,.08);box-shadow:0 0 0 3px rgba(255,255,255,.9),0 0 28px rgba(74,222,255,.85)}
-.game-hotspot:active{transform:scale(.985)}
-.g1{top:46.70%}.g2{top:54.35%}.g3{top:62.05%}.g4{top:69.72%}.g5{top:77.42%}
+.game-hotspot{position:absolute;left:14.3%;width:66.8%;height:7%;z-index:5;border-radius:999px;text-decoration:none;cursor:pointer;background:rgba(255,255,255,0);outline:none;transform:translateZ(0);animation:hubButtonBreath 2.7s ease-in-out infinite;transition:background .16s ease,box-shadow .16s ease,transform .12s ease}
+.game-hotspot::before{content:"";position:absolute;inset:2% 1.2%;border-radius:999px;border:2px solid rgba(255,255,255,.14);background:linear-gradient(100deg,rgba(255,255,255,.02),rgba(255,255,255,.17),rgba(255,255,255,.02));box-shadow:0 0 0 rgba(76,224,255,0);opacity:.45;pointer-events:none;animation:hubButtonGlow 2.7s ease-in-out infinite}
+.game-hotspot:hover,.game-hotspot:focus-visible{background:rgba(255,255,255,.08);box-shadow:0 0 0 3px rgba(255,255,255,.9),0 0 28px rgba(74,222,255,.85);transform:scale(1.025)}
+.game-hotspot:hover::before,.game-hotspot:focus-visible::before{opacity:.9;border-color:rgba(255,255,255,.75);box-shadow:0 0 24px rgba(74,222,255,.75)}
+.game-hotspot:active{transform:scale(.975)}
+.g1{top:46.70%;animation-delay:0s}.g2{top:54.35%;animation-delay:.28s}.g3{top:62.05%;animation-delay:.56s}.g4{top:69.72%;animation-delay:.84s}.g5{top:77.42%;animation-delay:1.12s}
+.g1::before{animation-delay:0s}.g2::before{animation-delay:.28s}.g3::before{animation-delay:.56s}.g4::before{animation-delay:.84s}.g5::before{animation-delay:1.12s}
+@keyframes hubButtonBreath{0%,100%{transform:scale(1)}50%{transform:scale(1.018)}}
+@keyframes hubButtonGlow{0%,100%{opacity:.28;box-shadow:0 0 0 rgba(74,222,255,0)}50%{opacity:.78;box-shadow:0 0 22px rgba(74,222,255,.62)}}
 .sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
 .load-error{display:none;min-height:100dvh;padding:28px 18px;color:#fff;text-align:center;line-height:1.5;background:linear-gradient(180deg,#073b74,#071a48)}
 .load-error.show{display:flex;align-items:center;justify-content:center}
 .load-error div{width:min(100%,480px);padding:22px;border-radius:20px;background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.18)}
 .load-error b{color:#ffe66d}
 @media(min-width:942px){.hub{margin:14px auto;border-radius:24px;box-shadow:0 25px 65px rgba(0,0,0,.48)}}
+@media(prefers-reduced-motion:reduce){.game-hotspot,.game-hotspot::before{animation:none!important}}
 </style>
 </head>
 <body>
