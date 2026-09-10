@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ranking Geral — Turma 703</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(160deg,#04162f,#14104b 55%,#42134e);color:#fff}
+main{width:min(100%,720px);margin:auto;padding:18px}.hero{text-align:center;padding:18px}.hero h1{font-size:clamp(34px,8vw,56px);margin:0;color:#ffe66d}.hero p{font-weight:800;color:#dbeafe}
+.card{background:rgba(8,16,50,.9);border:1px solid rgba(255,255,255,.15);border-radius:24px;padding:14px;box-shadow:0 20px 50px rgba(0,0,0,.3)}
+.row{display:grid;grid-template-columns:48px 1fr auto;gap:8px;align-items:center;background:#fff;color:#172033;border-radius:14px;padding:11px;margin:7px 0}
+.row.top1{background:linear-gradient(135deg,#ffd700,#fff4a3)}.row.top2{background:linear-gradient(135deg,#d8d8d8,#fff)}.row.top3{background:linear-gradient(135deg,#cd7f32,#ffd6a3)}
+.pos{font-size:20px;font-weight:1000}.name{font-weight:1000}.sub{font-size:11px;color:#64748b;font-weight:800}.pts{font-weight:1000;color:#e11d48;text-align:right}.btn{display:block;text-align:center;text-decoration:none;background:linear-gradient(135deg,#ffe66d,#22c55e);color:#172033;padding:14px;border-radius:16px;font-weight:1000;margin-top:14px}
+.note{text-align:center;color:#cbd5e1;font-size:12px;line-height:1.4}
+</style></head><body><main>
+<div class="hero"><h1>🏆 Ranking Geral</h1><p>Turma 703 • Escola Municipal Princesa Izabel</p><p>Conta somente a MELHOR pontuação de cada aluno em cada jogo.</p></div>
+<div class="card"><div id="ranking">Carregando ranking real...</div><p class="note">Pontuação geral = soma das melhores pontuações nos jogos da Turma 703. Repetir o mesmo jogo pode melhorar seu recorde, mas não soma tentativas.</p><a class="btn" href="index_turma_703_english_game_hub.html">← VOLTAR AO GAME HUB</a></div>
+</main>
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+import {getFirestore,collection,query,limit,onSnapshot} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+const app=initializeApp({apiKey:"AIzaSyCVTR3nnyo5mYTF28TJisgTUe-Xyjk1upg",authDomain:"english-game-hub.firebaseapp.com",projectId:"english-game-hub",storageBucket:"english-game-hub.firebasestorage.app",messagingSenderId:"131880771426",appId:"1:131880771426:web:cf29a6f34ca86be527d63b"});
+const db=getFirestore(app);
+const GAME_SET=new Set(["703-quanticompare-challenge","703-quanticompare-hangman","703-english-spin-and-answer","703-english-voice-challenge","703-english-million-challenge","703-show-do-milhao"]);
+const box=document.getElementById("ranking");
+const q=query(collection(db,"pontuacoes"),limit(1500));
+onSnapshot(q,snap=>{
+  const bestByStudentGame=new Map();
+  snap.forEach(doc=>{
+    const d=doc.data()||{}; if(!GAME_SET.has(String(d.jogo||""))) return;
+    let p=Number(d.pontos||0); if(!Number.isFinite(p)||p<0||p>100) return;
+    const nome=String(d.nome||"").trim(), escola=String(d.escola||"").trim(); if(!nome)return;
+    const student=nome.toLowerCase()+"|"+escola.toLowerCase(), key=student+"|"+d.jogo;
+    const prev=bestByStudentGame.get(key); if(!prev||p>prev.pontos)bestByStudentGame.set(key,{nome,escola,jogo:d.jogo,pontos:p,student});
+  });
+  const students=new Map();
+  for(const r of bestByStudentGame.values()){
+    const s=students.get(r.student)||{nome:r.nome,escola:r.escola,total:0,jogos:0};
+    s.total+=r.pontos;s.jogos++;students.set(r.student,s);
+  }
+  const arr=[...students.values()].sort((a,b)=>b.total-a.total||b.jogos-a.jogos);
+  box.innerHTML="";
+  if(!arr.length){box.textContent="Ainda não há pontuações válidas no ranking.";return}
+  arr.slice(0,20).forEach((x,i)=>{
+    const row=document.createElement("div");row.className="row "+(i===0?"top1":i===1?"top2":i===2?"top3":"");
+    const medal=i===0?"🥇":i===1?"🥈":i===2?"🥉":(i+1)+"º";
+    row.innerHTML=`<div class="pos">${medal}</div><div><div class="name">${x.nome}</div><div class="sub">${x.escola||"Escola Municipal Princesa Izabel"} • ${x.jogos} jogo(s)</div></div><div class="pts">${x.total} pts</div>`;
+    box.appendChild(row);
+  });
+},err=>{console.error(err);box.textContent="Ranking indisponível no momento.";});
+</script></body></html>
