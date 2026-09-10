@@ -908,7 +908,7 @@ body.sound-win .final-card, body.sound-try .final-card{animation:finalGlow 1.6s 
       <label>Seu nome</label>
       <input id="playerName" type="text" placeholder="Digite seu nome" maxlength="28">
       <label>Turma</label>
-      <input id="playerClass" type="text" placeholder="703" maxlength="12">
+      <input id="playerClass" type="text" value="703" maxlength="12">
       <label>Escola</label>
       <input id="playerSchool" type="text" placeholder="Digite o nome da escola" maxlength="40">
     </div>
@@ -1589,7 +1589,7 @@ function finishGame(completed){
   const msgEl = document.getElementById("finalMsg");
   const primaryBtn = document.getElementById("primaryActionBtn");
 
-  titleEl.textContent = completed ? "🏆 YOU ARE THE ONE!" : "💪 TRY AGAIN!";
+  titleEl.textContent = completed ? "🏆 VOCÊ CONSEGUIU!" : "💪 TENTE NOVAMENTE!";
 
   if(completed){
     msgEl.textContent = "Parabéns! Você concluiu as 6 fases. Começou com reconhecimento simples e chegou ao desafio final!";
@@ -1597,9 +1597,6 @@ function finishGame(completed){
     primaryBtn.onclick = restart;
   } else {
     msgEl.textContent = `Você chegou à Fase ${mission}/6. Revise com calma e tente novamente!`;
-    primaryBtn.textContent = "Tentar novamente";
-    primaryBtn.onclick = restart;
-  }/10 e tente melhorar sua pontuação para seguir em frente!`;
     primaryBtn.textContent = "Tentar novamente";
     primaryBtn.onclick = restart;
   }
