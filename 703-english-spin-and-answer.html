@@ -31,7 +31,7 @@ main{padding:14px}
 .wheel-wrap{position:relative;display:flex;flex-direction:column;align-items:center;gap:9px}
 .pointer{position:absolute;top:2px;left:50%;transform:translateX(-50%);z-index:10;width:0;height:0;border-left:17px solid transparent;border-right:17px solid transparent;border-top:42px solid #111827;filter:drop-shadow(0 2px 2px rgba(0,0,0,.35))}
 .pointer::after{content:"";position:absolute;left:-6px;top:-28px;width:12px;height:12px;background:white;border:4px solid #111827;border-radius:50%}
-.wheel{width:min(78vw,390px);height:min(78vw,390px);max-width:390px;max-height:390px;border-radius:50%;background:conic-gradient(#1da1f2 0deg 51.43deg, #22c55e 51.43deg 102.86deg, #f97316 102.86deg 154.29deg, #8b5cf6 154.29deg 205.72deg, #06b6d4 205.72deg 257.15deg, #eab308 257.15deg 308.58deg, #f43f5e 308.58deg 360deg);position:relative;border:7px solid white;box-shadow:0 18px 32px rgba(0,0,0,.18);transition:transform 5.4s cubic-bezier(.08,.82,.12,1)}
+.wheel{width:min(78vw,390px);height:min(78vw,390px);max-width:390px;max-height:390px;border-radius:50%;background:conic-gradient(#1da1f2 0deg 60deg, #22c55e 60deg 120deg, #f97316 120deg 180deg, #8b5cf6 180deg 240deg, #06b6d4 240deg 300deg, #f43f5e 300deg 360deg);position:relative;border:7px solid white;box-shadow:0 18px 32px rgba(0,0,0,.18);transition:transform 5.4s cubic-bezier(.08,.82,.12,1)}
 .wheel::after{content:attr(data-theme);position:absolute;inset:31%;border-radius:50%;background:#f8fafc;border:6px solid #e2e8f0;display:flex;align-items:center;justify-content:center;text-align:center;color:#1d4ed8;font-weight:900;font-size:clamp(17px,4vw,25px);line-height:1.05;padding:8px}
 .wheel-label{position:absolute;left:50%;top:50%;width:92px;margin-left:-46px;margin-top:-10px;transform:rotate(var(--r)) translateY(-151px) rotate(calc(-1 * var(--r)));transform-origin:center;font-size:15px;line-height:1.05;color:white;text-shadow:0 2px 4px rgba(0,0,0,.35);font-weight:900;text-align:center;pointer-events:none}
 .spin-btn{border:0;border-radius:14px;padding:12px 42px;background:linear-gradient(135deg,#e11d48,#fb7185);color:white;font-weight:900;font-size:16px;cursor:pointer;box-shadow:0 8px 18px rgba(225,29,72,.25)}
@@ -433,6 +433,83 @@ body.sound-win .final-card, body.sound-try .final-card{animation:finalGlow 1.6s 
   font-weight:900;
   font-size:12px;
 }
+
+
+/* === Wheel alignment fix for Turma 703 === */
+.wheel{
+  width:min(80vw,390px)!important;
+  height:min(80vw,390px)!important;
+  max-width:390px!important;
+  max-height:390px!important;
+  border:8px solid #ffffff!important;
+  box-shadow:0 18px 34px rgba(0,0,0,.20)!important;
+}
+.wheel::after{
+  inset:31%!important;
+  font-size:clamp(16px,3.4vw,23px)!important;
+  line-height:1.05!important;
+  padding:7px!important;
+}
+.wheel-label{
+  width:82px!important;
+  margin-left:-41px!important;
+  margin-top:-10px!important;
+  transform:rotate(var(--r)) translateY(-138px) rotate(calc(-1 * var(--r)))!important;
+  transform-origin:center center!important;
+  font-size:12.8px!important;
+  line-height:1.08!important;
+  font-weight:1000!important;
+  letter-spacing:.1px!important;
+  text-align:center!important;
+  text-shadow:0 2px 6px rgba(0,0,0,.65)!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  white-space:normal!important;
+  overflow-wrap:anywhere!important;
+}
+
+/* Game screen / mobile version */
+body.playing .wheel{
+  width:218px!important;
+  height:218px!important;
+}
+body.playing .wheel::after{
+  inset:31%!important;
+  font-size:13px!important;
+}
+body.playing .wheel-label{
+  width:58px!important;
+  margin-left:-29px!important;
+  margin-top:-7px!important;
+  transform:rotate(var(--r)) translateY(-80px) rotate(calc(-1 * var(--r)))!important;
+  font-size:8.8px!important;
+  line-height:1.02!important;
+}
+
+@media (max-width:420px){
+  .wheel{
+    width:min(84vw,340px)!important;
+    height:min(84vw,340px)!important;
+  }
+  .wheel-label{
+    width:70px!important;
+    margin-left:-35px!important;
+    transform:rotate(var(--r)) translateY(-120px) rotate(calc(-1 * var(--r)))!important;
+    font-size:11px!important;
+  }
+  body.playing .wheel{
+    width:198px!important;
+    height:198px!important;
+  }
+  body.playing .wheel-label{
+    width:54px!important;
+    margin-left:-27px!important;
+    transform:rotate(var(--r)) translateY(-73px) rotate(calc(-1 * var(--r)))!important;
+    font-size:8px!important;
+  }
+}
+/* === End wheel alignment fix === */
 
 </style>
 
