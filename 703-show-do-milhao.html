@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-<title>703 English Million Challenge</title>
+<title>Show do Milhão - Turma 703</title>
 <style>
 *{box-sizing:border-box}
 :root{--bg1:#06081f;--bg2:#12043b;--panel:rgba(9,13,50,.94);--gold:#ffe66d;--gold2:#ffb703;--blue:#2563eb;--pink:#e11d48;--green:#22c55e;--red:#ef4444;--text:#f8fafc}
 html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;color:var(--text)}
-body{min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:8px;background:linear-gradient(180deg,rgba(4,7,25,.50),rgba(18,4,59,.72)),url('8ano-show-do-milhao-fundo.png') center/cover no-repeat fixed}
-.app{width:min(100%,1060px);height:min(770px,calc(100dvh - 16px));background:linear-gradient(180deg,rgba(7,10,40,.82),rgba(11,8,48,.88)),url('8ano-show-do-milhao-fundo.png') center/cover no-repeat;border:1px solid rgba(255,230,109,.22);border-radius:22px;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.45);display:flex;flex-direction:column}
+body{min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:8px;background:linear-gradient(180deg,rgba(4,7,25,.50),rgba(18,4,59,.72)),url('703-show-do-milhao-bg-final.png') center/cover no-repeat fixed}
+.app{width:min(100%,1060px);height:min(770px,calc(100dvh - 16px));background:linear-gradient(180deg,rgba(7,10,40,.82),rgba(11,8,48,.88)),url('703-show-do-milhao-bg-final.png') center/cover no-repeat;border:1px solid rgba(255,230,109,.22);border-radius:22px;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.45);display:flex;flex-direction:column}
 header{padding:10px 14px;text-align:center;background:linear-gradient(135deg,#1d4ed8,#7c3aed 50%,#e11d48);border-bottom:1px solid rgba(255,255,255,.16)}
 .topbar{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:4px}
 .back,.pill{color:#fff;text-decoration:none;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.28);border-radius:999px;padding:6px 10px;font-weight:900;font-size:12px}
@@ -64,7 +64,7 @@ main{flex:1;min-height:0;padding:10px;overflow:hidden}
 .modal{position:fixed;inset:0;z-index:50;display:none;align-items:center;justify-content:center;background:rgba(2,6,23,.78);backdrop-filter:blur(4px);padding:15px} .modal.active{display:flex} .modal-card{width:min(100%,620px);max-height:88dvh;overflow:auto;background:linear-gradient(180deg,rgba(15,20,70,.98),rgba(9,13,50,.98));border:1.5px solid rgba(255,230,109,.4);border-radius:22px;padding:16px;box-shadow:0 24px 60px rgba(0,0,0,.48);text-align:center} .modal-card h2{margin:0 0 8px;color:#ffe66d;font-size:28px}
 .firebase-rating{margin:10px 0 8px;padding:10px;border-radius:16px;background:rgba(255,255,255,.07);border:1px solid rgba(255,230,109,.24);text-align:center} .firebase-rating h3{margin:0 0 7px;color:#ffe66d;font-size:16px} .rating-buttons{display:grid;grid-template-columns:repeat(3,1fr);gap:7px} .rating-buttons button{border:0;border-radius:14px;padding:8px 5px;background:linear-gradient(135deg,#fff7ad,#ffb703);color:#172033;font-weight:1000;cursor:pointer} #ratingMessage{margin:7px 0 0;color:#fff7c2;font-weight:900;font-size:12px}
 
-.round-intro{position:fixed;inset:0;z-index:80;display:none;align-items:center;justify-content:center;padding:18px;background:linear-gradient(180deg,rgba(3,7,30,.02),rgba(3,7,30,.18)),url('8ano-show-do-milhao-fundo.png') center/cover no-repeat;overflow:hidden}
+.round-intro{position:fixed;inset:0;z-index:80;display:none;align-items:center;justify-content:center;padding:18px;background:linear-gradient(180deg,rgba(3,7,30,.02),rgba(3,7,30,.18)),url('703-show-do-milhao-bg-final.png') center/cover no-repeat;overflow:hidden}
 .round-intro.active{display:flex;animation:introFade .25s ease-out}
 .round-intro::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 35%,rgba(255,230,109,.06),rgba(3,7,30,.10) 58%,rgba(3,7,30,.22));pointer-events:none}
 .round-intro-card{position:relative;width:min(92vw,720px);margin-top:auto;margin-bottom:4dvh;text-align:center;background:linear-gradient(135deg,rgba(8,13,48,.70),rgba(25,9,66,.66));border:2px solid rgba(255,230,109,.72);border-radius:28px;padding:18px 14px;box-shadow:0 0 36px rgba(255,230,109,.30),0 18px 60px rgba(0,0,0,.45);backdrop-filter:blur(2px)}
@@ -84,14 +84,14 @@ main{flex:1;min-height:0;padding:10px;overflow:hidden}
 <div class="app">
 <header>
   <div class="topbar"><a class="back" href="index_turma_703_english_game_hub.html">← Turma 703</a><span class="pill">Alinhado à BNCC</span></div>
-  <h1>English Million Challenge</h1>
+  <h1>Show do Milhão</h1>
   <p class="subtitle">Desafio de raciocínio com os conteúdos do 3º bimestre da Turma 703.</p>
 </header>
 <main>
 <section id="startScreen" class="screen active">
   <div class="start-wrap">
     <div class="card start-card">
-      <h2>🌽 703 English Million Challenge</h2>
+      <h2>🌽 Show do Milhão — Turma 703</h2>
       <div class="motivation">Aqui não basta decorar. Leia a situação, pense na regra, elimine as opções erradas e escolha a melhor resposta. As missões ficam mais desafiadoras aos poucos.</div>
       <div class="review-grid">
         <div class="review-block"><b>Family Members & Family Life</b><span>mother, father, sister, brother...</span><span>I live with...</span><span>My family is...</span></div>
@@ -181,7 +181,7 @@ main{flex:1;min-height:0;padding:10px;overflow:hidden}
 
 <section id="rankingModal" class="modal">
   <div class="modal-card">
-    <h2>🏆 Ranking Geral — English Million Challenge 8º Ano</h2>
+    <h2>🏆 Ranking Geral — Show do Milhão — Turma 703</h2>
     <p class="rank-note">Pontos acumulados somente neste jogo.</p>
     <div id="rankingModalList" class="rank-list"><div class="rank-note">Carregando ranking...</div></div>
     <button class="btn secondary" onclick="closeRankingModal()">Fechar</button>
@@ -205,7 +205,7 @@ main{flex:1;min-height:0;padding:10px;overflow:hidden}
     <div id="introKicker" class="round-intro-kicker">Vamos à próxima pergunta!</div>
     <div id="introValue" class="round-intro-value">50 pontos</div>
     <div id="introTheme" class="round-intro-theme">Prepare-se para responder.</div>
-    <div class="round-intro-mini">703 English Million Challenge</div>
+    <div class="round-intro-mini">Show do Milhão — Turma 703</div>
   </div>
 </div>
 
@@ -402,7 +402,7 @@ function showRoundIntro(done){
   playIntroSound();
   setTimeout(()=>{el("roundIntro").classList.remove("active"); done();}, 2300);
 }
-function missionTitle(n){return ["Observe e Escolha","Complete com Sentido","Encontre o Erro","Pense na Situação","Million Challenge"][n-1] || "English Million Challenge"}
+function missionTitle(n){return ["Observe e Escolha","Complete com Sentido","Encontre o Erro","Pense na Situação","Million Challenge"][n-1] || "Show do Milhão"}
 function startTimer(){
   state.timeLeft=20;
   el("timerBar").style.width="100%"; el("timerText").textContent="20 segundos";
@@ -531,7 +531,7 @@ function finishGame(status){
   const won = status==="venceu";
   el("finalEmoji").textContent = won ? "🏆🌟" : status==="parou" ? "🛑" : "💪";
   el("finalTitle").textContent = won ? "CONGRATULATIONS!" : status==="parou" ? "VOCÊ PAROU COM SEGURANÇA" : "GAME OVER";
-  el("finalMessage").textContent = won ? "Você concluiu o English Million Challenge!" : status==="parou" ? "Você decidiu parar e guardar sua pontuação." : "Você chegou ao fim da rodada. Continue treinando!";
+  el("finalMessage").textContent = won ? "Você concluiu o Show do Milhão!" : status==="parou" ? "Você decidiu parar e guardar sua pontuação." : "Você chegou ao fim da rodada. Continue treinando!";
   el("finalScore").textContent=state.score; el("finalCorrect").textContent=state.correct; el("finalWrong").textContent=state.wrong; el("finalStatus").textContent=status.toUpperCase();
   el("currentScoreBox").innerHTML = `✨ SUA PONTUAÇÃO AGORA ✨<br><b>${p.nome}</b> — ${state.score} pontos<br><small>Turma: ${p.turma} • ${p.escola}</small>`;
   showScreen("finalScreen");
