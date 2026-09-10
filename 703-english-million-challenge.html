@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<title>703 English Million Challenge</title>
+<style>
+*{box-sizing:border-box}
+:root{--bg1:#06081f;--bg2:#12043b;--panel:rgba(9,13,50,.94);--gold:#ffe66d;--gold2:#ffb703;--blue:#2563eb;--pink:#e11d48;--green:#22c55e;--red:#ef4444;--text:#f8fafc}
+html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;color:var(--text)}
+body{min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:8px;background:linear-gradient(180deg,rgba(4,7,25,.50),rgba(18,4,59,.72)),url('8ano-show-do-milhao-fundo.png') center/cover no-repeat fixed}
+.app{width:min(100%,1060px);height:min(770px,calc(100dvh - 16px));background:linear-gradient(180deg,rgba(7,10,40,.82),rgba(11,8,48,.88)),url('8ano-show-do-milhao-fundo.png') center/cover no-repeat;border:1px solid rgba(255,230,109,.22);border-radius:22px;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.45);display:flex;flex-direction:column}
+header{padding:10px 14px;text-align:center;background:linear-gradient(135deg,#1d4ed8,#7c3aed 50%,#e11d48);border-bottom:1px solid rgba(255,255,255,.16)}
+.topbar{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:4px}
+.back,.pill{color:#fff;text-decoration:none;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.28);border-radius:999px;padding:6px 10px;font-weight:900;font-size:12px}
+h1{margin:0;font-size:clamp(26px,5.8vw,48px);line-height:1;text-shadow:0 3px 10px rgba(0,0,0,.2)}
+.subtitle{margin:4px 0 0;font-weight:800;color:#fff7c2;font-size:13px}
+main{flex:1;min-height:0;padding:10px;overflow:hidden}
+.screen{display:none;height:100%;min-height:0} .screen.active{display:flex}
+.card{background:linear-gradient(180deg,rgba(15,20,70,.90),rgba(9,13,50,.88));backdrop-filter:blur(3px);border:1px solid rgba(255,255,255,.16);border-radius:18px;padding:12px;box-shadow:0 12px 30px rgba(0,0,0,.25)}
+.btn,.start-btn{border:0;border-radius:16px;padding:13px 18px;cursor:pointer;width:100%;background:linear-gradient(135deg,var(--gold),var(--gold2) 35%,#ff4d9e 78%,#7c3aed);color:#172033;font-weight:1000;font-size:16px;box-shadow:0 10px 22px rgba(255,183,3,.22)}
+.btn.secondary{background:linear-gradient(135deg,#dbeafe,#a7f3d0);box-shadow:none}
+.brand,.final-brand{font-weight:900;color:#fff3b0;text-align:center;font-size:12px;margin-top:10px}
+#startScreen{align-items:center;justify-content:center;overflow:hidden}
+.start-wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:14px;width:100%;height:100%;min-height:0;align-items:stretch}
+.start-card{overflow:auto;display:flex;flex-direction:column;justify-content:flex-start;min-height:100%}
+.start-card h2,.info-card h3{margin:0 0 10px;color:#fff;font-size:30px;line-height:1.1}
+.motivation{background:rgba(255,230,109,.12);border:1px solid rgba(255,230,109,.32);color:#fff7c2;padding:14px;border-radius:16px;font-weight:900;line-height:1.38;margin:10px 0 12px;font-size:15px}
+.player-form{display:grid;gap:8px;text-align:left;margin:12px 0 0}
+.player-form label{font-weight:900;color:var(--gold);font-size:15px}
+.player-form input{width:100%;border:2px solid rgba(96,165,250,.42);border-radius:14px;padding:12px 13px;font-size:16px;font-weight:800;outline:none;background:rgba(255,255,255,.96);color:#172033}
+.review-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;max-height:300px;overflow:auto;padding-right:3px}
+.review-block{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);border-radius:14px;padding:10px}
+.review-block b{display:block;color:#ffe66d;font-size:14px;margin-bottom:6px;line-height:1.15}
+.review-block span{display:block;color:#eaf2ff;font-weight:800;font-size:12px;line-height:1.3;margin:3px 0}
+.info-list{display:grid;gap:10px} .info-item{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13);border-radius:15px;padding:12px;font-weight:900;line-height:1.32;color:#eaf2ff;font-size:14px} .info-item b{color:var(--gold);font-size:16px}
+#gameScreen.active{display:flex;flex-direction:column}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin-bottom:8px}
+.stat{background:linear-gradient(180deg,rgba(13,20,72,.96),rgba(13,10,50,.96));border:1.5px solid rgba(255,230,109,.28);border-radius:14px;padding:8px 4px;text-align:center}
+.stat b{display:block;font-size:18px;color:var(--gold);line-height:1} .stat span{font-size:10px;font-weight:900;color:#dbeafe;text-transform:uppercase;letter-spacing:.4px}
+.progress-card{text-align:center;padding:9px 12px;margin-bottom:8px;border-radius:14px;background:linear-gradient(90deg,rgba(255,230,109,.16),rgba(56,189,248,.13),rgba(225,29,72,.16));border:1.5px solid rgba(255,230,109,.38);font-weight:1000;color:#fff3b0;font-size:15px}
+.question-card{flex:1;min-height:0;overflow:hidden;display:flex;flex-direction:column;gap:6px;justify-content:flex-start}
+.mission-box{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 12px;border-radius:16px;background:linear-gradient(135deg,rgba(255,230,109,.26),rgba(37,99,235,.20),rgba(225,29,72,.14));border:1px solid rgba(255,230,109,.46);color:#fff7c2;font-weight:1000}
+.theme-chip{align-self:flex-start;background:linear-gradient(135deg,rgba(255,230,109,.24),rgba(255,183,3,.15));color:#fff3b0;border:1px solid rgba(255,230,109,.48);border-radius:999px;padding:7px 12px;font-weight:1000;font-size:15px}
+.visual{display:flex;align-items:center;justify-content:center;min-height:56px;border-radius:18px;background:linear-gradient(135deg,rgba(239,246,255,.95),rgba(236,254,255,.92));border:1px dashed #93c5fd;font-size:38px}
+.prompt{font-size:21px;line-height:1.25;font-weight:900;color:#fff;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-left:5px solid var(--gold);padding:12px;border-radius:15px}
+.timer-wrap{width:100%;height:12px;border-radius:999px;overflow:hidden;background:rgba(255,255,255,.12);border:1px solid rgba(255,230,109,.28)} .timer-bar{width:100%;height:100%;background:linear-gradient(90deg,#22c55e,#ffe66d,#ef4444);transition:width .15s linear} .timer-text{text-align:center;font-weight:1000;color:#fff7c2;font-size:13px}
+.options{display:grid;grid-template-columns:1fr;gap:7px;min-height:0;overflow:hidden}
+.option{border:2px solid rgba(96,165,250,.32);background:linear-gradient(180deg,#ffffff,#eaf2ff);border-radius:14px;padding:10px 12px;text-align:left;font-weight:1000;font-size:15.5px;cursor:pointer;color:#172033;box-shadow:0 4px 10px rgba(0,0,0,.10);display:flex;gap:9px;align-items:center}
+.option-letter{flex:0 0 31px;width:31px;height:31px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:1000;background:linear-gradient(135deg,#1d4ed8,#7c3aed);color:#fff}
+.option.correct{background:#dcfce7;border-color:#22c55e;color:#14532d;box-shadow:0 0 22px rgba(34,197,94,.75)} .option.wrong{background:#fee2e2;border-color:#ef4444;color:#7f1d1d}
+.option.hide-option{opacity:.18;pointer-events:none;filter:grayscale(1);text-decoration:line-through}
+.feedback{display:none;border-radius:13px;padding:8px;font-weight:900;line-height:1.22;font-size:12px} .feedback.good{display:block;background:#dcfce7;border:1px solid #86efac;color:#14532d} .feedback.bad{display:block;background:#fee2e2;border:1px solid #fca5a5;color:#7f1d1d}
+.lifelines{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:3px}
+.help-btn{border:1px solid rgba(255,230,109,.36);border-radius:14px;padding:10px 8px;background:linear-gradient(135deg,rgba(255,230,109,.18),rgba(37,99,235,.18),rgba(225,29,72,.12));color:#fff7c2;font-weight:1000;cursor:pointer} .help-btn:disabled{opacity:.45;cursor:not-allowed;filter:grayscale(.5)} .stop-btn{background:linear-gradient(135deg,rgba(34,197,94,.22),rgba(255,230,109,.20),rgba(37,99,235,.14))!important;color:#dcfce7!important}
+#finalScreen{align-items:center;justify-content:center} .final-card{width:100%;max-width:720px;text-align:center;max-height:100%;overflow:auto} .big-title{font-size:34px;color:var(--gold);margin:0 0 8px;text-shadow:0 0 16px rgba(255,230,109,.18)} .win-emoji{font-size:54px;margin:4px 0}
+.final-message{font-weight:900;line-height:1.35;margin:8px 0 12px;background:linear-gradient(135deg,#fff7ed,#dbeafe);border:2px solid var(--gold);color:#172033;border-radius:15px;padding:10px}
+.result-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:10px 0} .result-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:8px;text-align:center;font-weight:900} .result-box span{display:block;color:#64748b;font-size:9px;text-transform:uppercase} .result-box b{display:block;color:#e11d48;font-size:18px;margin-top:2px}
+.current-score-box{background:linear-gradient(135deg,#fff7ed,#dbeafe);border:2px solid #ffe66d;border-radius:16px;padding:10px;margin:10px 0;color:#172033;font-weight:1000;box-shadow:0 0 18px rgba(255,230,109,.28)}
+.rank-list{display:grid;gap:6px;margin:8px 0} .rank-row{display:grid;grid-template-columns:34px 1fr auto;gap:7px;align-items:center;padding:8px;border-radius:12px;background:#f8fafc;border:1px solid #e2e8f0;color:#172033} .rank-row.player{border:3px solid #00e5ff;box-shadow:0 0 18px rgba(0,229,255,.85);animation:pulsePlayer 1s infinite alternate} @keyframes pulsePlayer{from{filter:brightness(1)}to{filter:brightness(1.12)}}
+.rank-row.rank-1{background:linear-gradient(135deg,#ffd700,#fff3a0);border:3px solid #ffcc00;box-shadow:0 0 18px rgba(255,215,0,.8)} .rank-row.rank-2{background:linear-gradient(135deg,#c0c0c0,#f4f4f4);border:3px solid #b0b0b0} .rank-row.rank-3{background:linear-gradient(135deg,#cd7f32,#ffd2a0);border:3px solid #b87333}
+.rank-pos{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;background:#dbeafe;color:#1d4ed8;font-size:11px} .rank-name{font-weight:900;line-height:1.05;font-size:12px;text-align:left} .rank-school{font-size:9px;font-weight:800;color:#64748b;margin-top:2px;text-align:left} .rank-score{font-weight:900;color:#e11d48;text-align:right;font-size:12px} .champion-badge{display:block;color:#92400e;font-size:10px;margin-top:2px} .rank-note{text-align:center;font-size:12px;color:#fff7c2;font-weight:900;margin:8px 0 4px}
+.rank-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:9px}
+.modal{position:fixed;inset:0;z-index:50;display:none;align-items:center;justify-content:center;background:rgba(2,6,23,.78);backdrop-filter:blur(4px);padding:15px} .modal.active{display:flex} .modal-card{width:min(100%,620px);max-height:88dvh;overflow:auto;background:linear-gradient(180deg,rgba(15,20,70,.98),rgba(9,13,50,.98));border:1.5px solid rgba(255,230,109,.4);border-radius:22px;padding:16px;box-shadow:0 24px 60px rgba(0,0,0,.48);text-align:center} .modal-card h2{margin:0 0 8px;color:#ffe66d;font-size:28px}
+.firebase-rating{margin:10px 0 8px;padding:10px;border-radius:16px;background:rgba(255,255,255,.07);border:1px solid rgba(255,230,109,.24);text-align:center} .firebase-rating h3{margin:0 0 7px;color:#ffe66d;font-size:16px} .rating-buttons{display:grid;grid-template-columns:repeat(3,1fr);gap:7px} .rating-buttons button{border:0;border-radius:14px;padding:8px 5px;background:linear-gradient(135deg,#fff7ad,#ffb703);color:#172033;font-weight:1000;cursor:pointer} #ratingMessage{margin:7px 0 0;color:#fff7c2;font-weight:900;font-size:12px}
+
+.round-intro{position:fixed;inset:0;z-index:80;display:none;align-items:center;justify-content:center;padding:18px;background:linear-gradient(180deg,rgba(3,7,30,.02),rgba(3,7,30,.18)),url('8ano-show-do-milhao-fundo.png') center/cover no-repeat;overflow:hidden}
+.round-intro.active{display:flex;animation:introFade .25s ease-out}
+.round-intro::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 35%,rgba(255,230,109,.06),rgba(3,7,30,.10) 58%,rgba(3,7,30,.22));pointer-events:none}
+.round-intro-card{position:relative;width:min(92vw,720px);margin-top:auto;margin-bottom:4dvh;text-align:center;background:linear-gradient(135deg,rgba(8,13,48,.70),rgba(25,9,66,.66));border:2px solid rgba(255,230,109,.72);border-radius:28px;padding:18px 14px;box-shadow:0 0 36px rgba(255,230,109,.30),0 18px 60px rgba(0,0,0,.45);backdrop-filter:blur(2px)}
+.round-intro-kicker{font-size:clamp(16px,4vw,26px);font-weight:1000;color:#fff7c2;text-shadow:0 2px 8px rgba(0,0,0,.55);margin-bottom:8px}
+.round-intro-value{font-size:clamp(32px,9vw,72px);font-weight:1000;line-height:1;color:#ffe66d;text-shadow:0 0 16px rgba(255,230,109,.55),0 4px 12px rgba(0,0,0,.55);letter-spacing:.5px;animation:valuePop .8s ease-in-out infinite alternate}
+.round-intro-theme{font-size:clamp(13px,3.5vw,21px);font-weight:900;color:#dbeafe;margin-top:10px;line-height:1.25}
+.round-intro-mini{font-size:12px;font-weight:900;color:#fff;margin-top:9px;opacity:.92}
+@keyframes introFade{from{opacity:0;transform:scale(1.02)}to{opacity:1;transform:scale(1)}}
+@keyframes valuePop{from{transform:scale(1)}to{transform:scale(1.035)}}
+.option.correct{animation:correctGlow .45s ease-in-out 0s 2}
+@keyframes correctGlow{0%{transform:scale(1);box-shadow:0 0 0 rgba(34,197,94,0)}50%{transform:scale(1.025);box-shadow:0 0 30px rgba(34,197,94,.95)}100%{transform:scale(1);box-shadow:0 0 22px rgba(34,197,94,.75)}}
+
+@media(max-width:860px){body{padding:5px;align-items:flex-start}.app{height:calc(100dvh - 10px);border-radius:16px}header{padding:5px 7px}.back,.pill{font-size:9px;padding:4px 7px}h1{font-size:22px}.subtitle{display:none}main{padding:5px}.start-wrap{grid-template-columns:1fr;overflow:auto}.info-card{display:none}.start-card h2{font-size:24px}.motivation{font-size:13px;padding:11px}.review-grid{grid-template-columns:1fr;max-height:250px}.stats{gap:5px;margin-bottom:5px}.stat{padding:6px 3px;border-radius:11px}.stat b{font-size:14px}.stat span{font-size:8px}.progress-card{font-size:12px;padding:7px 8px;margin-bottom:5px}.question-card{gap:4px;padding:7px;border-radius:13px}.mission-box{padding:7px 8px}.mission-box span{font-size:12px}.mission-box small{font-size:9px}.theme-chip{font-size:12px;padding:5px 9px}.visual{min-height:32px;font-size:23px}.prompt{font-size:14.5px;line-height:1.18;padding:7px 8px}.timer-wrap{height:9px}.timer-text{font-size:11px}.options{gap:5px}.option{font-size:12.3px;line-height:1.13;padding:7px 8px;min-height:32px}.option-letter{width:25px;height:25px;flex-basis:25px;font-size:12px}.feedback{font-size:10.5px;padding:5px}.lifelines{grid-template-columns:repeat(2,1fr);gap:4px}.help-btn{font-size:10.5px;padding:6px 5px}.result-grid{grid-template-columns:repeat(2,1fr)}.big-title{font-size:27px}.win-emoji{font-size:42px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+  <div class="topbar"><a class="back" href="index_turma_703_english_game_hub.html">← Turma 703</a><span class="pill">Alinhado à BNCC</span></div>
+  <h1>English Million Challenge</h1>
+  <p class="subtitle">Desafio de raciocínio com os conteúdos do 3º bimestre da Turma 703.</p>
+</header>
+<main>
+<section id="startScreen" class="screen active">
+  <div class="start-wrap">
+    <div class="card start-card">
+      <h2>🌽 703 English Million Challenge</h2>
+      <div class="motivation">Aqui não basta decorar. Leia a situação, pense na regra, elimine as opções erradas e escolha a melhor resposta. As missões ficam mais desafiadoras aos poucos.</div>
+      <div class="review-grid">
+        <div class="review-block"><b>Family Members & Family Life</b><span>mother, father, sister, brother...</span><span>I live with...</span><span>My family is...</span></div>
+        <div class="review-block"><b>Present Information</b><span>What are you doing?</span><span>What is he/she doing?</span><span>Where are they?</span></div>
+        <div class="review-block"><b>Present Continuous</b><span>am / is / are + verbo-ing</span><span>ações acontecendo agora</span></div>
+        <div class="review-block"><b>Quantifiers & Comparatives</b><span>all, most, many, a lot of, some, a few, not many</span><span>taller, bigger, younger, more interesting...</span></div>
+</div>
+      <div class="player-form">
+        <label>Nome do aluno</label><input id="playerName" placeholder="Digite seu nome"/>
+        <label>Turma</label><input id="playerClass" placeholder="703"/>
+        <label>Escola</label><input id="playerSchool" value="Escola Municipal Princesa Izabel"/>
+        <button class="start-btn" onclick="startGame()">COMEÇAR O DESAFIO 🌽</button>
+      </div>
+      <div class="motivation" style="margin-top:10px">🧠 Aqui a dificuldade aumenta pelo raciocínio: observar, completar, encontrar erros, interpretar situações e integrar conteúdos.</div>
+      <div class="brand">Jogo idealizado pelo professor Jasson Bruno.</div>
+    </div>
+    <div class="card info-card">
+      <h3>Como funciona?</h3>
+      <div class="info-list">
+        <div class="info-item"><b>🎯 50 questões</b><br/>São 5 missões com 10 desafios. Os temas aparecem misturados e a dificuldade aumenta.</div>
+        <div class="info-item"><b>⏱️ 20 segundos</b><br/>Leia, pense e escolha. A dificuldade está no raciocínio, não em frases longas.</div>
+        <div class="info-item"><b>🏆 Ranking</b><br/>Ao terminar, veja sua pontuação e o Ranking Geral do jogo.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="gameScreen" class="screen">
+  <div class="stats">
+    <div class="stat"><b id="mission">1/5</b><span>Missão</span></div>
+    <div class="stat"><b id="round">1/50</b><span>Rodada</span></div>
+    <div class="stat"><b id="score">0</b><span>Pontos</span></div>
+    <div class="stat"><b id="correct">0</b><span>Acertos</span></div>
+    <div class="stat"><b id="lives">5</b><span>Vidas</span></div>
+  </div>
+  <div class="progress-card" id="progressText">Missão 1 • Rodada 1 de 10</div>
+  <div class="card question-card">
+    <div class="mission-box"><span id="missionName">Missão 1 — Warm-up</span><small id="missionProgress">Rodada 1/10</small></div>
+    <div id="theme" class="theme-chip">Tema</div>
+    <div id="visual" class="visual">🧠</div>
+    <div id="prompt" class="prompt">Pergunta</div>
+    <div class="timer-wrap"><div id="timerBar" class="timer-bar"></div></div>
+    <div id="timerText" class="timer-text">20 segundos</div>
+    <div id="options" class="options"></div>
+    <div class="lifelines">
+      <button id="fiftyBtn" class="help-btn" onclick="useFifty()">50/50</button>
+      <button id="skipBtn" class="help-btn" onclick="useSkip()">Pular: 3</button>
+      <button id="tipBtn" class="help-btn" onclick="useTip()">Dica</button>
+      <button class="help-btn stop-btn" onclick="finishGame('parou')">Parar</button>
+    </div>
+    <div id="feedback" class="feedback"></div>
+    <div class="brand">Jogo idealizado pelo professor Jasson Bruno.</div>
+  </div>
+</section>
+
+<section id="finalScreen" class="screen">
+  <div class="card final-card">
+    <div class="win-emoji" id="finalEmoji">🏆</div>
+    <h2 class="big-title" id="finalTitle">RESULTADO FINAL</h2>
+    <p class="final-message" id="finalMessage">Parabéns por participar!</p>
+    <div class="current-score-box" id="currentScoreBox"></div>
+    <div class="result-grid">
+      <div class="result-box"><span>Pontos</span><b id="finalScore">0</b></div>
+      <div class="result-box"><span>Acertos</span><b id="finalCorrect">0</b></div>
+      <div class="result-box"><span>Erros</span><b id="finalWrong">0</b></div>
+      <div class="result-box"><span>Status</span><b id="finalStatus">OK</b></div>
+    </div>
+    <h3 style="color:#ffe66d;margin:8px 0 4px">🏆 Ranking rápido</h3>
+    <div id="rankingContainer" class="rank-list"><div class="rank-note">Carregando ranking...</div></div>
+    <div class="firebase-rating">
+      <h3>Como foi jogar?</h3>
+      <div class="rating-buttons">
+        <button onclick="rateGame('ruim')"><span class="emoji">😕</span>Difícil</button>
+        <button onclick="rateGame('neutro')"><span class="emoji">🙂</span>Legal</button>
+        <button onclick="rateGame('bom')"><span class="emoji">🤩</span>Muito bom</button>
+      </div>
+      <p id="ratingMessage"></p>
+    </div>
+    <div class="rank-actions">
+      <button class="btn" onclick="openRankingModal()">🏆 Ranking Geral</button>
+      <button class="btn secondary" onclick="restartGame()">Jogar novamente</button>
+    </div>
+    <button class="btn secondary" style="margin-top:7px" onclick="location.href='index_turma_703_english_game_hub.html'">Voltar ao Game Hub</button>
+    <div class="final-brand">Jogo idealizado pelo professor Jasson Bruno.</div>
+  </div>
+</section>
+
+<section id="rankingModal" class="modal">
+  <div class="modal-card">
+    <h2>🏆 Ranking Geral — English Million Challenge 8º Ano</h2>
+    <p class="rank-note">Pontos acumulados somente neste jogo.</p>
+    <div id="rankingModalList" class="rank-list"><div class="rank-note">Carregando ranking...</div></div>
+    <button class="btn secondary" onclick="closeRankingModal()">Fechar</button>
+  </div>
+</section>
+</main>
+</div>
+
+
+
+<audio id="audioClick" src="click.wav" preload="auto"></audio>
+<audio id="audioIntro" src="spin.wav" preload="auto"></audio>
+<audio id="audioSuspense" src="show-suspense.wav" preload="auto" loop></audio>
+<audio id="audioSuccess" src="success.wav" preload="auto"></audio>
+<audio id="audioError" src="error.wav" preload="auto"></audio>
+<audio id="audioVictory" src="victory.wav" preload="auto"></audio>
+<audio id="audioGameOver" src="game-over.wav" preload="auto"></audio>
+
+<div id="roundIntro" class="round-intro" aria-live="polite">
+  <div class="round-intro-card">
+    <div id="introKicker" class="round-intro-kicker">Vamos à próxima pergunta!</div>
+    <div id="introValue" class="round-intro-value">50 pontos</div>
+    <div id="introTheme" class="round-intro-theme">Prepare-se para responder.</div>
+    <div class="round-intro-mini">703 English Million Challenge</div>
+  </div>
+</div>
+
+<script>
+const GAME_NAME = "703-english-million-challenge";
+const TOTAL_ROUNDS = 50;
+const MILHO_VALUES = [50,100,200,300,500,750,1000,1500,2000,3000,5000,7500,10000,15000,20000,30000,50000,75000,100000,150000,200000,250000,300000,350000,400000,450000,500000,550000,600000,650000,700000,750000,800000,850000,900000,925000,950000,975000,1000000,1100000,1200000,1300000,1400000,1500000,1600000,1700000,1800000,1900000,2000000,3000000];
+function milhoValue(){return MILHO_VALUES[Math.min(state.index, MILHO_VALUES.length-1)] || 50}
+function formatPontos(v){return Number(v).toLocaleString('pt-BR') + ' pontos'}
+const QUESTION_BANK = [{"level": 1, "theme": "Quantifiers", "visual": "👥", "prompt": "Na sala há 30 alunos. O professor quer dizer que há muitos estudantes. Complete: There are ___ students in the class.", "answer": "many", "options": ["many", "much", "younger", "better"], "tip": "Students é contável no plural. Use many."}, {"level": 1, "theme": "Family Members", "visual": "👩‍👧", "prompt": "Ana aponta para uma mulher e diz: She is my mother. Quem é essa pessoa?", "answer": "A mãe de Ana.", "options": ["A mãe de Ana.", "A irmã de Ana.", "A tia de Ana.", "A avó de Ana."], "tip": "Mother = mãe."}, {"level": 1, "theme": "Present Continuous", "visual": "📚", "prompt": "João está fazendo a tarefa agora. Qual frase combina com a situação?", "answer": "João is studying now.", "options": ["João is studying now.", "João are studying now.", "João study now.", "João studied now."], "tip": "Ação agora: is + studying."}, {"level": 1, "theme": "Comparatives", "visual": "📏", "prompt": "Pedro mede 1,70 m e Lucas 1,55 m. Qual frase está correta?", "answer": "Pedro is taller than Lucas.", "options": ["Pedro is taller than Lucas.", "Pedro is younger than Lucas.", "Lucas is taller than Pedro.", "Pedro is more tall than Lucas."], "tip": "Tall → taller than."}, {"level": 1, "theme": "Family Life", "visual": "🏠", "prompt": "Leia: I live with my parents. O que a frase informa?", "answer": "Eu moro com meus pais.", "options": ["Eu moro com meus pais.", "Eu estudo com meus pais.", "Eu moro sozinho.", "Eu tenho dois irmãos."], "tip": "I live with = eu moro com; parents = pais."}, {"level": 1, "theme": "Present Information", "visual": "❓", "prompt": "A resposta é: I'm studying now. Qual pergunta combina melhor?", "answer": "What are you doing?", "options": ["What are you doing?", "How old are you?", "What is your name?", "Where is your school?"], "tip": "A resposta fala do que a pessoa está fazendo agora."}, {"level": 1, "theme": "Quantifiers", "visual": "🍎", "prompt": "Em uma cesta há apenas 3 maçãs. Qual expressão combina melhor com essa pequena quantidade?", "answer": "a few apples", "options": ["a few apples", "many apples", "much apples", "most apple"], "tip": "A few indica pequena quantidade de itens contáveis."}, {"level": 1, "theme": "Comparatives", "visual": "🎂", "prompt": "Maria tem 12 anos e Ana tem 10. Qual frase está correta?", "answer": "Maria is older than Ana.", "options": ["Maria is older than Ana.", "Maria is younger than Ana.", "Ana is older than Maria.", "Maria is more old than Ana."], "tip": "Older than = mais velho(a) que."}, {"level": 1, "theme": "Family Members", "visual": "👨‍👩‍👧", "prompt": "O irmão da sua mãe é seu...", "answer": "uncle", "options": ["uncle", "cousin", "brother", "grandfather"], "tip": "Uncle = tio."}, {"level": 1, "theme": "Present Continuous", "visual": "⚽", "prompt": "Duas crianças estão jogando bola neste momento. Complete: They ___ playing now.", "answer": "are", "options": ["are", "is", "am", "be"], "tip": "Com they usamos are."}, {"level": 2, "theme": "Quantifiers", "visual": "📚", "prompt": "Há vários livros sobre a mesa. Qual opção completa corretamente: There are ___ books on the table.", "answer": "many", "options": ["many", "much", "older", "more"], "tip": "Books é contável e plural."}, {"level": 2, "theme": "Present Continuous", "visual": "🍳", "prompt": "Sua mãe está cozinhando agora. Qual frase descreve isso corretamente?", "answer": "My mother is cooking now.", "options": ["My mother is cooking now.", "My mother are cooking now.", "My mother cooking now.", "My mother cooks now."], "tip": "Com my mother usamos is + verbo-ing."}, {"level": 2, "theme": "Comparatives", "visual": "🚗", "prompt": "Um carro custa R$ 60 mil e outro R$ 90 mil. O segundo é...", "answer": "more expensive", "options": ["more expensive", "expensiver", "more cheap", "younger"], "tip": "Expensive é adjetivo longo: more expensive."}, {"level": 2, "theme": "Family Life", "visual": "👨‍👩‍👧‍👦", "prompt": "Carlos mora com a mãe, o pai e dois irmãos. Qual frase faz sentido?", "answer": "Carlos lives with his family.", "options": ["Carlos lives with his family.", "Carlos is studying with his family.", "Carlos has no family.", "Carlos is younger his family."], "tip": "Lives with his family = mora com sua família."}, {"level": 2, "theme": "Present Information", "visual": "📍", "prompt": "Você quer saber onde seus colegas estão. Qual pergunta usar?", "answer": "Where are they?", "options": ["Where are they?", "What are they doing?", "How old are they?", "Who is your mother?"], "tip": "Where = onde."}, {"level": 2, "theme": "Quantifiers", "visual": "✅", "prompt": "28 de 30 alunos entregaram a atividade. Qual quantifier combina melhor?", "answer": "most", "options": ["most", "a few", "not many", "much"], "tip": "Most = a maioria."}, {"level": 2, "theme": "Comparatives", "visual": "🐘", "prompt": "Um elefante é maior que um cachorro. Complete: An elephant is ___ than a dog.", "answer": "bigger", "options": ["bigger", "biger", "more big", "biggest"], "tip": "Big → bigger."}, {"level": 2, "theme": "Family Members", "visual": "👵", "prompt": "A mãe do seu pai é sua...", "answer": "grandmother", "options": ["grandmother", "mother", "aunt", "sister"], "tip": "Grandmother = avó."}, {"level": 2, "theme": "Present Continuous", "visual": "🎮", "prompt": "Os meninos estão jogando agora. Qual opção completa: They are ___ now.", "answer": "playing", "options": ["playing", "play", "plays", "played"], "tip": "Present Continuous usa verbo + ing."}, {"level": 2, "theme": "Family Life", "visual": "🏡", "prompt": "Leia: My family is small. Qual ideia aparece?", "answer": "Minha família é pequena.", "options": ["Minha família é pequena.", "Minha família está estudando.", "Minha família é mais velha.", "Minha família mora longe."], "tip": "Small = pequena."}, {"level": 3, "theme": "Comparatives", "visual": "🔎", "prompt": "Um aluno escreveu: My brother is more tall than me. O que deve ser corrigido?", "answer": "Trocar more tall por taller.", "options": ["Trocar more tall por taller.", "Retirar brother.", "Trocar my por many.", "Retirar than."], "tip": "Tall é curto: tall → taller."}, {"level": 3, "theme": "Quantifiers", "visual": "🔎", "prompt": "Observe: There are much books on the table. Qual é o erro?", "answer": "Much deveria ser many.", "options": ["Much deveria ser many.", "Books deveria ser book.", "There deveria ser they.", "Table deveria estar no plural."], "tip": "Books é contável no plural: many books."}, {"level": 3, "theme": "Present Continuous", "visual": "🔎", "prompt": "Observe: She are studying now. O que precisa mudar?", "answer": "Are deve virar is.", "options": ["Are deve virar is.", "Studying deve virar study.", "Now deve ser retirado.", "She deve virar they."], "tip": "Com she usamos is."}, {"level": 3, "theme": "Family Life", "visual": "🔎", "prompt": "Um aluno quer dizer “Eu moro com minha família” e escreve: I study with my family. O problema é...", "answer": "study não significa morar.", "options": ["study não significa morar.", "family está errado.", "my deveria ser many.", "A frase já está correta."], "tip": "Morar = live. A frase correta é I live with my family."}, {"level": 3, "theme": "Comparatives", "visual": "🔎", "prompt": "Observe: This book is interestinger than that book. Qual correção está certa?", "answer": "more interesting than", "options": ["more interesting than", "interestinger than", "most interesting than", "interesting more"], "tip": "Interesting é adjetivo longo."}, {"level": 3, "theme": "Quantifiers", "visual": "🔎", "prompt": "Um aluno escreve: a few water. Por que está inadequado?", "answer": "Water não é contável.", "options": ["Water não é contável.", "A few significa muitos.", "Water está no plural.", "A frase está correta."], "tip": "A few é usado com substantivos contáveis."}, {"level": 3, "theme": "Present Information", "visual": "🔎", "prompt": "A resposta é “They are at school.” O aluno pergunta “What are they doing?”. O que está errado?", "answer": "A pergunta deveria ser Where are they?", "options": ["A pergunta deveria ser Where are they?", "A resposta deveria ter many.", "They deveria ser he.", "Não há erro."], "tip": "At school informa lugar, então a pergunta adequada usa Where."}, {"level": 3, "theme": "Present Continuous", "visual": "🔎", "prompt": "Observe: He is play now. Qual correção deixa a frase no Present Continuous?", "answer": "He is playing now.", "options": ["He is playing now.", "He playing now.", "He are playing now.", "He played now."], "tip": "Use is + verbo-ing."}, {"level": 3, "theme": "Family Members", "visual": "🔎", "prompt": "Uma aluna diz: My aunt is my mother's sister. Essa relação está...", "answer": "correta", "options": ["correta", "errada, aunt significa prima", "errada, aunt significa avó", "errada, aunt significa irmã"], "tip": "Aunt = tia; pode ser irmã da mãe ou do pai."}, {"level": 3, "theme": "Comparatives", "visual": "🔎", "prompt": "Observe: Ana is gooder than Maria at English. Qual forma substitui gooder?", "answer": "better", "options": ["better", "gooder", "more good", "best"], "tip": "Good tem comparativo irregular: better."}, {"level": 4, "theme": "Quantifiers", "visual": "🧠", "prompt": "Em uma turma de 30 alunos, apenas 4 faltaram. Qual frase descreve melhor os que vieram?", "answer": "Most students are here.", "options": ["Most students are here.", "A few students are here.", "Not many students are here.", "Much students are here."], "tip": "Se quase todos vieram, most é a melhor escolha."}, {"level": 4, "theme": "Present Continuous", "visual": "🧠", "prompt": "Você liga por vídeo e vê sua irmã lendo. Qual frase descreve o que acontece agora?", "answer": "My sister is reading.", "options": ["My sister is reading.", "My sister reads yesterday.", "My sister are reading.", "My sister reading."], "tip": "Ação acontecendo agora: is reading."}, {"level": 4, "theme": "Comparatives", "visual": "🧠", "prompt": "Um livro tem 80 páginas e outro 200. O segundo parece mais difícil. Qual frase compara corretamente?", "answer": "The second book is more difficult.", "options": ["The second book is more difficult.", "The second book is difficulter.", "The second book is most difficult than.", "The second book difficult more."], "tip": "Difficult é longo: more difficult."}, {"level": 4, "theme": "Family Life", "visual": "🧠", "prompt": "Ana diz: I live with my mother and my grandmother. O que podemos concluir?", "answer": "Ana mora com a mãe e a avó.", "options": ["Ana mora com a mãe e a avó.", "Ana mora sozinha.", "Ana tem duas irmãs.", "Ana está estudando agora."], "tip": "Live with indica com quem a pessoa mora."}, {"level": 4, "theme": "Present Information", "visual": "🧠", "prompt": "Você quer saber o que seu irmão está fazendo neste momento. Qual pergunta é mais adequada?", "answer": "What is he doing?", "options": ["What is he doing?", "Where is he?", "How old is he?", "Who is he?"], "tip": "What is he doing? pergunta sobre ação em andamento."}, {"level": 4, "theme": "Quantifiers", "visual": "🧠", "prompt": "Só 2 de 25 alunos escolheram a opção A. Qual expressão descreve melhor esse grupo?", "answer": "a few students", "options": ["a few students", "most students", "all students", "much students"], "tip": "A few = poucos / alguns poucos."}, {"level": 4, "theme": "Comparatives", "visual": "🧠", "prompt": "Lia tem 9 anos e Bia 13. Qual conclusão está correta?", "answer": "Lia is younger than Bia.", "options": ["Lia is younger than Bia.", "Lia is older than Bia.", "Bia is younger than Lia.", "Lia is more young than Bia."], "tip": "Younger than = mais jovem que."}, {"level": 4, "theme": "Present Continuous", "visual": "🧠", "prompt": "Na foto, duas pessoas estão conversando. Qual frase combina melhor?", "answer": "They are talking.", "options": ["They are talking.", "They is talking.", "They talk yesterday.", "They talking are."], "tip": "They + are + talking."}, {"level": 4, "theme": "Family Members", "visual": "🧠", "prompt": "O filho da sua tia é seu...", "answer": "cousin", "options": ["cousin", "uncle", "brother", "father"], "tip": "Cousin = primo ou prima."}, {"level": 4, "theme": "Family Life + Comparatives", "visual": "🧠", "prompt": "A família de Ana tem 6 pessoas e a de Bia tem 3. Qual frase faz sentido?", "answer": "Ana's family is bigger than Bia's family.", "options": ["Ana's family is bigger than Bia's family.", "Ana's family is younger than Bia's family.", "Bia's family is bigger than Ana's family.", "Ana's family is more big than Bia's family."], "tip": "Big → bigger than."}, {"level": 5, "theme": "Quantifiers + Present Continuous", "visual": "🏆", "prompt": "Leia: Most students are studying now. Quais ideias aparecem juntas?", "answer": "Quantidade + ação acontecendo agora.", "options": ["Quantidade + ação acontecendo agora.", "Família + passado.", "Comparação + idade.", "Apenas vocabulário."], "tip": "Most indica quantidade; are studying indica ação agora."}, {"level": 5, "theme": "Comparatives + Family", "visual": "🏆", "prompt": "Leia: My sister is younger than my brother. Quem é mais jovem?", "answer": "A irmã.", "options": ["A irmã.", "O irmão.", "Os dois têm a mesma idade.", "Não é possível saber."], "tip": "Younger than = mais jovem que."}, {"level": 5, "theme": "Family Life + Present Continuous", "visual": "🏆", "prompt": "Leia: My mother is cooking and my father is working. Qual alternativa descreve melhor a frase?", "answer": "Duas pessoas da família fazem ações agora.", "options": ["Duas pessoas da família fazem ações agora.", "A família está sendo comparada.", "A frase fala de quantidade.", "A frase está no passado."], "tip": "Is cooking e is working indicam ações em andamento."}, {"level": 5, "theme": "Quantifiers", "visual": "🏆", "prompt": "Em uma enquete, 18 de 20 alunos escolheram a mesma resposta. Qual frase é mais adequada?", "answer": "Most students chose the same answer.", "options": ["Most students chose the same answer.", "A few students chose the same answer.", "Not many students chose the same answer.", "Much students chose the same answer."], "tip": "18 de 20 representa a maioria."}, {"level": 5, "theme": "Comparatives", "visual": "🏆", "prompt": "Um aluno escreve: This exercise is more easy than the last one. Qual correção está certa?", "answer": "This exercise is easier than the last one.", "options": ["This exercise is easier than the last one.", "This exercise is more easy than the last one.", "This exercise is easiest than the last one.", "This exercise easier the last one."], "tip": "Easy termina em consoante + y: easy → easier."}, {"level": 5, "theme": "Present Information + Present Continuous", "visual": "🏆", "prompt": "A resposta é: She is talking to her mother. Qual pergunta combina perfeitamente?", "answer": "What is she doing?", "options": ["What is she doing?", "Where is she from?", "How old is her mother?", "Who is your sister?"], "tip": "A resposta informa uma ação acontecendo agora."}, {"level": 5, "theme": "Quantifiers + Family", "visual": "🏆", "prompt": "Leia: A few people in my family live far away. Qual interpretação está correta?", "answer": "Poucas pessoas da família moram longe.", "options": ["Poucas pessoas da família moram longe.", "Toda a família mora longe.", "A maioria da família mora longe.", "Ninguém da família mora longe."], "tip": "A few indica pequena quantidade."}, {"level": 5, "theme": "Comparatives", "visual": "🏆", "prompt": "Há três opções: good, bad e expensive. Qual delas possui comparativo irregular?", "answer": "good", "options": ["good", "expensive", "interesting", "beautiful"], "tip": "Good → better. Os outros usam regras regulares."}, {"level": 5, "theme": "Present Continuous + Quantifiers", "visual": "🏆", "prompt": "Na biblioteca, somente 3 estudantes estão lendo agora. Qual frase descreve melhor?", "answer": "A few students are reading now.", "options": ["A few students are reading now.", "Most students are reading now.", "Much students are reading now.", "All students is reading now."], "tip": "A few indica poucos; are reading indica ação agora."}, {"level": 5, "theme": "Mixed Challenge", "visual": "🏆", "prompt": "Leia: My family is small, but my cousin's family is bigger. O que a frase faz?", "answer": "Compara o tamanho de duas famílias.", "options": ["Compara o tamanho de duas famílias.", "Pergunta onde a família está.", "Diz que todos estão estudando.", "Fala apenas de quantidade de livros."], "tip": "Bigger mostra comparação entre duas famílias."}];
+const SECOND_BANK = QUESTION_BANK;
+const REVIEW_BANK = [];
+let state = {
+  deck: [], index: 0, score: 0, correct: 0, wrong: 0, lives: 5,
+  skipLeft: 3, tipUsed: false, fiftyUsed: false, timer: null, timeLeft: 20,
+  player: null, finished: false, lastResult: null
+};
+
+let gameAudioUnlocked = false;
+const REAL_AUDIO_IDS = {
+  click: "audioClick",
+  intro: "audioIntro",
+  suspense: "audioSuspense",
+  success: "audioSuccess",
+  error: "audioError",
+  victory: "audioVictory",
+  gameover: "audioGameOver"
+};
+
+function getRealAudio(name){
+  const id = REAL_AUDIO_IDS[name];
+  return id ? document.getElementById(id) : null;
+}
+
+function safePlayAudio(name, options={}){
+  const audio = getRealAudio(name);
+  if(!audio) return false;
+  try{
+    const volume = typeof options.volume === "number" ? options.volume : 1;
+    audio.volume = volume;
+    if(options.restart !== false){
+      audio.currentTime = 0;
+    }
+    const p = audio.play();
+    if(p && typeof p.catch === "function"){
+      p.catch(()=>{});
+    }
+    return true;
+  }catch(e){
+    return false;
+  }
+}
+
+function stopAudio(name){
+  const audio = getRealAudio(name);
+  if(!audio) return;
+  try{
+    audio.pause();
+    audio.currentTime = 0;
+  }catch(e){}
+}
+
+function stopSuspense(){
+  stopAudio("suspense");
+}
+
+function startSuspense(){
+  const audio = getRealAudio("suspense");
+  if(!audio) return;
+  try{
+    audio.loop = true;
+    audio.volume = 0.42;
+    audio.currentTime = 0;
+    const p = audio.play();
+    if(p && typeof p.catch === "function"){
+      p.catch(()=>{});
+    }
+  }catch(e){}
+}
+
+function unlockRealAudio(){
+  if(gameAudioUnlocked) return;
+  gameAudioUnlocked = true;
+
+  Object.keys(REAL_AUDIO_IDS).forEach(name=>{
+    const audio = getRealAudio(name);
+    if(!audio) return;
+    try{
+      const oldMuted = audio.muted;
+      audio.muted = true;
+      audio.volume = 0.01;
+      const p = audio.play();
+      if(p && typeof p.then === "function"){
+        p.then(()=>{
+          audio.pause();
+          audio.currentTime = 0;
+          audio.muted = oldMuted;
+          audio.volume = name === "suspense" ? 0.42 : 1;
+        }).catch(()=>{
+          audio.muted = oldMuted;
+          audio.volume = name === "suspense" ? 0.42 : 1;
+        });
+      }else{
+        audio.pause();
+        audio.currentTime = 0;
+        audio.muted = oldMuted;
+        audio.volume = name === "suspense" ? 0.42 : 1;
+      }
+    }catch(e){}
+  });
+}
+
+function el(id){return document.getElementById(id)}
+function showScreen(id){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));el(id).classList.add("active");document.body.classList.toggle("playing",id==="gameScreen")}
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function makeDeck(){
+  const deck = [];
+  for(let level=1; level<=5; level++){
+    const part = shuffle(QUESTION_BANK.filter(q => q.level === level)).slice(0,10);
+    deck.push(...part);
+  }
+  return deck;
+}
+function getPlayerInfo(){
+  return {
+    nome:(el("playerName").value||"Aluno(a)").trim().slice(0,24),
+    turma:(el("playerClass").value||"703").trim().slice(0,20),
+    escola:(el("playerSchool").value||"Escola Municipal Princesa Izabel").trim().slice(0,40)
+  };
+}
+function startGame(){
+  unlockRealAudio();
+  safePlayAudio("click", {volume:.65});
+  state = {...state, deck: makeDeck(), index:0, score:0, correct:0, wrong:0, lives:5, skipLeft:3, tipUsed:false, fiftyUsed:false, finished:false, player:getPlayerInfo(), lastResult:null};
+  showScreen("gameScreen");
+  loadQuestion();
+}
+function currentQuestion(){return state.deck[state.index]}
+function loadQuestion(showIntro=true){
+  clearInterval(state.timer);
+  if(state.index >= TOTAL_ROUNDS) return finishGame("venceu");
+  if(state.lives <= 0) return finishGame("gameover");
+  if(showIntro) return showRoundIntro(()=>loadQuestion(false));
+  const q=currentQuestion();
+  const mission=Math.floor(state.index/10)+1, roundInMission=(state.index%10)+1;
+  const value = milhoValue();
+  el("mission").textContent = mission + "/5";
+  el("round").textContent = (state.index+1) + "/" + TOTAL_ROUNDS;
+  el("score").textContent = state.score;
+  el("correct").textContent = state.correct;
+  el("lives").textContent = "❤️".repeat(state.lives) || "0";
+  el("progressText").textContent = `Missão ${mission} • Rodada ${roundInMission} de 10 • Valendo ${formatPontos(value)}`;
+  el("missionName").textContent = `Missão ${mission} — ${missionTitle(mission)}`;
+  el("missionProgress").textContent = `Rodada ${roundInMission}/10`;
+  el("theme").textContent = q.theme;
+  el("visual").textContent = q.visual;
+  el("prompt").textContent = q.prompt;
+  el("feedback").className="feedback"; el("feedback").textContent="";
+  el("fiftyBtn").disabled = state.fiftyUsed; el("skipBtn").disabled = state.skipLeft<=0; el("skipBtn").textContent = "Pular: " + state.skipLeft; el("tipBtn").disabled = state.tipUsed;
+  const opts = shuffle(q.options);
+  const optionsBox = el("options");
+  optionsBox.innerHTML = "";
+  opts.forEach((op,i)=>{
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "option";
+    btn.dataset.answer = op;
+
+    const letter = document.createElement("span");
+    letter.className = "option-letter";
+    letter.textContent = String.fromCharCode(65+i);
+
+    const text = document.createElement("span");
+    text.className = "option-text";
+    text.textContent = op;
+
+    btn.appendChild(letter);
+    btn.appendChild(text);
+    btn.addEventListener("click",()=>answerQuestion(btn, op));
+    optionsBox.appendChild(btn);
+  });
+  startSuspense();
+  startTimer();
+}
+function showRoundIntro(done){
+  stopSuspense();
+  const q=currentQuestion();
+  const n = state.index + 1;
+  const value = milhoValue();
+  el("introKicker").textContent = n === 1 ? "Vamos à primeira pergunta!" : "Atenção para a próxima pergunta!";
+  el("introValue").textContent = `Valendo ${formatPontos(value)}!`;
+  el("introTheme").textContent = `${q.visual || "🌽"} Tema: ${q.theme}`;
+  el("roundIntro").classList.add("active");
+  playIntroSound();
+  setTimeout(()=>{el("roundIntro").classList.remove("active"); done();}, 2300);
+}
+function missionTitle(n){return ["Observe e Escolha","Complete com Sentido","Encontre o Erro","Pense na Situação","Million Challenge"][n-1] || "English Million Challenge"}
+function startTimer(){
+  state.timeLeft=20;
+  el("timerBar").style.width="100%"; el("timerText").textContent="20 segundos";
+  state.timer=setInterval(()=>{
+    state.timeLeft-=0.2;
+    const pct=Math.max(0,(state.timeLeft/20)*100);
+    el("timerBar").style.width=pct+"%";
+    el("timerText").textContent=Math.ceil(Math.max(0,state.timeLeft))+" segundos";
+    if(state.timeLeft<=0){clearInterval(state.timer); timeoutQuestion();}
+  },200);
+}
+function lockOptions(){document.querySelectorAll(".option").forEach(b=>b.disabled=true)}
+function answerQuestion(btn, selected){
+  safePlayAudio("click", {volume:.55});
+  stopSuspense();
+  clearInterval(state.timer); lockOptions();
+  const q=currentQuestion();
+  const ok = selected === q.answer;
+  document.querySelectorAll(".option").forEach(b=>{if(b.dataset.answer === q.answer) b.classList.add("correct")});
+  if(ok){
+    state.correct++; state.score += milhoValue();
+    btn.classList.add("correct");
+    playCorrectSound();
+    el("feedback").className="feedback good"; el("feedback").textContent="✅ Acertou! O milho gigante aprovou. Você ganhou "+formatPontos(milhoValue())+".";
+  } else {
+    state.wrong++; state.lives--; btn.classList.add("wrong");
+    playWrongSound();
+    el("feedback").className="feedback bad"; el("feedback").textContent="❌ Quase! A resposta correta é “"+q.answer+"”. "+q.tip;
+  }
+  setTimeout(()=>{state.index++; loadQuestion(true)}, ok ? 1400 : 1900);
+}
+function timeoutQuestion(){
+  stopSuspense();
+  lockOptions();
+  const q=currentQuestion(); state.wrong++; state.lives--;
+  document.querySelectorAll(".option").forEach(b=>{if(b.dataset.answer === q.answer) b.classList.add("correct")});
+  playWrongSound();
+  el("feedback").className="feedback bad"; el("feedback").textContent="⏰ O tempo acabou. A resposta correta é “"+q.answer+"”. "+q.tip;
+  setTimeout(()=>{state.index++; loadQuestion(true)},1900);
+}
+function useFifty(){
+  unlockRealAudio();
+  safePlayAudio("click", {volume:.55});
+  if(state.fiftyUsed) return; state.fiftyUsed=true; el("fiftyBtn").disabled=true;
+  const q=currentQuestion(); const wrong=[...document.querySelectorAll(".option")].filter(b=>b.dataset.answer !== q.answer);
+  shuffle(wrong).slice(0,2).forEach(b=>b.classList.add("hide-option"));
+}
+function useSkip(){
+  unlockRealAudio();
+  safePlayAudio("click", {volume:.55});
+  stopSuspense();
+  if(state.skipLeft<=0) return;
+  clearInterval(state.timer);
+  state.skipLeft--;
+  state.index++;
+  loadQuestion(true);
+}
+function useTip(){
+  unlockRealAudio();
+  safePlayAudio("click", {volume:.55});
+  if(state.tipUsed) return; state.tipUsed=true; el("tipBtn").disabled=true;
+  const q=currentQuestion(); el("feedback").className="feedback good"; el("feedback").textContent="💡 Dica: "+q.tip;
+}
+
+function audioCtx(){
+  if(!window._audioCtx) window._audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return window._audioCtx;
+}
+function tone(freq=440,dur=.12,type="sine",gain=.05,delay=0){
+  try{
+    const ctx=audioCtx(); const osc=ctx.createOscillator(); const g=ctx.createGain();
+    osc.type=type; osc.frequency.value=freq; g.gain.value=0;
+    osc.connect(g); g.connect(ctx.destination);
+    const t=ctx.currentTime+delay; g.gain.linearRampToValueAtTime(gain,t+.02); g.gain.exponentialRampToValueAtTime(.001,t+dur);
+    osc.start(t); osc.stop(t+dur+.03);
+  }catch(e){}
+}
+function playIntroSound(){
+  stopSuspense();
+  const ok = safePlayAudio("intro", {volume:.72});
+  if(!ok){
+    tone(330,.10,"sine",.035,0);
+    tone(440,.12,"sine",.035,.10);
+    tone(660,.16,"triangle",.04,.22);
+  }
+}
+
+function playCorrectSound(){
+  stopSuspense();
+  const ok = safePlayAudio("success", {volume:.92});
+  if(!ok){
+    tone(523,.10,"sine",.045,0);
+    tone(659,.12,"sine",.045,.10);
+    tone(784,.18,"triangle",.05,.22);
+    setTimeout(()=>makeApplause(),120);
+  }
+}
+
+function playWrongSound(){
+  stopSuspense();
+  const ok = safePlayAudio("error", {volume:.90});
+  if(!ok){
+    tone(190,.18,"sawtooth",.035,0);
+    tone(145,.22,"sawtooth",.025,.16);
+  }
+}
+function makeApplause(){
+  try{
+    const ctx=audioCtx();
+    for(let i=0;i<18;i++){
+      const buffer=ctx.createBuffer(1,ctx.sampleRate*.035,ctx.sampleRate); const data=buffer.getChannelData(0);
+      for(let j=0;j<data.length;j++) data[j]=(Math.random()*2-1)*(1-j/data.length);
+      const src=ctx.createBufferSource(); src.buffer=buffer; const g=ctx.createGain(); g.gain.value=.018+Math.random()*.018;
+      src.connect(g); g.connect(ctx.destination); src.start(ctx.currentTime+i*.025);
+    }
+  }catch(e){}
+}
+
+function finishGame(status){
+  stopSuspense();
+  if(status === "parou") safePlayAudio("click", {volume:.65});
+  if(state.finished) return; state.finished=true; clearInterval(state.timer);
+  const pontosRanking = state.score;
+  const p = state.player || getPlayerInfo();
+  state.lastResult = {...p, pontos:pontosRanking, score:state.score, acertos:state.correct, erros:state.wrong, jogo:GAME_NAME, status};
+  const won = status==="venceu";
+  el("finalEmoji").textContent = won ? "🏆🌟" : status==="parou" ? "🛑" : "💪";
+  el("finalTitle").textContent = won ? "CONGRATULATIONS!" : status==="parou" ? "VOCÊ PAROU COM SEGURANÇA" : "GAME OVER";
+  el("finalMessage").textContent = won ? "Você concluiu o English Million Challenge!" : status==="parou" ? "Você decidiu parar e guardar sua pontuação." : "Você chegou ao fim da rodada. Continue treinando!";
+  el("finalScore").textContent=state.score; el("finalCorrect").textContent=state.correct; el("finalWrong").textContent=state.wrong; el("finalStatus").textContent=status.toUpperCase();
+  el("currentScoreBox").innerHTML = `✨ SUA PONTUAÇÃO AGORA ✨<br><b>${p.nome}</b> — ${state.score} pontos<br><small>Turma: ${p.turma} • ${p.escola}</small>`;
+  showScreen("finalScreen");
+  if(status === "venceu") safePlayAudio("victory", {volume:1});
+  if(status === "gameover") safePlayAudio("gameover", {volume:1});
+  if(window.salvarPontuacao) window.salvarPontuacao(GAME_NAME, p.nome, p.turma, p.escola, pontosRanking, state.correct, state.wrong, status);
+  carregarRanking();
+}
+function restartGame(){
+  safePlayAudio("click", {volume:.6});
+  stopSuspense();
+  showScreen("startScreen");
+}
+function rankRowHTML(item, idx, current=false){
+  const pos=idx+1; const cls = current ? " player" : pos<=3 ? " rank-"+pos : "";
+  const medal = pos===1?"🥇":pos===2?"🥈":pos===3?"🥉":pos+"º";
+  const badge = pos===1 ? `<span class="champion-badge">🏆 Campeão do dia</span>` : "";
+  const you = current ? " ⭐ Você" : "";
+  return `<div class="rank-row${cls}"><div class="rank-pos">${medal}</div><div><div class="rank-name">${escapeHtml(item.nome)}${you}</div><div class="rank-school">${escapeHtml(item.escola||"Escola")}</div></div><div class="rank-score">${item.pontos} pts${badge}</div></div>`;
+}
+function escapeHtml(s){return String(s||"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m]))}
+function renderRanking(container, rows){
+  const current = state.lastResult;
+  let list = rows || [];
+  const keyCur = current ? `${current.nome.toLowerCase()}|${current.escola.toLowerCase()}` : "";
+  if(current && !list.some(x=>`${x.nome.toLowerCase()}|${(x.escola||"").toLowerCase()}`===keyCur)){
+    list = [...list, {nome:current.nome, escola:current.escola, pontos:current.pontos, local:true}];
+  }
+  list.sort((a,b)=>b.pontos-a.pontos);
+  const top10 = list.slice(0,10);
+  container.innerHTML = top10.map((item,i)=>rankRowHTML(item,i,current && `${item.nome.toLowerCase()}|${(item.escola||"").toLowerCase()}`===keyCur)).join("");
+  if(current){
+    const pos = list.findIndex(x=>`${x.nome.toLowerCase()}|${(x.escola||"").toLowerCase()}`===keyCur);
+    if(pos>=10){
+      container.insertAdjacentHTML("beforeend", `<div class="rank-note">✨ Sua posição nesta rodada</div>` + rankRowHTML(list[pos], pos, true));
+    }
+  }
+}
+function openRankingModal(){
+  safePlayAudio("click", {volume:.6});
+  el("rankingModal").classList.add("active");
+  carregarRanking(true);
+}
+function closeRankingModal(){
+  safePlayAudio("click", {volume:.6});
+  el("rankingModal").classList.remove("active");
+}
+function rateGame(avaliacao){
+  safePlayAudio("click", {volume:.6});
+  const p = state.player || getPlayerInfo();
+  if(window.salvarAvaliacao) window.salvarAvaliacao(avaliacao,GAME_NAME,p.nome,p.escola);
+  el("ratingMessage").textContent = "Obrigado pela avaliação!";
+}
+
+document.addEventListener("visibilitychange", ()=>{
+  if(document.hidden) stopSuspense();
+});
+</script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+import { getFirestore, collection, addDoc, serverTimestamp, query, orderBy, onSnapshot, getDocs } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+const firebaseConfig = {
+  apiKey: "AIzaSyCVTR3nnyo5mYTF28TJisgTUe-Xyjk1upg",
+  authDomain: "english-game-hub.firebaseapp.com",
+  projectId: "english-game-hub",
+  storageBucket: "english-game-hub.firebasestorage.app",
+  messagingSenderId: "131880771426",
+  appId: "1:131880771426:web:cf29a6f34ca86be527d63b"
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+window.salvarPontuacao = async function(jogo,nome,turma,escola,pontos,acertos,erros,status){
+  try{ await addDoc(collection(db,"pontuacoes"),{jogo,nome,turma,escola,pontos:Number(pontos)||0,acertos:Number(acertos)||0,erros:Number(erros)||0,status,timestamp:serverTimestamp(),dataLocal:new Date().toISOString()}); }
+  catch(e){ console.error("Erro ao salvar pontuação:",e); }
+};
+window.salvarAvaliacao = async function(avaliacao,jogo,nome,escola){
+  try{ await addDoc(collection(db,"avaliacoes"),{jogo,avaliacao,nome,escola,timestamp:serverTimestamp()}); }catch(e){console.warn("Erro ao salvar avaliação:",e)}
+};
+window.carregarRanking = function(modal=false){
+  const target = modal ? document.getElementById("rankingModalList") : document.getElementById("rankingContainer");
+  target.innerHTML = '<div class="rank-note">Carregando ranking...</div>';
+  const q = query(collection(db,"pontuacoes"), orderBy("timestamp","desc"));
+  getDocs(q).then(snapshot=>{
+    const map = new Map();
+    snapshot.forEach(doc=>{
+      const d = doc.data();
+      if(d.jogo !== GAME_NAME) return;
+      const nome = String(d.nome||"Aluno(a)").trim();
+      const escola = String(d.escola||"Escola não informada").trim();
+      const pontos = Number(d.pontos||0);
+      if(!nome || !Number.isFinite(pontos)) return;
+      const key = nome.toLowerCase()+"|"+escola.toLowerCase();
+      const item = map.get(key) || {nome, escola, pontos:0};
+      item.pontos += pontos;
+      map.set(key,item);
+    });
+    renderRanking(target, Array.from(map.values()));
+  }).catch(err=>{
+    console.error("Erro ao carregar ranking:",err);
+    const current = state.lastResult;
+    renderRanking(target, current ? [{nome:current.nome, escola:current.escola, pontos:current.pontos}] : []);
+  });
+};
+try{ await addDoc(collection(db,"acessos"),{jogo:GAME_NAME,timestamp:serverTimestamp(),dataLocal:new Date().toISOString()}); }catch(e){}
+</script>
+</body>
+</html>
