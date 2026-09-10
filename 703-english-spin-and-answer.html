@@ -1,0 +1,1801 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>703 English Spin & Answer</title>
+<style>
+*{box-sizing:border-box}
+:root{--blue:#2563eb;--pink:#e11d48;--dark:#172033;--cream:#fff7ed}
+html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;color:var(--dark)}
+body{
+  min-height:100vh;
+  background:linear-gradient(135deg,#1d4ed8,#06b6d4 45%,#e11d48);
+  display:flex;align-items:center;justify-content:center;padding:10px;
+}
+.app{width:min(100%,1100px);min-height:min(760px,96vh);background:rgba(255,255,255,.93);border-radius:26px;overflow:hidden;box-shadow:0 24px 50px rgba(0,0,0,.2)}
+header{background:linear-gradient(135deg,#4361ee,#8b5cf6 45%,#e11d48);color:white;padding:14px 18px;text-align:center;position:relative}
+.topbar{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:6px}
+.back,.pill{color:white;text-decoration:none;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:7px 11px;font-weight:900;font-size:12px}
+h1{font-size:clamp(32px,6vw,54px);line-height:1;margin:0;text-shadow:0 3px 10px rgba(0,0,0,.18)}
+.subtitle{margin:6px 0 0;font-weight:800}
+main{padding:14px}
+.screen{display:none} .screen.active{display:block}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:9px}
+.stat{background:white;border:1px solid #dbeafe;border-radius:16px;padding:8px;text-align:center;box-shadow:0 6px 16px rgba(15,23,42,.06)}
+.stat b{display:block;font-size:24px;color:#0b4db3;line-height:1} .stat span{font-size:10px;font-weight:900;color:#475569;text-transform:uppercase}
+.mission-card{margin:8px 0 10px;padding:10px 14px;border-radius:18px;background:linear-gradient(180deg,rgba(32,12,83,.96),rgba(16,8,56,.96));border:2px solid rgba(255,205,84,.35);box-shadow:0 0 0 1px rgba(255,255,255,.04),0 10px 18px rgba(0,0,0,.18);display:flex;align-items:center;justify-content:space-between;gap:10px;color:#fff}.mission-card b{font-size:18px;line-height:1.1;color:#ffe66d}.mission-card span{font-size:14px;font-weight:900;color:#dbeafe;text-align:right}.lives-card{background:#fff1f2;border:1px solid #fecdd3;border-radius:15px;padding:7px;text-align:center;font-weight:900;margin-bottom:9px}
+.heart{font-size:24px;color:#e11d48;margin:0 2px;line-height:1} .heart.lost{display:none}
+.game-grid{display:grid;grid-template-columns:1fr 1.08fr;gap:12px;align-items:stretch}
+.card{background:linear-gradient(180deg,#fff,#f8fafc);border:1px solid #dbeafe;border-radius:22px;padding:14px;box-shadow:0 10px 22px rgba(15,23,42,.08)}
+.wheel-wrap{position:relative;display:flex;flex-direction:column;align-items:center;gap:9px}
+.pointer{position:absolute;top:2px;left:50%;transform:translateX(-50%);z-index:10;width:0;height:0;border-left:17px solid transparent;border-right:17px solid transparent;border-top:42px solid #111827;filter:drop-shadow(0 2px 2px rgba(0,0,0,.35))}
+.pointer::after{content:"";position:absolute;left:-6px;top:-28px;width:12px;height:12px;background:white;border:4px solid #111827;border-radius:50%}
+.wheel{width:min(78vw,390px);height:min(78vw,390px);max-width:390px;max-height:390px;border-radius:50%;background:conic-gradient(#1da1f2 0deg 51.43deg, #22c55e 51.43deg 102.86deg, #f97316 102.86deg 154.29deg, #8b5cf6 154.29deg 205.72deg, #06b6d4 205.72deg 257.15deg, #eab308 257.15deg 308.58deg, #f43f5e 308.58deg 360deg);position:relative;border:7px solid white;box-shadow:0 18px 32px rgba(0,0,0,.18);transition:transform 5.4s cubic-bezier(.08,.82,.12,1)}
+.wheel::after{content:attr(data-theme);position:absolute;inset:31%;border-radius:50%;background:#f8fafc;border:6px solid #e2e8f0;display:flex;align-items:center;justify-content:center;text-align:center;color:#1d4ed8;font-weight:900;font-size:clamp(17px,4vw,25px);line-height:1.05;padding:8px}
+.wheel-label{position:absolute;left:50%;top:50%;width:92px;margin-left:-46px;margin-top:-10px;transform:rotate(var(--r)) translateY(-151px) rotate(calc(-1 * var(--r)));transform-origin:center;font-size:15px;line-height:1.05;color:white;text-shadow:0 2px 4px rgba(0,0,0,.35);font-weight:900;text-align:center;pointer-events:none}
+.spin-btn{border:0;border-radius:14px;padding:12px 42px;background:linear-gradient(135deg,#e11d48,#fb7185);color:white;font-weight:900;font-size:16px;cursor:pointer;box-shadow:0 8px 18px rgba(225,29,72,.25)}
+.spin-btn:disabled{opacity:.55;cursor:not-allowed}
+.sorted{width:100%;text-align:center;background:#fff1f2;border:1px solid #fecdd3;color:#e11d48;font-weight:900;border-radius:14px;padding:8px}
+.wheel-signature{width:100%;text-align:center;margin-top:10px;font-weight:900;font-size:12px;line-height:1.2;color:#cbd5e1;opacity:.95;text-shadow:0 1px 3px rgba(0,0,0,.28)}
+.theme-chip{display:inline-block;background:#dbeafe;color:#1d4ed8;border:1px solid #bfdbfe;border-radius:999px;padding:7px 12px;font-weight:900;margin-bottom:10px}
+.prompt{font-size:22px;line-height:1.28;font-weight:900;margin:0 0 12px}
+.options{display:grid;gap:9px}
+.option{border:2px solid #dbeafe;background:#f8fafc;border-radius:14px;padding:13px;text-align:left;font-weight:900;font-size:16px;cursor:pointer;color:#111827}
+.option.correct{background:#dcfce7;border-color:#22c55e;color:#14532d} .option.wrong{background:#fee2e2;border-color:#ef4444;color:#7f1d1d}
+.feedback{display:none;margin-top:10px;border-radius:14px;padding:10px;font-weight:900;line-height:1.25}
+.feedback.ok{display:block;background:#dcfce7;border:1px solid #86efac;color:#14532d} .feedback.bad{display:block;background:#fee2e2;border:1px solid #fca5a5;color:#7f1d1d}
+.brand{position:fixed;right:12px;bottom:12px;background:linear-gradient(135deg,#1e3a8a,#e11d48);color:white;font-weight:900;border-radius:14px;padding:9px 12px;font-size:12px;box-shadow:0 8px 18px rgba(15,23,42,.25);z-index:20}
+.final{text-align:center} .final h2{font-size:36px;color:#1d4ed8;margin:0 0 10px} .final p{font-weight:900;line-height:1.35}
+.final-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:15px 0}
+.box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:16px;padding:12px;font-weight:900} .box b{display:block;color:#e11d48;font-size:25px}
+
+@media(max-width:860px){
+  body.playing{height:100dvh;min-height:100dvh;overflow:hidden;padding:5px;align-items:flex-start}
+  body.playing .app{height:calc(100dvh - 10px);min-height:0;border-radius:16px;display:flex;flex-direction:column}
+  body.playing header{padding:5px 7px;flex:0 0 auto}
+  body.playing .topbar{margin-bottom:2px}
+  body.playing .back,body.playing .pill{font-size:9px;padding:4px 7px}
+  body.playing h1{font-size:22px}
+  body.playing .subtitle{display:none}
+  body.playing main{padding:5px;flex:1 1 auto;min-height:0;overflow:hidden}
+  body.playing #gameScreen.active{height:100%;display:flex;flex-direction:column;min-height:0;overflow:hidden}
+  body.playing .stats{grid-template-columns:repeat(4,1fr);gap:4px;margin-bottom:4px;flex:0 0 auto}
+  body.playing .stat{padding:4px 2px;border-radius:10px} body.playing .stat b{font-size:14px} body.playing .stat span{font-size:7px}
+  body.playing .lives-card{font-size:10px;padding:4px;margin-bottom:4px;border-radius:10px;flex:0 0 auto} body.playing .heart{font-size:17px}
+  body.playing .game-grid{grid-template-columns:1fr;grid-template-rows:auto 1fr;gap:5px;min-height:0;flex:1 1 auto;overflow:hidden}
+  body.playing .card{padding:6px;border-radius:13px}
+  body.playing .wheel-card{height:310px;min-height:310px;overflow:hidden}
+  body.playing .wheel{width:220px;height:220px;border-width:5px}
+  body.playing .wheel::after{inset:31%;font-size:14px;border-width:4px}
+  body.playing .wheel-label{font-size:9px;width:58px;margin-left:-29px;transform:rotate(var(--r)) translateY(-84px) rotate(calc(-1 * var(--r)))}
+  body.playing .pointer{top:1px;border-left-width:12px;border-right-width:12px;border-top-width:30px}
+  body.playing .pointer::after{left:-5px;top:-22px;width:9px;height:9px;border-width:3px}
+  body.playing .spin-btn{padding:8px 26px;font-size:12px;border-radius:10px}
+  body.playing .sorted{font-size:10px;padding:5px}
+  body.playing .question-card{min-height:0;overflow:hidden}
+  body.playing .theme-chip{font-size:10px;padding:5px 8px;margin-bottom:5px}
+  body.playing .prompt{font-size:13px;line-height:1.15;margin-bottom:5px;max-height:50px;overflow:hidden}
+  body.playing .options{gap:5px}
+  body.playing .option{font-size:11.5px;line-height:1.05;padding:7px;border-radius:9px;min-height:31px}
+  body.playing .feedback{font-size:10.5px;padding:5px;max-height:42px;overflow:hidden;margin-top:5px}
+  body.playing .brand{display:none}
+}
+@media(max-width:380px){body.playing .wheel-card{height:280px;min-height:280px} body.playing .wheel{width:196px;height:196px} body.playing .wheel-label{font-size:8px;transform:rotate(var(--r)) translateY(-75px) rotate(calc(-1 * var(--r)))}}
+
+.start-card{
+  max-width:520px;
+  margin:0 auto;
+  text-align:center;
+}
+.start-card h2{
+  font-size:34px;
+  color:#1d4ed8;
+  margin:0 0 8px;
+}
+.start-text{
+  font-weight:900;
+  line-height:1.35;
+  color:#334155;
+}
+.player-form{
+  display:grid;
+  gap:6px;
+  margin:12px 0;
+  text-align:left;
+}
+.player-form label{
+  font-weight:900;
+  color:#1e3a8a;
+  font-size:13px;
+}
+.player-form input{
+  width:100%;
+  border:2px solid #bfdbfe;
+  border-radius:14px;
+  padding:11px 12px;
+  font-size:15px;
+  font-weight:800;
+  outline:none;
+  background:white;
+}
+.player-form input:focus{
+  border-color:#2563eb;
+  box-shadow:0 0 0 3px rgba(37,99,235,.15);
+}
+.brand-start{
+  margin-top:12px;
+  font-weight:900;
+  color:#334155;
+}
+.final-ranking h2{
+  margin:0 0 8px;
+  text-align:center;
+  font-size:28px;
+  color:#1d4ed8;
+}
+.final-message{
+  background:linear-gradient(135deg,#fff7ed,#fde68a 22%,#ffffff 100%);
+  border:2px solid #f59e0b;
+  color:#111827; font-weight:1000;
+  text-shadow:none;
+  border-radius:16px;
+  padding:10px;
+  font-weight:900;
+  line-height:1.25;
+  text-align:center;
+  margin:8px 0;
+  font-size:12.5px;
+}
+.player-summary{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:6px;
+  margin:8px 0;
+}
+.summary-box{
+  background:#f8fafc;
+  border:1px solid #e2e8f0;
+  border-radius:13px;
+  padding:8px 5px;
+  text-align:center;
+  font-weight:900;
+}
+.summary-box span{
+  display:block;
+  color:#64748b;
+  font-size:9px;
+  text-transform:uppercase;
+}
+.summary-box b{
+  display:block;
+  color:#e11d48;
+  font-size:17px;
+  margin-top:2px;
+}
+.ranking-title{
+  text-align:center;
+  margin:9px 0 6px;
+  font-size:17px;
+  color:#1d4ed8;
+}
+.rank-list{
+  display:grid;
+  gap:5px;
+  margin:5px 0;
+}
+.rank-row{
+  display:grid;
+  grid-template-columns:29px 1fr auto;
+  gap:6px;
+  align-items:center;
+  padding:5px;
+  border-radius:11px;
+  background:#f8fafc;
+  border:1px solid #e2e8f0;
+  box-shadow:0 3px 8px rgba(15,23,42,.04);
+}
+.rank-row.player{
+  background:linear-gradient(135deg,#fff7ed,#dbeafe);
+  border:2px solid #f8d36b;
+  box-shadow:0 6px 12px rgba(245,158,11,.16);
+}
+.rank-pos{
+  width:24px;
+  height:24px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:900;
+  background:#dbeafe;
+  color:#1d4ed8;
+  font-size:10px;
+}
+.rank-row.player .rank-pos{
+  background:#f8d36b;
+  color:#172033;
+}
+.rank-name{
+  font-weight:900;
+  color:#172033;
+  line-height:1.05;
+  font-size:10.8px;
+}
+.rank-school{
+  font-size:8.2px;
+  font-weight:800;
+  color:#64748b;
+  margin-top:1px;
+}
+.rank-score{
+  font-weight:900;
+  color:#e11d48;
+  text-align:right;
+  font-size:10.5px;
+}
+.rank-note{
+  text-align:center;
+  font-size:9px;
+  color:#475569;
+  font-weight:800;
+  line-height:1.15;
+  margin-top:5px;
+}
+.rank-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:6px;
+  margin-top:8px;
+}
+.final-ranking .spin-btn{
+  padding:9px 8px;
+  font-size:11px;
+}
+.wheel.spinning{
+  filter:drop-shadow(0 0 16px rgba(255,255,255,.85)) drop-shadow(0 0 28px rgba(225,29,72,.45));
+}
+.suspense{
+  animation:suspensePulse .6s ease-in-out infinite alternate;
+}
+@keyframes suspensePulse{
+  from{transform:scale(1); filter:brightness(1)}
+  to{transform:scale(1.045); filter:brightness(1.08)}
+}
+@media(max-width:860px){
+  #startScreen.active{
+    display:flex;
+    height:100%;
+    align-items:center;
+    justify-content:center;
+  }
+  .start-card{
+    padding:14px;
+  }
+  .start-card h2{
+    font-size:28px;
+  }
+  .start-text{
+    font-size:13px;
+  }
+  #finalScreen.active{
+    height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+  }
+  .final-ranking{
+    width:100%;
+    max-height:100%;
+    overflow:hidden;
+    padding:7px;
+  }
+  .final-ranking h2{
+    font-size:23px;
+  }
+  .rank-actions{
+    grid-template-columns:1fr;
+  }
+}
+
+
+/* ===== Neon colorful update inspired by approved reference ===== */
+body{position:relative;background:
+ radial-gradient(circle at 20% 20%, rgba(236,72,153,.22), transparent 18%),
+ radial-gradient(circle at 80% 15%, rgba(59,130,246,.22), transparent 20%),
+ radial-gradient(circle at 50% 80%, rgba(168,85,247,.18), transparent 20%),
+ linear-gradient(180deg,#060818 0%,#090b28 40%,#12013a 100%);}
+body::before,body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:0}
+body::before{background-image:
+ radial-gradient(circle, rgba(255,255,255,.95) 0 1.2px, transparent 1.4px),
+ radial-gradient(circle, rgba(255,255,255,.7) 0 1px, transparent 1.2px),
+ radial-gradient(circle, rgba(255,214,10,.85) 0 1.2px, transparent 1.4px),
+ radial-gradient(circle, rgba(96,165,250,.8) 0 1.1px, transparent 1.3px);
+background-size:120px 120px, 180px 180px, 220px 220px, 260px 260px;
+background-position:0 0, 40px 70px, 80px 120px, 20px 140px;opacity:.55}
+body::after{background:
+ radial-gradient(ellipse at 50% 120%, rgba(14,165,233,.28), transparent 35%),
+ radial-gradient(ellipse at 50% -10%, rgba(244,63,94,.22), transparent 30%);opacity:.9}
+.app{position:relative;z-index:1;background:linear-gradient(180deg,rgba(9,10,38,.96),rgba(12,7,52,.95));border:1px solid rgba(167,139,250,.42);box-shadow:0 0 0 1px rgba(236,72,153,.14),0 24px 50px rgba(0,0,0,.45);}
+header{background:linear-gradient(135deg,rgba(24,24,80,.72),rgba(35,15,101,.55) 45%,rgba(7,121,198,.35));border-bottom:1px solid rgba(255,255,255,.12)}
+h1{background:linear-gradient(180deg,#fff,#fef08a 60%,#f59e0b 100%);-webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:.5px;text-shadow:0 0 16px rgba(251,191,36,.18)}
+.subtitle{color:#e2e8f0}
+.back,.pill{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.22);box-shadow:0 0 12px rgba(96,165,250,.18)}
+.stat{background:linear-gradient(180deg,rgba(17,24,69,.94),rgba(20,7,55,.9));border:1px solid rgba(96,165,250,.35);box-shadow:0 0 0 1px rgba(236,72,153,.12),0 8px 18px rgba(0,0,0,.28)}
+.stat b{color:#fff}.stat span{color:#cbd5e1}
+.stat:nth-child(1){border-color:#a855f7}.stat:nth-child(1) b{color:#fcd34d}
+.stat:nth-child(2){border-color:#06b6d4}.stat:nth-child(2) b{color:#67e8f9}
+.stat:nth-child(3){border-color:#f59e0b}.stat:nth-child(3) b{color:#fbbf24}
+.stat:nth-child(4){border-color:#ec4899}.stat:nth-child(4) b{color:#f9a8d4}
+.lives-card{background:linear-gradient(180deg,rgba(21,11,62,.94),rgba(30,8,48,.92));border:1px solid rgba(244,63,94,.4);color:#fff;box-shadow:0 0 0 1px rgba(96,165,250,.12),0 10px 18px rgba(0,0,0,.25)}
+.heart{filter:drop-shadow(0 0 6px rgba(255,0,90,.45))}
+.card{background:linear-gradient(180deg,rgba(11,18,62,.88),rgba(15,10,42,.9));border:1px solid rgba(96,165,250,.26);box-shadow:0 0 0 1px rgba(236,72,153,.08),0 10px 24px rgba(0,0,0,.25);color:#fff}
+.wheel-card{background:
+ radial-gradient(circle at 50% 50%, rgba(34,211,238,.08), transparent 35%),
+ radial-gradient(circle at 50% 50%, rgba(236,72,153,.08), transparent 65%),
+ linear-gradient(180deg,rgba(8,16,54,.85),rgba(15,7,47,.92));}
+.wheel-wrap::before{content:"";position:absolute;inset:auto 50% -8px 50%;width:105%;height:72%;transform:translateX(-50%);border:4px solid rgba(236,72,153,.7);border-top:none;border-radius:0 0 220px 220px;filter:drop-shadow(0 0 10px rgba(236,72,153,.4));pointer-events:none}
+.wheel-wrap::after{content:"";position:absolute;inset:auto 50% 10px 50%;width:110%;height:80%;transform:translateX(-50%);border:4px solid rgba(59,130,246,.55);border-top:none;border-radius:0 0 240px 240px;pointer-events:none;opacity:.8}
+.pointer{border-top-color:#050816;filter:drop-shadow(0 0 6px rgba(255,255,255,.22)) drop-shadow(0 3px 4px rgba(0,0,0,.5))}
+.pointer::after{background:#fff;border-color:#050816;box-shadow:0 0 12px rgba(255,255,255,.35)}
+.wheel{width:min(82vw,408px);height:min(82vw,408px);max-width:408px;max-height:408px;border:8px solid #f8fafc;box-shadow:0 0 0 4px rgba(236,72,153,.2),0 16px 34px rgba(0,0,0,.34)}
+.wheel::after{background:linear-gradient(180deg,#f8fafc,#e2e8f0);border-color:#cbd5e1;font-size:clamp(18px,4vw,28px);box-shadow:inset 0 0 12px rgba(255,255,255,.8),0 0 18px rgba(255,255,255,.18)}
+.wheel-label{width:118px;margin-left:-59px;transform:rotate(var(--r)) translateY(-158px) rotate(calc(-1 * var(--r)));font-size:18px;line-height:1.05;font-weight:1000;text-shadow:0 2px 6px rgba(0,0,0,.62),0 0 10px rgba(255,255,255,.12)}
+.spin-btn{background:linear-gradient(135deg,#f43f5e,#ec4899 55%,#fb7185);font-size:19px;letter-spacing:.5px;box-shadow:0 0 0 1px rgba(255,255,255,.14),0 10px 22px rgba(244,63,94,.3)}
+.sorted{background:linear-gradient(180deg,rgba(57,10,70,.72),rgba(41,6,54,.75));border-color:rgba(244,63,94,.45);color:#fef08a;box-shadow:0 0 14px rgba(236,72,153,.14) inset}
+.theme-chip{background:linear-gradient(135deg,rgba(37,99,235,.22),rgba(125,211,252,.18));color:#bfdbfe;border-color:rgba(96,165,250,.5)}
+.prompt{color:#fff;font-size:29px;line-height:1.22;text-shadow:0 2px 10px rgba(0,0,0,.25)}
+.option{position:relative;background:rgba(5,9,34,.76);color:#fff;border:2px solid rgba(96,165,250,.42);padding:14px 15px 14px 56px;box-shadow:0 6px 12px rgba(0,0,0,.18);transition:transform .12s ease, box-shadow .12s ease, border-color .12s ease;font-size:19px;line-height:1.14}
+.option:hover{transform:translateY(-1px);box-shadow:0 8px 18px rgba(0,0,0,.24)}
+.option::before{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:28px;height:28px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-weight:1000;color:#fff;border:1px solid rgba(255,255,255,.18)}
+.options .option:nth-child(1)::before{content:"A";background:linear-gradient(135deg,#22c55e,#16a34a)}
+.options .option:nth-child(2)::before{content:"B";background:linear-gradient(135deg,#3b82f6,#2563eb)}
+.options .option:nth-child(3)::before{content:"C";background:linear-gradient(135deg,#f59e0b,#d97706)}
+.options .option:nth-child(4)::before{content:"D";background:linear-gradient(135deg,#ec4899,#db2777)}
+.option.correct{background:rgba(20,83,45,.35);border-color:#22c55e;color:#dcfce7}.option.wrong{background:rgba(127,29,29,.42);border-color:#ef4444;color:#fee2e2}
+.feedback.ok{background:rgba(22,101,52,.28);border-color:#4ade80;color:#dcfce7}.feedback.bad{background:rgba(127,29,29,.35);border-color:#f87171;color:#fee2e2}
+.final h2{color:#fff}
+.box{background:linear-gradient(180deg,rgba(9,16,54,.9),rgba(15,10,42,.92));border-color:rgba(96,165,250,.28);color:#fff}
+.box b{color:#fbbf24}
+.final-message,.rank-item,.rank-head{color:inherit}
+@media(max-width:860px){
+  body.playing .stat{background:linear-gradient(180deg,rgba(17,24,69,.96),rgba(20,7,55,.95))}
+  body.playing .wheel-card{height:286px;min-height:286px}
+  body.playing .wheel{width:208px;height:208px}
+  body.playing .wheel::after{font-size:14px}
+  body.playing .wheel-label{font-size:9.8px;width:62px;margin-left:-31px;transform:rotate(var(--r)) translateY(-82px) rotate(calc(-1 * var(--r)))}
+  body.playing .sorted{font-size:10.8px;padding:5px 6px}
+  body.playing .question-card{display:flex;flex-direction:column;justify-content:flex-start;min-height:0;overflow:hidden}
+  body.playing .theme-chip{font-size:11.5px;padding:5px 8px;margin-bottom:5px}
+  body.playing .prompt{font-size:16.6px;line-height:1.18;margin-bottom:6px;max-height:none;overflow:visible}
+  body.playing .options{gap:4px}
+  body.playing .option{font-size:13.9px;line-height:1.1;padding:8px 8px 8px 39px;border-radius:10px;min-height:35px}
+  body.playing .option::before{left:8px;width:20px;height:20px;font-size:10.5px}
+  body.playing .feedback{font-size:11.2px;padding:5px 6px;max-height:none;overflow:visible;margin-top:5px;line-height:1.15}
+}
+@media(max-width:380px){
+  body.playing .wheel-card{height:268px;min-height:268px}
+  body.playing .wheel{width:194px;height:194px}
+  body.playing .wheel-label{font-size:8.9px;transform:rotate(var(--r)) translateY(-77px) rotate(calc(-1 * var(--r)))}
+  body.playing .prompt{font-size:15.2px}
+  body.playing .option{font-size:12.9px;min-height:33px;padding:7px 7px 7px 36px}
+}
+
+
+/* Extra sound-event visual feedback */
+body.sound-win .final-card, body.sound-try .final-card{animation:finalGlow 1.6s ease-in-out infinite alternate}
+@keyframes finalGlow{
+  from{box-shadow:0 0 0 1px rgba(255,255,255,.10),0 12px 30px rgba(0,0,0,.25)}
+  to{box-shadow:0 0 26px rgba(251,191,36,.28),0 16px 42px rgba(0,0,0,.35)}
+}
+
+
+/* --- Firebase: avaliação simples por emojis --- */
+.firebase-rating{
+  margin:10px 0 8px;
+  padding:10px;
+  border-radius:16px;
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,230,109,.24);
+  text-align:center;
+}
+.firebase-rating h3{
+  margin:0 0 7px;
+  color:#ffe66d;
+  font-size:16px;
+}
+.rating-buttons{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:7px;
+}
+.rating-buttons button{
+  border:0;
+  border-radius:14px;
+  padding:8px 5px;
+  background:linear-gradient(135deg,#fff7ad,#ffb703);
+  color:#172033;
+  font-weight:1000;
+  cursor:pointer;
+  box-shadow:0 6px 14px rgba(255,179,3,.18);
+}
+.rating-buttons button:disabled{opacity:.65;cursor:not-allowed}
+.rating-buttons .emoji{
+  display:block;
+  font-size:24px;
+  line-height:1;
+  margin-bottom:2px;
+}
+#ratingMessage{
+  margin:7px 0 0;
+  color:#fff7c2;
+  font-weight:900;
+  font-size:12px;
+}
+
+</style>
+
+<style id="spin2-mobile-exact-fix">
+/* ===== Correção final de layout para ficar muito mais fiel à Spin 2 ===== */
+@media(max-width:860px){
+  body.playing{
+    overflow:auto !important;
+    align-items:stretch !important;
+    padding:0 !important;
+  }
+  body.playing .app{
+    width:100% !important;
+    min-height:100dvh !important;
+    height:auto !important;
+    border-radius:0 !important;
+    border:none !important;
+    box-shadow:none !important;
+  }
+  body.playing header{
+    padding:10px 10px 6px !important;
+  }
+  body.playing h1{
+    font-size:26px !important;
+    margin-top:4px !important;
+    margin-bottom:2px !important;
+  }
+  body.playing .subtitle{
+    display:none !important;
+  }
+  body.playing main{
+    padding:8px 8px 12px !important;
+    overflow:visible !important;
+    min-height:0 !important;
+    height:auto !important;
+  }
+  body.playing .screen.active{
+    overflow:visible !important;
+    height:auto !important;
+  }
+  body.playing .stats{
+    gap:7px !important;
+    margin-bottom:7px !important;
+  }
+  body.playing .stat{
+    padding:8px 4px !important;
+  }
+  body.playing .stat b{
+    font-size:18px !important;
+  }
+  body.playing .stat span{
+    font-size:8px !important;
+  }
+  body.playing .lives-card{
+    padding:8px 10px !important;
+    border-radius:16px !important;
+    margin-bottom:8px !important;
+  }
+  body.playing .lives-card b{
+    font-size:14px !important;
+  }
+  body.playing .heart{
+    font-size:22px !important;
+  }
+
+  body.playing .game-grid{
+    grid-template-columns:1fr !important;
+    gap:8px !important;
+    overflow:visible !important;
+  }
+
+  body.playing .card{
+    padding:8px !important;
+    border-radius:18px !important;
+  }
+
+  /* Bigger, more centered wheel section */
+  body.playing .wheel-card{
+    min-height:570px !important;
+    height:570px !important;
+    padding-top:8px !important;
+    padding-bottom:8px !important;
+    overflow:hidden !important;
+  }
+  body.playing .wheel-wrap{
+    min-height:554px !important;
+    height:554px !important;
+    justify-content:flex-start !important;
+    gap:9px !important;
+    position:relative !important;
+  }
+  body.playing .wheel-wrap::before{
+    width:121% !important;
+    height:60% !important;
+    bottom:86px !important;
+    border-width:5px !important;
+  }
+  body.playing .wheel-wrap::after{
+    width:115% !important;
+    height:55% !important;
+    bottom:66px !important;
+    border-width:5px !important;
+  }
+  body.playing .pointer{
+    top:4px !important;
+    border-left-width:15px !important;
+    border-right-width:15px !important;
+    border-top-width:39px !important;
+  }
+  body.playing .pointer::after{
+    top:-26px !important;
+    left:-6px !important;
+    width:12px !important;
+    height:12px !important;
+    border-width:3px !important;
+  }
+  body.playing .wheel{
+    width:332px !important;
+    height:332px !important;
+    max-width:332px !important;
+    max-height:332px !important;
+    border-width:8px !important;
+    margin-top:6px !important;
+  }
+  body.playing .wheel::after{
+    inset:29% !important;
+    font-size:16px !important;
+    border-width:4px !important;
+  }
+
+  /* Better-fitting labels inside the wheel */
+  body.playing .wheel-label{
+    width:78px !important;
+    margin-left:-39px !important;
+    font-size:12.8px !important;
+    line-height:.96 !important;
+    transform:rotate(var(--r)) translateY(-132px) rotate(calc(-1 * var(--r))) !important;
+    text-align:center !important;
+    word-break:normal !important;
+    overflow-wrap:break-word !important;
+    letter-spacing:-0.1px !important;
+  }
+
+  body.playing .spin-btn{
+    padding:11px 44px !important;
+    font-size:20px !important;
+    border-radius:18px !important;
+    margin-top:2px !important;
+  }
+  body.playing .sorted{
+    font-size:14px !important;
+    padding:8px 10px !important;
+    border-radius:14px !important;
+  }
+
+  /* Push questions lower by using the enlarged wheel block */
+  body.playing .question-card{
+    min-height:0 !important;
+    overflow:visible !important;
+    padding-top:8px !important;
+    padding-bottom:10px !important;
+  }
+  body.playing .theme-chip{
+    font-size:13px !important;
+    padding:6px 10px !important;
+    margin-bottom:9px !important;
+  }
+  body.playing .prompt{
+    font-size:17px !important;
+    line-height:1.16 !important;
+    margin-bottom:10px !important;
+    max-height:none !important;
+    overflow:visible !important;
+  }
+  body.playing .options{
+    gap:8px !important;
+  }
+  body.playing .option{
+    font-size:15px !important;
+    line-height:1.1 !important;
+    min-height:49px !important;
+    padding:10px 10px 10px 43px !important;
+    border-radius:15px !important;
+  }
+  body.playing .option::before{
+    width:24px !important;
+    height:24px !important;
+    left:9px !important;
+    font-size:13px !important;
+  }
+  body.playing .feedback{
+    font-size:12px !important;
+    line-height:1.16 !important;
+    max-height:none !important;
+    overflow:visible !important;
+  }
+  body.playing .brand{
+    display:none !important;
+  }
+}
+
+@media(max-width:390px){
+  body.playing .wheel-card{
+    min-height:545px !important;
+    height:545px !important;
+  }
+  body.playing .wheel-wrap{
+    min-height:528px !important;
+    height:528px !important;
+  }
+  body.playing .wheel{
+    width:316px !important;
+    height:316px !important;
+    max-width:316px !important;
+    max-height:316px !important;
+  }
+  body.playing .wheel-label{
+    width:74px !important;
+    margin-left:-37px !important;
+    font-size:12.1px !important;
+    transform:rotate(var(--r)) translateY(-126px) rotate(calc(-1 * var(--r))) !important;
+  }
+}
+
+@media(max-width:370px){
+  body.playing .wheel-card{
+    min-height:510px !important;
+    height:510px !important;
+  }
+  body.playing .wheel-wrap{
+    min-height:495px !important;
+    height:495px !important;
+  }
+  body.playing .wheel{
+    width:294px !important;
+    height:294px !important;
+    max-width:294px !important;
+    max-height:294px !important;
+  }
+  body.playing .wheel-label{
+    width:70px !important;
+    margin-left:-35px !important;
+    font-size:11.2px !important;
+    transform:rotate(var(--r)) translateY(-118px) rotate(calc(-1 * var(--r))) !important;
+  }
+  body.playing .prompt{
+    font-size:16px !important;
+  }
+  body.playing .option{
+    font-size:14px !important;
+  }
+}
+</style>
+
+
+<style id="mobile-modal-and-desktop-wheel-fix">
+/* ===== Mobile question modal over the wheel ===== */
+.question-modal{
+  display:none;
+}
+@media(max-width:860px){
+  body.playing{
+    overflow:auto !important;
+  }
+  body.playing .question-card{
+    display:none !important;
+  }
+  body.playing .game-grid{
+    grid-template-columns:1fr !important;
+    gap:8px !important;
+  }
+  body.playing .wheel-card{
+    min-height:calc(100dvh - 190px) !important;
+    height:calc(100dvh - 190px) !important;
+    overflow:hidden !important;
+  }
+  body.playing .wheel-wrap{
+    min-height:100% !important;
+    height:100% !important;
+    justify-content:center !important;
+    padding-top:0 !important;
+  }
+  body.playing .wheel{
+    width:min(88vw, 340px) !important;
+    height:min(88vw, 340px) !important;
+    max-width:340px !important;
+    max-height:340px !important;
+  }
+  body.playing .wheel-label{
+    width:76px !important;
+    margin-left:-38px !important;
+    font-size:12px !important;
+    line-height:.96 !important;
+    transform:rotate(var(--r)) translateY(-126px) rotate(calc(-1 * var(--r))) !important;
+  }
+  body.playing .wheel::after{
+    font-size:18px !important;
+  }
+  .question-modal.show{
+    display:flex !important;
+    position:fixed;
+    inset:0;
+    z-index:9999;
+    align-items:center;
+    justify-content:center;
+    padding:18px;
+  }
+  .modal-backdrop{
+    position:absolute;
+    inset:0;
+    background:rgba(3,4,18,.42);
+    backdrop-filter:blur(2px);
+  }
+  .modal-card{
+    position:relative;
+    width:min(94vw, 430px);
+    max-height:88dvh;
+    overflow:auto;
+    border-radius:24px;
+    padding:14px;
+    background:
+      radial-gradient(circle at 20% 0%, rgba(0,212,255,.25), transparent 35%),
+      radial-gradient(circle at 88% 10%, rgba(255,0,153,.25), transparent 35%),
+      linear-gradient(180deg, rgba(5,9,48,.97), rgba(11,5,42,.98));
+    border:2px solid rgba(255,50,200,.55);
+    box-shadow:0 0 0 1px rgba(255,255,255,.08), 0 22px 50px rgba(0,0,0,.55), 0 0 32px rgba(236,72,153,.22);
+  }
+  .modal-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+    margin-bottom:8px;
+  }
+  .modal-mini{
+    color:#fde68a;
+    font-size:11px;
+    font-weight:900;
+    text-align:right;
+  }
+  .modal-card .theme-chip{
+    font-size:13px !important;
+    padding:6px 10px !important;
+    margin-bottom:0 !important;
+  }
+  .modal-prompt{
+    font-size:21px !important;
+    line-height:1.14 !important;
+    margin:10px 0 12px !important;
+    color:#fff !important;
+    text-shadow:0 2px 8px rgba(0,0,0,.22);
+  }
+  .modal-options{
+    gap:9px !important;
+  }
+  .modal-card .option{
+    font-size:17px !important;
+    line-height:1.1 !important;
+    min-height:54px !important;
+    padding:11px 11px 11px 46px !important;
+    border-radius:17px !important;
+    background:rgba(4,10,51,.97) !important;
+  }
+  .modal-card .option::before{
+    left:10px !important;
+    width:27px !important;
+    height:27px !important;
+    font-size:14px !important;
+  }
+  .modal-feedback{
+    font-size:13px !important;
+    line-height:1.18 !important;
+    margin-top:10px !important;
+    max-height:none !important;
+    overflow:visible !important;
+  }
+}
+
+/* ===== Desktop: keep side question, fix wheel labels escaping ===== */
+@media(min-width:861px){
+  body.playing .question-modal{
+    display:none !important;
+  }
+  body.playing .game-grid{
+    grid-template-columns:minmax(420px,.95fr) minmax(420px,1.05fr) !important;
+    align-items:stretch !important;
+  }
+  body.playing .wheel-card{
+    overflow:hidden !important;
+  }
+  body.playing .wheel-wrap{
+    min-height:520px !important;
+    height:auto !important;
+  }
+  body.playing .wheel{
+    width:360px !important;
+    height:360px !important;
+    max-width:360px !important;
+    max-height:360px !important;
+  }
+  body.playing .wheel::after{
+    inset:29% !important;
+    font-size:20px !important;
+  }
+  body.playing .wheel-label{
+    width:74px !important;
+    margin-left:-37px !important;
+    font-size:12.6px !important;
+    line-height:.96 !important;
+    letter-spacing:-.15px !important;
+    transform:rotate(var(--r)) translateY(-142px) rotate(calc(-1 * var(--r))) !important;
+    overflow-wrap:break-word !important;
+    word-break:normal !important;
+  }
+  body.playing .prompt{
+    font-size:25px !important;
+    line-height:1.15 !important;
+  }
+  body.playing .option{
+    font-size:19px !important;
+  }
+}
+</style>
+
+
+<style id="signature-placement-fix">
+@media(max-width:860px){body.playing .wheel-wrap{padding-bottom:10px !important} body.playing .wheel-signature{display:block !important}}
+@media(min-width:861px){body.playing .wheel-signature{font-size:12px; margin-top:12px; color:#dbeafe}}
+</style>
+
+<style id="mission-card-responsive">
+@media(max-width:860px){body.playing .mission-card{margin:7px 0 8px;padding:8px 10px;border-radius:15px;gap:8px}body.playing .mission-card b{font-size:14px}body.playing .mission-card span{font-size:11px}}
+@media(min-width:861px){body.playing .mission-card b{font-size:18px}body.playing .mission-card span{font-size:14px}}
+</style>
+
+<style id="final-msg-dark-fix">
+.final-message{color:#111827 !important; background:linear-gradient(135deg,#fff8e1,#fef3c7 38%,#ffffff 100%) !important; border-color:#d97706 !important; text-shadow:none !important; font-weight:1000 !important} 
+.final-message b,strong{color:#111827 !important} 
+@media(max-width:860px){.final-message{font-size:13px !important; line-height:1.28 !important}}
+</style>
+
+
+<style id="ranking-podium-modal-fix">
+.rank-row.rank-first{background:linear-gradient(135deg,#ffd700,#fff7b0 48%,#fffdf0) !important;border:2px solid #f59e0b !important;box-shadow:0 0 18px rgba(255,215,0,.55),0 8px 18px rgba(0,0,0,.18) !important;}
+.rank-row.rank-second{background:linear-gradient(135deg,#cbd5e1,#f8fafc 48%,#ffffff) !important;border:2px solid #94a3b8 !important;box-shadow:0 0 14px rgba(203,213,225,.55),0 8px 16px rgba(0,0,0,.14) !important;}
+.rank-row.rank-third{background:linear-gradient(135deg,#cd7f32,#fed7aa 55%,#fff7ed) !important;border:2px solid #b45309 !important;box-shadow:0 0 14px rgba(205,127,50,.48),0 8px 16px rgba(0,0,0,.14) !important;}
+.rank-row.player{border:3px solid #00e5ff !important;box-shadow:0 0 22px rgba(0,229,255,.75),0 0 36px rgba(255,255,255,.18) !important;animation:playerPulse 1.1s ease-in-out infinite alternate;}
+@keyframes playerPulse{from{filter:brightness(1)}to{filter:brightness(1.14)}}
+.champion-badge{display:inline-block;margin-left:5px;padding:2px 6px;border-radius:999px;background:#111827;color:#fde68a;font-size:9px;font-weight:1000;white-space:nowrap;}
+.current-score-card{margin:8px 0 10px;padding:10px;border-radius:16px;background:linear-gradient(135deg,rgba(34,211,238,.16),rgba(255,230,109,.22),rgba(236,72,153,.14));border:2px solid rgba(34,211,238,.58);color:#fff;font-weight:1000;text-align:center;box-shadow:0 0 18px rgba(34,211,238,.24);}
+.current-score-card b{color:#fde68a}.general-rank-modal{display:none;position:fixed;inset:0;z-index:10000;align-items:center;justify-content:center;padding:16px;background:rgba(2,6,23,.74);backdrop-filter:blur(4px);}
+.general-rank-modal.show{display:flex}.general-rank-card{width:min(96vw,620px);max-height:88dvh;overflow:auto;border-radius:24px;padding:15px;background:linear-gradient(180deg,rgba(6,10,45,.98),rgba(20,8,58,.98));border:2px solid rgba(255,230,109,.45);box-shadow:0 24px 60px rgba(0,0,0,.58),0 0 35px rgba(236,72,153,.20);}
+.general-rank-card h2{margin:0 0 8px;text-align:center;color:#fde68a;font-size:25px;}.general-rank-card .rank-note{color:#e2e8f0}.rank-actions{grid-template-columns:1fr 1fr 1fr !important;}
+@media(max-width:860px){.rank-actions{grid-template-columns:1fr !important}.general-rank-card{padding:11px;border-radius:18px}.general-rank-card h2{font-size:21px}.champion-badge{display:block;margin:3px 0 0;font-size:8px}}
+</style>
+
+</head>
+<body class="playing">
+<div class="app">
+<header>
+  <div class="topbar"><a class="back" href="index_turma_703_english_game_hub.html">← Turma 703</a><div class="pill">📘 Alinhado à BNCC</div></div>
+  <h1>English Spin & Answer</h1>
+  <p class="subtitle">Gire a roleta, descubra o tema e avance por níveis de dificuldade.</p>
+</header>
+<main>
+
+<section id="startScreen" class="screen active">
+  <div class="card start-card">
+    <h2>🎡 English Spin & Answer</h2>
+    <p class="start-text">Você começa com perguntas simples e o inglês aumenta aos poucos. Em todas as fases, os assuntos aparecem misturados: Family Members, Family Life, Present Information, Present Continuous, Quantifiers e Comparatives.</p>
+    <div class="start-highlight"><b>Fases por dificuldade:</b> 1) reconhecimento; 2) escolha com apoio; 3) estruturas simples; 4) compreensão guiada; 5) aplicação; 6) desafio final.</div>
+    <div class="player-form">
+      <label>Seu nome</label>
+      <input id="playerName" type="text" placeholder="Digite seu nome" maxlength="28">
+      <label>Turma</label>
+      <input id="playerClass" type="text" placeholder="703" maxlength="12">
+      <label>Escola</label>
+      <input id="playerSchool" type="text" placeholder="Digite o nome da escola" maxlength="40">
+    </div>
+    <button class="spin-btn" onclick="restart()">Começar jogo</button>
+    <div class="brand-start">Jogo idealizado pelo professor Jasson Bruno.</div>
+  </div>
+</section>
+
+<section id="gameScreen" class="screen">
+  <div class="stats">
+    <div class="stat"><b id="score">0</b><span>Pontos</span></div>
+    <div class="stat"><b id="corrects">0</b><span>Acertos</span></div>
+    <div class="stat"><b id="combo">0</b><span>Combo</span></div>
+    <div class="stat"><b id="round">1 de 30</b><span>Rodada</span></div>
+  </div>
+  <div class="mission-card"><b id="missionLabel">Missão 1/10</b><span id="roundLabel">Rodada 1 de 30</span></div>
+  <div class="lives-card"><b>Vidas:</b> <span id="lives"></span></div>
+  <div class="game-grid">
+    <div class="card wheel-card">
+      <div class="wheel-wrap">
+        <div class="pointer"></div>
+        <div id="wheel" class="wheel" data-theme="SPIN">
+          <div class="wheel-label" style="--r:30deg">Family<br>Members</div>
+<div class="wheel-label" style="--r:90deg">Family<br>Life</div>
+<div class="wheel-label" style="--r:150deg">Present<br>Information</div>
+<div class="wheel-label" style="--r:210deg">Present<br>Continuous</div>
+<div class="wheel-label" style="--r:270deg">Quantifiers</div>
+<div class="wheel-label" style="--r:330deg">Comparatives</div>
+
+        </div>
+        <button id="spinBtn" class="spin-btn" onclick="spinWheel()">SPIN</button>
+        <div id="sorted" class="sorted">Gire a roleta para começar.</div>
+        <div class="wheel-signature">Jogo idealizado pelo professor Jasson Bruno</div>
+      </div>
+    </div>
+    <div class="card question-card">
+      <div id="theme" class="theme-chip">Tema</div>
+      <div id="prompt" class="prompt">Clique em SPIN para sortear o tema e liberar a pergunta.</div>
+      <div id="options" class="options"></div>
+      <div id="feedback" class="feedback"></div>
+    </div>
+  </div>
+
+  <div id="questionModal" class="question-modal" aria-hidden="true">
+    <div class="modal-backdrop"></div>
+    <div class="modal-card">
+      <div class="modal-top">
+        <span id="modalTheme" class="theme-chip">Tema</span>
+        <span class="modal-mini">Responda para continuar</span>
+      </div>
+      <div id="modalPrompt" class="prompt modal-prompt">Pergunta</div>
+      <div id="modalOptions" class="options modal-options"></div>
+      <div id="modalFeedback" class="feedback modal-feedback"></div>
+    </div>
+  </div>
+</section>
+
+<section id="finalScreen" class="screen">
+  <div class="card final final-ranking">
+    <h2 id="finalTitle">💪 TRY AGAIN!</h2>
+    <div id="finalMsg" class="final-message"></div>
+    <div id="currentScoreCard" class="current-score-card"></div>
+
+    <div class="player-summary">
+      <div class="summary-box"><span>Pontuação</span><b id="fScore">0</b></div>
+      <div class="summary-box"><span>Acertos</span><b id="fCorrects">0/30</b></div>
+      <div class="summary-box"><span>Combo</span><b id="fCombo">0</b></div>
+      <div class="summary-box"><span>Vidas</span><b id="fLives">0/5</b></div>
+    </div>
+
+    <h3 class="ranking-title">🏆 Prévia do Ranking — Spin and Answer</h3>
+    <div id="rankList" class="rank-list"></div>
+
+    <div class="rank-note">
+      Ranking geral deste jogo. A pontuação é acumulada apenas nas partidas do Spin and Answer.
+    </div>
+
+    <div class="firebase-rating">
+      <h3>Como foi jogar?</h3>
+      <div class="rating-buttons">
+        <button onclick="avaliarJogo('ruim', this)"><span class="emoji">😡</span>Difícil</button>
+        <button onclick="avaliarJogo('neutro', this)"><span class="emoji">😐</span>Mais ou menos</button>
+        <button onclick="avaliarJogo('bom', this)"><span class="emoji">😀</span>Gostei</button>
+      </div>
+      <p id="ratingMessage"></p>
+    </div>
+
+    <div class="rank-actions">
+      <button class="spin-btn" onclick="openGeneralRanking()">🏆 Ranking Geral</button>
+      <button id="primaryActionBtn" class="spin-btn" onclick="restart()">Jogar novamente</button>
+      <button class="spin-btn" onclick="location.href='index_turma_703_english_game_hub.html'">Voltar ao Game Hub</button>
+    </div>
+  </div>
+</section>
+
+
+
+<div id="generalRankModal" class="general-rank-modal" aria-hidden="true">
+  <div class="general-rank-card">
+    <h2>🏆 Ranking Geral — Spin and Answer</h2>
+    <div id="generalCurrentScore" class="current-score-card"></div>
+    <div id="generalRankList" class="rank-list"></div>
+    <div class="rank-note">Este ranking soma somente as partidas deste jogo. O aluno que acabou de jogar aparece em destaque quando estiver no ranking ou em “sua posição nesta rodada”.</div>
+    <button class="spin-btn" onclick="closeGeneralRanking()" style="margin-top:10px;width:100%">Fechar ranking</button>
+  </div>
+</div>
+
+</main>
+<div class="brand">Jogo idealizado pelo professor Jasson Bruno.</div>
+</div>
+<script>
+
+const GAME_NAME = "703-english-spin-and-answer";
+
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+let audioCtx = null;
+let spinMusicTimer = null;
+let spinPulseTimer = null;
+let spinStep = 0;
+
+function ensureAudio(){
+  if(!AudioCtx) return null;
+  if(!audioCtx) audioCtx = new AudioCtx();
+  if(audioCtx.state === 'suspended') audioCtx.resume();
+  return audioCtx;
+}
+
+function playTone(freq=440, duration=.12, type='sine', volume=.03, when=0){
+  const ctx = ensureAudio();
+  if(!ctx) return;
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.type = type;
+  osc.frequency.setValueAtTime(freq, ctx.currentTime + when);
+  gain.gain.setValueAtTime(0.0001, ctx.currentTime + when);
+  gain.gain.exponentialRampToValueAtTime(volume, ctx.currentTime + when + 0.015);
+  gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + when + duration);
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+  osc.start(ctx.currentTime + when);
+  osc.stop(ctx.currentTime + when + duration + 0.03);
+}
+
+function playNoise(duration=.18, volume=.025, when=0){
+  const ctx = ensureAudio();
+  if(!ctx) return;
+  const bufferSize = Math.max(1, Math.floor(ctx.sampleRate * duration));
+  const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+  const data = buffer.getChannelData(0);
+  for(let i=0;i<bufferSize;i++){
+    data[i] = (Math.random() * 2 - 1) * (1 - i / bufferSize);
+  }
+  const src = ctx.createBufferSource();
+  const gain = ctx.createGain();
+  src.buffer = buffer;
+  gain.gain.setValueAtTime(volume, ctx.currentTime + when);
+  gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + when + duration);
+  src.connect(gain);
+  gain.connect(ctx.destination);
+  src.start(ctx.currentTime + when);
+  src.stop(ctx.currentTime + when + duration + 0.02);
+}
+
+function startSpinMusic(){
+  stopSpinMusic();
+  ensureAudio();
+  spinStep = 0;
+  const melody = [
+    392.00, 523.25, 659.25, 783.99,
+    698.46, 659.25, 587.33, 523.25,
+    440.00, 554.37, 659.25, 880.00
+  ];
+  const bass = [196.00, 261.63, 220.00, 293.66];
+
+  spinMusicTimer = setInterval(()=>{
+    const f = melody[spinStep % melody.length];
+    playTone(f, .12, 'square', .028);
+    playTone(f * 1.5, .08, 'triangle', .013, .035);
+    if(spinStep % 2 === 0) playTone(bass[Math.floor(spinStep/2) % bass.length], .16, 'sine', .018, .015);
+    if(spinStep % 4 === 0) playNoise(.06, .012);
+    spinStep++;
+  }, 125);
+
+  spinPulseTimer = setInterval(()=>{
+    const btn = el('spinBtn');
+    const wheel = el('wheel');
+    if(btn) btn.style.transform = `scale(${1 + Math.random()*0.045}) rotate(${(Math.random()-.5)*2}deg)`;
+    if(wheel) wheel.style.filter = `saturate(${1.1 + Math.random()*0.35}) drop-shadow(0 0 ${10 + Math.random()*16}px rgba(236,72,153,.36))`;
+  }, 95);
+}
+
+function stopSpinMusic(){
+  if(spinMusicTimer){ clearInterval(spinMusicTimer); spinMusicTimer = null; }
+  if(spinPulseTimer){ clearInterval(spinPulseTimer); spinPulseTimer = null; }
+  const btn = el('spinBtn');
+  const wheel = el('wheel');
+  if(btn) btn.style.transform = '';
+  if(wheel) wheel.style.filter = '';
+}
+
+function playCorrectSound(){
+  const notes = [523.25, 659.25, 783.99, 1046.50];
+  notes.forEach((f,idx)=>playTone(f,.18,'triangle',.04,idx*0.065));
+  playNoise(.08,.01,.05);
+}
+
+function playErrorSound(){
+  playTone(220,.16,'sawtooth',.035,0);
+  playTone(196,.18,'sawtooth',.03,.12);
+  playTone(164.81,.24,'triangle',.026,.25);
+  playNoise(.18,.018,.03);
+}
+
+function playTryAgainMusic(){
+  const notes = [392, 392, 440, 523.25, 440, 392, 329.63, 392, 440, 523.25, 587.33, 523.25];
+  notes.forEach((f,i)=>{
+    playTone(f,.22,'triangle',.032,i*.18);
+    if(i % 3 === 0) playTone(f/2,.28,'sine',.018,i*.18);
+  });
+}
+
+function playVictoryMusic(){
+  const notes = [
+    523.25,659.25,783.99,1046.50,
+    987.77,1046.50,1174.66,1318.51,
+    1046.50,1318.51,1567.98
+  ];
+  notes.forEach((f,i)=>{
+    playTone(f,.24,'triangle',.04,i*.13);
+    if(i % 2 === 0) playTone(f/2,.28,'sine',.018,i*.13);
+  });
+  setTimeout(()=>playNoise(.22,.018), 360);
+}
+
+const THEMES = ["Family Members", "Family Life", "Present Information", "Present Continuous", "Quantifiers", "Comparatives"];
+const QUESTIONS = [{"level": 1, "theme": "Family Members", "q": "mother = ?", "a": "mãe", "o": ["mãe", "irmã", "tia", "avó"], "e": "Mother significa mãe."}, {"level": 1, "theme": "Family Life", "q": "family = ?", "a": "família", "o": ["família", "amigo", "escola", "cidade"], "e": "Family significa família."}, {"level": 1, "theme": "Present Information", "q": "now = ?", "a": "agora", "o": ["agora", "ontem", "amanhã", "sempre"], "e": "Now significa agora."}, {"level": 1, "theme": "Present Continuous", "q": "studying = ?", "a": "estudando", "o": ["estudando", "dormindo", "comendo", "correndo"], "e": "Studying significa estudando."}, {"level": 1, "theme": "Quantifiers", "q": "many = ?", "a": "muitos / muitas", "o": ["muitos / muitas", "poucos / poucas", "todos / todas", "mais alto"], "e": "Many significa muitos/muitas."}, {"level": 1, "theme": "Comparatives", "q": "taller = ?", "a": "mais alto", "o": ["mais alto", "mais baixo", "mais velho", "mais rápido"], "e": "Taller significa mais alto."}, {"level": 2, "theme": "Family Members", "q": "She is my _____. 💡 Dica: mãe", "a": "mother", "o": ["mother", "sister", "aunt", "cousin"], "e": "Mother significa mãe."}, {"level": 2, "theme": "Family Life", "q": "I live with my _____. 💡 Dica: família", "a": "family", "o": ["family", "book", "school", "friend"], "e": "I live with my family = Eu moro com minha família."}, {"level": 2, "theme": "Present Information", "q": "What are you doing? quer saber...", "a": "o que você está fazendo", "o": ["o que você está fazendo", "seu nome", "sua idade", "sua escola"], "e": "What are you doing? = O que você está fazendo?"}, {"level": 2, "theme": "Present Continuous", "q": "She ___ studying. 💡 Dica: ela", "a": "is", "o": ["am", "is", "are", "be"], "e": "Com she usamos is."}, {"level": 2, "theme": "Quantifiers", "q": "There are ____ books. 💡 Dica: muitos", "a": "many", "o": ["much", "many", "better", "older"], "e": "Books é contável no plural: many books."}, {"level": 2, "theme": "Comparatives", "q": "He is ____ than me. 💡 Dica: mais alto", "a": "taller", "o": ["taller", "smaller", "younger", "worse"], "e": "Tall = alto; taller = mais alto."}, {"level": 3, "theme": "Family Members", "q": "Your mother's brother is your...", "a": "uncle", "o": ["uncle", "cousin", "brother", "grandfather"], "e": "Uncle significa tio."}, {"level": 3, "theme": "Family Life", "q": "My family is _____. 💡 Dica: grande", "a": "big", "o": ["big", "small", "young", "old"], "e": "Big significa grande."}, {"level": 3, "theme": "Present Information", "q": "Where are they? significa...", "a": "Onde eles estão?", "o": ["Onde eles estão?", "O que eles fazem?", "Quem são eles?", "Quantos são?"], "e": "Where are they? = Onde eles estão?"}, {"level": 3, "theme": "Present Continuous", "q": "They ___ playing now.", "a": "are", "o": ["is", "am", "are", "be"], "e": "Com they usamos are."}, {"level": 3, "theme": "Quantifiers", "q": "I have ____ close friends. 💡 Dica: alguns poucos", "a": "a few", "o": ["all", "most", "a few", "much"], "e": "A few = alguns poucos."}, {"level": 3, "theme": "Comparatives", "q": "big → ?", "a": "bigger", "o": ["bigger", "biger", "more big", "biggest"], "e": "Big segue CVC: dobramos o g e acrescentamos -er."}, {"level": 4, "theme": "Family Members", "q": "Ana is my sister. Quem é Ana?", "a": "minha irmã", "o": ["minha irmã", "minha mãe", "minha tia", "minha prima"], "e": "Sister significa irmã."}, {"level": 4, "theme": "Family Life", "q": "I have two brothers. A frase significa...", "a": "Eu tenho dois irmãos.", "o": ["Eu tenho dois irmãos.", "Eu moro com dois irmãos.", "Eu tenho duas irmãs.", "Eu sou o irmão mais velho."], "e": "I have = eu tenho; two brothers = dois irmãos."}, {"level": 4, "theme": "Present Information", "q": "What is he doing? A pergunta fala sobre...", "a": "o que ele está fazendo agora", "o": ["o que ele está fazendo agora", "a idade dele", "a família dele", "o nome dele"], "e": "A pergunta busca uma ação em andamento."}, {"level": 4, "theme": "Present Continuous", "q": "Qual frase está correta?", "a": "She is studying.", "o": ["She are studying.", "She is studying.", "She am studying.", "She studying is."], "e": "Com she usamos is + verbo-ing."}, {"level": 4, "theme": "Quantifiers", "q": "There are a few students here. O que a few indica?", "a": "alguns poucos", "o": ["todos", "alguns poucos", "muitos", "nenhum"], "e": "A few indica pequena quantidade contável."}, {"level": 4, "theme": "Comparatives", "q": "My brother is taller than me. Taller than significa...", "a": "mais alto que", "o": ["mais alto que", "mais velho que", "mais rápido que", "mais feliz que"], "e": "Taller than = mais alto que."}, {"level": 5, "theme": "Family Members", "q": "My father's mother is my _____.", "a": "grandmother", "o": ["grandmother", "mother", "aunt", "sister"], "e": "Grandmother significa avó."}, {"level": 5, "theme": "Family Life", "q": "Qual frase está correta?", "a": "I live with my parents.", "o": ["I live with my parents.", "I living with parents.", "I am live parents.", "My parents live I."], "e": "I live with my parents = Eu moro com meus pais."}, {"level": 5, "theme": "Present Information", "q": "Qual pergunta combina com: I'm studying now.", "a": "What are you doing?", "o": ["What are you doing?", "How old are you?", "Where is your mother?", "What is your name?"], "e": "I'm studying now responde a What are you doing?"}, {"level": 5, "theme": "Present Continuous", "q": "Qual frase está na forma negativa?", "a": "He is not playing.", "o": ["He is playing.", "Is he playing?", "He is not playing.", "He plays now."], "e": "Na negativa usamos not depois do verbo to be."}, {"level": 5, "theme": "Quantifiers", "q": "Qual combinação está correta?", "a": "many books", "o": ["many books", "much books", "a few water", "many information"], "e": "Books é contável no plural, então usamos many."}, {"level": 5, "theme": "Comparatives", "q": "Qual comparativo está correto?", "a": "more interesting than", "o": ["interestinger than", "more interesting than", "most interesting than", "interesting more than"], "e": "Adjetivo longo: more + adjective + than."}, {"level": 6, "theme": "Family Members", "q": "My aunt's daughter is my cousin. Quem é a filha da minha tia?", "a": "minha prima", "o": ["minha prima", "minha irmã", "minha avó", "minha mãe"], "e": "Cousin significa primo ou prima."}, {"level": 6, "theme": "Family Life", "q": "My family is small, but we are very close. A frase fala de...", "a": "uma família pequena e unida", "o": ["uma família pequena e unida", "uma família grande", "uma família viajando", "uma família estudando"], "e": "Small = pequena; close aqui indica proximidade."}, {"level": 6, "theme": "Present Information", "q": "They are cooking now. Qual pergunta combina?", "a": "What are they doing?", "o": ["What are they doing?", "Where are they from?", "How old are they?", "Who is your teacher?"], "e": "A resposta descreve o que eles estão fazendo agora."}, {"level": 6, "theme": "Present Continuous", "q": "Most students are studying now. Qual estrutura verbal aparece?", "a": "Present Continuous", "o": ["Present Continuous", "Simple Past", "Comparative", "Family vocabulary"], "e": "Are studying = are + verbo-ing."}, {"level": 6, "theme": "Quantifiers", "q": "Most students are studying now. O que most indica?", "a": "a maioria", "o": ["a maioria", "todos", "alguns poucos", "nenhum"], "e": "Most significa a maioria."}, {"level": 6, "theme": "Comparatives", "q": "This book is more interesting than that one. A frase...", "a": "compara dois livros", "o": ["compara dois livros", "fala de quantidade", "pergunta uma idade", "apresenta uma pessoa"], "e": "More interesting than mostra uma comparação."}];
+const TOTAL_ROUNDS = 30;
+const MAX_LIVES = 5;
+const SEGMENT = 360 / THEMES.length;
+
+const PHASE_NAMES = [
+  "Fase 1 — Easy Start",
+  "Fase 2 — With a Hint",
+  "Fase 3 — Simple English",
+  "Fase 4 — Understand",
+  "Fase 5 — Use the Rule",
+  "Fase 6 — Final Challenge"
+];
+function getPhaseIndex(){ return Math.min(5, Math.floor((state.round - 1) / 5)); }
+function getRoundInPhase(){ return ((state.round - 1) % 5) + 1; }
+
+let state = {};
+
+function el(id){return document.getElementById(id)}
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function show(id){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));el(id).classList.add("active");document.body.classList.toggle("playing", id==="gameScreen")}
+
+function makeBag(){
+  const bag = [];
+  for(let level = 1; level <= 6; level++){
+    const pool = shuffle(QUESTIONS.filter(q => q.level === level));
+    const chosen = [];
+    const usedThemes = new Set();
+
+    for(const q of pool){
+      if(chosen.length >= 5) break;
+      if(!usedThemes.has(q.theme)){
+        chosen.push(q);
+        usedThemes.add(q.theme);
+      }
+    }
+    for(const q of pool){
+      if(chosen.length >= 5) break;
+      if(!chosen.includes(q)) chosen.push(q);
+    }
+    bag.push(...shuffle(chosen.slice(0,5)));
+  }
+  return bag;
+}
+function getMission(){ return getPhaseIndex() + 1; }
+function nextMissionLabel(){ return Math.min(getMission()+1,6); }
+function goToNextMission(){ restart(); }
+
+function restart(){
+  const missionToUse = state.mission || 1;
+  state = {score:0,corrects:0,errors:0,combo:0,maxCombo:0,round:1,lives:MAX_LIVES,bag:makeBag(),current:null,spinning:false,answered:false,rotation:0,mission:missionToUse,scoreSaved:false};
+  el("wheel").style.transform = "rotate(0deg)";
+  el("wheel").dataset.theme = "SPIN";
+  el("sorted").textContent = "Gire a roleta para começar.";
+  el("theme").textContent = "Tema";
+  el("prompt").textContent = "Clique em SPIN para sortear o tema e liberar a pergunta.";
+  el("options").innerHTML = "";
+  el("modalOptions").innerHTML = "";
+  el("feedback").className = "feedback";
+  el("feedback").innerHTML = "";
+  el("spinBtn").disabled = false;
+  updateStats();
+  show("gameScreen");
+}
+
+function updateStats(){
+  el("score").textContent = state.score;
+  el("corrects").textContent = state.corrects;
+  el("combo").textContent = state.combo;
+  el("round").textContent = `${getRoundInPhase()} de 5`;
+  if(el("roundLabel")) el("roundLabel").textContent = `Desafio ${getRoundInPhase()}/5`;
+  if(el("missionLabel")) el("missionLabel").textContent = PHASE_NAMES[getPhaseIndex()];
+  el("lives").innerHTML = Array.from({length:MAX_LIVES}, (_,i)=>`<span class="heart ${i>=state.lives ? 'lost' : ''}">♥</span>`).join("");
+}
+
+function spinWheel(){
+  if(state.spinning || state.answered) return;
+  if(state.round > TOTAL_ROUNDS) return finishGame(true);
+
+  state.current = state.bag[state.round-1];
+  const q = state.current;
+  const themeIndex = THEMES.indexOf(q.theme);
+
+  closeQuestionModal();
+  state.spinning = true;
+  el("spinBtn").disabled = true;
+  el("options").innerHTML = "";
+  el("feedback").className = "feedback";
+  el("feedback").innerHTML = "";
+  el("prompt").textContent = "A roleta está girando... espere o tema parar!";
+  el("theme").textContent = "Girando...";
+  el("wheel").dataset.theme = "SPIN";
+  el("wheel").classList.add("spinning");
+  startSpinMusic();
+  el("sorted").classList.add("suspense");
+  el("sorted").textContent = "Girando rápido...";
+
+  // Centro do tema que precisa parar no ponteiro superior.
+  const center = themeIndex * SEGMENT + SEGMENT / 2;
+  const target = 360 - center;
+
+  // Nunca deixa a roleta dar giro curto:
+  // calcula quanto falta até o alvo a partir da rotação atual e SOMA muitas voltas completas.
+  const currentNorm = ((state.rotation % 360) + 360) % 360;
+  const deltaToTarget = ((target - currentNorm) + 360) % 360;
+
+  // Todos os giros terão no mínimo 10 voltas completas e até 14 voltas.
+  const fullTurns = 10 + Math.floor(Math.random() * 5);
+
+  // Passa um pouco do ponto e volta suavemente, criando suspense.
+  const overshoot = 12 + Math.random() * 18;
+
+  const direction = Math.random() > 0.5 ? 1 : -1;
+  const suspenseOffset = overshoot * direction;
+
+  const firstStop = state.rotation + (fullTurns * 360) + deltaToTarget + suspenseOffset;
+  const finalStop = state.rotation + (fullTurns * 360) + deltaToTarget;
+
+  // Etapa 1: giro longo, acelerado e emocionante.
+  el("wheel").style.transition = "transform 6.2s cubic-bezier(.06,.88,.08,1)";
+  state.rotation = firstStop;
+  el("wheel").style.transform = `rotate(${state.rotation}deg)`;
+
+  setTimeout(()=>{
+    el("sorted").textContent = "Atenção... quase parando!";
+    el("prompt").textContent = "Quase parando... qual tema será?";
+  }, 2700);
+
+  setTimeout(()=>{
+    el("sorted").textContent = "Será que vai passar?";
+  }, 4300);
+
+  // Etapa 2: pequeno ajuste final, como se a roleta balançasse antes de parar.
+  setTimeout(()=>{
+    el("wheel").style.transition = "transform .9s cubic-bezier(.2,.95,.18,1)";
+    state.rotation = finalStop;
+    el("wheel").style.transform = `rotate(${state.rotation}deg)`;
+  }, 6250);
+
+  setTimeout(()=>{
+    stopSpinMusic();
+    state.spinning = false;
+    el("wheel").classList.remove("spinning");
+    el("sorted").classList.remove("suspense");
+    el("wheel").style.transition = "transform 6.2s cubic-bezier(.06,.88,.08,1)";
+    el("wheel").dataset.theme = q.theme;
+    el("sorted").textContent = `Tema sorteado: ${q.theme}`;
+    renderQuestion(q);
+  }, 7350);
+}
+
+
+function isMobileGame(){
+  return window.innerWidth <= 860;
+}
+
+function openQuestionModal(){
+  const modal = el("questionModal");
+  if(!modal) return;
+  modal.classList.add("show");
+  modal.setAttribute("aria-hidden", "false");
+}
+
+function closeQuestionModal(){
+  const modal = el("questionModal");
+  if(!modal) return;
+  modal.classList.remove("show");
+  modal.setAttribute("aria-hidden", "true");
+}
+
+function makeOptionButton(opt){
+  const btn = document.createElement("button");
+  btn.className = "option";
+  btn.type = "button";
+  btn.textContent = opt;
+  btn.addEventListener("click", () => answer(opt));
+  return btn;
+}
+
+function renderQuestion(q){
+  state.answered = false;
+
+  // Desktop/PC question area
+  el("theme").textContent = q.theme;
+  el("prompt").textContent = q.q;
+  const box = el("options");
+  box.innerHTML = "";
+
+  // Mobile modal question area
+  el("modalTheme").textContent = q.theme;
+  el("modalPrompt").textContent = q.q;
+  const modalBox = el("modalOptions");
+  modalBox.innerHTML = "";
+
+  const mixedOptions = shuffle([...q.o]);
+  mixedOptions.forEach(opt => {
+    box.appendChild(makeOptionButton(opt));
+    modalBox.appendChild(makeOptionButton(opt));
+  });
+
+  el("feedback").className = "feedback";
+  el("feedback").innerHTML = "";
+  el("modalFeedback").className = "feedback modal-feedback";
+  el("modalFeedback").innerHTML = "";
+
+  if(isMobileGame()){
+    setTimeout(openQuestionModal, 180);
+  }
+}
+
+function markAllOptions(correct, selectedClean){
+  document.querySelectorAll(".option").forEach(b => {
+    b.disabled = true;
+    const txt = String(b.textContent).trim();
+    if(txt === correct) b.classList.add("correct");
+    if(txt === selectedClean && selectedClean !== correct) b.classList.add("wrong");
+  });
+}
+
+function setFeedback(ok, htmlText){
+  const fb = el("feedback");
+  const mfb = el("modalFeedback");
+  fb.className = ok ? "feedback ok" : "feedback bad";
+  mfb.className = ok ? "feedback modal-feedback ok" : "feedback modal-feedback bad";
+  fb.innerHTML = htmlText;
+  mfb.innerHTML = htmlText;
+}
+
+function prepareNextRound(){
+  state.round++;
+  state.answered = false;
+  el("spinBtn").disabled = false;
+  el("theme").textContent = "Tema";
+  el("prompt").textContent = "Clique em SPIN para sortear o próximo tema.";
+  el("options").innerHTML = "";
+  el("feedback").className = "feedback";
+  el("feedback").innerHTML = "";
+  el("modalTheme").textContent = "Tema";
+  el("modalPrompt").textContent = "Pergunta";
+  el("modalOptions").innerHTML = "";
+  el("modalFeedback").className = "feedback modal-feedback";
+  el("modalFeedback").innerHTML = "";
+  el("sorted").textContent = "Gire a roleta para continuar.";
+  closeQuestionModal();
+  updateStats();
+}
+
+function answer(selected){
+  if(state.answered || state.spinning) return;
+  state.answered = true;
+
+  const q = state.current;
+  const correct = String(q.a).trim();
+  const selectedClean = String(selected).trim();
+
+  markAllOptions(correct, selectedClean);
+
+  if(selectedClean === correct){
+    state.corrects++;
+    state.combo++;
+    state.maxCombo = Math.max(state.maxCombo, state.combo);
+    const bonus = state.combo >= 3 ? 20 : 0;
+    state.score += 100 + bonus;
+    playCorrectSound();
+    setFeedback(true, `✅ Great job! Você acertou.<br><b>Explicação:</b> ${q.e}${bonus ? "<br>🔥 Bônus de combo: +20 pontos!" : ""}`);
+  } else {
+    state.combo = 0;
+    state.lives = Math.max(0, state.lives - 1);
+    playErrorSound();
+    setFeedback(false, `❌ Quase! Você perdeu 1 vida. A resposta correta é <b>${q.a}</b>.<br><b>Explicação:</b> ${q.e}`);
+  }
+
+  updateStats();
+
+  const delay = 1700;
+
+  if(state.lives <= 0){
+    setTimeout(()=>{ closeQuestionModal(); finishGame(false); }, delay);
+    return;
+  }
+
+  if(state.round >= TOTAL_ROUNDS){
+    setTimeout(()=>{ closeQuestionModal(); finishGame(true); }, delay);
+    return;
+  }
+
+  setTimeout(prepareNextRound, delay);
+}
+
+
+
+const FAKE_RANKING_NAMES = [
+  ["Ana Clara", "Escola Municipal Frei Fabiano Merz — 602"],
+  ["Miguel Santos", "Escola Municipal Fluminense — 601"],
+  ["Lívia Beatriz", "Escola Municipal Maria Amália Queiroz de Sousa — 603"],
+  ["Gabriel Silva", "Escola Municipal Rotary — 601"],
+  ["Mariana Costa", "Escola Municipal Ubaldo Corrêa — 602"],
+  ["João Pedro", "Escola Municipal Haroldo Veloso — 601"],
+  ["Sofia Martins", "Escola Municipal São José Operário — 603"],
+  ["Lucas Henrique", "Escola Municipal Irmã Leodgard Gausepohl — 602"],
+  ["Isabela Rocha", "Escola Municipal Princesa Izabel — 601"],
+  ["Rafael Lima", "Escola Municipal Brigadeiro Eduardo Gomes — 601"]
+];
+
+function getPlayerInfo(){
+  const nameInput = document.getElementById("playerName");
+  const classInput = document.getElementById("playerClass");
+  const schoolInput = document.getElementById("playerSchool");
+  const name = (nameInput && nameInput.value ? nameInput.value : "Aluno(a)").trim() || "Aluno(a)";
+  const klass = (classInput && classInput.value ? classInput.value : "703").trim() || "703";
+  const school = (schoolInput && schoolInput.value ? schoolInput.value : "Minha escola").trim() || "Minha escola";
+  return {name, klass, school};
+}
+
+function buildMotivationalRanking(){
+  const player = getPlayerInfo();
+  const playerScore = state.score;
+
+  let playerRank = 6;
+  if(playerScore >= 2800) playerRank = 2;
+  else if(playerScore >= 2100) playerRank = 3;
+  else if(playerScore >= 1400) playerRank = 4;
+  else if(playerScore >= 800) playerRank = 5;
+
+  const shuffledNames = shuffle(FAKE_RANKING_NAMES);
+  const rows = [];
+  let fakeIndex = 0;
+
+  for(let pos = 1; pos <= 10; pos++){
+    if(pos === playerRank){
+      rows.push({
+        name: player.name,
+        school: `${player.school} — ${player.klass}`,
+        score: playerScore,
+        isPlayer: true
+      });
+    } else {
+      let score;
+      if(pos < playerRank){
+        score = playerScore + (playerRank - pos) * 210 + 90;
+      } else {
+        score = Math.max(0, playerScore - (pos - playerRank) * 120);
+      }
+
+      const fake = shuffledNames[fakeIndex % shuffledNames.length];
+      fakeIndex++;
+
+      rows.push({
+        name: fake[0],
+        school: fake[1],
+        score,
+        isPlayer: false
+      });
+    }
+  }
+
+  return rows;
+}
+
+function renderRanking(){
+  const list = document.getElementById("rankList");
+  if(!list) return;
+
+  if(typeof window.carregarRanking === "function"){
+    list.innerHTML = '<div class="rank-row"><div class="rank-pos">...</div><div><div class="rank-name">Carregando ranking geral...</div><div class="rank-school">English Game Hub</div></div><div class="rank-score">...</div></div>';
+    window.carregarRanking(GAME_NAME, "rankList");
+    return;
+  }
+
+  const rows = buildMotivationalRanking();
+  list.innerHTML = rows.map((r, i) => `
+    <div class="rank-row ${r.isPlayer ? "player" : ""}">
+      <div class="rank-pos">${i + 1}º</div>
+      <div>
+        <div class="rank-name">${r.isPlayer ? "⭐ " : ""}${r.name}</div>
+        <div class="rank-school">${r.school}</div>
+      </div>
+      <div class="rank-score">${r.score} pts</div>
+    </div>
+  `).join("");
+}
+
+
+function getRankingPoints(){
+  return Math.max(0, Math.min(100, Math.round((state.corrects / TOTAL_ROUNDS) * 100)));
+}
+
+function renderCurrentScoreBoxes(){
+  const player = getPlayerInfo();
+  const htmlScore = `✨ <b>SUA PONTUAÇÃO AGORA</b><br>${player.name} — ${state.score} pontos no jogo<br>${getRankingPoints()} pts enviados ao ranking • ${player.school} — ${player.klass}`;
+  const card = document.getElementById("currentScoreCard");
+  const modalCard = document.getElementById("generalCurrentScore");
+  if(card) card.innerHTML = htmlScore;
+  if(modalCard) modalCard.innerHTML = htmlScore;
+}
+
+function openGeneralRanking(){
+  renderCurrentScoreBoxes();
+  const modal = document.getElementById("generalRankModal");
+  if(modal){
+    modal.classList.add("show");
+    modal.setAttribute("aria-hidden", "false");
+  }
+  if(typeof window.carregarRanking === "function"){
+    window.carregarRanking(GAME_NAME, "generalRankList");
+  } else {
+    const list = document.getElementById("generalRankList");
+    const oldList = document.getElementById("rankList");
+    if(list && oldList) list.innerHTML = oldList.innerHTML;
+  }
+}
+
+function closeGeneralRanking(){
+  const modal = document.getElementById("generalRankModal");
+  if(modal){
+    modal.classList.remove("show");
+    modal.setAttribute("aria-hidden", "true");
+  }
+}
+
+function finishGame(completed){
+  stopSpinMusic();
+
+  try{
+    const player = getPlayerInfo();
+    const hubPoints = Math.max(0, Math.min(100, Math.round((state.corrects / TOTAL_ROUNDS) * 100)));
+
+    window.currentGameResult = { nome: player.name, escola: player.school, turma: player.klass, pontosRanking: hubPoints, pontosJogo: state.score, jogo: GAME_NAME };
+
+    if(!state.scoreSaved && typeof window.salvarPontuacao === "function"){
+      state.scoreSaved = true;
+      window.salvarPontuacao(player.name, hubPoints, GAME_NAME, player.school);
+    }
+  }catch(e){ console.warn("Pontuação não foi salva:", e); }
+
+  show("finalScreen");
+  document.body.classList.remove("sound-win","sound-try");
+  document.body.classList.add(completed ? "sound-win" : "sound-try");
+  setTimeout(()=> completed ? playVictoryMusic() : playTryAgainMusic(), 250);
+
+  const mission = getMission();
+  const titleEl = document.getElementById("finalTitle");
+  const msgEl = document.getElementById("finalMsg");
+  const primaryBtn = document.getElementById("primaryActionBtn");
+
+  titleEl.textContent = completed ? "🏆 YOU ARE THE ONE!" : "💪 TRY AGAIN!";
+
+  if(completed){
+    msgEl.textContent = "Parabéns! Você concluiu as 6 fases. Começou com reconhecimento simples e chegou ao desafio final!";
+    primaryBtn.textContent = "Jogar novamente";
+    primaryBtn.onclick = restart;
+  } else {
+    msgEl.textContent = `Você chegou à Fase ${mission}/6. Revise com calma e tente novamente!`;
+    primaryBtn.textContent = "Tentar novamente";
+    primaryBtn.onclick = restart;
+  }/10 e tente melhorar sua pontuação para seguir em frente!`;
+    primaryBtn.textContent = "Tentar novamente";
+    primaryBtn.onclick = restart;
+  }
+
+  document.getElementById("fScore").textContent = state.score;
+  document.getElementById("fCorrects").textContent = `${state.corrects}/${TOTAL_ROUNDS}`;
+  document.getElementById("fCombo").textContent = state.maxCombo;
+  document.getElementById("fLives").textContent = `${state.lives}/${MAX_LIVES}`;
+
+  renderCurrentScoreBoxes();
+  renderRanking();
+}
+
+
+function avaliarJogo(avaliacao, buttonElement){
+  try{
+    const player = getPlayerInfo();
+
+    if(typeof window.salvarAvaliacao === "function"){
+      window.salvarAvaliacao(avaliacao, GAME_NAME, player.name, player.school);
+    }
+
+    const msg = document.getElementById("ratingMessage");
+    if(msg) msg.textContent = "Obrigado! Sua avaliação foi registrada.";
+
+    const box = buttonElement ? buttonElement.closest(".firebase-rating") : null;
+    if(box){
+      box.querySelectorAll("button").forEach(btn=>{
+        btn.disabled = true;
+        btn.style.filter = "none";
+      });
+    }
+
+    if(buttonElement) buttonElement.style.filter = "brightness(1.2)";
+  }catch(e){
+    console.warn("Erro ao registrar avaliação:", e);
+  }
+}
+
+show('startScreen');
+</script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+import { getFirestore, collection, addDoc, serverTimestamp, query, limit, onSnapshot } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCVTR3nnyo5mYTF28TJisgTUe-Xyjk1upg",
+  authDomain: "english-game-hub.firebaseapp.com",
+  projectId: "english-game-hub",
+  storageBucket: "english-game-hub.firebasestorage.app",
+  messagingSenderId: "131880771426",
+  appId: "1:131880771426:web:cf29a6f34ca86be527d63b"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+window.registrarAcesso = async function registrarAcesso(jogo = "703-english-spin-and-answer") {
+  try {
+    const agora = new Date();
+
+    await addDoc(collection(db, "acessos"), {
+      nome_do_jogo: jogo,
+      data: agora.toLocaleDateString("pt-BR"),
+      hora: agora.toLocaleTimeString("pt-BR"),
+      timestamp: serverTimestamp()
+    });
+  } catch (error) {
+    console.error("Erro ao registrar acesso:", error);
+  }
+};
+
+window.salvarPontuacao = async function salvarPontuacao(nome, pontos, jogo = "703-english-spin-and-answer", escola = "Escola não informada") {
+  try {
+    const nomeLimpo = String(nome || "").trim().slice(0, 24);
+    const escolaLimpa = String(escola || "Escola não informada").trim().slice(0, 42);
+    const pontosNumero = Number(pontos);
+
+    if (!nomeLimpo) return;
+    if (!Number.isInteger(pontosNumero) || pontosNumero < 0 || pontosNumero > 100) return;
+
+    await addDoc(collection(db, "pontuacoes"), {
+      nome: nomeLimpo,
+      escola: escolaLimpa || "Escola não informada",
+      pontos: pontosNumero,
+      jogo: jogo,
+      tipo: "real",
+      timestamp: serverTimestamp()
+    });
+  } catch (error) {
+    console.error("Erro ao salvar pontuação:", error);
+  }
+};
+
+window.salvarAvaliacao = async function salvarAvaliacao(avaliacao, jogo = "703-english-spin-and-answer", nome = "Não informado", escola = "Escola não informada") {
+  try {
+    if (!["ruim", "neutro", "bom"].includes(avaliacao)) return;
+
+    await addDoc(collection(db, "avaliacoes"), {
+      jogo: jogo,
+      avaliacao: avaliacao,
+      nome: String(nome || "Não informado").trim().slice(0, 24),
+      escola: String(escola || "Escola não informada").trim().slice(0, 42),
+      timestamp: serverTimestamp()
+    });
+  } catch (error) {
+    console.error("Erro ao salvar avaliação:", error);
+  }
+};
+
+const rankingMotivacionalInicial = [
+  { nome: "Ana Clara", escola: "Escola Delfina de Jesus Amorim", pontos: 85, tipo: "motivacional" },
+  { nome: "Pedro Lucas", escola: "Escola Frei Fabiano Merz", pontos: 74, tipo: "motivacional" },
+  { nome: "Maria Eduarda", escola: "Escola Maria Amália Queiroz", pontos: 68, tipo: "motivacional" },
+  { nome: "João Miguel", escola: "Escola São Francisco", pontos: 61, tipo: "motivacional" },
+  { nome: "Lívia Vitória", escola: "Escola Nossa Senhora de Fátima", pontos: 55, tipo: "motivacional" }
+];
+
+window.carregarRanking = function carregarRanking(jogo = "703-english-spin-and-answer", containerId = "rankList") {
+  const rankingContainer = document.getElementById(containerId);
+  if (!rankingContainer) return;
+
+  const rankingQuery = query(collection(db, "pontuacoes"), limit(500));
+
+  onSnapshot(rankingQuery, (snapshot) => {
+    rankingContainer.innerHTML = "";
+    const somaPorAluno = new Map();
+
+    rankingMotivacionalInicial.forEach(item => {
+      const chave = `${item.nome.toLowerCase()}|${item.escola.toLowerCase()}|motivacional`;
+      somaPorAluno.set(chave, { ...item });
+    });
+
+    snapshot.forEach((doc) => {
+      const item = doc.data();
+      if (!item || item.tipo === "motivacional") return;
+      if (String(item.jogo || "") !== jogo) return;
+
+      const nome = String(item.nome || "").trim();
+      const escola = String(item.escola || "Escola não informada").trim();
+      const pontos = Number(item.pontos || 0);
+      if (!nome || !Number.isFinite(pontos)) return;
+
+      const chave = `${nome.toLowerCase()}|${escola.toLowerCase()}|real`;
+      const atual = somaPorAluno.get(chave) || { nome, escola, pontos: 0, tipo: "real" };
+      atual.pontos += pontos;
+      somaPorAluno.set(chave, atual);
+    });
+
+    const allItems = Array.from(somaPorAluno.values()).sort((a, b) => b.pontos - a.pontos);
+    const rankingItems = allItems.slice(0, 10);
+    const current = window.currentGameResult || null;
+    const currentName = current ? String(current.nome || "").trim().toLowerCase() : "";
+    const currentSchool = current ? String(current.escola || "").trim().toLowerCase() : "";
+
+    if (!rankingItems.length) {
+      rankingContainer.innerHTML = '<div class="rank-row"><div class="rank-pos">--</div><div><div class="rank-name">Nenhuma pontuação registrada ainda.</div><div class="rank-school">English Game Hub</div></div><div class="rank-score">0 pts</div></div>';
+      return;
+    }
+
+    function rowHTML(item, index, extraClass = ""){
+      const isCurrent = currentName && item.tipo === "real" && String(item.nome || "").trim().toLowerCase() === currentName && String(item.escola || "").trim().toLowerCase() === currentSchool;
+      const podiumClass = index === 0 ? "rank-first" : index === 1 ? "rank-second" : index === 2 ? "rank-third" : "";
+      const medal = index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : `${index + 1}º`;
+      const champion = index === 0 ? '<span class="champion-badge">🏆 Campeão do dia</span>' : '';
+      const selo = item.tipo === "motivacional" ? " ⭐" : "";
+      return `
+        <div class="rank-row ${podiumClass} ${isCurrent ? "player" : ""} ${extraClass}">
+          <div class="rank-pos">${medal}</div>
+          <div>
+            <div class="rank-name">${isCurrent ? "⭐ Você — " : ""}${item.nome}${selo}</div>
+            <div class="rank-school">${item.escola}</div>
+          </div>
+          <div class="rank-score">${item.pontos} pts ${champion}</div>
+        </div>`;
+    }
+
+    rankingContainer.innerHTML = rankingItems.map((item, index) => rowHTML(item, index)).join("");
+
+    const currentInTop = rankingItems.some(item => currentName && item.tipo === "real" && String(item.nome || "").trim().toLowerCase() === currentName && String(item.escola || "").trim().toLowerCase() === currentSchool);
+
+    if(current && !currentInTop){
+      const currentTotal = allItems.find(item => item.tipo === "real" && String(item.nome || "").trim().toLowerCase() === currentName && String(item.escola || "").trim().toLowerCase() === currentSchool);
+      const currentRow = currentTotal || { nome: current.nome, escola: `${current.escola} — ${current.turma || "703"}`, pontos: Number(current.pontosRanking || 0), tipo: "real" };
+      const currentIndex = currentTotal ? allItems.indexOf(currentTotal) : 10;
+      rankingContainer.innerHTML += `<div class="rank-note">✨ Sua posição nesta rodada</div>` + rowHTML(currentRow, Math.max(10, currentIndex), "player");
+    }
+  }, (error) => {
+    console.error("Erro ao carregar ranking:", error);
+    rankingContainer.innerHTML = '<div class="rank-row"><div class="rank-pos">!</div><div><div class="rank-name">Não foi possível carregar o ranking.</div><div class="rank-school">Verifique a conexão/Firebase</div></div><div class="rank-score">--</div></div>';
+  });
+};
+
+window.registrarAcesso("703-english-spin-and-answer");
+</script>
+
+</body>
+</html>
