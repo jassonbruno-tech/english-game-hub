@@ -966,11 +966,126 @@ body.playing .wheel-label{
 @media(max-width:860px){.rank-actions{grid-template-columns:1fr !important}.general-rank-card{padding:11px;border-radius:18px}.general-rank-card h2{font-size:21px}.champion-badge{display:block;margin:3px 0 0;font-size:8px}}
 </style>
 
+
+<style id="wheel-final-alignment-fix">
+/* FINAL WHEEL FIX — 6 equal sectors and labels centered in each sector */
+.wheel{
+  position:relative !important;
+  width:min(80vw,390px) !important;
+  height:min(80vw,390px) !important;
+  max-width:390px !important;
+  max-height:390px !important;
+  border-radius:50% !important;
+  background:conic-gradient(
+    from 0deg,
+    #1da1f2 0deg 60deg,
+    #22c55e 60deg 120deg,
+    #f97316 120deg 180deg,
+    #8b5cf6 180deg 240deg,
+    #06b6d4 240deg 300deg,
+    #f43f5e 300deg 360deg
+  ) !important;
+  border:8px solid #fff !important;
+  overflow:hidden !important;
+  box-shadow:0 16px 34px rgba(0,0,0,.26) !important;
+}
+
+/* inner circle */
+.wheel::after{
+  content:attr(data-theme) !important;
+  position:absolute !important;
+  inset:33% !important;
+  z-index:3 !important;
+  border-radius:50% !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  text-align:center !important;
+  padding:7px !important;
+  background:#f8fafc !important;
+  border:5px solid #e2e8f0 !important;
+  color:#1d4ed8 !important;
+  font-weight:1000 !important;
+  font-size:clamp(14px,3vw,21px) !important;
+  line-height:1.05 !important;
+  box-shadow:0 4px 12px rgba(0,0,0,.18) !important;
+}
+
+/* Labels never use rotation math anymore */
+.wheel-label{
+  position:absolute !important;
+  z-index:2 !important;
+  transform:translate(-50%,-50%) !important;
+  width:25% !important;
+  margin:0 !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  text-align:center !important;
+  color:#fff !important;
+  font-size:clamp(10px,2.7vw,14px) !important;
+  line-height:1.03 !important;
+  font-weight:1000 !important;
+  letter-spacing:-.1px !important;
+  text-shadow:0 2px 5px rgba(0,0,0,.78),0 0 4px rgba(0,0,0,.45) !important;
+  pointer-events:none !important;
+  overflow:visible !important;
+  white-space:normal !important;
+  word-break:normal !important;
+}
+
+/* Exact centers of the six 60° sectors */
+.wheel .wheel-label:nth-of-type(1){left:65.5% !important;top:23.2% !important;} /* 30° */
+.wheel .wheel-label:nth-of-type(2){left:81.0% !important;top:50.0% !important;} /* 90° */
+.wheel .wheel-label:nth-of-type(3){left:65.5% !important;top:76.8% !important;} /* 150° */
+.wheel .wheel-label:nth-of-type(4){left:34.5% !important;top:76.8% !important;} /* 210° */
+.wheel .wheel-label:nth-of-type(5){left:19.0% !important;top:50.0% !important;} /* 270° */
+.wheel .wheel-label:nth-of-type(6){left:34.5% !important;top:23.2% !important;} /* 330° */
+
+/* During the game on smaller screens, use the same percentage geometry */
+body.playing .wheel{
+  width:218px !important;
+  height:218px !important;
+}
+body.playing .wheel-label{
+  width:27% !important;
+  font-size:8.4px !important;
+  line-height:1 !important;
+}
+body.playing .wheel::after{
+  inset:34% !important;
+  font-size:12px !important;
+  border-width:4px !important;
+}
+
+@media(max-width:420px){
+  body.playing .wheel{
+    width:204px !important;
+    height:204px !important;
+  }
+  body.playing .wheel-label{
+    font-size:7.7px !important;
+    width:28% !important;
+  }
+}
+</style>
+
+
+<style id="sound-button-fix">
+button.pill{font-family:inherit;cursor:pointer}
+#soundBtn{min-width:76px}
+#soundBtn.sound-off{opacity:.68}
+</style>
+
 </head>
 <body class="playing">
 <div class="app">
 <header>
-  <div class="topbar"><a class="back" href="index_turma_703_english_game_hub.html">← Turma 703</a><div class="pill">📘 Alinhado à BNCC</div></div>
+  <div class="topbar">
+    <a class="back" href="index_turma_703_english_game_hub.html">← Turma 703</a>
+    <button id="soundBtn" class="pill" type="button" onclick="toggleSound()" aria-label="Ativar ou desativar som">🔊 Som</button>
+    <div class="pill">📘 Alinhado à BNCC</div>
+  </div>
   <h1>English Spin & Answer</h1>
   <p class="subtitle">Gire a roleta, descubra o tema e avance por níveis de dificuldade.</p>
 </header>
@@ -1008,12 +1123,12 @@ body.playing .wheel-label{
       <div class="wheel-wrap">
         <div class="pointer"></div>
         <div id="wheel" class="wheel" data-theme="SPIN">
-          <div class="wheel-label" style="--r:30deg">Family<br>Members</div>
-<div class="wheel-label" style="--r:90deg">Family<br>Life</div>
-<div class="wheel-label" style="--r:150deg">Present<br>Information</div>
-<div class="wheel-label" style="--r:210deg">Present<br>Continuous</div>
-<div class="wheel-label" style="--r:270deg">Quantifiers</div>
-<div class="wheel-label" style="--r:330deg">Comparatives</div>
+          <div class="wheel-label">Family<br>Members</div>
+<div class="wheel-label">Family<br>Life</div>
+<div class="wheel-label">Present<br>Information</div>
+<div class="wheel-label">Present<br>Continuous</div>
+<div class="wheel-label">Quantifiers</div>
+<div class="wheel-label">Comparatives</div>
 
         </div>
         <button id="spinBtn" class="spin-btn" onclick="spinWheel()">SPIN</button>
@@ -1102,123 +1217,227 @@ const GAME_NAME = "703-english-spin-and-answer";
 
 const AudioCtx = window.AudioContext || window.webkitAudioContext;
 let audioCtx = null;
+let masterGain = null;
+let audioPrimed = false;
+let soundEnabled = true;
 let spinMusicTimer = null;
 let spinPulseTimer = null;
 let spinStep = 0;
 
 function ensureAudio(){
-  if(!AudioCtx) return null;
-  if(!audioCtx) audioCtx = new AudioCtx();
-  if(audioCtx.state === 'suspended') audioCtx.resume();
+  if(!AudioCtx || !soundEnabled) return null;
+  if(!audioCtx){
+    audioCtx = new AudioCtx();
+    masterGain = audioCtx.createGain();
+    masterGain.gain.value = 0.92;
+    masterGain.connect(audioCtx.destination);
+  }
   return audioCtx;
 }
 
-function playTone(freq=440, duration=.12, type='sine', volume=.03, when=0){
+async function unlockAudio(){
+  if(!soundEnabled) return null;
+  const ctx = ensureAudio();
+  if(!ctx) return null;
+  try{
+    if(ctx.state === "suspended") await ctx.resume();
+
+    /* Prime Web Audio after a real user gesture (important on iPhone/Safari) */
+    if(!audioPrimed && ctx.state === "running"){
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      gain.gain.value = 0.00001;
+      osc.connect(gain);
+      gain.connect(masterGain || ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.025);
+      audioPrimed = true;
+    }
+  }catch(e){
+    console.warn("Áudio não pôde ser liberado:", e);
+  }
+  updateSoundButton();
+  return ctx;
+}
+
+function updateSoundButton(){
+  const btn = document.getElementById("soundBtn");
+  if(!btn) return;
+  btn.textContent = soundEnabled ? "🔊 Som" : "🔇 Mudo";
+  btn.classList.toggle("sound-off", !soundEnabled);
+}
+
+async function toggleSound(){
+  soundEnabled = !soundEnabled;
+  if(!soundEnabled){
+    stopSpinMusic();
+    if(masterGain) masterGain.gain.value = 0;
+  }else{
+    if(masterGain) masterGain.gain.value = 0.92;
+    await unlockAudio();
+    /* short confirmation chime */
+    playTone(659.25,.10,"triangle",.055,0);
+    playTone(880,.12,"triangle",.05,.08);
+  }
+  updateSoundButton();
+}
+
+function playTone(freq=440, duration=.12, type='sine', volume=.045, when=0){
+  if(!soundEnabled) return;
   const ctx = ensureAudio();
   if(!ctx) return;
-  const osc = ctx.createOscillator();
-  const gain = ctx.createGain();
-  osc.type = type;
-  osc.frequency.setValueAtTime(freq, ctx.currentTime + when);
-  gain.gain.setValueAtTime(0.0001, ctx.currentTime + when);
-  gain.gain.exponentialRampToValueAtTime(volume, ctx.currentTime + when + 0.015);
-  gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + when + duration);
-  osc.connect(gain);
-  gain.connect(ctx.destination);
-  osc.start(ctx.currentTime + when);
-  osc.stop(ctx.currentTime + when + duration + 0.03);
+
+  const fire = ()=>{
+    try{
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      const out = masterGain || ctx.destination;
+      const t = ctx.currentTime + when;
+
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq, t);
+      gain.gain.setValueAtTime(0.0001, t);
+      gain.gain.exponentialRampToValueAtTime(Math.max(.0002, volume), t + .015);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t + duration);
+
+      osc.connect(gain);
+      gain.connect(out);
+      osc.start(t);
+      osc.stop(t + duration + .04);
+    }catch(e){ console.warn("Falha no tom:", e); }
+  };
+
+  if(ctx.state === "suspended"){
+    ctx.resume().then(fire).catch(()=>{});
+  }else{
+    fire();
+  }
 }
 
 function playNoise(duration=.18, volume=.025, when=0){
+  if(!soundEnabled) return;
   const ctx = ensureAudio();
   if(!ctx) return;
-  const bufferSize = Math.max(1, Math.floor(ctx.sampleRate * duration));
-  const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-  const data = buffer.getChannelData(0);
-  for(let i=0;i<bufferSize;i++){
-    data[i] = (Math.random() * 2 - 1) * (1 - i / bufferSize);
+
+  const fire = ()=>{
+    try{
+      const bufferSize = Math.max(1, Math.floor(ctx.sampleRate * duration));
+      const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for(let i=0;i<bufferSize;i++){
+        data[i] = (Math.random()*2-1) * (1-i/bufferSize);
+      }
+
+      const src = ctx.createBufferSource();
+      const gain = ctx.createGain();
+      const out = masterGain || ctx.destination;
+      const t = ctx.currentTime + when;
+
+      src.buffer = buffer;
+      gain.gain.setValueAtTime(Math.max(.0002, volume), t);
+      gain.gain.exponentialRampToValueAtTime(.0001, t + duration);
+      src.connect(gain);
+      gain.connect(out);
+      src.start(t);
+      src.stop(t + duration + .03);
+    }catch(e){ console.warn("Falha no efeito sonoro:", e); }
+  };
+
+  if(ctx.state === "suspended"){
+    ctx.resume().then(fire).catch(()=>{});
+  }else{
+    fire();
   }
-  const src = ctx.createBufferSource();
-  const gain = ctx.createGain();
-  src.buffer = buffer;
-  gain.gain.setValueAtTime(volume, ctx.currentTime + when);
-  gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + when + duration);
-  src.connect(gain);
-  gain.connect(ctx.destination);
-  src.start(ctx.currentTime + when);
-  src.stop(ctx.currentTime + when + duration + 0.02);
 }
 
 function startSpinMusic(){
   stopSpinMusic();
-  ensureAudio();
+  if(!soundEnabled) return;
   spinStep = 0;
+
   const melody = [
-    392.00, 523.25, 659.25, 783.99,
-    698.46, 659.25, 587.33, 523.25,
-    440.00, 554.37, 659.25, 880.00
+    392.00,523.25,659.25,783.99,
+    698.46,659.25,587.33,523.25,
+    440.00,554.37,659.25,880.00
   ];
-  const bass = [196.00, 261.63, 220.00, 293.66];
+  const bass = [196.00,261.63,220.00,293.66];
+
+  /* immediate sound confirms the wheel started */
+  playTone(523.25,.11,"square",.055);
 
   spinMusicTimer = setInterval(()=>{
+    if(!soundEnabled) return;
     const f = melody[spinStep % melody.length];
-    playTone(f, .12, 'square', .028);
-    playTone(f * 1.5, .08, 'triangle', .013, .035);
-    if(spinStep % 2 === 0) playTone(bass[Math.floor(spinStep/2) % bass.length], .16, 'sine', .018, .015);
-    if(spinStep % 4 === 0) playNoise(.06, .012);
+    playTone(f,.12,"square",.042);
+    playTone(f*1.5,.08,"triangle",.023,.035);
+    if(spinStep % 2 === 0){
+      playTone(bass[Math.floor(spinStep/2)%bass.length],.16,"sine",.027,.015);
+    }
+    if(spinStep % 4 === 0) playNoise(.055,.014);
     spinStep++;
-  }, 125);
+  },125);
 
   spinPulseTimer = setInterval(()=>{
-    const btn = el('spinBtn');
-    const wheel = el('wheel');
-    if(btn) btn.style.transform = `scale(${1 + Math.random()*0.045}) rotate(${(Math.random()-.5)*2}deg)`;
-    if(wheel) wheel.style.filter = `saturate(${1.1 + Math.random()*0.35}) drop-shadow(0 0 ${10 + Math.random()*16}px rgba(236,72,153,.36))`;
-  }, 95);
+    const btn = el("spinBtn");
+    const wheel = el("wheel");
+    if(btn) btn.style.transform = `scale(${1 + Math.random()*.035})`;
+    if(wheel) wheel.style.filter =
+      `saturate(${1.08 + Math.random()*.25}) drop-shadow(0 0 ${9 + Math.random()*13}px rgba(236,72,153,.32))`;
+  },95);
 }
 
 function stopSpinMusic(){
-  if(spinMusicTimer){ clearInterval(spinMusicTimer); spinMusicTimer = null; }
-  if(spinPulseTimer){ clearInterval(spinPulseTimer); spinPulseTimer = null; }
-  const btn = el('spinBtn');
-  const wheel = el('wheel');
-  if(btn) btn.style.transform = '';
-  if(wheel) wheel.style.filter = '';
+  if(spinMusicTimer){clearInterval(spinMusicTimer);spinMusicTimer=null;}
+  if(spinPulseTimer){clearInterval(spinPulseTimer);spinPulseTimer=null;}
+  const btn = el("spinBtn");
+  const wheel = el("wheel");
+  if(btn) btn.style.transform = "";
+  if(wheel) wheel.style.filter = "";
 }
 
 function playCorrectSound(){
-  const notes = [523.25, 659.25, 783.99, 1046.50];
-  notes.forEach((f,idx)=>playTone(f,.18,'triangle',.04,idx*0.065));
-  playNoise(.08,.01,.05);
+  if(!soundEnabled) return;
+  [523.25,659.25,783.99,1046.50].forEach((f,i)=>
+    playTone(f,.18,"triangle",.065,i*.065)
+  );
+  playNoise(.08,.014,.05);
 }
 
 function playErrorSound(){
-  playTone(220,.16,'sawtooth',.035,0);
-  playTone(196,.18,'sawtooth',.03,.12);
-  playTone(164.81,.24,'triangle',.026,.25);
-  playNoise(.18,.018,.03);
+  if(!soundEnabled) return;
+  playTone(220,.17,"sawtooth",.055,0);
+  playTone(196,.19,"sawtooth",.048,.12);
+  playTone(164.81,.25,"triangle",.04,.25);
+  playNoise(.18,.024,.03);
 }
 
 function playTryAgainMusic(){
-  const notes = [392, 392, 440, 523.25, 440, 392, 329.63, 392, 440, 523.25, 587.33, 523.25];
+  if(!soundEnabled) return;
+  const notes=[392,392,440,523.25,440,392,329.63,392,440,523.25,587.33,523.25];
   notes.forEach((f,i)=>{
-    playTone(f,.22,'triangle',.032,i*.18);
-    if(i % 3 === 0) playTone(f/2,.28,'sine',.018,i*.18);
+    playTone(f,.22,"triangle",.05,i*.18);
+    if(i%3===0) playTone(f/2,.28,"sine",.028,i*.18);
   });
 }
 
 function playVictoryMusic(){
-  const notes = [
+  if(!soundEnabled) return;
+  const notes=[
     523.25,659.25,783.99,1046.50,
     987.77,1046.50,1174.66,1318.51,
     1046.50,1318.51,1567.98
   ];
   notes.forEach((f,i)=>{
-    playTone(f,.24,'triangle',.04,i*.13);
-    if(i % 2 === 0) playTone(f/2,.28,'sine',.018,i*.13);
+    playTone(f,.24,"triangle",.065,i*.13);
+    if(i%2===0) playTone(f/2,.28,"sine",.028,i*.13);
   });
-  setTimeout(()=>playNoise(.22,.018), 360);
+  setTimeout(()=>playNoise(.22,.022),360);
 }
+
+/* Any first tap/click can unlock audio; the SPIN button also does it explicitly. */
+document.addEventListener("pointerdown", unlockAudio, {once:true, passive:true});
+document.addEventListener("touchstart", unlockAudio, {once:true, passive:true});
+document.addEventListener("keydown", unlockAudio, {once:true});
 
 const THEMES = ["Family Members", "Family Life", "Present Information", "Present Continuous", "Quantifiers", "Comparatives"];
 const QUESTIONS = [{"level": 1, "theme": "Family Members", "q": "mother = ?", "a": "mãe", "o": ["mãe", "irmã", "tia", "avó"], "e": "Mother significa mãe."}, {"level": 1, "theme": "Family Life", "q": "family = ?", "a": "família", "o": ["família", "amigo", "escola", "cidade"], "e": "Family significa família."}, {"level": 1, "theme": "Present Information", "q": "now = ?", "a": "agora", "o": ["agora", "ontem", "amanhã", "sempre"], "e": "Now significa agora."}, {"level": 1, "theme": "Present Continuous", "q": "studying = ?", "a": "estudando", "o": ["estudando", "dormindo", "comendo", "correndo"], "e": "Studying significa estudando."}, {"level": 1, "theme": "Quantifiers", "q": "many = ?", "a": "muitos / muitas", "o": ["muitos / muitas", "poucos / poucas", "todos / todas", "mais alto"], "e": "Many significa muitos/muitas."}, {"level": 1, "theme": "Comparatives", "q": "taller = ?", "a": "mais alto", "o": ["mais alto", "mais baixo", "mais velho", "mais rápido"], "e": "Taller significa mais alto."}, {"level": 2, "theme": "Family Members", "q": "She is my _____. 💡 Dica: mãe", "a": "mother", "o": ["mother", "sister", "aunt", "cousin"], "e": "Mother significa mãe."}, {"level": 2, "theme": "Family Life", "q": "I live with my _____. 💡 Dica: família", "a": "family", "o": ["family", "book", "school", "friend"], "e": "I live with my family = Eu moro com minha família."}, {"level": 2, "theme": "Present Information", "q": "What are you doing? quer saber...", "a": "o que você está fazendo", "o": ["o que você está fazendo", "seu nome", "sua idade", "sua escola"], "e": "What are you doing? = O que você está fazendo?"}, {"level": 2, "theme": "Present Continuous", "q": "She ___ studying. 💡 Dica: ela", "a": "is", "o": ["am", "is", "are", "be"], "e": "Com she usamos is."}, {"level": 2, "theme": "Quantifiers", "q": "There are ____ books. 💡 Dica: muitos", "a": "many", "o": ["much", "many", "better", "older"], "e": "Books é contável no plural: many books."}, {"level": 2, "theme": "Comparatives", "q": "He is ____ than me. 💡 Dica: mais alto", "a": "taller", "o": ["taller", "smaller", "younger", "worse"], "e": "Tall = alto; taller = mais alto."}, {"level": 3, "theme": "Family Members", "q": "Your mother's brother is your...", "a": "uncle", "o": ["uncle", "cousin", "brother", "grandfather"], "e": "Uncle significa tio."}, {"level": 3, "theme": "Family Life", "q": "My family is _____. 💡 Dica: grande", "a": "big", "o": ["big", "small", "young", "old"], "e": "Big significa grande."}, {"level": 3, "theme": "Present Information", "q": "Where are they? significa...", "a": "Onde eles estão?", "o": ["Onde eles estão?", "O que eles fazem?", "Quem são eles?", "Quantos são?"], "e": "Where are they? = Onde eles estão?"}, {"level": 3, "theme": "Present Continuous", "q": "They ___ playing now.", "a": "are", "o": ["is", "am", "are", "be"], "e": "Com they usamos are."}, {"level": 3, "theme": "Quantifiers", "q": "I have ____ close friends. 💡 Dica: alguns poucos", "a": "a few", "o": ["all", "most", "a few", "much"], "e": "A few = alguns poucos."}, {"level": 3, "theme": "Comparatives", "q": "big → ?", "a": "bigger", "o": ["bigger", "biger", "more big", "biggest"], "e": "Big segue CVC: dobramos o g e acrescentamos -er."}, {"level": 4, "theme": "Family Members", "q": "Ana is my sister. Quem é Ana?", "a": "minha irmã", "o": ["minha irmã", "minha mãe", "minha tia", "minha prima"], "e": "Sister significa irmã."}, {"level": 4, "theme": "Family Life", "q": "I have two brothers. A frase significa...", "a": "Eu tenho dois irmãos.", "o": ["Eu tenho dois irmãos.", "Eu moro com dois irmãos.", "Eu tenho duas irmãs.", "Eu sou o irmão mais velho."], "e": "I have = eu tenho; two brothers = dois irmãos."}, {"level": 4, "theme": "Present Information", "q": "What is he doing? A pergunta fala sobre...", "a": "o que ele está fazendo agora", "o": ["o que ele está fazendo agora", "a idade dele", "a família dele", "o nome dele"], "e": "A pergunta busca uma ação em andamento."}, {"level": 4, "theme": "Present Continuous", "q": "Qual frase está correta?", "a": "She is studying.", "o": ["She are studying.", "She is studying.", "She am studying.", "She studying is."], "e": "Com she usamos is + verbo-ing."}, {"level": 4, "theme": "Quantifiers", "q": "There are a few students here. O que a few indica?", "a": "alguns poucos", "o": ["todos", "alguns poucos", "muitos", "nenhum"], "e": "A few indica pequena quantidade contável."}, {"level": 4, "theme": "Comparatives", "q": "My brother is taller than me. Taller than significa...", "a": "mais alto que", "o": ["mais alto que", "mais velho que", "mais rápido que", "mais feliz que"], "e": "Taller than = mais alto que."}, {"level": 5, "theme": "Family Members", "q": "My father's mother is my _____.", "a": "grandmother", "o": ["grandmother", "mother", "aunt", "sister"], "e": "Grandmother significa avó."}, {"level": 5, "theme": "Family Life", "q": "Qual frase está correta?", "a": "I live with my parents.", "o": ["I live with my parents.", "I living with parents.", "I am live parents.", "My parents live I."], "e": "I live with my parents = Eu moro com meus pais."}, {"level": 5, "theme": "Present Information", "q": "Qual pergunta combina com: I'm studying now.", "a": "What are you doing?", "o": ["What are you doing?", "How old are you?", "Where is your mother?", "What is your name?"], "e": "I'm studying now responde a What are you doing?"}, {"level": 5, "theme": "Present Continuous", "q": "Qual frase está na forma negativa?", "a": "He is not playing.", "o": ["He is playing.", "Is he playing?", "He is not playing.", "He plays now."], "e": "Na negativa usamos not depois do verbo to be."}, {"level": 5, "theme": "Quantifiers", "q": "Qual combinação está correta?", "a": "many books", "o": ["many books", "much books", "a few water", "many information"], "e": "Books é contável no plural, então usamos many."}, {"level": 5, "theme": "Comparatives", "q": "Qual comparativo está correto?", "a": "more interesting than", "o": ["interestinger than", "more interesting than", "most interesting than", "interesting more than"], "e": "Adjetivo longo: more + adjective + than."}, {"level": 6, "theme": "Family Members", "q": "My aunt's daughter is my cousin. Quem é a filha da minha tia?", "a": "minha prima", "o": ["minha prima", "minha irmã", "minha avó", "minha mãe"], "e": "Cousin significa primo ou prima."}, {"level": 6, "theme": "Family Life", "q": "My family is small, but we are very close. A frase fala de...", "a": "uma família pequena e unida", "o": ["uma família pequena e unida", "uma família grande", "uma família viajando", "uma família estudando"], "e": "Small = pequena; close aqui indica proximidade."}, {"level": 6, "theme": "Present Information", "q": "They are cooking now. Qual pergunta combina?", "a": "What are they doing?", "o": ["What are they doing?", "Where are they from?", "How old are they?", "Who is your teacher?"], "e": "A resposta descreve o que eles estão fazendo agora."}, {"level": 6, "theme": "Present Continuous", "q": "Most students are studying now. Qual estrutura verbal aparece?", "a": "Present Continuous", "o": ["Present Continuous", "Simple Past", "Comparative", "Family vocabulary"], "e": "Are studying = are + verbo-ing."}, {"level": 6, "theme": "Quantifiers", "q": "Most students are studying now. O que most indica?", "a": "a maioria", "o": ["a maioria", "todos", "alguns poucos", "nenhum"], "e": "Most significa a maioria."}, {"level": 6, "theme": "Comparatives", "q": "This book is more interesting than that one. A frase...", "a": "compara dois livros", "o": ["compara dois livros", "fala de quantidade", "pergunta uma idade", "apresenta uma pessoa"], "e": "More interesting than mostra uma comparação."}];
@@ -1270,6 +1489,7 @@ function nextMissionLabel(){ return Math.min(getMission()+1,6); }
 function goToNextMission(){ restart(); }
 
 function restart(){
+  unlockAudio();
   const missionToUse = state.mission || 1;
   state = {score:0,corrects:0,errors:0,combo:0,maxCombo:0,round:1,lives:MAX_LIVES,bag:makeBag(),current:null,spinning:false,answered:false,rotation:0,mission:missionToUse,scoreSaved:false};
   el("wheel").style.transform = "rotate(0deg)";
@@ -1297,6 +1517,7 @@ function updateStats(){
 }
 
 function spinWheel(){
+  unlockAudio();
   if(state.spinning || state.answered) return;
   if(state.round > TOTAL_ROUNDS) return finishGame(true);
 
