@@ -16,7 +16,8 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#07142f;fon
 #n{top:76.6%}#s{top:82.55%}#c{top:88.45%}
 .start{position:absolute;left:36%;top:92.0%;width:28%;height:2.9%;border:0;border-radius:999px;background:linear-gradient(180deg,#ffe66d,#ffb703);color:#07326b;font-size:18px;font-weight:1000;cursor:pointer;box-shadow:0 5px 14px rgba(0,0,0,.32)}
 .start:active{transform:scale(.97)}
-.back{position:absolute;left:22px;top:24px;z-index:3;padding:11px 17px;border-radius:999px;background:rgba(2,18,55,.62);border:1px solid rgba(255,255,255,.28);color:#fff;text-decoration:none;font-size:19px;font-weight:900}
+.back{position:absolute;left:22px;top:24px;z-index:3;padding:13px 20px;border-radius:999px;background:linear-gradient(180deg,rgba(9,46,111,.96),rgba(2,18,55,.96));border:2px solid rgba(255,230,109,.82);color:#fff;text-decoration:none;font-size:22px;font-weight:1000;letter-spacing:.7px;box-shadow:0 5px 16px rgba(0,0,0,.35),0 0 16px rgba(255,230,109,.2);cursor:pointer}
+.back:active{transform:scale(.96)}
 .msg{position:absolute;left:23%;right:23%;top:95.2%;text-align:center;color:#fff7c2;font-size:14px;font-weight:900;text-shadow:0 2px 5px #000;min-height:18px}
 #game{position:fixed;inset:0;width:100%;height:100%;border:0;display:none;background:#07142f;z-index:5}
 </style>
@@ -25,7 +26,7 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#07142f;fon
 <div class="cover" id="cover">
  <div class="stage" id="stage">
   <img class="art" src="703-combinacao-de-vocabulario-nova-capa.png" alt="Capa do jogo Combinação de Vocabulário">
-  <a class="back" href="index_turma_703_english_game_hub.html">← Hub</a>
+  <button class="back" type="button" onclick="location.reload()">← VOLTAR</button>
   <input id="n" class="field" autocomplete="name" aria-label="Nome do aluno">
   <input id="s" class="field" autocomplete="organization" aria-label="Escola">
   <input id="c" class="field" aria-label="Turma" inputmode="numeric">
