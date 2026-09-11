@@ -33,7 +33,7 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#07142f;fon
   <div class="msg" id="msg"></div>
  </div>
 </div>
-<iframe id="game" src="703-quanticompare-challenge-core.html?v=35" title="Combinação de Vocabulário"></iframe>
+<iframe id="game" src="703-quanticompare-challenge-core.html?v=36" title="Combinação de Vocabulário"></iframe>
 <script>
 const BASE_W=941,BASE_H=1672,stage=document.getElementById('stage'),frame=document.getElementById('game');
 let ready=false,pending=false;
@@ -56,8 +56,8 @@ function optimizeGameLayout(){
    .status{font-size:15px!important;min-height:22px!important;margin-bottom:8px!important}
    .board{display:grid!important;grid-template-columns:1fr 1fr!important;gap:9px!important;flex:1 1 auto!important;height:100%!important;min-height:0!important;align-content:center!important}
    .col{display:flex!important;flex-direction:column!important;justify-content:center!important;gap:8px!important;height:100%!important;min-height:0!important}
-   .word{min-height:0!important;height:calc((100% - 72px)/10)!important;flex:0 0 calc((100% - 72px)/10)!important;font-size:clamp(14px,4vw,18px)!important;line-height:1.18!important;padding:7px 6px!important;display:flex!important;align-items:center!important;justify-content:center!important;text-align:center!important}
-   @media(max-height:720px){.app{padding:6px!important;gap:6px!important}.col{gap:5px!important}.word{height:calc((100% - 45px)/10)!important;flex-basis:calc((100% - 45px)/10)!important;font-size:12px!important;padding:5px!important}.pill{font-size:12px!important;padding:7px 2px!important}.status{font-size:13px!important}#phaseTitle{font-size:20px!important}.card{padding:8px!important}}
+   .word{min-height:0!important;height:58px!important;min-height:58px!important;max-height:58px!important;flex:0 0 58px!important;font-size:clamp(15px,4.2vw,19px)!important;line-height:1.2!important;padding:8px 7px!important;display:flex!important;align-items:center!important;justify-content:center!important;text-align:center!important}
+   @media(max-height:720px){.app{padding:6px!important;gap:6px!important}.col{gap:5px!important}.word{height:52px!important;min-height:52px!important;max-height:52px!important;flex-basis:52px!important;font-size:13px!important;padding:6px!important}.pill{font-size:12px!important;padding:7px 2px!important}.status{font-size:13px!important}#phaseTitle{font-size:20px!important}.card{padding:8px!important}}
   `;
  }catch(e){}
 }
@@ -74,12 +74,13 @@ function openGame(){
  pending=false;
  const w=frame.contentWindow,d=w.document;
  const values={name:document.getElementById('n').value.trim(),school:document.getElementById('s').value.trim(),klass:document.getElementById('c').value.trim()};
- const map={'name':'name','school':'school','klass':'klass'};
+ const map={'name': 'name', 'school': 'school', 'klass': 'klass'};
  Object.entries(map).forEach(([k,id])=>{const e=d.getElementById(id);if(e)e.value=values[k]});
  let started=false;
- if(typeof w.startWithPlayer==='function'){started=w.startWithPlayer(values.name,values.school,values.klass)!==false}
- if(!started&&typeof w.startGame==='function'){w.startGame();started=true}
- if(started){document.getElementById('cover').style.display='none';frame.style.display='block';setTimeout(optimizeGameLayout,80);setTimeout(optimizeGameLayout,350)}
+ if(typeof w.startWithPlayer==='function'){w.startWithPlayer(values.name,values.school,values.klass);started=true}
+ if(!started){for(const fn of ['startGame']){if(typeof w[fn]==='function'){w[fn]();started=true;break}}}
+ if(!started){const b=d.querySelector('.cover-start-action,.start-btn,button[onclick*="start"],button[onclick*="restart"]');if(b){b.click();started=true}}
+ if(started){document.getElementById('cover').style.display='none';frame.style.display='block'}
  else document.getElementById('msg').textContent='Não foi possível iniciar. Toque novamente.';
 }
 document.getElementById('startBtn').addEventListener('click',openGame);
