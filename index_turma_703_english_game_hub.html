@@ -5,53 +5,184 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#053a67">
 <title>English Game Hub — Turma 703</title>
-<meta name="description" content="English Game Hub da Turma 703 — Escola Municipal Princesa Izabel. Jogos elaborados pelo professor Jasson Bruno.">
+<meta name="description" content="Central de jogos de inglês da Turma 703 da Escola Municipal Princesa Izabel.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="English Game Hub — Turma 703">
-<meta property="og:description" content="Aprenda inglês jogando! Game Hub da Turma 703 — Escola Municipal Princesa Izabel.">
+<meta property="og:description" content="Acesse os jogos de inglês da Turma 703.">
+<meta property="og:image" content="https://jassonbruno-tech.github.io/english-game-hub/703-game-hub-portugues-final.png">
 <meta property="og:url" content="https://jassonbruno-tech.github.io/english-game-hub/index_turma_703_english_game_hub.html">
-<meta property="og:image" content="https://jassonbruno-tech.github.io/english-game-hub/703-game-hub-final-princesa-izabel.png">
-<meta property="og:image:alt" content="English Game Hub da Turma 703 — Escola Municipal Princesa Izabel">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="English Game Hub — Turma 703">
-<meta name="twitter:description" content="Aprenda inglês jogando! Turma 703 — Escola Municipal Princesa Izabel.">
-<meta name="twitter:image" content="https://jassonbruno-tech.github.io/english-game-hub/703-game-hub-final-princesa-izabel.png">
+<meta name="twitter:description" content="Acesse os jogos de inglês da Turma 703.">
+<meta name="twitter:image" content="https://jassonbruno-tech.github.io/english-game-hub/703-game-hub-portugues-final.png">
 <style>
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;background:#031d3a}
-body{min-height:100dvh;display:flex;justify-content:center;background:radial-gradient(circle at 50% 0%,rgba(0,196,255,.18),transparent 34%),linear-gradient(180deg,#021a38,#06134f)}
-.hub{position:relative;width:min(100vw,941px);margin:0 auto;line-height:0;overflow:hidden;background:#063c76}
-.hub-image{display:block;width:100%;height:auto;user-select:none;-webkit-user-drag:none}
-.game-hotspot{position:absolute;left:14.3%;width:66.8%;height:7%;z-index:5;border-radius:999px;text-decoration:none;cursor:pointer;background:rgba(2,14,48,.48);outline:none;overflow:hidden;animation:hubPulse 1.8s ease-in-out infinite;transition:transform .14s ease,filter .14s ease,box-shadow .14s ease;display:flex;align-items:center;justify-content:center}
-.game-hotspot::before{content:"";position:absolute;inset:3%;border-radius:999px;border:3px solid rgba(255,255,255,.58);box-shadow:0 0 15px rgba(74,222,255,.72),0 0 34px rgba(74,222,255,.52),inset 0 0 14px rgba(255,255,255,.2);animation:hubGlow 1.8s ease-in-out infinite;pointer-events:none}
-.game-hotspot::after{content:"";position:absolute;top:-40%;bottom:-40%;left:-28%;width:22%;transform:skewX(-20deg);background:linear-gradient(90deg,transparent,rgba(255,255,255,.92),transparent);filter:blur(1px);animation:hubShine 2.6s ease-in-out infinite;pointer-events:none}
-.hotspot-label{position:relative;z-index:2;display:block;padding:0 14px;color:#fff;font-weight:1000;font-size:clamp(14px,3.1vw,28px);line-height:1;text-align:center;text-transform:uppercase;letter-spacing:.4px;text-shadow:0 2px 6px rgba(0,0,0,.9),0 0 12px rgba(0,225,255,.7)}
-.game-hotspot:hover,.game-hotspot:focus-visible{transform:scale(1.035);filter:brightness(1.2);box-shadow:0 0 0 3px rgba(255,255,255,.92),0 0 38px rgba(74,222,255,.95)}
-.game-hotspot:active{transform:scale(.965)}
-.g1{top:46.70%;animation-delay:0s}.g2{top:54.35%;animation-delay:.18s}.g3{top:62.05%;animation-delay:.36s}.g4{top:69.72%;animation-delay:.54s}.g5{top:77.42%;animation-delay:.72s}
-.g1::before,.g1::after{animation-delay:0s}.g2::before,.g2::after{animation-delay:.22s}.g3::before,.g3::after{animation-delay:.44s}.g4::before,.g4::after{animation-delay:.66s}.g5::before,.g5::after{animation-delay:.88s}
-@keyframes hubPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.027)}}
-@keyframes hubGlow{0%,100%{opacity:.48;box-shadow:0 0 10px rgba(74,222,255,.4),0 0 24px rgba(74,222,255,.34),inset 0 0 9px rgba(255,255,255,.12)}50%{opacity:1;box-shadow:0 0 20px rgba(255,255,255,.9),0 0 44px rgba(74,222,255,.95),0 0 68px rgba(168,85,247,.5),inset 0 0 18px rgba(255,255,255,.28)}}
-@keyframes hubShine{0%,34%{left:-30%;opacity:0}45%{opacity:1}68%{left:110%;opacity:.8}76%,100%{left:110%;opacity:0}}
-.load-error{display:none;min-height:100dvh;padding:28px 18px;color:#fff;text-align:center;line-height:1.5;background:linear-gradient(180deg,#073b74,#071a48)}
-.load-error.show{display:flex;align-items:center;justify-content:center}
-.load-error div{width:min(100%,480px);padding:22px;border-radius:20px;background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.18)}
-.load-error b{color:#ffe66d}
-@media(max-width:520px){.hotspot-label{font-size:clamp(12px,4.6vw,19px);padding:0 8px}}
-@media(min-width:942px){.hub{margin:14px auto;border-radius:24px;box-shadow:0 25px 65px rgba(0,0,0,.48)}}
-@media(prefers-reduced-motion:reduce){.game-hotspot,.game-hotspot::before,.game-hotspot::after{animation:none!important}}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;background:#031d3a}
+  body{
+    min-height:100dvh;
+    display:flex;
+    justify-content:center;
+    background:
+      radial-gradient(circle at 50% 0%,rgba(0,196,255,.18),transparent 34%),
+      linear-gradient(180deg,#021a38,#06134f);
+  }
+
+  .hub{
+    position:relative;
+    width:min(100vw, 941px);
+    margin:0 auto;
+    line-height:0;
+    overflow:hidden;
+    background:#063c76;
+  }
+
+  .hub-image{
+    display:block;
+    width:100%;
+    height:auto;
+    user-select:none;
+    -webkit-user-drag:none;
+  }
+
+  /* Cada área abaixo fica exatamente sobre um botão desenhado na imagem. */
+  .game-hotspot{
+    position:absolute;
+    left:14.3%;
+    width:66.8%;
+    height:7.0%;
+    z-index:5;
+    border-radius:999px;
+    text-decoration:none;
+    cursor:pointer;
+    background:rgba(255,255,255,0);
+    outline:none;
+    transition:background .16s ease,box-shadow .16s ease,transform .12s ease;
+  }
+
+  .game-hotspot:hover,
+  .game-hotspot:focus-visible{
+    background:rgba(255,255,255,.08);
+    box-shadow:0 0 0 3px rgba(255,255,255,.9),0 0 28px rgba(74,222,255,.85);
+  }
+
+  .game-hotspot:active{transform:scale(.985)}
+
+  /* Posições relativas à arte vertical 941 × 1672. */
+  .g1{top:46.70%}
+  .g2{top:54.35%}
+  .g3{top:62.05%}
+  .g4{top:69.72%}
+  .g5{top:77.42%}
+
+  .sr-only{
+    position:absolute!important;
+    width:1px!important;height:1px!important;
+    padding:0!important;margin:-1px!important;
+    overflow:hidden!important;clip:rect(0,0,0,0)!important;
+    white-space:nowrap!important;border:0!important;
+  }
+
+  .load-error{
+    display:none;
+    min-height:100dvh;
+    padding:28px 18px;
+    color:#fff;
+    text-align:center;
+    line-height:1.5;
+    background:linear-gradient(180deg,#073b74,#071a48);
+  }
+  .load-error.show{display:flex;align-items:center;justify-content:center}
+  .load-error div{
+    width:min(100%,480px);
+    padding:22px;
+    border-radius:20px;
+    background:rgba(0,0,0,.25);
+    border:1px solid rgba(255,255,255,.18);
+  }
+  .load-error b{color:#ffe66d}
+
+  @media (min-width:942px){
+    .hub{
+      margin:14px auto;
+      border-radius:24px;
+      box-shadow:0 25px 65px rgba(0,0,0,.48);
+    }
+  }
 </style>
 </head>
 <body>
+
 <main id="hub" class="hub" aria-label="English Game Hub da Turma 703">
-<img id="hubImage" class="hub-image" src="703-game-hub-final-princesa-izabel.png" alt="English Game Hub — Turma 703 — Escola Municipal Princesa Izabel. Jogos elaborados pelo professor Jasson Bruno.">
-<a class="game-hotspot g1" href="703-quanticompare-challenge.html" aria-label="Jogar Combinação de Vocabulário" title="Combinação de Vocabulário"><span class="hotspot-label">Combinação de Vocabulário</span></a>
-<a class="game-hotspot g2" href="703-quanticompare-hangman.html" aria-label="Jogar Jogo da Forca" title="Jogo da Forca"><span class="hotspot-label">Jogo da Forca</span></a>
-<a class="game-hotspot g3" href="703-english-spin-and-answer.html" aria-label="Jogar Roleta do Inglês" title="Roleta do Inglês"><span class="hotspot-label">Roleta do Inglês</span></a>
-<a class="game-hotspot g4" href="703-english-voice-challenge.html" aria-label="Jogar Desafio de Pronúncia" title="Desafio de Pronúncia"><span class="hotspot-label">Desafio de Pronúncia</span></a>
-<a class="game-hotspot g5" href="703-show-do-milhao.html" aria-label="Jogar Show do Milhão" title="Show do Milhão"><span class="hotspot-label">Show do Milhão</span></a>
+  <img
+    id="hubImage"
+    class="hub-image"
+    src="703-game-hub-portugues-final.png"
+    alt="English Game Hub da Turma 703 da Escola Municipal Princesa Izabel, com os jogos Roleta do Inglês, Jogo da Forca, Combinação de Vocabulário, Desafio de Pronúncia e Show do Milhão."
+  >
+
+  <a class="game-hotspot g1"
+     href="703-quanticompare-challenge.html"
+     aria-label="Jogar Combinação de Vocabulário"
+     title="Combinação de Vocabulário">
+    <span class="sr-only">Combinação de Vocabulário</span>
+  </a>
+
+  <a class="game-hotspot g2"
+     href="703-quanticompare-hangman.html"
+     aria-label="Jogar Jogo da Forca"
+     title="Jogo da Forca">
+    <span class="sr-only">Jogo da Forca</span>
+  </a>
+
+  <a class="game-hotspot g3"
+     href="703-english-spin-and-answer.html"
+     aria-label="Jogar Roleta do Inglês"
+     title="Roleta do Inglês">
+    <span class="sr-only">Roleta do Inglês</span>
+  </a>
+
+  <a class="game-hotspot g4"
+     href="703-english-voice-challenge.html"
+     aria-label="Jogar Desafio de Pronúncia"
+     title="Desafio de Pronúncia">
+    <span class="sr-only">Desafio de Pronúncia</span>
+  </a>
+
+  <a class="game-hotspot g5"
+     href="703-show-do-milhao.html"
+     aria-label="Jogar Show do Milhão"
+     title="Show do Milhão">
+    <span class="sr-only">Show do Milhão</span>
+  </a>
 </main>
-<section id="loadError" class="load-error" aria-live="polite"><div><h1>English Game Hub — Turma 703</h1><p>A imagem principal não foi carregada.</p><p>Verifique se o arquivo <b>703-game-hub-final-princesa-izabel.png</b> está no mesmo diretório deste HTML.</p></div></section>
-<script>(function(){const img=document.getElementById('hubImage');const hub=document.getElementById('hub');const error=document.getElementById('loadError');img.addEventListener('error',function(){hub.style.display='none';error.classList.add('show')});img.addEventListener('load',function(){if(!img.naturalWidth||!img.naturalHeight){hub.style.display='none';error.classList.add('show')}})})();</script>
+
+<section id="loadError" class="load-error" aria-live="polite">
+  <div>
+    <h1>English Game Hub — Turma 703</h1>
+    <p>A imagem principal não foi carregada.</p>
+    <p>Verifique se o arquivo <b>703-game-hub-portugues-final.png</b> está no mesmo diretório deste HTML.</p>
+  </div>
+</section>
+
+<script>
+(function(){
+  const img = document.getElementById("hubImage");
+  const hub = document.getElementById("hub");
+  const error = document.getElementById("loadError");
+
+  img.addEventListener("error", function(){
+    hub.style.display = "none";
+    error.classList.add("show");
+  });
+
+  // Também detecta arquivos inválidos/quebrados que o navegador não consiga renderizar.
+  img.addEventListener("load", function(){
+    if(!img.naturalWidth || !img.naturalHeight){
+      hub.style.display = "none";
+      error.classList.add("show");
+    }
+  });
+})();
+</script>
 </body>
 </html>
