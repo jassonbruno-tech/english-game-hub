@@ -33,7 +33,7 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#07142f;fon
   <div class="msg" id="msg"></div>
  </div>
 </div>
-<iframe id="game" src="703-quanticompare-challenge-core.html?v=34" title="Combinação de Vocabulário"></iframe>
+<iframe id="game" src="703-quanticompare-challenge-core.html?v=35" title="Combinação de Vocabulário"></iframe>
 <script>
 const BASE_W=941,BASE_H=1672,stage=document.getElementById('stage'),frame=document.getElementById('game');
 let ready=false,pending=false;
@@ -47,7 +47,7 @@ function optimizeGameLayout(){
   st.textContent=`
    html,body{height:100%!important;min-height:100%!important;overflow:hidden!important}
    body{height:100dvh!important;min-height:100dvh!important;display:flex!important;align-items:center!important;justify-content:center!important}
-   .app{width:100%!important;max-width:none!important;height:100dvh!important;min-height:100dvh!important;padding:calc(env(safe-area-inset-top,0px) + 10px) 10px calc(env(safe-area-inset-bottom,0px) + 10px)!important;display:flex!important;flex-direction:column!important;justify-content:center!important;gap:10px!important;overflow:hidden!important}
+   .app{width:100%!important;max-width:none!important;height:100dvh!important;min-height:100dvh!important;padding:calc(env(safe-area-inset-top,0px) + 8px) 8px calc(env(safe-area-inset-bottom,0px) + 8px)!important;display:flex!important;flex-direction:column!important;justify-content:center!important;gap:8px!important;overflow:hidden!important}
    .game.active{display:flex!important;flex-direction:column!important;flex:1 1 auto!important;height:100%!important;min-height:0!important;justify-content:center!important}
    .hud{flex:0 0 auto!important;margin:0!important}
    .pill{font-size:14px!important;padding:10px 4px!important}
@@ -55,9 +55,9 @@ function optimizeGameLayout(){
    .card h2,#phaseTitle{font-size:clamp(21px,5.8vw,30px)!important;margin:0 0 6px!important}
    .status{font-size:15px!important;min-height:22px!important;margin-bottom:8px!important}
    .board{display:grid!important;grid-template-columns:1fr 1fr!important;gap:9px!important;flex:1 1 auto!important;height:100%!important;min-height:0!important;align-content:center!important}
-   .col{display:grid!important;gap:8px!important;height:100%!important;min-height:0!important;align-content:stretch!important}
-   .word{min-height:0!important;height:100%!important;font-size:clamp(13px,3.7vw,17px)!important;line-height:1.2!important;padding:8px 7px!important;display:flex!important;align-items:center!important;justify-content:center!important;text-align:center!important}
-   @media(max-height:720px){.app{padding:6px!important;gap:6px!important}.word{font-size:12px!important;padding:5px!important}.pill{font-size:12px!important;padding:7px 2px!important}.status{font-size:13px!important}#phaseTitle{font-size:20px!important}.card{padding:8px!important}}
+   .col{display:flex!important;flex-direction:column!important;justify-content:center!important;gap:8px!important;height:100%!important;min-height:0!important}
+   .word{min-height:0!important;height:calc((100% - 72px)/10)!important;flex:0 0 calc((100% - 72px)/10)!important;font-size:clamp(14px,4vw,18px)!important;line-height:1.18!important;padding:7px 6px!important;display:flex!important;align-items:center!important;justify-content:center!important;text-align:center!important}
+   @media(max-height:720px){.app{padding:6px!important;gap:6px!important}.col{gap:5px!important}.word{height:calc((100% - 45px)/10)!important;flex-basis:calc((100% - 45px)/10)!important;font-size:12px!important;padding:5px!important}.pill{font-size:12px!important;padding:7px 2px!important}.status{font-size:13px!important}#phaseTitle{font-size:20px!important}.card{padding:8px!important}}
   `;
  }catch(e){}
 }
