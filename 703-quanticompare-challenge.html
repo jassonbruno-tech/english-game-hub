@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>QuantiCompare Challenge — Turma 703</title>
+<title>Combinação de Vocabulário — Turma 703</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}:root{--bg:#07142f;--cyan:#00eaff;--purple:#7c3aed;--pink:#ec4899;--gold:#ffe66d;--green:#22c55e;--red:#ef4444}
 html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;color:#fff;background:radial-gradient(circle at top,#123b7a,#07142f 48%,#12052c)}
@@ -21,18 +21,101 @@ input{width:100%;padding:13px;border-radius:14px;border:2px solid #93c5fd;font-w
 .rank{display:grid;gap:6px;margin:10px 0}.row{display:grid;grid-template-columns:38px 1fr auto;gap:6px;background:#fff;color:#172033;border-radius:12px;padding:8px;align-items:center}.row.you{outline:3px solid #00eaff}.row.top{background:linear-gradient(135deg,#ffe66d,#fff7c2)}
 @media(max-height:720px){.word{min-height:43px;font-size:12px}.card{padding:9px}}
 </style>
+
+<style id="custom-cover-start-style">
+.cover-start-screen{padding:10px !important}
+.cover-start-shell{
+  width:min(100%,540px);
+  margin:0 auto;
+  border-radius:30px;
+  overflow:hidden;
+  background:linear-gradient(180deg,rgba(8,11,38,.98),rgba(12,7,52,.98));
+  border:1px solid rgba(255,255,255,.14);
+  box-shadow:0 18px 46px rgba(0,0,0,.34),0 0 0 1px rgba(255,255,255,.04) inset;
+}
+.cover-art{
+  width:100%;
+  aspect-ratio:9/15.6;
+  background-image:var(--cover);
+  background-size:cover;
+  background-position:center top;
+  background-repeat:no-repeat;
+}
+.cover-bottom{
+  padding:16px 16px 18px;
+  background:linear-gradient(180deg,rgba(8,11,38,.98),rgba(12,7,52,.98));
+}
+.cover-badge{
+  display:inline-block;
+  padding:7px 12px;
+  border-radius:999px;
+  background:rgba(255,230,109,.14);
+  border:1px solid rgba(255,230,109,.34);
+  color:#fff3b0;
+  font-size:12px;
+  font-weight:1000;
+  margin-bottom:10px;
+}
+.cover-caption{
+  margin:0 0 12px;
+  color:#e8eeff;
+  font-size:13px;
+  line-height:1.38;
+  font-weight:800;
+}
+.cover-form{display:grid;gap:8px;text-align:left}
+.cover-form label{font-size:12px;font-weight:1000;color:#fff6c5;letter-spacing:.2px}
+.cover-form input{
+  width:100%;padding:12px 13px;border-radius:14px;border:1px solid rgba(255,255,255,.16);
+  background:rgba(255,255,255,.96);color:#172033;font-size:15px;font-weight:800;outline:none;
+}
+.cover-form input:focus{border-color:#60a5fa;box-shadow:0 0 0 3px rgba(96,165,250,.18)}
+.cover-actions{display:grid;gap:9px;margin-top:12px}
+.cover-start-btn,.cover-back-link{
+  display:block;width:100%;padding:13px 14px;border-radius:16px;border:0;text-decoration:none;text-align:center;
+  font-weight:1000;font-size:15px;cursor:pointer;
+}
+.cover-start-btn{background:linear-gradient(135deg,#ffe66d,#22c55e);color:#172033;box-shadow:0 10px 22px rgba(0,0,0,.22)}
+.cover-back-link{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#fff}
+.cover-footer{margin-top:10px;text-align:center;font-size:11px;font-weight:900;color:#d9e2ff}
+@media(min-width:760px){.cover-start-shell{width:min(100%,560px)}.cover-bottom{padding:18px 20px 20px}.cover-caption{font-size:14px}}
+@media(max-width:430px){.cover-start-screen{padding:6px !important}.cover-start-shell{border-radius:22px}.cover-bottom{padding:14px 12px 16px}.cover-caption{font-size:12.5px}}
+</style>
+
 </head>
 <body>
 <main class="app">
-<section id="start" class="screen active"><div class="card">
-<h1>QuantiCompare<br>Challenge</h1><p class="sub">Encontre os pares. Cada partida traz combinações diferentes para você continuar praticando sem decorar.</p>
-<div class="teacher">Turma 703 • Escola Municipal Princesa Izabel<br>Jogos elaborados pelo professor Jasson Bruno</div>
-<label>Nome</label><input id="name" placeholder="Digite seu nome"><label>Turma</label><input id="klass" value="703"><label>Escola</label><input id="school" value="Escola Municipal Princesa Izabel">
-<button class="btn" onclick="startGame()">COMEÇAR 🎯</button></div></section>
-<section id="game" class="screen"><div class="hud"><div class="pill" id="phaseHud">Fase 1</div><div class="pill" id="livesHud">❤️❤️❤️❤️❤️</div><div class="pill" id="progressHud">0/10</div></div><div class="card"><h2 id="phaseTitle" style="text-align:center;margin:0 0 6px">Fase 1</h2><div class="status" id="status">Escolha um item em inglês e encontre o par.</div><div class="board"><div class="col" id="enCol"></div><div class="col" id="ptCol"></div></div></div></section>
+<section id="start" class="screen active cover-start-screen">
+  <div class="cover-start-shell" style="--cover:url('703-combinacao-de-vocabulario-cover.png')">
+    <div class="cover-art" role="img" aria-label="Capa do jogo"></div>
+    <div class="cover-bottom">
+      <div class="cover-badge">Turma 703 • Escola Municipal Princesa Izabel</div>
+      <p class="cover-caption">Preencha seus dados e toque em COMEÇAR para encontrar pares de palavras, frases e traduções em novas combinações.</p>
+      <div class="cover-form">
+        <label>Nome do aluno</label><input id="name" placeholder="Digite seu nome">
+<label>Turma</label><input id="klass" value="703">
+<label>Escola</label><input id="school" value="Escola Municipal Princesa Izabel">
+      </div>
+      <div class="cover-actions">
+        <button class="cover-start-btn" onclick="startGame()">COMEÇAR 🧩</button>
+        <a class="cover-back-link" href="index_turma_703_english_game_hub.html">← Voltar ao Game Hub</a>
+      </div>
+      <div class="cover-footer">Jogos elaborados pelo professor Jasson Bruno.</div>
+    </div>
+  </div>
+</section>
+
+<section id="game" class="screen">
+<div class="hud"><div class="pill" id="phaseHud">Fase 1</div><div class="pill" id="livesHud">❤️❤️❤️❤️❤️</div><div class="pill" id="progressHud">0/10</div></div>
+<div class="card"><h2 id="phaseTitle" style="text-align:center;margin:0 0 6px">Fase 1</h2><div class="status" id="status">Escolha um item em inglês e encontre o par.</div>
+<div class="board"><div class="col" id="enCol"></div><div class="col" id="ptCol"></div></div></div>
+</section>
+
 <section id="end" class="screen"><div class="card"><h1>🏆 Resultado</h1><p class="sub" id="finalText"></p><h2 style="text-align:center;color:var(--gold)">Ranking REAL — Turma 703</h2><div id="ranking" class="rank">Carregando...</div><a class="btn" href="703-ranking.html">🏆 RANKING GERAL DA TURMA 703</a><br><a class="btn" href="index_turma_703_english_game_hub.html">VOLTAR AO HUB</a></div></section>
 </main>
+
 <div id="overlay" class="overlay"><div id="modal" class="modal"><div id="icon" class="big">🏆</div><h2 id="ovTitle">LEVEL COMPLETE!</h2><p id="ovText"></p><button id="ovBtn" class="btn">PRÓXIMA FASE 🚀</button></div></div>
+
 <script>
 const GAME_NAME="703-quanticompare-challenge", MAX_LIVES=5, PAIRS_TO_WIN=10;
 const BANKS=[{"level":1,"title":"Fase 1","pairs":[{"id":"Q1-01","en":"mother","pt":"mãe"},{"id":"Q1-02","en":"father","pt":"pai"},{"id":"Q1-03","en":"sister","pt":"irmã"},{"id":"Q1-04","en":"brother","pt":"irmão"},{"id":"Q1-05","en":"aunt","pt":"tia"},{"id":"Q1-06","en":"uncle","pt":"tio"},{"id":"Q1-07","en":"cousin","pt":"primo/prima"},{"id":"Q1-08","en":"family","pt":"família"},{"id":"Q1-09","en":"parents","pt":"pais"},{"id":"Q1-10","en":"now","pt":"agora"},{"id":"Q1-11","en":"many","pt":"muitos/muitas"},{"id":"Q1-12","en":"most","pt":"a maioria"},{"id":"Q1-13","en":"some","pt":"alguns/algumas"},{"id":"Q1-14","en":"a few","pt":"alguns poucos"},{"id":"Q1-15","en":"taller","pt":"mais alto"},{"id":"Q1-16","en":"older","pt":"mais velho"},{"id":"Q1-17","en":"younger","pt":"mais jovem"},{"id":"Q1-18","en":"better","pt":"melhor"}]},{"level":2,"title":"Fase 2","pairs":[{"id":"Q2-01","en":"grandmother","pt":"avó"},{"id":"Q2-02","en":"grandfather","pt":"avô"},{"id":"Q2-03","en":"I live with...","pt":"Eu moro com..."},{"id":"Q2-04","en":"My family is big.","pt":"Minha família é grande."},{"id":"Q2-05","en":"My family is small.","pt":"Minha família é pequena."},{"id":"Q2-06","en":"What are you doing?","pt":"O que você está fazendo?"},{"id":"Q2-07","en":"Where are they?","pt":"Onde eles estão?"},{"id":"Q2-08","en":"Who is she?","pt":"Quem é ela?"},{"id":"Q2-09","en":"studying","pt":"estudando"},{"id":"Q2-10","en":"reading","pt":"lendo"},{"id":"Q2-11","en":"cooking","pt":"cozinhando"},{"id":"Q2-12","en":"playing","pt":"jogando"},{"id":"Q2-13","en":"all","pt":"todos/todas"},{"id":"Q2-14","en":"not many","pt":"não muitos/poucos"},{"id":"Q2-15","en":"bigger","pt":"maior"},{"id":"Q2-16","en":"smaller","pt":"menor"},{"id":"Q2-17","en":"easier","pt":"mais fácil"},{"id":"Q2-18","en":"worse","pt":"pior"}]},{"level":3,"title":"Fase 3","pairs":[{"id":"Q3-01","en":"my mother","pt":"minha mãe"},{"id":"Q3-02","en":"my father","pt":"meu pai"},{"id":"Q3-03","en":"my aunt","pt":"minha tia"},{"id":"Q3-04","en":"my uncle","pt":"meu tio"},{"id":"Q3-05","en":"I have two brothers.","pt":"Eu tenho dois irmãos."},{"id":"Q3-06","en":"I live with my parents.","pt":"Eu moro com meus pais."},{"id":"Q3-07","en":"What is he doing?","pt":"O que ele está fazendo?"},{"id":"Q3-08","en":"What is she doing?","pt":"O que ela está fazendo?"},{"id":"Q3-09","en":"They are playing.","pt":"Eles estão jogando."},{"id":"Q3-10","en":"She is reading.","pt":"Ela está lendo."},{"id":"Q3-11","en":"I am studying.","pt":"Eu estou estudando."},{"id":"Q3-12","en":"a lot of","pt":"muitos/muitas"},{"id":"Q3-13","en":"most students","pt":"a maioria dos alunos"},{"id":"Q3-14","en":"many books","pt":"muitos livros"},{"id":"Q3-15","en":"faster","pt":"mais rápido"},{"id":"Q3-16","en":"happier","pt":"mais feliz"},{"id":"Q3-17","en":"more difficult","pt":"mais difícil"},{"id":"Q3-18","en":"more interesting","pt":"mais interessante"}]},{"level":4,"title":"Fase 4","pairs":[{"id":"Q4-01","en":"my mother's brother","pt":"meu tio"},{"id":"Q4-02","en":"my father's mother","pt":"minha avó"},{"id":"Q4-03","en":"my aunt's daughter","pt":"minha prima"},{"id":"Q4-04","en":"We have dinner together.","pt":"Nós jantamos juntos."},{"id":"Q4-05","en":"My family is very close.","pt":"Minha família é muito unida."},{"id":"Q4-06","en":"Where is your brother?","pt":"Onde está seu irmão?"},{"id":"Q4-07","en":"Who is your cousin?","pt":"Quem é seu primo/prima?"},{"id":"Q4-08","en":"My mother is cooking.","pt":"Minha mãe está cozinhando."},{"id":"Q4-09","en":"My father is working.","pt":"Meu pai está trabalhando."},{"id":"Q4-10","en":"We are studying English.","pt":"Nós estamos estudando inglês."},{"id":"Q4-11","en":"all my cousins","pt":"todos os meus primos"},{"id":"Q4-12","en":"a few students","pt":"poucos alunos"},{"id":"Q4-13","en":"not many students","pt":"poucos alunos"},{"id":"Q4-14","en":"more beautiful","pt":"mais bonito"},{"id":"Q4-15","en":"more expensive","pt":"mais caro"},{"id":"Q4-16","en":"farther","pt":"mais distante"},{"id":"Q4-17","en":"Are they studying now?","pt":"Eles estão estudando agora?"},{"id":"Q4-18","en":"He is not sleeping.","pt":"Ele não está dormindo."}]},{"level":5,"title":"Fase 5","pairs":[{"id":"Q5-01","en":"my father's sister","pt":"minha tia"},{"id":"Q5-02","en":"my mother's father","pt":"meu avô"},{"id":"Q5-03","en":"my uncle's son","pt":"meu primo"},{"id":"Q5-04","en":"My family lives in Santarém.","pt":"Minha família mora em Santarém."},{"id":"Q5-05","en":"We spend time together.","pt":"Nós passamos tempo juntos."},{"id":"Q5-06","en":"Where are your cousins?","pt":"Onde estão seus primos?"},{"id":"Q5-07","en":"What is your brother doing?","pt":"O que seu irmão está fazendo?"},{"id":"Q5-08","en":"My parents are watching TV.","pt":"Meus pais estão assistindo TV."},{"id":"Q5-09","en":"Are they studying now?","pt":"Eles estão estudando agora?"},{"id":"Q5-10","en":"Most people in my family","pt":"A maioria das pessoas da minha família"},{"id":"Q5-11","en":"a lot of people","pt":"muitas pessoas"},{"id":"Q5-12","en":"some friends","pt":"alguns amigos"},{"id":"Q5-13","en":"This exercise is easier.","pt":"Este exercício é mais fácil."},{"id":"Q5-14","en":"This book is more difficult.","pt":"Este livro é mais difícil."},{"id":"Q5-15","en":"My English is better now.","pt":"Meu inglês está melhor agora."},{"id":"Q5-16","en":"Today is worse than yesterday.","pt":"Hoje está pior que ontem."},{"id":"Q5-17","en":"My sister is younger.","pt":"Minha irmã é mais jovem."},{"id":"Q5-18","en":"My brother is taller.","pt":"Meu irmão é mais alto."}]},{"level":6,"title":"Fase 6","pairs":[{"id":"Q6-01","en":"My uncle's daughter is my cousin.","pt":"A filha do meu tio é minha prima."},{"id":"Q6-02","en":"My grandparents are my parents' parents.","pt":"Meus avós são os pais dos meus pais."},{"id":"Q6-03","en":"My family is bigger than your family.","pt":"Minha família é maior que sua família."},{"id":"Q6-04","en":"Most people in my family live nearby.","pt":"A maioria das pessoas da minha família mora perto."},{"id":"Q6-05","en":"A few cousins are visiting us.","pt":"Poucos primos estão nos visitando."},{"id":"Q6-06","en":"What are your parents doing now?","pt":"O que seus pais estão fazendo agora?"},{"id":"Q6-07","en":"Where is your grandmother now?","pt":"Onde está sua avó agora?"},{"id":"Q6-08","en":"Who is talking to your mother?","pt":"Quem está falando com sua mãe?"},{"id":"Q6-09","en":"Most students are studying now.","pt":"A maioria dos alunos está estudando agora."},{"id":"Q6-10","en":"My mother is cooking and my father is working.","pt":"Minha mãe está cozinhando e meu pai está trabalhando."},{"id":"Q6-11","en":"All students are in the classroom.","pt":"Todos os alunos estão na sala."},{"id":"Q6-12","en":"A few students are reading now.","pt":"Poucos alunos estão lendo agora."},{"id":"Q6-13","en":"This activity is more difficult.","pt":"Esta atividade é mais difícil."},{"id":"Q6-14","en":"My sister is younger than my brother.","pt":"Minha irmã é mais jovem que meu irmão."},{"id":"Q6-15","en":"Today is better than yesterday.","pt":"Hoje está melhor que ontem."},{"id":"Q6-16","en":"This street is busier than that street.","pt":"Esta rua é mais movimentada que aquela."},{"id":"Q6-17","en":"My parents are working now.","pt":"Meus pais estão trabalhando agora."},{"id":"Q6-18","en":"Some cousins live far away.","pt":"Alguns primos moram longe."}]}];
@@ -45,20 +128,21 @@ function seen(){try{return JSON.parse(localStorage.getItem(histKey())||"[]")}cat
 function freshPairs(pool,n){const s=new Set(seen()),f=shuffle(pool.filter(x=>!s.has(x.id))),o=shuffle(pool.filter(x=>s.has(x.id))),c=[...f,...o].slice(0,n);try{localStorage.setItem(histKey(),JSON.stringify([...seen(),...c.map(x=>x.id)].filter((v,i,a)=>a.indexOf(v)===i).slice(-420)))}catch(e){}return c}
 function startGame(){const name=$("name").value.trim();if(!name)return alert("Digite o nome do aluno.");state={phase:0,lives:5,score:0,correct:0,selected:null,en:[],pt:[],player:{name,klass:$("klass").value||"703",school:$("school").value||"Escola Municipal Princesa Izabel"},phaseScore:0};startPhase()}
 function startPhase(){state.lives=5;state.phaseScore=0;const pairs=freshPairs(BANKS[state.phase].pairs,PAIRS_TO_WIN);state.en=shuffle(pairs.map(x=>({...x,side:"en"})));state.pt=shuffle(pairs.map(x=>({...x,side:"pt"})));render();show("game")}
-function render(){$("phaseHud").textContent=`Fase ${state.phase+1}/6`;$('livesHud').textContent='❤️'.repeat(state.lives)+'🖤'.repeat(MAX_LIVES-state.lives);$('progressHud').textContent=`${state.phaseScore}/${PAIRS_TO_WIN}`;$('phaseTitle').textContent=BANKS[state.phase].title;renderCol('enCol',state.en,'en');renderCol('ptCol',state.pt,'pt')}
-function renderCol(id,arr,side){const c=$(id);c.innerHTML='';arr.forEach(x=>{const b=document.createElement('button');b.className='word '+(side==='pt'?'pt':'');b.textContent=side==='en'?x.en:x.pt;b.onclick=()=>pick(x,b);c.appendChild(b)})}
-function pick(item,btn){if(!state.selected){state.selected={item,btn};btn.classList.add('sel');return}if(state.selected.item.side===item.side){state.selected.btn.classList.remove('sel');state.selected={item,btn};btn.classList.add('sel');return}const first=state.selected;state.selected=null;first.btn.classList.remove('sel');if(first.item.id===item.id){first.btn.classList.add('ok');btn.classList.add('ok');state.score+=10;state.correct++;state.phaseScore++;state.en=state.en.filter(x=>x.id!==item.id);state.pt=state.pt.filter(x=>x.id!==item.id);$('status').textContent='✅ Par correto!';setTimeout(()=>{if(state.phaseScore>=PAIRS_TO_WIN)phaseWin();else render()},350)}else{state.lives--;first.btn.classList.add('bad');btn.classList.add('bad');$('status').textContent='❌ Não combina. Tente novamente.';render();if(state.lives<=0)setTimeout(()=>phaseLose(),250)}}
-function phaseWin(){const last=state.phase===5;showOverlay('victory',last?'Você concluiu todas as fases!':`Você concluiu a Fase ${state.phase+1} e liberou a próxima.`,last?'VER RANKING 🏆':`COMEÇAR FASE ${state.phase+2} 🚀`,()=>{if(last)finish();else{state.phase++;startPhase()}})}
-function phaseLose(){showOverlay('try',`Você ficou sem vidas na Fase ${state.phase+1}. Tente novamente com novas combinações.`,`TENTAR FASE ${state.phase+1} NOVAMENTE 🔁`,()=>startPhase())}
-function showOverlay(kind,text,label,fn){$('overlay').classList.add('show');$('modal').style.boxShadow=kind==='victory'?'0 0 45px rgba(34,197,94,.4)':'0 0 45px rgba(239,68,68,.38)';$('icon').textContent=kind==='victory'?'🏆✨':'💪❤️';$('ovTitle').textContent=kind==='victory'?'LEVEL COMPLETE!':'TRY AGAIN!';$('ovText').textContent=text;$('ovBtn').textContent=label;$('ovBtn').onclick=()=>{$('overlay').classList.remove('show');fn()}}
-function finish(){const points=Math.round((state.correct/(PAIRS_TO_WIN*6))*100);$('finalText').textContent=`${state.player.name}, você fez ${points} pontos para o ranking.`;show('end');if(window.salvarPontuacao)window.salvarPontuacao(state.player.name,points,GAME_NAME,state.player.school,state.player.klass);if(window.carregarRanking)window.carregarRanking(GAME_NAME,'ranking',state.player.name,state.player.school)}
+function render(){$("phaseHud").textContent=`Fase ${state.phase+1}/6`;$("livesHud").textContent="❤️".repeat(state.lives)+"🖤".repeat(MAX_LIVES-state.lives);$("progressHud").textContent=`${state.phaseScore}/${PAIRS_TO_WIN}`;$("phaseTitle").textContent=BANKS[state.phase].title;renderCol("enCol",state.en,"en");renderCol("ptCol",state.pt,"pt")}
+function renderCol(id,arr,side){const c=$(id);c.innerHTML="";arr.forEach(x=>{const b=document.createElement("button");b.className="word "+(side==="pt"?"pt":"");b.textContent=side==="en"?x.en:x.pt;b.onclick=()=>pick(x,b);c.appendChild(b)})}
+function pick(item,btn){if(!state.selected){state.selected={item,btn};btn.classList.add("sel");return}if(state.selected.item.side===item.side){state.selected.btn.classList.remove("sel");state.selected={item,btn};btn.classList.add("sel");return}const first=state.selected;state.selected=null;first.btn.classList.remove("sel");if(first.item.id===item.id){first.btn.classList.add("ok");btn.classList.add("ok");state.score+=10;state.correct++;state.phaseScore++;state.en=state.en.filter(x=>x.id!==item.id);state.pt=state.pt.filter(x=>x.id!==item.id);$("status").textContent="✅ Par correto!";setTimeout(()=>{if(state.phaseScore>=PAIRS_TO_WIN)phaseWin();else render()},350)}else{state.lives--;first.btn.classList.add("bad");btn.classList.add("bad");$("status").textContent="❌ Não combina. Tente novamente.";render();if(state.lives<=0)setTimeout(()=>phaseLose(),250)}}
+function phaseWin(){const last=state.phase===5;showOverlay("victory",last?`Você concluiu todas as fases!`:`Você concluiu a Fase ${state.phase+1} e liberou a próxima.`,last?"VER RANKING 🏆":`COMEÇAR FASE ${state.phase+2} 🚀`,()=>{if(last)finish();else{state.phase++;startPhase()}})}
+function phaseLose(){showOverlay("try",`Você ficou sem vidas na Fase ${state.phase+1}. Tente novamente com novas combinações.`,`TENTAR FASE ${state.phase+1} NOVAMENTE 🔁`,()=>startPhase())}
+function showOverlay(kind,text,label,fn){$("overlay").classList.add("show");$("modal").style.boxShadow=kind==="victory"?"0 0 45px rgba(34,197,94,.4)":"0 0 45px rgba(239,68,68,.38)";$("icon").textContent=kind==="victory"?"🏆✨":"💪❤️";$("ovTitle").textContent=kind==="victory"?"LEVEL COMPLETE!":"TRY AGAIN!";$("ovText").textContent=text;$("ovBtn").textContent=label;$("ovBtn").onclick=()=>{$("overlay").classList.remove("show");fn()}}
+function finish(){const points=Math.round((state.correct/(PAIRS_TO_WIN*6))*100);$("finalText").textContent=`${state.player.name}, você fez ${points} pontos para o ranking.`;show("end");if(window.salvarPontuacao)window.salvarPontuacao(state.player.name,points,GAME_NAME,state.player.school,state.player.klass);if(window.carregarRanking)window.carregarRanking(GAME_NAME,"ranking",state.player.name,state.player.school)}
 </script>
+
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
 import {getFirestore,collection,addDoc,serverTimestamp,query,limit,onSnapshot} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 const app=initializeApp({apiKey:"AIzaSyCVTR3nnyo5mYTF28TJisgTUe-Xyjk1upg",authDomain:"english-game-hub.firebaseapp.com",projectId:"english-game-hub",storageBucket:"english-game-hub.firebasestorage.app",messagingSenderId:"131880771426",appId:"1:131880771426:web:cf29a6f34ca86be527d63b"});
 const db=getFirestore(app);
-window.salvarPontuacao=async function(nome,pontos,jogo,escola,turma){try{await addDoc(collection(db,'pontuacoes'),{nome:String(nome).slice(0,24),pontos:Number(pontos)||0,jogo,escola,turma:turma||'703',tipo:'real',timestamp:serverTimestamp()})}catch(e){console.error(e)}};
-window.carregarRanking=function(jogo,containerId,currentName,currentSchool){const box=document.getElementById(containerId);if(!box)return;const q=query(collection(db,'pontuacoes'),limit(700));onSnapshot(q,snap=>{const map=new Map();snap.forEach(d=>{const x=d.data();if(x.jogo!==jogo)return;const key=(x.nome||'').toLowerCase()+'|'+(x.escola||'').toLowerCase();const prev=map.get(key);if(!prev||Number(x.pontos)>prev.pontos)map.set(key,{nome:x.nome,escola:x.escola,pontos:Number(x.pontos)||0})});const arr=[...map.values()].sort((a,b)=>b.pontos-a.pontos);box.innerHTML='';arr.slice(0,10).forEach((x,i)=>{const row=document.createElement('div');const you=x.nome?.toLowerCase()===String(currentName||'').toLowerCase()&&x.escola?.toLowerCase()===String(currentSchool||'').toLowerCase();row.className='row '+(i<3?'top ':'')+(you?'you':'');row.innerHTML=`<b>${i===0?'🥇':i===1?'🥈':i===2?'🥉':(i+1)+'º'}</b><span><strong>${x.nome}${you?' ⭐ Você':''}</strong><br><small>${x.escola||''}</small></span><strong>${x.pontos} pts</strong>`;box.appendChild(row)});if(!arr.length)box.textContent='Ainda não há pontuações.';})};
+window.salvarPontuacao=async function(nome,pontos,jogo,escola,turma){try{await addDoc(collection(db,"pontuacoes"),{nome:String(nome).slice(0,24),pontos:Number(pontos)||0,jogo,escola,turma:turma||"703",tipo:"real",timestamp:serverTimestamp()})}catch(e){console.error(e)}};
+window.carregarRanking=function(jogo,containerId,currentName,currentSchool){const box=document.getElementById(containerId);if(!box)return;const q=query(collection(db,"pontuacoes"),limit(700));onSnapshot(q,snap=>{const map=new Map();snap.forEach(d=>{const x=d.data();if(x.jogo!==jogo)return;const key=(x.nome||"").toLowerCase()+"|"+(x.escola||"").toLowerCase();const prev=map.get(key);if(!prev||Number(x.pontos)>prev.pontos)map.set(key,{nome:x.nome,escola:x.escola,pontos:Number(x.pontos)||0})});const arr=[...map.values()].sort((a,b)=>b.pontos-a.pontos);box.innerHTML="";arr.slice(0,10).forEach((x,i)=>{const row=document.createElement("div");const you=x.nome?.toLowerCase()===String(currentName||"").toLowerCase()&&x.escola?.toLowerCase()===String(currentSchool||"").toLowerCase();row.className="row "+(i<3?"top ":"")+(you?"you":"");row.innerHTML=`<b>${i===0?"🥇":i===1?"🥈":i===2?"🥉":(i+1)+"º"}</b><span><strong>${x.nome}${you?" ⭐ Você":""}</strong><br><small>${x.escola||""}</small></span><strong>${x.pontos} pts</strong>`;box.appendChild(row)});if(!arr.length)box.textContent="Ainda não há pontuações.";})};
 </script>
 </body></html>
