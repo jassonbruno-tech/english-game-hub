@@ -6,17 +6,83 @@
 <meta name="theme-color" content="#07142f">
 <title>Combinação de Vocabulário — Turma 703</title>
 <style>
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#07142f;font-family:Arial,Helvetica,sans-serif}.cover{position:fixed;inset:0;overflow:hidden;background:#07142f;z-index:10}.stage{position:absolute;left:50%;top:50%;width:941px;height:1672px;transform-origin:center center}.art{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;pointer-events:none;user-select:none;-webkit-user-drag:none}.field{position:absolute;left:31.5%;width:43.5%;height:3.05%;border:0;outline:0;background:transparent;color:#122b5e;font-weight:800;font-size:22px;line-height:1;padding:4px 14px;border-radius:999px}.field:focus{background:rgba(255,255,255,.13);box-shadow:0 0 0 4px rgba(255,201,42,.48)}#n{top:76.6%}#s{top:82.55%}#c{top:88.45%}.start{position:absolute;left:36%;top:92%;width:28%;height:2.9%;border:0;border-radius:999px;background:linear-gradient(180deg,#ffe66d,#ffb703);color:#07326b;font-size:18px;font-weight:1000;cursor:pointer;box-shadow:0 5px 14px rgba(0,0,0,.32)}.start:active{transform:scale(.97)}.back{position:absolute;left:22px;top:24px;z-index:3;padding:11px 17px;border-radius:999px;background:rgba(2,18,55,.62);border:1px solid rgba(255,255,255,.28);color:#fff;text-decoration:none;font-size:19px;font-weight:900}.msg{position:absolute;left:23%;right:23%;top:95.2%;text-align:center;color:#fff7c2;font-size:14px;font-weight:900;text-shadow:0 2px 5px #000;min-height:18px}#game{position:fixed;inset:0;width:100%;height:100%;border:0;display:none;background:#07142f;z-index:5}
-</style></head><body>
-<div class="cover" id="cover"><div class="stage" id="stage"><img class="art" src="703-combinacao-de-vocabulario-nova-capa.png" alt="Capa do jogo Combinação de Vocabulário"><a class="back" href="index_turma_703_english_game_hub.html">← Hub</a><input id="n" class="field" autocomplete="name" aria-label="Nome do aluno"><input id="s" class="field" autocomplete="organization" aria-label="Escola"><input id="c" class="field" aria-label="Turma" inputmode="numeric"><button id="startBtn" class="start" type="button">COMEÇAR ▶</button><div class="msg" id="msg"></div></div></div>
-<iframe id="game" src="703-quanticompare-challenge-core.html?v=33" title="Combinação de Vocabulário"></iframe>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#07142f;font-family:Arial,Helvetica,sans-serif}
+.cover{position:fixed;inset:0;overflow:hidden;background:#07142f;z-index:10}
+.stage{position:absolute;left:50%;top:50%;width:941px;height:1672px;transform-origin:center center}
+.art{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;pointer-events:none;user-select:none;-webkit-user-drag:none}
+.field{position:absolute;left:31.5%;width:43.5%;height:3.05%;border:0;outline:0;background:transparent;color:#122b5e;font-weight:800;font-size:22px;line-height:1;padding:4px 14px;border-radius:999px}
+.field:focus{background:rgba(255,255,255,.13);box-shadow:0 0 0 4px rgba(255,201,42,.48)}
+#n{top:76.6%}#s{top:82.55%}#c{top:88.45%}
+.start{position:absolute;left:36%;top:92.0%;width:28%;height:2.9%;border:0;border-radius:999px;background:linear-gradient(180deg,#ffe66d,#ffb703);color:#07326b;font-size:18px;font-weight:1000;cursor:pointer;box-shadow:0 5px 14px rgba(0,0,0,.32)}
+.start:active{transform:scale(.97)}
+.back{position:absolute;left:22px;top:24px;z-index:3;padding:11px 17px;border-radius:999px;background:rgba(2,18,55,.62);border:1px solid rgba(255,255,255,.28);color:#fff;text-decoration:none;font-size:19px;font-weight:900}
+.msg{position:absolute;left:23%;right:23%;top:95.2%;text-align:center;color:#fff7c2;font-size:14px;font-weight:900;text-shadow:0 2px 5px #000;min-height:18px}
+#game{position:fixed;inset:0;width:100%;height:100%;border:0;display:none;background:#07142f;z-index:5}
+</style>
+</head>
+<body>
+<div class="cover" id="cover">
+ <div class="stage" id="stage">
+  <img class="art" src="703-combinacao-de-vocabulario-nova-capa.png" alt="Capa do jogo Combinação de Vocabulário">
+  <a class="back" href="index_turma_703_english_game_hub.html">← Hub</a>
+  <input id="n" class="field" autocomplete="name" aria-label="Nome do aluno">
+  <input id="s" class="field" autocomplete="organization" aria-label="Escola">
+  <input id="c" class="field" aria-label="Turma" inputmode="numeric">
+  <button id="startBtn" class="start" type="button">COMEÇAR ▶</button>
+  <div class="msg" id="msg"></div>
+ </div>
+</div>
+<iframe id="game" src="703-quanticompare-challenge-core.html?v=34" title="Combinação de Vocabulário"></iframe>
 <script>
-const BASE_W=941,BASE_H=1672,stage=document.getElementById('stage'),frame=document.getElementById('game');let ready=false,pending=false;
+const BASE_W=941,BASE_H=1672,stage=document.getElementById('stage'),frame=document.getElementById('game');
+let ready=false,pending=false;
 function fit(){const sc=Math.max(innerWidth/BASE_W,innerHeight/BASE_H);stage.style.transform=`translate(-50%,-50%) scale(${sc})`}
 addEventListener('resize',fit,{passive:true});addEventListener('orientationchange',fit);fit();
-function applyGameLayout(){try{const d=frame.contentWindow.document;if(!d||d.getElementById('mobileFullHeightPatch'))return;const st=d.createElement('style');st.id='mobileFullHeightPatch';st.textContent=`html,body{height:100%!important;min-height:100%!important;overflow:hidden!important}body{min-height:100dvh!important}.app{width:100%!important;max-width:none!important;height:100dvh!important;min-height:100dvh!important;padding:calc(env(safe-area-inset-top,0px) + 5px) 5px calc(env(safe-area-inset-bottom,0px) + 5px)!important;display:flex!important;flex-direction:column!important;gap:5px!important}.game.active{display:flex!important;flex-direction:column!important;flex:1 1 auto!important;min-height:0!important;height:auto!important}.hud{flex:0 0 auto!important}.card{flex:1 1 auto!important;min-height:0!important;display:flex!important;flex-direction:column!important;padding:7px!important}.board{flex:1 1 auto!important;min-height:0!important;height:100%!important;display:grid!important;grid-template-columns:1fr 1fr!important;gap:6px!important}.col{display:grid!important;grid-auto-rows:1fr!important;align-content:stretch!important;height:100%!important;min-height:0!important;gap:6px!important}.word{min-height:0!important;height:100%!important;padding:5px!important;display:flex!important;align-items:center!important;justify-content:center!important;text-align:center!important;font-size:clamp(11px,3.15vw,14px)!important;line-height:1.12!important}.status{margin-bottom:4px!important} @media(max-height:720px){.app{padding:3px!important}.card{padding:5px!important}.col,.board{gap:4px!important}.word{font-size:10px!important;padding:3px!important}}`;d.head.appendChild(st)}catch(e){}}
-frame.addEventListener('load',()=>{ready=true;applyGameLayout();if(pending)openGame()});
-function validate(){for(const id of ['n','s','c']){const el=document.getElementById(id);if(!el.value.trim()){document.getElementById('msg').textContent='Preencha os três campos para começar.';el.focus();return false}}document.getElementById('msg').textContent='';return true}
-function openGame(){if(!validate()){pending=false;return}if(!ready){pending=true;document.getElementById('msg').textContent='Carregando o jogo...';return}pending=false;applyGameLayout();const w=frame.contentWindow;const v={name:n.value.trim(),school:s.value.trim(),klass:c.value.trim()};let started=false;if(typeof w.startWithPlayer==='function'){started=w.startWithPlayer(v.name,v.school,v.klass)!==false}if(!started&&typeof w.startGame==='function'){w.startGame();started=true}if(started){cover.style.display='none';frame.style.display='block';setTimeout(applyGameLayout,80)}else document.getElementById('msg').textContent='Não foi possível iniciar. Toque novamente.'}
-startBtn.addEventListener('click',openGame);c.addEventListener('keydown',e=>{if(e.key==='Enter')openGame()});
-</script></body></html>
+function optimizeGameLayout(){
+ try{
+  const d=frame.contentWindow.document;
+  let st=d.getElementById('mobile-fill-fix');
+  if(!st){st=d.createElement('style');st.id='mobile-fill-fix';d.head.appendChild(st)}
+  st.textContent=`
+   html,body{height:100%!important;min-height:100%!important;overflow:hidden!important}
+   body{height:100dvh!important;min-height:100dvh!important;display:flex!important;align-items:center!important;justify-content:center!important}
+   .app{width:100%!important;max-width:none!important;height:100dvh!important;min-height:100dvh!important;padding:calc(env(safe-area-inset-top,0px) + 10px) 10px calc(env(safe-area-inset-bottom,0px) + 10px)!important;display:flex!important;flex-direction:column!important;justify-content:center!important;gap:10px!important;overflow:hidden!important}
+   .game.active{display:flex!important;flex-direction:column!important;flex:1 1 auto!important;height:100%!important;min-height:0!important;justify-content:center!important}
+   .hud{flex:0 0 auto!important;margin:0!important}
+   .pill{font-size:14px!important;padding:10px 4px!important}
+   .card{flex:1 1 auto!important;height:auto!important;min-height:0!important;display:flex!important;flex-direction:column!important;padding:12px!important;border-radius:22px!important}
+   .card h2,#phaseTitle{font-size:clamp(21px,5.8vw,30px)!important;margin:0 0 6px!important}
+   .status{font-size:15px!important;min-height:22px!important;margin-bottom:8px!important}
+   .board{display:grid!important;grid-template-columns:1fr 1fr!important;gap:9px!important;flex:1 1 auto!important;height:100%!important;min-height:0!important;align-content:center!important}
+   .col{display:grid!important;gap:8px!important;height:100%!important;min-height:0!important;align-content:stretch!important}
+   .word{min-height:0!important;height:100%!important;font-size:clamp(13px,3.7vw,17px)!important;line-height:1.2!important;padding:8px 7px!important;display:flex!important;align-items:center!important;justify-content:center!important;text-align:center!important}
+   @media(max-height:720px){.app{padding:6px!important;gap:6px!important}.word{font-size:12px!important;padding:5px!important}.pill{font-size:12px!important;padding:7px 2px!important}.status{font-size:13px!important}#phaseTitle{font-size:20px!important}.card{padding:8px!important}}
+  `;
+ }catch(e){}
+}
+frame.addEventListener('load',()=>{ready=true;optimizeGameLayout();if(pending)openGame()});
+function validate(){
+ const ids=['n','s','c'];
+ for(const id of ids){const el=document.getElementById(id);if(!el.value.trim()){document.getElementById('msg').textContent='Preencha os três campos para começar.';el.focus();return false}}
+ document.getElementById('msg').textContent='';return true;
+}
+function openGame(){
+ if(!validate()){pending=false;return}
+ if(!ready){pending=true;document.getElementById('msg').textContent='Carregando o jogo...';return}
+ optimizeGameLayout();
+ pending=false;
+ const w=frame.contentWindow,d=w.document;
+ const values={name:document.getElementById('n').value.trim(),school:document.getElementById('s').value.trim(),klass:document.getElementById('c').value.trim()};
+ const map={'name':'name','school':'school','klass':'klass'};
+ Object.entries(map).forEach(([k,id])=>{const e=d.getElementById(id);if(e)e.value=values[k]});
+ let started=false;
+ if(typeof w.startWithPlayer==='function'){started=w.startWithPlayer(values.name,values.school,values.klass)!==false}
+ if(!started&&typeof w.startGame==='function'){w.startGame();started=true}
+ if(started){document.getElementById('cover').style.display='none';frame.style.display='block';setTimeout(optimizeGameLayout,80);setTimeout(optimizeGameLayout,350)}
+ else document.getElementById('msg').textContent='Não foi possível iniciar. Toque novamente.';
+}
+document.getElementById('startBtn').addEventListener('click',openGame);
+document.getElementById('c').addEventListener('keydown',e=>{if(e.key==='Enter')openGame()});
+</script>
+</body></html>
