@@ -1,1 +1,2103 @@
-<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>English Voice Challenge — Turma 703</title><style>*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Arial;background:linear-gradient(145deg,#4515b8,#0f8b8d 55%,#00b85a);color:#fff}.app{width:min(100%,540px);margin:auto;padding:12px}.card{background:#0f172aee;border:1px solid #ffffff29;border-radius:22px;padding:14px}.screen{display:none}.screen.active{display:block}h1{text-align:center}.btn{width:100%;padding:13px;border:0;border-radius:16px;background:linear-gradient(135deg,#fde047,#22c55e);font-weight:1000;cursor:pointer;text-decoration:none;color:#172033;display:block;text-align:center;box-shadow:0 8px 18px #0003}.btn:active{transform:scale(.98)}input{width:100%;padding:12px;border-radius:13px;border:2px solid #facc15;margin:5px 0;font-weight:800}.hud{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.pill{background:#ffffff1a;padding:8px;border-radius:12px;text-align:center;font-weight:900}.phrase{background:#fff;color:#172033;border-radius:20px;padding:16px;margin:10px 0;text-align:center;border:3px solid #facc15}.phrase h2{font-size:26px;margin:8px 4px}.tip{background:#fef3c7;color:#713f12;padding:8px;border-radius:12px;font-weight:800}.spoken{background:#ffffff1a;border:2px dashed #ffffff4d;padding:10px;border-radius:14px;min-height:58px;margin-top:10px}.phaseMap{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin:8px 0}.tile{padding:8px 2px;border-radius:10px;background:#ffffff14;text-align:center;font-size:11px;font-weight:900}.tile.on{background:#facc15;color:#422006}.tile.done{background:#22c55e;color:#052e16}.overlay{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:#000d;z-index:50;padding:18px}.overlay.show{display:flex}.modal{width:min(100%,430px);background:linear-gradient(160deg,#111c58,#4b1167);padding:24px;border-radius:28px;text-align:center;box-shadow:0 0 50px #22d3ee55}.big{font-size:64px}.modal h2{font-size:32px;color:#ffe66d}.rank{display:grid;gap:6px}.row{display:grid;grid-template-columns:40px 1fr auto;gap:6px;background:#fff;color:#172033;border-radius:12px;padding:8px}.row.top{background:linear-gradient(135deg,#ffe66d,#fff7c2)}.row.you{outline:3px solid #00eaff}#successFx{position:fixed;inset:0;z-index:90;pointer-events:none;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;background:radial-gradient(circle,#fff 0 8%,#22c55ec9 18%,#00eaff66 42%,transparent 68%)}#successFx.show{visibility:visible;animation:flash .95s ease-out both}#successFx div{padding:18px 24px;border-radius:26px;background:linear-gradient(135deg,#fef08a,#22c55e,#22d3ee);color:#052e16;font-weight:1000;font-size:clamp(26px,8vw,44px);box-shadow:0 0 28px #fff,0 0 70px #22c55ef2;animation:pop .75s ease both}.phrase.correctPulse{animation:pc .8s ease-out}@keyframes flash{0%{opacity:0}12%{opacity:1}65%{opacity:.96}100%{opacity:0}}@keyframes pop{0%{transform:scale(.55)}45%{transform:scale(1.13)}100%{transform:scale(1)}}@keyframes pc{0%,100%{transform:scale(1);box-shadow:none}35%{transform:scale(1.025);box-shadow:0 0 46px #22c55ef2,0 0 80px #00eaff80}}</style></head><body><main class="app"><section id="start" class="screen active"><div class="card"><h1>🎙️ English Voice Challenge</h1><p>10 fases • 10 desafios por fase. Comece com palavras e expressões curtas e avance até frases completas.</p><input id="name" placeholder="Nome do aluno"><input id="klass" value="703"><input id="school" value="Escola Municipal Princesa Izabel"><button class="btn" onclick="start()">COMEÇAR 🎧</button><p style="text-align:center">Jogos elaborados pelo professor Jasson Bruno</p></div></section><section id="play" class="screen"><div id="map" class="phaseMap"></div><div class="hud"><div class="pill" id="phase">Fase 1/10</div><div class="pill" id="round">1/10</div><div class="pill" id="lives">❤️❤️❤️❤️❤️</div></div><div class="phrase"><span id="topic"></span><h2 id="phrase"></h2><p id="pt"></p><div id="tip" class="tip"></div></div><button class="btn" onclick="speak()">🔊 OUVIR</button><br><button class="btn" onclick="listen()">🎤 FALAR</button><div id="spoken" class="spoken">Sua fala aparecerá aqui.</div></section><section id="end" class="screen"><div class="card"><h1>🏆 Ranking da Turma</h1><p id="final"></p><div id="ranking" class="rank"><div style="text-align:center;padding:10px">Carregando ranking...</div></div><div id="endActions" style="display:grid;gap:8px;margin-top:12px"></div><a class="btn" href="703-ranking.html">🏆 RANKING GERAL DA TURMA 703</a><br><a class="btn" href="index_turma_703_english_game_hub.html">VOLTAR AO HUB</a></div></section></main><div id="ov" class="overlay"><div class="modal"><div id="oi" class="big">🏆</div><h2 id="ot">LEVEL COMPLETE!</h2><p id="om"></p><button id="ob" class="btn"></button></div></div><div id="successFx"><div>✨ PERFECT! 🎤✨</div></div><script>const GAME='703-english-voice-challenge',MAX=5,ROUNDS=10,PHASES=10,HKEY='703-voice-seen-v8';const $=i=>document.getElementById(i),D=(id,topic,en,pt,tip)=>({id,topic,en,pt,tip});const BANKS=[[D('1a','Family Members','mother','mãe','Uma palavra.'),D('1b','Family Members','father','pai','Uma palavra.'),D('1c','Family Members','sister','irmã','Uma palavra.'),D('1d','Family Members','brother','irmão','Uma palavra.'),D('1e','Family Members','grandmother','avó','Uma palavra.'),D('1f','Family Members','grandfather','avô','Uma palavra.'),D('1g','Family Members','aunt','tia','Uma palavra.'),D('1h','Family Members','uncle','tio','Uma palavra.'),D('1i','Family Members','cousin','primo/prima','Uma palavra.'),D('1j','Family Members','parents','pais','Uma palavra.'),D('1k','Quantifiers','many','muitos','Uma palavra.'),D('1l','Quantifiers','some','alguns','Uma palavra.'),D('1m','Comparatives','taller','mais alto','Uma palavra.'),D('1n','Comparatives','younger','mais jovem','Uma palavra.')],[D('2a','Family Members','my mother','minha mãe','Duas palavras.'),D('2b','Family Members','my father','meu pai','Duas palavras.'),D('2c','Family Members','my sister','minha irmã','Duas palavras.'),D('2d','Family Members','my brother','meu irmão','Duas palavras.'),D('2e','Present Continuous','is reading','está lendo','Expressão curta.'),D('2f','Present Continuous','is cooking','está cozinhando','Expressão curta.'),D('2g','Present Continuous','is running','está correndo','Expressão curta.'),D('2h','Present Continuous','are playing','estão jogando','Expressão curta.'),D('2i','Quantifiers','a few','poucos','Expressão curta.'),D('2j','Quantifiers','a lot of','muitos','Expressão curta.'),D('2k','Comparatives','more difficult','mais difícil','Expressão curta.'),D('2l','Comparatives','more interesting','mais interessante','Expressão curta.')],[D('3a','Family Life','My family is big.','Minha família é grande.','Frase curta.'),D('3b','Family Life','My family is small.','Minha família é pequena.','Frase curta.'),D('3c','Family Life','I have a sister.','Eu tenho uma irmã.','Frase curta.'),D('3d','Family Life','I have a brother.','Eu tenho um irmão.','Frase curta.'),D('3e','Present Continuous','I am studying.','Eu estou estudando.','am + verbo-ing.'),D('3f','Present Continuous','She is reading.','Ela está lendo.','is + verbo-ing.'),D('3g','Present Continuous','He is cooking.','Ele está cozinhando.','is + verbo-ing.'),D('3h','Quantifiers','Many students are here.','Muitos alunos estão aqui.','Many + plural.'),D('3i','Quantifiers','Some friends are outside.','Alguns amigos estão lá fora.','Some + plural.'),D('3j','Comparatives','My brother is taller.','Meu irmão é mais alto.','Comparative.'),D('3k','Comparatives','Today is better.','Hoje está melhor.','Irregular.'),D('3l','Comparatives','Today is worse.','Hoje está pior.','Irregular.')],[D('4a','Present Information','Who is she?','Quem é ela?','Pergunta completa.'),D('4b','Present Information','Who is he?','Quem é ele?','Pergunta completa.'),D('4c','Present Information','Where are they?','Onde eles estão?','Pergunta completa.'),D('4d','Present Information','Where is your mother?','Onde está sua mãe?','Pergunta completa.'),D('4e','Present Information','Where is your brother?','Onde está seu irmão?','Pergunta completa.'),D('4f','Present Continuous','They are playing.','Eles estão jogando.','are + verbo-ing.'),D('4g','Present Continuous','We are studying English.','Nós estamos estudando inglês.','are + verbo-ing.'),D('4h','Family Life','I live with my parents.','Eu moro com meus pais.','Frase completa.'),D('4i','Quantifiers','Most students are ready.','A maioria dos alunos está pronta.','Most.'),D('4j','Comparatives','This activity is easier.','Esta atividade é mais fácil.','Comparative.'),D('4k','Comparatives','This bag is heavier.','Esta bolsa é mais pesada.','Comparative.')],[D('5a','Present Information','What are you doing?','O que você está fazendo?','Pergunta completa.'),D('5b','Present Information','What is she doing?','O que ela está fazendo?','Pergunta completa.'),D('5c','Present Information','What is he doing?','O que ele está fazendo?','Pergunta completa.'),D('5d','Present Information','What are they doing?','O que eles estão fazendo?','Pergunta completa.'),D('5e','Present Continuous','My mother is working.','Minha mãe está trabalhando.','Frase completa.'),D('5f','Present Continuous','My father is cooking.','Meu pai está cozinhando.','Frase completa.'),D('5g','Family Life','My family is very close.','Minha família é muito unida.','Frase completa.'),D('5h','Quantifiers','Not many students are absent.','Poucos alunos estão ausentes.','Not many.'),D('5i','Quantifiers','All my cousins are here.','Todos os meus primos estão aqui.','All.'),D('5j','Comparatives','English is more interesting.','Inglês é mais interessante.','more + adjective.')],[D('6a','Family Life','I live with my family in Santarém.','Eu moro com minha família em Santarém.','Fale em blocos.'),D('6b','Present Continuous','My parents are watching TV.','Meus pais estão assistindo TV.','are + verbo-ing.'),D('6c','Present Continuous','My cousins are visiting us.','Meus primos estão nos visitando.','are + verbo-ing.'),D('6d','Present Continuous','My sister is doing her homework.','Minha irmã está fazendo a tarefa dela.','Ritmo natural.'),D('6e','Present Continuous','My brother is playing soccer.','Meu irmão está jogando futebol.','Ritmo natural.'),D('6f','Quantifiers','A lot of people are waiting.','Muitas pessoas estão esperando.','A lot of.'),D('6g','Comparatives','My father is older than my mother.','Meu pai é mais velho que minha mãe.','older than.'),D('6h','Comparatives','My brother is taller than me.','Meu irmão é mais alto que eu.','taller than.'),D('6i','Present Information','Who is your cousin?','Quem é seu primo/prima?','Pergunta completa.'),D('6j','Present Information','Where are your parents?','Onde estão seus pais?','Pergunta completa.')],[D('7a','Present Continuous','What is your mother doing right now?','O que sua mãe está fazendo agora?','Fale com calma.'),D('7b','Present Continuous','What are your cousins doing today?','O que seus primos estão fazendo hoje?','Fale com calma.'),D('7c','Family Life','We usually spend time together after dinner.','Nós geralmente passamos tempo juntos depois do jantar.','Ritmo natural.'),D('7d','Quantifiers','Most people in my family live nearby.','A maioria da minha família mora perto.','Most.'),D('7e','Comparatives','My sister is younger than my brother.','Minha irmã é mais jovem que meu irmão.','younger than.'),D('7f','Comparatives','Today is better than yesterday.','Hoje está melhor que ontem.','better than.'),D('7g','Family Life','My family likes to eat together on Sundays.','Minha família gosta de comer junta aos domingos.','Ritmo natural.'),D('7h','Quantifiers','Many students are studying for the test.','Muitos alunos estão estudando para a prova.','Many.'),D('7i','Present Continuous','My father is cooking while my mother is reading.','Meu pai está cozinhando enquanto minha mãe lê.','Fale em blocos.'),D('7j','Present Information','Where is your family going this weekend?','Onde sua família vai neste fim de semana?','Pergunta completa.')],[D('8a','Present Continuous','My parents are watching TV in the living room.','Meus pais estão assistindo TV na sala.','Ritmo natural.'),D('8b','Present Continuous','My brother is studying while my sister is playing.','Meu irmão estuda enquanto minha irmã brinca.','Fale em blocos.'),D('8c','Family Life','My grandparents live close to our house.','Meus avós moram perto da nossa casa.','Ritmo natural.'),D('8d','Family Life','We have dinner together every evening.','Nós jantamos juntos todas as noites.','Ritmo natural.'),D('8e','Quantifiers','A lot of students are doing the activity now.','Muitos alunos estão fazendo a atividade agora.','A lot of.'),D('8f','Quantifiers','Not many students are absent today.','Não há muitos alunos ausentes hoje.','Not many.'),D('8g','Comparatives','My school is bigger than my old school.','Minha escola é maior que minha escola antiga.','bigger than.'),D('8h','Comparatives','This exercise is easier than the last exercise.','Este exercício é mais fácil que o anterior.','easier than.'),D('8i','Present Information','Who is talking to your teacher?','Quem está falando com seu professor?','Pergunta completa.'),D('8j','Present Continuous','We are practicing English in class right now.','Estamos praticando inglês na aula agora.','Ritmo natural.')],[D('9a','Family Life','My family is small, but we spend a lot of time together.','Minha família é pequena, mas passamos muito tempo juntos.','Fale em blocos.'),D('9b','Present Continuous','My mother is working and my father is cooking dinner.','Minha mãe está trabalhando e meu pai está preparando o jantar.','Fale em blocos.'),D('9c','Present Information','What are your parents doing at the moment?','O que seus pais estão fazendo neste momento?','Pergunta completa.'),D('9d','Quantifiers','Most students are ready, but a few need more time.','A maioria está pronta, mas alguns precisam de mais tempo.','Most + a few.'),D('9e','Comparatives','My brother is taller than me, but I am older than him.','Meu irmão é mais alto que eu, mas eu sou mais velho.','Dois comparativos.'),D('9f','Comparatives','This book is more difficult than the previous book.','Este livro é mais difícil que o anterior.','Comparative.'),D('9g','Present Continuous','Some students are reading while others are writing.','Alguns alunos estão lendo enquanto outros escrevem.','Ritmo natural.'),D('9h','Family Life','My family usually visits my grandparents on weekends.','Minha família geralmente visita meus avós nos fins de semana.','Ritmo natural.'),D('9i','Present Information','Who is helping your brother with his homework?','Quem está ajudando seu irmão com a tarefa?','Pergunta completa.'),D('9j','Comparatives','Today is busier than yesterday at school.','Hoje está mais movimentado que ontem na escola.','busier than.')],[D('10a','Final Challenge','Most people in my family live nearby, but a few live far away.','A maioria da minha família mora perto, mas alguns moram longe.','Desafio final.'),D('10b','Final Challenge','My sister is younger than me, but she is taller than my cousin.','Minha irmã é mais jovem que eu, mas é mais alta que meu primo.','Desafio final.'),D('10c','Final Challenge','What are your parents doing while you are studying English?','O que seus pais estão fazendo enquanto você estuda inglês?','Desafio final.'),D('10d','Final Challenge','My mother is cooking dinner and my father is watching TV.','Minha mãe está preparando o jantar e meu pai está assistindo TV.','Desafio final.'),D('10e','Final Challenge','A lot of my cousins are visiting us this weekend.','Muitos dos meus primos estão nos visitando neste fim de semana.','Desafio final.'),D('10f','Final Challenge','This activity is easier than the previous activity, but it is more interesting.','Esta atividade é mais fácil que a anterior, mas é mais interessante.','Desafio final.'),D('10g','Final Challenge','Who is talking to your grandmother in the living room?','Quem está conversando com sua avó na sala?','Desafio final.'),D('10h','Final Challenge','Where are your brothers going after the English class?','Onde seus irmãos vão depois da aula de inglês?','Desafio final.'),D('10i','Final Challenge','My family is bigger than my best friend’s family.','Minha família é maior que a família do meu melhor amigo.','Desafio final.'),D('10j','Final Challenge','What is your family doing together right now?','O que sua família está fazendo junta agora?','Desafio final.')]];let S={};function sh(a){a=[...a];for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}function seen(){try{return JSON.parse(localStorage.getItem(HKEY)||'[]')}catch(e){return[]}}function fresh(l){let s=new Set(seen()),p=BANKS[l],c=[...sh(p.filter(x=>!s.has(x.id))),...sh(p.filter(x=>s.has(x.id)))].slice(0,ROUNDS);try{localStorage.setItem(HKEY,JSON.stringify([...seen(),...c.map(x=>x.id)].filter((v,i,a)=>a.indexOf(v)===i).slice(-1000)))}catch(e){}return c}function show(id){document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));$(id).classList.add('active')}function start(){let n=$('name').value.trim();if(!n)return alert('Digite o nome.');ensureAudio();S={name:n,klass:$('klass').value||'703',school:$('school').value||'Escola Municipal Princesa Izabel',phase:0,round:0,score:0,lives:MAX,deck:fresh(0)};show('play');load()}function map(){let h='';for(let i=0;i<PHASES;i++)h+=`<div class="tile ${i<S.phase?'done':i===S.phase?'on':''}">${i<S.phase?'✓':i+1}</div>`;$('map').innerHTML=h}function load(){map();let x=S.deck[S.round];S.cur=x;$('phase').textContent=`Fase ${S.phase+1}/${PHASES}`;$('round').textContent=`${S.round+1}/${ROUNDS}`;$('lives').textContent='❤️'.repeat(S.lives)+'🖤'.repeat(MAX-S.lives);$('topic').textContent=x.topic;$('phrase').textContent=x.en;$('pt').textContent=x.pt;$('tip').textContent='💡 '+x.tip;$('spoken').textContent='Sua fala aparecerá aqui.'}function speak(){ensureAudio();if(!('speechSynthesis'in window))return alert('Áudio não disponível.');speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(S.cur.en);u.lang='en-US';u.rate=.78;speechSynthesis.speak(u)}function norm(s){return String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^\w\s']/g,'').replace(/\s+/g,' ').trim()}let ac=null;function ensureAudio(){const A=window.AudioContext||window.webkitAudioContext;if(!A)return null;if(!ac)ac=new A();if(ac.state==='suspended')ac.resume().catch(()=>{});return ac}function tone(f,t,d,v=.05,type='triangle'){let c=ensureAudio();if(!c)return;try{let o=c.createOscillator(),g=c.createGain(),n=c.currentTime+t;o.type=type;o.frequency.setValueAtTime(f,n);g.gain.setValueAtTime(.0001,n);g.gain.exponentialRampToValueAtTime(v,n+.015);g.gain.exponentialRampToValueAtTime(.0001,n+d);o.connect(g);g.connect(c.destination);o.start(n);o.stop(n+d+.03)}catch(e){}}function successSound(){[523.25,659.25,783.99,1046.5].forEach((f,i)=>tone(f,i*.07,.20,.06));tone(1318.51,.30,.28,.05,'sine')}function trySound(){tone(220,0,.15,.035,'sawtooth');tone(196,.10,.18,.03)}function levelMusic(final=false){let m=final?[523,659,784,1047,988,1175,1319,1568,1319,1568]:[523,659,784,1047,784,988,1175,1319];m.forEach((f,i)=>{tone(f,i*.13,.24,.055,i%3===0?'square':'triangle');if(i%2===0)tone(f/2,i*.13,.30,.022,'sine')});tone(final?2093:1568,m.length*.13+.05,.42,.06)}function fx(){let x=$('successFx'),c=document.querySelector('.phrase');x.classList.remove('show');void x.offsetWidth;x.classList.add('show');setTimeout(()=>x.classList.remove('show'),1000);c.classList.remove('correctPulse');void c.offsetWidth;c.classList.add('correctPulse');setTimeout(()=>c.classList.remove('correctPulse'),900)}function listen(){ensureAudio();const R=window.SpeechRecognition||window.webkitSpeechRecognition;if(!R){$('spoken').textContent='Seu navegador não oferece reconhecimento de voz. Use OUVIR e repita em voz alta.';return}let r=new R;r.lang='en-US';r.interimResults=false;$('spoken').textContent='🎤 Ouvindo...';r.onresult=e=>check(e.results[0][0].transcript);r.onerror=()=>{$('spoken').textContent='Não consegui ouvir. Tente novamente.'};r.start()}function check(sp){$('spoken').textContent=`Você disse: ${sp}`;let a=norm(sp).split(' '),b=norm(S.cur.en).split(' '),hit=b.filter(w=>a.includes(w)).length,ok=hit/Math.max(1,b.length)>=.72;if(ok){S.score++;$('spoken').textContent=`✅ Muito bem! Você disse: ${sp}`;fx();successSound();setTimeout(next,1100)}else{S.lives--;trySound();$('spoken').textContent=`🔁 Quase! Você disse: ${sp}. Ouça novamente e tente de novo.`;$('lives').textContent='❤️'.repeat(S.lives)+'🖤'.repeat(MAX-S.lives);if(S.lives<=0)setTimeout(()=>trans(false),650)}}function next(){S.round++;if(S.round>=ROUNDS)return trans(true);load()}function scorePct(){return Math.round(S.score/(PHASES*ROUNDS)*100)}function retryPhase(){S.round=0;S.lives=MAX;S.deck=fresh(S.phase);show('play');load()}function showFailureRanking(){$('ov').classList.remove('show');let p=scorePct(),phase=S.phase+1;$('final').innerHTML=`<b>${S.name}</b>, você ficou sem vidas na <b>Fase ${phase}</b>.<br>Seu desempenho atual é <b>${p} pontos</b>. Veja quem está no topo e tente superar sua marca!`;$('endActions').innerHTML=`<button class="btn" id="retryPhaseBtn">🔁 TENTAR FASE ${phase} NOVAMENTE</button>`;$('retryPhaseBtn').onclick=retryPhase;show('end');if(window.saveScore)window.saveScore(S.name,p,GAME,S.school,S.klass);if(window.loadRank)window.loadRank(GAME,'ranking',S.name,S.school)}function trans(win){let last=S.phase===PHASES-1;$('ov').classList.add('show');$('oi').textContent=win?'🏆🎤':'💪🎙️';$('ot').textContent=win?(last?'FINAL LEVEL!':'LEVEL COMPLETE!'):'TRY AGAIN!';$('om').textContent=win?(last?'Você concluiu todas as fases de fala e escuta!':`Você concluiu a Fase ${S.phase+1}.`):`Você ficou sem vidas na Fase ${S.phase+1}. Agora veja o ranking da turma e tente superar sua pontuação!`;$('ob').textContent=win?(last?'VER RANKING 🏆':`COMEÇAR FASE ${S.phase+2} 🚀`):'VER RANKING DA TURMA 🏆';if(win)setTimeout(()=>levelMusic(last),120);else trySound();if(win){$('ob').onclick=()=>{$('ov').classList.remove('show');if(last)return finish();S.phase++;S.round=0;S.lives=MAX;S.deck=fresh(S.phase);load()}}else{let moved=false;const go=()=>{if(moved)return;moved=true;showFailureRanking()};$('ob').onclick=go;setTimeout(go,2200)}}function finish(){let p=scorePct();$('final').textContent=`${S.name}, você conseguiu ${p} pontos para o ranking.`;$('endActions').innerHTML='<button class="btn" id="replayBtn">🎮 JOGAR NOVAMENTE</button>';$('replayBtn').onclick=()=>{S.phase=0;S.round=0;S.score=0;S.lives=MAX;S.deck=fresh(0);show('play');load()};show('end');if(window.saveScore)window.saveScore(S.name,p,GAME,S.school,S.klass);if(window.loadRank)window.loadRank(GAME,'ranking',S.name,S.school)}</script><script type="module">import{initializeApp}from'https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js';import{getFirestore,collection,addDoc,serverTimestamp,query,limit,onSnapshot}from'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';const db=getFirestore(initializeApp({apiKey:'AIzaSyCVTR3nnyo5mYTF28TJisgTUe-Xyjk1upg',authDomain:'english-game-hub.firebaseapp.com',projectId:'english-game-hub',storageBucket:'english-game-hub.firebasestorage.app',messagingSenderId:'131880771426',appId:'1:131880771426:web:cf29a6f34ca86be527d63b'}));window.saveScore=async(n,p,j,e,t)=>{try{await addDoc(collection(db,'pontuacoes'),{nome:n.slice(0,24),pontos:Number(p)||0,jogo:j,escola:e,turma:t||'703',tipo:'real',timestamp:serverTimestamp()})}catch(x){}};window.loadRank=(j,id,cn,cs)=>{let box=document.getElementById(id),q=query(collection(db,'pontuacoes'),limit(900));onSnapshot(q,s=>{let m=new Map;s.forEach(d=>{let x=d.data();if(x.jogo!==j)return;let k=(x.nome||'').toLowerCase()+'|'+(x.escola||'').toLowerCase(),p=Number(x.pontos)||0,a=m.get(k);if(!a||p>a.pontos)m.set(k,{nome:x.nome,escola:x.escola,pontos:p})});let a=[...m.values()].sort((x,y)=>y.pontos-x.pontos);box.innerHTML='';if(!a.length){box.innerHTML='<div style="text-align:center;padding:10px">Ainda não há pontuações registradas.</div>';return}a.slice(0,10).forEach((x,i)=>{let r=document.createElement('div'),you=x.nome?.toLowerCase()===cn?.toLowerCase()&&x.escola?.toLowerCase()===cs?.toLowerCase();r.className='row '+(i<3?'top ':'')+(you?'you':'');r.innerHTML=`<b>${i===0?'🥇':i===1?'🥈':i===2?'🥉':i+1+'º'}</b><span><b>${x.nome}${you?' ⭐ Você':''}</b><br><small>${x.escola||''}</small></span><b>${x.pontos} pts</b>`;box.appendChild(r)})},()=>{box.innerHTML='<div style="text-align:center;padding:10px">Ranking indisponível no momento. Você ainda pode tentar novamente.</div>'})};</script></body></html>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Desafio de Pronúncia — Turma 703</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top left, #fff176 0, transparent 28%),
+        radial-gradient(circle at top right, #ff80ab 0, transparent 25%),
+        linear-gradient(145deg, #4614b8, #0f8b8d 55%, #00c853);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 440px;
+      min-height: 92vh;
+      background: rgba(15, 23, 42, 0.93);
+      border: 3px solid rgba(255, 255, 255, 0.25);
+      border-radius: 28px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .screen {
+      display: none;
+      padding: 16px;
+      min-height: 92vh;
+    }
+
+    .screen.active {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .top-badge {
+      display: inline-block;
+      align-self: center;
+      background: linear-gradient(90deg, #ffeb3b, #ff9800);
+      color: #3b2600;
+      font-weight: 900;
+      padding: 7px 14px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      box-shadow: 0 4px 0 #a16207;
+    }
+
+    h1 {
+      margin: 12px 0 8px;
+      text-align: center;
+      font-size: 1.65rem;
+      line-height: 1.08;
+      color: #fff;
+      text-shadow: 0 3px 0 rgba(0, 0, 0, 0.25);
+    }
+
+    h2 {
+      margin: 8px 0;
+      text-align: center;
+      font-size: 1.18rem;
+    }
+
+    p {
+      margin: 8px 0;
+      line-height: 1.35;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #dbeafe;
+      font-size: 0.96rem;
+    }
+
+    .teacher {
+      text-align: center;
+      color: #cbd5e1;
+      font-size: 0.78rem;
+      margin-top: auto;
+      padding-top: 10px;
+    }
+
+    .mini-note {
+      color: #cbd5e1;
+      font-size: 0.78rem;
+      text-align: center;
+      line-height: 1.35;
+      margin-top: 10px;
+    }
+
+    label {
+      display: block;
+      font-weight: 800;
+      color: #fef08a;
+      margin: 12px 0 6px;
+      font-size: 0.92rem;
+    }
+
+    input {
+      width: 100%;
+      border: 2px solid #facc15;
+      border-radius: 16px;
+      padding: 14px;
+      font-size: 1rem;
+      outline: none;
+      background: #fff;
+      color: #111827;
+    }
+
+    input:focus {
+      border-color: #22c55e;
+      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.25);
+    }
+
+    button {
+      width: 100%;
+      border: none;
+      border-radius: 18px;
+      padding: 15px 12px;
+      font-size: 1.02rem;
+      font-weight: 900;
+      cursor: pointer;
+      min-height: 54px;
+      transition: transform 0.1s ease, filter 0.2s ease, opacity 0.2s ease;
+      box-shadow: 0 5px 0 rgba(0, 0, 0, 0.25);
+    }
+
+    button:active {
+      transform: translateY(3px);
+      box-shadow: 0 2px 0 rgba(0, 0, 0, 0.25);
+    }
+
+    button:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    .btn-green { background: linear-gradient(180deg, #4ade80, #16a34a); color: #052e16; }
+    .btn-blue { background: linear-gradient(180deg, #60a5fa, #2563eb); color: #fff; }
+    .btn-yellow { background: linear-gradient(180deg, #fde047, #f59e0b); color: #422006; }
+    .btn-purple { background: linear-gradient(180deg, #c084fc, #7c3aed); color: #fff; }
+    .btn-orange { background: linear-gradient(180deg, #fb923c, #ea580c); color: #fff; }
+    .btn-gray { background: linear-gradient(180deg, #94a3b8, #475569); color: #fff; }
+
+    .button-grid {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .button-grid.two {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .phase-map {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      margin: 14px 0;
+    }
+
+    .phase-tile {
+      min-height: 64px;
+      border-radius: 18px;
+      border: 2px solid rgba(255, 255, 255, 0.25);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-weight: 900;
+      text-align: center;
+      font-size: 0.75rem;
+    }
+
+    .phase-tile.open {
+      background: linear-gradient(180deg, #ffeb3b, #ff9800);
+      color: #422006;
+      border-color: #fff7ad;
+      animation: pulse 1.4s infinite;
+    }
+
+    .phase-tile.done {
+      background: linear-gradient(180deg, #4ade80, #16a34a);
+      color: #052e16;
+    }
+
+    .phase-tile.locked {
+      background: rgba(148, 163, 184, 0.25);
+      color: #cbd5e1;
+      opacity: 0.88;
+    }
+
+    .phase-number {
+      font-size: 1.2rem;
+      margin-bottom: 2px;
+    }
+
+    .lock {
+      font-size: 1.25rem;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.04); }
+      100% { transform: scale(1); }
+    }
+
+    .hud {
+      background: rgba(255, 255, 255, 0.12);
+      border: 2px solid rgba(255, 255, 255, 0.18);
+      border-radius: 20px;
+      padding: 10px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .hud-card {
+      background: rgba(15, 23, 42, 0.65);
+      border-radius: 14px;
+      padding: 8px;
+      text-align: center;
+      font-size: 0.84rem;
+      font-weight: 800;
+    }
+
+    .hud-card strong {
+      display: block;
+      color: #fef08a;
+      font-size: 1.05rem;
+      margin-top: 3px;
+    }
+
+    .life-row {
+      display: flex;
+      justify-content: center;
+      gap: 4px;
+      font-size: 1.4rem;
+      margin-top: 4px;
+      letter-spacing: 2px;
+    }
+
+    .progress-wrap {
+      height: 14px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.18);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #ffeb3b, #22c55e, #38bdf8);
+      transition: width 0.3s ease;
+    }
+
+    .phrase-card {
+      background: linear-gradient(180deg, #ffffff, #e0f2fe);
+      color: #0f172a;
+      border-radius: 24px;
+      padding: 14px;
+      margin-top: 12px;
+      border: 3px solid #facc15;
+      box-shadow: 0 7px 0 #a16207;
+      text-align: center;
+      transition: box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+
+    .phrase-card.correct-glow {
+      animation: correctGlow 0.9s ease;
+      border-color: #22c55e;
+      box-shadow:
+        0 0 18px #22c55e,
+        0 0 35px rgba(34, 197, 94, 0.75),
+        0 7px 0 #15803d;
+    }
+
+    .phrase-card.wrong-shake {
+      animation: wrongShake 0.45s ease;
+      border-color: #ef4444;
+      box-shadow:
+        0 0 16px #ef4444,
+        0 0 28px rgba(239, 68, 68, 0.55),
+        0 7px 0 #991b1b;
+    }
+
+    @keyframes correctGlow {
+      0% { transform: scale(1); filter: brightness(1); }
+      35% { transform: scale(1.04); filter: brightness(1.2); }
+      70% { transform: scale(1.02); filter: brightness(1.1); }
+      100% { transform: scale(1); filter: brightness(1); }
+    }
+
+    @keyframes wrongShake {
+      0% { transform: translateX(0); }
+      20% { transform: translateX(-6px); }
+      40% { transform: translateX(6px); }
+      60% { transform: translateX(-4px); }
+      80% { transform: translateX(4px); }
+      100% { transform: translateX(0); }
+    }
+
+    .content-tag {
+      display: inline-block;
+      background: #312e81;
+      color: #fff;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 900;
+      margin: 2px;
+    }
+
+    .sentence-type {
+      display: inline-block;
+      background: #fce7f3;
+      color: #9d174d;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 900;
+      margin: 2px;
+    }
+
+    .phrase {
+      font-size: 1.55rem;
+      line-height: 1.18;
+      font-weight: 900;
+      color: #111827;
+      margin: 8px 0;
+    }
+
+    .translation {
+      color: #334155;
+      font-size: 0.92rem;
+      font-weight: 700;
+    }
+
+    .tip {
+      background: #fef3c7;
+      color: #713f12;
+      border-radius: 14px;
+      padding: 8px;
+      margin-top: 9px;
+      font-size: 0.84rem;
+      font-weight: 700;
+    }
+
+    .spoken-box {
+      background: rgba(255, 255, 255, 0.12);
+      border: 2px dashed rgba(255, 255, 255, 0.28);
+      border-radius: 18px;
+      padding: 10px;
+      margin-top: 12px;
+      min-height: 66px;
+      font-size: 0.93rem;
+      color: #e0f2fe;
+    }
+
+    .spoken-box strong {
+      color: #fef08a;
+    }
+
+    .feedback {
+      display: none;
+      margin-top: 10px;
+      border-radius: 18px;
+      padding: 12px;
+      font-weight: 900;
+      text-align: center;
+      font-size: 1rem;
+    }
+
+    .feedback.show {
+      display: block;
+    }
+
+    .feedback.correct {
+      background: #dcfce7;
+      color: #14532d;
+      border: 3px solid #22c55e;
+    }
+
+    .feedback.wrong {
+      background: #fee2e2;
+      color: #991b1b;
+      border: 3px solid #ef4444;
+    }
+
+    .feedback.info {
+      background: #dbeafe;
+      color: #1e40af;
+      border: 3px solid #60a5fa;
+    }
+
+    .big-message-box {
+      background: linear-gradient(180deg, #ffffff, #e0f2fe);
+      color: #0f172a;
+      border-radius: 24px;
+      padding: 18px;
+      margin-top: 16px;
+      text-align: center;
+      border: 3px solid #facc15;
+      box-shadow: 0 7px 0 #a16207;
+    }
+
+    .big-message-box h1 {
+      color: #111827;
+      text-shadow: none;
+      margin-bottom: 10px;
+    }
+
+    .big-message-box p {
+      color: #334155;
+      font-weight: 700;
+    }
+
+    .game-over-title {
+      color: #dc2626 !important;
+      font-size: 2rem;
+    }
+
+    .victory-title {
+      color: #16a34a !important;
+      font-size: 1.8rem;
+    }
+
+    .phase-result {
+      background: #fef3c7;
+      color: #78350f;
+      border-radius: 16px;
+      padding: 12px;
+      font-weight: 900;
+      margin: 12px 0;
+    }
+
+    .rating-box {
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 2px solid rgba(255, 255, 255, 0.22);
+      text-align: center;
+    }
+
+    .rating-buttons {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .rating-buttons button {
+      min-height: 70px;
+      padding: 8px;
+      font-size: 0.82rem;
+      background: linear-gradient(180deg, #fef08a, #f59e0b);
+      color: #422006;
+    }
+
+    .emoji {
+      display: block;
+      font-size: 1.8rem;
+      margin-bottom: 3px;
+    }
+
+    #ratingMessage {
+      color: #bbf7d0;
+      font-weight: 900;
+      min-height: 22px;
+    }
+
+    .ranking-list {
+      list-style: none;
+      padding: 0;
+      margin: 12px 0;
+    }
+
+    .ranking-list li {
+      background: rgba(255, 255, 255, 0.12);
+      border: 2px solid rgba(255, 255, 255, 0.18);
+      padding: 10px;
+      border-radius: 16px;
+      margin-bottom: 8px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .ranking-list li.you {
+      background: linear-gradient(180deg, #fef08a, #f59e0b);
+      color: #422006;
+      border-color: #fff7ad;
+    }
+
+    .final-score {
+      background: #dcfce7;
+      color: #14532d;
+      border-radius: 20px;
+      padding: 14px;
+      text-align: center;
+      font-size: 1.35rem;
+      font-weight: 900;
+      margin: 12px 0;
+    }
+
+    .motivation {
+      background: #fef3c7;
+      color: #78350f;
+      border-radius: 18px;
+      padding: 12px;
+      font-weight: 900;
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+
+
+    .current-score-box {
+      display: none;
+      margin: 12px 0;
+      padding: 12px;
+      border-radius: 18px;
+      text-align: center;
+      background: linear-gradient(135deg, #0ea5e9, #22c55e);
+      border: 2px solid #fff;
+      box-shadow: 0 0 18px rgba(34,197,94,.75);
+      color: #fff;
+      animation: pulsePlayer 1.2s ease-in-out infinite alternate;
+    }
+
+    .current-score-box .label {
+      font-size: .75rem;
+      font-weight: 900;
+      color: #fef08a;
+      letter-spacing: .5px;
+    }
+
+    .current-score-box .name {
+      font-size: 1rem;
+      font-weight: 900;
+      margin-top: 4px;
+    }
+
+    .current-score-box .points {
+      font-size: .9rem;
+      font-weight: 900;
+      color: #ecfeff;
+      margin-top: 2px;
+    }
+
+    .ranking-list li.rank-1 {
+      background: linear-gradient(135deg, #ffd700, #fff3a0);
+      border-color: #ffcc00;
+      color: #2b1a00;
+      box-shadow: 0 0 18px rgba(255,215,0,.82);
+    }
+
+    .ranking-list li.rank-2 {
+      background: linear-gradient(135deg, #c0c0c0, #f8fafc);
+      border-color: #e5e7eb;
+      color: #111827;
+      box-shadow: 0 0 14px rgba(229,231,235,.72);
+    }
+
+    .ranking-list li.rank-3 {
+      background: linear-gradient(135deg, #cd7f32, #fed7aa);
+      border-color: #fb923c;
+      color: #2b1606;
+      box-shadow: 0 0 14px rgba(251,146,60,.72);
+    }
+
+    .ranking-list li.you {
+      outline: 3px solid #22c55e;
+      box-shadow: 0 0 20px rgba(34,197,94,.85);
+      animation: pulsePlayer 1.1s ease-in-out infinite alternate;
+    }
+
+    .champion-tag {
+      display: inline-block;
+      margin-left: 6px;
+      padding: 3px 7px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.75);
+      color: #7c2d12;
+      font-size: .72rem;
+      font-weight: 900;
+    }
+
+    .ranking-modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 14px;
+      background: rgba(0,0,0,.78);
+      z-index: 999;
+    }
+
+    .ranking-modal.show { display: flex; }
+
+    .ranking-modal-box {
+      width: 100%;
+      max-width: 430px;
+      max-height: 88vh;
+      overflow: auto;
+      background: linear-gradient(180deg, #0f172a, #1e293b);
+      color: #fff;
+      border: 3px solid #facc15;
+      border-radius: 26px;
+      padding: 16px;
+      box-shadow: 0 18px 45px rgba(0,0,0,.55);
+    }
+
+    .ranking-modal-box h2 {
+      color: #fef08a;
+      margin-top: 0;
+    }
+
+    @keyframes pulsePlayer {
+      from { transform: scale(1); filter: brightness(1); }
+      to { transform: scale(1.018); filter: brightness(1.13); }
+    }
+
+    @media (max-height: 720px) {
+      .screen { padding: 12px; }
+      h1 { font-size: 1.35rem; margin: 8px 0 5px; }
+      .subtitle { font-size: 0.85rem; }
+      .phase-tile { min-height: 54px; border-radius: 14px; }
+      .phrase { font-size: 1.32rem; }
+      button { min-height: 48px; padding: 12px 10px; font-size: 0.95rem; }
+      .phrase-card { padding: 11px; margin-top: 9px; }
+    }
+  
+    .hub-link{
+      display:block;
+      width:100%;
+      margin-top:10px;
+      text-align:center;
+      text-decoration:none;
+      background:linear-gradient(180deg,#60a5fa,#2563eb);
+      color:#fff;
+      font-weight:900;
+      padding:13px 12px;
+      border-radius:18px;
+      box-shadow:0 5px 0 rgba(0,0,0,.25);
+    }
+
+  </style>
+
+<style id="custom-cover-start-style">
+.cover-start-screen{padding:10px !important}
+.cover-start-shell{
+  width:min(100%,540px);
+  margin:0 auto;
+  border-radius:30px;
+  overflow:hidden;
+  background:linear-gradient(180deg,rgba(8,11,38,.98),rgba(12,7,52,.98));
+  border:1px solid rgba(255,255,255,.14);
+  box-shadow:0 18px 46px rgba(0,0,0,.34),0 0 0 1px rgba(255,255,255,.04) inset;
+}
+.cover-art{
+  width:100%;
+  aspect-ratio:9/15.6;
+  background-image:var(--cover);
+  background-size:cover;
+  background-position:center top;
+  background-repeat:no-repeat;
+}
+.cover-bottom{
+  padding:16px 16px 18px;
+  background:linear-gradient(180deg,rgba(8,11,38,.98),rgba(12,7,52,.98));
+}
+.cover-badge{
+  display:inline-block;
+  padding:7px 12px;
+  border-radius:999px;
+  background:rgba(255,230,109,.14);
+  border:1px solid rgba(255,230,109,.34);
+  color:#fff3b0;
+  font-size:12px;
+  font-weight:1000;
+  margin-bottom:10px;
+}
+.cover-caption{
+  margin:0 0 12px;
+  color:#e8eeff;
+  font-size:13px;
+  line-height:1.38;
+  font-weight:800;
+}
+.cover-form{display:grid;gap:8px;text-align:left}
+.cover-form label{font-size:12px;font-weight:1000;color:#fff6c5;letter-spacing:.2px}
+.cover-form input{
+  width:100%;padding:12px 13px;border-radius:14px;border:1px solid rgba(255,255,255,.16);
+  background:rgba(255,255,255,.96);color:#172033;font-size:15px;font-weight:800;outline:none;
+}
+.cover-form input:focus{border-color:#60a5fa;box-shadow:0 0 0 3px rgba(96,165,250,.18)}
+.cover-actions{display:grid;gap:9px;margin-top:12px}
+.cover-start-btn,.cover-back-link{
+  display:block;width:100%;padding:13px 14px;border-radius:16px;border:0;text-decoration:none;text-align:center;
+  font-weight:1000;font-size:15px;cursor:pointer;
+}
+.cover-start-btn{background:linear-gradient(135deg,#ffe66d,#22c55e);color:#172033;box-shadow:0 10px 22px rgba(0,0,0,.22)}
+.cover-back-link{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:#fff}
+.cover-footer{margin-top:10px;text-align:center;font-size:11px;font-weight:900;color:#d9e2ff}
+@media(min-width:760px){.cover-start-shell{width:min(100%,560px)}.cover-bottom{padding:18px 20px 20px}.cover-caption{font-size:14px}}
+@media(max-width:430px){.cover-start-screen{padding:6px !important}.cover-start-shell{border-radius:22px}.cover-bottom{padding:14px 12px 16px}.cover-caption{font-size:12.5px}}
+</style>
+
+</head>
+
+<body>
+  <main class="app">
+    <section id="startScreen" class="screen active cover-start-screen">
+  <div class="cover-start-shell" style="--cover:url('703-desafio-de-pronuncia-cover.png')">
+    <div class="cover-art" role="img" aria-label="Capa do jogo"></div>
+    <div class="cover-bottom">
+      <div class="cover-badge">Turma 703 • Escola Municipal Princesa Izabel</div>
+      <p class="cover-caption">Preencha seus dados e toque em COMEÇAR para praticar a pronúncia. As fases começam com palavras e expressões curtas e depois avançam para frases.</p>
+      <div class="cover-form">
+        <label>Nome do aluno</label><input id="playerName" type="text" maxlength="24" placeholder="Digite seu nome" />
+<label>Turma</label><input id="playerClass" type="text" maxlength="12" value="703" />
+<label>Escola</label><input id="playerSchool" type="text" maxlength="42" value="Escola Municipal Princesa Izabel" />
+      </div>
+      <div class="cover-actions">
+        <button class="cover-start-btn" onclick="startGame()">COMEÇAR 🎤</button>
+        <a class="cover-back-link" href="index_turma_703_english_game_hub.html">← Voltar ao Game Hub</a>
+      </div>
+      <div class="cover-footer">Jogos elaborados pelo professor Jasson Bruno.</div>
+    </div>
+  </div>
+</section>
+
+    <section id="gameScreen" class="screen">
+      <span class="top-badge" id="phaseTitle">Fase 1</span>
+
+      <div class="hud">
+        <div class="hud-card">
+          Pontuação
+          <strong id="scoreText">0/100</strong>
+        </div>
+
+        <div class="hud-card">
+          Frase
+          <strong id="questionText">1/10</strong>
+        </div>
+
+        <div class="hud-card" style="grid-column: 1 / 3;">
+          Vidas da fase
+          <div id="livesText" class="life-row">❤️❤️❤️❤️❤️</div>
+        </div>
+      </div>
+
+      <div class="progress-wrap">
+        <div id="progressBar" class="progress-bar"></div>
+      </div>
+
+      <div id="gamePhaseMap" class="phase-map"></div>
+
+      <div id="phraseCard" class="phrase-card">
+        <span id="contentTag" class="content-tag">Tema</span>
+        <span id="sentenceType" class="sentence-type">Tipo</span>
+
+        <div id="phraseText" class="phrase">I am happy.</div>
+        <div id="translationText" class="translation">Eu estou feliz.</div>
+        <div id="tipText" class="tip">Dica: I am = eu sou / estou.</div>
+      </div>
+
+      <div class="button-grid two">
+        <button class="btn-blue" onclick="speakPhrase()">🔊 Ouvir</button>
+        <button class="btn-yellow" onclick="startRecognition()">🎤 Falar</button>
+      </div>
+
+      <div class="spoken-box">
+        <strong>Você disse:</strong>
+        <div id="spokenText">Toque em “Falar” e repita a frase.</div>
+      </div>
+
+      <div id="feedbackBox" class="feedback"></div>
+
+      <div class="button-grid">
+        <button id="nextButton" class="btn-purple" onclick="nextQuestion()" disabled>Próxima ➜</button>
+      </div>
+    </section>
+
+    <section id="phaseCompleteScreen" class="screen">
+      <span class="top-badge">Fase concluída</span>
+
+      <div class="big-message-box">
+        <h1 class="victory-title">🎉 Parabéns!</h1>
+
+        <p id="phaseCompleteMessage">Você completou esta fase!</p>
+
+        <div class="phase-result" id="phaseCompleteScore">Pontuação atual: 0/100</div>
+
+        <p>
+          Sua escuta e sua pronúncia estão evoluindo.
+          Você está preparado para o próximo desafio?
+        </p>
+      </div>
+
+      <div class="button-grid">
+        <button id="nextPhaseButton" class="btn-green" onclick="continueToNextPhase()">
+          🚀 Começar próxima fase
+        </button>
+      </div>
+
+      <p class="teacher">Jogo idealizado pelo Prof. Jasson Bruno.</p>
+    </section>
+
+    <section id="gameOverScreen" class="screen">
+      <span class="top-badge">Fim da tentativa</span>
+
+      <div class="big-message-box">
+        <h1 class="game-over-title">GAME OVER</h1>
+
+        <p>
+          Você tentou, treinou e isso já é um passo importante!
+          Aprender inglês é assim: ouvir, repetir, errar, corrigir e tentar novamente.
+        </p>
+
+        <div class="phase-result" id="gameOverScore">Pontuação: 0/100</div>
+
+        <p>💪 Não desista! Cada tentativa melhora sua escuta e sua pronúncia.</p>
+      </div>
+
+      <div class="rating-box">
+        <h2>Como foi jogar?</h2>
+        <p>Antes de continuar, marque uma opção:</p>
+
+        <div class="rating-buttons">
+          <button onclick="avaliarJogo('ruim', this)">
+            <span class="emoji">😡</span>
+            Difícil
+          </button>
+
+          <button onclick="avaliarJogo('neutro', this)">
+            <span class="emoji">😐</span>
+            Mais ou menos
+          </button>
+
+          <button onclick="avaliarJogo('bom', this)">
+            <span class="emoji">😀</span>
+            Gostei
+          </button>
+        </div>
+
+        <p id="ratingMessageGameOver"></p>
+      </div>
+
+      <div class="button-grid">
+        <button class="btn-orange" onclick="retryCurrentPhase()">🔁 Tentar esta fase novamente</button>
+        <button class="btn-gray" onclick="restartGame()">🏠 Voltar ao início</button>
+      </div>
+
+      <div id="currentScoreGameOver" class="current-score-box"></div>
+
+      <button class="btn-purple" onclick="openRankingModal()">🏆 Ranking Geral</button>
+
+      <h2>🏆 Ranking — 703 Desafio de Pronúncia</h2>
+      <p class="mini-note">A pontuação soma somente as partidas deste Desafio de Pronúncia.</p>
+      <ol id="rankingGameOver" class="ranking-list">
+        <li>Carregando ranking...</li>
+      </ol>
+
+      <p class="teacher">Jogo idealizado pelo Prof. Jasson Bruno.</p>
+    </section>
+
+    <section id="endScreen" class="screen">
+      <span class="top-badge">Resultado Final</span>
+      <h1>Journey Completed!</h1>
+
+      <div id="finalScore" class="final-score">Pontuação: 0/100</div>
+      <div id="motivationText" class="motivation"></div>
+
+      <div class="rating-box">
+        <h2>Como foi jogar?</h2>
+        <p>Toque em uma opção:</p>
+
+        <div class="rating-buttons">
+          <button onclick="avaliarJogo('ruim', this)">
+            <span class="emoji">😡</span>
+            Difícil
+          </button>
+
+          <button onclick="avaliarJogo('neutro', this)">
+            <span class="emoji">😐</span>
+            Mais ou menos
+          </button>
+
+          <button onclick="avaliarJogo('bom', this)">
+            <span class="emoji">😀</span>
+            Gostei
+          </button>
+        </div>
+
+        <p id="ratingMessage"></p>
+      </div>
+
+      <div id="currentScoreEnd" class="current-score-box"></div>
+
+      <button class="btn-purple" onclick="openRankingModal()">🏆 Ranking Geral</button>
+
+      <h2>🏆 Ranking — 703 Desafio de Pronúncia</h2>
+      <p class="mini-note">A pontuação soma somente as partidas deste Desafio de Pronúncia.</p>
+      <ol id="rankingOnline" class="ranking-list">
+        <li>Carregando ranking...</li>
+      </ol>
+
+      <button class="btn-green" onclick="restartGame()">🔁 Jogar novamente</button>
+      <a class="hub-link" href="index_turma_703_english_game_hub.html">← Voltar ao Game Hub da Turma 703</a>
+
+      <p class="teacher">Jogo idealizado pelo Prof. Jasson Bruno.</p>
+    </section>
+  </main>
+
+  <div id="rankingModal" class="ranking-modal">
+    <div class="ranking-modal-box">
+      <h2>🏆 Ranking Geral — 703 Desafio de Pronúncia</h2>
+      <p class="mini-note" style="color:#dbeafe">Ranking acumulado somente deste jogo. O 1º lugar aparece como Campeão do dia.</p>
+      <div id="currentScoreModal" class="current-score-box"></div>
+      <ol id="rankingModalList" class="ranking-list">
+        <li>Carregando ranking...</li>
+      </ol>
+      <a class="btn-green" href="703-ranking.html" style="display:block;text-decoration:none;text-align:center;margin:10px 0">🏆 Ranking geral da Turma 703</a><button class="btn-gray" onclick="closeRankingModal()">Fechar ranking</button>
+    </div>
+  </div>
+
+
+  <script>
+    const NOME_DO_JOGO = "703-english-voice-challenge";
+    const phases = [
+  {
+    "title": "Fase 1 - Listen & Repeat",
+    "items": [
+      {
+        "topic": "Family Members",
+        "type": "Ouvir e repetir",
+        "phrase": "My mother",
+        "pt": "Minha mãe.",
+        "tip": "Mother = mãe."
+      },
+      {
+        "topic": "Family Life",
+        "type": "Ouvir e repetir",
+        "phrase": "My family",
+        "pt": "Minha família.",
+        "tip": "Family = família."
+      },
+      {
+        "topic": "Present Information",
+        "type": "Ouvir e repetir",
+        "phrase": "I am here",
+        "pt": "Eu estou aqui.",
+        "tip": "I am = eu sou / estou."
+      },
+      {
+        "topic": "Present Continuous",
+        "type": "Ouvir e repetir",
+        "phrase": "I am studying",
+        "pt": "Eu estou estudando.",
+        "tip": "am + studying = ação acontecendo agora."
+      },
+      {
+        "topic": "Quantifiers",
+        "type": "Ouvir e repetir",
+        "phrase": "Many books",
+        "pt": "Muitos livros.",
+        "tip": "Many = muitos / muitas."
+      },
+      {
+        "topic": "Comparatives",
+        "type": "Ouvir e repetir",
+        "phrase": "Taller than me",
+        "pt": "Mais alto que eu.",
+        "tip": "Tall = alto; taller than = mais alto que."
+      },
+      {
+        "topic": "Family Members",
+        "type": "Ouvir e repetir",
+        "phrase": "My sister",
+        "pt": "Minha irmã.",
+        "tip": "Sister = irmã."
+      },
+      {
+        "topic": "Quantifiers",
+        "type": "Ouvir e repetir",
+        "phrase": "A few friends",
+        "pt": "Alguns poucos amigos.",
+        "tip": "A few = alguns poucos."
+      }
+    ]
+  },
+  {
+    "title": "Fase 2 - Short Sentences",
+    "items": [
+      {
+        "topic": "Family Members",
+        "type": "Frase curta",
+        "phrase": "She is my mother",
+        "pt": "Ela é minha mãe.",
+        "tip": "She = ela; mother = mãe."
+      },
+      {
+        "topic": "Family Life",
+        "type": "Frase curta",
+        "phrase": "I live with my family",
+        "pt": "Eu moro com minha família.",
+        "tip": "I live with = eu moro com."
+      },
+      {
+        "topic": "Present Information",
+        "type": "Frase curta",
+        "phrase": "I am at home",
+        "pt": "Eu estou em casa.",
+        "tip": "At home = em casa."
+      },
+      {
+        "topic": "Present Continuous",
+        "type": "Frase curta",
+        "phrase": "He is studying",
+        "pt": "Ele está estudando.",
+        "tip": "He + is + studying."
+      },
+      {
+        "topic": "Quantifiers",
+        "type": "Frase curta",
+        "phrase": "There are many books",
+        "pt": "Há muitos livros.",
+        "tip": "Many é usado com substantivos contáveis no plural."
+      },
+      {
+        "topic": "Comparatives",
+        "type": "Frase curta",
+        "phrase": "My brother is taller",
+        "pt": "Meu irmão é mais alto.",
+        "tip": "Taller = mais alto."
+      },
+      {
+        "topic": "Family Members",
+        "type": "Frase curta",
+        "phrase": "He is my uncle",
+        "pt": "Ele é meu tio.",
+        "tip": "Uncle = tio."
+      },
+      {
+        "topic": "Present Continuous",
+        "type": "Frase curta",
+        "phrase": "They are playing",
+        "pt": "Eles estão brincando.",
+        "tip": "They + are + verbo-ing."
+      }
+    ]
+  },
+  {
+    "title": "Fase 3 - Everyday English",
+    "items": [
+      {
+        "topic": "Family Life",
+        "type": "Cotidiano",
+        "phrase": "My family is big",
+        "pt": "Minha família é grande.",
+        "tip": "Big = grande."
+      },
+      {
+        "topic": "Present Continuous",
+        "type": "Cotidiano",
+        "phrase": "They are studying now",
+        "pt": "Eles estão estudando agora.",
+        "tip": "Now = agora."
+      },
+      {
+        "topic": "Quantifiers",
+        "type": "Cotidiano",
+        "phrase": "I have a few friends",
+        "pt": "Eu tenho alguns poucos amigos.",
+        "tip": "A few + substantivo contável."
+      },
+      {
+        "topic": "Comparatives",
+        "type": "Cotidiano",
+        "phrase": "My sister is younger",
+        "pt": "Minha irmã é mais jovem.",
+        "tip": "Young = jovem; younger = mais jovem."
+      },
+      {
+        "topic": "Present Information",
+        "type": "Pergunta curta",
+        "phrase": "What are you doing?",
+        "pt": "O que você está fazendo?",
+        "tip": "Use para perguntar sobre uma ação agora."
+      },
+      {
+        "topic": "Family Members",
+        "type": "Cotidiano",
+        "phrase": "My cousin is here",
+        "pt": "Meu primo / minha prima está aqui.",
+        "tip": "Cousin = primo ou prima."
+      },
+      {
+        "topic": "Quantifiers",
+        "type": "Cotidiano",
+        "phrase": "Most students are here",
+        "pt": "A maioria dos alunos está aqui.",
+        "tip": "Most = a maioria."
+      },
+      {
+        "topic": "Comparatives",
+        "type": "Cotidiano",
+        "phrase": "This book is bigger",
+        "pt": "Este livro é maior.",
+        "tip": "Big → bigger."
+      }
+    ]
+  },
+  {
+    "title": "Fase 4 - Listen Carefully",
+    "items": [
+      {
+        "topic": "Present Continuous",
+        "type": "Compreensão",
+        "phrase": "My mother is cooking now",
+        "pt": "Minha mãe está cozinhando agora.",
+        "tip": "Is cooking = está cozinhando."
+      },
+      {
+        "topic": "Quantifiers",
+        "type": "Compreensão",
+        "phrase": "Most students are studying",
+        "pt": "A maioria dos alunos está estudando.",
+        "tip": "Most = a maioria."
+      },
+      {
+        "topic": "Comparatives",
+        "type": "Compreensão",
+        "phrase": "My brother is taller than me",
+        "pt": "Meu irmão é mais alto que eu.",
+        "tip": "Taller than = mais alto que."
+      },
+      {
+        "topic": "Family Life",
+        "type": "Compreensão",
+        "phrase": "I live with my parents",
+        "pt": "Eu moro com meus pais.",
+        "tip": "Parents = pais."
+      },
+      {
+        "topic": "Present Information",
+        "type": "Pergunta",
+        "phrase": "What is she doing?",
+        "pt": "O que ela está fazendo?",
+        "tip": "Pergunta sobre uma ação em andamento."
+      },
+      {
+        "topic": "Family Members",
+        "type": "Compreensão",
+        "phrase": "My grandmother is very kind",
+        "pt": "Minha avó é muito gentil.",
+        "tip": "Grandmother = avó; kind = gentil."
+      },
+      {
+        "topic": "Quantifiers",
+        "type": "Compreensão",
+        "phrase": "Some students are reading",
+        "pt": "Alguns alunos estão lendo.",
+        "tip": "Some = alguns / algumas."
+      },
+      {
+        "topic": "Comparatives",
+        "type": "Compreensão",
+        "phrase": "This exercise is easier",
+        "pt": "Este exercício é mais fácil.",
+        "tip": "Easy → easier."
+      }
+    ]
+  },
+  {
+    "title": "Fase 5 - Speak with Confidence",
+    "items": [
+      {
+        "topic": "Quantifiers",
+        "type": "Aplicação",
+        "phrase": "There are many students in my class",
+        "pt": "Há muitos alunos na minha turma.",
+        "tip": "Many + students."
+      },
+      {
+        "topic": "Comparatives",
+        "type": "Aplicação",
+        "phrase": "My sister is younger than my brother",
+        "pt": "Minha irmã é mais jovem que meu irmão.",
+        "tip": "Younger than = mais jovem que."
+      },
+      {
+        "topic": "Present Continuous",
+        "type": "Aplicação",
+        "phrase": "They are playing with their cousins",
+        "pt": "Eles estão brincando com seus primos.",
+        "tip": "Are playing = estão brincando."
+      },
+      {
+        "topic": "Quantifiers",
+        "type": "Aplicação",
+        "phrase": "A few students are reading now",
+        "pt": "Alguns poucos alunos estão lendo agora.",
+        "tip": "A few indica pequena quantidade."
+      },
+      {
+        "topic": "Family Life",
+        "type": "Aplicação",
+        "phrase": "My family is very close",
+        "pt": "Minha família é muito unida.",
+        "tip": "Close, aqui, significa unida / próxima."
+      },
+      {
+        "topic": "Present Information",
+        "type": "Aplicação",
+        "phrase": "Where are they now?",
+        "pt": "Onde eles estão agora?",
+        "tip": "Where = onde."
+      },
+      {
+        "topic": "Comparatives",
+        "type": "Aplicação",
+        "phrase": "This city is bigger than my town",
+        "pt": "Esta cidade é maior que minha cidade.",
+        "tip": "Bigger than = maior que."
+      },
+      {
+        "topic": "Family Members",
+        "type": "Aplicação",
+        "phrase": "My aunt is talking to my mother",
+        "pt": "Minha tia está falando com minha mãe.",
+        "tip": "Aunt = tia; mother = mãe."
+      }
+    ]
+  },
+  {
+    "title": "Fase 6 - Final Voice Challenge",
+    "items": [
+      {
+        "topic": "Quantifiers + Present Continuous",
+        "type": "Desafio final",
+        "phrase": "Most students are studying now",
+        "pt": "A maioria dos alunos está estudando agora.",
+        "tip": "Most + students + are studying."
+      },
+      {
+        "topic": "Comparatives + Family",
+        "type": "Desafio final",
+        "phrase": "My brother is taller than my cousin",
+        "pt": "Meu irmão é mais alto que meu primo.",
+        "tip": "Taller than = mais alto que."
+      },
+      {
+        "topic": "Family Life + Present Continuous",
+        "type": "Desafio final",
+        "phrase": "My mother is cooking and my father is working",
+        "pt": "Minha mãe está cozinhando e meu pai está trabalhando.",
+        "tip": "Duas ações acontecendo agora."
+      },
+      {
+        "topic": "Quantifiers + Present Continuous",
+        "type": "Desafio final",
+        "phrase": "A few people are talking in the classroom",
+        "pt": "Algumas poucas pessoas estão conversando na sala.",
+        "tip": "A few = pequena quantidade; are talking = estão conversando."
+      },
+      {
+        "topic": "Family Life",
+        "type": "Desafio final",
+        "phrase": "My family is small but we are very close",
+        "pt": "Minha família é pequena, mas somos muito unidos.",
+        "tip": "Small = pequena; close = unidos / próximos."
+      },
+      {
+        "topic": "Present Information",
+        "type": "Desafio final",
+        "phrase": "What are your parents doing now?",
+        "pt": "O que seus pais estão fazendo agora?",
+        "tip": "Parents = pais; doing now = fazendo agora."
+      },
+      {
+        "topic": "Comparatives",
+        "type": "Desafio final",
+        "phrase": "This book is more interesting than that book",
+        "pt": "Este livro é mais interessante que aquele livro.",
+        "tip": "Adjetivo longo: more + adjective + than."
+      },
+      {
+        "topic": "Quantifiers + Family",
+        "type": "Desafio final",
+        "phrase": "Most of my family is at home",
+        "pt": "A maior parte da minha família está em casa.",
+        "tip": "Most of = a maior parte de."
+      }
+    ]
+  }
+];
+
+    let currentPhase = 0;
+    let currentQuestion = 0;
+    let score = 0;
+    let totalQuestions = phases.reduce((total, phase) => total + phase.items.length, 0);
+    let answeredCurrent = false;
+    let playerName = "Você";
+    let playerSchool = "Sua escola";
+    let finalScoreSaved = false;
+    let ultimaPontuacaoLocal = null;
+
+    const MAX_LIVES = 5;
+    let lives = MAX_LIVES;
+    let gameOverSaved = false;
+
+    const startScreen = document.getElementById("startScreen");
+    const gameScreen = document.getElementById("gameScreen");
+    const phaseCompleteScreen = document.getElementById("phaseCompleteScreen");
+    const gameOverScreen = document.getElementById("gameOverScreen");
+    const endScreen = document.getElementById("endScreen");
+
+    const startPhaseMap = document.getElementById("startPhaseMap");
+    const gamePhaseMap = document.getElementById("gamePhaseMap");
+    const phaseTitle = document.getElementById("phaseTitle");
+    const scoreText = document.getElementById("scoreText");
+    const questionText = document.getElementById("questionText");
+    const progressBar = document.getElementById("progressBar");
+    const livesText = document.getElementById("livesText");
+
+    const contentTag = document.getElementById("contentTag");
+    const sentenceType = document.getElementById("sentenceType");
+    const phraseText = document.getElementById("phraseText");
+    const translationText = document.getElementById("translationText");
+    const tipText = document.getElementById("tipText");
+    const spokenText = document.getElementById("spokenText");
+    const feedbackBox = document.getElementById("feedbackBox");
+    const nextButton = document.getElementById("nextButton");
+    const phraseCard = document.getElementById("phraseCard");
+
+
+
+    function isCurrentPlayerItem(item) {
+      const ref = window.ultimaPontuacaoLocalRef || ultimaPontuacaoLocal;
+      if (!ref) return false;
+      return String(item?.nome || "").toLowerCase() === String(ref.nome || "").toLowerCase()
+        && String(item?.escola || "Escola não informada").toLowerCase() === String(ref.escola || "Escola não informada").toLowerCase()
+        && String(item?.tipo || "real") === "real";
+    }
+
+    function renderCurrentScoreBox(containerId) {
+      const box = document.getElementById(containerId);
+      const p = window.ultimaPontuacaoLocalRef || ultimaPontuacaoLocal;
+      if (!box || !p) return;
+      box.style.display = "block";
+      box.innerHTML = `
+        <div class="label">✨ SUA PONTUAÇÃO AGORA ✨</div>
+        <div class="name">${p.nome} — ${p.escola || "Escola não informada"}</div>
+        <div class="points">${Number(p.pontos || 0)} pts nesta partida</div>
+      `;
+    }
+
+    function renderAllCurrentScoreBoxes() {
+      ["currentScoreGameOver", "currentScoreEnd", "currentScoreModal"].forEach(renderCurrentScoreBox);
+    }
+
+    function openRankingModal() {
+      const modal = document.getElementById("rankingModal");
+      if (modal) modal.classList.add("show");
+      renderAllCurrentScoreBoxes();
+      if (typeof window.carregarRanking === "function") {
+        window.carregarRanking(NOME_DO_JOGO, "rankingModalList");
+      }
+    }
+
+    function closeRankingModal() {
+      const modal = document.getElementById("rankingModal");
+      if (modal) modal.classList.remove("show");
+    }
+
+
+    renderPhaseMap(startPhaseMap, 0);
+
+    function startGame() {
+      const name = document.getElementById("playerName").value.trim();
+      const school = document.getElementById("playerSchool").value.trim();
+
+      if (!name) {
+        alert("Digite o nome do aluno para começar.");
+        return;
+      }
+
+      playerName = name.slice(0, 24);
+      playerSchool = school ? school.slice(0, 42) : "Sua escola";
+
+      phases = buildVoiceSession();
+      totalQuestions = phases.reduce((sum,p)=>sum+p.items.length,0);
+      currentPhase = 0;
+      currentQuestion = 0;
+      score = 0;
+      lives = MAX_LIVES;
+      finalScoreSaved = false;
+      gameOverSaved = false;
+      ultimaPontuacaoLocal = null;
+
+      showScreen(gameScreen);
+      loadQuestion();
+    }
+
+    function showScreen(screen) {
+      startScreen.classList.remove("active");
+      gameScreen.classList.remove("active");
+      phaseCompleteScreen.classList.remove("active");
+      gameOverScreen.classList.remove("active");
+      endScreen.classList.remove("active");
+
+      screen.classList.add("active");
+    }
+
+    function renderPhaseMap(container, activePhase) {
+      container.innerHTML = "";
+
+      phases.forEach((phase, index) => {
+        const tile = document.createElement("div");
+        tile.className = "phase-tile";
+
+        if (index < activePhase) {
+          tile.classList.add("done");
+          tile.innerHTML = `<div class="phase-number">✓</div><div>Fase ${index + 1}</div>`;
+        } else if (index === activePhase) {
+          tile.classList.add("open");
+          tile.innerHTML = `<div class="phase-number">${index + 1}</div><div>Em andamento</div>`;
+        } else {
+          tile.classList.add("locked");
+          tile.innerHTML = `<div class="lock">🔒</div><div>Fase ${index + 1}</div>`;
+        }
+
+        container.appendChild(tile);
+      });
+    }
+
+    function loadQuestion() {
+      answeredCurrent = false;
+      nextButton.disabled = true;
+
+      const item = phases[currentPhase].items[currentQuestion];
+
+      phaseTitle.textContent = phases[currentPhase].title;
+      contentTag.textContent = item.topic;
+      sentenceType.textContent = item.type;
+      phraseText.textContent = item.phrase;
+      translationText.textContent = item.pt;
+      tipText.textContent = item.tip;
+
+      spokenText.textContent = "Toque em “Falar” e repita a frase.";
+      hideFeedback();
+
+      phraseCard.classList.remove("correct-glow", "wrong-shake");
+
+      renderPhaseMap(gamePhaseMap, currentPhase);
+      updateHud();
+    }
+
+    function updateHud() {
+      const answeredSoFar = phases.slice(0, currentPhase).reduce((sum,p)=>sum+p.items.length,0) + currentQuestion;
+      const progress = (answeredSoFar / totalQuestions) * 100;
+
+      scoreText.textContent = `${score}/${totalQuestions}`;
+      questionText.textContent = `${currentQuestion + 1}/${phases[currentPhase].items.length}`;
+      progressBar.style.width = `${progress}%`;
+
+      const hearts = "❤️".repeat(lives);
+      const lost = "🖤".repeat(MAX_LIVES - lives);
+      livesText.textContent = hearts + lost;
+    }
+
+    function speakPhrase() {
+      const item = phases[currentPhase].items[currentQuestion];
+
+      if (!("speechSynthesis" in window)) {
+        showFeedback("Seu navegador não suporta áudio de voz.", "wrong");
+        return;
+      }
+
+      window.speechSynthesis.cancel();
+
+      const utterance = new SpeechSynthesisUtterance(item.phrase);
+      utterance.lang = "en-US";
+      utterance.rate = 0.82;
+      utterance.pitch = 1;
+
+      const voices = window.speechSynthesis.getVoices();
+      const englishVoice = voices.find(voice => voice.lang && voice.lang.toLowerCase().startsWith("en"));
+
+      if (englishVoice) {
+        utterance.voice = englishVoice;
+      }
+
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function startRecognition() {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+      if (!SpeechRecognition) {
+        spokenText.textContent = "Seu navegador não suporta microfone.";
+        showFeedback("Seu navegador não suporta microfone. Continue ouvindo e repetindo oralmente.", "info");
+        nextButton.disabled = false;
+        return;
+      }
+
+      const recognition = new SpeechRecognition();
+      recognition.lang = "en-US";
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
+
+      spokenText.textContent = "Ouvindo... fale a frase em inglês.";
+      showFeedback("🎤 Pode falar agora!", "info");
+
+      recognition.start();
+
+      recognition.onresult = function(event) {
+        const spoken = event.results[0][0].transcript;
+        spokenText.textContent = spoken;
+        checkAnswer(spoken);
+      };
+
+      recognition.onerror = function() {
+        spokenText.textContent = "Não foi possível reconhecer sua fala.";
+        showFeedback("❌ Tente novamente ou toque em Próxima para continuar.", "wrong");
+        animateWrongCard();
+        playErrorSound();
+        nextButton.disabled = false;
+      };
+
+      recognition.onend = function() {
+        if (spokenText.textContent === "Ouvindo... fale a frase em inglês.") {
+          spokenText.textContent = "Nenhuma fala foi reconhecida.";
+          showFeedback("⚠️ Você não falou nada ou o áudio ficou baixo. Tente novamente.", "wrong");
+          animateWrongCard();
+          playErrorSound();
+          nextButton.disabled = false;
+        }
+      };
+    }
+
+    function checkAnswer(spoken) {
+      const expected = phases[currentPhase].items[currentQuestion].phrase;
+
+      const normalizedExpected = normalizeText(expected);
+      const normalizedSpoken = normalizeText(spoken);
+
+      const expectedWords = normalizedExpected.split(" ");
+      let matchedWords = 0;
+
+      expectedWords.forEach(word => {
+        if (normalizedSpoken.includes(word)) {
+          matchedWords++;
+        }
+      });
+
+      const similarity = matchedWords / expectedWords.length;
+      const isCorrect =
+        normalizedSpoken.includes(normalizedExpected) ||
+        normalizedExpected.includes(normalizedSpoken) ||
+        similarity >= 0.7;
+
+      if (isCorrect) {
+        if (!answeredCurrent) {
+          score++;
+          answeredCurrent = true;
+        }
+
+        showFeedback("✅ Muito bom! Great job!", "correct");
+        animateCorrectCard();
+        playSuccessSound();
+      } else {
+        lives--;
+
+        if (lives < 0) {
+          lives = 0;
+        }
+
+        showFeedback("❌ Tente novamente. Você perdeu 1 vida.", "wrong");
+        animateWrongCard();
+        playErrorSound();
+        updateHud();
+
+        if (lives <= 0) {
+          setTimeout(showGameOver, 700);
+          return;
+        }
+      }
+
+      nextButton.disabled = false;
+      updateHud();
+    }
+
+    function normalizeText(text) {
+      return text
+        .toLowerCase()
+        .replace(/[.,!?;:]/g, "")
+        .replace(/don't/g, "dont")
+        .replace(/doesn't/g, "doesnt")
+        .replace(/do not/g, "dont")
+        .replace(/does not/g, "doesnt")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    function showFeedback(message, type) {
+      feedbackBox.textContent = message;
+      feedbackBox.className = `feedback show ${type}`;
+    }
+
+    function hideFeedback() {
+      feedbackBox.textContent = "";
+      feedbackBox.className = "feedback";
+    }
+
+    function animateCorrectCard() {
+      phraseCard.classList.remove("correct-glow", "wrong-shake");
+      void phraseCard.offsetWidth;
+      phraseCard.classList.add("correct-glow");
+
+      setTimeout(() => {
+        phraseCard.classList.remove("correct-glow");
+      }, 900);
+    }
+
+    function animateWrongCard() {
+      phraseCard.classList.remove("correct-glow", "wrong-shake");
+      void phraseCard.offsetWidth;
+      phraseCard.classList.add("wrong-shake");
+
+      setTimeout(() => {
+        phraseCard.classList.remove("wrong-shake");
+      }, 500);
+    }
+
+    function nextQuestion() {
+      currentQuestion++;
+
+      if (currentQuestion >= phases[currentPhase].items.length) {
+        showPhaseComplete();
+        return;
+      }
+
+      loadQuestion();
+    }
+
+    function showPhaseComplete() {
+      const completedPhaseNumber = currentPhase + 1;
+
+      if (completedPhaseNumber >= phases.length) {
+        finishGame();
+        return;
+      }
+
+      document.getElementById("phaseCompleteMessage").textContent =
+        `Você completou a Fase ${completedPhaseNumber}!`;
+
+      document.getElementById("phaseCompleteScore").textContent =
+        `Pontuação atual: ${score}/${totalQuestions} | Vidas restantes: ${"❤️".repeat(lives)}${"🖤".repeat(MAX_LIVES - lives)}`;
+
+      document.getElementById("nextPhaseButton").textContent =
+        `🚀 Começar Fase ${completedPhaseNumber + 1}`;
+
+      showScreen(phaseCompleteScreen);
+    }
+
+    function continueToNextPhase() {
+      currentPhase++;
+      currentQuestion = 0;
+      lives = MAX_LIVES;
+      gameOverSaved = false;
+
+      showScreen(gameScreen);
+      loadQuestion();
+    }
+
+    function showGameOver() {
+      document.getElementById("gameOverScore").textContent =
+        `Pontuação: ${score}/${totalQuestions} | Você chegou até a Fase ${currentPhase + 1}`;
+
+      showScreen(gameOverScreen);
+
+      if (!gameOverSaved) {
+        gameOverSaved = true;
+
+        const rankingPoints = Math.round((score / Math.max(1,totalQuestions))*100);
+        ultimaPontuacaoLocal = { nome: playerName, escola: playerSchool, pontos: rankingPoints };
+        window.ultimaPontuacaoLocalRef = ultimaPontuacaoLocal;
+        renderAllCurrentScoreBoxes();
+
+        if (typeof window.salvarPontuacao === "function") {
+          window.salvarPontuacao(playerName, Math.round((score / Math.max(1,totalQuestions))*100), NOME_DO_JOGO, playerSchool);
+        }
+      }
+
+      if (typeof window.carregarRanking === "function") {
+        window.carregarRanking(NOME_DO_JOGO, "rankingGameOver");
+      }
+    }
+
+    function retryCurrentPhase() {
+      currentQuestion = 0;
+      lives = MAX_LIVES;
+      gameOverSaved = false;
+
+      showScreen(gameScreen);
+      loadQuestion();
+    }
+
+    function finishGame() {
+      progressBar.style.width = "100%";
+      showScreen(endScreen);
+
+      document.getElementById("finalScore").textContent = `Pontuação: ${score}/${totalQuestions}`;
+
+      const percent = score / totalQuestions;
+      const motivationText = document.getElementById("motivationText");
+
+      if (percent >= 0.85) {
+        motivationText.textContent = "🌟 Excelente! Sua escuta e sua fala estão evoluindo muito!";
+      } else if (percent >= 0.65) {
+        motivationText.textContent = "🔥 Muito bem! Continue treinando para falar com cada vez mais confiança.";
+      } else {
+        motivationText.textContent = "💪 Continue treinando. Ouvir e repetir várias vezes faz parte da aprendizagem.";
+      }
+
+      if (!finalScoreSaved) {
+        finalScoreSaved = true;
+
+        const rankingPoints = Math.round((score / Math.max(1,totalQuestions))*100);
+        ultimaPontuacaoLocal = { nome: playerName, escola: playerSchool, pontos: rankingPoints };
+        window.ultimaPontuacaoLocalRef = ultimaPontuacaoLocal;
+        renderAllCurrentScoreBoxes();
+
+        if (typeof window.salvarPontuacao === "function") {
+          window.salvarPontuacao(playerName, Math.round((score / Math.max(1,totalQuestions))*100), NOME_DO_JOGO, playerSchool);
+        }
+      }
+
+      if (typeof window.carregarRanking === "function") {
+        window.carregarRanking(NOME_DO_JOGO, "rankingOnline");
+      }
+    }
+
+    function avaliarJogo(avaliacao, buttonElement) {
+      const ratingMessage = document.getElementById("ratingMessage");
+      const ratingMessageGameOver = document.getElementById("ratingMessageGameOver");
+
+      if (typeof window.salvarAvaliacao === "function") {
+        window.salvarAvaliacao(avaliacao, NOME_DO_JOGO);
+      }
+
+      if (ratingMessage) {
+        ratingMessage.textContent = "Obrigado! Sua avaliação foi registrada.";
+      }
+
+      if (ratingMessageGameOver) {
+        ratingMessageGameOver.textContent = "Obrigado! Sua avaliação foi registrada.";
+      }
+
+      const ratingBox = buttonElement ? buttonElement.closest(".rating-box") : null;
+      const buttons = ratingBox ? ratingBox.querySelectorAll("button") : document.querySelectorAll(".rating-buttons button");
+
+      buttons.forEach(btn => {
+        btn.disabled = true;
+        btn.style.filter = "none";
+      });
+
+      if (buttonElement) {
+        buttonElement.style.filter = "brightness(1.25)";
+      }
+    }
+
+    function restartGame() {
+      if ("speechSynthesis" in window) {
+        window.speechSynthesis.cancel();
+      }
+
+      document.getElementById("playerName").value = "";
+      document.getElementById("playerSchool").value = "";
+      document.getElementById("ratingMessage").textContent = "";
+      const ratingMessageGameOver = document.getElementById("ratingMessageGameOver");
+      if (ratingMessageGameOver) {
+        ratingMessageGameOver.textContent = "";
+      }
+
+      const buttons = document.querySelectorAll(".rating-buttons button");
+      buttons.forEach(btn => {
+        btn.disabled = false;
+        btn.style.filter = "none";
+      });
+
+      currentPhase = 0;
+      currentQuestion = 0;
+      score = 0;
+      lives = MAX_LIVES;
+      finalScoreSaved = false;
+      gameOverSaved = false;
+      ultimaPontuacaoLocal = null;
+
+  
+
+      window.ultimaPontuacaoLocalRef = null;
+
+    renderPhaseMap(startPhaseMap, 0);
+      showScreen(startScreen);
+    }
+
+    function playSuccessSound() {
+      try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        const audioCtx = new AudioContext();
+
+        const notes = [
+          { frequency: 660, time: 0 },
+          { frequency: 880, time: 0.12 },
+          { frequency: 990, time: 0.24 }
+        ];
+
+        notes.forEach(note => {
+          const oscillator = audioCtx.createOscillator();
+          const gainNode = audioCtx.createGain();
+
+          oscillator.type = "sine";
+          oscillator.frequency.setValueAtTime(note.frequency, audioCtx.currentTime + note.time);
+
+          gainNode.gain.setValueAtTime(0.001, audioCtx.currentTime + note.time);
+          gainNode.gain.exponentialRampToValueAtTime(0.18, audioCtx.currentTime + note.time + 0.03);
+          gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + note.time + 0.22);
+
+          oscillator.connect(gainNode);
+          gainNode.connect(audioCtx.destination);
+
+          oscillator.start(audioCtx.currentTime + note.time);
+          oscillator.stop(audioCtx.currentTime + note.time + 0.24);
+        });
+      } catch (error) {
+        console.log("Som positivo não pôde ser reproduzido.");
+      }
+    }
+
+    function playErrorSound() {
+      try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        const audioCtx = new AudioContext();
+
+        const oscillator = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+
+        oscillator.type = "sawtooth";
+        oscillator.frequency.setValueAtTime(180, audioCtx.currentTime);
+        oscillator.frequency.exponentialRampToValueAtTime(95, audioCtx.currentTime + 0.22);
+
+        gainNode.gain.setValueAtTime(0.12, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.25);
+
+        oscillator.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+
+        oscillator.start();
+        oscillator.stop(audioCtx.currentTime + 0.25);
+      } catch (error) {
+        console.log("Som de erro não pôde ser reproduzido.");
+      }
+    }
+
+    if ("speechSynthesis" in window) {
+      window.speechSynthesis.onvoiceschanged = function() {
+        window.speechSynthesis.getVoices();
+      };
+    }
+  </script>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+
+    import {
+      getFirestore,
+      collection,
+      addDoc,
+      serverTimestamp,
+      query,
+      orderBy,
+      limit,
+      onSnapshot
+    } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCVTR3nnyo5mYTF28TJisgTUe-Xyjk1upg",
+      authDomain: "english-game-hub.firebaseapp.com",
+      projectId: "english-game-hub",
+      storageBucket: "english-game-hub.firebasestorage.app",
+      messagingSenderId: "131880771426",
+      appId: "1:131880771426:web:cf29a6f34ca86be527d63b"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    window.registrarAcesso = async function registrarAcesso(jogo = NOME_DO_JOGO) {
+      try {
+        const agora = new Date();
+
+        await addDoc(collection(db, "acessos"), {
+          nome_do_jogo: jogo,
+          data: agora.toLocaleDateString("pt-BR"),
+          hora: agora.toLocaleTimeString("pt-BR"),
+          timestamp: serverTimestamp()
+        });
+      } catch (error) {
+        console.error("Erro ao registrar acesso:", error);
+      }
+    };
+
+    window.salvarPontuacao = async function salvarPontuacao(nome, pontos, jogo = NOME_DO_JOGO, escola = "Escola não informada") {
+      try {
+        const nomeLimpo = String(nome || "").trim().slice(0, 24);
+        const escolaLimpa = String(escola || "Escola não informada").trim().slice(0, 42);
+        const pontosNumero = Number(pontos);
+
+        if (!nomeLimpo) {
+          console.warn("Nome vazio. Pontuação não salva.");
+          return;
+        }
+
+        if (!Number.isInteger(pontosNumero) || pontosNumero < 0 || pontosNumero > 100) {
+          console.warn("Pontuação inválida. Pontuação não salva.");
+          return;
+        }
+
+        await addDoc(collection(db, "pontuacoes"), {
+          nome: nomeLimpo,
+          escola: escolaLimpa || "Escola não informada",
+          pontos: pontosNumero,
+          jogo: jogo,
+          tipo: "real",
+          turma: "703",
+          timestamp: serverTimestamp()
+        });
+      } catch (error) {
+        console.error("Erro ao salvar pontuação:", error);
+      }
+    };
+
+    window.salvarAvaliacao = async function salvarAvaliacao(avaliacao, jogo = NOME_DO_JOGO) {
+      try {
+        const avaliacoesPermitidas = ["ruim", "neutro", "bom"];
+
+        if (!avaliacoesPermitidas.includes(avaliacao)) {
+          console.warn("Avaliação inválida.");
+          return;
+        }
+
+        await addDoc(collection(db, "avaliacoes"), {
+          jogo: jogo,
+          avaliacao: avaliacao,
+          nome: playerName || "Não informado",
+          escola: playerSchool || "Escola não informada",
+          timestamp: serverTimestamp()
+        });
+      } catch (error) {
+        console.error("Erro ao salvar avaliação:", error);
+      }
+    };
+
+    const rankingMotivacionalInicial = [];
+
+    window.carregarRanking = function carregarRanking(jogo = NOME_DO_JOGO, containerId = "rankingOnline") {
+      const rankingContainer = document.getElementById(containerId);
+
+      if (!rankingContainer) {
+        console.warn("Elemento de ranking não encontrado.");
+        return;
+      }
+
+      const rankingQuery = query(
+        collection(db, "pontuacoes"),
+        limit(500)
+      );
+
+      onSnapshot(rankingQuery, (snapshot) => {
+        rankingContainer.innerHTML = "";
+
+        const somaPorAluno = new Map();
+
+        // Dados reais do Firebase: aqui o ranking é filtrado pelo jogo atual.
+        // Assim o Listening mostra somente pontuações do Listening, sem misturar Hangman, Spin ou Board Game.
+        snapshot.forEach((doc) => {
+          const item = doc.data();
+
+          if (!item || item.tipo === "motivacional") return;
+          if (String(item.jogo || "") !== String(jogo || NOME_DO_JOGO)) return;
+
+          const nome = String(item.nome || "").trim();
+          const escola = String(item.escola || "Escola não informada").trim();
+          const pontos = Number(item.pontos || 0);
+
+          if (!nome || !Number.isFinite(pontos)) return;
+
+          const chave = `${nome.toLowerCase()}|${escola.toLowerCase()}|real`;
+          const atual = somaPorAluno.get(chave) || {
+            nome,
+            escola,
+            pontos: 0,
+            tipo: "real"
+          };
+
+          atual.pontos = Math.max(atual.pontos, pontos);
+          somaPorAluno.set(chave, atual);
+        });
+
+        // Inclui a pontuação local recém-finalizada para aparecer imediatamente,
+        // mesmo antes do Firebase devolver a atualização em tempo real.
+        if (window.ultimaPontuacaoLocalRef && window.ultimaPontuacaoLocalRef.nome) {
+          const local = window.ultimaPontuacaoLocalRef;
+          const chaveLocal = `${String(local.nome).toLowerCase()}|${String(local.escola || "Escola não informada").toLowerCase()}|real`;
+
+          if (!somaPorAluno.has(chaveLocal)) {
+            somaPorAluno.set(chaveLocal, {
+              nome: local.nome,
+              escola: local.escola || "Escola não informada",
+              pontos: Number(local.pontos || 0),
+              tipo: "real"
+            });
+          }
+        }
+
+        renderAllCurrentScoreBoxes();
+
+        const ordered = Array.from(somaPorAluno.values())
+          .sort((a, b) => b.pontos - a.pontos);
+
+        const rankingItems = ordered.slice(0, 10);
+
+        if (rankingItems.length === 0) {
+          rankingContainer.innerHTML = "<li>Nenhuma pontuação registrada ainda neste jogo.</li>";
+          return;
+        }
+
+        rankingItems.forEach((item, index) => {
+          const li = document.createElement("li");
+          const medalha = index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : `${index + 1}º`;
+          li.classList.add(index === 0 ? "rank-1" : index === 1 ? "rank-2" : index === 2 ? "rank-3" : "rank-normal");
+
+          const campeao = index === 0 ? '<span class="champion-tag">🏆 Campeão do dia</span>' : '';
+          li.innerHTML = `${medalha} <strong>${item.nome}${isCurrentPlayerItem(item) ? " ⭐ Você" : ""}</strong><br><span>${item.escola || "Escola não informada"}</span><br><strong>${item.pontos} pontos</strong>${campeao}`;
+
+          if (isCurrentPlayerItem(item)) {
+            li.classList.add("you");
+          }
+
+          rankingContainer.appendChild(li);
+        });
+
+        // Se o aluno atual não entrou no TOP 10, ele ainda aparece para não se sentir invisível.
+        if (window.ultimaPontuacaoLocalRef && !rankingItems.some(isCurrentPlayerItem)) {
+          const localRankIndex = ordered.findIndex(isCurrentPlayerItem);
+          const localItem = ordered.find(isCurrentPlayerItem) || window.ultimaPontuacaoLocalRef;
+          const liInfo = document.createElement("li");
+          liInfo.textContent = "Sua posição nesta partida aparece em destaque abaixo:";
+          rankingContainer.appendChild(liInfo);
+
+          const li = document.createElement("li");
+          li.classList.add("you");
+          li.innerHTML = `${localRankIndex >= 0 ? localRankIndex + 1 : rankingItems.length + 1}º <strong>${localItem.nome} ⭐ Você</strong><br><span>${localItem.escola || "Escola não informada"}</span><br><strong>${Number(localItem.pontos || 0)} pontos</strong>`;
+          rankingContainer.appendChild(li);
+        }
+      }, (error) => {
+        console.error("Erro ao carregar ranking:", error);
+        renderAllCurrentScoreBoxes();
+        rankingContainer.innerHTML = "<li>Ranking online indisponível no momento, mas sua pontuação desta partida ficou visível na tela.</li>";
+      });
+    };
+
+    window.registrarAcesso(NOME_DO_JOGO);
+    window.carregarRanking(NOME_DO_JOGO, "rankingOnline");
+  </script>
+</body>
+</html>
