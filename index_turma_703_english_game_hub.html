@@ -54,18 +54,55 @@
     border-radius:999px;
     text-decoration:none;
     cursor:pointer;
-    background:rgba(255,255,255,0);
+    background:rgba(255,255,255,.06);
     outline:none;
-    transition:background .16s ease,box-shadow .16s ease,transform .12s ease;
+    overflow:hidden;
+    box-shadow:0 0 0 1px rgba(255,255,255,.10), 0 0 18px rgba(255,230,109,.18);
+    transition:background .18s ease,box-shadow .18s ease,transform .12s ease;
+    animation:hotspotPulse 2.1s ease-in-out infinite;
+  }
+
+  .game-hotspot::before{
+    content:"";
+    position:absolute;
+    inset:-20% -35%;
+    background:linear-gradient(115deg,rgba(255,255,255,0) 35%,rgba(255,255,255,.30) 48%,rgba(255,255,255,.65) 50%,rgba(255,255,255,.25) 52%,rgba(255,255,255,0) 65%);
+    transform:translateX(-120%) skewX(-18deg);
+    animation:hotspotShine 3.8s ease-in-out infinite;
+    pointer-events:none;
   }
 
   .game-hotspot:hover,
   .game-hotspot:focus-visible{
-    background:rgba(255,255,255,.08);
-    box-shadow:0 0 0 3px rgba(255,255,255,.9),0 0 28px rgba(74,222,255,.85);
+    background:rgba(255,255,255,.12);
+    box-shadow:0 0 0 3px rgba(255,255,255,.95),0 0 32px rgba(74,222,255,.95),0 0 18px rgba(255,230,109,.45);
+    transform:scale(1.02);
   }
 
   .game-hotspot:active{transform:scale(.985)}
+
+  .g1{animation-delay:0s}
+  .g2{animation-delay:.18s}
+  .g3{animation-delay:.36s}
+  .g4{animation-delay:.54s}
+  .g5{animation-delay:.72s}
+
+  .g1::before{animation-delay:0s}
+  .g2::before{animation-delay:.35s}
+  .g3::before{animation-delay:.7s}
+  .g4::before{animation-delay:1.05s}
+  .g5::before{animation-delay:1.4s}
+
+  @keyframes hotspotPulse{
+    0%,100%{background:rgba(255,255,255,.04); box-shadow:0 0 0 1px rgba(255,255,255,.08),0 0 14px rgba(255,230,109,.12);}
+    50%{background:rgba(255,255,255,.10); box-shadow:0 0 0 2px rgba(255,255,255,.20),0 0 28px rgba(255,230,109,.28),0 0 18px rgba(74,222,255,.24);}
+  }
+
+  @keyframes hotspotShine{
+    0%,70%,100%{transform:translateX(-140%) skewX(-18deg); opacity:0;}
+    12%{opacity:.75;}
+    32%{transform:translateX(140%) skewX(-18deg); opacity:.05;}
+  }
 
   /* Posições relativas à arte vertical 941 × 1672. */
   .g1{top:46.70%}
