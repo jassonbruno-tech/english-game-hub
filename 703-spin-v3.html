@@ -14,6 +14,44 @@
 <div id="loading" class="loading">Carregando a Roleta do Inglês...</div>
 <script>
 const cover=document.getElementById('cover'),stage=document.getElementById('stage'),msg=document.getElementById('msg'),loading=document.getElementById('loading');
+const EXTRA_QUESTIONS=[
+{phase:1,theme:'Family Members',q:'My mother’s mother is my _____.',o:['grandmother','sister','aunt','cousin'],a:0,e:'Grandmother = avó.'},
+{phase:1,theme:'Family Members',q:'My father’s brother is my _____.',o:['uncle','grandfather','brother','son'],a:0,e:'Uncle = tio.'},
+{phase:1,theme:'Family Life',q:'Choose the best sentence about family.',o:['We have dinner together.','We dinner together have.','Together dinner we has.','We having dinner together.'],a:0,e:'We have dinner together = Nós jantamos juntos.'},
+{phase:1,theme:'WH-Questions',q:'_____ is your sister? She is at school.',o:['Where','Who','What','When'],a:0,e:'Where pergunta lugar.'},
+{phase:1,theme:'Present Continuous',q:'She _____ reading now.',o:['is','are','am','be'],a:0,e:'She + is + verbo-ing.'},
+{phase:1,theme:'Quantifiers',q:'There are _____ students in the room.',o:['many','much','little','a little'],a:0,e:'Many acompanha substantivos contáveis no plural.'},
+{phase:2,theme:'Comparatives',q:'My brother is _____ than me.',o:['taller','tall','more tall','tallest'],a:0,e:'Tall → taller.'},
+{phase:2,theme:'Family Members',q:'A daughter of my aunt is my _____.',o:['cousin','sister','niece','mother'],a:0,e:'Cousin = primo ou prima.'},
+{phase:2,theme:'Family Life',q:'Which sentence is correct?',o:['My family is very close.','My family are very close.','My family very close is.','My family close very.'],a:0,e:'My family is very close.'},
+{phase:2,theme:'WH-Questions',q:'_____ are you doing now?',o:['What','Who','Where','How many'],a:0,e:'What are you doing? = O que você está fazendo?'},
+{phase:2,theme:'Present Continuous',q:'They _____ playing soccer.',o:['are','is','am','does'],a:0,e:'They + are + verbo-ing.'},
+{phase:2,theme:'Quantifiers',q:'I have _____ friends at school.',o:['a few','a little','much','little'],a:0,e:'A few acompanha substantivos contáveis.'},
+{phase:3,theme:'Comparatives',q:'This exercise is _____ than the last one.',o:['easier','easy','more easy','easiest'],a:0,e:'Easy → easier.'},
+{phase:3,theme:'Family Members',q:'My mother and father are my _____.',o:['parents','cousins','grandparents','siblings'],a:0,e:'Parents = pais.'},
+{phase:3,theme:'Family Life',q:'Choose the natural sentence.',o:['We spend time together.','We together spend times.','We spends time together.','We are spend time together.'],a:0,e:'We spend time together.'},
+{phase:3,theme:'WH-Questions',q:'_____ is talking to your mother?',o:['Who','Where','How much','When many'],a:0,e:'Who pergunta quem.'},
+{phase:3,theme:'Present Continuous',q:'My mother is _____ dinner now.',o:['cooking','cook','cooks','cooked'],a:0,e:'Present Continuous usa verbo + ing.'},
+{phase:3,theme:'Quantifiers',q:'There is _____ water in the bottle.',o:['a little','a few','many','several'],a:0,e:'A little acompanha incontáveis.'},
+{phase:4,theme:'Comparatives',q:'This book is _____ interesting than that one.',o:['more','most','many','much'],a:0,e:'More interesting.'},
+{phase:4,theme:'Family Members',q:'My sister’s son is my _____.',o:['nephew','uncle','cousin','father'],a:0,e:'Nephew = sobrinho.'},
+{phase:4,theme:'Family Life',q:'Which sentence describes a routine?',o:['We visit our grandparents on Sundays.','We visiting grandparents Sundays.','We visits our grandparents.','We are visit grandparents.'],a:0,e:'We visit our grandparents on Sundays.'},
+{phase:4,theme:'WH-Questions',q:'_____ are your cousins? They are at home.',o:['Where','What','Who','Why many'],a:0,e:'Where pergunta onde.'},
+{phase:4,theme:'Present Continuous',q:'I _____ studying English now.',o:['am','is','are','do'],a:0,e:'I + am + verbo-ing.'},
+{phase:4,theme:'Quantifiers',q:'_____ students are absent today?',o:['How many','How much','How little','How few of'],a:0,e:'How many é usado com contáveis.'},
+{phase:5,theme:'Comparatives',q:'Today is _____ than yesterday.',o:['better','gooder','more good','best'],a:0,e:'Better é comparativo irregular de good.'},
+{phase:5,theme:'Family Members',q:'My father’s father is my _____.',o:['grandfather','uncle','brother','cousin'],a:0,e:'Grandfather = avô.'},
+{phase:5,theme:'Family Life',q:'Complete: My family _____ in Santarém.',o:['lives','live are','living','is live'],a:0,e:'My family lives in Santarém.'},
+{phase:5,theme:'WH-Questions',q:'_____ is your grandmother doing?',o:['What','Where many','Who much','How many'],a:0,e:'What is she doing?'},
+{phase:5,theme:'Present Continuous',q:'He is not _____.',o:['sleeping','sleep','sleeps','slept now'],a:0,e:'Is not + verbo-ing.'},
+{phase:5,theme:'Quantifiers',q:'_____ students are studying now.',o:['Most','Much','A little','Any of'],a:0,e:'Most = a maioria.'},
+{phase:6,theme:'Comparatives',q:'My house is _____ than yours.',o:['smaller','small','more small','smallest'],a:0,e:'Small → smaller.'},
+{phase:6,theme:'Family Members',q:'My aunt’s daughter is my _____.',o:['cousin','niece','sister','grandmother'],a:0,e:'Cousin = prima.'},
+{phase:6,theme:'Family Life',q:'Choose the correct sentence.',o:['My parents are working now.','My parents is working now.','My parents working now.','My parents are work now.'],a:0,e:'Parents é plural: are working.'},
+{phase:6,theme:'WH-Questions',q:'_____ is your brother doing?',o:['What','Where','Who','How much'],a:0,e:'What is your brother doing?'},
+{phase:6,theme:'Present Continuous',q:'The students are _____ English.',o:['studying','study','studies','studied now'],a:0,e:'Are + studying.'},
+{phase:6,theme:'Quantifiers',q:'We have _____ books for the activity.',o:['enough','much','little','a little'],a:0,e:'Enough = suficiente.'}
+];
 function fit(){const sc=Math.max(innerWidth/941,innerHeight/1672);stage.style.transform=`translate(-50%,-50%) scale(${sc})`}
 addEventListener('resize',fit,{passive:true});addEventListener('orientationchange',fit);fit();
 function extractJSON(text,startToken,endToken){const a=text.indexOf(startToken);if(a<0)throw new Error('Banco 703 não encontrado: '+startToken);const from=a+startToken.length;const b=text.indexOf(endToken,from);if(b<0)throw new Error('Fim do banco não encontrado');return JSON.parse(text.slice(from,b).trim())}
@@ -23,13 +61,13 @@ async function launch(){
  cover.style.display='none';loading.style.display='flex';
  try{
    const [engine,old703]=await Promise.all([
-     fetch('8ano-spin-challenge.html?v=703engine3',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('Motor do 8º ano não carregou');return r.text()}),
-     fetch('703-english-spin-and-answer-core.html?v=703content3',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('Conteúdo da 703 não carregou');return r.text()})
+     fetch('8ano-spin-challenge.html?v=703engine4',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('Motor do 8º ano não carregou');return r.text()}),
+     fetch('703-english-spin-and-answer-core.html?v=703content4',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('Conteúdo da 703 não carregou');return r.text()})
    ]);
    const themeMap={'Family Members':'Family Members','Family Life':'Family Life','Present Information':'WH-Questions','Present Continuous':'Present Continuous','Quantifiers':'Quantifiers','Comparatives':'Comparatives'};
    const themes=['Family Members','Family Life','WH-Questions','Present Continuous','Quantifiers','Comparatives'];
    const oldQuestions=extractJSON(old703,'const QUESTIONS = ',';\nconst TOTAL_ROUNDS =');
-   const questions=oldQuestions.map(q=>({phase:Number(q.level||q.phase||1),theme:themeMap[q.theme]||q.theme,q:q.q,o:q.o,a:q.a,e:q.e}));
+   const questions=oldQuestions.map(q=>({phase:Number(q.level||q.phase||1),theme:themeMap[q.theme]||q.theme,q:q.q,o:q.o,a:q.a,e:q.e})).concat(EXTRA_QUESTIONS);
    const phases=[{id:1,title:'Aquecimento 703',icon:'🎡'},{id:2,title:'Complete e Descubra',icon:'🎯'},{id:3,title:'Grammar Challenge',icon:'⚡'},{id:4,title:'Context Challenge',icon:'🧠'},{id:5,title:'Smart Review',icon:'🚀'},{id:6,title:'Final Review Boss',icon:'🔥'}];
    let html=engine;
    html=html.replace(/const THEMES = \[[\s\S]*?\];\s*const TOTAL_ROUNDS = 10;\s*const MAX_LIVES = 3;\s*const SEGMENT = 360 \/ THEMES\.length;\s*const QUESTIONS = \[[\s\S]*?\];\s*const PHASES=\[[\s\S]*?\];/,
