@@ -23,8 +23,8 @@ async function launch(){
  cover.style.display='none';loading.style.display='flex';
  try{
    const [engine,content703]=await Promise.all([
-     fetch('8ano-listening-speaking-game.html?v=703voiceengine2',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('Motor do 8º ano não carregou');return r.text()}),
-     fetch('703-english-voice-challenge-core.html?v=703voicecontent2',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('Conteúdo da 703 não carregou');return r.text()})
+     fetch('8ano-listening-speaking-game.html?v=703voiceengine3',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('Motor do 8º ano não carregou');return r.text()}),
+     fetch('703-english-voice-challenge-core.html?v=703voicecontent3',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('Conteúdo da 703 não carregou');return r.text()})
    ]);
    const phases=extractPhases(content703);
    let html=engine;
@@ -36,8 +36,8 @@ async function launch(){
      .replaceAll('Listening Game do Turma 703','Desafio de Pronúncia da Turma 703')
      .replaceAll('English Voice Challenge - Turma 703','Desafio de Pronúncia — Turma 703');
    const data=JSON.stringify({n,s,c});
-   const auto=`<script>(function(){const p=${data};function boot(){try{const n=document.getElementById('playerName'),s=document.getElementById('playerSchool');if(n)n.value=p.n;if(s)s.value=p.s;if(window.speechSynthesis)window.speechSynthesis.resume();if(typeof startGame==='function'){startGame();return true}}catch(e){console.error(e)}return false}let tries=0;const t=setInterval(function(){tries++;if(boot()||tries>20)clearInterval(t)},80)})();<\/script>`;
-   html=html.replace('</body>',auto+'</body>');
+   const boot=`renderPhaseMap(startPhaseMap, 0);\n    (function(){const p=${data};setTimeout(function(){try{const pn=document.getElementById('playerName');const ps=document.getElementById('playerSchool');if(pn)pn.value=p.n;if(ps)ps.value=p.s;if(window.speechSynthesis)window.speechSynthesis.resume();startGame();}catch(e){console.error('703 voice boot',e)}},60)})();`;
+   html=html.replace('renderPhaseMap(startPhaseMap, 0);',boot);
    document.open();document.write(html);document.close();
  }catch(e){console.error(e);loading.style.display='none';cover.style.display='block';msg.textContent='Não foi possível carregar o jogo. Atualize a página e tente novamente.'}
 }
