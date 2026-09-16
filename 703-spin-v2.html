@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#07142f">
+<title>Roleta do Inglês — Turma 703</title>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#07142f;font-family:Arial,Helvetica,sans-serif}.cover{position:fixed;inset:0;overflow:hidden;background:#07142f}.stage{position:absolute;left:50%;top:50%;width:941px;height:1672px;transform-origin:center}.art{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;pointer-events:none;user-select:none;-webkit-user-drag:none}.field{position:absolute;left:31.5%;width:43.5%;height:3.05%;border:0;outline:0;background:transparent;color:#122b5e;font-weight:900;font-size:22px;padding:4px 14px;border-radius:999px}.field:focus{background:rgba(255,255,255,.18);box-shadow:0 0 0 4px rgba(255,230,109,.5)}#studentName{top:76.6%}#studentSchool{top:82.55%}#studentClass{top:88.45%}.start{position:absolute;left:36%;top:92%;width:28%;height:2.9%;border:0;border-radius:999px;background:linear-gradient(180deg,#ffe66d,#ffb703);color:#07326b;font-size:18px;font-weight:1000;cursor:pointer;box-shadow:0 5px 14px rgba(0,0,0,.32)}.start:active{transform:scale(.97)}.back{position:absolute;left:22px;top:24px;padding:11px 17px;border-radius:999px;background:rgba(2,18,55,.72);border:1px solid rgba(255,255,255,.28);color:#fff;text-decoration:none;font-size:19px;font-weight:900}.msg{position:absolute;left:20%;right:20%;top:95.4%;text-align:center;color:#fff7c2;font-size:14px;font-weight:900;text-shadow:0 2px 5px #000}.loading{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:#050713;color:#ffe66d;font-size:20px;font-weight:1000;z-index:50}
+</style>
+</head>
+<body>
+<div class="cover" id="cover"><div class="stage" id="stage"><img class="art" src="703-roleta-do-ingles-nova-capa.png" alt="Capa da Roleta do Inglês"><a class="back" href="index_turma_703_english_game_hub.html">← Hub</a><input id="studentName" class="field" autocomplete="name" aria-label="Nome do aluno"><input id="studentSchool" class="field" value="Escola Municipal Princesa Izabel" autocomplete="organization" aria-label="Escola"><input id="studentClass" class="field" value="703" aria-label="Turma"><button id="startBtn" class="start" type="button">COMEÇAR ▶</button><div id="msg" class="msg"></div></div></div>
+<div id="loading" class="loading">Carregando a Roleta do Inglês...</div>
+<script>
+const cover=document.getElementById('cover'),stage=document.getElementById('stage'),msg=document.getElementById('msg'),loading=document.getElementById('loading');
+function fit(){const sc=Math.max(innerWidth/941,innerHeight/1672);stage.style.transform=`translate(-50%,-50%) scale(${sc})`}
+addEventListener('resize',fit,{passive:true});addEventListener('orientationchange',fit);fit();
+function extractJSON(text,startToken,endToken){const a=text.indexOf(startToken);if(a<0)throw new Error('Banco 703 não encontrado: '+startToken);const from=a+startToken.length;const b=text.indexOf(endToken,from);if(b<0)throw new Error('Fim do banco não encontrado');return JSON.parse(text.slice(from,b).trim())}
+async function launch(){
+ const n=document.getElementById('studentName').value.trim(),s=document.getElementById('studentSchool').value.trim(),c=document.getElementById('studentClass').value.trim();
+ if(!n||!s||!c){msg.textContent='Preencha Nome, Escola e Turma para começar.';return}
+ cover.style.display='none';loading.style.display='flex';
+ try{
+   const [engine,old703]=await Promise.all([
+     fetch('8ano-spin-challenge.html?v=703engine1',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('Motor do 8º ano não carregou');return r.text()}),
+     fetch('703-english-spin-and-answer-core.html?v=703content1',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('Conteúdo da 703 não carregou');return r.text()})
+   ]);
+   const themes=extractJSON(old703,'const THEMES = ',';\nconst QUESTIONS =');
+   const oldQuestions=extractJSON(old703,'const QUESTIONS = ',';\nconst TOTAL_ROUNDS =');
+   const questions=oldQuestions.map(q=>({phase:Number(q.level||q.phase||1),theme:q.theme,q:q.q,o:q.o,a:q.a,e:q.e}));
+   const phases=[
+     {id:1,title:'Aquecimento 703',icon:'🎡'},
+     {id:2,title:'Complete e Descubra',icon:'🎯'},
+     {id:3,title:'Grammar Challenge',icon:'⚡'},
+     {id:4,title:'Context Challenge',icon:'🧠'},
+     {id:5,title:'Smart Review',icon:'🚀'},
+     {id:6,title:'Final Review Boss',icon:'🔥'}
+   ];
+   let html=engine;
+   html=html.replace(/const THEMES = \[[\s\S]*?\];\s*const TOTAL_ROUNDS = 10;\s*const MAX_LIVES = 3;\s*const SEGMENT = 360 \/ THEMES\.length;\s*const QUESTIONS = \[[\s\S]*?\];\s*const PHASES=\[[\s\S]*?\];/,
+     'const THEMES = '+JSON.stringify(themes)+';\nconst TOTAL_ROUNDS = 10;\nconst MAX_LIVES = 3;\nconst SEGMENT = 360 / THEMES.length;\nconst QUESTIONS = '+JSON.stringify(questions)+';\nconst PHASES='+JSON.stringify(phases)+';');
+   html=html.replaceAll('8ano.html','index_turma_703_english_game_hub.html')
+     .replaceAll('8º Ano','Turma 703').replaceAll('8º ano','turma 703')
+     .replaceAll('8º ANO','TURMA 703')
+     .replaceAll('Present Perfect • Life Experiences • Review','Family • Present Continuous • Quantifiers • Comparatives')
+     .replaceAll('Present Perfect','Conteúdos da 703')
+     .replaceAll('Life Experiences','Quantifiers & Comparatives')
+     .replaceAll('Voltar ao Turma 703','Voltar à Turma 703');
+   const data=JSON.stringify({n,s,c});
+   const auto=`<script>(function(){const p=${data};setTimeout(function(){try{const n=document.getElementById('playerName'),s=document.getElementById('playerSchool'),c=document.getElementById('playerClass');if(n)n.value=p.n;if(s)s.value=p.s;if(c)c.value=p.c;if(typeof goToPhases==='function')goToPhases();}catch(e){console.error(e)}},120)})();<\/script>`;
+   html=html.replace('</body>',auto+'</body>');
+   document.open();document.write(html);document.close();
+ }catch(e){console.error(e);loading.style.display='none';cover.style.display='block';msg.textContent='Não foi possível carregar a roleta. Atualize a página e tente novamente.'}
+}
+document.getElementById('startBtn').addEventListener('click',launch);document.getElementById('studentClass').addEventListener('keydown',e=>{if(e.key==='Enter')launch()});
+</script>
+</body>
+</html>
