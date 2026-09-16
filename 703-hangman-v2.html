@@ -35,24 +35,25 @@ const CHALLENGES703=[
 {theme:'Long Comparatives',word:'MORE BEAUTIFUL',hint:'Forma comparativa de beautiful.'},{theme:'Long Comparatives',word:'MORE EXPENSIVE',hint:'Forma comparativa de expensive.'},{theme:'Long Comparatives',word:'MORE INTERESTING',hint:'Forma comparativa de interesting.'},{theme:'Long Comparatives',word:'MORE DIFFICULT',hint:'Forma comparativa de difficult.'},{theme:'Long Comparatives',word:'MORE COMFORTABLE',hint:'Forma comparativa de comfortable.'},{theme:'Long Comparatives',word:'MORE IMPORTANT',hint:'Forma comparativa de important.'},{theme:'Long Comparatives',word:'MORE POPULAR',hint:'Forma comparativa de popular.'},{theme:'Long Comparatives',word:'MORE DANGEROUS',hint:'Forma comparativa de dangerous.'},{theme:'Long Comparatives',word:'MORE MODERN',hint:'Significa mais moderno.'},{theme:'Long Comparatives',word:'MORE CROWDED',hint:'Significa mais lotado.'},
 {theme:'Mixed Review',word:'BETTER',hint:'Comparativo irregular de good: melhor.'},{theme:'Mixed Review',word:'WORSE',hint:'Comparativo irregular de bad: pior.'},{theme:'Mixed Review',word:'HOW MANY',hint:'Expressão usada para perguntar quantidade de itens contáveis.'},{theme:'Mixed Review',word:'HOW MUCH',hint:'Expressão usada para perguntar quantidade de algo incontável.'},{theme:'Mixed Review',word:'A FEW',hint:'Significa alguns poucos e acompanha contáveis.'},{theme:'Mixed Review',word:'A LITTLE',hint:'Significa um pouco e acompanha incontáveis.'},{theme:'Mixed Review',word:'TOO MANY',hint:'Significa muitos demais, com contáveis.'},{theme:'Mixed Review',word:'TOO MUCH',hint:'Significa demais, com incontáveis.'},{theme:'Mixed Review',word:'BETTER THAN',hint:'Expressão comparativa: melhor que.'},{theme:'Mixed Review',word:'MORE THAN',hint:'Expressão que significa mais que.'}
 ];
-function fit(){const s=Math.max(innerWidth/941,innerHeight/1672);stage.style.transform=`translate(-50%,-50%) scale(${s})`}addEventListener('resize',fit,{passive:true});fit();
+const stageEl=document.getElementById('stage'),coverEl=document.getElementById('cover'),loadingEl=document.getElementById('loading'),msgEl=document.getElementById('msg'),nameEl=document.getElementById('name'),schoolEl=document.getElementById('school'),classEl=document.getElementById('classroom'),startEl=document.getElementById('startBtn');
+function fit(){const s=Math.max(innerWidth/941,innerHeight/1672);stageEl.style.transform=`translate(-50%,-50%) scale(${s})`}addEventListener('resize',fit,{passive:true});fit();
 function esc(s){return JSON.stringify(s)}
 async function launch(){
- const n=name.value.trim(),s=school.value.trim(),c=classroom.value.trim();
- if(!n||!s||!c){msg.textContent='Preencha Nome, Escola e Turma para começar.';return}
- cover.style.display='none';loading.style.display='flex';
+ const n=nameEl.value.trim(),s=schoolEl.value.trim(),c=classEl.value.trim();
+ if(!n||!s||!c){msgEl.textContent='Preencha Nome, Escola e Turma para começar.';return}
+ coverEl.style.display='none';loadingEl.style.display='flex';
  try{
-  let html=await fetch('8ano-hangman-challenge.html?v=703engine2',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('motor');return r.text()});
+  let html=await fetch('8ano-hangman-challenge.html?v=703engine3',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('motor');return r.text()});
   html=html.replace('const GAME_NAME = "8ano-hangman-challenge";','const GAME_NAME = "703-hangman-challenge";');
   html=html.replace(/const PHASES = \[[\s\S]*?\];\s*const TOTAL_ROUNDS = 60;\s*const MAX_LIVES = 6;/,'const PHASES = '+JSON.stringify(PHASES703)+';\nconst TOTAL_ROUNDS = 60;\nconst MAX_LIVES = 6;');
   html=html.replace(/const CHALLENGES = \[[\s\S]*?\];\s*const KEYBOARD =/,'const CHALLENGES = '+JSON.stringify(CHALLENGES703)+';\nconst KEYBOARD =');
   html=html.replace(/function makeBag\(\)\{[\s\S]*?return bag\.slice\(0,TOTAL_ROUNDS\);\s*\}/,'function makeBag(){ return shuffle(CHALLENGES).slice(0,TOTAL_ROUNDS); }');
-  html=html.replaceAll('8ano.html','index_turma_703_english_game_hub.html').replaceAll('8º Ano','Turma 703').replaceAll('8º ano','turma 703').replaceAll('8º Ano','Turma 703').replaceAll('Present Perfect Challenge','Quantifiers & Comparatives Challenge').replaceAll('Present Perfect, experiências de vida e revisão do 8º ano','Quantifiers, nouns e comparatives da turma 703').replaceAll('Present Perfect, Life Experiences, past participles, viagens, lazer e revisão da turma 703','Quantifiers, countable and uncountable nouns e comparatives').replaceAll('💡 💡 Dica de memória: pense nos assuntos da turma 703: Present Perfect, experiências de vida e revisão.','💡 Dica de memória: pense em quantifiers, countable/uncountable nouns e comparatives.');
-  const auto=`<script>setTimeout(function(){try{document.getElementById('playerName').value=${esc(n)};document.getElementById('playerSchool').value=${esc(s)};document.getElementById('playerClass').value=${esc(c)};if(typeof startGame==='function')startGame();}catch(e){console.error(e)}},120);<\/script>`;
+  html=html.replaceAll('8ano.html','index_turma_703_english_game_hub.html').replaceAll('8º Ano','Turma 703').replaceAll('8º ano','turma 703').replaceAll('Present Perfect Challenge','Quantifiers & Comparatives Challenge').replaceAll('Present Perfect, experiências de vida e revisão da turma 703','Quantifiers, nouns e comparatives da turma 703').replaceAll('Present Perfect, Life Experiences, past participles, viagens, lazer e revisão da turma 703','Quantifiers, countable and uncountable nouns e comparatives').replaceAll('💡 💡 Dica de memória: pense nos assuntos da turma 703: Present Perfect, experiências de vida e revisão.','💡 Dica de memória: pense em quantifiers, countable/uncountable nouns e comparatives.');
+  const auto=`<script>setTimeout(function(){try{document.getElementById('playerName').value=${esc(n)};document.getElementById('playerSchool').value=${esc(s)};document.getElementById('playerClass').value=${esc(c)};if(typeof startGame==='function')startGame();}catch(e){console.error(e)}},180);<\/script>`;
   html=html.replace('</body>',auto+'</body>');
   document.open();document.write(html);document.close();
- }catch(e){loading.style.display='none';cover.style.display='block';msg.textContent='Não foi possível carregar o motor do jogo.'}
+ }catch(e){loadingEl.style.display='none';coverEl.style.display='block';msgEl.textContent='Não foi possível carregar o motor do jogo.'}
 }
-startBtn.addEventListener('click',launch);classroom.addEventListener('keydown',e=>{if(e.key==='Enter')launch()});
+startEl.addEventListener('click',launch);classEl.addEventListener('keydown',e=>{if(e.key==='Enter')launch()});
 </script>
 </body></html>
