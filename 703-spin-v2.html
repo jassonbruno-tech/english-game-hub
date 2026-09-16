@@ -23,46 +23,24 @@ async function launch(){
  cover.style.display='none';loading.style.display='flex';
  try{
    const [engine,old703]=await Promise.all([
-     fetch('8ano-spin-challenge.html?v=703engine2',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('Motor do 8º ano não carregou');return r.text()}),
-     fetch('703-english-spin-and-answer-core.html?v=703content2',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('Conteúdo da 703 não carregou');return r.text()})
+     fetch('8ano-spin-challenge.html?v=703engine3',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('Motor do 8º ano não carregou');return r.text()}),
+     fetch('703-english-spin-and-answer-core.html?v=703content3',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('Conteúdo da 703 não carregou');return r.text()})
    ]);
-   const themeMap={
-     'Family Members':'Family Members',
-     'Family Life':'Family Life',
-     'Present Information':'WH-Questions',
-     'Present Continuous':'Present Continuous',
-     'Quantifiers':'Quantifiers',
-     'Comparatives':'Comparatives'
-   };
+   const themeMap={'Family Members':'Family Members','Family Life':'Family Life','Present Information':'WH-Questions','Present Continuous':'Present Continuous','Quantifiers':'Quantifiers','Comparatives':'Comparatives'};
    const themes=['Family Members','Family Life','WH-Questions','Present Continuous','Quantifiers','Comparatives'];
    const oldQuestions=extractJSON(old703,'const QUESTIONS = ',';\nconst TOTAL_ROUNDS =');
    const questions=oldQuestions.map(q=>({phase:Number(q.level||q.phase||1),theme:themeMap[q.theme]||q.theme,q:q.q,o:q.o,a:q.a,e:q.e}));
-   const phases=[
-     {id:1,title:'Aquecimento 703',icon:'🎡'},
-     {id:2,title:'Complete e Descubra',icon:'🎯'},
-     {id:3,title:'Grammar Challenge',icon:'⚡'},
-     {id:4,title:'Context Challenge',icon:'🧠'},
-     {id:5,title:'Smart Review',icon:'🚀'},
-     {id:6,title:'Final Review Boss',icon:'🔥'}
-   ];
+   const phases=[{id:1,title:'Aquecimento 703',icon:'🎡'},{id:2,title:'Complete e Descubra',icon:'🎯'},{id:3,title:'Grammar Challenge',icon:'⚡'},{id:4,title:'Context Challenge',icon:'🧠'},{id:5,title:'Smart Review',icon:'🚀'},{id:6,title:'Final Review Boss',icon:'🔥'}];
    let html=engine;
    html=html.replace(/const THEMES = \[[\s\S]*?\];\s*const TOTAL_ROUNDS = 10;\s*const MAX_LIVES = 3;\s*const SEGMENT = 360 \/ THEMES\.length;\s*const QUESTIONS = \[[\s\S]*?\];\s*const PHASES=\[[\s\S]*?\];/,
      'const THEMES = '+JSON.stringify(themes)+';\nconst TOTAL_ROUNDS = 10;\nconst MAX_LIVES = 3;\nconst SEGMENT = 360 / THEMES.length;\nconst QUESTIONS = '+JSON.stringify(questions)+';\nconst PHASES='+JSON.stringify(phases)+';');
    html=html.replaceAll('8ano.html','index_turma_703_english_game_hub.html')
-     .replaceAll('8º Ano','Turma 703').replaceAll('8º ano','turma 703')
-     .replaceAll('8º ANO','TURMA 703')
+     .replaceAll('8º Ano','Turma 703').replaceAll('8º ano','turma 703').replaceAll('8º ANO','TURMA 703')
      .replaceAll('Present Perfect • Life Experiences • Review','Family • Present Continuous • Quantifiers • Comparatives')
-     .replaceAll('Present Perfect','Conteúdos da 703')
-     .replaceAll('Life Experiences','Quantifiers & Comparatives')
-     .replaceAll('Voltar ao Turma 703','Voltar à Turma 703')
-     .replace('<div class="wheel-label" style="--r:30deg">Life<br>XP</div>','<div class="wheel-label" style="--r:30deg">Family<br>Members</div>')
-     .replace('<div class="wheel-label" style="--r:90deg">Have<br>Has</div>','<div class="wheel-label" style="--r:90deg">Family<br>Life</div>')
-     .replace('<div class="wheel-label" style="--r:150deg">Time<br>Words</div>','<div class="wheel-label" style="--r:150deg">WH-<br>Questions</div>')
-     .replace('<div class="wheel-label" style="--r:210deg">Verb<br>Power</div>','<div class="wheel-label" style="--r:210deg">Present<br>Continuous</div>')
-     .replace('<div class="wheel-label" style="--r:270deg">Fix<br>It</div>','<div class="wheel-label" style="--r:270deg">Quantifiers</div>')
-     .replace('<div class="wheel-label" style="--r:330deg">Review</div>','<div class="wheel-label" style="--r:330deg">Comparatives</div>');
+     .replaceAll('Present Perfect','Conteúdos da 703').replaceAll('Life Experiences','Quantifiers & Comparatives')
+     .replaceAll('Voltar ao Turma 703','Voltar à Turma 703');
    const data=JSON.stringify({n,s,c});
-   const auto=`<script>(function(){const p=${data};setTimeout(function(){try{const n=document.getElementById('playerName'),s=document.getElementById('playerSchool'),c=document.getElementById('playerClass');if(n)n.value=p.n;if(s)s.value=p.s;if(c)c.value=p.c;if(typeof goToPhases==='function')goToPhases();}catch(e){console.error(e)}},120)})();<\/script>`;
+   const auto=`<script>(function(){const p=${data};const labels=['Family<br>Members','Family<br>Life','WH-<br>Questions','Present<br>Continuous','Quantifiers','Comparatives'];function fixLabels(){const els=document.querySelectorAll('#wheel .wheel-label');if(els.length===6){els.forEach((el,i)=>el.innerHTML=labels[i]);return true}return false}function init(){try{const n=document.getElementById('playerName'),s=document.getElementById('playerSchool'),c=document.getElementById('playerClass');if(n)n.value=p.n;if(s)s.value=p.s;if(c)c.value=p.c;fixLabels();if(typeof goToPhases==='function')goToPhases();let tries=0;const t=setInterval(()=>{fixLabels();if(++tries>20)clearInterval(t)},100);}catch(e){console.error(e)}}setTimeout(init,120);})();<\/script>`;
    html=html.replace('</body>',auto+'</body>');
    document.open();document.write(html);document.close();
  }catch(e){console.error(e);loading.style.display='none';cover.style.display='block';msg.textContent='Não foi possível carregar a roleta. Atualize a página e tente novamente.'}
