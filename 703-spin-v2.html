@@ -26,9 +26,17 @@ async function launch(){
      fetch('8ano-spin-challenge.html?v=703engine1',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('Motor do 8º ano não carregou');return r.text()}),
      fetch('703-english-spin-and-answer-core.html?v=703content1',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('Conteúdo da 703 não carregou');return r.text()})
    ]);
-   const themes=extractJSON(old703,'const THEMES = ',';\nconst QUESTIONS =');
+   const themeMap={
+     'Family Members':'Family Members',
+     'Family Life':'Family Life',
+     'Present Information':'WH-Questions',
+     'Present Continuous':'Present Continuous',
+     'Quantifiers':'Quantifiers',
+     'Comparatives':'Comparatives'
+   };
+   const themes=['Family Members','Family Life','WH-Questions','Present Continuous','Quantifiers','Comparatives'];
    const oldQuestions=extractJSON(old703,'const QUESTIONS = ',';\nconst TOTAL_ROUNDS =');
-   const questions=oldQuestions.map(q=>({phase:Number(q.level||q.phase||1),theme:q.theme,q:q.q,o:q.o,a:q.a,e:q.e}));
+   const questions=oldQuestions.map(q=>({phase:Number(q.level||q.phase||1),theme:themeMap[q.theme]||q.theme,q:q.q,o:q.o,a:q.a,e:q.e}));
    const phases=[
      {id:1,title:'Aquecimento 703',icon:'🎡'},
      {id:2,title:'Complete e Descubra',icon:'🎯'},
