@@ -34,12 +34,33 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#07142f;fon
   <div class="msg" id="msg"></div>
  </div>
 </div>
-<iframe id="game" src="703-quanticompare-challenge-core.html?v=40" title="Combinação de Vocabulário"></iframe>
+<iframe id="game" src="703-quanticompare-challenge-core.html?v=51" title="Combinação de Vocabulário"></iframe>
 <script>
 const BASE_W=941,BASE_H=1672,stage=document.getElementById('stage'),frame=document.getElementById('game');
 let ready=false,pending=false;
+const EXTRA_BANKS={
+1:[['L1-11','daughter','filha'],['L1-12','son','filho'],['L1-13','grandparents','avós'],['L1-14','nephew','sobrinho'],['L1-15','niece','sobrinha']],
+2:[['L2-11','I have two brothers.','Eu tenho dois irmãos.'],['L2-12','My parents are at home.','Meus pais estão em casa.'],['L2-13','My cousin lives nearby.','Meu primo/minha prima mora perto.'],['L2-14','We visit our grandparents.','Nós visitamos nossos avós.'],['L2-15','My sister is very kind.','Minha irmã é muito gentil.']],
+3:[['L3-11','writing','escrevendo'],['L3-12','listening','ouvindo'],['L3-13','running','correndo'],['L3-14','eating','comendo'],['L3-15','drinking','bebendo']],
+4:[['L4-11','Who is he?','Quem é ele?'],['L4-12','Where is your mother?','Onde está sua mãe?'],['L4-13','What are they doing?','O que eles estão fazendo?'],['L4-14','Is she studying now?','Ela está estudando agora?'],['L4-15','Who is cooking now?','Quem está cozinhando agora?']],
+5:[['L5-11','much','muito/muita'],['L5-12','any','algum/alguma'],['L5-13','little','pouco/pouca'],['L5-14','several','vários/várias'],['L5-15','enough','suficiente']],
+6:[['L6-11','stronger','mais forte'],['L6-12','cleaner','mais limpo'],['L6-13','colder','mais frio'],['L6-14','warmer','mais quente'],['L6-15','nicer','mais agradável']],
+7:[['L7-11','more exciting','mais emocionante'],['L7-12','more careful','mais cuidadoso'],['L7-13','more useful','mais útil'],['L7-14','more famous','mais famoso'],['L7-15','more peaceful','mais tranquilo']],
+8:[['L8-11',"my father's brother",'meu tio'],['L8-12',"my mother's sister",'minha tia'],['L8-13',"my cousin's mother",'minha tia'],['L8-14','My grandparents live nearby.','Meus avós moram perto.'],['L8-15','My family has many cousins.','Minha família tem muitos primos.']],
+9:[['L9-11','My sister is reading now.','Minha irmã está lendo agora.'],['L9-12','Some students are talking.','Alguns alunos estão conversando.'],['L9-13','My cousins are visiting us.','Meus primos estão nos visitando.'],['L9-14','Most families eat together.','A maioria das famílias come junta.'],['L9-15','My father is driving now.','Meu pai está dirigindo agora.']],
+10:[['L10-11','My brother is stronger than me.','Meu irmão é mais forte que eu.'],['L10-12','This book is more interesting.','Este livro é mais interessante.'],['L10-13','My house is smaller than yours.','Minha casa é menor que a sua.'],['L10-14','Today is colder than yesterday.','Hoje está mais frio que ontem.'],['L10-15','My family is happier today.','Minha família está mais feliz hoje.']]
+};
 function fit(){const sc=Math.max(innerWidth/BASE_W,innerHeight/BASE_H);stage.style.transform=`translate(-50%,-50%) scale(${sc})`}
 addEventListener('resize',fit,{passive:true});addEventListener('orientationchange',fit);fit();
+function expandContentBank(){
+ try{
+  const d=frame.contentWindow.document;
+  if(d.getElementById('bank-expansion-703'))return;
+  const s=d.createElement('script');s.id='bank-expansion-703';
+  s.textContent=`(function(){try{const extras=${JSON.stringify(EXTRA_BANKS)};Object.keys(extras).forEach(k=>{const i=Number(k)-1;if(!BANKS[i]||!Array.isArray(BANKS[i].pairs))return;extras[k].forEach(x=>{if(!BANKS[i].pairs.some(p=>p.id===x[0]))BANKS[i].pairs.push({id:x[0],en:x[1],pt:x[2]})})});}catch(e){console.error('703 bank expansion',e)}})();`;
+  d.body.appendChild(s);
+ }catch(e){}
+}
 function optimizeGameLayout(){
  try{
   const d=frame.contentWindow.document;
@@ -62,7 +83,7 @@ function optimizeGameLayout(){
   `;
  }catch(e){}
 }
-frame.addEventListener('load',()=>{ready=true;optimizeGameLayout();if(pending)openGame()});
+frame.addEventListener('load',()=>{ready=true;expandContentBank();optimizeGameLayout();if(pending)openGame()});
 function validate(){
  const ids=['n','s','c'];
  for(const id of ids){const el=document.getElementById(id);if(!el.value.trim()){document.getElementById('msg').textContent='Preencha os três campos para começar.';el.focus();return false}}
@@ -72,7 +93,7 @@ function resumeAudio(w){try{for(const key of ['audioCtx','_audioCtx','AudioCtx']
 function openGame(){
  if(!validate()){pending=false;return}
  if(!ready){pending=true;document.getElementById('msg').textContent='Carregando o jogo...';return}
- optimizeGameLayout();
+ expandContentBank();optimizeGameLayout();
  pending=false;
  const w=frame.contentWindow,d=w.document;
  resumeAudio(w);
