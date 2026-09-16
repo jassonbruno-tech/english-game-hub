@@ -17,16 +17,26 @@ const cover=document.getElementById('cover'),stage=document.getElementById('stag
 function fit(){const sc=Math.max(innerWidth/941,innerHeight/1672);stage.style.transform=`translate(-50%,-50%) scale(${sc})`}
 addEventListener('resize',fit,{passive:true});addEventListener('orientationchange',fit);fit();
 function extractPhases(text){const a=text.indexOf('const phases = ');if(a<0)throw new Error('Banco de fases da 703 não encontrado');const from=a+'const phases = '.length;const marker=';\n\n    let currentPhase';const b=text.indexOf(marker,from);if(b<0)throw new Error('Fim do banco de fases não encontrado');return JSON.parse(text.slice(from,b).trim())}
+function makeTenPhases(source){
+ const all=source.flatMap(p=>Array.isArray(p.items)?p.items:[]);
+ const titles=[
+  'Fase 1 - Listen & Repeat','Fase 2 - Family Words','Fase 3 - Present Actions','Fase 4 - Question Time','Fase 5 - Quantifiers',
+  'Fase 6 - Comparatives','Fase 7 - Sentence Power','Fase 8 - Speaking Challenge','Fase 9 - Smart Review','Fase 10 - Final Voice Mission'
+ ];
+ const out=titles.map(title=>({title,items:[]}));
+ all.forEach((item,i)=>out[i%10].items.push(item));
+ return out;
+}
 async function launch(){
  const n=document.getElementById('studentName').value.trim(),s=document.getElementById('studentSchool').value.trim(),c=document.getElementById('studentClass').value.trim();
  if(!n||!s||!c){msg.textContent='Preencha Nome, Escola e Turma para começar.';return}
  cover.style.display='none';loading.style.display='flex';
  try{
    const [engine,content703]=await Promise.all([
-     fetch('8ano-listening-speaking-game.html?v=703voiceengine3',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('Motor do 8º ano não carregou');return r.text()}),
-     fetch('703-english-voice-challenge-core.html?v=703voicecontent3',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('Conteúdo da 703 não carregou');return r.text()})
+     fetch('8ano-listening-speaking-game.html?v=703voiceengine4',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('Motor do 8º ano não carregou');return r.text()}),
+     fetch('703-english-voice-challenge-core.html?v=703voicecontent4',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('Conteúdo da 703 não carregou');return r.text()})
    ]);
-   const phases=extractPhases(content703);
+   const phases=makeTenPhases(extractPhases(content703));
    let html=engine;
    html=html.replace(/const NOME_DO_JOGO = "8ano-listening-speaking-game";\s*const phases = \[[\s\S]*?\];\s*\n\s*let currentPhase/,
      'const NOME_DO_JOGO = "703-english-voice-challenge";\n    const phases = '+JSON.stringify(phases)+';\n\n    let currentPhase');
@@ -35,6 +45,44 @@ async function launch(){
      .replaceAll('Listening Game do turma 703','Desafio de Pronúncia da Turma 703')
      .replaceAll('Listening Game do Turma 703','Desafio de Pronúncia da Turma 703')
      .replaceAll('English Voice Challenge - Turma 703','Desafio de Pronúncia — Turma 703');
+   const mobileCss=`<style>
+@media(max-width:860px){
+ html,body{width:100%;height:100dvh;min-height:100dvh;overflow:hidden!important}
+ body{padding:0!important;align-items:stretch!important}
+ .app{width:100vw!important;max-width:none!important;height:100dvh!important;min-height:100dvh!important;border:0!important;border-radius:0!important;overflow:hidden!important}
+ .screen{height:100dvh!important;min-height:100dvh!important;overflow:hidden!important;padding:8px!important}
+ #gameScreen.active{display:flex!important;flex-direction:column!important;justify-content:flex-start!important;gap:4px!important}
+ #gameScreen h1,#gameScreen h2{margin:4px 0!important;font-size:1.05rem!important}
+ .top-badge{font-size:.62rem!important;padding:4px 9px!important}
+ .hud{padding:5px!important;gap:4px!important;margin-top:3px!important;border-radius:12px!important}
+ .hud-card{padding:4px!important;font-size:.68rem!important;border-radius:9px!important}
+ .hud-card strong{font-size:.82rem!important;margin-top:1px!important}
+ .life-row{font-size:1rem!important;margin-top:1px!important;gap:2px!important}
+ .progress-wrap{height:8px!important;margin-top:4px!important}
+ .phrase-card{padding:8px!important;margin-top:5px!important;border-width:2px!important;border-radius:15px!important;box-shadow:0 3px 0 #a16207!important}
+ .content-tag,.sentence-type{padding:3px 6px!important;font-size:.58rem!important;margin:1px!important}
+ .phrase{font-size:1.12rem!important;line-height:1.08!important;margin:4px 0!important}
+ .translation{font-size:.72rem!important;line-height:1.15!important}
+ .tip{padding:5px!important;margin-top:4px!important;font-size:.68rem!important;line-height:1.15!important}
+ .spoken-box{padding:6px!important;margin-top:5px!important;min-height:40px!important;font-size:.72rem!important;border-radius:11px!important}
+ .feedback{padding:6px!important;margin-top:4px!important;font-size:.74rem!important;border-width:2px!important;border-radius:11px!important}
+ .button-grid{gap:5px!important;margin-top:5px!important}
+ button{min-height:40px!important;padding:8px 7px!important;font-size:.78rem!important;border-radius:11px!important;box-shadow:0 3px 0 rgba(0,0,0,.25)!important}
+ .mini-note{font-size:.62rem!important;line-height:1.15!important;margin-top:4px!important}
+ .teacher{font-size:.6rem!important;padding-top:3px!important}
+ .phase-map{grid-template-columns:repeat(5,1fr)!important;gap:4px!important;margin:6px 0!important}
+ .phase-tile{min-height:45px!important;border-radius:10px!important;font-size:.55rem!important}
+ .phase-number{font-size:.82rem!important}
+}
+@media(max-width:380px),(max-height:680px){
+ .screen{padding:6px!important}
+ .hud{display:grid!important;grid-template-columns:repeat(4,1fr)!important}
+ .hud-card{font-size:.58rem!important}.hud-card strong{font-size:.72rem!important}
+ .phrase{font-size:1rem!important}.translation,.tip,.spoken-box{font-size:.64rem!important}
+ button{min-height:36px!important;padding:6px!important;font-size:.7rem!important}
+}
+</style>`;
+   html=html.replace('</head>',mobileCss+'</head>');
    const data=JSON.stringify({n,s,c});
    const boot=`renderPhaseMap(startPhaseMap, 0);\n    (function(){const p=${data};setTimeout(function(){try{const pn=document.getElementById('playerName');const ps=document.getElementById('playerSchool');if(pn)pn.value=p.n;if(ps)ps.value=p.s;if(window.speechSynthesis)window.speechSynthesis.resume();startGame();}catch(e){console.error('703 voice boot',e)}},60)})();`;
    html=html.replace('renderPhaseMap(startPhaseMap, 0);',boot);
