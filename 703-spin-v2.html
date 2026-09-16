@@ -23,8 +23,8 @@ async function launch(){
  cover.style.display='none';loading.style.display='flex';
  try{
    const [engine,old703]=await Promise.all([
-     fetch('8ano-spin-challenge.html?v=703engine1',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('Motor do 8º ano não carregou');return r.text()}),
-     fetch('703-english-spin-and-answer-core.html?v=703content1',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('Conteúdo da 703 não carregou');return r.text()})
+     fetch('8ano-spin-challenge.html?v=703engine2',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('Motor do 8º ano não carregou');return r.text()}),
+     fetch('703-english-spin-and-answer-core.html?v=703content2',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('Conteúdo da 703 não carregou');return r.text()})
    ]);
    const themeMap={
      'Family Members':'Family Members',
@@ -54,7 +54,13 @@ async function launch(){
      .replaceAll('Present Perfect • Life Experiences • Review','Family • Present Continuous • Quantifiers • Comparatives')
      .replaceAll('Present Perfect','Conteúdos da 703')
      .replaceAll('Life Experiences','Quantifiers & Comparatives')
-     .replaceAll('Voltar ao Turma 703','Voltar à Turma 703');
+     .replaceAll('Voltar ao Turma 703','Voltar à Turma 703')
+     .replace('<div class="wheel-label" style="--r:30deg">Life<br>XP</div>','<div class="wheel-label" style="--r:30deg">Family<br>Members</div>')
+     .replace('<div class="wheel-label" style="--r:90deg">Have<br>Has</div>','<div class="wheel-label" style="--r:90deg">Family<br>Life</div>')
+     .replace('<div class="wheel-label" style="--r:150deg">Time<br>Words</div>','<div class="wheel-label" style="--r:150deg">WH-<br>Questions</div>')
+     .replace('<div class="wheel-label" style="--r:210deg">Verb<br>Power</div>','<div class="wheel-label" style="--r:210deg">Present<br>Continuous</div>')
+     .replace('<div class="wheel-label" style="--r:270deg">Fix<br>It</div>','<div class="wheel-label" style="--r:270deg">Quantifiers</div>')
+     .replace('<div class="wheel-label" style="--r:330deg">Review</div>','<div class="wheel-label" style="--r:330deg">Comparatives</div>');
    const data=JSON.stringify({n,s,c});
    const auto=`<script>(function(){const p=${data};setTimeout(function(){try{const n=document.getElementById('playerName'),s=document.getElementById('playerSchool'),c=document.getElementById('playerClass');if(n)n.value=p.n;if(s)s.value=p.s;if(c)c.value=p.c;if(typeof goToPhases==='function')goToPhases();}catch(e){console.error(e)}},120)})();<\/script>`;
    html=html.replace('</body>',auto+'</body>');
