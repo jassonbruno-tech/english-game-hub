@@ -26,7 +26,7 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#07142f;fon
 <div class="cover" id="cover">
  <div class="stage" id="stage">
   <img class="art" src="703-combinacao-de-vocabulario-nova-capa.png" alt="Capa do jogo Combinação de Vocabulário">
-  <button class="back" type="button" onclick="window.location.href='index_turma_703_english_game_hub.html?v=38'">← VOLTAR</button>
+  <button class="back" type="button" onclick="window.location.href='index_turma_703_english_game_hub.html?v=40'">← VOLTAR</button>
   <input id="n" class="field" autocomplete="name" aria-label="Nome do aluno">
   <input id="s" class="field" autocomplete="organization" aria-label="Escola">
   <input id="c" class="field" aria-label="Turma" inputmode="numeric">
@@ -34,7 +34,7 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#07142f;fon
   <div class="msg" id="msg"></div>
  </div>
 </div>
-<iframe id="game" src="703-quanticompare-challenge-core.html?v=36" title="Combinação de Vocabulário"></iframe>
+<iframe id="game" src="703-quanticompare-challenge-core.html?v=40" title="Combinação de Vocabulário"></iframe>
 <script>
 const BASE_W=941,BASE_H=1672,stage=document.getElementById('stage'),frame=document.getElementById('game');
 let ready=false,pending=false;
@@ -68,20 +68,22 @@ function validate(){
  for(const id of ids){const el=document.getElementById(id);if(!el.value.trim()){document.getElementById('msg').textContent='Preencha os três campos para começar.';el.focus();return false}}
  document.getElementById('msg').textContent='';return true;
 }
+function resumeAudio(w){try{for(const key of ['audioCtx','_audioCtx','AudioCtx']){const ctx=w[key];if(ctx&&ctx.state==='suspended'&&typeof ctx.resume==='function')ctx.resume()}if(typeof w.primeAudio==='function')w.primeAudio()}catch(e){}}
 function openGame(){
  if(!validate()){pending=false;return}
  if(!ready){pending=true;document.getElementById('msg').textContent='Carregando o jogo...';return}
  optimizeGameLayout();
  pending=false;
  const w=frame.contentWindow,d=w.document;
+ resumeAudio(w);
  const values={name:document.getElementById('n').value.trim(),school:document.getElementById('s').value.trim(),klass:document.getElementById('c').value.trim()};
- const map={'name': 'name', 'school': 'school', 'klass': 'klass'};
+ const map={'name':'name','school':'school','klass':'klass'};
  Object.entries(map).forEach(([k,id])=>{const e=d.getElementById(id);if(e)e.value=values[k]});
  let started=false;
  if(typeof w.startWithPlayer==='function'){w.startWithPlayer(values.name,values.school,values.klass);started=true}
  if(!started){for(const fn of ['startGame']){if(typeof w[fn]==='function'){w[fn]();started=true;break}}}
  if(!started){const b=d.querySelector('.cover-start-action,.start-btn,button[onclick*="start"],button[onclick*="restart"]');if(b){b.click();started=true}}
- if(started){document.getElementById('cover').style.display='none';frame.style.display='block'}
+ if(started){document.getElementById('cover').style.display='none';frame.style.display='block';setTimeout(()=>resumeAudio(w),80)}
  else document.getElementById('msg').textContent='Não foi possível iniciar. Toque novamente.';
 }
 document.getElementById('startBtn').addEventListener('click',openGame);
