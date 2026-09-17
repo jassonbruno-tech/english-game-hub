@@ -1,37 +1,14 @@
-<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Tug of War English — Neon V24</title><style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#030712}iframe{border:0;width:100%;height:100%;display:block}</style></head><body><iframe id="outer" src="tug-of-war-final.html?v=20260917-v24-inner" allow="autoplay"></iframe><script>
-const outer=document.getElementById('outer');
-function injectV24(){
- try{
-  const wrapDoc=outer.contentDocument;
-  const gameFrame=wrapDoc&&wrapDoc.getElementById('game');
-  const d=gameFrame&&gameFrame.contentDocument;
-  if(!d||!d.head)return false;
-  if(d.getElementById('neon-v24-style'))return true;
-  const s=d.createElement('style');s.id='neon-v24-style';s.textContent=`
-  :root{--bg:#030712!important;--panel:#071022!important;--card:#0b1630!important;--muted:#c4d3f2!important;--ok:#39ff99!important;--bad:#ff416c!important}
-  html,body{background:#030712!important;font-family:Inter,Poppins,"Segoe UI",Arial,sans-serif!important}
-  #game{background:radial-gradient(circle at 14% 0,#7c3aed55 0,transparent 30%),radial-gradient(circle at 88% 6%,#06b6d455 0,transparent 28%),linear-gradient(145deg,#030712,#07132c 50%,#18103f)!important}
-  .topbar{background:linear-gradient(120deg,#0b1638ee,#17113cee)!important;border:1px solid #67e8f988!important;border-radius:16px!important;padding:6px 12px!important;box-shadow:0 0 28px #22d3ee2e,0 12px 30px #000a!important}
-  .brand h1{font-size:25px!important;font-weight:1000!important;background:linear-gradient(90deg,#fff,#5ee7ff,#c084fc,#fb7185);-webkit-background-clip:text;background-clip:text;color:transparent!important;letter-spacing:.4px!important}
-  .brand small{color:#9fb4dc!important}.stage{background:linear-gradient(135deg,#6d28d9,#9333ea,#db2777)!important;border:1px solid #f0abfc88!important;border-radius:999px!important;color:#fff!important;box-shadow:0 0 22px #a855f777!important;padding:7px 16px!important}
-  .chip{background:#0b1530!important;border:1px solid #45618f77!important;color:#dbeafe!important}.chip.current{outline:2px solid #22d3ee!important;box-shadow:0 0 16px #22d3ee77!important}
-  .arena{background:linear-gradient(180deg,#13b9ff 0 44%,#66f07d 44% 61%,#1da856 61% 100%)!important;border:2px solid #67e8f9!important;border-radius:24px!important;box-shadow:0 0 0 1px #fff2 inset,0 0 32px #22d3ee55,0 18px 35px #0009!important;filter:saturate(1.22) contrast(1.05)}
-  .scoreboard{background:linear-gradient(145deg,#020617f2,#101b3df2)!important;border:1px solid #67e8f9aa!important;border-radius:18px!important;padding:8px 16px!important;box-shadow:0 0 24px #22d3ee66,0 10px 28px #0009!important}
-  .score-team{font-size:17px!important;font-weight:1000!important;text-shadow:0 0 14px currentColor!important}.score-num{font-size:31px!important;color:#fff!important;background:#020617!important;border-radius:10px!important;padding:2px 9px!important;box-shadow:0 0 12px #fff3 inset!important}
-  .rope{height:10px!important;background:repeating-linear-gradient(45deg,#ffd166 0 8px,#c26b22 8px 16px)!important;box-shadow:0 0 9px #ffb84d99,0 2px 0 #613313 inset!important}.flag{filter:drop-shadow(0 0 8px #ff2d75)!important}.flag:after{border-left-color:#ff2d75!important}
-  .arena-msg{background:#07142deb!important;border:1px solid #67e8f988!important;color:#fff!important;border-radius:13px!important;box-shadow:0 0 18px #22d3ee44!important}
-  .play-area{background:linear-gradient(145deg,#071022f2,#111b3af2)!important;border:1px solid #5b7fb455!important;border-radius:20px!important;box-shadow:0 18px 38px #000a,inset 0 1px 0 #fff2!important}
-  .question-top{background:#030817cc!important;border:1px solid #3b588477!important;border-radius:12px!important;padding:6px 9px!important}.qmeta{color:#5ee7ff!important;font-weight:1000!important;letter-spacing:.7px!important}.question-text{color:#fff!important;font-size:23px!important;text-shadow:0 0 18px #a855f766!important}
-  .team-card{background:linear-gradient(145deg,#0a1329,#0c1835)!important;border-width:2px!important;border-radius:17px!important;box-shadow:0 10px 26px #0008,inset 0 1px 0 #fff1!important}.team-name{font-size:18px!important;font-weight:1000!important;text-shadow:0 0 14px currentColor!important}.status{background:#020617dd!important;border:1px solid #fff2!important;color:#e5edff!important}
-  .options{gap:9px!important}.opt{min-height:46px!important;border:1px solid #6b86b477!important;border-radius:13px!important;background:linear-gradient(135deg,#14213f,#091329)!important;color:#fff!important;font-weight:900!important;box-shadow:0 6px 15px #0006,inset 0 1px 0 #fff1!important;transition:.16s ease!important}.opt:hover:not(:disabled){transform:translateY(-2px) scale(1.015)!important;border-color:#5ee7ff!important;box-shadow:0 0 18px #22d3ee55,0 8px 18px #0008!important}.opt.selected{outline:2px solid #fff!important;box-shadow:0 0 22px #22d3ee88!important}.opt.correct{background:linear-gradient(135deg,#27f59a,#a3ff6f)!important;color:#04281a!important;box-shadow:0 0 28px #39ff99aa!important}.opt.wrong{background:linear-gradient(135deg,#ff416c,#ff1744)!important;color:#fff!important;box-shadow:0 0 28px #ff416c99!important}
-  .timer{width:64px!important;height:64px!important;background:radial-gradient(circle,#061126 0 55%,#132548 56%)!important;border:4px solid #22d3ee!important;color:#fff!important;box-shadow:0 0 0 3px #22d3ee22,0 0 26px #22d3eeaa,inset 0 0 16px #22d3ee33!important;font-size:24px!important}.timer-label{color:#67e8f9!important;letter-spacing:1px!important}.timer.redflash{border-color:#ff416c!important;box-shadow:0 0 30px #ff416caa!important}
-  .result{background:linear-gradient(135deg,#071022,#17123b)!important;border:1px solid #708ac066!important;border-radius:12px!important;color:#fff!important}.result.celebrate{box-shadow:0 0 32px var(--winner-color)!important}
-  .success{background:linear-gradient(135deg,#39ff99,#22d3ee)!important;color:#03261c!important;box-shadow:0 0 20px #39ff9966!important}.action{border-radius:12px!important}.test-panel{background:#050b1bdd!important;border-color:#51678f66!important}
-  .round-overlay,.countdown-overlay,.modal{background:radial-gradient(circle,#4c1d95dd,#020617f7 60%)!important;backdrop-filter:blur(10px)!important}.round-box,.countdown-box,.modal-card{background:linear-gradient(145deg,#0b1634ee,#24124aee)!important;border:2px solid #67e8f9aa!important;box-shadow:0 0 38px #8b5cf688,0 24px 70px #000d!important}.round-number{background:linear-gradient(90deg,#fde047,#fb7185,#c084fc);-webkit-background-clip:text;background-clip:text;color:transparent!important}.ready-text{color:#e0f2fe!important;text-shadow:0 0 20px #5ee7ffaa!important}.countdown-number{color:#fff!important;text-shadow:0 0 28px #22d3ee!important}
-  `;d.head.appendChild(s);
-  const badge=d.createElement('div');badge.textContent='NEON V24';badge.style.cssText='position:fixed;right:12px;top:12px;z-index:9999;background:linear-gradient(135deg,#06b6d4,#8b5cf6,#ec4899);color:white;font:900 10px/1 Arial;padding:6px 9px;border-radius:999px;box-shadow:0 0 16px #22d3ee88;pointer-events:none';d.body.appendChild(badge);
-  return true;
- }catch(e){return false}
-}
-outer.addEventListener('load',()=>{let n=0;const id=setInterval(()=>{n++;if(injectV24()||n>80)clearInterval(id)},100)});
-</script></body></html>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Tug of War English — Neon V24</title>
+<meta http-equiv="refresh" content="0; url=tug-of-war-final.html?v=20260917-neon-v24-fix1">
+<script>location.replace('tug-of-war-final.html?v=20260917-neon-v24-fix1');</script>
+<style>html,body{margin:0;height:100%;display:grid;place-items:center;background:#050816;color:#fff;font-family:Arial,sans-serif}a{color:#67e8f9}</style>
+</head>
+<body>
+<p>Carregando o jogo... <a href="tug-of-war-final.html?v=20260917-neon-v24-fix1">abrir manualmente</a></p>
+</body>
+</html>
