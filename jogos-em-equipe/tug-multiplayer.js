@@ -9,12 +9,13 @@ const $=id=>document.getElementById(id);
 const params=new URLSearchParams(location.search);
 const room=(params.get('sala')||'LAB703').replace(/[^a-zA-Z0-9_-]/g,'').toUpperCase();
 const testMode=params.get('teste')==='1';
+const soloMode=params.get('sim')==='1';
 $('roomCode').textContent=room;
 
 function uid(){return 'dev_'+crypto.getRandomValues(new Uint32Array(4)).join('_')}
 const deviceKey='tugDeviceId';
 let deviceId;
-if(testMode){deviceId=sessionStorage.getItem(deviceKey)||uid();sessionStorage.setItem(deviceKey,deviceId)}
+if(testMode||soloMode){deviceId=sessionStorage.getItem(deviceKey)||uid();sessionStorage.setItem(deviceKey,deviceId)}
 else{deviceId=localStorage.getItem(deviceKey)||uid();localStorage.setItem(deviceKey,deviceId)}
 
 const cfg=window.TUG_FIREBASE_CONFIG||{};
@@ -29,7 +30,7 @@ function renderMe(){
   $('teamEmoji').textContent=c.emoji;
   $('teamName').textContent='VOCÊ É A '+c.name;
   $('teamName').style.color=c.hex;
-  $('status').textContent='Equipe registrada neste computador. Aguarde as outras equipes.';
+  $('status').textContent=soloMode?'Equipe definida. As outras três equipes serão simuladas neste computador.':'Equipe registrada neste computador. Aguarde as outras equipes.';
 }
 function renderTeams(teams){
   teams=teams||{};
@@ -45,11 +46,28 @@ function renderTeams(teams){
 }
 function enterGame(){
   if(!myColor)return;
-  const u=new URL('tug-of-war-final.html',location.href);
-  u.searchParams.set('sala',room);u.searchParams.set('equipe',myColor);u.searchParams.set('modo',testMode?'teste-local':'multiplayer');u.searchParams.set('v','20260917-multi2');
+  const target=soloMode?'tug-simulacao.html':'tug-of-war-final.html';
+  const u=new URL(target,location.href);
+  u.searchParams.set('sala',room);u.searchParams.set('equipe',myColor);u.searchParams.set('modo',soloMode?'simulacao':testMode?'teste-local':'multiplayer');u.searchParams.set('v','20260917-torneio1');
   location.href=u.href;
 }
 $('enterGame').onclick=enterGame;
+
+function startSolo(){
+  $('setupBox').hidden=true;
+  myColor='blue';
+  renderMe();
+  const teams={};COLORS.forEach(c=>teams[c.id]={simulated:c.id!==myColor});
+  renderTeams(teams);
+  $('connected').textContent='4/4';
+  $('status').textContent='Simulação pronta: você joga pela Equipe Azul; as outras equipes serão automáticas.';
+  $('readyBox').hidden=false;
+  $('enterGame').textContent='▶ ENTRAR NO CAMPEONATO';
+  COLORS.forEach(c=>{
+    const el=$('slot-'+c.id);el.querySelector('.slotState').textContent=c.id===myColor?'VOCÊ':'SIMULADA';
+  });
+  const badge=document.createElement('div');badge.textContent='SIMULAÇÃO COMPLETA';badge.style.cssText='position:fixed;right:12px;top:12px;z-index:9999;background:linear-gradient(135deg,#06b6d4,#8b5cf6);color:#fff;font:900 11px Arial;padding:7px 10px;border-radius:999px;box-shadow:0 0 16px #22d3ee88';document.body.appendChild(badge);
+}
 
 /* ===== PRODUÇÃO: FIREBASE ENTRE COMPUTADORES ===== */
 async function startFirebase(){
@@ -94,13 +112,15 @@ function startLocal(){
   claim();
 }
 
-if(firebaseReady){
+if(soloMode){
+  startSolo();
+}else if(firebaseReady){
   $('setupBox').hidden=true;
   startFirebase().catch(err=>{$('status').textContent='Erro ao conectar à sala: '+err.message});
 }else if(testMode){
   startLocal();
 }else{
   $('setupBox').hidden=false;
-  $('status').textContent='Modo online preparado. Enquanto o Firebase não estiver configurado, use o link de teste local para simular 4 computadores em abas diferentes.';
+  $('status').textContent='Modo online preparado. Enquanto o Firebase não estiver configurado, use a simulação em um computador ou o teste local em 4 abas.';
 }
 })();
