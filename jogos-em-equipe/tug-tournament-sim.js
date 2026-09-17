@@ -62,7 +62,7 @@ function aiAnswer(){
 }
 function planAi(){
   clearTimeout(aiTimer);
-  aiTimer=setTimeout(aiAnswer,2200+Math.floor(Math.random()*4200));
+  aiTimer=setTimeout(aiAnswer,700+Math.floor(Math.random()*800));
 }
 
 function ensureAdvanceOverlay(){
