@@ -1,0 +1,31 @@
+(()=>{
+const TOTAL=15;
+const d=document,$=id=>d.getElementById(id);
+const left=$('leftPeople'),right=$('rightPeople'),rope=$('ropeWrap'),flag=rope?.querySelector('.flag'),centerLine=d.querySelector('.center-line'),arenaEl=d.querySelector('.arena');
+const leftCoil=$('leftCoil'),rightCoil=$('rightCoil');
+let finalPullDone=false,finalTimer=null;
+
+function centerPx(){if(!flag||!rope||!centerLine)return null;const rr=rope.getBoundingClientRect(),cr=centerLine.getBoundingClientRect();return (cr.left+cr.width/2)-rr.left}
+function flagAt(px){if(flag)flag.style.setProperty('left',px+'px','important')}
+function centerFlag(){const x=centerPx();if(x!==null)flagAt(x)}
+function moveFlag(diff){const base=centerPx();if(base===null)return;const rr=rope.getBoundingClientRect();const n=Math.max(-7,Math.min(7,Number(diff)||0));const step=Math.min(74,rr.width*.065);flagAt(base-n*step)}
+function coils(diff){if(!leftCoil||!rightCoil)return;const n=Math.min(7,Math.abs(diff)),s=.50+n*.12;leftCoil.classList.toggle('show',diff>0);rightCoil.classList.toggle('show',diff<0);leftCoil.style.transform=`scale(${diff>0?s:.35})`;rightCoil.style.transform=`scale(${diff<0?s:.35})`}
+function positions(diff){const n=Math.max(-7,Math.min(7,Number(diff)||0)),m=Math.abs(n);if(n>0){left.style.setProperty('left',`calc(12% - ${Math.min(18*m,96)}px)`,'important');right.style.setProperty('right',`calc(12% + ${Math.min(64*m,270)}px)`,'important')}else if(n<0){left.style.setProperty('left',`calc(12% + ${Math.min(64*m,270)}px)`,'important');right.style.setProperty('right',`calc(12% - ${Math.min(18*m,96)}px)`,'important')}else{left.style.setProperty('left','12%','important');right.style.setProperty('right','12%','important')}moveFlag(n);coils(n)}
+function resetVisual(){finalPullDone=false;clearTimeout(finalTimer);left.style.setProperty('left','12%','important');right.style.setProperty('right','12%','important');left.style.transform='';right.style.transform='';centerFlag();coils(0)}
+function regulationRound(){return qi+1}
+function clinched(){if(ls===rs)return false;if(sd)return true;const remaining=Math.max(0,TOTAL-regulationRound());return Math.abs(ls-rs)>remaining||regulationRound()>=TOTAL}
+function pulse(winner){left.classList.add('pulling');right.classList.add('pulling');if(winner==='left'){left.style.transform='translateX(-18px) rotate(-2deg)';right.style.transform='translateX(-44px) rotate(-5deg)'}else{left.style.transform='translateX(44px) rotate(5deg)';right.style.transform='translateX(18px) rotate(2deg)'}setTimeout(()=>{if(!finalPullDone){left.style.transform='';right.style.transform=''}left.classList.remove('pulling');right.classList.remove('pulling')},850)}
+function normalPull(winner){pulse(winner);positions(ls-rs)}
+const baseCelebrate=celebrate;
+function finalPull(leftWins){if(finalPullDone||!arenaEl)return;finalPullDone=true;clearTimeout(finalTimer);const winEl=leftWins?left:right,loseEl=leftWins?right:left;setFace(winEl,'laugh');setFace(loseEl,'panic');leftCoil?.classList.remove('show');rightCoil?.classList.remove('show');requestAnimationFrame(()=>{const ar=arenaEl.getBoundingClientRect(),wr=winEl.getBoundingClientRect(),lr=loseEl.getBoundingClientRect(),center=ar.left+ar.width/2,margin=22;let winDx=0,loseDx=0;if(leftWins){winDx=(ar.left+margin)-wr.left;loseDx=(center-30)-lr.right}else{winDx=(ar.right-margin)-wr.right;loseDx=(center+30)-lr.left}winEl.style.transition='transform 1.8s cubic-bezier(.08,.78,.12,1)';loseEl.style.transition='transform 1.8s cubic-bezier(.08,.78,.12,1)';winEl.style.transform=`translateX(${winDx}px) rotate(${leftWins?-3:3}deg)`;loseEl.style.transform=`translateX(${loseDx}px) rotate(${leftWins?-8:8}deg)`;const base=centerPx(),rr=rope.getBoundingClientRect();if(base!==null)flagAt(base+(leftWins?-rr.width*.30:rr.width*.30));finalTimer=setTimeout(()=>{winEl.classList.add('final-winner');loseEl.classList.add('final-loser');baseCelebrate(leftWins?L:R)},1900)})}
+
+startMatch=function(){qi=0;ls=0;rs=0;sd=false;finalPullDone=false;qs=sh(Q);$('leftScore').textContent=$('rightScore').textContent=0;resetVisual();$('nextMatchBtn').style.display='none';teams();intro()};
+render=function(){clearTimeout(auto);rev=false;la=ra=null;resetMoods();$('resultBox').style.display='none';$('resultBox').classList.remove('celebrate');$('winnerFlash').classList.remove('show');$('leftStatus').textContent=$('rightStatus').textContent='Aguardando resposta';$('arenaMsg').textContent='As duas equipes devem responder.';if(qi>=qs.length){let pool=sh(Q),last=qs[qs.length-1];qs.push(pool.find(x=>x.q!==last?.q)||pool[0])}const q=qs[qi];$('qText').textContent=q.q;$('qMeta').textContent=sd?'DESEMPATE — morte súbita':`Pergunta ${qi+1}/${TOTAL}`;opts('left',sh(q.o));opts('right',sh(q.o));clock()};
+setRope=function(diff){if(Number(diff)===0){if(ls===0&&rs===0)resetVisual();else positions(0);return}if(!finalPullDone)positions(Number(diff)||0)};
+pull=function(winner){if(finalPullDone)return;const loser=winner==='left'?'right':'left',w=winner==='left'?left:right,l=loser==='left'?left:right;setFace(w,'laugh');setFace(l,'panic');dust(loser);if(clinched())finalPull(winner==='left');else normalPull(winner)};
+bothPull=function(){if(finalPullDone)return;setFace(left,'laugh');setFace(right,'laugh');positions(ls-rs)};
+schedule=function(delay,a,b){if(sd){if(a!==b)return setTimeout(endMatch,delay);return auto=setTimeout(next,delay+200)}const remaining=Math.max(0,TOTAL-(qi+1));if(Math.abs(ls-rs)>remaining)return setTimeout(endMatch,delay);if(qi<TOTAL-1)return auto=setTimeout(next,delay+250);if(ls===rs){sd=true;$('resultBox').textContent+=' Empate! Morte súbita.';return auto=setTimeout(next,delay+300)}setTimeout(endMatch,delay)};
+endMatch=function(){stop();const w=ls>rs?L:R;$('resultBox').textContent=`🏆 ${T[w].name} venceu a partida por ${ls} × ${rs}!`;$('resultBox').style.display='block';$('arenaMsg').textContent='PARTIDA ENCERRADA';$('nextMatchBtn').style.display='inline-block';if(!finalPullDone&&ls!==rs)finalPull(ls>rs);if(mi<2)fin.push(w);else setTimeout(()=>champion(w),finalPullDone?2100:0)};
+
+requestAnimationFrame(centerFlag);setTimeout(centerFlag,120);setTimeout(centerFlag,400);window.addEventListener('resize',()=>{if(ls===0&&rs===0)centerFlag();else if(!finalPullDone)moveFlag(ls-rs)});
+})();
