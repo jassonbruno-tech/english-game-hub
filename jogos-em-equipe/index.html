@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jogos em Equipe — English Game Hub</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(180deg,#071a33,#0d2c50 45%,#123d65);color:#fff;min-height:100vh}
+.wrap{max-width:1180px;margin:auto;padding:34px 22px 60px}
+.hero{text-align:center;margin-bottom:32px}
+.hero h1{font-size:clamp(38px,6vw,74px);margin:0;font-weight:1000;letter-spacing:1px}
+.hero p{font-size:20px;color:#d6e8ff;max-width:760px;margin:12px auto 0;line-height:1.45}
+.badge{display:inline-block;margin-top:16px;background:#ffffff18;border:1px solid #ffffff33;padding:9px 14px;border-radius:999px;font-weight:800}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px;margin-top:26px}
+.card{background:#0b1628;border:1px solid #ffffff22;border-radius:24px;overflow:hidden;box-shadow:0 18px 45px #0007;transition:.2s}
+.card:hover{transform:translateY(-4px)}
+.cover{aspect-ratio:16/9;background:
+linear-gradient(180deg,#73c6ff 0 58%,#65c46d 58% 100%);
+position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.rope{position:absolute;left:8%;right:8%;top:50%;height:8px;background:#b77a42;border-radius:8px}
+.flag{position:absolute;left:50%;top:calc(50% - 42px);transform:translateX(-50%);font-size:56px}
+.team{font-size:62px;position:absolute;top:50%;transform:translateY(-50%)}
+.team.left{left:12%}.team.right{right:12%}
+.cover-title{position:absolute;top:18px;left:0;right:0;text-align:center;font-weight:1000;font-size:28px;text-shadow:0 2px 4px #0006}
+.content{padding:20px}
+.content h2{margin:0 0 8px;font-size:27px}
+.content p{color:#cbd5e1;line-height:1.5;margin:0 0 16px}
+.tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.tag{font-size:13px;font-weight:800;background:#1e293b;border:1px solid #475569;border-radius:999px;padding:7px 10px}
+.play{display:block;text-align:center;text-decoration:none;background:#22c55e;color:#062b13;font-size:20px;font-weight:1000;padding:14px 18px;border-radius:14px;box-shadow:0 5px 0 #15803d}
+.soon{opacity:.58}
+.soon .play{background:#475569;color:#e2e8f0;box-shadow:none;pointer-events:none}
+.footer{text-align:center;color:#a9bfd6;margin-top:38px;font-size:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <h1>🎮 JOGOS EM EQUIPE</h1>
+    <p>Espaço para jogos competitivos de Inglês disputados em grupos. Novos desafios serão adicionados aqui conforme forem sendo criados.</p>
+    <div class="badge">Professor Jasson Bruno • English Game Hub</div>
+  </header>
+
+  <section class="grid">
+    <article class="card">
+      <div class="cover">
+        <div class="cover-title">TUG OF WAR ENGLISH</div>
+        <div class="team left">🔵👥</div>
+        <div class="rope"></div>
+        <div class="flag">🚩</div>
+        <div class="team right">👥🟡</div>
+      </div>
+      <div class="content">
+        <h2>🪢 Cabo de Guerra</h2>
+        <p>Quatro equipes disputam semifinais e final. Nesta versão de teste, uma pessoa pode simular os dois lados para conferir toda a mecânica.</p>
+        <div class="tags"><span class="tag">Personal Pronouns</span><span class="tag">Verb To Be</span><span class="tag">4 equipes</span></div>
+        <a class="play" href="tug-of-war-english.html">▶ JOGAR AGORA</a>
+      </div>
+    </article>
+
+    <article class="card soon">
+      <div class="cover"><div class="cover-title">PRÓXIMO JOGO</div><div style="font-size:88px">🏆</div></div>
+      <div class="content">
+        <h2>Em breve</h2>
+        <p>Este espaço já fica reservado para o próximo jogo em equipe.</p>
+        <a class="play" href="#">EM CONSTRUÇÃO</a>
+      </div>
+    </article>
+  </section>
+
+  <div class="footer">English Game Hub — Jogos em Equipe</div>
+</div>
+</body>
+</html>
