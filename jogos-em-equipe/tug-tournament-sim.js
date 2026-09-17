@@ -9,7 +9,6 @@ let tournamentStage='semi';
 let nextStage=null;
 let aiTimer=null;
 let otherWinner=null,otherLoser=null;
-const playerSide='left';
 const $s=id=>document.getElementById(id);
 
 function rand(arr){return arr[Math.floor(Math.random()*arr.length)]}
@@ -45,7 +44,6 @@ function setStageTeams(){
   [...$s('rightPeople').children].forEach(p=>p.style.setProperty('--shirt',b.color));
   resetMoods();
 }
-
 function simulateOtherSemi(){
   otherWinner=Math.random()<.5?OTHER_PAIR[0]:OTHER_PAIR[1];
   otherLoser=OTHER_PAIR.find(x=>x!==otherWinner);
@@ -63,12 +61,11 @@ function aiAnswer(){
 }
 function planAi(){
   clearTimeout(aiTimer);
-  const delay=2200+Math.floor(Math.random()*4200);
-  aiTimer=setTimeout(aiAnswer,delay);
+  aiTimer=setTimeout(aiAnswer,2200+Math.floor(Math.random()*4200));
 }
 
 startMatch=function(){
-  clearTimeout(aiTimer);qi=0;ls=0;rs=0;sd=false;finalPullDone=false;qs=sh(Q);$s('leftScore').textContent=$s('rightScore').textContent=0;resetVisual();$s('nextMatchBtn').style.display='none';setStageTeams();intro();
+  clearTimeout(aiTimer);qi=0;ls=0;rs=0;sd=false;qs=sh(Q);$s('leftScore').textContent=$s('rightScore').textContent=0;resetFaces();setRope(0);$s('nextMatchBtn').style.display='none';setStageTeams();intro();
 };
 render=function(){
   clearTimeout(auto);clearTimeout(aiTimer);rev=false;la=ra=null;resetMoods();$s('resultBox').style.display='none';$s('resultBox').classList.remove('celebrate');$s('winnerFlash').classList.remove('show');
@@ -84,7 +81,6 @@ pick=function(side,v,b){
   const box=$s('leftOptions');[...box.children].forEach(x=>x.classList.remove('selected'));b.classList.add('selected');[...box.children].forEach(x=>x.disabled=true);la=v;$s('leftStatus').textContent='Resposta enviada ✓';
   if(ra!==null){stop();clearTimeout(aiTimer);$s('arenaMsg').textContent='Respostas bloqueadas...';setTimeout(reveal,450)}
 };
-const baseTimeout=timeout;
 timeout=function(){
   if(rev)return;
   clearTimeout(aiTimer);
@@ -102,17 +98,17 @@ schedule=function(delay,a,b){
 };
 endMatch=function(){
   stop();clearTimeout(aiTimer);
-  const userWon=ls>rs,w=userWon?L:R;
+  const userWon=ls>rs;
   $s('resultBox').textContent=`🏁 Fim da partida: ${T[L].short} ${ls} × ${rs} ${T[R].short}`;$s('resultBox').style.display='block';$s('arenaMsg').textContent='PARTIDA ENCERRADA';
-  if(!finalPullDone&&ls!==rs)finalPull(userWon);
+  if(ls!==rs)pull(userWon?'left':'right');
   if(tournamentStage==='semi'){
     simulateOtherSemi();nextStage=userWon?'final':'third';
     setTimeout(()=>{
       const btn=$s('nextMatchBtn');btn.style.display='inline-block';btn.textContent=userWon?'🏆 IR PARA A FINAL ➜':'🥉 IR PARA A DISPUTA DE 3º LUGAR ➜';
       $s('resultBox').textContent=userWon?`✅ ${T[L].name} CLASSIFICADA PARA A FINAL!`:`➡️ ${T[L].name} vai disputar o 3º lugar.`;
-    },finalPullDone?2050:300);
+    },2200);
   }else{
-    setTimeout(()=>finishTournament(userWon),finalPullDone?2050:300);
+    setTimeout(()=>finishTournament(userWon),2200);
   }
 };
 advance=function(){
@@ -121,13 +117,12 @@ advance=function(){
 };
 function finishTournament(userWon){
   const modal=$s('championModal'),title=$s('championTitle'),text=$s('championText'),again=$s('playAgain');
-  let place;
-  if(tournamentStage==='final')place=userWon?1:2;else place=userWon?3:4;
+  const place=tournamentStage==='final'?(userWon?1:2):(userWon?3:4);
   const medal=place===1?'🥇':place===2?'🥈':place===3?'🥉':'🏅';
   title.textContent=place===1?`🏆 ${T[player].name} É A CAMPEÃ!`:`${medal} ${place}º LUGAR — ${T[player].name}`;
   text.textContent=tournamentStage==='final'?(userWon?'Você venceu a final e conquistou o campeonato!':'Você chegou à final e terminou como vice-campeã.'):(userWon?'Você venceu a disputa de 3º lugar e conquistou o pódio!':'Você encerrou o torneio em 4º lugar.');
   again.textContent='JOGAR NOVO CAMPEONATO';again.style.display='inline-block';modal.classList.add('show');
-};
+}
 reset=function(){
   stop();clearTimeout(auto);clearTimeout(aiTimer);tournamentStage='semi';nextStage=null;otherWinner=null;otherLoser=null;$s('championModal').classList.remove('show');startMatch();
 };
@@ -137,6 +132,6 @@ const brandSmall=document.querySelector('.brand small');if(brandSmall)brandSmall
 const rightNote=document.querySelector('.right-note');if(rightNote)rightNote.textContent='Adversário automático';
 const testPanel=document.querySelector('.test-panel');if(testPanel)testPanel.style.display='none';
 $s('nextMatchBtn').onclick=advance;
-$s('playAgain').onclick=()=>{reset()};
+$s('playAgain').onclick=()=>reset();
 const badge=document.createElement('div');badge.textContent='SIMULAÇÃO 1 COMPUTADOR';badge.style.cssText='position:fixed;right:12px;top:12px;z-index:9999;background:linear-gradient(135deg,#06b6d4,#8b5cf6);color:#fff;font:900 10px Arial;padding:6px 9px;border-radius:999px;box-shadow:0 0 16px #22d3ee88;pointer-events:none';document.body.appendChild(badge);
 })();
