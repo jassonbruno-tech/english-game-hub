@@ -10,6 +10,7 @@ let nextStage=null;
 let aiTimer=null;
 let otherWinner=null,otherLoser=null;
 let matchClinched=false;
+let postMatchTimer=null;
 const $s=id=>document.getElementById(id);
 
 function rand(arr){return arr[Math.floor(Math.random()*arr.length)]}
@@ -19,7 +20,18 @@ function setChipLabels(){
   if(c2)c2.textContent='🥉 3º lugar';
   if(c3)c3.textContent='🏆 Final';
 }
+function cleanupFinalState(){
+  clearTimeout(postMatchTimer);
+  [$s('leftPeople'),$s('rightPeople')].forEach(el=>{
+    if(!el)return;
+    el.classList.remove('final-winner','final-loser','winner','loser','pulling');
+    el.style.transform='';
+    el.querySelectorAll('.tear').forEach(t=>t.style.display='');
+  });
+  resetFaces();
+}
 function setStageTeams(){
+  cleanupFinalState();
   document.querySelectorAll('.chip').forEach(x=>x.classList.remove('current'));
   L=player;
   if(tournamentStage==='semi'){
@@ -65,39 +77,49 @@ function planAi(){
   aiTimer=setTimeout(aiAnswer,700+Math.floor(Math.random()*800));
 }
 
-function ensureAdvanceOverlay(){
-  if(document.getElementById('tournamentAdvanceOverlay'))return;
+function ensureAdvanceDock(){
+  if(document.getElementById('tournamentAdvanceDock'))return;
   const style=document.createElement('style');
   style.textContent=`
-  #tournamentAdvanceOverlay{position:fixed;inset:0;z-index:10050;display:none;align-items:center;justify-content:center;padding:24px;background:radial-gradient(circle at center,#312e81ee,#020617fa 62%);backdrop-filter:blur(10px)}
-  #tournamentAdvanceOverlay.show{display:flex}
-  #tournamentAdvanceCard{width:min(760px,92vw);text-align:center;background:linear-gradient(145deg,#0b1634f5,#24124af5);border:2px solid #67e8f9aa;border-radius:28px;padding:34px 28px;box-shadow:0 0 42px #8b5cf688,0 24px 80px #000d}
-  #tournamentAdvanceIcon{font-size:76px;line-height:1;margin-bottom:10px}
-  #tournamentAdvanceTitle{font-size:clamp(30px,5vw,56px);font-weight:1000;margin:0 0 10px;background:linear-gradient(90deg,#fff,#67e8f9,#c084fc,#fb7185);-webkit-background-clip:text;background-clip:text;color:transparent}
-  #tournamentAdvanceText{font-size:18px;color:#dbeafe;margin:0 0 24px;font-weight:800}
-  #tournamentAdvanceBtn{border:0;border-radius:18px;padding:18px 30px;font-size:clamp(20px,3vw,30px);font-weight:1000;cursor:pointer;color:#04131e;background:linear-gradient(135deg,#facc15,#39ff99,#22d3ee);box-shadow:0 0 30px #22d3ee88,0 8px 0 #0e7490;animation:tugCtaPulse 1.15s infinite alternate}
-  #tournamentAdvanceBtn:active{transform:translateY(5px);box-shadow:0 0 22px #22d3ee77,0 3px 0 #0e7490}
-  @keyframes tugCtaPulse{from{transform:scale(1)}to{transform:scale(1.035)}}
+  #tournamentAdvanceDock{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:10050;display:none;align-items:center;gap:12px;padding:10px 12px 10px 16px;background:linear-gradient(145deg,#071226ee,#151b3aee);border:1px solid #67e8f988;border-radius:20px;box-shadow:0 10px 32px #000b,0 0 24px #22d3ee55;backdrop-filter:blur(10px);max-width:min(900px,94vw)}
+  #tournamentAdvanceDock.show{display:flex}
+  #tournamentAdvanceMsg{font-size:15px;font-weight:900;color:#eaf8ff;white-space:nowrap}
+  #tournamentAdvanceBtn{border:0;border-radius:14px;padding:14px 22px;font-size:clamp(16px,2vw,22px);font-weight:1000;cursor:pointer;color:#04131e;background:linear-gradient(135deg,#facc15,#39ff99,#22d3ee);box-shadow:0 0 22px #22d3ee77,0 5px 0 #0e7490;animation:tugCtaPulse 1.15s infinite alternate;white-space:nowrap}
+  #tournamentAdvanceBtn:active{transform:translateY(4px);box-shadow:0 0 18px #22d3ee66,0 2px 0 #0e7490}
+  @keyframes tugCtaPulse{from{filter:brightness(1)}to{filter:brightness(1.12)}}
+  @media(max-width:720px){#tournamentAdvanceDock{flex-direction:column;width:92vw;text-align:center}#tournamentAdvanceMsg{white-space:normal}#tournamentAdvanceBtn{width:100%}}
   `;
   document.head.appendChild(style);
-  const o=document.createElement('div');o.id='tournamentAdvanceOverlay';
-  o.innerHTML='<div id="tournamentAdvanceCard"><div id="tournamentAdvanceIcon">🏆</div><h2 id="tournamentAdvanceTitle"></h2><p id="tournamentAdvanceText"></p><button id="tournamentAdvanceBtn" type="button"></button></div>';
-  document.body.appendChild(o);
-  document.getElementById('tournamentAdvanceBtn').addEventListener('click',()=>{hideAdvanceOverlay();advance()});
+  const dock=document.createElement('div');dock.id='tournamentAdvanceDock';
+  dock.innerHTML='<div id="tournamentAdvanceMsg"></div><button id="tournamentAdvanceBtn" type="button"></button>';
+  document.body.appendChild(dock);
+  document.getElementById('tournamentAdvanceBtn').addEventListener('click',()=>{hideAdvanceDock();advance()});
 }
-function hideAdvanceOverlay(){document.getElementById('tournamentAdvanceOverlay')?.classList.remove('show')}
-function showAdvanceOverlay(userWon){
-  ensureAdvanceOverlay();
-  const o=document.getElementById('tournamentAdvanceOverlay');
-  document.getElementById('tournamentAdvanceIcon').textContent=userWon?'🏆':'🥉';
-  document.getElementById('tournamentAdvanceTitle').textContent=userWon?'CLASSIFICADO PARA A FINAL!':'VAMOS DISPUTAR O 3º LUGAR!';
-  document.getElementById('tournamentAdvanceText').textContent=userWon?'Sua equipe venceu a semifinal. A outra semifinal já foi simulada e o adversário da final está definido.':'Sua equipe perdeu a semifinal, mas continua no torneio. A outra semifinal já foi simulada e o adversário do 3º lugar está definido.';
-  document.getElementById('tournamentAdvanceBtn').textContent=userWon?'🏆 IR PARA A FINAL ➜':'🥉 IR PARA A DISPUTA DE 3º LUGAR ➜';
-  o.classList.add('show');
+function hideAdvanceDock(){document.getElementById('tournamentAdvanceDock')?.classList.remove('show')}
+function showAdvanceDock(userWon){
+  ensureAdvanceDock();
+  document.getElementById('tournamentAdvanceMsg').textContent=userWon?'🏆 Classificado para a final!':'🥉 Vamos para a disputa de 3º lugar!';
+  document.getElementById('tournamentAdvanceBtn').textContent=userWon?'IR PARA A FINAL ➜':'IR PARA O 3º LUGAR ➜';
+  document.getElementById('tournamentAdvanceDock').classList.add('show');
+}
+function playEndCelebration(userWon){
+  cleanupFinalState();
+  const winner=userWon?$s('leftPeople'):$s('rightPeople');
+  const loser=userWon?$s('rightPeople'):$s('leftPeople');
+  winner.classList.add('final-winner');
+  loser.classList.add('final-loser');
+  setFace(winner,'laugh');
+  setFace(loser,'panic');
+  $s('arenaMsg').textContent=userWon?'🎉 SUA EQUIPE VENCEU! COMEMORE!':'👏 FIM DE JOGO — O ADVERSÁRIO VENCEU.';
+  postMatchTimer=setTimeout(()=>{
+    winner.classList.remove('final-winner');
+    loser.classList.remove('final-loser');
+    showAdvanceDock(userWon);
+  },10000);
 }
 
 startMatch=function(){
-  clearTimeout(aiTimer);hideAdvanceOverlay();matchClinched=false;qi=0;ls=0;rs=0;sd=false;qs=sh(Q);$s('leftScore').textContent=$s('rightScore').textContent=0;resetFaces();setRope(0);$s('nextMatchBtn').style.display='none';setStageTeams();intro();
+  clearTimeout(aiTimer);clearTimeout(postMatchTimer);hideAdvanceDock();cleanupFinalState();matchClinched=false;qi=0;ls=0;rs=0;sd=false;qs=sh(Q);$s('leftScore').textContent=$s('rightScore').textContent=0;setRope(0);$s('nextMatchBtn').style.display='none';setStageTeams();intro();
 };
 render=function(){
   clearTimeout(auto);clearTimeout(aiTimer);rev=false;la=ra=null;resetMoods();$s('resultBox').style.display='none';$s('resultBox').classList.remove('celebrate');$s('winnerFlash').classList.remove('show');
@@ -138,24 +160,23 @@ schedule=function(delay,a,b){
 endMatch=function(){
   stop();clearTimeout(aiTimer);
   const userWon=ls>rs;
-  $s('resultBox').textContent=`🏁 Fim da partida: ${T[L].short} ${ls} × ${rs} ${T[R].short}${matchClinched?' — vitória antecipada por vantagem irreversível.':''}`;$s('resultBox').style.display='block';$s('arenaMsg').textContent=matchClinched?'PARTIDA ENCERRADA ANTECIPADAMENTE':'PARTIDA ENCERRADA';
-  if(ls!==rs)pull(userWon?'left':'right');
+  $s('resultBox').textContent=`🏁 Fim da partida: ${T[L].short} ${ls} × ${rs} ${T[R].short}${matchClinched?' — vitória antecipada por vantagem irreversível.':''}`;$s('resultBox').style.display='block';
   if(tournamentStage==='semi'){
     simulateOtherSemi();nextStage=userWon?'final':'third';
-    setTimeout(()=>{
-      const btn=$s('nextMatchBtn');btn.style.display='none';
-      $s('resultBox').textContent=userWon?`✅ ${T[L].name} CLASSIFICADA PARA A FINAL!`:`➡️ ${T[L].name} vai disputar o 3º lugar.`;
-      showAdvanceOverlay(userWon);
-    },2200);
+    $s('nextMatchBtn').style.display='none';
+    $s('resultBox').textContent=userWon?`✅ ${T[L].name} CLASSIFICADA PARA A FINAL!`:`➡️ ${T[L].name} vai disputar o 3º lugar.`;
+    playEndCelebration(userWon);
   }else{
-    setTimeout(()=>finishTournament(userWon),2200);
+    playEndCelebration(userWon);
+    postMatchTimer=setTimeout(()=>finishTournament(userWon),10000);
   }
 };
 advance=function(){
   if(tournamentStage!=='semi')return;
-  hideAdvanceOverlay();tournamentStage=nextStage;$s('nextMatchBtn').style.display='none';startMatch();
+  clearTimeout(postMatchTimer);hideAdvanceDock();cleanupFinalState();tournamentStage=nextStage;$s('nextMatchBtn').style.display='none';startMatch();
 };
 function finishTournament(userWon){
+  cleanupFinalState();
   const modal=$s('championModal'),title=$s('championTitle'),text=$s('championText'),again=$s('playAgain');
   const place=tournamentStage==='final'?(userWon?1:2):(userWon?3:4);
   const medal=place===1?'🥇':place===2?'🥈':place===3?'🥉':'🏅';
@@ -164,10 +185,10 @@ function finishTournament(userWon){
   again.textContent='JOGAR NOVO CAMPEONATO';again.style.display='inline-block';modal.classList.add('show');
 }
 reset=function(){
-  stop();clearTimeout(auto);clearTimeout(aiTimer);hideAdvanceOverlay();tournamentStage='semi';nextStage=null;otherWinner=null;otherLoser=null;matchClinched=false;$s('championModal').classList.remove('show');startMatch();
+  stop();clearTimeout(auto);clearTimeout(aiTimer);clearTimeout(postMatchTimer);hideAdvanceDock();cleanupFinalState();tournamentStage='semi';nextStage=null;otherWinner=null;otherLoser=null;matchClinched=false;$s('championModal').classList.remove('show');startMatch();
 };
 
-ensureAdvanceOverlay();
+ensureAdvanceDock();
 setChipLabels();
 const brandSmall=document.querySelector('.brand small');if(brandSmall)brandSmall.textContent='Modo torneio • você controla apenas sua equipe';
 const rightNote=document.querySelector('.right-note');if(rightNote)rightNote.textContent='Resposta do adversário fica oculta até a revelação';
