@@ -14,8 +14,8 @@ f.addEventListener('load',()=>{
 .right .grip-shadow{left:-7px!important;right:auto!important}
 .left .arm-front{left:24px!important;width:20px!important;transform:rotate(2deg)!important}.left .arm-back{left:19px!important;width:20px!important;transform:rotate(-5deg)!important}.left .hand-back{left:34px!important}.left .hand-front{left:39px!important}.left .grip-shadow{left:36px!important}
 .hand-back,.hand-front{top:42px!important;width:13px!important;height:13px!important;border-radius:46%!important}
-.rope-wrap{bottom:71px!important;transition:transform 1.35s cubic-bezier(.12,.82,.18,1)!important}.rope{top:5px!important;height:10px!important}
-.team-people{transition:transform 1.35s cubic-bezier(.12,.82,.18,1)!important}
+.rope-wrap{bottom:71px!important;transition:transform 1.45s cubic-bezier(.12,.82,.18,1)!important}.rope{top:5px!important;height:10px!important}
+.team-people{transition:transform 1.45s cubic-bezier(.12,.82,.18,1)!important;will-change:transform}
 
 /* OLHOS — mantidos exatamente como estavam */
 .eye-white{top:22px!important;width:9px!important;height:12px!important;background:#fff!important;border:1.6px solid #111!important;border-radius:50%!important;box-shadow:none!important;overflow:visible!important;z-index:13!important}.eye-white.left-eye{left:12px!important}.eye-white.right-eye{left:23px!important}.pupil{position:absolute!important;top:3px!important;left:2px!important;width:5px!important;height:6px!important;background:#000!important;border-radius:50%!important;box-shadow:none!important}.pupil:after{content:'';position:absolute;width:1.8px;height:1.8px;background:#fff;border-radius:50%;top:1px;left:2.4px}.brow{top:18px!important;height:1.5px!important;background:#2b211b!important}.brow.left-brow{left:12px!important}.brow.right-brow{left:23px!important}
@@ -42,67 +42,117 @@ f.addEventListener('load',()=>{
 
   const left=d.getElementById('leftPeople'),right=d.getElementById('rightPeople');
   const rope=d.getElementById('ropeWrap');
+  const arenaEl=d.querySelector('.arena');
   const lStatus=d.getElementById('leftStatus'),rStatus=d.getElementById('rightStatus');
   const arena=d.getElementById('arenaMsg'),lScore=d.getElementById('leftScore'),rScore=d.getElementById('rightScore');
   const stateClasses=['winner','loser','neutral','inplay-happy','inplay-panic','final-winner','final-loser'];
-  let finalCrossDone=false;
+  let finalCrossDone=false,lastDiff=0,lastScoreSum=0,finalTimer=null;
 
   function setState(team,state){
     if(!team)return;
     stateClasses.forEach(c=>{if(c!==state&&team.classList.contains(c))team.classList.remove(c)});
     if(state&&!team.classList.contains(state))team.classList.add(state);
   }
+  function scoreVals(){return [parseInt(lScore?.textContent||'0',10),parseInt(rScore?.textContent||'0',10)]}
+  function ended(){return (arena?.textContent||'').includes('PARTIDA ENCERRADA')}
+  function setTeamTransform(el,value){if(el)el.style.setProperty('transform',value,'important')}
+  function setRopeTransform(value){if(rope)rope.style.setProperty('transform',value,'important')}
 
-  /* PUXADAS REGULARES MAIS FORTES: cada ponto desloca muito mais a corda */
+  /* A CORDA E OS DOIS GRUPOS SE DESLOCAM JUNTOS. Cada ponto move 62px. */
+  function placeByScore(overshoot=0){
+    if(ended()||finalCrossDone)return;
+    const [a,b]=scoreVals(),diff=a-b;
+    const base=-diff*62;
+    const extra=overshoot*(diff>lastDiff?-1:diff<lastDiff?1:0);
+    const x=base+extra;
+    setRopeTransform(`translateX(${x}px)`);
+    setTeamTransform(left,`translateX(${x}px)`);
+    setTeamTransform(right,`translateX(${x}px)`);
+  }
+
+  /* sobrescreve apenas a corda original; o observador abaixo move os personagens junto */
   w.setRope=function(diff){
     const n=Math.max(-5,Math.min(5,diff));
-    if(rope) rope.style.transform=`translateX(${-n*52}px)`;
+    const x=-n*62;
+    setRopeTransform(`translateX(${x}px)`);
+    setTeamTransform(left,`translateX(${x}px)`);
+    setTeamTransform(right,`translateX(${x}px)`);
   };
 
-  /* PUXAO DA RODADA: vencedor firma, perdedor e arrastado de forma visivel */
-  w.pull=function(winner){
-    const loser=winner==='left'?'right':'left';
-    const winEl=winner==='left'?left:right;
-    const loseEl=loser==='left'?left:right;
-    if(typeof w.setFace==='function'){w.setFace(winEl,'laugh');w.setFace(loseEl,'panic')}
-    if(typeof w.dust==='function')w.dust(loser);
-    if(winner==='left'){
-      winEl.style.transform='translateX(-34px) rotate(-3deg)';
-      loseEl.style.transform='translateX(-105px) rotate(-9deg)';
+  function animateScoreChange(){
+    if(ended()||finalCrossDone)return;
+    const [a,b]=scoreVals(),sum=a+b,diff=a-b;
+    if(sum!==lastScoreSum&&diff!==lastDiff){
+      const dir=diff>lastDiff?-1:1;
+      const target=-diff*62;
+      const kick=target+dir*48;
+      setRopeTransform(`translateX(${kick}px)`);
+      setTeamTransform(left,`translateX(${kick}px)`);
+      setTeamTransform(right,`translateX(${kick}px)`);
+      setTimeout(()=>{
+        if(!ended()&&!finalCrossDone){
+          setRopeTransform(`translateX(${target}px)`);
+          setTeamTransform(left,`translateX(${target}px)`);
+          setTeamTransform(right,`translateX(${target}px)`);
+        }
+      },620);
     }else{
-      winEl.style.transform='translateX(34px) rotate(3deg)';
-      loseEl.style.transform='translateX(105px) rotate(9deg)';
+      placeByScore();
     }
-    setTimeout(()=>w.setRope((parseInt(lScore?.textContent||'0',10))-(parseInt(rScore?.textContent||'0',10))),620);
-    setTimeout(()=>{winEl.style.transform='';loseEl.style.transform=''},2100);
-  };
+    lastDiff=diff;lastScoreSum=sum;
+  }
 
-  function ended(){return (arena?.textContent||'').includes('PARTIDA ENCERRADA')}
-
+  /* ÚLTIMO PUXÃO: primeiro arrasta. Depois que o perdedor atravessa COMPLETAMENTE a linha, comemora/chora. */
   function finalCross(){
-    if(finalCrossDone||!ended())return;
-    const a=parseInt(lScore?.textContent||'0',10),b=parseInt(rScore?.textContent||'0',10);
-    if(a===b)return;
+    if(finalCrossDone||!ended()||!arenaEl)return;
+    const [a,b]=scoreVals();if(a===b)return;
     finalCrossDone=true;
-    /* o ultimo puxao leva a equipe derrotada para alem da linha central */
-    setTimeout(()=>{
-      if(a>b){
-        if(rope)rope.style.transform='translateX(-430px)';
-        left.style.transform='translateX(-70px)';
-        right.style.transform='translateX(-570px) rotate(-10deg)';
+    clearTimeout(finalTimer);
+    const leftWins=a>b;
+    const winEl=leftWins?left:right;
+    const loseEl=leftWins?right:left;
+
+    setState(winEl,'inplay-happy');
+    setState(loseEl,'inplay-panic');
+
+    requestAnimationFrame(()=>{
+      const ar=arenaEl.getBoundingClientRect();
+      const lr=loseEl.getBoundingClientRect();
+      const wr=winEl.getBoundingClientRect();
+      const center=ar.left+ar.width/2;
+      const margin=28;
+      let loserDx,winnerDx,ropeDx;
+
+      if(leftWins){
+        /* equipe da direita perde: borda direita inteira termina à esquerda da linha */
+        loserDx=(center-margin)-lr.right;
+        winnerDx=Math.max(-115,(ar.left+18)-wr.left);
+        ropeDx=-Math.min(ar.width*.34,510);
       }else{
-        if(rope)rope.style.transform='translateX(430px)';
-        right.style.transform='translateX(70px)';
-        left.style.transform='translateX(570px) rotate(10deg)';
+        /* equipe da esquerda perde: borda esquerda inteira termina à direita da linha */
+        loserDx=(center+margin)-lr.left;
+        winnerDx=Math.min(115,(ar.right-18)-wr.right);
+        ropeDx=Math.min(ar.width*.34,510);
       }
-    },180);
+
+      loseEl.style.transition='transform 1.75s cubic-bezier(.08,.78,.12,1)';
+      winEl.style.transition='transform 1.75s cubic-bezier(.08,.78,.12,1)';
+      if(rope)rope.style.transition='transform 1.75s cubic-bezier(.08,.78,.12,1)';
+
+      setTeamTransform(loseEl,`translateX(${loserDx}px) rotate(${leftWins?-9:9}deg)`);
+      setTeamTransform(winEl,`translateX(${winnerDx}px) rotate(${leftWins?-3:3}deg)`);
+      setRopeTransform(`translateX(${ropeDx}px)`);
+
+      finalTimer=setTimeout(()=>{
+        setState(winEl,'final-winner');
+        setState(loseEl,'final-loser');
+      },1850);
+    });
   }
 
   function sync(){
+    const [a,b]=scoreVals();
     if(ended()){
-      const a=parseInt(lScore?.textContent||'0',10),b=parseInt(rScore?.textContent||'0',10);
-      if(a>b){setState(left,'final-winner');setState(right,'final-loser')}
-      else if(b>a){setState(left,'final-loser');setState(right,'final-winner')}
       finalCross();
       return;
     }
@@ -114,9 +164,13 @@ f.addEventListener('load',()=>{
     if(rs.includes('ACERTOU'))setState(right,'inplay-happy');
     else if(rs.includes('ERROU')||rs.includes('TEMPO ESGOTADO'))setState(right,'inplay-panic');
     else setState(right,'neutral');
+
+    animateScoreChange();
+    if(a===0&&b===0){lastDiff=0;lastScoreSum=0;placeByScore()}
   }
+
   const obs=new MutationObserver(sync);
-  [lStatus,rStatus,arena,lScore,rScore,left,right].forEach(el=>el&&obs.observe(el,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['class','style']}));
+  [lStatus,rStatus,arena,lScore,rScore].forEach(el=>el&&obs.observe(el,{childList:true,subtree:true,characterData:true}));
   sync();
 });
 </script></body></html>
