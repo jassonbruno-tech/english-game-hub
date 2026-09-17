@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tug of War English — 15 rodadas</title>
+<style>
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#0b1220}
+iframe{border:0;width:100%;height:100%;display:block}
+</style>
+</head>
+<body>
+<iframe id="outerGame" src="tug-of-war-final.html?v=20260917-sync15" allow="autoplay"></iframe>
+<script>
+const outer=document.getElementById('outerGame');
+
+function install15Rounds(){
+  const outerDoc=outer.contentDocument;
+  if(!outerDoc)return;
+  const inner=outerDoc.getElementById('game');
+  if(!inner)return;
+
+  const apply=()=>{
+    const d=inner.contentDocument;
+    const w=inner.contentWindow;
+    if(!d||!w||typeof w.schedule!=='function'||typeof w.next!=='function'||typeof w.endMatch!=='function')return;
+    if(w.__rounds15Installed)return;
+    w.__rounds15Installed=true;
+
+    const qMeta=d.getElementById('qMeta');
+    const lScore=d.getElementById('leftScore');
+    const rScore=d.getElementById('rightScore');
+    const roundNumber=d.getElementById('roundNumber');
+    const result=d.getElementById('resultBox');
+    const TOTAL=15;
+    const originalSchedule=w.schedule.bind(w);
+
+    function score(el){return parseInt(el?.textContent||'0',10)||0}
+    function currentRound(){
+      const q=qMeta?.textContent||'';
+      let m=q.match(/Pergunta\s+(\d+)/i);
+      if(m)return parseInt(m[1],10);
+      const r=roundNumber?.textContent||'';
+      m=r.match(/RODADA\s+(\d+)/i);
+      return m?parseInt(m[1],10):1;
+    }
+    function isSuddenDeath(){return /DESEMPATE|morte súbita/i.test((qMeta?.textContent||'')+' '+(roundNumber?.textContent||''))}
+    function fixCounter(){
+      if(!qMeta)return;
+      const t=qMeta.textContent||'';
+      if(/Pergunta\s+\d+\/\d+/i.test(t)){
+        const n=currentRound();
+        const wanted=`Pergunta ${n}/${TOTAL}`;
+        if(qMeta.textContent!==wanted)qMeta.textContent=wanted;
+      }
+    }
+
+    w.schedule=function(delay,a,b){
+      if(isSuddenDeath())return originalSchedule(delay,a,b);
+
+      const round=currentRound();
+      const ls=score(lScore),rs=score(rScore);
+      const remaining=Math.max(0,TOTAL-round);
+
+      /* encerra antes das 15 somente quando o adversário nem sequer pode empatar */
+      if(Math.abs(ls-rs)>remaining){
+        if(result){
+          result.textContent+=` Vantagem inalcançável: restam ${remaining} rodada${remaining===1?'':'s'}.`;
+        }
+        return w.setTimeout(()=>w.endMatch(),delay);
+      }
+
+      if(round<TOTAL){
+        return w.setTimeout(()=>w.next(),delay+250);
+      }
+
+      /* na 15ª, preserva a lógica original: empate vai para morte súbita */
+      return originalSchedule(delay,a,b);
+    };
+
+    const obs=new MutationObserver(fixCounter);
+    if(qMeta)obs.observe(qMeta,{childList:true,subtree:true,characterData:true});
+    fixCounter();
+  };
+
+  inner.addEventListener('load',()=>setTimeout(apply,120));
+  setTimeout(apply,350);
+}
+
+outer.addEventListener('load',()=>setTimeout(install15Rounds,120));
+</script>
+</body>
+</html>
