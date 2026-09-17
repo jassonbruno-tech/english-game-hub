@@ -1,12 +1,71 @@
-<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Tug of War English</title><style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#0b1220}iframe{border:0;width:100%;height:100%;display:block}</style></head><body><iframe id="game" src="tug-of-war.html?v=20260917-visual9" allow="autoplay"></iframe><script>const f=document.getElementById('game');f.addEventListener('load',()=>{const d=f.contentDocument;if(!d)return;const s=d.createElement('style');s.textContent=`
-/* DIREÇÃO: ambos os times encaram o centro */
-.right .person{transform:scaleX(-1)!important}.right .person.short{transform:scale(.94) scaleX(-1)!important}.right .person.tall{transform:scaleY(1.04) scaleX(-1)!important}
-/* OLHOS CARTOON: oval branco, contorno preto, pupila preta e brilho branco */
-.eye-white{top:22px!important;width:9px!important;height:12px!important;background:#fff!important;border:1.6px solid #111!important;border-radius:50%!important;box-shadow:none!important;overflow:visible!important;z-index:13!important}.eye-white.left-eye{left:12px!important}.eye-white.right-eye{left:23px!important}.pupil{position:absolute!important;top:3px!important;left:2px!important;width:5px!important;height:6px!important;background:#000!important;border-radius:50%!important;box-shadow:none!important}.pupil:after{content:'';position:absolute;width:1.8px;height:1.8px;background:#fff;border-radius:50%;top:1px;left:2.4px}.brow{top:18px!important;height:1.5px!important;background:#2b211b!important}.brow.left-brow{left:12px!important}.brow.right-brow{left:23px!important}.nose{position:absolute;left:31px;top:27px;width:5px;height:5px;background:var(--skin);border-right:1.5px solid #8b5e43;border-bottom:1.5px solid #8b5e43;transform:rotate(-35deg);border-radius:0 0 4px 0;z-index:12}
-/* MÃOS NA CORDA */
-.rope-wrap{bottom:71px!important}.rope{top:5px!important;height:10px!important}.left .arm-front{left:24px!important;width:20px!important;transform:rotate(2deg)!important}.left .arm-back{left:19px!important;width:20px!important;transform:rotate(-5deg)!important}.right .arm-front{right:24px!important;width:20px!important;transform:rotate(-2deg)!important}.right .arm-back{right:19px!important;width:20px!important;transform:rotate(5deg)!important}.hand-back,.hand-front{top:42px!important;width:13px!important;height:13px!important;border-radius:46%!important}.left .hand-back{left:34px!important}.left .hand-front{left:39px!important}.right .hand-back{right:34px!important}.right .hand-front{right:39px!important}.left .grip-shadow{left:36px!important}.right .grip-shadow{right:36px!important}
-/* VENCEDORES: soltam a corda, levantam os braços e pulam */
-.team-people.winner .arm-back,.team-people.winner .arm-front{top:34px!important;width:23px!important;transform-origin:2px 50%!important;z-index:9!important}.team-people.winner.left .arm-back{left:12px!important;transform:rotate(-72deg)!important}.team-people.winner.left .arm-front{left:23px!important;transform:rotate(-108deg)!important}.team-people.winner.right .arm-back{right:12px!important;transform:rotate(72deg)!important}.team-people.winner.right .arm-front{right:23px!important;transform:rotate(108deg)!important}.team-people.winner .hand-back,.team-people.winner .hand-front{top:20px!important;z-index:11!important}.team-people.winner.left .hand-back{left:8px!important}.team-people.winner.left .hand-front{left:31px!important}.team-people.winner.right .hand-back{right:8px!important}.team-people.winner.right .hand-front{right:31px!important}.team-people.winner.left .person{animation:jumpLeft .52s ease-in-out 4!important}.team-people.winner.right .person{animation:jumpRight .52s ease-in-out 4!important}@keyframes jumpLeft{0%,100%{transform:translateY(0)}50%{transform:translateY(-19px) rotate(-3deg)}}@keyframes jumpRight{0%,100%{transform:scaleX(-1) translateY(0)}50%{transform:scaleX(-1) translateY(-19px) rotate(-3deg)}}
-/* PERDEDORES: choram */
-.tear{position:absolute;width:5px;height:10px;background:#63c7ff;border:1px solid #dff7ff;border-radius:50% 50% 55% 55%;display:none;z-index:15}.tear.t1{top:31px;left:14px}.tear.t2{top:31px;left:25px}.team-people.loser .tear{display:block;animation:tearDrop .7s ease-in infinite}.team-people.loser .tear.t2{animation-delay:.18s}.team-people.loser .sweat{display:none!important}.team-people.loser .mouth{width:12px!important;height:7px!important;left:15px!important;top:35px!important;background:transparent!important;border:0!important;border-top:2.5px solid #7a2d20!important;border-radius:8px 8px 0 0!important}.team-people.loser.left .person{animation:cryLeft .42s ease-in-out infinite!important}.team-people.loser.right .person{animation:cryRight .42s ease-in-out infinite!important}@keyframes tearDrop{0%{transform:translateY(-1px) scale(.75);opacity:0}25%{opacity:1}100%{transform:translateY(12px) scale(1.05);opacity:0}}@keyframes cryLeft{0%,100%{transform:translateY(1px) rotate(2deg)}50%{transform:translateY(4px) rotate(-2deg)}}@keyframes cryRight{0%,100%{transform:scaleX(-1) translateY(1px) rotate(2deg)}50%{transform:scaleX(-1) translateY(4px) rotate(-2deg)}}
-`;d.head.appendChild(s);d.querySelectorAll('.person').forEach(p=>{if(!p.querySelector('.nose')){const n=d.createElement('div');n.className='nose';p.appendChild(n)}if(!p.querySelector('.tear')){const a=d.createElement('div');a.className='tear t1';const b=d.createElement('div');b.className='tear t2';p.append(a,b)}});});</script></body></html>
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Tug of War English</title><style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#0b1220}iframe{border:0;width:100%;height:100%;display:block}</style></head><body><iframe id="game" src="tug-of-war.html?v=20260917-visual9" allow="autoplay"></iframe><script>
+const f=document.getElementById('game');
+f.addEventListener('load',()=>{
+  const d=f.contentDocument;if(!d)return;
+  const s=d.createElement('style');
+  s.textContent=`
+/* EQUIPE DA DIREITA: de frente para os adversarios, braços apontando para o centro */
+.right .person,.right .person.short,.right .person.tall{transform:none!important}
+.right .arm-front{left:-2px!important;right:auto!important;width:22px!important;transform:rotate(-5deg)!important;transform-origin:right center!important;z-index:8!important}
+.right .arm-back{left:3px!important;right:auto!important;width:22px!important;transform:rotate(5deg)!important;transform-origin:right center!important;z-index:5!important}
+.right .hand-front{left:-8px!important;right:auto!important;z-index:10!important}
+.right .hand-back{left:-3px!important;right:auto!important;z-index:6!important}
+.right .grip-shadow{left:-7px!important;right:auto!important}
+.left .arm-front{left:24px!important;width:20px!important;transform:rotate(2deg)!important}.left .arm-back{left:19px!important;width:20px!important;transform:rotate(-5deg)!important}.left .hand-back{left:34px!important}.left .hand-front{left:39px!important}.left .grip-shadow{left:36px!important}
+.hand-back,.hand-front{top:42px!important;width:13px!important;height:13px!important;border-radius:46%!important}
+.rope-wrap{bottom:71px!important}.rope{top:5px!important;height:10px!important}
+
+/* OLHOS cartoon simples: branco, contorno preto, pupila preta e brilho */
+.eye-white{top:22px!important;width:9px!important;height:12px!important;background:#fff!important;border:1.7px solid #111!important;border-radius:50%!important;box-shadow:none!important;overflow:visible!important;z-index:13!important}.eye-white.left-eye{left:12px!important}.eye-white.right-eye{left:23px!important}.pupil{position:absolute!important;top:3px!important;left:2px!important;width:5px!important;height:6px!important;background:#000!important;border-radius:50%!important;box-shadow:none!important}.pupil:after{content:'';position:absolute;width:1.8px;height:1.8px;background:#fff;border-radius:50%;top:1px;left:2.5px}.brow{top:18px!important;height:1.5px!important;background:#2b211b!important}.brow.left-brow{left:12px!important}.brow.right-brow{left:23px!important}
+
+/* ESTADOS DURANTE A RODADA */
+.team-people.inplay-happy .mouth{width:14px!important;height:8px!important;left:14px!important;top:31px!important;background:transparent!important;border:0!important;border-bottom:3px solid #7a2d20!important;border-radius:0 0 9px 9px!important}.team-people.inplay-happy .sweat,.team-people.inplay-happy .tear{display:none!important}.team-people.inplay-happy .left-brow{transform:rotate(-4deg)!important}.team-people.inplay-happy .right-brow{transform:rotate(4deg)!important}
+.team-people.inplay-panic .mouth{width:10px!important;height:10px!important;left:16px!important;top:31px!important;background:transparent!important;border:2px solid #7a2d20!important;border-top:none!important;border-radius:0 0 8px 8px!important}.team-people.inplay-panic .left-brow{transform:rotate(18deg)!important}.team-people.inplay-panic .right-brow{transform:rotate(-18deg)!important}.team-people.inplay-panic .sweat{display:block!important}.team-people.inplay-panic .tear{display:none!important}
+
+/* FINAL DA PARTIDA: vencedor solta a corda e comemora */
+.team-people.final-winner .arm-back,.team-people.final-winner .arm-front{top:34px!important;width:23px!important;transform-origin:2px 50%!important;z-index:9!important}.team-people.final-winner.left .arm-back{left:12px!important;transform:rotate(-72deg)!important}.team-people.final-winner.left .arm-front{left:23px!important;transform:rotate(-108deg)!important}.team-people.final-winner.right .arm-back{left:7px!important;right:auto!important;transform:rotate(-108deg)!important}.team-people.final-winner.right .arm-front{left:18px!important;right:auto!important;transform:rotate(-72deg)!important}.team-people.final-winner .hand-back,.team-people.final-winner .hand-front{top:20px!important;z-index:11!important}.team-people.final-winner.left .hand-back{left:8px!important}.team-people.final-winner.left .hand-front{left:31px!important}.team-people.final-winner.right .hand-back{left:3px!important;right:auto!important}.team-people.final-winner.right .hand-front{left:26px!important;right:auto!important}.team-people.final-winner .person{animation:finalJump .52s ease-in-out 4!important}@keyframes finalJump{0%,100%{transform:translateY(0)}50%{transform:translateY(-19px) rotate(-3deg)}}
+
+/* FINAL DA PARTIDA: perdedor chora */
+.tear{position:absolute;width:5px;height:10px;background:#63c7ff;border:1px solid #dff7ff;border-radius:50% 50% 55% 55%;display:none;z-index:15}.tear.t1{top:31px;left:14px}.tear.t2{top:31px;left:25px}.team-people.final-loser .tear{display:block!important;animation:tearDrop .7s ease-in infinite}.team-people.final-loser .tear.t2{animation-delay:.18s}.team-people.final-loser .sweat{display:none!important}.team-people.final-loser .mouth{width:12px!important;height:7px!important;left:15px!important;top:35px!important;background:transparent!important;border:0!important;border-top:2.5px solid #7a2d20!important;border-radius:8px 8px 0 0!important}.team-people.final-loser .person{animation:finalCry .42s ease-in-out infinite!important}@keyframes tearDrop{0%{transform:translateY(-1px) scale(.75);opacity:0}25%{opacity:1}100%{transform:translateY(12px) scale(1.05);opacity:0}}@keyframes finalCry{0%,100%{transform:translateY(1px) rotate(2deg)}50%{transform:translateY(4px) rotate(-2deg)}}
+`;
+  d.head.appendChild(s);
+
+  d.querySelectorAll('.person').forEach(p=>{
+    if(!p.querySelector('.tear')){
+      const a=d.createElement('div');a.className='tear t1';
+      const b=d.createElement('div');b.className='tear t2';
+      p.append(a,b);
+    }
+  });
+
+  const left=d.getElementById('leftPeople'),right=d.getElementById('rightPeople');
+  const lStatus=d.getElementById('leftStatus'),rStatus=d.getElementById('rightStatus');
+  const arena=d.getElementById('arenaMsg'),lScore=d.getElementById('leftScore'),rScore=d.getElementById('rightScore');
+  const stateClasses=['winner','loser','neutral','inplay-happy','inplay-panic','final-winner','final-loser'];
+
+  function setState(team,state){
+    if(!team)return;
+    stateClasses.forEach(c=>{if(c!==state&&team.classList.contains(c))team.classList.remove(c)});
+    if(state&&!team.classList.contains(state))team.classList.add(state);
+  }
+  function ended(){return (arena?.textContent||'').includes('PARTIDA ENCERRADA')}
+  function sync(){
+    if(ended()){
+      const a=parseInt(lScore?.textContent||'0',10),b=parseInt(rScore?.textContent||'0',10);
+      if(a>b){setState(left,'final-winner');setState(right,'final-loser')}
+      else if(b>a){setState(left,'final-loser');setState(right,'final-winner')}
+      return;
+    }
+    const ls=lStatus?.textContent||'',rs=rStatus?.textContent||'';
+    if(ls.includes('ACERTOU'))setState(left,'inplay-happy');
+    else if(ls.includes('ERROU')||ls.includes('TEMPO ESGOTADO'))setState(left,'inplay-panic');
+    else setState(left,'neutral');
+    if(rs.includes('ACERTOU'))setState(right,'inplay-happy');
+    else if(rs.includes('ERROU')||rs.includes('TEMPO ESGOTADO'))setState(right,'inplay-panic');
+    else setState(right,'neutral');
+  }
+  const obs=new MutationObserver(sync);
+  [lStatus,rStatus,arena,lScore,rScore,left,right].forEach(el=>el&&obs.observe(el,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['class','style']}));
+  sync();
+});
+</script></body></html>
