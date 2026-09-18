@@ -1,0 +1,10 @@
+{
+  "rules": {
+    "tugRooms": {
+      "$room": {
+        ".read": true,
+        ".write": true
+      }
+    }
+  }
+}
