@@ -1,55 +1,29 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Tug of War — Campeonato Multiplayer</title>
-<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
-<script src="firebase-config.js?v=3"></script>
-<style>
-html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050816;font-family:Arial,sans-serif}
-iframe{border:0;width:100%;height:100%;display:block}
-.loading{position:fixed;inset:0;display:grid;place-items:center;background:#050816;color:#fff;z-index:20;text-align:center;padding:24px;font-weight:900}
-.loading.hide{display:none}.loading small{display:block;color:#9fb4dc;margin-top:10px;font-weight:600}
-</style>
-</head>
-<body>
-<div class="loading" id="loading">Conectando ao campeonato...<small id="loadNote"></small></div>
-<iframe id="outer" src="tug-of-war-final.html?v=20260918-multiwrap1" allow="autoplay"></iframe>
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Tug of War — Campeonato Multiplayer</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase-config.js?v=1"></script>
+<style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050816;font-family:Arial,sans-serif}iframe{border:0;width:100%;height:100%;display:block}.loading{position:fixed;inset:0;display:grid;place-items:center;background:#050816;color:#fff;z-index:20;text-align:center;padding:24px;font-weight:900}.loading.hide{display:none}.loading small{display:block;color:#9fb4dc;margin-top:10px;font-weight:600}</style></head><body>
+<div class="loading" id="loading">Conectando ao campeonato...<small id="loadNote"></small></div><iframe id="outer" src="tug-of-war-final.html?v=20260918-sbwrap1" allow="autoplay"></iframe>
 <script>
-const p=new URLSearchParams(location.search);
-const room=(p.get('sala')||'LAB703').replace(/[^a-zA-Z0-9_-]/g,'').toUpperCase();
-const player=p.get('equipe')||'blue';
-const cfg=window.TUG_FIREBASE_CONFIG||{};
-const loading=document.getElementById('loading'),note=document.getElementById('loadNote'),outer=document.getElementById('outer');
-if(!(cfg.apiKey&&cfg.databaseURL&&cfg.projectId)){
-  loading.innerHTML='⚙️ FIREBASE AINDA NÃO CONECTADO<small>O jogo multiplayer está programado, mas precisa das credenciais do Firebase para sincronizar computadores diferentes.</small>';
-}else{
-  if(!firebase.apps.length)firebase.initializeApp(cfg);
-  const db=firebase.database();
-  outer.addEventListener('load',()=>{
-    const od=outer.contentDocument;if(!od)return;
-    const inner=od.getElementById('game');if(!inner)return;
-    const desired='tug-of-war.html?v=20260918-multicore1&modo=multiplayer&equipe='+encodeURIComponent(player)+'&sala='+encodeURIComponent(room);
-    if(!inner.src.includes('modo=multiplayer'))inner.src=desired;
-    let tries=0,injected=false;
-    const boot=setInterval(()=>{
-      tries++;
-      try{
-        const d=inner.contentDocument,w=inner.contentWindow;
-        if(!d||!d.body)return;
-        if(injected||d.getElementById('tug-multi-loader')){injected=true;clearInterval(boot);loading.classList.add('hide');return}
-        if(typeof w.endMatch==='function'&&typeof w.setRope==='function'&&w.Q&&w.T){
-          w.__tugDb=db;w.__tugRoom=room;w.__tugPlayer=player;
-          const s=d.createElement('script');s.id='tug-multi-loader';s.src='tug-tournament-multiplayer.js?v=20260918-multi1';d.body.appendChild(s);
-          injected=true;clearInterval(boot);loading.classList.add('hide');
-        }
-      }catch(e){}
-      if(tries>160){clearInterval(boot);note.textContent='Não foi possível iniciar. Atualize a página.'}
-    },100);
-  });
+const p=new URLSearchParams(location.search),room=(p.get('sala')||'LAB703').replace(/[^a-zA-Z0-9_-]/g,'').toUpperCase(),player=p.get('equipe')||'blue';
+const cfg=window.TUG_SUPABASE_CONFIG||{},loading=document.getElementById('loading'),note=document.getElementById('loadNote'),outer=document.getElementById('outer');
+if(!(cfg.url&&cfg.key&&window.supabase?.createClient)){loading.innerHTML='⚠️ SUPABASE NÃO CARREGOU<small>Atualize a página e tente novamente.</small>'}
+else{
+ const sb=window.supabase.createClient(cfg.url,cfg.key);
+ outer.addEventListener('load',()=>{
+  const od=outer.contentDocument;if(!od)return;const inner=od.getElementById('game');if(!inner)return;
+  const desired='tug-of-war.html?v=20260918-sbcore1&modo=multiplayer&equipe='+encodeURIComponent(player)+'&sala='+encodeURIComponent(room);
+  if(!inner.src.includes('modo=multiplayer'))inner.src=desired;
+  let tries=0,injected=false;const boot=setInterval(()=>{
+   tries++;
+   try{
+    const d=inner.contentDocument,w=inner.contentWindow;if(!d||!d.body)return;
+    if(injected||d.getElementById('tug-multi-loader')){injected=true;clearInterval(boot);loading.classList.add('hide');return}
+    if(typeof w.endMatch==='function'&&typeof w.setRope==='function'){
+      w.__tugSupabase=sb;w.__tugRoom=room;w.__tugPlayer=player;
+      const s=d.createElement('script');s.id='tug-multi-loader';s.src='tug-tournament-multiplayer.js?v=20260918-supabase1';d.body.appendChild(s);injected=true;clearInterval(boot);loading.classList.add('hide');
+    }
+   }catch(e){}
+   if(tries>160){clearInterval(boot);note.textContent='Não foi possível iniciar. Atualize a página.'}
+  },100);
+ });
 }
-</script>
-</body>
-</html>
+</script></body></html>
