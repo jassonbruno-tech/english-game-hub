@@ -217,7 +217,10 @@ function finishPlacement(userWon){
   text.textContent=stage==='final'?(userWon?'Você venceu a final e conquistou o campeonato!':'Você chegou à final e terminou como vice-campeã.'):(userWon?'Você venceu a disputa de 3º lugar e conquistou o pódio!':'Você encerrou o torneio em 4º lugar.');
   again.style.display='none';modal.classList.add('show');
 }
+let booted=false;
 async function begin(){
+  if(booted)return;
+  booted=true;
   ensureDock();const badge=document.createElement('div');badge.textContent='MULTIPLAYER • '+room;badge.style.cssText='position:fixed;right:12px;top:12px;z-index:9999;background:linear-gradient(135deg,#06b6d4,#8b5cf6);color:#fff;font:900 10px Arial;padding:6px 9px;border-radius:999px;box-shadow:0 0 16px #22d3ee88;pointer-events:none';document.body.appendChild(badge);
   const brandSmall=document.querySelector('.brand small');if(brandSmall)brandSmall.textContent='Campeonato sincronizado • você controla apenas sua equipe';
   const rightNote=document.querySelector('.right-note');if(rightNote)rightNote.textContent='Resposta adversária oculta até a revelação';
@@ -225,8 +228,9 @@ async function begin(){
   const semiId=(player==='blue'||player==='yellow')?'semi1':'semi2',a=semiId==='semi1'?'blue':'green',b=semiId==='semi1'?'yellow':'red';
   await startStage(semiId,a,b,'semi');
 }
-startMatch=function(){begin().catch(e=>{$s('arenaMsg').textContent='Erro de sincronização: '+e.message})};
-reset=function(){location.reload()};
+function launch(){begin().catch(e=>{$s('arenaMsg').textContent='Erro de sincronização: '+e.message})}
+startMatch=launch;
+reset=launch;
 $s('playAgain').onclick=()=>location.reload();
 tournamentRef.on('value',()=>{if(stage==='semi'&&document.getElementById('multiAdvanceDock')?.classList.contains('show'))showDockAfterSemi().catch(()=>{})});
 })();
