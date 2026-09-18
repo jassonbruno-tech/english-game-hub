@@ -48,7 +48,7 @@ function enterGame(){
   if(!myColor)return;
   const target=soloMode?'tug-simulacao.html':'tug-multiplayer-game.html';
   const u=new URL(target,location.href);
-  u.searchParams.set('sala',room);u.searchParams.set('equipe',myColor);u.searchParams.set('modo',soloMode?'simulacao':testMode?'teste-local':'multiplayer');u.searchParams.set('v','20260918-multiplayer1');
+  u.searchParams.set('sala',room);u.searchParams.set('equipe',myColor);u.searchParams.set('modo',soloMode?'simulacao':testMode?'teste-local':'multiplayer');u.searchParams.set('v','20260918-multiplayer2');
   location.href=u.href;
 }
 $('enterGame').onclick=enterGame;
@@ -80,7 +80,7 @@ async function startFirebase(){
     for(const c of COLORS){
       const ref=teamsRef.child(c.id);
       const tx=await ref.transaction(v=>{
-        if(v===null||v?.deviceId===deviceId)return {deviceId,connected:true,joinedAt:firebase.database.ServerValue.TIMESTAMP};
+        if(v===null||v?.deviceId===deviceId||v?.connected===false)return {deviceId,connected:true,joinedAt:firebase.database.ServerValue.TIMESTAMP};
         return;
       });
       if(tx.committed){myColor=c.id;await meRef.set({color:c.id,connected:true,joinedAt:firebase.database.ServerValue.TIMESTAMP});renderMe();return}
