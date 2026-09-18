@@ -46,9 +46,9 @@ function renderTeams(teams){
 }
 function enterGame(){
   if(!myColor)return;
-  const target=soloMode?'tug-simulacao.html':'tug-of-war-final.html';
+  const target=soloMode?'tug-simulacao.html':'tug-multiplayer-game.html';
   const u=new URL(target,location.href);
-  u.searchParams.set('sala',room);u.searchParams.set('equipe',myColor);u.searchParams.set('modo',soloMode?'simulacao':testMode?'teste-local':'multiplayer');u.searchParams.set('v','20260917-torneio1');
+  u.searchParams.set('sala',room);u.searchParams.set('equipe',myColor);u.searchParams.set('modo',soloMode?'simulacao':testMode?'teste-local':'multiplayer');u.searchParams.set('v','20260918-multiplayer1');
   location.href=u.href;
 }
 $('enterGame').onclick=enterGame;
