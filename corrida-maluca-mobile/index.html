@@ -167,8 +167,8 @@ html,body{
   .track-wrap{
     left:1.6%;
     right:1.6%;
-    top:14%;
-    height:42%;
+    top:13.5%;
+    height:39.5%;
     border-radius:18px;
   }
   .track-wrap:before{border-radius:15px}
@@ -208,17 +208,17 @@ html,body{
   .numbers span{font-size:clamp(6px,1.03vw,9px)}
 
   .car{
-    font-size:clamp(24px,5.2vw,40px);
+    font-size:clamp(21px,4.4vw,34px);
   }
-  .smoke{font-size:clamp(10px,2vw,15px)}
+  .smoke{font-size:clamp(9px,1.7vw,13px)}
 
   .question-panel{
     left:1.6%;
-    bottom:1.2%;
+    bottom:1.0%;
     width:61.5%;
-    height:39%;
+    height:43%;
     border-radius:16px;
-    padding:1.1% 1.4%;
+    padding:1% 1.3%;
     overflow-y:auto;
     overscroll-behavior:contain;
   }
@@ -227,26 +227,26 @@ html,body{
     padding:.55% 1.4%;
   }
   .question-text{
-    font-size:clamp(10px,1.85vw,15px);
-    line-height:1.1;
-    min-height:16%;
-    margin-top:.6%;
+    font-size:clamp(9px,1.65vw,14px);
+    line-height:1.12;
+    min-height:14%;
+    margin-top:.45%;
   }
   .answers{
     display:grid;
     grid-template-columns:1fr 1fr;
-    gap:6px;
-    margin-top:.7%;
+    gap:5px;
+    margin-top:.5%;
     height:auto;
     align-content:start;
   }
   .answer{
-    min-height:46px;
+    min-height:44px;
     height:auto;
     border-radius:10px;
-    padding:8px 10px;
-    font-size:clamp(8px,1.55vw,12px);
-    line-height:1.18;
+    padding:7px 9px;
+    font-size:clamp(8px,1.45vw,11px);
+    line-height:1.16;
     white-space:normal;
     word-break:break-word;
     overflow:visible;
@@ -265,11 +265,11 @@ html,body{
 
   .score-panel{
     right:1.6%;
-    bottom:1.2%;
+    bottom:1.0%;
     width:34.5%;
-    height:39%;
+    height:43%;
     border-radius:16px;
-    padding:1.2% 2%;
+    padding:1.1% 1.8%;
   }
   .score-title{
     font-size:clamp(9px,1.6vw,12px);
@@ -326,12 +326,13 @@ html,body{
 
 /* Celulares muito baixos (ex.: 360px de altura em paisagem) */
 @media (max-height:430px) and (orientation:landscape){
-  .track-wrap{top:13.5%;height:39%}
-  .question-panel,.score-panel{height:42%;bottom:.8%}
-  .question-text{font-size:clamp(9px,1.7vw,13px);min-height:14%}
-  .answer{min-height:50px;font-size:clamp(8px,1.45vw,11px);padding:7px 9px;line-height:1.16}
-  .header{top:.3%}
-  .hud{top:.5%}
+  .track-wrap{top:12.8%;height:36.5%}
+  .question-panel,.score-panel{height:47%;bottom:.6%}
+  .question-text{font-size:clamp(8px,1.5vw,12px);min-height:12%;line-height:1.1}
+  .answer{min-height:42px;font-size:clamp(7px,1.3vw,10px);padding:6px 8px;line-height:1.14}
+  .car{font-size:clamp(19px,4vw,30px)}
+  .header{top:.2%}
+  .hud{top:.4%}
 }
 
 /* Em retrato, pede rotação em vez de esmagar o layout */
