@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Corrida Maluca Mobile — Filmes & Desenhos</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:Arial,Helvetica,sans-serif;background:#07111f}
+button{font-family:inherit}
+:root{
+  --bg1:#07111f; --bg2:#0b1f39; --panel:#0f2038; --panel2:#132a49; --text:#f4f8ff;
+  --muted:#b7caec; --line:#2d4d84; --glow:#5fd6ff; --glow2:#9a5bff;
+}
+.rotate-warning{display:none;position:fixed;inset:0;z-index:999;background:#081423;color:#fff;align-items:center;justify-content:center;text-align:center;padding:28px;font-weight:900;font-size:22px}
+@media (orientation:portrait) and (max-width: 900px){.rotate-warning{display:flex}}
+.viewport{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden;background:radial-gradient(circle at top,#31206a 0,#10244c 34%,#08111f 72%,#04070d 100%)}
+.stage{position:relative;width:min(100vw,177.78vh);height:min(56.25vw,100vh);overflow:hidden;background:linear-gradient(180deg,#160d31 0%,#0b1830 38%,#07111f 100%);box-shadow:0 0 40px rgba(0,0,0,.45), inset 0 0 60px rgba(255,255,255,.02)}
+
+/* decoração */
+.grid{position:absolute;inset:0;background:
+linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+background-size:3.2% 6%;opacity:.45;pointer-events:none}
+.glow-orb{position:absolute;border-radius:50%;filter:blur(40px);opacity:.35;pointer-events:none}
+.orb1{width:22%;height:35%;left:-4%;top:-7%;background:#20d6ff}
+.orb2{width:24%;height:38%;right:-6%;top:-9%;background:#ff3d9a}
+
+.header{position:absolute;left:0;right:0;top:1.5%;display:flex;justify-content:center;pointer-events:none;z-index:10}
+.title-box{background:linear-gradient(135deg,rgba(17,33,70,.88),rgba(10,20,40,.88));border:2px solid #4f6dff;border-radius:24px;padding:1.1% 2.8%;box-shadow:0 0 18px rgba(32,214,255,.28), 0 0 28px rgba(255,61,154,.14), inset 0 0 20px rgba(255,255,255,.05)}
+.title{font-size:clamp(25px,3.9vw,54px);font-weight:1000;letter-spacing:1px;line-height:1;color:#ffd83d;text-shadow:0 0 14px rgba(255,216,61,.55), 0 0 28px rgba(255,216,61,.22)}
+.subtitle{font-size:clamp(10px,1.2vw,18px);font-weight:900;color:#f4f8ff;text-align:center;margin-top:.4%}
+
+.hud{position:absolute;right:1.6%;top:3%;width:18%;height:14%;display:grid;grid-template-rows:1fr 1fr;gap:8%;z-index:15}
+.hud-card{background:linear-gradient(180deg,rgba(18,38,74,.92),rgba(10,21,41,.92));border:2px solid #4f6dff;border-radius:16px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;box-shadow:0 0 14px rgba(32,214,255,.18), inset 0 0 14px rgba(255,255,255,.03)}
+.hud-card span{color:#20d6ff;text-shadow:0 0 10px rgba(32,214,255,.45);margin-left:6px}
+
+.track-wrap{position:absolute;left:4%;right:4%;top:17%;height:50%;border-radius:28px;background:linear-gradient(180deg,rgba(16,32,60,.84),rgba(8,16,32,.96));border:2px solid #3559a8;box-shadow:inset 0 0 22px rgba(0,0,0,.42),0 0 18px rgba(32,214,255,.16), 0 0 28px rgba(255,61,154,.08);overflow:hidden}
+.track-wrap:before{content:"";position:absolute;inset:1.4%;border-radius:24px;border:1px solid rgba(160,193,255,.18)}
+.start-tag,.finish-tag{position:absolute;top:3.2%;width:8.3%;height:9%;border-radius:18px;display:flex;align-items:center;justify-content:center;font-weight:1000;font-size:clamp(12px,1.2vw,18px);z-index:7}
+.start-tag{left:1.8%;background:linear-gradient(135deg,#19f28a,#00c3a8);color:#03221f;box-shadow:0 0 18px rgba(25,242,138,.42)}
+.finish-tag{right:1.8%;background:linear-gradient(135deg,#ff7a1a,#ff3d9a);color:#fff;box-shadow:0 0 18px rgba(255,61,154,.34)}
+
+.lane-labels{position:absolute;left:1.8%;top:15%;width:10%;height:74%;display:grid;grid-template-rows:repeat(4,1fr);gap:4.2%;z-index:6}
+.team-label{border-radius:18px;padding:0 8%;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:1000;font-size:clamp(10px,1vw,15px);color:#fff;border:2px solid rgba(255,255,255,.18)}
+.t1{background:linear-gradient(135deg,#20d6ff,#2d7cff)}
+.t2{background:linear-gradient(135deg,#ff4d57,#ff7a1a)}
+.t3{background:linear-gradient(135deg,#19f28a,#00c853)}
+.t4{background:linear-gradient(135deg,#ffd83d,#ff9800);color:#21263a}
+
+.lanes{position:absolute;left:12.5%;right:3%;top:15%;height:74%;display:grid;grid-template-rows:repeat(4,1fr);gap:4.2%;z-index:5}
+.lane{position:relative;border-radius:18px;background:linear-gradient(180deg,#2d3f5d,#1a263b);border:1px solid rgba(255,255,255,.14);overflow:hidden;box-shadow:inset 0 0 16px rgba(0,0,0,.28), 0 0 12px rgba(32,214,255,.08)}
+.lane:before{content:"";position:absolute;left:2%;right:2%;top:50%;height:2px;background:repeating-linear-gradient(90deg,rgba(255,255,255,.6) 0 2.3%,transparent 2.3% 4.6%);transform:translateY(-50%)}
+.lane:after{content:"";position:absolute;right:1.2%;top:0;bottom:0;width:2.4%;background:repeating-linear-gradient(180deg,#fff 0 10px,#202c43 10px 20px)}
+.numbers{position:absolute;left:2.5%;right:5%;bottom:6%;display:grid;grid-template-columns:repeat(20,1fr);gap:0;pointer-events:none}
+.numbers span{font-size:clamp(8px,.74vw,11px);font-weight:900;color:#dfe9ff;text-align:center;opacity:.94;text-shadow:0 0 8px rgba(255,255,255,.08)}
+
+.car{position:absolute;left:2%;top:50%;transform:translate(-50%,-50%) scaleX(-1);width:auto;height:auto;font-size:clamp(28px,3vw,46px);line-height:1;transition:left .55s cubic-bezier(.22,.9,.3,1);filter:drop-shadow(0 4px 4px rgba(0,0,0,.4));z-index:9}
+.smoke{position:absolute;left:0;top:50%;transform:translate(-50%,-50%);font-size:clamp(12px,1vw,18px);opacity:0;z-index:8}
+.smoke.go{animation:puff .6s ease-out}
+@keyframes puff{0%{opacity:.95;transform:translate(-15px,-50%) scale(.7)}100%{opacity:0;transform:translate(-44px,-50%) scale(1.5)}}
+
+.question-panel{position:absolute;left:3%;bottom:3.2%;width:57%;height:26%;background:linear-gradient(180deg,rgba(16,30,54,.92),rgba(11,22,41,.94));border:2px solid #4f6dff;border-radius:22px;box-shadow:0 0 20px rgba(32,214,255,.18), 0 0 24px rgba(255,61,154,.08);padding:1.15% 1.8%;z-index:12;overflow:hidden}
+.q-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:.2%}
+.q-badge{display:inline-flex;align-items:center;background:linear-gradient(135deg,#20d6ff,#6f58ff);padding:.6% 1.8%;border-radius:999px;color:#fff;box-shadow:0 0 12px rgba(32,214,255,.24);font-weight:1000;font-size:clamp(10px,1vw,14px)}
+.question-text{color:#f4f8ff;font-size:clamp(12px,1.42vw,22px);font-weight:1000;line-height:1.08;min-height:20%;margin-top:.8%}
+.answers{display:grid;grid-template-columns:1fr 1fr;gap:4% 2.2%;margin-top:1%;height:61%}
+.answer{border:2px solid #b7cbed;border-radius:14px;background:linear-gradient(180deg,#253955,#17263b);color:#fff;padding:1.6% 2.8%;font-size:clamp(9px,.96vw,14px);font-weight:900;text-align:left;box-shadow:0 2px 0 #8eadcf;min-height:34px;line-height:1.1}
+.answer.good{background:linear-gradient(180deg,#18d968,#0fa852);border-color:#19f28a}
+.answer.bad{background:linear-gradient(180deg,#ff5c67,#c12f48);border-color:#ff7b96}
+.answer[disabled]{opacity:.65}
+.answer:hover{box-shadow:0 0 14px rgba(32,214,255,.22);transform:translateY(-1px)}
+.penalty{position:absolute;left:18%;right:18%;bottom:5%;padding:1.1% 2%;background:linear-gradient(135deg,#ff4d57,#a01a2d);color:#fff;border:2px solid #ffd54d;border-radius:12px;text-align:center;font-weight:1000;font-size:clamp(9px,.95vw,14px);display:none}
+.penalty.show{display:block}
+
+.score-panel{position:absolute;right:3%;bottom:3.2%;width:33%;height:26%;background:linear-gradient(180deg,rgba(16,30,54,.92),rgba(11,22,41,.94));border:2px solid #4f6dff;border-radius:22px;padding:1.35% 3.2%;box-shadow:0 0 20px rgba(32,214,255,.18), 0 0 24px rgba(255,61,154,.08);z-index:12;overflow:hidden}
+.score-title{color:#fff;font-size:clamp(11px,1.1vw,17px);font-weight:1000;text-align:center;margin-bottom:1.8%;line-height:1.1}
+.score-list{height:84%;display:flex;flex-direction:column;justify-content:space-evenly}
+.score-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:3%;height:21%}
+.score-name{font-size:clamp(9px,.9vw,13px);font-weight:900;color:#fff;display:flex;align-items:center;line-height:1}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:7px;box-shadow:0 0 8px currentColor}
+.d1{background:#21b8ff;color:#21b8ff}.d2{background:#ff6347;color:#ff6347}.d3{background:#1ddb73;color:#1ddb73}.d4{background:#ffd33d;color:#ffd33d}
+.score-pill{min-width:86px;text-align:center;background:linear-gradient(135deg,#ffffff,#dce7ff);border-radius:999px;box-shadow:0 0 12px rgba(32,214,255,.14);padding:5px 10px;font-size:clamp(9px,.82vw,12px);font-weight:1000;color:#10285a;line-height:1}
+
+.overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(6,15,28,.62);z-index:30}
+.card{width:42%;background:linear-gradient(180deg,rgba(19,41,76,.95),rgba(10,24,48,.95));border:2px solid #5a8cff;border-radius:24px;box-shadow:0 0 20px rgba(32,214,255,.22), 0 0 26px rgba(255,61,154,.12);padding:2.3%;text-align:center;color:#fff}
+.card h2{margin:0;font-size:clamp(22px,3vw,42px);color:#ffd54d}
+.card p{font-size:clamp(10px,1vw,15px);line-height:1.3;color:#d7e6ff;font-weight:800}
+.btn{border:0;background:linear-gradient(135deg,#20d6ff,#ff3d9a);color:#fff;border-radius:14px;padding:3% 8%;font-weight:1000;font-size:clamp(12px,1.25vw,18px);box-shadow:0 4px 0 rgba(16,39,83,.8), 0 0 18px rgba(32,214,255,.2)}
+.hidden{display:none !important}
+
+.podium-card{width:56%;background:linear-gradient(180deg,#102544,#0c1931);border:2px solid #5a8cff;border-radius:24px;box-shadow:0 0 20px rgba(95,214,255,.22);padding:2.3%;text-align:center;color:#fff}
+.podium-title{font-size:clamp(24px,3vw,44px);font-weight:1000;color:#ffd54d}
+.steps{display:grid;grid-template-columns:1fr 1.12fr 1fr;gap:2%;align-items:end;margin-top:2%}
+.step{border:2px solid rgba(255,255,255,.2);border-radius:16px 16px 4px 4px;padding:6% 3%;font-weight:1000;color:#fff}
+.first{min-height:154px;background:linear-gradient(180deg,#ffd83d,#ff9800)}
+.second{min-height:118px;background:linear-gradient(180deg,#d8dfec,#9ea8ba);color:#1a2849}
+.third{min-height:96px;background:linear-gradient(180deg,#ff8f4d,#ff5c35)}
+.medal{font-size:clamp(20px,2.5vw,36px)}
+.podcar{width:auto;height:auto;margin:6px auto;font-size:38px;line-height:1;background:none}
+.pname{font-size:clamp(9px,1vw,14px)}
+.pmini{font-size:clamp(8px,.88vw,12px)}
+.fourth{margin-top:2%;font-size:clamp(9px,1vw,14px);font-weight:900;color:#dbe8ff}
+
+@media(max-height:520px){.track-wrap{top:15%;height:52%}.question-panel,.score-panel{height:28%}.card{width:48%}.podium-card{width:62%}}
+
+.title.alert{animation:titleFlash .62s infinite alternate}
+@keyframes titleFlash{
+  0%{color:#ffd83d;text-shadow:0 0 10px rgba(255,216,61,.5),0 0 20px rgba(255,61,154,.18);transform:scale(1)}
+  100%{color:#ffffff;text-shadow:0 0 18px #20d6ff,0 0 34px #ff3d9a,0 0 46px rgba(255,216,61,.6);transform:scale(1.035)}
+}
+.winner-overlay{position:absolute;inset:0;z-index:45;background:radial-gradient(circle at center,rgba(36,18,77,.94),rgba(4,8,17,.97));display:none;align-items:center;justify-content:center;text-align:center;color:#fff}
+.winner-overlay.show{display:flex;animation:winnerIn .35s ease-out}
+@keyframes winnerIn{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
+.winner-box{width:58%;padding:4% 3%;border-radius:28px;background:linear-gradient(135deg,rgba(18,37,72,.96),rgba(22,12,49,.96));border:2px solid #5a8cff;box-shadow:0 0 28px rgba(32,214,255,.28),0 0 38px rgba(255,61,154,.18)}
+.winner-kicker{font-size:clamp(12px,1.4vw,20px);font-weight:900;color:#20d6ff;letter-spacing:2px}
+.winner-name{margin-top:1.2%;font-size:clamp(28px,4.6vw,68px);font-weight:1000;color:#ffd83d;text-shadow:0 0 14px rgba(255,216,61,.5)}
+.winner-car{margin:1.5% auto 0;font-size:clamp(48px,7vw,96px);filter:drop-shadow(0 6px 8px rgba(0,0,0,.35))}
+
+
+/* =========================================================
+   MOBILE VERSION — arquivo separado
+   Otimizado para celular em modo paisagem
+   ========================================================= */
+html,body{
+  width:100%;
+  height:100%;
+  min-height:100dvh;
+  overscroll-behavior:none;
+  touch-action:manipulation;
+  -webkit-tap-highlight-color:transparent;
+}
+.viewport{
+  width:100vw;
+  height:100dvh;
+  min-height:100svh;
+}
+.stage{
+  width:min(100vw,177.78dvh);
+  height:min(56.25vw,100dvh);
+  max-width:100vw;
+  max-height:100dvh;
+}
+.answer,.btn{touch-action:manipulation}
+
+@media (max-width:950px) and (orientation:landscape){
+  .viewport{
+    align-items:stretch;
+    justify-content:stretch;
+  }
+  .stage{
+    width:100vw;
+    height:100dvh;
+    max-width:none;
+    max-height:none;
+  }
+
+  .header{top:.8%;left:13%;right:19%}
+  .title-box{padding:.75% 2.2%;border-radius:16px}
+  .title{font-size:clamp(21px,4.3vw,38px)}
+  .subtitle{font-size:clamp(8px,1.45vw,12px)}
+
+  .hud{right:1%;top:1.1%;width:18%;height:12.5%;gap:5%}
+  .hud-card{border-radius:11px;font-size:clamp(8px,1.55vw,12px)}
+  .hud-card span{margin-left:4px}
+
+  .track-wrap{
+    left:1.6%;
+    right:1.6%;
+    top:15%;
+    height:48%;
+    border-radius:18px;
+  }
+  .track-wrap:before{border-radius:15px}
+  .start-tag,.finish-tag{
+    top:2.5%;
+    width:10%;
+    height:9%;
+    border-radius:11px;
+    font-size:clamp(8px,1.5vw,11px)
+  }
+  .start-tag{left:1.1%}
+  .finish-tag{right:1.1%}
+
+  .lane-labels{
+    left:1.2%;
+    top:14%;
+    width:12%;
+    height:76%;
+    gap:3.4%;
+  }
+  .team-label{
+    border-radius:11px;
+    font-size:clamp(7px,1.42vw,11px);
+    line-height:1.02;
+    padding:0 4%;
+  }
+
+  .lanes{
+    left:13.8%;
+    right:1.8%;
+    top:14%;
+    height:76%;
+    gap:3.4%;
+  }
+  .lane{border-radius:11px}
+  .numbers{left:2%;right:5%;bottom:3%}
+  .numbers span{font-size:clamp(6px,1.03vw,9px)}
+
+  .car{
+    font-size:clamp(24px,5.2vw,40px);
+  }
+  .smoke{font-size:clamp(10px,2vw,15px)}
+
+  .question-panel{
+    left:1.6%;
+    bottom:1.4%;
+    width:61.5%;
+    height:33.5%;
+    border-radius:16px;
+    padding:1.1% 1.4%;
+  }
+  .q-badge{
+    font-size:clamp(8px,1.35vw,11px);
+    padding:.55% 1.4%;
+  }
+  .question-text{
+    font-size:clamp(11px,2.05vw,17px);
+    line-height:1.05;
+    min-height:20%;
+    margin-top:.6%;
+  }
+  .answers{
+    gap:4% 1.8%;
+    margin-top:.7%;
+    height:62%;
+  }
+  .answer{
+    min-height:28px;
+    border-radius:10px;
+    padding:1.2% 2%;
+    font-size:clamp(8px,1.55vw,12px);
+    box-shadow:none;
+  }
+  .penalty{
+    left:12%;
+    right:12%;
+    bottom:4%;
+    font-size:clamp(8px,1.45vw,11px);
+  }
+
+  .score-panel{
+    right:1.6%;
+    bottom:1.4%;
+    width:34.5%;
+    height:33.5%;
+    border-radius:16px;
+    padding:1.2% 2%;
+  }
+  .score-title{
+    font-size:clamp(9px,1.6vw,12px);
+    margin-bottom:1%;
+  }
+  .score-list{height:86%}
+  .score-row{gap:2%}
+  .score-name{font-size:clamp(8px,1.42vw,11px)}
+  .dot{width:8px;height:8px;margin-right:5px}
+  .score-pill{
+    min-width:70px;
+    padding:4px 7px;
+    font-size:clamp(8px,1.35vw,10px)
+  }
+
+  .card{
+    width:min(72%,520px);
+    border-radius:18px;
+    padding:2%;
+  }
+  .card h2{font-size:clamp(21px,4.8vw,36px)}
+  .card p{font-size:clamp(9px,1.65vw,12px)}
+  .btn{
+    padding:2.4% 7%;
+    border-radius:11px;
+    font-size:clamp(11px,1.8vw,14px);
+  }
+
+  .winner-box{
+    width:min(76%,560px);
+    padding:3% 2.5%;
+    border-radius:20px;
+  }
+  .winner-kicker{font-size:clamp(10px,1.65vw,14px)}
+  .winner-name{font-size:clamp(28px,6vw,48px)}
+  .winner-car{font-size:clamp(46px,9vw,72px)}
+
+  .podium-card{
+    width:min(78%,620px);
+    padding:1.8%;
+    border-radius:18px;
+  }
+  .podium-title{font-size:clamp(20px,4.3vw,34px)}
+  .step{padding:4% 2%}
+  .first{min-height:112px}
+  .second{min-height:92px}
+  .third{min-height:78px}
+  .medal{font-size:clamp(18px,3.4vw,28px)}
+  .podcar{font-size:clamp(28px,5vw,38px)}
+  .pname{font-size:clamp(8px,1.4vw,11px)}
+  .pmini{font-size:clamp(7px,1.2vw,10px)}
+  .fourth{font-size:clamp(8px,1.3vw,10px)}
+}
+
+/* Celulares muito baixos (ex.: 360px de altura em paisagem) */
+@media (max-height:410px) and (orientation:landscape){
+  .track-wrap{top:14.5%;height:47.5%}
+  .question-panel,.score-panel{height:34.5%;bottom:.8%}
+  .header{top:.3%}
+  .hud{top:.5%}
+}
+
+/* Em retrato, pede rotação em vez de esmagar o layout */
+@media (orientation:portrait) and (max-width:950px){
+  .rotate-warning{
+    display:flex;
+    background:
+      radial-gradient(circle at 30% 20%,rgba(32,214,255,.18),transparent 28%),
+      radial-gradient(circle at 70% 15%,rgba(255,61,154,.18),transparent 30%),
+      #081423;
+    font-size:clamp(18px,5vw,25px);
+    line-height:1.35;
+  }
+}
+
+</style>
+</head>
+<body>
+<div class="rotate-warning">📱 Gire o celular para o modo paisagem.<br><br>A versão mobile foi otimizada para jogar com o aparelho deitado.</div>
+<div class="viewport">
+  <div class="stage">
+    <div class="grid"></div>
+    <div class="glow-orb orb1"></div><div class="glow-orb orb2"></div>
+
+    <div class="header"><div class="title-box"><div class="title" id="gameTitle">CORRIDA MALUCA</div><div class="subtitle">Filmes & Desenhos • Você contra 3 CPUs</div></div></div>
+
+    <div class="hud">
+      <div class="hud-card">Questão <span id="qHud">01/20</span></div>
+      <div class="hud-card">Tempo <span id="clock">00:00</span></div>
+    </div>
+
+    <div class="track-wrap">
+      <div class="start-tag">LARGADA</div>
+      <div class="finish-tag">CHEGADA</div>
+      <div class="lane-labels">
+        <div class="team-label t1">VOCÊ</div>
+        <div class="team-label t2">CPU NITRO</div>
+        <div class="team-label t3">CPU TURBO</div>
+        <div class="team-label t4">CPU FAÍSCA</div>
+      </div>
+      <div class="lanes">
+        <div class="lane"><span class="smoke" id="p0">💨</span><span class="car" id="c0">🏎️</span><div class="numbers"></div></div>
+        <div class="lane"><span class="smoke" id="p1">💨</span><span class="car" id="c1">🚗</span><div class="numbers"></div></div>
+        <div class="lane"><span class="smoke" id="p2">💨</span><span class="car" id="c2">🚙</span><div class="numbers"></div></div>
+        <div class="lane"><span class="smoke" id="p3">💨</span><span class="car" id="c3">🚕</span><div class="numbers"></div></div>
+      </div>
+    </div>
+
+    <div class="question-panel">
+      <div class="q-top"><div class="q-badge">🎬 FILMES & DESENHOS</div></div>
+      <div class="question-text" id="question">Prepare-se para a largada!</div>
+      <div class="answers" id="answers"></div>
+      <div class="penalty" id="penalty">🚧 PENALIDADE — aguarde <span id="penaltyN">3</span>s</div>
+    </div>
+
+    <div class="score-panel">
+      <div class="score-title">🏆 DESEMPENHO DAS EQUIPES</div>
+      <div class="score-list">
+        <div class="score-row"><div class="score-name"><span class="dot d1"></span>Você</div><div class="score-pill" id="r0">0 acertos</div></div>
+        <div class="score-row"><div class="score-name"><span class="dot d2"></span>CPU Nitro</div><div class="score-pill" id="r1">0 acertos</div></div>
+        <div class="score-row"><div class="score-name"><span class="dot d3"></span>CPU Turbo</div><div class="score-pill" id="r2">0 acertos</div></div>
+        <div class="score-row"><div class="score-name"><span class="dot d4"></span>CPU Faísca</div><div class="score-pill" id="r3">0 acertos</div></div>
+      </div>
+    </div>
+
+    <div class="overlay" id="startOverlay">
+      <div class="card">
+        <h2>🏁 CORRIDA MALUCA</h2>
+        <p>Você contra 3 CPUs. São 20 perguntas de filmes e desenhos.<br>Acertou: avança. Errou: 3 segundos de penalidade.</p>
+        <button class="btn" id="startBtn">LARGAR!</button>
+      </div>
+    </div>
+
+
+    <div class="winner-overlay" id="winnerOverlay">
+      <div class="winner-box">
+        <div class="winner-kicker">🏁 VENCEDOR DA CORRIDA</div>
+        <div class="winner-name" id="winnerName">VOCÊ</div>
+        <div class="winner-car" id="winnerCar">🏎️</div>
+      </div>
+    </div>
+
+    <div class="overlay hidden" id="podiumOverlay">
+      <div class="podium-card">
+        <div class="podium-title">🏆 PÓDIO FINAL</div>
+        <div class="steps" id="steps"></div>
+        <div class="fourth" id="fourth"></div>
+        <button class="btn" id="restartBtn">JOGAR NOVAMENTE</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const Q=[
+["Em Toy Story, quem é o cowboy?",["Buzz Lightyear","Woody","Rex","Slinky"],1],
+["Em Frozen, quem tem poderes de gelo?",["Anna","Olaf","Elsa","Kristoff"],2],
+["Qual é o nome do famoso ogro verde?",["Shrek","Po","Simba","Sullivan"],0],
+["Em Procurando Nemo, Nemo é um...",["Tubarão","Peixe-palhaço","Golfinho","Polvo"],1],
+["Quem é o pai de Simba em O Rei Leão?",["Scar","Mufasa","Timon","Rafiki"],1],
+["Qual animação tem um panda chamado Po?",["Madagascar","Kung Fu Panda","Carros","Monstros S.A."],1],
+["Quem é o protagonista vermelho de Carros?",["Mate","Relâmpago McQueen","Chick Hicks","Doc"],1],
+["Qual filme tem Alegria e Tristeza como personagens?",["Encanto","Divertida Mente","Up","Luca"],1],
+["Como são chamados os ajudantes amarelos de Gru?",["Smurfs","Minions","Trolls","Muppets"],1],
+["Em Madagascar, Alex é um...",["Leão","Zebra","Hipopótamo","Girafa"],0],
+["Em Encanto, qual é o sobrenome da família de Mirabel?",["Madrigal","Rivera","Montoya","Garcia"],0],
+["Em Monstros S.A., quem é grande, azul e peludo?",["Mike","Sullivan","Randall","Boo"],1],
+["Qual é um poder de Violeta em Os Incríveis?",["Invisibilidade","Superforça","Gelo","Voo"],0],
+["Quem é o boneco de neve de Frozen?",["Sven","Olaf","Hans","Kristoff"],1],
+["Em Up, o que faz a casa voar?",["Asas","Balões","Foguetes","Magia"],1],
+["Em Ratatouille, Remy é um...",["Gato","Rato","Coelho","Cachorro"],1],
+["Em A Era do Gelo, Sid é uma...",["Preguiça","Morsa","Raposa","Lontra"],0],
+["Qual é o nome do dragão de Soluço?",["Banguela","Tempestade","Draco","Fúria"],0],
+["Em Luca, a história se passa principalmente em qual país?",["Espanha","Itália","França","Portugal"],1],
+["Em Zootopia, Judy Hopps é uma...",["Raposa","Coelha","Gazela","Lontra"],1]
+];
+
+document.querySelectorAll('.numbers').forEach(n=>{for(let i=1;i<=20;i++){const s=document.createElement('span');s.textContent=i;n.appendChild(s);}});
+
+const racers=[
+  {name:'VOCÊ', klass:'formula1', score:0, q:0, end:0, human:true},
+  {name:'CPU NITRO', klass:'roadster', score:0, q:0, end:0, acc:.62, min:1700, max:3300},
+  {name:'CPU TURBO', klass:'cybertruck', score:0, q:0, end:0, acc:.72, min:1450, max:3000},
+  {name:'CPU FAÍSCA', klass:'hovercar', score:0, q:0, end:0, acc:.80, min:1250, max:2700}
+];
+
+const $=id=>document.getElementById(id);
+let startTime=0, started=false, finished=false, locked=false, clockTimer=null, cpuTimers=[];
+function updateCars(){
+  racers.forEach((r,i)=>{
+    const pct=3 + (r.score/20)*92;
+    $("c"+i).style.left=pct+"%";
+    $("p"+i).style.left=Math.max(1,pct-3.6)+"%";
+    $("r"+i).textContent=r.score+" acertos";
+  });
+  const nearFinish=racers.some(r=>r.score>=15);
+  $('gameTitle').classList.toggle('alert',nearFinish && !finished);
+}
+function puff(i){const p=$("p"+i);p.classList.remove('go');void p.offsetWidth;p.classList.add('go');}
+function disableAnswers(v){document.querySelectorAll('.answer').forEach(b=>b.disabled=v)}
+function renderQuestion(){
+  const h=racers[0];
+  if(h.q>=20){$('qHud').textContent='20/20';$('question').textContent='Você concluiu as 20 perguntas. Acompanhe o final da corrida!';$('answers').innerHTML='';checkEnd();return;}
+  $('qHud').textContent=String(h.q+1).padStart(2,'0')+'/20';
+  const [q,opts]=Q[h.q]; $('question').textContent=q; $('answers').innerHTML='';
+  opts.forEach((t,i)=>{const b=document.createElement('button');b.type='button';b.className='answer';b.textContent=String.fromCharCode(65+i)+') '+t;b.addEventListener('click',()=>answerHuman(i,b));$('answers').appendChild(b);});
+}
+function answerHuman(i,btn){
+  if(!started||locked||racers[0].q>=20) return;
+  locked=true; disableAnswers(true);
+  const r=racers[0], item=Q[r.q], correct=i===item[2]; r.q++;
+  if(correct){r.score++;btn.classList.add('good');updateCars();puff(0);if(r.q>=20) r.end=performance.now()-startTime;setTimeout(()=>{locked=false;renderQuestion();},420);}
+  else{btn.classList.add('bad'); let n=3; $('penaltyN').textContent=n; $('penalty').classList.add('show'); const t=setInterval(()=>{n--; $('penaltyN').textContent=Math.max(0,n); if(n<=0){clearInterval(t); $('penalty').classList.remove('show'); if(r.q>=20) r.end=performance.now()-startTime; locked=false; renderQuestion();}},1000);} }
+function scheduleCPU(i,delay){const id=setTimeout(()=>cpuStep(i),delay);cpuTimers.push(id)}
+function cpuStep(i){
+  if(!started||finished) return;
+  const r=racers[i];
+  if(r.q>=20){if(!r.end) r.end=performance.now()-startTime; checkEnd(); return;}
+  const correct=Math.random()<r.acc; r.q++; if(correct){r.score++;updateCars();puff(i);} const wait=(r.min+Math.random()*(r.max-r.min))+(correct?0:3000); if(r.q>=20&&!r.end) r.end=performance.now()-startTime+wait; scheduleCPU(i,wait);
+}
+function checkEnd(){
+  if(finished) return;
+  if(racers.every(r=>r.q>=20)){
+    finished=true; started=false; clearInterval(clockTimer);
+    $('gameTitle').classList.remove('alert');
+    setTimeout(showWinner,500);
+  }
+}
+function showWinner(){
+  const rank=[...racers].sort((a,b)=>b.score-a.score || a.end-b.end);
+  const win=rank[0];
+  const emoji=win.name==='VOCÊ'?'🏎️':win.name==='CPU NITRO'?'🚗':win.name==='CPU TURBO'?'🚙':'🚕';
+  $('winnerName').textContent=win.name;
+  $('winnerCar').textContent=emoji;
+  $('winnerOverlay').classList.add('show');
+  setTimeout(()=>{
+    $('winnerOverlay').classList.remove('show');
+    showPodium();
+  },3000);
+}
+function podiumEmoji(name){return name==='VOCÊ'?'🏎️':name==='CPU NITRO'?'🚗':name==='CPU TURBO'?'🚙':'🚕';}
+function showPodium(){
+  const rank=[...racers].sort((a,b)=>b.score-a.score || a.end-b.end);
+  const order=[rank[1],rank[0],rank[2]], cls=['second','first','third'], medals=['🥈','🥇','🥉'];
+  $('steps').innerHTML='';
+  order.forEach((r,i)=>{const d=document.createElement('div');d.className='step '+cls[i];d.innerHTML=`<div class="medal">${medals[i]}</div><div class="podcar">${podiumEmoji(r.name)}</div><div class="pname">${r.name}</div><div class="pmini">${r.score} acertos</div>`;$('steps').appendChild(d);});
+  $('fourth').textContent='4º lugar: '+rank[3].name+' — '+rank[3].score+' acertos'; $('podiumOverlay').classList.remove('hidden');
+}
+function startGame(){if(started) return; $('startOverlay').classList.add('hidden'); $('podiumOverlay').classList.add('hidden'); started=true; finished=false; locked=false; startTime=performance.now(); updateCars(); renderQuestion(); clockTimer=setInterval(()=>{const s=Math.floor((performance.now()-startTime)/1000); $('clock').textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');},250); scheduleCPU(1,900); scheduleCPU(2,1150); scheduleCPU(3,1400);}
+function resetGame(){cpuTimers.forEach(clearTimeout); cpuTimers=[]; clearInterval(clockTimer); racers.forEach(r=>{r.score=0;r.q=0;r.end=0;}); started=false; finished=false; locked=false; $('clock').textContent='00:00'; $('qHud').textContent='01/20'; $('question').textContent='Prepare-se para a largada!'; $('answers').innerHTML=''; $('penalty').classList.remove('show'); $('podiumOverlay').classList.add('hidden'); $('winnerOverlay').classList.remove('show'); $('gameTitle').classList.remove('alert'); $('startOverlay').classList.remove('hidden'); updateCars();}
+$('startBtn').addEventListener('click',startGame); $('restartBtn').addEventListener('click',resetGame); resetGame();
+</script>
+</body>
+</html>
