@@ -2,6 +2,97 @@
 const TOTAL=15;
 const sb=window.__tugSupabase,room=window.__tugRoom,player=window.__tugPlayer;
 if(!sb||!room||!T[player])return;
+if(window.__tugTest2){
+const TEST_TOTAL=15, TEST_MATCH='semi1', testOpponent=player==='blue'?'yellow':'blue';
+const TEST_Q=[
+ {q:'Qual personagem é um ogro verde?',o:['Shrek','Simba','Woody','Nemo'],a:'Shrek'},
+ {q:'Em Procurando Nemo, que animal é Nemo?',o:['Peixe-palhaço','Tartaruga','Golfinho','Tubarão'],a:'Peixe-palhaço'},
+ {q:'Quem mora em um abacaxi no fundo do mar?',o:['Bob Esponja','Scooby-Doo','Mickey','Sonic'],a:'Bob Esponja'},
+ {q:'Qual herói usa um escudo com uma estrela?',o:['Capitão América','Batman','Homem-Aranha','Thor'],a:'Capitão América'},
+ {q:'Em Toy Story, qual personagem é um cowboy?',o:['Woody','Buzz','Rex','Forky'],a:'Woody'},
+ {q:'Qual princesa tem poderes de gelo em Frozen?',o:['Elsa','Ariel','Mulan','Moana'],a:'Elsa'},
+ {q:'Em O Rei Leão, qual é o nome do protagonista?',o:['Simba','Scar','Timon','Rafiki'],a:'Simba'},
+ {q:'Qual dupla de desenho vive perseguindo um ao outro?',o:['Tom e Jerry','Shrek e Fiona','Woody e Buzz','Anna e Elsa'],a:'Tom e Jerry'},
+ {q:'Qual herói costuma lançar teias?',o:['Homem-Aranha','Hulk','Batman','Superman'],a:'Homem-Aranha'},
+ {q:'Em Harry Potter, qual esporte é jogado em vassouras?',o:['Quadribol','Futebol','Basquete','Beisebol'],a:'Quadribol'},
+ {q:'Qual personagem é um cão detetive medroso e adora lanches?',o:['Scooby-Doo','Snoopy','Pluto','Pateta'],a:'Scooby-Doo'},
+ {q:'Em Os Incríveis, qual é o sobrenome da família?',o:['Parr','Parker','Wayne','Stark'],a:'Parr'},
+ {q:'Qual filme famoso tem um parque com dinossauros?',o:['Jurassic Park','Titanic','Avatar','Jumanji'],a:'Jurassic Park'},
+ {q:'Quem é o parceiro de Woody que usa traje espacial?',o:['Buzz Lightyear','Rex','Slink','Andy'],a:'Buzz Lightyear'},
+ {q:'Em Frozen, qual boneco de neve gosta de abraços quentinhos?',o:['Olaf','Sven','Kristoff','Hans'],a:'Olaf'},
+ {q:'Qual herói é conhecido como o Homem de Aço?',o:['Superman','Batman','Hulk','Thor'],a:'Superman'},
+ {q:'Qual personagem azul corre em altíssima velocidade?',o:['Sonic','Stitch','Dory','Gênio'],a:'Sonic'},
+ {q:'Em Moana, quem é o semideus que acompanha a protagonista?',o:['Maui','Hércules','Aladdin','Tarzan'],a:'Maui'}
+];
+let testChannel=null,testCurrent=null,testLastRound=-1,testLastPhase='',testTimer=null,testStarted=false;
+const tx=id=>document.getElementById(id);
+const tshuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const torder=()=>tshuffle(TEST_Q.map((_,i)=>i)).slice(0,TEST_TOTAL);
+const tq=m=>TEST_Q[(m.question_order||[])[m.round]]||TEST_Q[0];
+const ta=(m,t)=>m?.answers?.[String(m.round)]?.[t];
+const ts=(m,t)=>Number(m?.scores?.[t]||0);
+function tsync(m){L=player;R=testOpponent;ls=ts(m,player);rs=ts(m,testOpponent);qi=m.round;sd=m.round>=TEST_TOTAL}
+function tpaint(){
+ L=player;R=testOpponent;const a=T[player],b=T[testOpponent];
+ tx('leftName').textContent=a.short;tx('rightName').textContent=b.short;
+ tx('leftTeamLabel').textContent=a.icon+' '+a.name;tx('rightTeamLabel').textContent=b.icon+' '+b.name;
+ tx('leftScoreName').style.color=a.color;tx('rightScoreName').style.color=b.color;
+ tx('leftCard').style.setProperty('--team-color',a.color);tx('rightCard').style.setProperty('--team-color',b.color);
+ [...tx('leftPeople').children].forEach(p=>p.style.setProperty('--shirt',a.color));[...tx('rightPeople').children].forEach(p=>p.style.setProperty('--shirt',b.color));
+ tx('stageLabel').textContent='TESTE 2 COMPUTADORES';
+ document.querySelectorAll('.chip').forEach(x=>x.classList.remove('current'));
+ if(tx('chip1')){tx('chip1').textContent='🎬 Filmes & Desenhos';tx('chip1').classList.add('current')}
+ if(tx('chip2'))tx('chip2').textContent='🔵 Azul × Amarela';if(tx('chip3'))tx('chip3').textContent='🧪 Teste online';
+ const bs=document.querySelector('.brand small');if(bs)bs.textContent='Teste de sincronização em 2 computadores • perguntas em português';
+ const rn=document.querySelector('.right-note');if(rn)rn.textContent='Resposta adversária oculta até a revelação';
+ const tp=document.querySelector('.test-panel');if(tp)tp.style.display='none';
+ resetMoods();resetFaces();setRope(0);
+}
+async function tensure(){const {error}=await sb.rpc('tug_get_or_create_match',{p_room:room,p_match_id:TEST_MATCH,p_stage:'semi',p_team_a:'blue',p_team_b:'yellow',p_order:torder()});if(error)throw error}
+async function tfetch(){const {data,error}=await sb.from('tug_matches').select('*').eq('room_code',room).eq('match_id',TEST_MATCH).single();if(error)throw error;return data}
+function trender(m){
+ testCurrent=m;tsync(m);rev=false;la=ra=null;tx('leftScore').textContent=ls;tx('rightScore').textContent=rs;
+ tx('resultBox').style.display='none';tx('resultBox').classList.remove('celebrate');tx('leftStatus').textContent='Sua equipe responde';tx('rightStatus').textContent='Aguardando resposta';
+ const q=tq(m);tx('qText').textContent=q.q;tx('qMeta').textContent=m.round>=TEST_TOTAL?'DESEMPATE — MORTE SÚBITA':'Pergunta '+(m.round+1)+'/'+TEST_TOTAL;
+ opts('left',sh(q.o));opts('right',sh(q.o));[...tx('rightOptions').children].forEach(b=>{b.disabled=true;b.classList.remove('selected','correct','wrong');b.style.cursor='default'});
+ const mine=ta(m,player),other=ta(m,testOpponent);
+ if(mine!==undefined){la=mine;[...tx('leftOptions').children].forEach(b=>{b.disabled=true;if(b.dataset.value===mine)b.classList.add('selected')});tx('leftStatus').textContent='Resposta enviada ✓'}
+ if(other!==undefined){ra=other;tx('rightStatus').textContent='Resposta enviada ✓'}
+ tx('arenaMsg').textContent=mine!==undefined&&other!==undefined?'As duas equipes responderam. Conferindo...':'Escolha uma resposta.';clock();
+}
+async function tsubmit(v){if(!testCurrent||testCurrent.phase!=='answering')return;const {error}=await sb.rpc('tug_submit_answer',{p_room:room,p_match_id:TEST_MATCH,p_round:testCurrent.round,p_team:player,p_answer:v});if(error)throw error}
+pick=function(side,v,b){if(side!=='left'||rev||la!==null||!testCurrent||testCurrent.phase!=='answering')return;la=v;[...tx('leftOptions').children].forEach(x=>{x.disabled=true;x.classList.remove('selected')});b.classList.add('selected');tx('leftStatus').textContent='Resposta enviada ✓';tx('arenaMsg').textContent='Resposta enviada. Aguardando o outro computador...';tsubmit(v).catch(()=>{})};
+timeout=function(){if(rev||!testCurrent||testCurrent.phase!=='answering')return;if(la===null){la='TIME';[...tx('leftOptions').children].forEach(b=>b.disabled=true);tx('leftStatus').textContent='TEMPO ESGOTADO ⏰';tsubmit('TIME').catch(()=>{})}};
+async function tresolve(m){if(ta(m,m.team_a)===undefined||ta(m,m.team_b)===undefined)return;const {error}=await sb.rpc('tug_resolve_round',{p_room:room,p_match_id:TEST_MATCH,p_round:m.round,p_correct:tq(m).a,p_total:TEST_TOTAL});if(error)throw error}
+function treveal(m){
+ stop();testCurrent=m;tsync(m);rev=true;const q=tq(m),mine=ta(m,player),other=ta(m,testOpponent);if(mine===undefined||other===undefined)return;
+ la=mine;ra=other;mark('left',mine,q.a);mark('right',other,q.a);const okL=mine===q.a,okR=other===q.a;
+ tx('leftStatus').textContent=okL?'ACERTOU! ✅':mine==='TIME'?'TEMPO ESGOTADO ⏰':'ERROU ✖';tx('rightStatus').textContent=okR?'ACERTOU! ✅':other==='TIME'?'TEMPO ESGOTADO ⏰':'ERROU ✖';
+ tx('leftScore').textContent=ls;tx('rightScore').textContent=rs;
+ if(okL&&okR){tx('resultBox').textContent='As duas equipes acertaram!';bothPull()}else if(okL){tx('resultBox').textContent=T[player].name+' venceu a rodada!';pull('left')}else if(okR){tx('resultBox').textContent=T[testOpponent].name+' venceu a rodada!';pull('right')}else{tx('resultBox').textContent='As duas equipes erraram. Resposta correta: '+q.a+'.';resetFaces()}
+ tx('resultBox').style.display='block';if(m.phase==='resolved'){clearTimeout(testTimer);testTimer=setTimeout(()=>tadvance(m.round),3000)}
+}
+async function tadvance(r){await sb.rpc('tug_advance_round',{p_room:room,p_match_id:TEST_MATCH,p_round:r,p_next_question:Math.floor(Math.random()*TEST_Q.length)})}
+function tend(m){
+ stop();tsync(m);const won=m.winner===player,w=won?tx('leftPeople'):tx('rightPeople'),l=won?tx('rightPeople'):tx('leftPeople');w.classList.add('final-winner');l.classList.add('final-loser');setFace(w,'laugh');setFace(l,'panic');
+ tx('arenaMsg').textContent=won?'🎉 SUA EQUIPE VENCEU O TESTE!':'👏 TESTE ENCERRADO — A OUTRA EQUIPE VENCEU.';
+ let box=document.getElementById('test2End');if(!box){box=document.createElement('div');box.id='test2End';box.style.cssText='position:fixed;inset:0;z-index:20000;display:grid;place-items:center;background:#020617cc;backdrop-filter:blur(8px);padding:20px';box.innerHTML='<div style="max-width:620px;width:92%;text-align:center;background:#0f172a;border:2px solid #67e8f9;border-radius:24px;padding:28px;color:#fff;box-shadow:0 0 50px #22d3ee44"><div style="font-size:54px">'+(won?'🏆':'👏')+'</div><h2>'+(won?'SUA EQUIPE VENCEU!':'PARTIDA ENCERRADA')+'</h2><p>Teste multiplayer concluído. Placar: '+ts(m,player)+' × '+ts(m,testOpponent)+'.</p></div>';document.body.appendChild(box)}
+}
+function ton(m){
+ if(!m?.team_a)return;testCurrent=m;tsync(m);
+ if(m.phase==='answering'){if(testLastRound!==m.round||testLastPhase!=='answering'){testLastRound=m.round;testLastPhase='answering';trender(m)}if(ta(m,m.team_a)!==undefined&&ta(m,m.team_b)!==undefined){stop();tresolve(m).catch(()=>{})}}
+ else if(m.phase==='resolved'){if(testLastRound!==m.round||testLastPhase!=='resolved'){testLastRound=m.round;testLastPhase='resolved';treveal(m)}}
+ else if(m.phase==='finished'){if(testLastPhase==='finished')return;testLastPhase='finished';treveal(m);setTimeout(()=>tend(m),2200)}
+}
+async function tbegin(){
+ if(testStarted)return;testStarted=true;tpaint();await tensure();
+ testChannel=sb.channel('tug-test2-'+room+'-'+player).on('postgres_changes',{event:'UPDATE',schema:'public',table:'tug_matches',filter:'room_code=eq.'+room},p=>{if(p.new?.match_id===TEST_MATCH)ton(p.new)}).subscribe();
+ ton(await tfetch());
+}
+function tlaunch(){tbegin().catch(e=>{if(tx('arenaMsg'))tx('arenaMsg').textContent='Erro de sincronização: '+e.message})}
+startMatch=tlaunch;reset=tlaunch;
+return;
+}
 
 let matchId=null,stage='semi',opponent=null,currentState=null,nextStage=null;
 let channel=null,lastRenderedRound=-1,lastRenderedPhase='',advanceTimer=null,postMatchTimer=null,booted=false;
