@@ -167,8 +167,8 @@ html,body{
   .track-wrap{
     left:1.6%;
     right:1.6%;
-    top:15%;
-    height:48%;
+    top:14%;
+    height:42%;
     border-radius:18px;
   }
   .track-wrap:before{border-radius:15px}
@@ -214,32 +214,46 @@ html,body{
 
   .question-panel{
     left:1.6%;
-    bottom:1.4%;
+    bottom:1.2%;
     width:61.5%;
-    height:33.5%;
+    height:39%;
     border-radius:16px;
     padding:1.1% 1.4%;
+    overflow-y:auto;
+    overscroll-behavior:contain;
   }
   .q-badge{
     font-size:clamp(8px,1.35vw,11px);
     padding:.55% 1.4%;
   }
   .question-text{
-    font-size:clamp(11px,2.05vw,17px);
-    line-height:1.05;
-    min-height:20%;
+    font-size:clamp(10px,1.85vw,15px);
+    line-height:1.1;
+    min-height:16%;
     margin-top:.6%;
   }
   .answers{
-    gap:4% 1.8%;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:6px;
     margin-top:.7%;
-    height:62%;
+    height:auto;
+    align-content:start;
   }
   .answer{
-    min-height:28px;
+    min-height:46px;
+    height:auto;
     border-radius:10px;
-    padding:1.2% 2%;
+    padding:8px 10px;
     font-size:clamp(8px,1.55vw,12px);
+    line-height:1.18;
+    white-space:normal;
+    word-break:break-word;
+    overflow:visible;
+    display:flex;
+    align-items:center;
+    justify-content:flex-start;
+    text-align:left;
     box-shadow:none;
   }
   .penalty{
@@ -251,9 +265,9 @@ html,body{
 
   .score-panel{
     right:1.6%;
-    bottom:1.4%;
+    bottom:1.2%;
     width:34.5%;
-    height:33.5%;
+    height:39%;
     border-radius:16px;
     padding:1.2% 2%;
   }
@@ -311,9 +325,11 @@ html,body{
 }
 
 /* Celulares muito baixos (ex.: 360px de altura em paisagem) */
-@media (max-height:410px) and (orientation:landscape){
-  .track-wrap{top:14.5%;height:47.5%}
-  .question-panel,.score-panel{height:34.5%;bottom:.8%}
+@media (max-height:430px) and (orientation:landscape){
+  .track-wrap{top:13.5%;height:39%}
+  .question-panel,.score-panel{height:42%;bottom:.8%}
+  .question-text{font-size:clamp(9px,1.7vw,13px);min-height:14%}
+  .answer{min-height:50px;font-size:clamp(8px,1.45vw,11px);padding:7px 9px;line-height:1.16}
   .header{top:.3%}
   .hud{top:.5%}
 }
