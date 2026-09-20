@@ -319,9 +319,12 @@ html,body{
 }
 
 /* Em retrato, pede rotação em vez de esmagar o layout */
+.rotate-box{max-width:520px;display:flex;flex-direction:column;align-items:center;gap:18px}
+.rotate-box small{font-size:.72em;line-height:1.35;color:#cfe4ff}
+#forceLandscapeBtn{border:0;border-radius:14px;padding:14px 22px;font-weight:1000;font-size:16px;color:#fff;background:linear-gradient(135deg,#20d6ff,#ff3d9a);box-shadow:0 0 18px rgba(32,214,255,.25)}
 @media (orientation:portrait) and (max-width:950px){
   .rotate-warning{
-    display:flex;
+    display:none;
     background:
       radial-gradient(circle at 30% 20%,rgba(32,214,255,.18),transparent 28%),
       radial-gradient(circle at 70% 15%,rgba(255,61,154,.18),transparent 30%),
@@ -334,7 +337,7 @@ html,body{
 </style>
 </head>
 <body>
-<div class="rotate-warning">📱 Gire o celular para o modo paisagem.<br><br>A versão mobile foi otimizada para jogar com o aparelho deitado.</div>
+<div class="rotate-warning" id="rotateWarning"><div class="rotate-box"><div>📱 Gire o celular para o modo paisagem.</div><small>Se o aparelho já estiver deitado e esta tela continuar aparecendo, toque no botão abaixo.</small><button type="button" id="forceLandscapeBtn">JOGAR ASSIM MESMO</button></div></div>
 <div class="viewport">
   <div class="stage">
     <div class="grid"></div>
@@ -443,6 +446,26 @@ const racers=[
 ];
 
 const $=id=>document.getElementById(id);
+const rotateWarning=$('rotateWarning');
+const forceLandscapeBtn=$('forceLandscapeBtn');
+let forcePlayMobile=false;
+function syncMobileOrientation(){
+  const mobileLike=Math.min(window.innerWidth,window.innerHeight)<950;
+  const landscape=window.innerWidth>window.innerHeight;
+  if(!rotateWarning) return;
+  rotateWarning.style.display=(mobileLike && !landscape && !forcePlayMobile)?'flex':'none';
+}
+if(forceLandscapeBtn){
+  forceLandscapeBtn.addEventListener('click',()=>{
+    forcePlayMobile=true;
+    syncMobileOrientation();
+  });
+}
+window.addEventListener('resize',syncMobileOrientation);
+window.addEventListener('orientationchange',()=>setTimeout(syncMobileOrientation,180));
+document.addEventListener('visibilitychange',()=>{if(!document.hidden) setTimeout(syncMobileOrientation,120)});
+setTimeout(syncMobileOrientation,0);
+setTimeout(syncMobileOrientation,400);
 let startTime=0, started=false, finished=false, locked=false, clockTimer=null, cpuTimers=[];
 function updateCars(){
   racers.forEach((r,i)=>{
