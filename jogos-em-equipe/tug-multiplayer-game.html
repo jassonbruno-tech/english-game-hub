@@ -16,7 +16,7 @@ else{
  }
  async function pairReady(){
    if(!test2)return true;
-   const cutoff=new Date(Date.now()-60000).toISOString();
+   const cutoff=new Date(Date.now()-10000).toISOString();
    const {data,error}=await sb.from('tug_devices').select('device_id,color,connected,last_seen').eq('room_code',room).eq('connected',true).in('color',['blue','yellow']).gte('last_seen',cutoff);
    if(error)throw error;
    const colors=new Set((data||[]).map(x=>x.color));
@@ -43,7 +43,7 @@ else{
         if(!readySince)readySince=Date.now();
         if(Date.now()-readySince<900)return;
         w.__tugSupabase=sb;w.__tugRoom=room;w.__tugPlayer=player;w.__tugTest2=test2;
-        const s=d.createElement('script');s.id='tug-multi-loader';s.src='tug-tournament-multiplayer.js?v=20260920-test2-wait1';d.body.appendChild(s);injected=true;clearInterval(boot);loading.classList.add('hide');
+        const s=d.createElement('script');s.id='tug-multi-loader';s.src='tug-tournament-multiplayer.js?v=20260920-test2-wait2';s.onload=()=>{const btn=d.getElementById('startGame');if(test2&&btn)btn.click();loading.classList.add('hide')};d.body.appendChild(s);injected=true;clearInterval(boot);if(!test2)loading.classList.add('hide');
       }
      }catch(e){}
      if(tries>220){clearInterval(boot);note.textContent='Não foi possível iniciar. Atualize a página.'}
@@ -58,7 +58,7 @@ else{
      presenceChannel=sb.channel('tug-game-wait-'+room+'-'+player)
        .on('postgres_changes',{event:'*',schema:'public',table:'tug_devices',filter:'room_code=eq.'+room},async()=>{if(!started&&await pairReady())bootGame()})
        .subscribe();
-     heartbeat=setInterval(async()=>{await markPresent();if(!started&&await pairReady())bootGame()},15000);
+     heartbeat=setInterval(async()=>{await markPresent();if(!started&&await pairReady())bootGame()},3000);
    }catch(e){loading.innerHTML='⚠️ ERRO DE CONEXÃO<small>'+e.message+'</small>'}
  }
  if(test2)waitForPair(); else bootGame();
