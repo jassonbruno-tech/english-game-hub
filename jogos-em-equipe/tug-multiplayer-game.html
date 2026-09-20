@@ -44,13 +44,14 @@ else{
         if(Date.now()-readySince<900)return;
         if(!d.getElementById('tug-responsive-v1')){
           const rs=d.createElement('style');rs.id='tug-responsive-v1';rs.textContent=`
-.eye-white{position:absolute!important;top:19px!important;width:14px!important;height:18px!important;background:#fff!important;border:3px solid #1f1f1f!important;border-radius:50%!important;overflow:hidden!important;box-shadow:none!important;z-index:20!important}
-.eye-white.left-eye{left:8px!important}.eye-white.right-eye{left:25px!important}
-.eye-white .pupil{display:none!important}
-.eye-white:before{content:''!important;position:absolute!important;display:block!important;width:8px!important;height:11px!important;left:3px!important;top:3px!important;background:#1f1b20!important;border-radius:50%!important;z-index:21!important}
-.eye-white:after{content:''!important;position:absolute!important;display:block!important;width:3px!important;height:4px!important;left:8px!important;top:4px!important;background:#fff!important;border-radius:50%!important;z-index:22!important}
-.brow{position:absolute!important;top:15px!important;width:12px!important;height:3px!important;background:#2d211b!important;border-radius:999px!important;z-index:23!important}
-.brow.left-brow{left:9px!important;transform:rotate(-10deg)!important}.brow.right-brow{left:27px!important;transform:rotate(10deg)!important}
+.eye-white{position:absolute!important;top:22px!important;width:9px!important;height:12px!important;background:
+radial-gradient(circle at 67% 28%,#fff 0 1.1px,transparent 1.2px),
+radial-gradient(ellipse at 55% 56%,#111 0 42%,transparent 44%),
+#fff!important;border:1.5px solid #111!important;border-radius:50%!important;overflow:hidden!important;box-shadow:none!important;z-index:20!important}
+.eye-white.left-eye{left:12px!important}.eye-white.right-eye{left:23px!important}
+.eye-white .pupil{display:none!important}.eye-white:before,.eye-white:after{display:none!important;content:none!important}
+.brow{position:absolute!important;top:18px!important;width:8px!important;height:2px!important;background:#2d211b!important;border-radius:999px!important;z-index:23!important}
+.brow.left-brow{left:12px!important;transform:rotate(-7deg)!important}.brow.right-brow{left:23px!important;transform:rotate(7deg)!important}
 @media(max-width:760px){
 html,body{overflow:auto!important;min-height:100%!important}
 #game{height:auto!important;min-height:100dvh!important;overflow:visible!important;padding:5px 6px 12px!important;display:grid!important;grid-template-rows:auto 180px auto!important;gap:6px!important}
@@ -84,13 +85,13 @@ html,body{overflow:hidden!important}#game{height:100dvh!important;min-height:100
           d.head.appendChild(rs);
         }
         w.__tugSupabase=sb;w.__tugRoom=room;w.__tugPlayer=player;w.__tugTest2=test2;
-        const s=d.createElement('script');s.id='tug-multi-loader';s.src='tug-tournament-multiplayer.js?v=20260920-eyes3';s.onload=()=>{const btn=d.getElementById('startGame');if(test2&&btn)btn.click();loading.classList.add('hide')};d.body.appendChild(s);injected=true;clearInterval(boot);if(!test2)loading.classList.add('hide');
+        const s=d.createElement('script');s.id='tug-multi-loader';s.src='tug-tournament-multiplayer.js?v=20260920-eyes4';s.onload=()=>{const btn=d.getElementById('startGame');if(test2&&btn)btn.click();loading.classList.add('hide')};d.body.appendChild(s);injected=true;clearInterval(boot);if(!test2)loading.classList.add('hide');
       }
      }catch(e){}
      if(tries>220){clearInterval(boot);note.textContent='Não foi possível iniciar. Atualize a página.'}
     },100);
    },{once:true});
-   outer.src='tug-of-war-final.html?v=20260920-eyes3';
+   outer.src='tug-of-war-final.html?v=20260920-eyes4';
  }
  async function waitForPair(){
    try{
