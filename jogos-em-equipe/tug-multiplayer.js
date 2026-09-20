@@ -13,7 +13,10 @@ const test2Mode=params.get('teste2')==='1';
 $('roomCode').textContent=room;
 function uid(){return 'dev_'+crypto.getRandomValues(new Uint32Array(4)).join('_')}
 const deviceKey='tugDeviceId';
+const test2SessionKey='tugTest2Session';
 const deviceId=soloMode?(sessionStorage.getItem(deviceKey)||uid()):(localStorage.getItem(deviceKey)||uid());
+const test2Session=test2Mode?(sessionStorage.getItem(test2SessionKey)||uid()):null;
+if(test2Mode)sessionStorage.setItem(test2SessionKey,test2Session);
 if(soloMode)sessionStorage.setItem(deviceKey,deviceId);else localStorage.setItem(deviceKey,deviceId);
 
 const cfg=window.TUG_SUPABASE_CONFIG||{};
@@ -31,7 +34,7 @@ function renderTeams(rows){
  const teams={};const cutoff=Date.now()-10000;(rows||[]).filter(r=>r.connected&&(!test2Mode||!r.last_seen||new Date(r.last_seen).getTime()>cutoff)).forEach(r=>teams[r.color]=r);
  const activeColors=test2Mode?COLORS.slice(0,2):COLORS;
  const n=activeColors.filter(c=>teams[c.id]).length;$('connected').textContent=n+'/'+(test2Mode?2:4);
- COLORS.forEach(c=>{const el=$('slot-'+c.id);if(test2Mode&&['green','red'].includes(c.id)){el.style.display='none';return}const on=!!teams[c.id];el.classList.toggle('on',on);el.querySelector('.slotState').textContent=on?(teams[c.id].device_id===deviceId?'VOCÊ':'CONECTADA'):'AGUARDANDO'});
+ COLORS.forEach(c=>{const el=$('slot-'+c.id);if(test2Mode&&['green','red'].includes(c.id)){el.style.display='none';return}const on=!!teams[c.id];el.classList.toggle('on',on);el.querySelector('.slotState').textContent=on?(teams[c.id].device_id===(test2Mode?test2Session:deviceId)?'VOCÊ':'CONECTADA'):'AGUARDANDO'});
  $('readyBox').hidden=test2Mode?true:n!==4;
  const readyTitle=$('readyBox')?.querySelector('b');if(readyTitle&&test2Mode)readyTitle.textContent='✅ OS 2 COMPUTADORES ESTÃO PRONTOS';
  if(n===(test2Mode?2:4))$('status').textContent=test2Mode?'Os 2 computadores estão conectados. Preparando a partida...':'As 4 equipes estão conectadas. Campeonato pronto para começar.';
@@ -60,13 +63,21 @@ function updateTest2Gate(n){
  }
 }
 async function loadTeams(){
+ if(test2Mode){
+   const cutoff=new Date(Date.now()-5000).toISOString();
+   const {data,error}=await sb.from('tug_test2_presence').select('room_code,color,session_id,last_seen').eq('room_code',room).gte('last_seen',cutoff);
+   if(error)throw error;
+   const rows=(data||[]).map(r=>({room_code:r.room_code,color:r.color,device_id:r.session_id,connected:true,last_seen:r.last_seen}));
+   renderTeams(rows);
+   return;
+ }
  const {data,error}=await sb.from('tug_devices').select('room_code,device_id,color,connected,last_seen').eq('room_code',room);
  if(error)throw error;renderTeams(data);
 }
 function enterGame(){
  if(!myColor)return;
  const target=soloMode?'tug-simulacao.html':'tug-multiplayer-game.html';
- const u=new URL(target,location.href);u.searchParams.set('sala',room);u.searchParams.set('equipe',myColor);u.searchParams.set('modo',soloMode?'simulacao':test2Mode?'teste2':'multiplayer');if(test2Mode){u.searchParams.set('teste2','1');u.searchParams.set('dev',deviceId)}u.searchParams.set('v','20260920-test2-wait1');goingToGame=true;location.href=u.href;
+ const u=new URL(target,location.href);u.searchParams.set('sala',room);u.searchParams.set('equipe',myColor);u.searchParams.set('modo',soloMode?'simulacao':test2Mode?'teste2':'multiplayer');if(test2Mode){u.searchParams.set('teste2','1');u.searchParams.set('sessao',test2Session)}u.searchParams.set('v','20260920-test2-wait1');goingToGame=true;location.href=u.href;
 }
 $('enterGame').onclick=enterGame;
 
@@ -79,16 +90,17 @@ function startSolo(){
 
 async function startSupabase(){
  $('setupBox').hidden=true;$('status').textContent='Conectando ao campeonato...';
- const {data:color,error}=await sb.rpc(test2Mode?'tug_claim_test2_team':'tug_claim_team',{p_room:room,p_device:deviceId});
+ const claimArgs=test2Mode?{p_room:room,p_session:test2Session}:{p_room:room,p_device:deviceId};
+ const {data:color,error}=await sb.rpc(test2Mode?'tug_test2_claim':'tug_claim_team',claimArgs);
  if(error)throw error;
- if(!color){$('status').textContent='Sala cheia. Os 4 computadores já foram definidos.';await loadTeams();return}
+ if(!color){$('status').textContent=test2Mode?'Sala de teste cheia. Azul e Amarela já estão ocupadas.':'Sala cheia. Os 4 computadores já foram definidos.';await loadTeams();return}
  myColor=color;renderMe();await loadTeams();
- channel=sb.channel('tug-lobby-'+room)
-  .on('postgres_changes',{event:'*',schema:'public',table:'tug_devices',filter:'room_code=eq.'+room},()=>loadTeams().catch(()=>{}))
+ channel=sb.channel('tug-lobby-'+room+'-'+(test2Session||deviceId))
+  .on('postgres_changes',{event:'*',schema:'public',table:test2Mode?'tug_test2_presence':'tug_devices',filter:'room_code=eq.'+room},()=>loadTeams().catch(()=>{}))
   .subscribe();
- heartbeat=setInterval(async()=>{if(!myColor)return;await sb.from('tug_devices').update({connected:true,last_seen:new Date().toISOString()}).eq('room_code',room).eq('device_id',deviceId)},test2Mode?3000:20000);
- document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&myColor)sb.from('tug_devices').update({connected:true,last_seen:new Date().toISOString()}).eq('room_code',room).eq('device_id',deviceId)});
- window.addEventListener('pagehide',()=>{if(myColor&&!goingToGame)sb.rpc('tug_disconnect',{p_room:room,p_device:deviceId})});
+ heartbeat=setInterval(async()=>{if(!myColor)return;if(test2Mode)await sb.rpc('tug_test2_ping',{p_room:room,p_session:test2Session});else await sb.from('tug_devices').update({connected:true,last_seen:new Date().toISOString()}).eq('room_code',room).eq('device_id',deviceId)},test2Mode?1500:20000);
+ document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&myColor){if(test2Mode)sb.rpc('tug_test2_ping',{p_room:room,p_session:test2Session});else sb.from('tug_devices').update({connected:true,last_seen:new Date().toISOString()}).eq('room_code',room).eq('device_id',deviceId)}});
+ window.addEventListener('pagehide',()=>{if(myColor&&!goingToGame){if(test2Mode)sb.rpc('tug_test2_leave',{p_room:room,p_session:test2Session});else sb.rpc('tug_disconnect',{p_room:room,p_device:deviceId})}});
 }
 
 if(test2Mode){
