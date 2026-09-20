@@ -32,7 +32,7 @@ else{
    loading.innerHTML='✅ OS 2 COMPUTADORES ESTÃO CONECTADOS<small>Preparando a partida...</small>';
    outer.addEventListener('load',()=>{
     const od=outer.contentDocument;if(!od)return;const inner=od.getElementById('game');if(!inner)return;
-    const desired='tug-of-war.html?v=20260920-svg-eyes1&modo='+(test2?'teste2':'multiplayer')+'&equipe='+encodeURIComponent(player)+'&sala='+encodeURIComponent(room);
+    const desired='tug-of-war.html?v=20260920-svg-eyes2&modo='+(test2?'teste2':'multiplayer')+'&equipe='+encodeURIComponent(player)+'&sala='+encodeURIComponent(room);
     if(!inner.src.includes('modo='+(test2?'teste2':'multiplayer')))inner.src=desired;
     let tries=0,injected=false,readySince=0;const boot=setInterval(()=>{
      tries++;
@@ -85,13 +85,13 @@ html,body{overflow:hidden!important}#game{height:100dvh!important;min-height:100
           d.head.appendChild(rs);
         }
         w.__tugSupabase=sb;w.__tugRoom=room;w.__tugPlayer=player;w.__tugTest2=test2;
-        const s=d.createElement('script');s.id='tug-multi-loader';s.src='tug-tournament-multiplayer.js?v=20260920-svg-eyes1';s.onload=()=>{const btn=d.getElementById('startGame');if(test2&&btn)btn.click();loading.classList.add('hide')};d.body.appendChild(s);injected=true;clearInterval(boot);if(!test2)loading.classList.add('hide');
+        const s=d.createElement('script');s.id='tug-multi-loader';s.src='tug-tournament-multiplayer.js?v=20260920-svg-eyes2';s.onload=()=>{const btn=d.getElementById('startGame');if(test2&&btn)btn.click();loading.classList.add('hide')};d.body.appendChild(s);injected=true;clearInterval(boot);if(!test2)loading.classList.add('hide');
       }
      }catch(e){}
      if(tries>220){clearInterval(boot);note.textContent='Não foi possível iniciar. Atualize a página.'}
     },100);
    },{once:true});
-   outer.src='tug-of-war-final.html?v=20260920-svg-eyes1';
+   outer.src='tug-of-war-final.html?v=20260920-svg-eyes2';
  }
  async function waitForPair(){
    try{
