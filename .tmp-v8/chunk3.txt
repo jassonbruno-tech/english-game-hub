@@ -1,0 +1,115 @@
+nt-size:clamp(48px,7vw,96px);filter:drop-shadow(0 6px 8px rgba(0,0,0,.35))}
+
+</style>
+</head>
+<body>
+<div class="rotate-warning">📱 Gire o celular para o modo paisagem para jogar.</div>
+<div class="viewport">
+  <div class="stage">
+    <div class="grid"></div>
+    <div class="glow-orb orb1"></div><div class="glow-orb orb2"></div>
+
+    <div class="header"><div class="title-box"><div class="title" id="gameTitle">CORRIDA MALUCA</div><div class="subtitle">Filmes & Desenhos • Você contra 3 CPUs</div></div></div>
+
+    <div class="hud">
+      <div class="hud-card">Questão <span id="qHud">01/20</span></div>
+      <div class="hud-card">Tempo <span id="clock">00:00</span></div>
+    </div>
+
+    <div class="track-wrap">
+      <div class="start-tag">LARGADA</div>
+      <div class="finish-tag">CHEGADA</div>
+      <div class="lane-labels">
+        <div class="team-label t1">VOCÊ</div>
+        <div class="team-label t2">CPU NITRO</div>
+        <div class="team-label t3">CPU TURBO</div>
+        <div class="team-label t4">CPU FAÍSCA</div>
+      </div>
+      <div class="lanes">
+        <div class="lane"><span class="smoke" id="p0">💨</span><span class="car" id="c0">🏎️</span><div class="numbers"></div></div>
+        <div class="lane"><span class="smoke" id="p1">💨</span><span class="car" id="c1">🚗</span><div class="numbers"></div></div>
+        <div class="lane"><span class="smoke" id="p2">💨</span><span class="car" id="c2">🚙</span><div class="numbers"></div></div>
+        <div class="lane"><span class="smoke" id="p3">💨</span><span class="car" id="c3">🚕</span><div class="numbers"></div></div>
+      </div>
+    </div>
+
+    <div class="question-panel">
+      <div class="q-top"><div class="q-badge">🎬 FILMES & DESENHOS</div></div>
+      <div class="question-text" id="question">Prepare-se para a largada!</div>
+      <div class="answers" id="answers"></div>
+      <div class="penalty" id="penalty">🚧 PENALIDADE — aguarde <span id="penaltyN">3</span>s</div>
+    </div>
+
+    <div class="score-panel">
+      <div class="score-title">🏆 DESEMPENHO DAS EQUIPES</div>
+      <div class="score-list">
+        <div class="score-row"><div class="score-name"><span class="dot d1"></span>Você</div><div class="score-pill" id="r0">0 acertos</div></div>
+        <div class="score-row"><div class="score-name"><span class="dot d2"></span>CPU Nitro</div><div class="score-pill" id="r1">0 acertos</div></div>
+        <div class="score-row"><div class="score-name"><span class="dot d3"></span>CPU Turbo</div><div class="score-pill" id="r2">0 acertos</div></div>
+        <div class="score-row"><div class="score-name"><span class="dot d4"></span>CPU Faísca</div><div class="score-pill" id="r3">0 acertos</div></div>
+      </div>
+    </div>
+
+    <div class="overlay" id="startOverlay">
+      <div class="card">
+        <h2>🏁 CORRIDA MALUCA</h2>
+        <p>Você contra 3 CPUs. São 20 perguntas de filmes e desenhos.<br>Acertou: avança. Errou: 3 segundos de penalidade.</p>
+        <button class="btn" id="startBtn">LARGAR!</button>
+      </div>
+    </div>
+
+
+    <div class="winner-overlay" id="winnerOverlay">
+      <div class="winner-box">
+        <div class="winner-kicker">🏁 VENCEDOR DA CORRIDA</div>
+        <div class="winner-name" id="winnerName">VOCÊ</div>
+        <div class="winner-car" id="winnerCar">🏎️</div>
+      </div>
+    </div>
+
+    <div class="overlay hidden" id="podiumOverlay">
+      <div class="podium-card">
+        <div class="podium-title">🏆 PÓDIO FINAL</div>
+        <div class="steps" id="steps"></div>
+        <div class="fourth" id="fourth"></div>
+        <button class="btn" id="restartBtn">JOGAR NOVAMENTE</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const Q=[
+["Em Toy Story, quem é o cowboy?",["Buzz Lightyear","Woody","Rex","Slinky"],1],
+["Em Frozen, quem tem poderes de gelo?",["Anna","Olaf","Elsa","Kristoff"],2],
+["Qual é o nome do famoso ogro verde?",["Shrek","Po","Simba","Sullivan"],0],
+["Em Procurando Nemo, Nemo é um...",["Tubarão","Peixe-palhaço","Golfinho","Polvo"],1],
+["Quem é o pai de Simba em O Rei Leão?",["Scar","Mufasa","Timon","Rafiki"],1],
+["Qual animação tem um panda chamado Po?",["Madagascar","Kung Fu Panda","Carros","Monstros S.A."],1],
+["Quem é o protagonista vermelho de Carros?",["Mate","Relâmpago McQueen","Chick Hicks","Doc"],1],
+["Qual filme tem Alegria e Tristeza como personagens?",["Encanto","Divertida Mente","Up","Luca"],1],
+["Como são chamados os ajudantes amarelos de Gru?",["Smurfs","Minions","Trolls","Muppets"],1],
+["Em Madagascar, Alex é um...",["Leão","Zebra","Hipopótamo","Girafa"],0],
+["Em Encanto, qual é o sobrenome da família de Mirabel?",["Madrigal","Rivera","Montoya","Garcia"],0],
+["Em Monstros S.A., quem é grande, azul e peludo?",["Mike","Sullivan","Randall","Boo"],1],
+["Qual é um poder de Violeta em Os Incríveis?",["Invisibilidade","Superforça","Gelo","Voo"],0],
+["Quem é o boneco de neve de Frozen?",["Sven","Olaf","Hans","Kristoff"],1],
+["Em Up, o que faz a casa voar?",["Asas","Balões","Foguetes","Magia"],1],
+["Em Ratatouille, Remy é um...",["Gato","Rato","Coelho","Cachorro"],1],
+["Em A Era do Gelo, Sid é uma...",["Preguiça","Morsa","Raposa","Lontra"],0],
+["Qual é o nome do dragão de Soluço?",["Banguela","Tempestade","Draco","Fúria"],0],
+["Em Luca, a história se passa principalmente em qual país?",["Espanha","Itália","França","Portugal"],1],
+["Em Zootopia, Judy Hopps é uma...",["Raposa","Coelha","Gazela","Lontra"],1]
+];
+
+document.querySelectorAll('.numbers').forEach(n=>{for(let i=1;i<=20;i++){const s=document.createElement('span');s.textContent=i;n.appendChild(s);}});
+
+const racers=[
+  {name:'VOCÊ', klass:'formula1', score:0, q:0, end:0, human:true},
+  {name:'CPU NITRO', klass:'roadster', score:0, q:0, end:0, acc:.62, min:1700, max:3300},
+  {name:'CPU TURBO', klass:'cybertruck', score:0, q:0, end:0, acc:.72, min:1450, max:3000},
+  {name:'CPU FAÍSCA', klass:'hovercar', score:0, q:0, end:0, acc:.80, min:1250, max:2700}
+];
+
+const $=id=>document.getElementById(id);
+let startTime=0, started=false, finis
