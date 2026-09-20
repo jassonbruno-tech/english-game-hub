@@ -144,7 +144,6 @@ const racers=[
 ];
 let start=performance.now(),locked=false,finished=false;
 const $=id=>document.getElementById(id);
-function pos(score){return 62+(score/20)*(window.innerWidth>900?760:Math.max(300,window.innerWidth-190))}
 function update(){
  racers.forEach((r,i)=>{
    $("c"+i).style.left=Math.min(94,5+(r.score/20)*86)+"%";
@@ -154,7 +153,8 @@ function update(){
 }
 function puff(i){
  const car=$("c"+i),p=$("p"+i);
- p.style.left=car.style.left;p.style.top=(i*0)+"px";
+ p.style.left=car.style.left;
+ p.style.top="0px";
  p.classList.remove("go");void p.offsetWidth;p.classList.add("go");
 }
 function renderQ(){
@@ -185,6 +185,7 @@ function cpuStep(i){
  const correct=Math.random()<r.acc;r.q++;
  if(correct){r.score++;update();puff(i)}
  const wait=(r.min+Math.random()*(r.max-r.min))+(correct?0:3000);
+ if(r.q>=20 && !r.end) r.end=performance.now()-start+wait;
  setTimeout(()=>cpuStep(i),wait);
 }
 function checkEnd(){
