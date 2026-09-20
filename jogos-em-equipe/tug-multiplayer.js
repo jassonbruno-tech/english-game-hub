@@ -28,13 +28,36 @@ function renderMe(){
  $('status').textContent=soloMode?'Equipe definida. As outras três equipes serão simuladas neste computador.':test2Mode?(myColor==='blue'?'Você é a Equipe Azul. Aguardando a Equipe Amarela...':'Você é a Equipe Amarela. Aguardando a Equipe Azul...'):'Equipe registrada neste computador. Aguarde as outras equipes.';
 }
 function renderTeams(rows){
- const teams={};const cutoff=Date.now()-60000;(rows||[]).filter(r=>r.connected&&(!test2Mode||!r.last_seen||new Date(r.last_seen).getTime()>cutoff)).forEach(r=>teams[r.color]=r);
+ const teams={};const cutoff=Date.now()-10000;(rows||[]).filter(r=>r.connected&&(!test2Mode||!r.last_seen||new Date(r.last_seen).getTime()>cutoff)).forEach(r=>teams[r.color]=r);
  const activeColors=test2Mode?COLORS.slice(0,2):COLORS;
  const n=activeColors.filter(c=>teams[c.id]).length;$('connected').textContent=n+'/'+(test2Mode?2:4);
  COLORS.forEach(c=>{const el=$('slot-'+c.id);if(test2Mode&&['green','red'].includes(c.id)){el.style.display='none';return}const on=!!teams[c.id];el.classList.toggle('on',on);el.querySelector('.slotState').textContent=on?(teams[c.id].device_id===deviceId?'VOCÊ':'CONECTADA'):'AGUARDANDO'});
- $('readyBox').hidden=n!==(test2Mode?2:4);
+ $('readyBox').hidden=test2Mode?true:n!==4;
  const readyTitle=$('readyBox')?.querySelector('b');if(readyTitle&&test2Mode)readyTitle.textContent='✅ OS 2 COMPUTADORES ESTÃO PRONTOS';
- if(n===(test2Mode?2:4))$('status').textContent=test2Mode?'Os 2 computadores estão conectados. Partida de teste pronta para começar.':'As 4 equipes estão conectadas. Campeonato pronto para começar.';
+ if(n===(test2Mode?2:4))$('status').textContent=test2Mode?'Os 2 computadores estão conectados. Preparando a partida...':'As 4 equipes estão conectadas. Campeonato pronto para começar.';
+ if(test2Mode)updateTest2Gate(n);
+}
+function updateTest2Gate(n){
+ if(!test2Mode)return;
+ let gate=document.getElementById('test2Gate');
+ if(!gate){
+   gate=document.createElement('div');gate.id='test2Gate';
+   gate.style.cssText='position:fixed;inset:0;z-index:99999;display:grid;place-items:center;background:radial-gradient(circle at 50% 15%,#172554,#020617 68%);color:#fff;padding:24px;font-family:Arial,sans-serif';
+   gate.innerHTML='<div style="max-width:720px;width:94%;text-align:center;background:#0f172ae8;border:2px solid #60a5fa;border-radius:28px;padding:34px;box-shadow:0 0 60px #2563eb55"><div id="test2GateEmoji" style="font-size:72px"></div><h1 id="test2GateTitle" style="margin:8px 0;font-size:clamp(30px,5vw,52px)"></h1><p id="test2GateMsg" style="font-size:20px;color:#cbd5e1;margin:12px 0 0"></p><div id="test2GateDots" style="font-size:34px;letter-spacing:10px;margin-top:24px">● ○ ○</div></div>';
+   document.body.appendChild(gate);
+ }
+ const c=COLORS.find(x=>x.id===myColor)||COLORS[0],other=myColor==='yellow'?'AZUL':'AMARELA';
+ document.getElementById('test2GateEmoji').textContent=c.emoji;
+ document.getElementById('test2GateTitle').textContent='VOCÊ É A '+c.name;
+ if(n<2){
+   gate.style.display='grid';
+   document.getElementById('test2GateMsg').textContent='AGUARDANDO A EQUIPE '+other+' ENTRAR NA SALA...';
+   document.getElementById('test2GateDots').textContent='● ○ ○';
+ }else{
+   document.getElementById('test2GateMsg').textContent='ADVERSÁRIO CONECTADO! PREPARANDO A PARTIDA...';
+   document.getElementById('test2GateDots').textContent='● ● ●';
+   if(!goingToGame)setTimeout(()=>{if(!goingToGame)enterGame()},700);
+ }
 }
 async function loadTeams(){
  const {data,error}=await sb.from('tug_devices').select('room_code,device_id,color,connected,last_seen').eq('room_code',room);
@@ -56,14 +79,14 @@ function startSolo(){
 
 async function startSupabase(){
  $('setupBox').hidden=true;$('status').textContent='Conectando ao campeonato...';
- const {data:color,error}=await sb.rpc('tug_claim_team',{p_room:room,p_device:deviceId});
+ const {data:color,error}=await sb.rpc(test2Mode?'tug_claim_test2_team':'tug_claim_team',{p_room:room,p_device:deviceId});
  if(error)throw error;
  if(!color){$('status').textContent='Sala cheia. Os 4 computadores já foram definidos.';await loadTeams();return}
  myColor=color;renderMe();await loadTeams();
  channel=sb.channel('tug-lobby-'+room)
   .on('postgres_changes',{event:'*',schema:'public',table:'tug_devices',filter:'room_code=eq.'+room},()=>loadTeams().catch(()=>{}))
   .subscribe();
- heartbeat=setInterval(async()=>{if(!myColor)return;await sb.from('tug_devices').update({connected:true,last_seen:new Date().toISOString()}).eq('room_code',room).eq('device_id',deviceId)},20000);
+ heartbeat=setInterval(async()=>{if(!myColor)return;await sb.from('tug_devices').update({connected:true,last_seen:new Date().toISOString()}).eq('room_code',room).eq('device_id',deviceId)},test2Mode?3000:20000);
  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&myColor)sb.from('tug_devices').update({connected:true,last_seen:new Date().toISOString()}).eq('room_code',room).eq('device_id',deviceId)});
  window.addEventListener('pagehide',()=>{if(myColor&&!goingToGame)sb.rpc('tug_disconnect',{p_room:room,p_device:deviceId})});
 }
