@@ -19,16 +19,16 @@ if(soloMode)sessionStorage.setItem(deviceKey,deviceId);else localStorage.setItem
 const cfg=window.TUG_SUPABASE_CONFIG||{};
 const onlineReady=!!(cfg.url&&cfg.key&&window.supabase?.createClient);
 const sb=onlineReady?window.supabase.createClient(cfg.url,cfg.key):null;
-let myColor=null,channel=null,heartbeat=null;
+let myColor=null,channel=null,heartbeat=null,goingToGame=false;
 
 function renderMe(){
  const c=COLORS.find(x=>x.id===myColor);if(!c)return;
  const card=$('identity');card.hidden=false;card.style.setProperty('--team',c.hex);
  $('teamEmoji').textContent=c.emoji;$('teamName').textContent='VOCÊ É A '+c.name;$('teamName').style.color=c.hex;
- $('status').textContent=soloMode?'Equipe definida. As outras três equipes serão simuladas neste computador.':'Equipe registrada neste computador. Aguarde as outras equipes.';
+ $('status').textContent=soloMode?'Equipe definida. As outras três equipes serão simuladas neste computador.':test2Mode?(myColor==='blue'?'Você é a Equipe Azul. Aguardando a Equipe Amarela...':'Você é a Equipe Amarela. Aguardando a Equipe Azul...'):'Equipe registrada neste computador. Aguarde as outras equipes.';
 }
 function renderTeams(rows){
- const teams={};(rows||[]).filter(r=>r.connected).forEach(r=>teams[r.color]=r);
+ const teams={};const cutoff=Date.now()-60000;(rows||[]).filter(r=>r.connected&&(!test2Mode||!r.last_seen||new Date(r.last_seen).getTime()>cutoff)).forEach(r=>teams[r.color]=r);
  const activeColors=test2Mode?COLORS.slice(0,2):COLORS;
  const n=activeColors.filter(c=>teams[c.id]).length;$('connected').textContent=n+'/'+(test2Mode?2:4);
  COLORS.forEach(c=>{const el=$('slot-'+c.id);if(test2Mode&&['green','red'].includes(c.id)){el.style.display='none';return}const on=!!teams[c.id];el.classList.toggle('on',on);el.querySelector('.slotState').textContent=on?(teams[c.id].device_id===deviceId?'VOCÊ':'CONECTADA'):'AGUARDANDO'});
@@ -43,7 +43,7 @@ async function loadTeams(){
 function enterGame(){
  if(!myColor)return;
  const target=soloMode?'tug-simulacao.html':'tug-multiplayer-game.html';
- const u=new URL(target,location.href);u.searchParams.set('sala',room);u.searchParams.set('equipe',myColor);u.searchParams.set('modo',soloMode?'simulacao':test2Mode?'teste2':'multiplayer');if(test2Mode)u.searchParams.set('teste2','1');u.searchParams.set('v','20260920-test2-existing1');location.href=u.href;
+ const u=new URL(target,location.href);u.searchParams.set('sala',room);u.searchParams.set('equipe',myColor);u.searchParams.set('modo',soloMode?'simulacao':test2Mode?'teste2':'multiplayer');if(test2Mode){u.searchParams.set('teste2','1');u.searchParams.set('dev',deviceId)}u.searchParams.set('v','20260920-test2-wait1');goingToGame=true;location.href=u.href;
 }
 $('enterGame').onclick=enterGame;
 
@@ -65,7 +65,7 @@ async function startSupabase(){
   .subscribe();
  heartbeat=setInterval(async()=>{if(!myColor)return;await sb.from('tug_devices').update({connected:true,last_seen:new Date().toISOString()}).eq('room_code',room).eq('device_id',deviceId)},20000);
  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&myColor)sb.from('tug_devices').update({connected:true,last_seen:new Date().toISOString()}).eq('room_code',room).eq('device_id',deviceId)});
- window.addEventListener('pagehide',()=>{if(myColor)sb.rpc('tug_disconnect',{p_room:room,p_device:deviceId})});
+ window.addEventListener('pagehide',()=>{if(myColor&&!goingToGame)sb.rpc('tug_disconnect',{p_room:room,p_device:deviceId})});
 }
 
 if(test2Mode){
