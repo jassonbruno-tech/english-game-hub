@@ -1,0 +1,67 @@
+hed=false, locked=false, clockTimer=null, cpuTimers=[];
+function updateCars(){
+  racers.forEach((r,i)=>{
+    const pct=3 + (r.score/20)*92;
+    $("c"+i).style.left=pct+"%";
+    $("p"+i).style.left=Math.max(1,pct-3.6)+"%";
+    $("r"+i).textContent=r.score+" acertos";
+  });
+  const nearFinish=racers.some(r=>r.score>=15);
+  $('gameTitle').classList.toggle('alert',nearFinish && !finished);
+}
+function puff(i){const p=$("p"+i);p.classList.remove('go');void p.offsetWidth;p.classList.add('go');}
+function disableAnswers(v){document.querySelectorAll('.answer').forEach(b=>b.disabled=v)}
+function renderQuestion(){
+  const h=racers[0];
+  if(h.q>=20){$('qHud').textContent='20/20';$('question').textContent='Você concluiu as 20 perguntas. Acompanhe o final da corrida!';$('answers').innerHTML='';checkEnd();return;}
+  $('qHud').textContent=String(h.q+1).padStart(2,'0')+'/20';
+  const [q,opts]=Q[h.q]; $('question').textContent=q; $('answers').innerHTML='';
+  opts.forEach((t,i)=>{const b=document.createElement('button');b.type='button';b.className='answer';b.textContent=String.fromCharCode(65+i)+') '+t;b.addEventListener('click',()=>answerHuman(i,b));$('answers').appendChild(b);});
+}
+function answerHuman(i,btn){
+  if(!started||locked||racers[0].q>=20) return;
+  locked=true; disableAnswers(true);
+  const r=racers[0], item=Q[r.q], correct=i===item[2]; r.q++;
+  if(correct){r.score++;btn.classList.add('good');updateCars();puff(0);if(r.q>=20) r.end=performance.now()-startTime;setTimeout(()=>{locked=false;renderQuestion();},420);}
+  else{btn.classList.add('bad'); let n=3; $('penaltyN').textContent=n; $('penalty').classList.add('show'); const t=setInterval(()=>{n--; $('penaltyN').textContent=Math.max(0,n); if(n<=0){clearInterval(t); $('penalty').classList.remove('show'); if(r.q>=20) r.end=performance.now()-startTime; locked=false; renderQuestion();}},1000);} }
+function scheduleCPU(i,delay){const id=setTimeout(()=>cpuStep(i),delay);cpuTimers.push(id)}
+function cpuStep(i){
+  if(!started||finished) return;
+  const r=racers[i];
+  if(r.q>=20){if(!r.end) r.end=performance.now()-startTime; checkEnd(); return;}
+  const correct=Math.random()<r.acc; r.q++; if(correct){r.score++;updateCars();puff(i);} const wait=(r.min+Math.random()*(r.max-r.min))+(correct?0:3000); if(r.q>=20&&!r.end) r.end=performance.now()-startTime+wait; scheduleCPU(i,wait);
+}
+function checkEnd(){
+  if(finished) return;
+  if(racers.every(r=>r.q>=20)){
+    finished=true; started=false; clearInterval(clockTimer);
+    $('gameTitle').classList.remove('alert');
+    setTimeout(showWinner,500);
+  }
+}
+function showWinner(){
+  const rank=[...racers].sort((a,b)=>b.score-a.score || a.end-b.end);
+  const win=rank[0];
+  const emoji=win.name==='VOCÊ'?'🏎️':win.name==='CPU NITRO'?'🚗':win.name==='CPU TURBO'?'🚙':'🚕';
+  $('winnerName').textContent=win.name;
+  $('winnerCar').textContent=emoji;
+  $('winnerOverlay').classList.add('show');
+  setTimeout(()=>{
+    $('winnerOverlay').classList.remove('show');
+    showPodium();
+  },3000);
+}
+function podiumEmoji(name){return name==='VOCÊ'?'🏎️':name==='CPU NITRO'?'🚗':name==='CPU TURBO'?'🚙':'🚕';}
+function showPodium(){
+  const rank=[...racers].sort((a,b)=>b.score-a.score || a.end-b.end);
+  const order=[rank[1],rank[0],rank[2]], cls=['second','first','third'], medals=['🥈','🥇','🥉'];
+  $('steps').innerHTML='';
+  order.forEach((r,i)=>{const d=document.createElement('div');d.className='step '+cls[i];d.innerHTML=`<div class="medal">${medals[i]}</div><div class="podcar">${podiumEmoji(r.name)}</div><div class="pname">${r.name}</div><div class="pmini">${r.score} acertos</div>`;$('steps').appendChild(d);});
+  $('fourth').textContent='4º lugar: '+rank[3].name+' — '+rank[3].score+' acertos'; $('podiumOverlay').classList.remove('hidden');
+}
+function startGame(){if(started) return; $('startOverlay').classList.add('hidden'); $('podiumOverlay').classList.add('hidden'); started=true; finished=false; locked=false; startTime=performance.now(); updateCars(); renderQuestion(); clockTimer=setInterval(()=>{const s=Math.floor((performance.now()-startTime)/1000); $('clock').textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');},250); scheduleCPU(1,900); scheduleCPU(2,1150); scheduleCPU(3,1400);}
+function resetGame(){cpuTimers.forEach(clearTimeout); cpuTimers=[]; clearInterval(clockTimer); racers.forEach(r=>{r.score=0;r.q=0;r.end=0;}); started=false; finished=false; locked=false; $('clock').textContent='00:00'; $('qHud').textContent='01/20'; $('question').textContent='Prepare-se para a largada!'; $('answers').innerHTML=''; $('penalty').classList.remove('show'); $('podiumOverlay').classList.add('hidden'); $('winnerOverlay').classList.remove('show'); $('gameTitle').classList.remove('alert'); $('startOverlay').classList.remove('hidden'); updateCars();}
+$('startBtn').addEventListener('click',startGame); $('restartBtn').addEventListener('click',resetGame); resetGame();
+</script>
+</body>
+</html>
