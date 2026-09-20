@@ -3,226 +3,234 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#060816">
+<meta name="theme-color" content="#050816">
 <title>Cabo de Guerra Mobile — Você vs CPU</title>
 <style>
-*{box-sizing:border-box}
-html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:Inter,Arial,sans-serif;background:#050816;color:#fff}
-button{font:inherit}
-body{background:
-radial-gradient(circle at 18% 0%,#5b21b655 0,transparent 34%),
-radial-gradient(circle at 85% 8%,#0891b255 0,transparent 30%),
-linear-gradient(145deg,#050816,#0a1024 50%,#12103a)}
-.wrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:8px}
-.game{position:relative;width:min(100vw,177.78vh);height:min(56.25vw,100vh);overflow:hidden;border:1px solid #4f6f9d55;border-radius:22px;background:linear-gradient(180deg,#071225,#0a1024);box-shadow:0 20px 60px #000b}
-.game:before{content:"";position:absolute;inset:0;background-image:linear-gradient(#67e8f911 1px,transparent 1px),linear-gradient(90deg,#67e8f911 1px,transparent 1px);background-size:34px 34px;pointer-events:none}
-
-.top{position:absolute;left:2%;right:2%;top:2%;height:11%;display:flex;align-items:center;justify-content:space-between;z-index:5}
-.titlebox{background:linear-gradient(135deg,#0d1530ee,#161342ee);border:2px solid #67e8f977;border-radius:18px;padding:8px 18px;box-shadow:0 0 24px #22d3ee33}
-.title{font-weight:1000;font-size:clamp(20px,3.2vw,44px);background:linear-gradient(90deg,#fff,#67e8f9,#c084fc);-webkit-background-clip:text;background-clip:text;color:transparent}
-.sub{font-size:clamp(8px,1vw,13px);color:#b7c4e2;text-align:center}
-.hud{display:flex;gap:8px}
-.pill{background:#0e1731e6;border:1px solid #64748b55;border-radius:12px;padding:8px 12px;font-weight:900;font-size:clamp(9px,1vw,13px)}
-.pill b{color:#67e8f9}
-
-.arena{position:absolute;left:2%;right:2%;top:14%;height:43%;border-radius:20px;overflow:hidden;border:2px solid #9eefff77;background:linear-gradient(180deg,#20b8ff 0 45%,#5ee66f 45% 61%,#23b95e 61% 100%);box-shadow:0 0 28px #22d3ee22,inset 0 0 0 1px #ffffff18}
-.arena:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#ffffff18,transparent 40%),radial-gradient(circle at 50% 120%,#7c3aed33,transparent 42%);pointer-events:none}
-.cloud{position:absolute;background:#fff;border-radius:999px;opacity:.9;filter:drop-shadow(0 5px 7px #087ea744)}
-.c1{width:88px;height:26px;left:8%;top:9%}.c2{width:74px;height:22px;right:9%;top:13%}.cloud:before,.cloud:after{content:"";position:absolute;background:#fff;border-radius:50%}.cloud:before{width:30px;height:30px;left:12px;top:-14px}.cloud:after{width:38px;height:38px;right:10px;top:-18px}
-.ground{position:absolute;left:0;right:0;bottom:0;height:38%;background:linear-gradient(180deg,#df9146,#984b21)}
-.center{position:absolute;left:50%;top:43%;bottom:0;width:3px;background:#fff;box-shadow:0 0 12px #fff,0 0 18px #67e8f9;transform:translateX(-50%);z-index:3}
-.score{position:absolute;left:50%;top:7%;transform:translateX(-50%);display:flex;align-items:center;gap:12px;background:linear-gradient(145deg,#081225f2,#111c3af0);border:1px solid #67e8f977;border-radius:14px;padding:7px 14px;z-index:6;box-shadow:0 8px 24px #0008,0 0 20px #22d3ee44}
-.snum{font-size:clamp(22px,2.5vw,34px);font-weight:1000;background:#020617aa;border-radius:9px;padding:0 9px}
-.sname{font-weight:1000;font-size:clamp(10px,1.1vw,14px)}
-.blue{color:#67e8f9}.red{color:#ff5b7d}
-
-.team{position:absolute;bottom:22%;display:flex;gap:2px;z-index:5;transition:transform .75s cubic-bezier(.1,.82,.18,1)}
-.team.left{left:8%}.team.right{right:8%;transform:scaleX(-1)}
-.person{position:relative;width:24px;height:74px;--shirt:#22d3ee}
-.head{position:absolute;left:5px;top:0;width:18px;height:20px;border-radius:50%;background:#e2ad84;border:1px solid #5c382a}
-.hair{position:absolute;left:4px;top:-2px;width:20px;height:9px;border-radius:50% 50% 30% 30%;background:#2b211b;z-index:2}
-.eye{position:absolute;top:7px;width:4px;height:5px;background:#fff;border:1px solid #111;border-radius:50%;z-index:3}.e1{left:9px}.e2{left:15px}.eye:after{content:"";position:absolute;width:2px;height:3px;background:#111;border-radius:50%;left:1px;top:1px}
-.body{position:absolute;left:4px;top:19px;width:20px;height:30px;border-radius:7px;background:var(--shirt);border:1px solid #14213a}
-.arm{position:absolute;top:28px;width:20px;height:6px;border-radius:5px;background:#e2ad84;transform:rotate(-7deg);left:18px}
-.leg{position:absolute;top:47px;width:7px;height:24px;background:#1f2937;border-radius:4px}.l1{left:6px}.l2{left:15px}
-.mouth{position:absolute;left:10px;top:14px;width:8px;height:4px;border-bottom:2px solid #7f1d1d;border-radius:0 0 8px 8px;z-index:3}
-.team.winner .person{animation:jump .5s ease-in-out 3}.team.loser .mouth{border-bottom:0;border-top:2px solid #7f1d1d;border-radius:8px 8px 0 0}
-@keyframes jump{50%{transform:translateY(-12px)}}
-
-.ropeWrap{position:absolute;left:9%;right:9%;bottom:28%;height:20px;z-index:4;transition:transform .8s cubic-bezier(.1,.82,.18,1)}
-.rope{position:absolute;left:0;right:0;top:7px;height:9px;border-radius:999px;background:repeating-linear-gradient(45deg,#ffd47d 0 9px,#b76625 9px 18px);box-shadow:0 2px 0 #5d351c inset,0 2px 6px #0007}
-.flag{position:absolute;left:50%;top:-12px;width:3px;height:32px;background:#101321;border:1px solid #fff;transform:translateX(-50%)}
-.flag:after{content:"";position:absolute;left:3px;top:2px;border-top:8px solid transparent;border-bottom:8px solid transparent;border-left:25px solid #ff2d75}
-.msg{position:absolute;left:50%;bottom:4%;transform:translateX(-50%);z-index:7;background:#071226ee;border:1px solid #67e8f966;border-radius:11px;padding:6px 12px;font-weight:900;font-size:clamp(9px,1vw,13px);white-space:nowrap}
-
-.play{position:absolute;left:2%;right:2%;bottom:2%;height:38%;display:grid;grid-template-columns:1fr 150px;gap:10px;z-index:6}
-.panel{background:linear-gradient(145deg,#0b1227ee,#111a38ee);border:1px solid #4f6f9d55;border-radius:18px;padding:10px 12px;box-shadow:0 14px 36px #0009,inset 0 1px 0 #ffffff12;overflow:hidden}
-.qtop{display:flex;justify-content:space-between;align-items:center;gap:8px}
-.qmeta{font-weight:1000;color:#67e8f9;font-size:clamp(9px,1vw,13px)}
-.timer{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle,#071124 0 54%,#0e1d3a 55%);border:4px solid #22d3ee;font-weight:1000;font-size:20px;box-shadow:0 0 20px #22d3ee77}
-.timer.critical{border-color:#ff3b6b;box-shadow:0 0 26px #ff3b6b99}
-.question{font-size:clamp(13px,1.7vw,22px);font-weight:1000;line-height:1.1;margin:6px 0 8px}
-.opts{display:grid;grid-template-columns:1fr 1fr;gap:7px}
-.opt{min-height:38px;border-radius:11px;border:1px solid #5e719766;background:linear-gradient(135deg,#101a35,#0a1127);color:#fff;font-weight:900;padding:8px 10px;text-align:left}
-.opt:active{transform:scale(.99)}.opt.selected{outline:2px solid #fff}.opt.correct{background:linear-gradient(135deg,#24f59a,#84ff73);color:#052e16;border-color:#b7ffcf}.opt.wrong{background:linear-gradient(135deg,#ff3b6b,#ef4444);border-color:#ffb0c2}
-.side{display:flex;flex-direction:column;gap:8px}
-.sidebox{flex:1;background:linear-gradient(145deg,#0d1530ee,#161342ee);border:1px solid #67e8f944;border-radius:15px;padding:9px;text-align:center;display:flex;flex-direction:column;justify-content:center}
-.cpuThink{font-size:28px;animation:pulse .8s infinite alternate}@keyframes pulse{to{transform:scale(1.12);filter:brightness(1.2)}}
-.status{font-size:clamp(9px,1vw,12px);font-weight:900;color:#dbeafe}
-.start,.end{position:absolute;inset:0;z-index:20;background:rgba(2,6,23,.82);display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px)}
-.card{width:min(78%,560px);background:linear-gradient(145deg,#0d1530f2,#161342f2);border:2px solid #67e8f977;border-radius:24px;padding:24px;text-align:center;box-shadow:0 0 35px #7c3aed66,0 20px 60px #000c}
-.card h1{margin:0;font-size:clamp(28px,5vw,52px);background:linear-gradient(90deg,#fff,#67e8f9,#c084fc);-webkit-background-clip:text;color:transparent}
-.card p{color:#c9d5ef;font-weight:800;line-height:1.35}
-.btn{border:0;border-radius:13px;padding:12px 22px;font-weight:1000;color:#fff;background:linear-gradient(135deg,#06b6d4,#7c3aed 55%,#ec4899);box-shadow:0 0 24px #22d3ee55}
-.hidden{display:none!important}
-.rotate-warning{display:none;position:fixed;inset:0;z-index:99;background:#081423;color:#fff;align-items:center;justify-content:center;text-align:center;padding:24px;font-weight:1000}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050816}
+iframe{border:0;width:100%;height:100%;display:block}
+.rotate-warning{display:none;position:fixed;inset:0;z-index:999;background:#081423;color:#fff;align-items:center;justify-content:center;text-align:center;padding:24px;font:900 20px Arial,sans-serif}
 .rotate-box{max-width:520px;display:flex;flex-direction:column;gap:16px;align-items:center}
-.rotate-box small{font-size:.72em;color:#cfe4ff}
-@media (orientation:portrait) and (max-width:950px){.rotate-warning{display:none}}
-@media(max-width:950px) and (orientation:landscape){
-  .wrap{padding:0}.game{width:100vw;height:100dvh;border-radius:0}
-  .top{top:.8%;height:12%}.titlebox{padding:5px 12px;border-radius:12px}.title{font-size:clamp(18px,4vw,30px)}.sub{font-size:clamp(7px,1.3vw,10px)}
-  .pill{padding:5px 8px;font-size:clamp(7px,1.3vw,10px)}
-  .arena{top:14%;height:44%;left:1%;right:1%;border-radius:14px}
-  .team.left{left:4%}.team.right{right:4%}.person{transform:scale(.88);transform-origin:bottom}
-  .score{top:5%;padding:4px 9px}.snum{font-size:clamp(18px,3vw,26px)}.sname{font-size:clamp(8px,1.4vw,11px)}
-  .play{left:1%;right:1%;bottom:1%;height:40%;grid-template-columns:1fr 122px;gap:6px}
-  .panel{border-radius:13px;padding:7px 8px}.question{font-size:clamp(11px,2vw,16px);margin:4px 0 5px}.qmeta{font-size:clamp(8px,1.4vw,10px)}
-  .timer{width:42px;height:42px;font-size:17px;border-width:3px}
-  .opts{gap:5px}.opt{min-height:31px;padding:5px 7px;font-size:clamp(8px,1.4vw,11px);border-radius:9px}
-  .sidebox{padding:5px;border-radius:10px}.cpuThink{font-size:22px}.status{font-size:clamp(7px,1.25vw,9px)}
-  .msg{font-size:clamp(7px,1.3vw,10px);padding:4px 8px}
-}
+.rotate-box small{font-size:.72em;line-height:1.35;color:#cfe4ff}
+.rotate-box button{border:0;border-radius:14px;padding:13px 20px;font-weight:1000;color:#fff;background:linear-gradient(135deg,#06b6d4,#7c3aed,#ec4899)}
 </style>
 </head>
 <body>
-<div class="rotate-warning" id="rotateWarning"><div class="rotate-box">📱 Gire o celular para o modo paisagem.<small>Se já estiver deitado e esta tela continuar aparecendo:</small><button class="btn" id="forceBtn">JOGAR ASSIM MESMO</button></div></div>
-<div class="wrap">
-<div class="game">
-  <div class="top">
-    <div class="titlebox"><div class="title">CABO DE GUERRA</div><div class="sub">Você contra o computador</div></div>
-    <div class="hud"><div class="pill">Rodada <b id="roundHud">1/8</b></div><div class="pill">Modo <b>SOLO</b></div></div>
+<div class="rotate-warning" id="rotateWarning">
+  <div class="rotate-box">
+    📱 Gire o celular para o modo paisagem.
+    <small>Se o aparelho já estiver deitado e esta tela continuar aparecendo:</small>
+    <button id="forceBtn">JOGAR ASSIM MESMO</button>
   </div>
-
-  <div class="arena">
-    <div class="cloud c1"></div><div class="cloud c2"></div><div class="ground"></div><div class="center"></div>
-    <div class="score"><span class="sname blue">VOCÊ</span><span class="snum" id="leftScore">0</span><span>×</span><span class="snum" id="rightScore">0</span><span class="sname red">CPU</span></div>
-    <div class="team left" id="leftTeam"></div>
-    <div class="team right" id="rightTeam"></div>
-    <div class="ropeWrap" id="ropeWrap"><div class="rope"></div><div class="flag"></div></div>
-    <div class="msg" id="arenaMsg">Responda antes do tempo acabar!</div>
-  </div>
-
-  <div class="play">
-    <div class="panel">
-      <div class="qtop"><div class="qmeta" id="qMeta">Pergunta 1/8</div><div class="timer" id="timer">20</div></div>
-      <div class="question" id="question">Prepare-se!</div>
-      <div class="opts" id="options"></div>
-    </div>
-    <div class="side">
-      <div class="sidebox"><div class="cpuThink" id="cpuIcon">🤖</div><div class="status" id="cpuStatus">CPU aguardando...</div></div>
-      <div class="sidebox"><div class="status" id="playerStatus">Sua vez!</div></div>
-    </div>
-  </div>
-
-  <div class="start" id="startOverlay"><div class="card"><h1>CABO DE GUERRA</h1><p>Você contra o computador.<br>8 rodadas • 20 segundos por pergunta.<br>Se apenas um acertar, ele puxa a corda. Empate vai para morte súbita.</p><button class="btn" id="startBtn">COMEÇAR</button></div></div>
-  <div class="end hidden" id="endOverlay"><div class="card"><h1 id="endTitle">FIM DE JOGO</h1><p id="endText"></p><button class="btn" id="againBtn">JOGAR NOVAMENTE</button></div></div>
 </div>
-</div>
+<iframe id="gameFrame" src="../jogos-em-equipe/tug-of-war.html?v=mobile-solo-original-1" allow="autoplay"></iframe>
 <script>
-const BANK=[
-{q:'Complete: ___ am a student.',a:'I',o:['I','You','He','They']},
-{q:'Complete: She ___ my friend.',a:'is',o:['am','is','are','be']},
-{q:'Complete: They ___ at school.',a:'are',o:['is','am','are','be']},
-{q:"Choose the correct pronoun for 'Maria'.",a:'She',o:['He','She','It','They']},
-{q:'Complete: We ___ happy today.',a:'are',o:['am','is','are','be']},
-{q:"Choose the correct pronoun for 'Pedro and Lucas'.",a:'They',o:['He','We','They','It']},
-{q:'Complete: You ___ my teacher.',a:'are',o:['is','am','are','be']},
-{q:"Choose the correct pronoun for 'The dog'.",a:'It',o:['He','She','It','We']},
-{q:'Complete: He ___ 12 years old.',a:'is',o:['am','is','are','be']},
-{q:'Complete: I ___ from Brazil.',a:'am',o:['am','is','are','be']},
-{q:"Choose the correct pronoun for 'Ana and I'.",a:'We',o:['They','We','You','She']},
-{q:'Complete: It ___ a beautiful day.',a:'is',o:['am','is','are','be']},
-{q:'Complete: My parents ___ at home.',a:'are',o:['am','is','are','be']},
-{q:"Choose the correct pronoun for 'John'.",a:'He',o:['He','She','It','They']},
-{q:'Complete: The books ___ new.',a:'are',o:['am','is','are','be']},
-{q:"Choose the correct pronoun for 'My sister and I'.",a:'We',o:['We','They','You','She']},
-{q:'Complete: The cat ___ under the table.',a:'is',o:['am','is','are','be']},
-{q:'Complete: You and I ___ friends.',a:'are',o:['am','is','are','be']},
-{q:"Choose the correct pronoun for 'The cars'.",a:'They',o:['It','They','We','He']},
-{q:'Complete: I ___ not tired.',a:'am',o:['am','is','are','be']}
-];
-const $=id=>document.getElementById(id);
-let questions=[],round=0,leftScore=0,rightScore=0,time=20,timer=null,locked=false,cpuChoice=null,sudden=false;
-function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
-function buildTeam(el,color){el.innerHTML='';for(let i=0;i<5;i++){const p=document.createElement('div');p.className='person';p.style.setProperty('--shirt',color);p.innerHTML='<div class="hair"></div><div class="head"></div><div class="eye e1"></div><div class="eye e2"></div><div class="mouth"></div><div class="body"></div><div class="arm"></div><div class="leg l1"></div><div class="leg l2"></div>';el.appendChild(p)}}
-buildTeam($('leftTeam'),'#22d3ee');buildTeam($('rightTeam'),'#ff4f7a');
+const frame=document.getElementById('gameFrame');
 
-function setRope(){const d=Math.max(-5,Math.min(5,leftScore-rightScore));$('ropeWrap').style.transform='translateX('+(-d*18)+'px)'}
-function mood(win){
-  $('leftTeam').classList.remove('winner','loser');$('rightTeam').classList.remove('winner','loser');
-  if(win==='left'){$('leftTeam').classList.add('winner');$('rightTeam').classList.add('loser')}
-  if(win==='right'){$('rightTeam').classList.add('winner');$('leftTeam').classList.add('loser')}
+function syncOrientation(){
+  const mobileLike=Math.min(innerWidth,innerHeight)<950;
+  const landscape=innerWidth>innerHeight;
+  const forced=sessionStorage.getItem('tug-force-landscape')==='1';
+  document.getElementById('rotateWarning').style.display=(mobileLike&&!landscape&&!forced)?'flex':'none';
 }
-function resetMood(){$('leftTeam').classList.remove('winner','loser');$('rightTeam').classList.remove('winner','loser')}
-function prepare(){questions=shuffle(BANK).slice(0,8);round=0;leftScore=rightScore=0;sudden=false;updateScore()}
-function updateScore(){$('leftScore').textContent=leftScore;$('rightScore').textContent=rightScore;setRope()}
-function render(){
-  locked=false;cpuChoice=null;resetMood();clearInterval(timer);time=20;tick();
-  const q=questions[round];
-  $('question').textContent=q.q;
-  $('roundHud').textContent=(sudden?'SD':(round+1)+'/8');
-  $('qMeta').textContent=sudden?'MORTE SÚBITA':('Pergunta '+(round+1)+'/8');
-  $('arenaMsg').textContent='Responda antes do computador!';
-  $('playerStatus').textContent='Sua vez!';
-  $('cpuStatus').textContent='CPU pensando...';
-  $('cpuIcon').textContent='🤖';
-  const opts=shuffle(q.o);$('options').innerHTML='';
-  opts.forEach(v=>{const b=document.createElement('button');b.className='opt';b.textContent=v;b.dataset.v=v;b.onclick=()=>answer(v,b);$('options').appendChild(b)});
-  const cpuDelay=2200+Math.random()*5200;
-  setTimeout(()=>cpuAnswer(q),cpuDelay);
-  timer=setInterval(()=>{time--;tick();if(time<=0){clearInterval(timer);if(!locked){locked=true;$('playerStatus').textContent='Tempo esgotado!';disable();setTimeout(()=>reveal('TIME'),350)}}},1000);
-}
-function tick(){$('timer').textContent=time;$('timer').classList.toggle('critical',time<=5)}
-function disable(){document.querySelectorAll('.opt').forEach(b=>b.disabled=true)}
-function cpuAnswer(q){if(cpuChoice!==null)return;const acc=.72;cpuChoice=Math.random()<acc?q.a:shuffle(q.o.filter(x=>x!==q.a))[0];$('cpuStatus').textContent='CPU respondeu ✓';$('cpuIcon').textContent='✅';if(locked&&$('playerStatus').textContent!=='Sua vez!')setTimeout(()=>reveal(window.playerChoice||'TIME'),250)}
-function answer(v,b){if(locked)return;locked=true;window.playerChoice=v;clearInterval(timer);disable();b.classList.add('selected');$('playerStatus').textContent='Resposta enviada ✓';if(cpuChoice===null){$('arenaMsg').textContent='Aguardando a CPU...';const wait=setInterval(()=>{if(cpuChoice!==null){clearInterval(wait);reveal(v)}},100)}else reveal(v)}
-function reveal(player){
-  const q=questions[round];if(cpuChoice===null)cpuAnswer(q);
-  setTimeout(()=>{
-    const okP=player===q.a,okC=cpuChoice===q.a;
-    document.querySelectorAll('.opt').forEach(b=>{if(b.dataset.v===q.a)b.classList.add('correct');else if(b.dataset.v===player)b.classList.add('wrong')});
-    if(okP&&!okC){leftScore++;mood('left');$('arenaMsg').textContent='VOCÊ PUXOU! 💪'}
-    else if(okC&&!okP){rightScore++;mood('right');$('arenaMsg').textContent='CPU PUXOU! 🤖'}
-    else if(okP&&okC){$('arenaMsg').textContent='OS DOIS ACERTARAM — corda parada!'}
-    else{$('arenaMsg').textContent='OS DOIS ERRARAM — resposta: '+q.a}
-    $('cpuStatus').textContent=okC?'CPU acertou ✅':'CPU errou ✖';
-    $('playerStatus').textContent=okP?'Você acertou ✅':'Você errou ✖';
-    updateScore();
-    setTimeout(nextRound,1900);
-  },220);
-}
-function nextRound(){
-  if(sudden){if(leftScore!==rightScore)return finish();questions.push(shuffle(BANK)[0]);round++;return render()}
-  if(round<7){round++;return render()}
-  if(leftScore===rightScore){sudden=true;questions.push(shuffle(BANK)[0]);round++;$('arenaMsg').textContent='EMPATE! MORTE SÚBITA!';return setTimeout(render,900)}
-  finish();
-}
-function finish(){
-  clearInterval(timer);
-  const win=leftScore>rightScore;
-  $('endTitle').textContent=win?'🏆 VOCÊ VENCEU!':'🤖 CPU VENCEU';
-  $('endText').textContent='Placar final: '+leftScore+' × '+rightScore+(win?' — excelente puxada!':' — tente novamente!');
-  $('endOverlay').classList.remove('hidden');
-}
-$('startBtn').onclick=()=>{$('startOverlay').classList.add('hidden');prepare();render()};
-$('againBtn').onclick=()=>{$('endOverlay').classList.add('hidden');prepare();render()};
+document.getElementById('forceBtn').onclick=()=>{sessionStorage.setItem('tug-force-landscape','1');syncOrientation()};
+addEventListener('resize',syncOrientation);
+addEventListener('orientationchange',()=>setTimeout(syncOrientation,180));
+syncOrientation();
 
-// orientação robusta
-let force=false;
-function syncOrientation(){const mobileLike=Math.min(innerWidth,innerHeight)<950,landscape=innerWidth>innerHeight;$('rotateWarning').style.display=(mobileLike&&!landscape&&!force)?'flex':'none'}
-$('forceBtn').onclick=()=>{force=true;syncOrientation()};
-addEventListener('resize',syncOrientation);addEventListener('orientationchange',()=>setTimeout(syncOrientation,180));setTimeout(syncOrientation,0);setTimeout(syncOrientation,350);
+frame.addEventListener('load',()=>{
+  const d=frame.contentDocument;
+  const w=frame.contentWindow;
+  if(!d)return;
+
+  const style=d.createElement('style');
+  style.textContent=`
+  /* Base: preservar arena/personagens/corda do HTML original */
+  html,body{height:100%!important;overflow:hidden!important;background:#050816!important}
+  #cover{height:100dvh!important;padding-bottom:4dvh!important;background-position:center!important}
+  .cover-play{font-size:clamp(18px,5vw,30px)!important;min-width:220px!important;padding:12px 28px!important}
+
+  #game{
+    height:100dvh!important;
+    padding:4px 6px!important;
+    gap:4px!important;
+    grid-template-rows:36px 185px minmax(0,1fr) 0!important;
+    background:radial-gradient(circle at 16% 0%,#5b21b655 0,transparent 32%),radial-gradient(circle at 85% 8%,#0891b255 0,transparent 30%),linear-gradient(145deg,#050816 0%,#0a1024 48%,#12103a 100%)!important;
+  }
+  .topbar{height:36px!important;min-height:0!important}
+  .brand h1{font-size:clamp(15px,3.3vw,21px)!important}
+  .brand small{display:none!important}
+  .stage{font-size:clamp(8px,1.45vw,11px)!important;padding:4px 8px!important;background:#312e81!important;border-color:#c4b5fd66!important}
+  .bracket{display:none!important}
+
+  .arena{height:185px!important;border-radius:15px!important}
+  .scoreboard{top:5px!important;padding:4px 8px!important;gap:6px!important;border-radius:10px!important}
+  .score-team{min-width:100px!important;font-size:clamp(9px,1.55vw,12px)!important}
+  .score-num{font-size:clamp(18px,3vw,24px)!important;min-width:23px!important}
+  .arena-msg{bottom:3px!important;font-size:clamp(8px,1.45vw,11px)!important;padding:4px 8px!important;min-width:210px!important}
+
+  /* Mantém a geometria original da mão/corda, só escala tudo junto no mobile */
+  .arena-inner-mobile{transform-origin:center bottom}
+  .team-people{bottom:10px!important;transform-origin:bottom center!important}
+  .team-people.left{left:1.8%!important}
+  .team-people.right{right:1.8%!important}
+  .person{width:36px!important;height:96px!important;transform-origin:bottom center!important}
+  .right .person{transform:scaleX(-1)!important}
+  .person.short{transform:scale(.94)!important}
+  .right .person.short{transform:scale(.94) scaleX(-1)!important}
+  .person.tall{transform:scaleY(1.04)!important}
+  .right .person.tall{transform:scaleY(1.04) scaleX(-1)!important}
+  .rope-wrap{left:12%!important;right:12%!important;bottom:61px!important;height:18px!important}
+  .rope{top:6px!important;height:8px!important}
+
+  .play-area{
+    min-height:0!important;height:100%!important;
+    padding:5px 7px!important;gap:3px!important;
+    grid-template-rows:35px auto minmax(0,1fr) auto!important;
+    overflow:hidden!important;
+    border-radius:12px!important;
+    background:linear-gradient(145deg,#0b1227ee,#111a38ee)!important;
+  }
+  .question-top{height:35px!important}
+  .qmeta{font-size:clamp(8px,1.35vw,10px)!important}
+  .right-note{font-size:clamp(7px,1.2vw,9px)!important}
+  .timer-label{font-size:7px!important}
+  .timer{width:39px!important;height:39px!important;font-size:15px!important;border-width:3px!important}
+  .question-text{font-size:clamp(12px,2vw,17px)!important;line-height:1.05!important;margin:0!important;min-height:22px!important}
+  .teams{gap:6px!important;min-height:0!important;height:100%!important}
+  .team-card{padding:4px 5px!important;border-radius:10px!important;grid-template-rows:24px minmax(0,1fr)!important;min-height:0!important;overflow:hidden!important}
+  .team-header{margin-bottom:2px!important;height:24px!important}
+  .team-name{font-size:clamp(9px,1.6vw,12px)!important}
+  .status{font-size:clamp(7px,1.2vw,9px)!important;padding:2px 4px!important}
+  .options{
+    grid-template-columns:1fr 1fr!important;
+    grid-template-rows:repeat(2,minmax(31px,1fr))!important;
+    gap:4px!important;
+    min-height:0!important;
+    align-content:stretch!important;
+  }
+  .opt{
+    min-height:31px!important;
+    height:100%!important;
+    padding:4px 6px!important;
+    border-radius:8px!important;
+    font-size:clamp(8px,1.4vw,11px)!important;
+    line-height:1.05!important;
+    white-space:normal!important;
+    overflow:visible!important;
+  }
+  .result{font-size:clamp(8px,1.3vw,10px)!important;padding:3px 6px!important}
+  .controls{height:0!important;overflow:hidden!important}
+  #nextMatchBtn{display:none!important}
+  .test-panel{display:none!important}
+
+  .round-box,.countdown-box,.modal-card{min-width:min(500px,88vw)!important;padding:18px 24px!important;border-radius:18px!important}
+  .round-number{font-size:clamp(34px,8vw,58px)!important}
+  .ready-text{font-size:clamp(20px,4vw,34px)!important}
+  .countdown-number{font-size:clamp(90px,22vw,170px)!important}
+  `;
+  d.head.appendChild(style);
+
+  /* Rótulos solo */
+  const brand=d.querySelector('.brand h1');
+  if(brand)brand.textContent='🏆 Cabo de Guerra — Você vs CPU';
+  const stage=d.getElementById('stageLabel');
+  if(stage)stage.textContent='MODO SOLO';
+  const rightNote=d.querySelector('.right-note');
+  if(rightNote)rightNote.textContent='CPU responde automaticamente';
+
+  /* Script novo: reutiliza TODA a mecânica visual original,
+     inclusive pessoas, mãos, corda, puxada, expressões e animações. */
+  const solo=d.createElement('script');
+  solo.textContent=`
+    // fixa uma única partida solo usando a estrutura original
+    mi=0; fin=[]; L='blue'; R='red';
+
+    const originalTeams=teams;
+    teams=function(){
+      document.querySelectorAll('.chip').forEach(x=>x.classList.remove('current'));
+      L='blue'; R='red';
+      document.getElementById('stageLabel').textContent='MODO SOLO';
+      const a=T[L],b=T[R];
+      document.getElementById('leftName').textContent='VOCÊ';
+      document.getElementById('rightName').textContent='CPU';
+      document.getElementById('leftTeamLabel').textContent='🔵 VOCÊ';
+      document.getElementById('rightTeamLabel').textContent='🤖 CPU';
+      document.getElementById('leftScoreName').style.color=a.color;
+      document.getElementById('rightScoreName').style.color=b.color;
+      document.getElementById('leftCard').style.setProperty('--team-color',a.color);
+      document.getElementById('rightCard').style.setProperty('--team-color',b.color);
+      [...document.getElementById('leftPeople').children].forEach(p=>p.style.setProperty('--shirt',a.color));
+      [...document.getElementById('rightPeople').children].forEach(p=>p.style.setProperty('--shirt',b.color));
+      resetMoods();
+    };
+
+    function cpuAutoAnswer(){
+      if(rev || ra!==null)return;
+      const q=qs[qi];
+      const accuracy=.72;
+      const choice=Math.random()<accuracy?q.a:sh(q.o.filter(x=>x!==q.a))[0];
+      const buttons=[...document.getElementById('rightOptions').children];
+      const btn=buttons.find(b=>b.dataset.value===choice);
+      if(btn)pick('right',choice,btn);
+    }
+
+    const originalRender=render;
+    render=function(){
+      originalRender();
+      document.getElementById('rightStatus').textContent='CPU pensando...';
+      [...document.getElementById('rightOptions').children].forEach(b=>{b.onclick=null;b.style.pointerEvents='none'});
+      const delay=1800+Math.random()*4200;
+      auto=setTimeout(cpuAutoAnswer,delay);
+    };
+
+    // no tempo esgotado, a CPU ainda deve responder se ainda estiver pensando
+    const originalTimeout=timeout;
+    timeout=function(){
+      if(ra===null)cpuAutoAnswer();
+      originalTimeout();
+    };
+
+    // uma partida só; ao final mostra modal simples
+    endMatch=function(){
+      stop(); clearTimeout(auto);
+      const playerWon=ls>rs;
+      const tied=ls===rs;
+      if(tied){
+        sd=true;
+        document.getElementById('resultBox').textContent='Empate! Morte súbita.';
+        document.getElementById('resultBox').style.display='block';
+        return setTimeout(next,1500);
+      }
+      const winner=playerWon?'blue':'red';
+      document.getElementById('resultBox').textContent=(playerWon?'🏆 VOCÊ VENCEU!':'🤖 CPU VENCEU!')+' Placar: '+ls+' × '+rs;
+      document.getElementById('resultBox').style.display='block';
+      celebrate(winner);
+      document.getElementById('arenaMsg').textContent='PARTIDA ENCERRADA';
+      setTimeout(()=>{
+        document.getElementById('championTitle').textContent=playerWon?'🏆 VOCÊ VENCEU!':'🤖 CPU VENCEU!';
+        document.getElementById('championText').textContent='Placar final: '+ls+' × '+rs;
+        document.getElementById('championModal').classList.add('show');
+      },1800);
+    };
+
+    reset=function(){
+      stop();clearTimeout(auto);
+      mi=0;fin=[];L='blue';R='red';
+      document.getElementById('championModal').classList.remove('show');
+      startMatch();
+    };
+
+    document.getElementById('playAgain').onclick=()=>{
+      document.getElementById('championModal').classList.remove('show');
+      reset();
+    };
+
+    // remove painel de teste e ajusta textos do cover
+    const test=document.querySelector('.test-panel'); if(test)test.remove();
+    const btn=document.getElementById('startGame'); if(btn)btn.textContent='▶ JOGAR SOLO';
+  `;
+  d.body.appendChild(solo);
+});
 </script>
 </body>
 </html>
