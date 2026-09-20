@@ -1,369 +1,86 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Corrida Maluca — Filmes & Desenhos</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Corrida Maluca Futurista — Filmes & Desenhos</title>
 <style>
 *{box-sizing:border-box}
-html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#071a33;font-family:Arial,Helvetica,sans-serif}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:Arial,Helvetica,sans-serif;background:#07111f}
 button{font-family:inherit}
-.viewport{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#071a33}
-.stage{
-  position:relative;
-  width:min(100vw,177.78vh);
-  height:min(56.25vw,100vh);
-  overflow:hidden;
-  background:url("corrida-maluca-bg.jpg?v=2") center center/100% 100% no-repeat;
-  box-shadow:0 0 40px rgba(0,0,0,.45);
-  user-select:none;
-  -webkit-user-select:none;
+:root{
+  --bg1:#07111f; --bg2:#0b1f39; --panel:#0f2038; --panel2:#132a49; --text:#f4f8ff;
+  --muted:#b7caec; --line:#2d4d84; --glow:#5fd6ff; --glow2:#9a5bff;
 }
-.rotate{
-  display:none;position:fixed;inset:0;z-index:9999;background:#0f2747;color:#fff;
-  align-items:center;justify-content:center;text-align:center;padding:28px;font-weight:900;font-size:22px
-}
-@media (orientation:portrait) and (max-width:900px){.rotate{display:flex}}
+.rotate-warning{display:none;position:fixed;inset:0;z-index:999;background:#081423;color:#fff;align-items:center;justify-content:center;text-align:center;padding:28px;font-weight:900;font-size:22px}
+@media (orientation:portrait) and (max-width: 900px){.rotate-warning{display:flex}}
+.viewport{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden;background:radial-gradient(circle at top,#31206a 0,#10244c 34%,#08111f 72%,#04070d 100%)}
+.stage{position:relative;width:min(100vw,177.78vh);height:min(56.25vw,100vh);overflow:hidden;background:linear-gradient(180deg,#160d31 0%,#0b1830 38%,#07111f 100%);box-shadow:0 0 40px rgba(0,0,0,.45), inset 0 0 60px rgba(255,255,255,.02)}
 
-/* pistas funcionais sobre a arte */
-.race-lane{
-  position:absolute;left:18.1%;width:68.5%;height:6.2%;
-  background:linear-gradient(180deg,rgba(80,87,99,.98),rgba(63,69,80,.98));
-  border-top:1px solid rgba(255,255,255,.55);border-bottom:1px solid rgba(255,255,255,.55);
-  z-index:3;overflow:hidden
-}
-.race-lane:after{
-  content:"";position:absolute;left:0;right:0;top:50%;height:2px;
-  background:repeating-linear-gradient(90deg,rgba(255,255,255,.55) 0 2.4%,transparent 2.4% 4.2%);
-  transform:translateY(-50%)
-}
-.l0{top:22.2%}.l1{top:31.4%}.l2{top:40.6%}.l3{top:49.8%}
-.team-badge{
-  position:absolute;left:6.2%;width:11.4%;height:5.9%;z-index:7;border-radius:5px;
-  display:flex;align-items:center;justify-content:center;text-align:center;color:#fff;
-  font-weight:1000;font-size:clamp(8px,1.15vw,15px);line-height:1.05;
-  border:2px solid rgba(255,255,255,.85);text-shadow:1px 1px 1px rgba(0,0,0,.35)
-}
-.tb0{top:22.15%;background:#087ce8}.tb1{top:31.35%;background:#de2e31}
-.tb2{top:40.55%;background:#119747}.tb3{top:49.75%;background:#d8a900;color:#17213a;text-shadow:none}
-.car{
-  position:absolute;left:2.6%;top:50%;transform:translate(-50%,-50%);
-  z-index:6;font-size:clamp(23px,3.4vw,49px);transition:left .55s cubic-bezier(.2,.9,.25,1);
-  filter:drop-shadow(0 3px 2px rgba(0,0,0,.45))
-}
-.smoke{position:absolute;z-index:5;opacity:0;font-size:clamp(12px,1.6vw,24px);top:50%;transform:translateY(-50%)}
+/* decoração */
+.grid{position:absolute;inset:0;background:
+linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+background-size:3.2% 6%;opacity:.45;pointer-events:none}
+.glow-orb{position:absolute;border-radius:50%;filter:blur(40px);opacity:.35;pointer-events:none}
+.orb1{width:22%;height:35%;left:-4%;top:-7%;background:#20d6ff}
+.orb2{width:24%;height:38%;right:-6%;top:-9%;background:#ff3d9a}
+
+.header{position:absolute;left:0;right:0;top:1.5%;display:flex;justify-content:center;pointer-events:none;z-index:10}
+.title-box{background:linear-gradient(135deg,rgba(17,33,70,.88),rgba(10,20,40,.88));border:2px solid #4f6dff;border-radius:24px;padding:1.1% 2.8%;box-shadow:0 0 18px rgba(32,214,255,.28), 0 0 28px rgba(255,61,154,.14), inset 0 0 20px rgba(255,255,255,.05)}
+.title{font-size:clamp(25px,3.9vw,54px);font-weight:1000;letter-spacing:1px;line-height:1;color:#ffd83d;text-shadow:0 0 14px rgba(255,216,61,.55), 0 0 28px rgba(255,216,61,.22)}
+.subtitle{font-size:clamp(10px,1.2vw,18px);font-weight:900;color:#f4f8ff;text-align:center;margin-top:.4%}
+
+.hud{position:absolute;right:1.6%;top:3%;width:18%;height:14%;display:grid;grid-template-rows:1fr 1fr;gap:8%;z-index:15}
+.hud-card{background:linear-gradient(180deg,rgba(18,38,74,.92),rgba(10,21,41,.92));border:2px solid #4f6dff;border-radius:16px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;box-shadow:0 0 14px rgba(32,214,255,.18), inset 0 0 14px rgba(255,255,255,.03)}
+.hud-card span{color:#20d6ff;text-shadow:0 0 10px rgba(32,214,255,.45);margin-left:6px}
+
+.track-wrap{position:absolute;left:4%;right:4%;top:17%;height:50%;border-radius:28px;background:linear-gradient(180deg,rgba(16,32,60,.84),rgba(8,16,32,.96));border:2px solid #3559a8;box-shadow:inset 0 0 22px rgba(0,0,0,.42),0 0 18px rgba(32,214,255,.16), 0 0 28px rgba(255,61,154,.08);overflow:hidden}
+.track-wrap:before{content:"";position:absolute;inset:1.4%;border-radius:24px;border:1px solid rgba(160,193,255,.18)}
+.start-tag,.finish-tag{position:absolute;top:3.2%;width:8.3%;height:9%;border-radius:18px;display:flex;align-items:center;justify-content:center;font-weight:1000;font-size:clamp(12px,1.2vw,18px);z-index:7}
+.start-tag{left:1.8%;background:linear-gradient(135deg,#19f28a,#00c3a8);color:#03221f;box-shadow:0 0 18px rgba(25,242,138,.42)}
+.finish-tag{right:1.8%;background:linear-gradient(135deg,#ff7a1a,#ff3d9a);color:#fff;box-shadow:0 0 18px rgba(255,61,154,.34)}
+
+.lane-labels{position:absolute;left:1.8%;top:15%;width:10%;height:74%;display:grid;grid-template-rows:repeat(4,1fr);gap:4.2%;z-index:6}
+.team-label{border-radius:18px;padding:0 8%;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:1000;font-size:clamp(10px,1vw,15px);color:#fff;border:2px solid rgba(255,255,255,.18)}
+.t1{background:linear-gradient(135deg,#20d6ff,#2d7cff)}
+.t2{background:linear-gradient(135deg,#ff4d57,#ff7a1a)}
+.t3{background:linear-gradient(135deg,#19f28a,#00c853)}
+.t4{background:linear-gradient(135deg,#ffd83d,#ff9800);color:#21263a}
+
+.lanes{position:absolute;left:12.5%;right:3%;top:15%;height:74%;display:grid;grid-template-rows:repeat(4,1fr);gap:4.2%;z-index:5}
+.lane{position:relative;border-radius:18px;background:linear-gradient(180deg,#2d3f5d,#1a263b);border:1px solid rgba(255,255,255,.14);overflow:hidden;box-shadow:inset 0 0 16px rgba(0,0,0,.28), 0 0 12px rgba(32,214,255,.08)}
+.lane:before{content:"";position:absolute;left:2%;right:2%;top:50%;height:2px;background:repeating-linear-gradient(90deg,rgba(255,255,255,.6) 0 2.3%,transparent 2.3% 4.6%);transform:translateY(-50%)}
+.lane:after{content:"";position:absolute;right:1.2%;top:0;bottom:0;width:2.4%;background:repeating-linear-gradient(180deg,#fff 0 10px,#202c43 10px 20px)}
+.numbers{position:absolute;left:2.5%;right:5%;bottom:6%;display:grid;grid-template-columns:repeat(20,1fr);gap:0;pointer-events:none}
+.numbers span{font-size:clamp(8px,.74vw,11px);font-weight:900;color:#dfe9ff;text-align:center;opacity:.94;text-shadow:0 0 8px rgba(255,255,255,.08)}
+
+.car{position:absolute;left:2%;top:50%;transform:translate(-50%,-50%) scaleX(-1);width:auto;height:auto;font-size:clamp(28px,3vw,46px);line-height:1;transition:left .55s cubic-bezier(.22,.9,.3,1);filter:drop-shadow(0 4px 4px rgba(0,0,0,.4));z-index:9}
+.smoke{position:absolute;left:0;top:50%;transform:translate(-50%,-50%);font-size:clamp(12px,1vw,18px);opacity:0;z-index:8}
 .smoke.go{animation:puff .6s ease-out}
-@keyframes puff{0%{opacity:.9;transform:translate(-10px,-50%) scale(.7)}100%{opacity:0;transform:translate(-40px,-50%) scale(1.5)}}
+@keyframes puff{0%{opacity:.95;transform:translate(-15px,-50%) scale(.7)}100%{opacity:0;transform:translate(-44px,-50%) scale(1.5)}}
 
-/* HUD no mesmo local da arte */
-.hud{
-  position:absolute;right:11.3%;top:2.2%;width:14.5%;height:10.9%;z-index:10;
-  background:rgba(255,255,255,.97);border:3px solid #91b6dc;border-radius:12px;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  font-weight:1000;color:#10205b;box-shadow:0 3px 8px rgba(0,0,0,.2)
-}
-.hud .qh{font-size:clamp(9px,1.35vw,18px)}
-.hud .tm{font-size:clamp(10px,1.5vw,21px);color:#d51f24;margin-top:2px}
-
-/* painel da pergunta cobre o texto fixo do PNG */
-.question-panel{
-  position:absolute;left:2.2%;bottom:5.2%;width:50.8%;height:29.6%;z-index:12;
-  background:rgba(255,255,255,.985);border:3px solid #78aee0;border-radius:16px;
-  padding:1.1% 1.5%;box-shadow:0 4px 9px rgba(0,0,0,.22)
-}
-.tag{
-  display:inline-flex;align-items:center;background:#6d37ce;color:#fff;border-radius:999px;
-  padding:.35% 1.2%;font-size:clamp(8px,1vw,13px);font-weight:1000
-}
-.question{
-  margin:.6% 0 1.2%;font-size:clamp(12px,1.65vw,23px);font-weight:1000;color:#10235f;line-height:1.08;
-  min-height:27%
-}
-.answers{display:grid;grid-template-columns:1fr 1fr;gap:6% 2.5%;height:50%}
-.answer{
-  border:2px solid #c8d9ed;background:#edf5ff;color:#152866;border-radius:12px;
-  padding:1.4% 3%;font-size:clamp(9px,1.18vw,16px);font-weight:900;text-align:left;
-  box-shadow:0 2px 0 #b8cce3;min-width:0
-}
-.answer:active{transform:translateY(1px)}
-.answer.good{background:#d9f8df;border-color:#43b765;color:#12652d}
-.answer.bad{background:#ffd8d8;border-color:#e75c5c;color:#861e1e}
+.question-panel{position:absolute;left:3%;bottom:3.2%;width:57%;height:26%;background:linear-gradient(180deg,rgba(16,30,54,.92),rgba(11,22,41,.94));border:2px solid #4f6dff;border-radius:22px;box-shadow:0 0 20px rgba(32,214,255,.18), 0 0 24px rgba(255,61,154,.08);padding:1.15% 1.8%;z-index:12;overflow:hidden}
+.q-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:.2%}
+.q-badge{display:inline-flex;align-items:center;background:linear-gradient(135deg,#20d6ff,#6f58ff);padding:.6% 1.8%;border-radius:999px;color:#fff;box-shadow:0 0 12px rgba(32,214,255,.24);font-weight:1000;font-size:clamp(10px,1vw,14px)}
+.question-text{color:#f4f8ff;font-size:clamp(12px,1.42vw,22px);font-weight:1000;line-height:1.08;min-height:20%;margin-top:.8%}
+.answers{display:grid;grid-template-columns:1fr 1fr;gap:4% 2.2%;margin-top:1%;height:61%}
+.answer{border:2px solid #b7cbed;border-radius:14px;background:linear-gradient(180deg,#253955,#17263b);color:#fff;padding:1.6% 2.8%;font-size:clamp(9px,.96vw,14px);font-weight:900;text-align:left;box-shadow:0 2px 0 #8eadcf;min-height:34px;line-height:1.1}
+.answer.good{background:linear-gradient(180deg,#18d968,#0fa852);border-color:#19f28a}
+.answer.bad{background:linear-gradient(180deg,#ff5c67,#c12f48);border-color:#ff7b96}
 .answer[disabled]{opacity:.65}
-.penalty{
-  position:absolute;left:22%;right:22%;bottom:3%;background:#d51f24;color:#fff;border:2px solid #ffcf32;
-  border-radius:11px;padding:1% 2%;font-size:clamp(9px,1.05vw,14px);font-weight:1000;text-align:center;display:none
-}
+.answer:hover{box-shadow:0 0 14px rgba(32,214,255,.22);transform:translateY(-1px)}
+.penalty{position:absolute;left:18%;right:18%;bottom:5%;padding:1.1% 2%;background:linear-gradient(135deg,#ff4d57,#a01a2d);color:#fff;border:2px solid #ffd54d;border-radius:12px;text-align:center;font-weight:1000;font-size:clamp(9px,.95vw,14px);display:none}
 .penalty.show{display:block}
 
-/* placar cobre o placar fixo do PNG */
-.score-panel{
-  position:absolute;left:53.6%;bottom:7%;width:26.1%;height:27%;z-index:12;
-  background:rgba(30,75,135,.98);border:3px solid #5ea1d8;border-radius:14px;
-  padding:1%;box-shadow:0 4px 9px rgba(0,0,0,.22)
-}
-.score-title{color:#fff;text-align:center;font-weight:1000;font-size:clamp(9px,1.15vw,15px);margin-bottom:3%}
-.score-row{
-  height:18.5%;display:flex;align-items:center;justify-content:space-between;border-radius:8px;
-  padding:0 4%;margin:2% 0;color:#fff;font-weight:1000;font-size:clamp(8px,1vw,13px)
-}
-.s0{background:#087ce8}.s1{background:#de2e31}.s2{background:#119747}.s3{background:#d8a900;color:#17213a}
-.score-num{background:rgba(255,255,255,.92);color:#10235f;border-radius:999px;padding:2% 5%;white-space:nowrap}
+.score-panel{position:absolute;right:3%;bottom:3.2%;width:33%;height:26%;background:linear-gradient(180deg,rgba(16,30,54,.92),rgba(11,22,41,.94));border:2px solid #4f6dff;border-radius:22px;padding:1.35% 3.2%;box-shadow:0 0 20px rgba(32,214,255,.18), 0 0 24px rgba(255,61,154,.08);z-index:12;overflow:hidden}
+.score-title{color:#fff;font-size:clamp(11px,1.1vw,17px);font-weight:1000;text-align:center;margin-bottom:1.8%;line-height:1.1}
+.score-list{height:84%;display:flex;flex-direction:column;justify-content:space-evenly}
+.score-row{display:grid;grid-template-columns:1fr auto;align-items:center;gap:3%;height:21%}
+.score-name{font-size:clamp(9px,.9vw,13px);font-weight:900;color:#fff;display:flex;align-items:center;line-height:1}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:7px;box-shadow:0 0 8px currentColor}
+.d1{background:#21b8ff;color:#21b8ff}.d2{background:#ff6347;color:#ff6347}.d3{background:#1ddb73;color:#1ddb73}.d4{background:#ffd33d;color:#ffd33d}
+.score-pill{min-width:86px;text-align:center;background:linear-gradient(135deg,#ffffff,#dce7ff);border-radius:999px;box-shadow:0 0 12px rgba(32,214,255,.14);padding:5px 10px;font-size:clamp(9px,.82vw,12px);font-weight:1000;color:#10285a;line-height:1}
 
-/* início */
-.start-overlay{
-  position:absolute;inset:0;z-index:40;background:rgba(5,20,45,.62);
-  display:flex;align-items:center;justify-content:center
-}
-.start-card{
-  width:42%;background:#fff7dd;border:5px solid #fff;outline:4px solid #285a9b;border-radius:22px;
-  padding:2%;text-align:center;box-shadow:0 8px 20px rgba(0,0,0,.35)
-}
-.start-card h2{margin:0;color:#d92824;font-size:clamp(20px,3.4vw,44px)}
-.start-card p{font-weight:800;color:#173e70;font-size:clamp(9px,1.15vw,15px);line-height:1.25}
-.start-btn,.restart{
-  border:0;background:linear-gradient(#ffdf43,#ff9b1c);color:#8c1d13;border-radius:14px;
-  padding:3% 8%;font-weight:1000;font-size:clamp(12px,1.55vw,20px);box-shadow:0 4px 0 #c45f0e
-}
-
-/* pódio */
-.podium-overlay{
-  position:absolute;inset:0;z-index:50;background:rgba(9,28,55,.72);display:none;align-items:center;justify-content:center
-}
-.podium-overlay.show{display:flex}
-.podium-card{
-  width:58%;background:linear-gradient(#b5ecff 0 53%,#6cc56a 53% 100%);
-  border:5px solid #fff;outline:4px solid #315e9d;border-radius:22px;padding:2%;text-align:center
-}
-.podium-title{font-size:clamp(22px,3.4vw,45px);font-weight:1000;color:#ffbd00;text-shadow:2px 2px 0 #8a3e00}
-.steps{display:grid;grid-template-columns:1fr 1.12fr 1fr;gap:2%;align-items:end;margin:2% auto 0;width:86%}
-.step{border:3px solid #fff;border-radius:12px 12px 2px 2px;padding:6% 3%;font-weight:1000;color:#15244d}
-.first{min-height:145px;background:#ffd54b}.second{min-height:112px;background:#dce2ea}.third{min-height:92px;background:#d99a61}
-.medal{font-size:clamp(20px,2.8vw,38px)}.podcar{font-size:clamp(24px,3.4vw,46px)}
-.pname{font-size:clamp(8px,1vw,13px)}.pmini{font-size:clamp(7px,.9vw,12px)}
-.fourth{font-weight:900;color:#11335c;font-size:clamp(8px,1vw,13px);margin:1%}
-.restart{padding:1.7% 5%;margin-top:1%}
-
-/* telas muito baixas */
-@media(max-height:420px){
- .question-panel{bottom:3.4%;height:30.8%}
- .score-panel{bottom:5.2%;height:28.5%}
- .first{min-height:110px}.second{min-height:88px}.third{min-height:72px}
-}
-</style>
-</head>
-<body>
-<div class="rotate">📱 Gire o celular para o modo paisagem.</div>
-<div class="viewport">
-  <main class="stage" id="stage">
-    <div class="hud"><div class="qh" id="qHud">Questão 01/20</div><div class="tm" id="clock">⏱ 00:00</div></div>
-
-    <div class="team-badge tb0">VOCÊ</div>
-    <div class="team-badge tb1">CPU NITRO</div>
-    <div class="team-badge tb2">CPU TURBO</div>
-    <div class="team-badge tb3">CPU FAÍSCA</div>
-
-    <div class="race-lane l0"><span class="smoke" id="p0">💨</span><span class="car" id="c0">🏎️</span></div>
-    <div class="race-lane l1"><span class="smoke" id="p1">💨</span><span class="car" id="c1">🚗</span></div>
-    <div class="race-lane l2"><span class="smoke" id="p2">💨</span><span class="car" id="c2">🚙</span></div>
-    <div class="race-lane l3"><span class="smoke" id="p3">💨</span><span class="car" id="c3">🚕</span></div>
-
-    <section class="question-panel">
-      <div class="tag">🎬 FILMES & DESENHOS</div>
-      <div class="question" id="question">Prepare-se para a largada!</div>
-      <div class="answers" id="answers"></div>
-      <div class="penalty" id="penalty">🚧 PENALIDADE — aguarde <span id="penaltyN">3</span>s</div>
-    </section>
-
-    <aside class="score-panel">
-      <div class="score-title">🏆 DESEMPENHO</div>
-      <div class="score-row s0"><span>VOCÊ</span><span class="score-num" id="r0">0 acertos</span></div>
-      <div class="score-row s1"><span>CPU NITRO</span><span class="score-num" id="r1">0 acertos</span></div>
-      <div class="score-row s2"><span>CPU TURBO</span><span class="score-num" id="r2">0 acertos</span></div>
-      <div class="score-row s3"><span>CPU FAÍSCA</span><span class="score-num" id="r3">0 acertos</span></div>
-    </aside>
-
-    <div class="start-overlay" id="startOverlay">
-      <div class="start-card">
-        <h2>🏁 CORRIDA MALUCA</h2>
-        <p>Você contra 3 CPUs. São 20 perguntas de filmes e desenhos.<br>Acertou: avança. Errou: 3 segundos de penalidade.</p>
-        <button class="start-btn" id="startBtn">LARGAR! 🏎️</button>
-      </div>
-    </div>
-
-    <div class="podium-overlay" id="podium">
-      <div class="podium-card">
-        <div class="podium-title">🏆 PÓDIO FINAL</div>
-        <div class="steps" id="steps"></div>
-        <div class="fourth" id="fourth"></div>
-        <button class="restart" id="restartBtn">🔁 JOGAR NOVAMENTE</button>
-      </div>
-    </div>
-  </main>
-</div>
-
-<script>
-const Q=[
-["Em Toy Story, quem é o cowboy?",["Buzz Lightyear","Woody","Rex","Slinky"],1],
-["Em Frozen, quem tem poderes de gelo?",["Anna","Olaf","Elsa","Kristoff"],2],
-["Qual é o nome do famoso ogro verde?",["Shrek","Po","Simba","Sullivan"],0],
-["Em Procurando Nemo, Nemo é um...",["Tubarão","Peixe-palhaço","Golfinho","Polvo"],1],
-["Quem é o pai de Simba em O Rei Leão?",["Scar","Mufasa","Timon","Rafiki"],1],
-["Qual animação tem um panda chamado Po?",["Madagascar","Kung Fu Panda","Carros","Monstros S.A."],1],
-["Quem é o protagonista vermelho de Carros?",["Mate","Relâmpago McQueen","Chick Hicks","Doc"],1],
-["Qual filme tem Alegria e Tristeza como personagens?",["Encanto","Divertida Mente","Up","Luca"],1],
-["Como são chamados os ajudantes amarelos de Gru?",["Smurfs","Minions","Trolls","Muppets"],1],
-["Em Madagascar, Alex é um...",["Leão","Zebra","Hipopótamo","Girafa"],0],
-["Em Encanto, qual é o sobrenome da família de Mirabel?",["Madrigal","Rivera","Montoya","Garcia"],0],
-["Em Monstros S.A., quem é grande, azul e peludo?",["Mike","Sullivan","Randall","Boo"],1],
-["Qual é um poder de Violeta em Os Incríveis?",["Invisibilidade","Superforça","Gelo","Voo"],0],
-["Quem é o boneco de neve de Frozen?",["Sven","Olaf","Hans","Kristoff"],1],
-["Em Up, o que faz a casa voar?",["Asas","Balões","Foguetes","Magia"],1],
-["Em Ratatouille, Remy é um...",["Gato","Rato","Coelho","Cachorro"],1],
-["Em A Era do Gelo, Sid é uma...",["Preguiça","Morsa","Raposa","Lontra"],0],
-["Qual é o nome do dragão de Soluço?",["Banguela","Tempestade","Draco","Fúria"],0],
-["Em Luca, a história se passa principalmente em qual país?",["Espanha","Itália","França","Portugal"],1],
-["Em Zootopia, Judy Hopps é uma...",["Raposa","Coelha","Gazela","Lontra"],1]
-];
-
-const racers=[
- {name:"VOCÊ",icon:"🏎️",score:0,q:0,end:0,human:true},
- {name:"CPU NITRO",icon:"🚗",score:0,q:0,end:0,acc:.62,min:1700,max:3300},
- {name:"CPU TURBO",icon:"🚙",score:0,q:0,end:0,acc:.72,min:1450,max:3000},
- {name:"CPU FAÍSCA",icon:"🚕",score:0,q:0,end:0,acc:.80,min:1250,max:2700}
-];
-
-const $=id=>document.getElementById(id);
-let startTime=0,started=false,locked=false,finished=false,clockTimer=null,cpuTimers=[];
-
-function reset(){
- racers.forEach(r=>{r.score=0;r.q=0;r.end=0});
- locked=false;finished=false;started=false;
- cpuTimers.forEach(clearTimeout);cpuTimers=[];
- clearInterval(clockTimer);
- $("clock").textContent="⏱ 00:00";
- $("qHud").textContent="Questão 01/20";
- $("question").textContent="Prepare-se para a largada!";
- $("answers").innerHTML="";
- $("penalty").classList.remove("show");
- $("podium").classList.remove("show");
- $("startOverlay").style.display="flex";
- update();
-}
-
-function update(){
- racers.forEach((r,i)=>{
-   const pct=2.6+(r.score/20)*94;
-   $("c"+i).style.left=Math.min(96.5,pct)+"%";
-   $("p"+i).style.left=Math.max(1,pct-3)+"%";
-   $("r"+i).textContent=r.score+" acertos";
- });
-}
-
-function puff(i){
- const p=$("p"+i);
- p.classList.remove("go");void p.offsetWidth;p.classList.add("go");
-}
-
-function renderQ(){
- const h=racers[0];
- if(h.q>=20){
-   $("qHud").textContent="Questão 20/20";
-   $("question").textContent="Você concluiu as 20 perguntas. Acompanhe o final da corrida!";
-   $("answers").innerHTML="";
-   checkEnd();return;
- }
- $("qHud").textContent="Questão "+String(h.q+1).padStart(2,"0")+"/20";
- const [q,opts]=Q[h.q];
- $("question").textContent=q;
- $("answers").innerHTML="";
- opts.forEach((t,i)=>{
-   const b=document.createElement("button");
-   b.className="answer";b.type="button";
-   b.textContent=String.fromCharCode(65+i)+") "+t;
-   b.addEventListener("click",()=>answer(i,b));
-   $("answers").appendChild(b);
- });
-}
-
-function disableAnswers(v){document.querySelectorAll(".answer").forEach(b=>b.disabled=v)}
-
-function answer(i,b){
- if(!started||locked||racers[0].q>=20)return;
- locked=true;disableAnswers(true);
- const r=racers[0], item=Q[r.q], correct=i===item[2];
- r.q++;
- if(correct){
-   r.score++;b.classList.add("good");update();puff(0);
-   if(r.q>=20)r.end=performance.now()-startTime;
-   setTimeout(()=>{locked=false;renderQ()},420);
- }else{
-   b.classList.add("bad");
-   let n=3;$("penaltyN").textContent=n;$("penalty").classList.add("show");
-   const t=setInterval(()=>{
-     n--;$("penaltyN").textContent=Math.max(0,n);
-     if(n<=0){
-       clearInterval(t);$("penalty").classList.remove("show");
-       if(r.q>=20)r.end=performance.now()-startTime;
-       locked=false;renderQ();
-     }
-   },1000);
- }
-}
-
-function scheduleCPU(i,delay){
- const id=setTimeout(()=>cpuStep(i),delay);cpuTimers.push(id);
-}
-
-function cpuStep(i){
- if(!started||finished)return;
- const r=racers[i];
- if(r.q>=20){if(!r.end)r.end=performance.now()-startTime;checkEnd();return}
- const correct=Math.random()<r.acc;
- r.q++;
- if(correct){r.score++;update();puff(i)}
- const wait=(r.min+Math.random()*(r.max-r.min))+(correct?0:3000);
- if(r.q>=20&&!r.end)r.end=performance.now()-startTime+wait;
- scheduleCPU(i,wait);
-}
-
-function checkEnd(){
- if(finished)return;
- if(racers.every(r=>r.q>=20)){
-   finished=true;started=false;
-   setTimeout(showPodium,550);
- }
-}
-
-function showPodium(){
- clearInterval(clockTimer);
- const rank=[...racers].sort((a,b)=>b.score-a.score||a.end-b.end);
- const order=[rank[1],rank[0],rank[2]],cls=["second","first","third"],med=["🥈","🥇","🥉"];
- $("steps").innerHTML="";
- order.forEach((r,i)=>{
-   const d=document.createElement("div");
-   d.className="step "+cls[i];
-   d.innerHTML='<div class="medal">'+med[i]+'</div><div class="podcar">'+r.icon+'</div><div class="pname">'+r.name+'</div><div class="pmini">'+r.score+' acertos</div>';
-   $("steps").appendChild(d);
- });
- $("fourth").textContent="4º lugar: "+rank[3].name+" — "+rank[3].score+" acertos";
- $("podium").classList.add("show");
-}
-
-function startGame(){
- if(started)return;
- $("startOverlay").style.display="none";
- started=true;startTime=performance.now();
- renderQ();update();
- clockTimer=setInterval(()=>{
-   const s=Math.floor((performance.now()-startTime)/1000);
-   $("clock").textContent="⏱ "+String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0");
- },250);
- scheduleCPU(1,900);scheduleCPU(2,1150);scheduleCPU(3,1400);
-}
-
-$("startBtn").addEventListener("click",startGame);
-$("restartBtn").addEventListener("click",reset);
-reset();
-</script>
-</body>
-</html>
+.overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(6,15,28,.62);z-index:30}
+.card{width:42%;background:linear-gradient(180deg,rgba(19,41,76,.95),rgba(10,24,48,.95));border:2px solid #5a8cff;b
