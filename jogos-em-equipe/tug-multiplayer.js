@@ -77,7 +77,7 @@ async function loadTeams(){
 function enterGame(){
  if(!myColor)return;
  const target=soloMode?'tug-simulacao.html':'tug-multiplayer-game.html';
- const u=new URL(target,location.href);u.searchParams.set('sala',room);u.searchParams.set('equipe',myColor);u.searchParams.set('modo',soloMode?'simulacao':test2Mode?'teste2':'multiplayer');if(test2Mode){u.searchParams.set('teste2','1');u.searchParams.set('sessao',test2Session)}u.searchParams.set('v','20260920-responsive2');goingToGame=true;location.href=u.href;
+ const u=new URL(target,location.href);u.searchParams.set('sala',room);u.searchParams.set('equipe',myColor);u.searchParams.set('modo',soloMode?'simulacao':test2Mode?'teste2':'multiplayer');if(test2Mode){u.searchParams.set('teste2','1');u.searchParams.set('sessao',test2Session)}u.searchParams.set('v','20260920-eyes3');goingToGame=true;location.href=u.href;
 }
 $('enterGame').onclick=enterGame;
 
