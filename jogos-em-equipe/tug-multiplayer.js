@@ -9,6 +9,7 @@ const $=id=>document.getElementById(id);
 const params=new URLSearchParams(location.search);
 const room=(params.get('sala')||'LAB703').replace(/[^a-zA-Z0-9_-]/g,'').toUpperCase();
 const soloMode=params.get('sim')==='1';
+const test2Mode=params.get('teste2')==='1';
 $('roomCode').textContent=room;
 function uid(){return 'dev_'+crypto.getRandomValues(new Uint32Array(4)).join('_')}
 const deviceKey='tugDeviceId';
@@ -28,10 +29,12 @@ function renderMe(){
 }
 function renderTeams(rows){
  const teams={};(rows||[]).filter(r=>r.connected).forEach(r=>teams[r.color]=r);
- const n=COLORS.filter(c=>teams[c.id]).length;$('connected').textContent=n+'/4';
- COLORS.forEach(c=>{const el=$('slot-'+c.id),on=!!teams[c.id];el.classList.toggle('on',on);el.querySelector('.slotState').textContent=on?(teams[c.id].device_id===deviceId?'VOCÊ':'CONECTADA'):'AGUARDANDO'});
- $('readyBox').hidden=n!==4;
- if(n===4)$('status').textContent='As 4 equipes estão conectadas. Campeonato pronto para começar.';
+ const activeColors=test2Mode?COLORS.slice(0,2):COLORS;
+ const n=activeColors.filter(c=>teams[c.id]).length;$('connected').textContent=n+'/'+(test2Mode?2:4);
+ COLORS.forEach(c=>{const el=$('slot-'+c.id);if(test2Mode&&['green','red'].includes(c.id)){el.style.display='none';return}const on=!!teams[c.id];el.classList.toggle('on',on);el.querySelector('.slotState').textContent=on?(teams[c.id].device_id===deviceId?'VOCÊ':'CONECTADA'):'AGUARDANDO'});
+ $('readyBox').hidden=n!==(test2Mode?2:4);
+ const readyTitle=$('readyBox')?.querySelector('b');if(readyTitle&&test2Mode)readyTitle.textContent='✅ OS 2 COMPUTADORES ESTÃO PRONTOS';
+ if(n===(test2Mode?2:4))$('status').textContent=test2Mode?'Os 2 computadores estão conectados. Partida de teste pronta para começar.':'As 4 equipes estão conectadas. Campeonato pronto para começar.';
 }
 async function loadTeams(){
  const {data,error}=await sb.from('tug_devices').select('room_code,device_id,color,connected,last_seen').eq('room_code',room);
@@ -40,7 +43,7 @@ async function loadTeams(){
 function enterGame(){
  if(!myColor)return;
  const target=soloMode?'tug-simulacao.html':'tug-multiplayer-game.html';
- const u=new URL(target,location.href);u.searchParams.set('sala',room);u.searchParams.set('equipe',myColor);u.searchParams.set('modo',soloMode?'simulacao':'multiplayer');u.searchParams.set('v','20260918-supabase1');location.href=u.href;
+ const u=new URL(target,location.href);u.searchParams.set('sala',room);u.searchParams.set('equipe',myColor);u.searchParams.set('modo',soloMode?'simulacao':test2Mode?'teste2':'multiplayer');if(test2Mode)u.searchParams.set('teste2','1');u.searchParams.set('v','20260920-test2-existing1');location.href=u.href;
 }
 $('enterGame').onclick=enterGame;
 
@@ -63,6 +66,13 @@ async function startSupabase(){
  heartbeat=setInterval(async()=>{if(!myColor)return;await sb.from('tug_devices').update({connected:true,last_seen:new Date().toISOString()}).eq('room_code',room).eq('device_id',deviceId)},20000);
  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&myColor)sb.from('tug_devices').update({connected:true,last_seen:new Date().toISOString()}).eq('room_code',room).eq('device_id',deviceId)});
  window.addEventListener('pagehide',()=>{if(myColor)sb.rpc('tug_disconnect',{p_room:room,p_device:deviceId})});
+}
+
+if(test2Mode){
+  document.querySelector('.slots').style.gridTemplateColumns='1fr 1fr';
+  const help=document.querySelector('.testHelp');if(help)help.style.display='none';
+  const counter=document.querySelector('.counter');if(counter)counter.firstChild.textContent='Computadores conectados: ';
+  const hero=document.querySelector('.hero h1');if(hero)hero.textContent='🎬 TUG OF WAR — TESTE 2 PCs';
 }
 
 if(soloMode)startSolo();
