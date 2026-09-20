@@ -3,7 +3,7 @@
 <style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050816;font-family:Arial,sans-serif}iframe{border:0;width:100%;height:100%;display:block}.loading{position:fixed;inset:0;display:grid;place-items:center;background:#050816;color:#fff;z-index:20;text-align:center;padding:24px;font-weight:900}.loading.hide{display:none}.loading small{display:block;color:#9fb4dc;margin-top:10px;font-weight:600}</style></head><body>
 <div class="loading" id="loading">Conectando ao campeonato...<small id="loadNote"></small></div><iframe id="outer" src="tug-of-war-final.html?v=20260918-sbwrap1" allow="autoplay"></iframe>
 <script>
-const p=new URLSearchParams(location.search),room=(p.get('sala')||'LAB703').replace(/[^a-zA-Z0-9_-]/g,'').toUpperCase(),player=p.get('equipe')||'blue',test2=p.get('teste2')==='1',deviceId=p.get('dev')||'';
+const p=new URLSearchParams(location.search),room=(p.get('sala')||'LAB703').replace(/[^a-zA-Z0-9_-]/g,'').toUpperCase(),player=p.get('equipe')||'blue',test2=p.get('teste2')==='1',test2Session=p.get('sessao')||'';
 const cfg=window.TUG_SUPABASE_CONFIG||{},loading=document.getElementById('loading'),note=document.getElementById('loadNote'),outer=document.getElementById('outer');
 if(!(cfg.url&&cfg.key&&window.supabase?.createClient)){loading.innerHTML='⚠️ SUPABASE NÃO CARREGOU<small>Atualize a página e tente novamente.</small>'}
 else{
@@ -11,16 +11,16 @@ else{
  let presenceChannel=null,heartbeat=null,started=false;
 
  async function markPresent(){
-   if(!test2||!deviceId)return;
-   await sb.from('tug_devices').update({connected:true,last_seen:new Date().toISOString()}).eq('room_code',room).eq('device_id',deviceId);
+   if(!test2||!test2Session)return;
+   await sb.rpc('tug_test2_ping',{p_room:room,p_session:test2Session});
  }
  async function pairReady(){
    if(!test2)return true;
-   const cutoff=new Date(Date.now()-10000).toISOString();
-   const {data,error}=await sb.from('tug_devices').select('device_id,color,connected,last_seen').eq('room_code',room).eq('connected',true).in('color',['blue','yellow']).gte('last_seen',cutoff);
+   const cutoff=new Date(Date.now()-5000).toISOString();
+   const {data,error}=await sb.from('tug_test2_presence').select('session_id,color,last_seen').eq('room_code',room).gte('last_seen',cutoff);
    if(error)throw error;
-   const colors=new Set((data||[]).map(x=>x.color));
-   const ok=colors.has('blue')&&colors.has('yellow');
+   const fresh=(data||[]);const colors=new Set(fresh.map(x=>x.color));const sessions=new Set(fresh.map(x=>x.session_id));
+   const ok=colors.has('blue')&&colors.has('yellow')&&sessions.size>=2;
    if(!ok){
      const waitingFor=player==='blue'?'EQUIPE AMARELA':'EQUIPE AZUL';
      loading.innerHTML='⏳ AGUARDANDO '+waitingFor+'<small>Você já está conectado como '+(player==='blue'?'EQUIPE AZUL':'EQUIPE AMARELA')+'. O jogo só será liberado quando o outro computador entrar.</small>';
@@ -56,12 +56,12 @@ else{
      await markPresent();
      if(await pairReady()){bootGame();return}
      presenceChannel=sb.channel('tug-game-wait-'+room+'-'+player)
-       .on('postgres_changes',{event:'*',schema:'public',table:'tug_devices',filter:'room_code=eq.'+room},async()=>{if(!started&&await pairReady())bootGame()})
+       .on('postgres_changes',{event:'*',schema:'public',table:'tug_test2_presence',filter:'room_code=eq.'+room},async()=>{if(!started&&await pairReady())bootGame()})
        .subscribe();
-     heartbeat=setInterval(async()=>{await markPresent();if(!started&&await pairReady())bootGame()},3000);
+     heartbeat=setInterval(async()=>{await markPresent();if(!started&&await pairReady())bootGame()},1500);
    }catch(e){loading.innerHTML='⚠️ ERRO DE CONEXÃO<small>'+e.message+'</small>'}
  }
  if(test2)waitForPair(); else bootGame();
- window.addEventListener('pagehide',()=>{if(test2&&deviceId)sb.rpc('tug_disconnect',{p_room:room,p_device:deviceId})});
+ window.addEventListener('pagehide',()=>{if(test2&&test2Session)sb.rpc('tug_test2_leave',{p_room:room,p_session:test2Session})});
 }
 </script></body></html>
