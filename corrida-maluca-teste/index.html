@@ -83,4 +83,216 @@ background-size:3.2% 6%;opacity:.45;pointer-events:none}
 .score-pill{min-width:86px;text-align:center;background:linear-gradient(135deg,#ffffff,#dce7ff);border-radius:999px;box-shadow:0 0 12px rgba(32,214,255,.14);padding:5px 10px;font-size:clamp(9px,.82vw,12px);font-weight:1000;color:#10285a;line-height:1}
 
 .overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(6,15,28,.62);z-index:30}
-.card{width:42%;background:linear-gradient(180deg,rgba(19,41,76,.95),rgba(10,24,48,.95));border:2px solid #5a8cff;b
+.card{width:42%;background:linear-gradient(180deg,rgba(19,41,76,.95),rgba(10,24,48,.95));border:2px solid #5a8cff;border-radius:24px;box-shadow:0 0 20px rgba(32,214,255,.22), 0 0 26px rgba(255,61,154,.12);padding:2.3%;text-align:center;color:#fff}
+.card h2{margin:0;font-size:clamp(22px,3vw,42px);color:#ffd54d}
+.card p{font-size:clamp(10px,1vw,15px);line-height:1.3;color:#d7e6ff;font-weight:800}
+.btn{border:0;background:linear-gradient(135deg,#20d6ff,#ff3d9a);color:#fff;border-radius:14px;padding:3% 8%;font-weight:1000;font-size:clamp(12px,1.25vw,18px);box-shadow:0 4px 0 rgba(16,39,83,.8), 0 0 18px rgba(32,214,255,.2)}
+.hidden{display:none !important}
+
+.podium-card{width:56%;background:linear-gradient(180deg,#102544,#0c1931);border:2px solid #5a8cff;border-radius:24px;box-shadow:0 0 20px rgba(95,214,255,.22);padding:2.3%;text-align:center;color:#fff}
+.podium-title{font-size:clamp(24px,3vw,44px);font-weight:1000;color:#ffd54d}
+.steps{display:grid;grid-template-columns:1fr 1.12fr 1fr;gap:2%;align-items:end;margin-top:2%}
+.step{border:2px solid rgba(255,255,255,.2);border-radius:16px 16px 4px 4px;padding:6% 3%;font-weight:1000;color:#fff}
+.first{min-height:154px;background:linear-gradient(180deg,#ffd83d,#ff9800)}
+.second{min-height:118px;background:linear-gradient(180deg,#d8dfec,#9ea8ba);color:#1a2849}
+.third{min-height:96px;background:linear-gradient(180deg,#ff8f4d,#ff5c35)}
+.medal{font-size:clamp(20px,2.5vw,36px)}
+.podcar{width:auto;height:auto;margin:6px auto;font-size:38px;line-height:1;background:none}
+.pname{font-size:clamp(9px,1vw,14px)}
+.pmini{font-size:clamp(8px,.88vw,12px)}
+.fourth{margin-top:2%;font-size:clamp(9px,1vw,14px);font-weight:900;color:#dbe8ff}
+
+@media(max-height:520px){.track-wrap{top:15%;height:52%}.question-panel,.score-panel{height:28%}.card{width:48%}.podium-card{width:62%}}
+
+.title.alert{animation:titleFlash .62s infinite alternate}
+@keyframes titleFlash{
+  0%{color:#ffd83d;text-shadow:0 0 10px rgba(255,216,61,.5),0 0 20px rgba(255,61,154,.18);transform:scale(1)}
+  100%{color:#ffffff;text-shadow:0 0 18px #20d6ff,0 0 34px #ff3d9a,0 0 46px rgba(255,216,61,.6);transform:scale(1.035)}
+}
+.winner-overlay{position:absolute;inset:0;z-index:45;background:radial-gradient(circle at center,rgba(36,18,77,.94),rgba(4,8,17,.97));display:none;align-items:center;justify-content:center;text-align:center;color:#fff}
+.winner-overlay.show{display:flex;animation:winnerIn .35s ease-out}
+@keyframes winnerIn{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
+.winner-box{width:58%;padding:4% 3%;border-radius:28px;background:linear-gradient(135deg,rgba(18,37,72,.96),rgba(22,12,49,.96));border:2px solid #5a8cff;box-shadow:0 0 28px rgba(32,214,255,.28),0 0 38px rgba(255,61,154,.18)}
+.winner-kicker{font-size:clamp(12px,1.4vw,20px);font-weight:900;color:#20d6ff;letter-spacing:2px}
+.winner-name{margin-top:1.2%;font-size:clamp(28px,4.6vw,68px);font-weight:1000;color:#ffd83d;text-shadow:0 0 14px rgba(255,216,61,.5)}
+.winner-car{margin:1.5% auto 0;font-size:clamp(48px,7vw,96px);filter:drop-shadow(0 6px 8px rgba(0,0,0,.35))}
+
+</style>
+</head>
+<body>
+<div class="rotate-warning">📱 Gire o celular para o modo paisagem para jogar.</div>
+<div class="viewport">
+  <div class="stage">
+    <div class="grid"></div>
+    <div class="glow-orb orb1"></div><div class="glow-orb orb2"></div>
+
+    <div class="header"><div class="title-box"><div class="title" id="gameTitle">CORRIDA MALUCA</div><div class="subtitle">Filmes & Desenhos • Você contra 3 CPUs</div></div></div>
+
+    <div class="hud">
+      <div class="hud-card">Questão <span id="qHud">01/20</span></div>
+      <div class="hud-card">Tempo <span id="clock">00:00</span></div>
+    </div>
+
+    <div class="track-wrap">
+      <div class="start-tag">LARGADA</div>
+      <div class="finish-tag">CHEGADA</div>
+      <div class="lane-labels">
+        <div class="team-label t1">VOCÊ</div>
+        <div class="team-label t2">CPU NITRO</div>
+        <div class="team-label t3">CPU TURBO</div>
+        <div class="team-label t4">CPU FAÍSCA</div>
+      </div>
+      <div class="lanes">
+        <div class="lane"><span class="smoke" id="p0">💨</span><span class="car" id="c0">🏎️</span><div class="numbers"></div></div>
+        <div class="lane"><span class="smoke" id="p1">💨</span><span class="car" id="c1">🚗</span><div class="numbers"></div></div>
+        <div class="lane"><span class="smoke" id="p2">💨</span><span class="car" id="c2">🚙</span><div class="numbers"></div></div>
+        <div class="lane"><span class="smoke" id="p3">💨</span><span class="car" id="c3">🚕</span><div class="numbers"></div></div>
+      </div>
+    </div>
+
+    <div class="question-panel">
+      <div class="q-top"><div class="q-badge">🎬 FILMES & DESENHOS</div></div>
+      <div class="question-text" id="question">Prepare-se para a largada!</div>
+      <div class="answers" id="answers"></div>
+      <div class="penalty" id="penalty">🚧 PENALIDADE — aguarde <span id="penaltyN">3</span>s</div>
+    </div>
+
+    <div class="score-panel">
+      <div class="score-title">🏆 DESEMPENHO DAS EQUIPES</div>
+      <div class="score-list">
+        <div class="score-row"><div class="score-name"><span class="dot d1"></span>Você</div><div class="score-pill" id="r0">0 acertos</div></div>
+        <div class="score-row"><div class="score-name"><span class="dot d2"></span>CPU Nitro</div><div class="score-pill" id="r1">0 acertos</div></div>
+        <div class="score-row"><div class="score-name"><span class="dot d3"></span>CPU Turbo</div><div class="score-pill" id="r2">0 acertos</div></div>
+        <div class="score-row"><div class="score-name"><span class="dot d4"></span>CPU Faísca</div><div class="score-pill" id="r3">0 acertos</div></div>
+      </div>
+    </div>
+
+    <div class="overlay" id="startOverlay">
+      <div class="card">
+        <h2>🏁 CORRIDA MALUCA</h2>
+        <p>Você contra 3 CPUs. São 20 perguntas de filmes e desenhos.<br>Acertou: avança. Errou: 3 segundos de penalidade.</p>
+        <button class="btn" id="startBtn">LARGAR!</button>
+      </div>
+    </div>
+
+
+    <div class="winner-overlay" id="winnerOverlay">
+      <div class="winner-box">
+        <div class="winner-kicker">🏁 VENCEDOR DA CORRIDA</div>
+        <div class="winner-name" id="winnerName">VOCÊ</div>
+        <div class="winner-car" id="winnerCar">🏎️</div>
+      </div>
+    </div>
+
+    <div class="overlay hidden" id="podiumOverlay">
+      <div class="podium-card">
+        <div class="podium-title">🏆 PÓDIO FINAL</div>
+        <div class="steps" id="steps"></div>
+        <div class="fourth" id="fourth"></div>
+        <button class="btn" id="restartBtn">JOGAR NOVAMENTE</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const Q=[
+["Em Toy Story, quem é o cowboy?",["Buzz Lightyear","Woody","Rex","Slinky"],1],
+["Em Frozen, quem tem poderes de gelo?",["Anna","Olaf","Elsa","Kristoff"],2],
+["Qual é o nome do famoso ogro verde?",["Shrek","Po","Simba","Sullivan"],0],
+["Em Procurando Nemo, Nemo é um...",["Tubarão","Peixe-palhaço","Golfinho","Polvo"],1],
+["Quem é o pai de Simba em O Rei Leão?",["Scar","Mufasa","Timon","Rafiki"],1],
+["Qual animação tem um panda chamado Po?",["Madagascar","Kung Fu Panda","Carros","Monstros S.A."],1],
+["Quem é o protagonista vermelho de Carros?",["Mate","Relâmpago McQueen","Chick Hicks","Doc"],1],
+["Qual filme tem Alegria e Tristeza como personagens?",["Encanto","Divertida Mente","Up","Luca"],1],
+["Como são chamados os ajudantes amarelos de Gru?",["Smurfs","Minions","Trolls","Muppets"],1],
+["Em Madagascar, Alex é um...",["Leão","Zebra","Hipopótamo","Girafa"],0],
+["Em Encanto, qual é o sobrenome da família de Mirabel?",["Madrigal","Rivera","Montoya","Garcia"],0],
+["Em Monstros S.A., quem é grande, azul e peludo?",["Mike","Sullivan","Randall","Boo"],1],
+["Qual é um poder de Violeta em Os Incríveis?",["Invisibilidade","Superforça","Gelo","Voo"],0],
+["Quem é o boneco de neve de Frozen?",["Sven","Olaf","Hans","Kristoff"],1],
+["Em Up, o que faz a casa voar?",["Asas","Balões","Foguetes","Magia"],1],
+["Em Ratatouille, Remy é um...",["Gato","Rato","Coelho","Cachorro"],1],
+["Em A Era do Gelo, Sid é uma...",["Preguiça","Morsa","Raposa","Lontra"],0],
+["Qual é o nome do dragão de Soluço?",["Banguela","Tempestade","Draco","Fúria"],0],
+["Em Luca, a história se passa principalmente em qual país?",["Espanha","Itália","França","Portugal"],1],
+["Em Zootopia, Judy Hopps é uma...",["Raposa","Coelha","Gazela","Lontra"],1]
+];
+
+document.querySelectorAll('.numbers').forEach(n=>{for(let i=1;i<=20;i++){const s=document.createElement('span');s.textContent=i;n.appendChild(s);}});
+
+const racers=[
+  {name:'VOCÊ', klass:'formula1', score:0, q:0, end:0, human:true},
+  {name:'CPU NITRO', klass:'roadster', score:0, q:0, end:0, acc:.62, min:1700, max:3300},
+  {name:'CPU TURBO', klass:'cybertruck', score:0, q:0, end:0, acc:.72, min:1450, max:3000},
+  {name:'CPU FAÍSCA', klass:'hovercar', score:0, q:0, end:0, acc:.80, min:1250, max:2700}
+];
+
+const $=id=>document.getElementById(id);
+let startTime=0, started=false, finished=false, locked=false, clockTimer=null, cpuTimers=[];
+function updateCars(){
+  racers.forEach((r,i)=>{
+    const pct=3 + (r.score/20)*92;
+    $("c"+i).style.left=pct+"%";
+    $("p"+i).style.left=Math.max(1,pct-3.6)+"%";
+    $("r"+i).textContent=r.score+" acertos";
+  });
+  const nearFinish=racers.some(r=>r.score>=15);
+  $('gameTitle').classList.toggle('alert',nearFinish && !finished);
+}
+function puff(i){const p=$("p"+i);p.classList.remove('go');void p.offsetWidth;p.classList.add('go');}
+function disableAnswers(v){document.querySelectorAll('.answer').forEach(b=>b.disabled=v)}
+function renderQuestion(){
+  const h=racers[0];
+  if(h.q>=20){$('qHud').textContent='20/20';$('question').textContent='Você concluiu as 20 perguntas. Acompanhe o final da corrida!';$('answers').innerHTML='';checkEnd();return;}
+  $('qHud').textContent=String(h.q+1).padStart(2,'0')+'/20';
+  const [q,opts]=Q[h.q]; $('question').textContent=q; $('answers').innerHTML='';
+  opts.forEach((t,i)=>{const b=document.createElement('button');b.type='button';b.className='answer';b.textContent=String.fromCharCode(65+i)+') '+t;b.addEventListener('click',()=>answerHuman(i,b));$('answers').appendChild(b);});
+}
+function answerHuman(i,btn){
+  if(!started||locked||racers[0].q>=20) return;
+  locked=true; disableAnswers(true);
+  const r=racers[0], item=Q[r.q], correct=i===item[2]; r.q++;
+  if(correct){r.score++;btn.classList.add('good');updateCars();puff(0);if(r.q>=20) r.end=performance.now()-startTime;setTimeout(()=>{locked=false;renderQuestion();},420);}
+  else{btn.classList.add('bad'); let n=3; $('penaltyN').textContent=n; $('penalty').classList.add('show'); const t=setInterval(()=>{n--; $('penaltyN').textContent=Math.max(0,n); if(n<=0){clearInterval(t); $('penalty').classList.remove('show'); if(r.q>=20) r.end=performance.now()-startTime; locked=false; renderQuestion();}},1000);} }
+function scheduleCPU(i,delay){const id=setTimeout(()=>cpuStep(i),delay);cpuTimers.push(id)}
+function cpuStep(i){
+  if(!started||finished) return;
+  const r=racers[i];
+  if(r.q>=20){if(!r.end) r.end=performance.now()-startTime; checkEnd(); return;}
+  const correct=Math.random()<r.acc; r.q++; if(correct){r.score++;updateCars();puff(i);} const wait=(r.min+Math.random()*(r.max-r.min))+(correct?0:3000); if(r.q>=20&&!r.end) r.end=performance.now()-startTime+wait; scheduleCPU(i,wait);
+}
+function checkEnd(){
+  if(finished) return;
+  if(racers.every(r=>r.q>=20)){
+    finished=true; started=false; clearInterval(clockTimer);
+    $('gameTitle').classList.remove('alert');
+    setTimeout(showWinner,500);
+  }
+}
+function showWinner(){
+  const rank=[...racers].sort((a,b)=>b.score-a.score || a.end-b.end);
+  const win=rank[0];
+  const emoji=win.name==='VOCÊ'?'🏎️':win.name==='CPU NITRO'?'🚗':win.name==='CPU TURBO'?'🚙':'🚕';
+  $('winnerName').textContent=win.name;
+  $('winnerCar').textContent=emoji;
+  $('winnerOverlay').classList.add('show');
+  setTimeout(()=>{
+    $('winnerOverlay').classList.remove('show');
+    showPodium();
+  },3000);
+}
+function podiumEmoji(name){return name==='VOCÊ'?'🏎️':name==='CPU NITRO'?'🚗':name==='CPU TURBO'?'🚙':'🚕';}
+function showPodium(){
+  const rank=[...racers].sort((a,b)=>b.score-a.score || a.end-b.end);
+  const order=[rank[1],rank[0],rank[2]], cls=['second','first','third'], medals=['🥈','🥇','🥉'];
+  $('steps').innerHTML='';
+  order.forEach((r,i)=>{const d=document.createElement('div');d.className='step '+cls[i];d.innerHTML=`<div class="medal">${medals[i]}</div><div class="podcar">${podiumEmoji(r.name)}</div><div class="pname">${r.name}</div><div class="pmini">${r.score} acertos</div>`;$('steps').appendChild(d);});
+  $('fourth').textContent='4º lugar: '+rank[3].name+' — '+rank[3].score+' acertos'; $('podiumOverlay').classList.remove('hidden');
+}
+function startGame(){if(started) return; $('startOverlay').classList.add('hidden'); $('podiumOverlay').classList.add('hidden'); started=true; finished=false; locked=false; startTime=performance.now(); updateCars(); renderQuestion(); clockTimer=setInterval(()=>{const s=Math.floor((performance.now()-startTime)/1000); $('clock').textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');},250); scheduleCPU(1,900); scheduleCPU(2,1150); scheduleCPU(3,1400);}
+function resetGame(){cpuTimers.forEach(clearTimeout); cpuTimers=[]; clearInterval(clockTimer); racers.forEach(r=>{r.score=0;r.q=0;r.end=0;}); started=false; finished=false; locked=false; $('clock').textContent='00:00'; $('qHud').textContent='01/20'; $('question').textContent='Prepare-se para a largada!'; $('answers').innerHTML=''; $('penalty').classList.remove('show'); $('podiumOverlay').classList.add('hidden'); $('winnerOverlay').classList.remove('show'); $('gameTitle').classList.remove('alert'); $('startOverlay').classList.remove('hidden'); updateCars();}
+$('startBtn').addEventListener('click',startGame); $('restartBtn').addEventListener('click',resetGame); resetGame();
+</script>
+</body>
+</html>
