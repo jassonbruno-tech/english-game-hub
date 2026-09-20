@@ -3,23 +3,23 @@
 <style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050816;font-family:Arial,sans-serif}iframe{border:0;width:100%;height:100%;display:block}.loading{position:fixed;inset:0;display:grid;place-items:center;background:#050816;color:#fff;z-index:20;text-align:center;padding:24px;font-weight:900}.loading.hide{display:none}.loading small{display:block;color:#9fb4dc;margin-top:10px;font-weight:600}</style></head><body>
 <div class="loading" id="loading">Conectando ao campeonato...<small id="loadNote"></small></div><iframe id="outer" src="tug-of-war-final.html?v=20260918-sbwrap1" allow="autoplay"></iframe>
 <script>
-const p=new URLSearchParams(location.search),room=(p.get('sala')||'LAB703').replace(/[^a-zA-Z0-9_-]/g,'').toUpperCase(),player=p.get('equipe')||'blue';
+const p=new URLSearchParams(location.search),room=(p.get('sala')||'LAB703').replace(/[^a-zA-Z0-9_-]/g,'').toUpperCase(),player=p.get('equipe')||'blue',test2=p.get('teste2')==='1';
 const cfg=window.TUG_SUPABASE_CONFIG||{},loading=document.getElementById('loading'),note=document.getElementById('loadNote'),outer=document.getElementById('outer');
 if(!(cfg.url&&cfg.key&&window.supabase?.createClient)){loading.innerHTML='⚠️ SUPABASE NÃO CARREGOU<small>Atualize a página e tente novamente.</small>'}
 else{
  const sb=window.supabase.createClient(cfg.url,cfg.key);
  outer.addEventListener('load',()=>{
   const od=outer.contentDocument;if(!od)return;const inner=od.getElementById('game');if(!inner)return;
-  const desired='tug-of-war.html?v=20260918-sbcore1&modo=multiplayer&equipe='+encodeURIComponent(player)+'&sala='+encodeURIComponent(room);
-  if(!inner.src.includes('modo=multiplayer'))inner.src=desired;
+  const desired='tug-of-war.html?v=20260920-core-test2a&modo='+(test2?'teste2':'multiplayer')+'&equipe='+encodeURIComponent(player)+'&sala='+encodeURIComponent(room);
+  if(!inner.src.includes('modo='+(test2?'teste2':'multiplayer')))inner.src=desired;
   let tries=0,injected=false;const boot=setInterval(()=>{
    tries++;
    try{
     const d=inner.contentDocument,w=inner.contentWindow;if(!d||!d.body)return;
     if(injected||d.getElementById('tug-multi-loader')){injected=true;clearInterval(boot);loading.classList.add('hide');return}
     if(typeof w.endMatch==='function'&&typeof w.setRope==='function'){
-      w.__tugSupabase=sb;w.__tugRoom=room;w.__tugPlayer=player;
-      const s=d.createElement('script');s.id='tug-multi-loader';s.src='tug-tournament-multiplayer.js?v=20260918-supabase1';d.body.appendChild(s);injected=true;clearInterval(boot);loading.classList.add('hide');
+      w.__tugSupabase=sb;w.__tugRoom=room;w.__tugPlayer=player;w.__tugTest2=test2;
+      const s=d.createElement('script');s.id='tug-multi-loader';s.src='tug-tournament-multiplayer.js?v=20260920-test2-existing1';d.body.appendChild(s);injected=true;clearInterval(boot);loading.classList.add('hide');
     }
    }catch(e){}
    if(tries>160){clearInterval(boot);note.textContent='Não foi possível iniciar. Atualize a página.'}
