@@ -413,7 +413,7 @@ html,body{
 </div>
 
 <script>
-const Q=[
+const Q_BANK=[
 ["Qual é o nome da protagonista de Grey's Anatomy?",["Cristina Yang","Meredith Grey","Miranda Bailey","Jo Wilson"],1],
 ["Em qual área Meredith Grey constrói sua carreira?",["Cirurgia","Pediatria","Dermatologia","Psiquiatria"],0],
 ["Quem é conhecido pelo apelido 'McDreamy'?",["Alex Karev","Owen Hunt","Derek Shepherd","Richard Webber"],2],
@@ -425,7 +425,7 @@ const Q=[
 ["Quem é o chefe de cirurgia no início da série?",["Richard Webber","Derek Shepherd","Preston Burke","Owen Hunt"],0],
 ["Qual personagem é cirurgiã cardiotorácica e uma das melhores amigas de Meredith?",["Cristina Yang","April Kepner","Jo Wilson","Amelia Shepherd"],0],
 ["Quem é a meia-irmã de Meredith que também trabalha como médica no hospital?",["Lexie Grey","Addison Montgomery","Teddy Altman","Callie Torres"],0],
-["Qual personagem se torna esposa de Callie Torres?",["Arizona Robbins","Cristina Yang","Jo Wilson","Maggie Pierce"],0],
+["Qual personagem se casa com Callie Torres?",["Arizona Robbins","Cristina Yang","Jo Wilson","Maggie Pierce"],0],
 ["Quem é irmã de Derek Shepherd?",["Amelia Shepherd","Lexie Grey","Maggie Pierce","Stephanie Edwards"],0],
 ["Qual é o primeiro nome da Dra. Bailey?",["Maggie","Miranda","Amelia","Teddy"],1],
 ["Qual personagem é interpretada por Ellen Pompeo?",["Meredith Grey","Cristina Yang","Miranda Bailey","Izzie Stevens"],0],
@@ -433,8 +433,48 @@ const Q=[
 ["Grey's Anatomy acompanha principalmente a vida profissional e pessoal de quem?",["Advogados","Policiais","Médicos","Professores"],2],
 ["Qual é o nome atual do hospital central da série?",["Seattle Mercy Hospital","Grey Sloan Memorial Hospital","Seattle Hope Hospital","Pacific Medical Center"],1],
 ["Quem criou Grey's Anatomy?",["Shonda Rhimes","Ellen Pompeo","Debbie Allen","Krista Vernoff"],0],
-["Em que ano Grey's Anatomy estreou na televisão?",["2001","2003","2005","2008"],2]
+["Em que ano Grey's Anatomy estreou na televisão?",["2001","2003","2005","2008"],2],
+["Qual é o primeiro nome de Karev?",["Alex","Andrew","Mark","George"],0],
+["Quem é conhecido pelo apelido 'McSteamy'?",["Mark Sloan","Derek Shepherd","Owen Hunt","Preston Burke"],0],
+["Qual personagem é ortopedista?",["Callie Torres","Cristina Yang","Teddy Altman","Addison Montgomery"],0],
+["Qual personagem é cirurgiã pediátrica?",["Arizona Robbins","Miranda Bailey","Amelia Shepherd","Maggie Pierce"],0],
+["Qual é o nome do ex-marido de Addison Montgomery?",["Mark Sloan","Derek Shepherd","Richard Webber","Owen Hunt"],1],
+["Quem foi noivo de Cristina Yang no início da série?",["Preston Burke","Alex Karev","Jackson Avery","Ben Warren"],0],
+["Qual personagem é conhecida por sua habilidade em neurocirurgia?",["Amelia Shepherd","Callie Torres","Jo Wilson","April Kepner"],0],
+["Quem é o pai biológico de Meredith Grey?",["Richard Webber","Thatcher Grey","Derek Shepherd","Ellis Grey"],1],
+["Qual destas personagens é filha de Ellis Grey e Richard Webber?",["Lexie Grey","Maggie Pierce","Jo Wilson","Arizona Robbins"],1],
+["Quem é o marido de Miranda Bailey?",["Ben Warren","Owen Hunt","Jackson Avery","Alex Karev"],0],
+["Qual personagem deixa a medicina para se tornar bombeiro?",["Ben Warren","George O'Malley","Mark Sloan","Preston Burke"],0],
+["Qual destes personagens serviu no Exército?",["Owen Hunt","Derek Shepherd","Jackson Avery","Richard Webber"],0],
+["Qual personagem é especialista em trauma e também veterano militar?",["Owen Hunt","Mark Sloan","Tom Koracick","Alex Karev"],0],
+["Quem é a melhor amiga de Cristina Yang em Seattle?",["Meredith Grey","Callie Torres","Arizona Robbins","Jo Wilson"],0],
+["Quem é o pai de Jackson Avery?",["Richard Webber","Robert Avery","Preston Burke","Ben Warren"],1],
+["Quem é a mãe de Jackson Avery?",["Catherine Fox","Ellis Grey","Adele Webber","Susan Grey"],0],
+["Qual é o sobrenome de April?",["Kepner","Wilson","Grey","Robbins"],0],
+["Qual personagem trabalha em cirurgia plástica e é mentor de Jackson Avery?",["Mark Sloan","Derek Shepherd","Owen Hunt","Richard Webber"],0],
+["Quem é a filha de Callie Torres e Arizona Robbins?",["Sofia","Zola","Ellis","Harriet"],0],
+["Qual é o nome da filha adotiva mais velha de Meredith e Derek?",["Zola","Sofia","Harriet","Tuck"],0],
+["Qual personagem se casa com Alex Karev?",["Jo Wilson","Lexie Grey","April Kepner","Maggie Pierce"],0],
+["Qual é o sobrenome de Jo?",["Wilson","Stevens","Grey","Montgomery"],0],
+["Quem foi casado com Izzie Stevens?",["Alex Karev","George O'Malley","Jackson Avery","Owen Hunt"],0],
+["Qual personagem foi atropelado por um ônibus após salvar uma mulher?",["George O'Malley","Mark Sloan","Derek Shepherd","Andrew DeLuca"],0],
+["Quem é irmão de Carina DeLuca?",["Andrew DeLuca","Alex Karev","Jackson Avery","Ben Warren"],0],
+["Qual personagem é irmã de Meredith por parte de mãe?",["Maggie Pierce","Lexie Grey","Jo Wilson","April Kepner"],0],
+["Qual personagem é irmã de Meredith por parte de pai?",["Lexie Grey","Maggie Pierce","Amelia Shepherd","Arizona Robbins"],0],
+["Qual especialidade médica está associada a Teddy Altman?",["Cirurgia cardiotorácica","Neurocirurgia","Ortopedia","Dermatologia"],0],
+["Qual personagem é conhecida por trabalhar com medicina fetal e obstetrícia?",["Addison Montgomery","Cristina Yang","Callie Torres","Miranda Bailey"],0],
+["Em qual cidade se passa a maior parte de Grey's Anatomy?",["Chicago","Seattle","Boston","Los Angeles"],1]
 ];
+let Q=[];
+
+function prepareRoundQuestions(){
+  const pool=[...Q_BANK];
+  for(let i=pool.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [pool[i],pool[j]]=[pool[j],pool[i]];
+  }
+  Q=pool.slice(0,20);
+}
 
 document.querySelectorAll('.numbers').forEach(n=>{for(let i=1;i<=20;i++){const s=document.createElement('span');s.textContent=i;n.appendChild(s);}});
 
@@ -528,7 +568,7 @@ function showPodium(){
   $('fourth').textContent='4º lugar: '+rank[3].name+' — '+rank[3].score+' acertos'; $('podiumOverlay').classList.remove('hidden');
 }
 function startGame(){if(started) return; $('startOverlay').classList.add('hidden'); $('podiumOverlay').classList.add('hidden'); started=true; finished=false; locked=false; startTime=performance.now(); updateCars(); renderQuestion(); clockTimer=setInterval(()=>{const s=Math.floor((performance.now()-startTime)/1000); $('clock').textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');},250); scheduleCPU(1,900); scheduleCPU(2,1150); scheduleCPU(3,1400);}
-function resetGame(){cpuTimers.forEach(clearTimeout); cpuTimers=[]; clearInterval(clockTimer); racers.forEach(r=>{r.score=0;r.q=0;r.end=0;}); started=false; finished=false; locked=false; $('clock').textContent='00:00'; $('qHud').textContent='01/20'; $('question').textContent='Prepare-se para a largada!'; $('answers').innerHTML=''; $('penalty').classList.remove('show'); $('podiumOverlay').classList.add('hidden'); $('winnerOverlay').classList.remove('show'); $('gameTitle').classList.remove('alert'); $('startOverlay').classList.remove('hidden'); updateCars();}
+function resetGame(){cpuTimers.forEach(clearTimeout); cpuTimers=[]; clearInterval(clockTimer); prepareRoundQuestions(); racers.forEach(r=>{r.score=0;r.q=0;r.end=0;}); started=false; finished=false; locked=false; $('clock').textContent='00:00'; $('qHud').textContent='01/20'; $('question').textContent='Prepare-se para a largada!'; $('answers').innerHTML=''; $('penalty').classList.remove('show'); $('podiumOverlay').classList.add('hidden'); $('winnerOverlay').classList.remove('show'); $('gameTitle').classList.remove('alert'); $('startOverlay').classList.remove('hidden'); updateCars();}
 $('startBtn').addEventListener('click',startGame); $('restartBtn').addEventListener('click',resetGame); resetGame();
 </script>
 </body>
