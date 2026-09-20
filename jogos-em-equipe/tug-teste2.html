@@ -1,0 +1,24 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tug of War — Teste 2 computadores</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js?v=1"></script>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:Inter,Poppins,Arial,sans-serif;background:radial-gradient(circle at 20% 0,#2563eb55 0,transparent 30%),radial-gradient(circle at 80% 0,#eab30844 0,transparent 28%),linear-gradient(145deg,#030712,#07132c 50%,#18103f);color:#fff}
+.wrap{max-width:900px;margin:auto;padding:28px}.hero{text-align:center}.hero h1{font-size:clamp(34px,5vw,58px);margin:0;background:linear-gradient(90deg,#60a5fa,#fff,#fde047);-webkit-background-clip:text;background-clip:text;color:transparent}
+.room,.status,.identity,.ready{max-width:720px;margin:18px auto;padding:16px;border-radius:18px;text-align:center;background:#07142ddd;border:1px solid #67e8f955}
+.room{padding:10px}.identity{border:2px solid var(--team,#67e8f9)}.identity .emoji{font-size:56px}.identity h2{margin:6px 0 0}.slots{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:720px;margin:24px auto}
+.slot{padding:24px 16px;text-align:center;border-radius:20px;background:#0b1530;border:1px solid #4d628755;opacity:.5}.slot.on{opacity:1;box-shadow:0 0 24px #22d3ee33}.slot .e{font-size:54px}.slot b{display:block;margin:8px 0;font-size:22px}.slotState{font-size:13px;color:#b9c8e8}
+.counter{text-align:center;font-size:22px;font-weight:900}.counter span{color:#67e8f9}.ready{background:linear-gradient(135deg,#123a2d,#0c2630);border-color:#39ff9966}.btn{border:0;border-radius:14px;padding:14px 24px;font-size:18px;font-weight:1000;cursor:pointer;background:linear-gradient(135deg,#39ff99,#22d3ee);color:#03261c}.note{max-width:720px;margin:20px auto;color:#b7c6e7;text-align:center;font-size:14px;line-height:1.45}
+</style></head><body><div class="wrap">
+<header class="hero"><h1>🎬 CABO DE GUERRA — TESTE 2 PCs</h1></header>
+<div class="room">Sala de teste: <b id="roomCode">—</b></div>
+<div class="status" id="status">Conectando...</div>
+<section class="identity" id="identity" hidden><div class="emoji" id="teamEmoji"></div><h2 id="teamName"></h2></section>
+<div class="counter">Computadores conectados: <span id="connected">0/2</span></div>
+<section class="slots">
+ <div class="slot" id="slot-blue"><div class="e">🔵</div><b>AZUL</b><span class="slotState">AGUARDANDO</span></div>
+ <div class="slot" id="slot-yellow"><div class="e">🟡</div><b>AMARELA</b><span class="slotState">AGUARDANDO</span></div>
+</section>
+<section class="ready" id="readyBox" hidden><b>✅ OS 2 COMPUTADORES ESTÃO PRONTOS</b><br><br><button class="btn" id="enterGame">ENTRAR NA PARTIDA</button></section>
+<div class="note">Perguntas em português sobre filmes e desenhos conhecidos. Este modo existe apenas para testar a sincronização entre dois computadores; o campeonato oficial de 4 equipes permanece separado.</div>
+</div><script src="tug-teste2-lobby.js?v=1"></script></body></html>
