@@ -84,10 +84,31 @@ function ton(m){
  else if(m.phase==='resolved'){if(testLastRound!==m.round||testLastPhase!=='resolved'){testLastRound=m.round;testLastPhase='resolved';treveal(m)}}
  else if(m.phase==='finished'){if(testLastPhase==='finished')return;testLastPhase='finished';treveal(m);setTimeout(()=>tend(m),2200)}
 }
+function tReadySequence(done){
+ stop();rev=true;
+ const ro=tx('roundOverlay'),rn=tx('roundNumber'),ready=document.querySelector('.ready-text'),co=tx('countdownOverlay'),cn=tx('countdownNumber');
+ if(rn)rn.textContent='VOCÊ ESTÁ PREPARADO?';
+ if(ready)ready.textContent='AS DUAS EQUIPES ESTÃO NA SALA';
+ if(ro)ro.classList.add('show');
+ setTimeout(()=>{
+   if(ro)ro.classList.remove('show');
+   let n=3;
+   const step=()=>{
+     if(co)co.classList.add('show');
+     if(cn){cn.textContent=n>0?String(n):'COMEÇAR!';cn.classList.remove('count-pop');void cn.offsetWidth;cn.classList.add('count-pop')}
+     if(n>0){n--;setTimeout(step,700)}
+     else setTimeout(()=>{if(co)co.classList.remove('show');done()},650);
+   };
+   step();
+ },1600);
+}
 async function tbegin(){
  if(testStarted)return;testStarted=true;tpaint();await tensure();
- testChannel=sb.channel('tug-test2-'+room+'-'+player).on('postgres_changes',{event:'UPDATE',schema:'public',table:'tug_matches',filter:'room_code=eq.'+room},p=>{if(p.new?.match_id===TEST_MATCH)ton(p.new)}).subscribe();
- ton(await tfetch());
+ const first=await tfetch();
+ tReadySequence(()=>{
+   testChannel=sb.channel('tug-test2-'+room+'-'+player).on('postgres_changes',{event:'UPDATE',schema:'public',table:'tug_matches',filter:'room_code=eq.'+room},p=>{if(p.new?.match_id===TEST_MATCH)ton(p.new)}).subscribe();
+   ton(first);
+ });
 }
 function tlaunch(){tbegin().catch(e=>{if(tx('arenaMsg'))tx('arenaMsg').textContent='Erro de sincronização: '+e.message})}
 startMatch=tlaunch;reset=tlaunch;
