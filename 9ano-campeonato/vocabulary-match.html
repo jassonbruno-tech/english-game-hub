@@ -6,37 +6,73 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="../jogos-em-equipe/supabase-config.js?v=9ano1"></script>
 <style>
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:Arial,Helvetica,sans-serif;background:#dff5ff;color:#12335d}
-body{background:radial-gradient(circle at 15% 0,#fff3a4 0,transparent 27%),radial-gradient(circle at 90% 5%,#ffb7df 0,transparent 25%),linear-gradient(180deg,#9fe4ff,#eefaff)}
-button{font:inherit}.app{height:100%;width:min(1280px,100%);margin:auto;padding:10px 12px;display:grid;grid-template-rows:auto auto minmax(0,1fr) auto;gap:8px}
-.top{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;background:linear-gradient(135deg,#226cff,#45cdf5 60%,#62e2c3);color:white;border-radius:20px;padding:10px 16px;border:3px solid #fff;box-shadow:0 10px 28px #2466a733}
-.top h1{margin:0;font-size:clamp(28px,4vw,48px);font-weight:1000;text-shadow:0 3px 0 #124eae}.top p{margin:3px 0 0;font-weight:900;font-size:14px}.team-badge{background:#fff;color:#1a5bb7;border-radius:999px;padding:10px 14px;font-weight:1000}
-.hud{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}.pill{background:#fff;border:2px solid #a9d9ff;border-radius:13px;padding:7px 10px;text-align:center;font-weight:1000;font-size:13px}.pill b{display:block;font-size:18px;color:#1760b9;margin-top:2px}
-.game{display:grid;grid-template-columns:1fr 1fr;gap:10px;min-height:0}.col{background:rgba(255,255,255,.9);border:2px solid #afdfff;border-radius:20px;padding:10px;display:grid;grid-template-rows:auto repeat(10,1fr);gap:5px;min-height:0}.col h2{margin:0;text-align:center;color:#1857a3;font-size:18px}
-.word{border:2px solid #c2dcf5;border-radius:11px;background:#f8fcff;color:#163d70;font-weight:1000;font-size:clamp(13px,1.25vw,18px);line-height:1.05;padding:5px 8px;cursor:pointer;min-height:0;display:flex;align-items:center;justify-content:center;text-align:center}.word:hover{border-color:#5ca8ff}.word.sel{background:#fff0a8;border-color:#ffc400;color:#684c00}.word.matched{background:#c8f7dc;border-color:#24c879;color:#11693f;opacity:.72}.word.wrong{animation:shake .22s 2;background:#ffd6dd;border-color:#ff647c}@keyframes shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
-.bottom{display:flex;justify-content:space-between;align-items:center;gap:8px;background:#fff;border:2px solid #b5dcff;border-radius:16px;padding:7px 11px;font-weight:900}.hint{color:#53769d;font-size:12px}.progress{color:#1659a8;font-size:13px}.overlay{position:fixed;inset:0;z-index:20;display:grid;place-items:center;background:#12355cbb;backdrop-filter:blur(5px);padding:16px}.hidden{display:none}.modal{width:min(650px,94vw);background:#fff;border:3px solid #9bdcff;border-radius:24px;padding:22px;text-align:center;box-shadow:0 24px 70px #174b8438}.modal h2{margin:0;color:#1858a4;font-size:clamp(28px,5vw,48px)}.modal p{color:#52749b;font-weight:800;line-height:1.35}.btn{border:0;border-radius:13px;padding:11px 15px;background:linear-gradient(135deg,#236cff,#42c9ff);color:#fff;font-weight:1000;cursor:pointer}.rank-list{max-width:520px;margin:12px auto}.rank{display:grid;grid-template-columns:44px 1fr auto;gap:8px;align-items:center;padding:10px 12px;margin:6px 0;border-radius:12px;font-weight:1000;text-align:left}.rank:nth-child(1){background:#ffe66d}.rank:nth-child(2){background:#e5edf4}.rank:nth-child(3){background:#efb27f}.rank:nth-child(4){background:#edf6ff}.waiting{font-size:18px;color:#1b5cac;font-weight:1000}
-.effect{margin:12px auto 4px;padding:11px 14px;border-radius:14px;background:linear-gradient(135deg,#e7f7ff,#fff5b8);color:#174f9c;font-size:18px;font-weight:1000}
-.general-title{margin:14px 0 5px;color:#174f9c;font-size:18px;font-weight:1000}
-.release{margin-top:12px;background:linear-gradient(135deg,#ffb52e,#ff5fa3)}
-.next-count{font-size:88px;font-weight:1000;color:#236cff;margin:8px 0;text-shadow:0 4px 0 #bcd8ff}
-.next-name{font-size:clamp(28px,5vw,48px);font-weight:1000;color:#174f9c;margin-top:4px}
-@media(max-height:720px){.app{padding:6px 9px;gap:5px}.top{padding:6px 12px}.top h1{font-size:32px}.top p{font-size:11px}.team-badge{padding:7px 10px}.hud{gap:5px}.pill{padding:4px 7px;font-size:10px}.pill b{font-size:14px}.game{gap:6px}.col{padding:6px;gap:3px;border-radius:15px}.col h2{font-size:14px}.word{font-size:11px;padding:3px 5px;border-radius:8px}.bottom{padding:4px 8px}.hint,.progress{font-size:10px}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{--cyan:#00eaff;--purple:#7c3aed;--gold:#ffe66d;--green:#22c55e;--red:#ef4444}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:Arial,Helvetica,sans-serif;color:#fff;background:radial-gradient(circle at 50% 0,#164897,#07142f 48%,#17042e)}
+body{display:flex;justify-content:center}
+button{font:inherit}
+.app{width:min(100%,720px);height:100dvh;padding:8px;display:flex;flex-direction:column;gap:7px}
+.top{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;background:linear-gradient(135deg,#1d4ed8,#7c3aed 52%,#e11d48);border-radius:18px;padding:9px 12px;border:1px solid rgba(255,255,255,.22);box-shadow:0 8px 22px #0006}
+.top h1{margin:0;font-size:clamp(24px,4vw,36px);font-weight:1000;text-shadow:0 2px 0 #102c7d}
+.top p{margin:3px 0 0;font-size:12px;font-weight:900;color:#fff7c2}
+.team-badge{background:#fff;color:#1d4ed8;border-radius:999px;padding:8px 11px;font-weight:1000;font-size:12px;white-space:nowrap}
+.hud{display:grid;grid-template-columns:repeat(5,1fr);gap:5px}
+.pill{background:linear-gradient(180deg,rgba(23,48,117,.98),rgba(14,21,65,.98));border:1px solid rgba(255,230,109,.35);padding:6px 3px;border-radius:12px;text-align:center;font-size:10px;font-weight:1000;box-shadow:0 5px 15px rgba(0,0,0,.18)}
+.pill b{display:block;color:var(--gold);font-size:16px;margin-top:2px}
+.game{min-height:0;flex:1;background:linear-gradient(180deg,rgba(8,18,52,.94),rgba(18,8,54,.94));border:1px solid rgba(255,255,255,.15);border-radius:18px;padding:8px;box-shadow:0 14px 38px rgba(0,0,0,.32);display:flex;flex-direction:column}
+.board-title{text-align:center;margin:0 0 4px;color:#fff7c2;font-size:clamp(17px,3vw,23px);font-weight:1000}
+.status{text-align:center;color:var(--gold);font-weight:900;min-height:18px;font-size:12px;margin-bottom:5px}
+.board{display:grid;grid-template-columns:1fr 1fr;gap:6px;flex:1;min-height:0}
+.col{display:grid;grid-template-rows:auto repeat(10,1fr);gap:5px;min-height:0}
+.col h2{margin:0;text-align:center;color:#dbeafe;font-size:12px}
+.word{min-height:0;border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:5px;background:linear-gradient(180deg,rgba(26,65,135,.72),rgba(12,29,81,.8));color:#fff;font-weight:900;font-size:clamp(10px,1.75vw,14px);line-height:1.1;cursor:pointer;box-shadow:0 4px 10px rgba(0,0,0,.16);transition:transform .12s,filter .12s,box-shadow .12s;display:flex;align-items:center;justify-content:center;text-align:center}
+#right .word{background:linear-gradient(180deg,rgba(115,48,190,.65),rgba(57,22,117,.82))}
+.word:active{transform:scale(.97)}
+.word.sel{outline:3px solid var(--gold);filter:brightness(1.22);box-shadow:0 0 18px rgba(255,230,109,.62)}
+.word.matched{background:linear-gradient(135deg,#16a34a,#4ade80)!important;color:#052e16;animation:correctCard .56s ease;box-shadow:0 0 30px rgba(74,222,128,.98);border-color:#86efac}
+.word.wrong{background:linear-gradient(135deg,#991b1b,#ef4444)!important;color:#fff;animation:shake .4s ease;box-shadow:0 0 18px rgba(239,68,68,.7);border-color:#fecaca}
+@keyframes correctCard{0%{transform:scale(1)}35%{transform:scale(1.09) rotate(-1deg);filter:brightness(1.5)}70%{transform:scale(1.04) rotate(1deg)}100%{transform:scale(1)}}
+@keyframes shake{20%{transform:translateX(-7px)}40%{transform:translateX(7px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
+.bottom{display:flex;justify-content:space-between;gap:8px;align-items:center;background:linear-gradient(180deg,rgba(23,48,117,.98),rgba(14,21,65,.98));border:1px solid rgba(255,230,109,.25);border-radius:12px;padding:6px 9px;font-size:10px;font-weight:900;color:#dbeafe}
+.progress{color:#fff7c2}
+#flash{position:fixed;inset:0;pointer-events:none;opacity:0;z-index:80;background:radial-gradient(circle,#fff 0,#7dffce 20%,rgba(0,234,255,.78) 48%,rgba(124,58,237,.56) 72%,transparent 100%)}
+#flash.go{animation:flash .68s ease-out}
+@keyframes flash{0%{opacity:0}16%{opacity:.94}36%{opacity:.18}53%{opacity:.72}100%{opacity:0}}
+.spark{position:fixed;z-index:81;pointer-events:none;font-size:22px;animation:sparkFly .8s ease-out forwards}
+@keyframes sparkFly{from{transform:translate(0,0) scale(.5) rotate(0);opacity:1}to{transform:translate(var(--x),var(--y)) scale(1.35) rotate(260deg);opacity:0}}
+.overlay{position:fixed;inset:0;z-index:90;display:grid;place-items:center;background:rgba(0,0,0,.78);backdrop-filter:blur(8px);padding:18px}
+.hidden{display:none!important}
+.modal{width:min(100%,520px);max-height:94vh;overflow:auto;text-align:center;border-radius:28px;padding:24px;background:linear-gradient(160deg,#101d5a,#421060);border:1px solid rgba(255,255,255,.2);box-shadow:0 0 60px rgba(0,234,255,.28);color:#fff}
+.modal h2{margin:0;color:var(--gold);font-size:30px}.modal p{line-height:1.4;font-weight:850;color:#e5edff}.btn{width:100%;padding:13px;border:0;border-radius:15px;background:linear-gradient(135deg,var(--gold),#22c55e);font-weight:1000;font-size:15px;cursor:pointer;color:#10203a}
+.rank-list{display:grid;gap:6px;margin:10px 0}.rank{display:grid;grid-template-columns:38px 1fr auto;gap:6px;background:#fff;color:#172033;border-radius:12px;padding:8px;align-items:center;text-align:left;font-weight:1000}.rank:nth-child(1){background:linear-gradient(135deg,#ffe66d,#fff7c2)}.rank:nth-child(2){background:linear-gradient(135deg,#dfe7ef,#fff)}.rank:nth-child(3){background:linear-gradient(135deg,#e7a76c,#ffd6b0)}
+.waiting{font-size:17px;color:#fff7c2;font-weight:1000}.effect{margin:12px auto 4px;padding:11px 14px;border-radius:14px;background:linear-gradient(135deg,#e7f7ff,#fff5b8);color:#174f9c;font-size:17px;font-weight:1000}.general-title{margin:14px 0 5px;color:#fff7c2;font-size:18px;font-weight:1000}.release{margin-top:12px;background:linear-gradient(135deg,#ffb52e,#ff5fa3);color:#fff}.next-count{font-size:88px;font-weight:1000;color:var(--gold);margin:8px 0;text-shadow:0 4px 0 #7c3aed}.next-name{font-size:clamp(28px,5vw,48px);font-weight:1000;color:var(--gold);margin-top:4px}
+@media(max-height:720px){.app{padding:5px;gap:5px}.top{padding:6px 9px}.top h1{font-size:26px}.top p{font-size:9px}.team-badge{padding:6px 8px;font-size:10px}.pill{padding:4px 2px;font-size:8px}.pill b{font-size:13px}.game{padding:6px}.word{font-size:9.5px;padding:3px}.bottom{padding:4px 7px;font-size:8.5px}}
+@media(max-width:560px){.app{width:100%;padding:5px}.top h1{font-size:22px}.top p{font-size:9px}.word{font-size:10px}.board{gap:5px}.col{gap:4px}}
 </style></head><body>
 <main class="app">
- <section class="top"><div><h1>🧩 VOCABULARY MATCH</h1><p>FASE 1 • 40 combinações • +5 acerto • −2 erro • bônus: 40 / 25 / 15 / 5</p></div><div class="team-badge" id="teamBadge">CONECTANDO...</div></section>
+ <section class="top"><div><h1>🧩 VOCABULARY MATCH</h1><p>FASE 1 • 40 combinações • +5 acerto • −2 erro • bônus por colocação</p></div><div class="team-badge" id="teamBadge">CONECTANDO...</div></section>
  <section class="hud">
   <div class="pill">RODADA<b id="roundHud">1/4</b></div>
   <div class="pill">ACERTOS<b id="correctHud">0</b></div>
   <div class="pill">ERROS<b id="wrongHud">0</b></div>
   <div class="pill">PONTOS<b id="pointsHud">0</b></div>
-  <div class="pill">COMBINAÇÕES<b id="matchedHud">0/40</b></div>
+  <div class="pill">PROGRESSO<b id="matchedHud">0/40</b></div>
  </section>
  <section class="game">
-  <div class="col"><h2>🇬🇧 ENGLISH</h2><div id="left"></div></div>
-  <div class="col"><h2>🇧🇷 SIGNIFICADO</h2><div id="right"></div></div>
+  <h2 class="board-title" id="boardTitle">Rodada 1 — encontre os pares</h2>
+  <div class="status" id="status">Escolha um item em inglês e encontre o significado.</div>
+  <div class="board">
+   <div class="col" id="left"><h2>🇬🇧 ENGLISH</h2></div>
+   <div class="col" id="right"><h2>🇧🇷 PORTUGUÊS</h2></div>
+  </div>
  </section>
- <section class="bottom"><span class="hint">Selecione uma palavra em inglês e depois o significado correspondente.</span><span class="progress" id="status">Preparando a mesma rodada para as 4 equipes...</span></section>
+ <section class="bottom"><span>Selecione um item de cada lado.</span><span class="progress">Mesma sequência para as 4 equipes.</span></section>
 </main>
+<div id="flash"></div>
+<audio id="sndOk" src="../success.wav" preload="auto"></audio>
+<audio id="sndCombo" src="../combo.wav" preload="auto"></audio>
+<audio id="sndBad" src="../error.wav" preload="auto"></audio>
+<audio id="sndWin" src="../victory.wav" preload="auto"></audio>
 <div class="overlay" id="loading"><div class="modal"><h2>FASE 1</h2><p id="loadText">Sincronizando as 40 combinações da sala...</p></div></div>
 <div class="overlay hidden" id="finish"><div class="modal">
   <h2>✅ SUA EQUIPE TERMINOU</h2>
@@ -69,10 +105,13 @@ function rawPoints(){return Math.max(0,correct*5-wrong*2)}
 function paintHud(){$('correctHud').textContent=correct;$('wrongHud').textContent=wrong;$('pointsHud').textContent=rawPoints();$('matchedHud').textContent=matched+'/40';$('roundHud').textContent=Math.min(round+1,4)+'/4'}
 function renderRound(){
  const ids=order.slice(round*10,round*10+10),pairs=ids.map((idx,pos)=>({idx,pos,en:BANK[idx][0],pt:BANK[idx][1]}));
- const left=shuffle(pairs),right=shuffle(pairs);$('left').innerHTML='';$('right').innerHTML='';selectedLeft=selectedRight=null;locked=false;
+ const left=shuffle(pairs),right=shuffle(pairs);
+ $('left').innerHTML='<h2>🇬🇧 ENGLISH</h2>';$('right').innerHTML='<h2>🇧🇷 PORTUGUÊS</h2>';
+ selectedLeft=selectedRight=null;locked=false;
  left.forEach(p=>{const b=document.createElement('button');b.className='word';b.dataset.pos=p.pos;b.textContent=p.en;b.onclick=()=>choose('left',b,p);$('left').appendChild(b)});
  right.forEach(p=>{const b=document.createElement('button');b.className='word';b.dataset.pos=p.pos;b.textContent=p.pt;b.onclick=()=>choose('right',b,p);$('right').appendChild(b)});
- $('status').textContent='Rodada '+(round+1)+' de 4 • combine os 10 pares.';paintHud();
+ $('boardTitle').textContent='Rodada '+(round+1)+' de 4 — encontre os pares';
+ $('status').textContent='Escolha um item em inglês e encontre o significado.';paintHud();
 }
 function choose(side,b,p){
  if(locked||b.classList.contains('matched'))return;
@@ -80,15 +119,33 @@ function choose(side,b,p){
  if(side==='left')selectedLeft={b,p};else selectedRight={b,p};
  if(selectedLeft&&selectedRight)checkPair();
 }
+function play(id,vol=.65){try{const a=$(id);a.pause();a.currentTime=0;a.volume=vol;a.play().catch(()=>{})}catch(e){}}
+function celebrate(btn){
+ const f=$('flash');f.classList.remove('go');void f.offsetWidth;f.classList.add('go');
+ const r=btn.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,icons=['✨','⭐','💫','🎉','✅'];
+ for(let i=0;i<12;i++){const s=document.createElement('span');s.className='spark';s.textContent=icons[i%icons.length];s.style.left=cx+'px';s.style.top=cy+'px';s.style.setProperty('--x',(Math.random()*220-110)+'px');s.style.setProperty('--y',(Math.random()*-220-35)+'px');document.body.appendChild(s);setTimeout(()=>s.remove(),850)}
+ if(navigator.vibrate)navigator.vibrate([35,25,55]);
+}
 function checkPair(){
  locked=true;const ok=selectedLeft.p.pos===selectedRight.p.pos;
  if(ok){
-   correct++;matched++;selectedLeft.b.classList.remove('sel');selectedRight.b.classList.remove('sel');selectedLeft.b.classList.add('matched');selectedRight.b.classList.add('matched');
-   selectedLeft=selectedRight=null;locked=false;paintHud();
-   if(matched%10===0)setTimeout(()=>{if(matched===40)finishGame();else{round++;renderRound()}},420);
+   correct++;matched++;
+   const lb=selectedLeft.b,rb=selectedRight.b;
+   lb.classList.remove('sel');rb.classList.remove('sel');lb.classList.add('matched');rb.classList.add('matched');
+   $('status').textContent=matched%3===0?'🔥 COMBO! Excelente!':'✅ Par correto! Muito bem!';
+   celebrate(rb);play(matched%3===0?'sndCombo':'sndOk',.72);paintHud();
+   selectedLeft=selectedRight=null;
+   setTimeout(()=>{
+     lb.style.visibility='hidden';rb.style.visibility='hidden';locked=false;
+     if(matched%10===0){if(matched===40)finishGame();else{round++;renderRound()}}
+   },620);
  }else{
-   wrong++;selectedLeft.b.classList.add('wrong');selectedRight.b.classList.add('wrong');paintHud();
-   setTimeout(()=>{selectedLeft?.b.classList.remove('sel','wrong');selectedRight?.b.classList.remove('sel','wrong');selectedLeft=selectedRight=null;locked=false},430);
+   wrong++;
+   const lb=selectedLeft.b,rb=selectedRight.b;
+   lb.classList.add('wrong');rb.classList.add('wrong');
+   $('status').textContent='❌ Não combina. Tente novamente.';
+   play('sndBad',.45);paintHud();
+   setTimeout(()=>{lb.classList.remove('sel','wrong');rb.classList.remove('sel','wrong');selectedLeft=selectedRight=null;locked=false},430);
  }
 }
 async function init(){
@@ -108,7 +165,7 @@ async function init(){
  $('loading').classList.add('hidden');renderRound();
 }
 async function finishGame(){
- if(finished)return;finished=true;$('finish').classList.remove('hidden');$('finishSummary').textContent=correct+' acertos • '+wrong+' erros • '+rawPoints()+' pontos antes do bônus.';
+ if(finished)return;finished=true;play('sndWin',.55);$('finish').classList.remove('hidden');$('finishSummary').textContent=correct+' acertos • '+wrong+' erros • '+rawPoints()+' pontos antes do bônus.';
  document.querySelectorAll('.word').forEach(b=>b.disabled=true);
  if(demo){
    $('waiting').textContent='MODO TESTE — resultado local da sua partida.';
