@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Corrida Maluca — Teste da Ampulheta</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:Arial,Helvetica,sans-serif;background:#050816;color:#fff}
+button{font-family:inherit}
+:root{--cyan:#20d6ff;--pink:#ff3d9a;--yellow:#ffd83d;--panel:#0e1d35;--line:#3559a8}
+.viewport{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at top,#322069 0,#10244c 36%,#07111f 72%,#04070d 100%)}
+.stage{position:relative;width:min(100vw,177.78vh);height:min(56.25vw,100vh);overflow:hidden;background:linear-gradient(180deg,#160d31,#0b1830 38%,#07111f);box-shadow:0 0 40px #0008}
+.grid{position:absolute;inset:0;background:linear-gradient(#fff1 1px,transparent 1px),linear-gradient(90deg,#fff1 1px,transparent 1px);background-size:3.2% 6%;opacity:.32}
+.header{position:absolute;left:0;right:0;top:1%;text-align:center;z-index:5}
+.title{display:inline-block;padding:8px 22px;border:2px solid #4f6dff;border-radius:22px;background:#10264bea;color:var(--yellow);font-size:clamp(26px,4vw,54px);font-weight:1000;text-shadow:0 0 14px #ffd83d88}
+.sub{font-size:clamp(10px,1.2vw,17px);font-weight:900;color:#e8f2ff;margin-top:4px}
+.timer-box{position:absolute;left:50%;top:13%;transform:translateX(-50%);z-index:12;display:flex;align-items:center;gap:12px;background:#071224dc;border:2px solid #5a8cff;border-radius:18px;padding:8px 14px;box-shadow:0 0 20px #20d6ff44}
+.timer-label{font-weight:1000;font-size:clamp(10px,1vw,14px);color:#dce8ff;text-align:center}
+.time-num{font-size:clamp(18px,2vw,28px);font-weight:1000;color:var(--yellow);min-width:72px;text-align:center}
+.hourglass{position:relative;width:48px;height:64px}
+.hourglass:before,.hourglass:after{content:"";position:absolute;left:4px;right:4px;height:5px;border-radius:4px;background:#d9e6ff;box-shadow:0 0 8px #7ecfff88}
+.hourglass:before{top:0}.hourglass:after{bottom:0}
+.glass{position:absolute;left:8px;right:8px;top:5px;bottom:5px;border-left:4px solid #bcd6ff;border-right:4px solid #bcd6ff;clip-path:polygon(0 0,100% 0,60% 48%,100% 100%,0 100%,40% 48%)}
+.sand-top,.sand-bottom{position:absolute;left:12px;right:12px;background:#ffd65a;overflow:hidden}
+.sand-top{top:9px;height:22px;clip-path:polygon(0 0,100% 0,60% 100%,40% 100%);transform-origin:top}
+.sand-bottom{bottom:9px;height:22px;clip-path:polygon(40% 0,60% 0,100% 100%,0 100%);transform-origin:bottom}
+.sand-stream{position:absolute;left:23px;top:28px;width:3px;height:12px;background:#ffd65a;border-radius:2px;box-shadow:0 0 6px #ffd65a88}
+.running .sand-top{animation:drain var(--duration) linear forwards}
+.running .sand-bottom{animation:fill var(--duration) linear forwards}
+.running .sand-stream{display:block}
+.paused .sand-stream,.finished .sand-stream{display:none}
+@keyframes drain{from{transform:scaleY(1)}to{transform:scaleY(0)}}
+@keyframes fill{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+.track-wrap{position:absolute;left:3%;right:3%;top:27%;height:42%;border-radius:26px;background:#101f38;border:2px solid var(--line);overflow:hidden;box-shadow:inset 0 0 25px #0007,0 0 18px #20d6ff22}
+.lane-labels{position:absolute;left:1.4%;top:8%;width:11%;height:84%;display:grid;grid-template-rows:repeat(4,1fr);gap:4%}
+.team-label{display:flex;align-items:center;justify-content:center;border-radius:14px;font-size:clamp(9px,1vw,14px);font-weight:1000;border:2px solid #ffffff33}
+.t1{background:linear-gradient(135deg,#20d6ff,#2d7cff)}.t2{background:linear-gradient(135deg,#ff4d57,#ff7a1a)}.t3{background:linear-gradient(135deg,#19f28a,#00c853)}.t4{background:linear-gradient(135deg,#ffd83d,#ff9800);color:#172033}
+.lanes{position:absolute;left:13.5%;right:2%;top:8%;height:84%;display:grid;grid-template-rows:repeat(4,1fr);gap:4%}
+.lane{position:relative;border-radius:14px;background:linear-gradient(180deg,#2d3f5d,#1a263b);border:1px solid #ffffff22;overflow:hidden}
+.lane:before{content:"";position:absolute;left:2%;right:2%;top:50%;height:2px;background:repeating-linear-gradient(90deg,#ffffffaa 0 18px,transparent 18px 34px)}
+.finish{position:absolute;right:1%;top:0;bottom:0;width:2.8%;background:repeating-linear-gradient(180deg,#fff 0 9px,#222d43 9px 18px)}
+.car{position:absolute;left:3%;top:50%;transform:translate(-50%,-50%) scaleX(-1);font-size:clamp(30px,3.5vw,50px);transition:left .5s cubic-bezier(.2,.9,.25,1);filter:drop-shadow(0 4px 4px #0008);z-index:3}
+.score{position:absolute;right:4.5%;top:8%;font-size:clamp(9px,.9vw,13px);font-weight:1000;background:#ffffffdd;color:#10285a;border-radius:999px;padding:4px 8px;z-index:4}
+.question-panel{position:absolute;left:3%;right:3%;bottom:2%;height:26%;display:grid;grid-template-columns:1.45fr .55fr;gap:12px}
+.card{background:linear-gradient(180deg,#10213d,#09182d);border:2px solid #4f6dff;border-radius:18px;padding:10px 14px;box-shadow:0 0 18px #20d6ff22}
+.qtag{display:inline-block;background:linear-gradient(135deg,#20d6ff,#7958ff);border-radius:999px;padding:4px 9px;font-size:10px;font-weight:1000}
+.q{font-size:clamp(12px,1.55vw,22px);font-weight:1000;line-height:1.08;margin:5px 0 7px}
+.answers{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.answer{border:2px solid #a9c6eb;border-radius:10px;background:#213753;color:#fff;padding:7px 9px;font-size:clamp(9px,1vw,14px);font-weight:900;text-align:left;min-height:34px}
+.answer.good{background:#15944b;border-color:#23e37c}.answer.bad{background:#a9273e;border-color:#ff6b81}.answer[disabled]{opacity:.7}
+.info{display:flex;flex-direction:column;justify-content:center;gap:7px;text-align:center}
+.info h3{margin:0;color:var(--yellow);font-size:clamp(15px,1.5vw,22px)}
+.info p{margin:0;color:#d6e5ff;font-size:clamp(9px,.9vw,13px);font-weight:800;line-height:1.25}
+.overlay{position:absolute;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;background:#050b18d9}
+.hidden{display:none!important}
+.modal{width:min(560px,72%);background:linear-gradient(180deg,#12294b,#0a1830);border:2px solid #5a8cff;border-radius:24px;padding:26px;text-align:center;box-shadow:0 0 35px #20d6ff33}
+.modal h2{margin:0 0 10px;color:var(--yellow);font-size:clamp(26px,4vw,48px)}
+.modal p{color:#d8e7ff;font-weight:800;line-height:1.35}
+.btn{border:0;border-radius:14px;padding:12px 20px;font-size:16px;font-weight:1000;color:#fff;background:linear-gradient(135deg,#20d6ff,#ff3d9a);box-shadow:0 4px 0 #13244d;cursor:pointer}
+.result-list{margin:12px auto;max-width:430px;text-align:left}
+.result-row{display:flex;justify-content:space-between;gap:14px;padding:9px 12px;margin:6px 0;border-radius:12px;background:#ffffff12;font-weight:1000}
+.tie{color:#ffd83d}
+.flash{animation:flash .55s infinite alternate}
+@keyframes flash{from{filter:brightness(1)}to{filter:brightness(1.5)}}
+@media(max-height:540px){
+ .timer-box{top:10.5%;transform:translateX(-50%) scale(.85)}
+ .track-wrap{top:25%;height:40%}
+ .question-panel{height:31%}
+ .q{font-size:clamp(11px,1.3vw,17px)}
+ .answer{font-size:clamp(8px,.9vw,12px);padding:5px 7px;min-height:30px}
+}
+</style>
+</head>
+<body>
+<div class="viewport">
+<div class="stage" id="stage">
+  <div class="grid"></div>
+  <div class="header">
+    <div class="title">CORRIDA MALUCA</div>
+    <div class="sub">TESTE DA AMPULHETA • 90 segundos • vence quem tiver mais acertos</div>
+  </div>
+
+  <div class="timer-box" id="timerBox" style="--duration:90s">
+    <div class="hourglass">
+      <div class="glass"></div>
+      <div class="sand-top"></div>
+      <div class="sand-stream"></div>
+      <div class="sand-bottom"></div>
+    </div>
+    <div>
+      <div class="timer-label">AMPULHETA</div>
+      <div class="time-num" id="timeNum">90s</div>
+    </div>
+  </div>
+
+  <div class="track-wrap">
+    <div class="lane-labels">
+      <div class="team-label t1">VOCÊ</div>
+      <div class="team-label t2">CPU NITRO</div>
+      <div class="team-label t3">CPU TURBO</div>
+      <div class="team-label t4">CPU FAÍSCA</div>
+    </div>
+    <div class="lanes">
+      <div class="lane"><span class="car" id="c0">🏎️</span><span class="score" id="s0">0 acertos</span><span class="finish"></span></div>
+      <div class="lane"><span class="car" id="c1">🚗</span><span class="score" id="s1">0 acertos</span><span class="finish"></span></div>
+      <div class="lane"><span class="car" id="c2">🚙</span><span class="score" id="s2">0 acertos</span><span class="finish"></span></div>
+      <div class="lane"><span class="car" id="c3">🚕</span><span class="score" id="s3">0 acertos</span><span class="finish"></span></div>
+    </div>
+  </div>
+
+  <div class="question-panel">
+    <div class="card">
+      <div class="qtag">🧪 QUESTÕES DE TESTE</div>
+      <div class="q" id="question">Clique em COMEÇAR TESTE.</div>
+      <div class="answers" id="answers"></div>
+    </div>
+    <div class="card info">
+      <h3>🏁 REGRA DO TESTE</h3>
+      <p>Acerto = carro avança.</p>
+      <p>Erro = carro não avança.</p>
+      <p>O jogo termina somente quando a areia acabar.</p>
+    </div>
+  </div>
+
+  <div class="overlay" id="startOverlay">
+    <div class="modal">
+      <h2>⌛ TESTE 90s</h2>
+      <p>Este é um protótipo para visualizar a nova mecânica. Você joga contra 3 CPUs simuladas. Na versão final, cada equipe estará em um computador diferente.</p>
+      <button class="btn" id="startBtn">COMEÇAR TESTE</button>
+    </div>
+  </div>
+
+  <div class="overlay hidden" id="endOverlay">
+    <div class="modal">
+      <h2>⌛ TEMPO ESGOTADO!</h2>
+      <p>Classificação baseada somente no número de acertos.</p>
+      <div class="result-list" id="results"></div>
+      <button class="btn" id="againBtn">TESTAR NOVAMENTE</button>
+    </div>
+  </div>
+</div>
+</div>
+<script>
+const DURATION=90;
+const BASE=[
+["Qual personagem é um ogro verde?",["Shrek","Simba","Woody","Nemo"],0],
+["Em Frozen, quem tem poderes de gelo?",["Anna","Elsa","Olaf","Kristoff"],1],
+["Quem é o cowboy de Toy Story?",["Buzz","Woody","Rex","Andy"],1],
+["Em O Rei Leão, quem é o protagonista?",["Simba","Scar","Timon","Rafiki"],0],
+["Qual personagem vive em um abacaxi no fundo do mar?",["Sonic","Bob Esponja","Mickey","Scooby-Doo"],1],
+["Qual herói lança teias?",["Batman","Thor","Homem-Aranha","Hulk"],2],
+["Em Procurando Nemo, Nemo é um...",["Peixe-palhaço","Golfinho","Polvo","Tubarão"],0],
+["Quem é o boneco de neve de Frozen?",["Sven","Hans","Olaf","Kristoff"],2],
+["Qual personagem azul corre muito rápido?",["Stitch","Sonic","Dory","Gênio"],1],
+["Em Carros, quem é o protagonista?",["Mate","Doc","Relâmpago McQueen","Chick Hicks"],2],
+["Em Kung Fu Panda, o protagonista é...",["Po","Shrek","Alex","Rex"],0],
+["Qual filme tem Alegria e Tristeza?",["Encanto","Divertida Mente","Up","Luca"],1],
+["Em Madagascar, Alex é um...",["Leão","Zebra","Girafa","Hipopótamo"],0],
+["Qual princesa tem uma irmã chamada Anna?",["Moana","Elsa","Ariel","Mulan"],1],
+["Quem é o parceiro espacial de Woody?",["Buzz Lightyear","Rex","Slinky","Andy"],0],
+["Em Zootopia, Judy Hopps é uma...",["Raposa","Coelha","Gazela","Lontra"],1],
+["Em Ratatouille, Remy é um...",["Rato","Gato","Coelho","Cachorro"],0],
+["Em Up, o que faz a casa voar?",["Foguetes","Balões","Asas","Magia"],1],
+["Qual filme tem uma família chamada Madrigal?",["Encanto","Frozen","Moana","Coco"],0],
+["Em Monstros S.A., Sullivan é...",["Verde e pequeno","Azul e peludo","Humano","Robô"],1],
+["Qual personagem é um cão detetive medroso?",["Pluto","Pateta","Scooby-Doo","Snoopy"],2],
+["Em Os Incríveis, qual é o sobrenome da família?",["Parr","Parker","Stark","Wayne"],0],
+["Qual herói é conhecido como Homem de Aço?",["Batman","Superman","Thor","Hulk"],1],
+["Em Harry Potter, qual esporte é jogado em vassouras?",["Futebol","Quadribol","Basquete","Tênis"],1],
+["Qual filme famoso tem um parque com dinossauros?",["Avatar","Jurassic Park","Titanic","Jumanji"],1],
+["Em Moana, quem é o semideus?",["Maui","Hércules","Tarzan","Aladdin"],0],
+["Quem é o pai de Simba?",["Scar","Mufasa","Timon","Zazu"],1],
+["Em A Era do Gelo, Sid é uma...",["Preguiça","Morsa","Raposa","Lontra"],0],
+["Qual dragão acompanha Soluço?",["Banguela","Draco","Fúria","Tempestade"],0],
+["Em Luca, a história se passa principalmente em...",["Itália","Espanha","França","Portugal"],0],
+["Quem é a irmã de Elsa?",["Anna","Ariel","Mulan","Merida"],0],
+["Qual personagem é amarelo e ajuda Gru?",["Smurf","Minion","Troll","Muppet"],1],
+["Em Toy Story, Buzz acredita inicialmente ser um...",["Astronauta real","Cowboy","Dinossauro","Robô"],0],
+["Qual animal é Po?",["Urso panda","Leão","Coelho","Tigre"],0],
+["Quem é o vilão principal de O Rei Leão?",["Scar","Mufasa","Timon","Pumba"],0],
+["Em Procurando Dory, Dory é uma...",["Peixe","Tartaruga","Foca","Estrela-do-mar"],0],
+["Qual personagem de Frozen é uma rena?",["Olaf","Sven","Hans","Kristoff"],1],
+["Em Carros, Mate é um...",["Guincho","Carro de corrida","Ônibus","Trator"],0],
+["Qual filme tem um robô compactador como protagonista?",["WALL-E","Up","Cars","Luca"],0],
+["Em Coco, a história está ligada ao...",["Dia dos Mortos","Natal","Carnaval","Ano-Novo"],0],
+["Quem é a protagonista de Encanto?",["Mirabel","Elsa","Moana","Boo"],0],
+["Em Shrek, quem é a princesa?",["Fiona","Anna","Ariel","Jasmine"],0],
+["Qual personagem de Monsters Inc. é pequeno e verde?",["Mike","Sullivan","Randall","Boo"],0],
+["Em Os Incríveis, quem tem superforça?",["Sr. Incrível","Violeta","Flecha","Edna"],0],
+["Qual personagem é um rato cozinheiro?",["Remy","Rex","Olaf","Nemo"],0]
+];
+
+const racers=[
+{name:"VOCÊ",score:0,q:0,acc:1,min:0,max:0},
+{name:"CPU NITRO",score:0,q:0,acc:.64,min:1200,max:2500},
+{name:"CPU TURBO",score:0,q:0,acc:.72,min:1100,max:2300},
+{name:"CPU FAÍSCA",score:0,q:0,acc:.78,min:1000,max:2100}
+];
+let questions=[],started=false,ended=false,startAt=0,ticker=null,cpuTimers=[],currentCorrect=0;
+const $=id=>document.getElementById(id);
+function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function buildRound(){
+  questions=shuffle(BASE).slice(0,40).map(([q,opts,a])=>{
+    const answer=opts[a],mixed=shuffle(opts);
+    return [q,mixed,mixed.indexOf(answer)];
+  });
+}
+function updateCars(){
+  racers.forEach((r,i)=>{
+    const pct=3+Math.min(r.score,40)/40*91;
+    $("c"+i).style.left=pct+"%";
+    $("s"+i).textContent=r.score+" acertos";
+  });
+}
+function renderQuestion(){
+  if(!started||ended)return;
+  const h=racers[0];
+  if(h.q>=questions.length){
+    $("question").textContent="Você respondeu todas as questões disponíveis. Aguarde a ampulheta terminar.";
+    $("answers").innerHTML="";
+    return;
+  }
+  const [q,opts,a]=questions[h.q];
+  currentCorrect=a;
+  $("question").textContent="Questão "+(h.q+1)+" — "+q;
+  $("answers").innerHTML="";
+  opts.forEach((t,i)=>{
+    const b=document.createElement("button");
+    b.className="answer";b.type="button";
+    b.textContent=String.fromCharCode(65+i)+") "+t;
+    b.onclick=()=>answerHuman(i,b);
+    $("answers").appendChild(b);
+  });
+}
+function answerHuman(i,b){
+  if(!started||ended)return;
+  const r=racers[0],item=questions[r.q];
+  document.querySelectorAll(".answer").forEach(x=>x.disabled=true);
+  const ok=i===item[2];
+  if(ok){r.score++;b.classList.add("good")}else b.classList.add("bad");
+  r.q++;updateCars();
+  setTimeout(renderQuestion,230);
+}
+function cpuStep(i){
+  if(!started||ended)return;
+  const r=racers[i];
+  if(r.q>=questions.length)return;
+  r.q++;
+  if(Math.random()<r.acc)r.score++;
+  updateCars();
+  const wait=r.min+Math.random()*(r.max-r.min);
+  const id=setTimeout(()=>cpuStep(i),wait);cpuTimers.push(id);
+}
+function tick(){
+  const elapsed=(performance.now()-startAt)/1000;
+  const left=Math.max(0,DURATION-elapsed);
+  $("timeNum").textContent=Math.ceil(left)+"s";
+  if(left<=0)endGame();
+}
+function startGame(){
+  buildRound();
+  racers.forEach(r=>{r.score=0;r.q=0});
+  updateCars();
+  started=true;ended=false;
+  $("startOverlay").classList.add("hidden");
+  $("endOverlay").classList.add("hidden");
+  $("timerBox").classList.remove("finished");
+  void $("timerBox").offsetWidth;
+  $("timerBox").classList.add("running");
+  $("timeNum").textContent=DURATION+"s";
+  startAt=performance.now();
+  renderQuestion();
+  ticker=setInterval(tick,100);
+  cpuTimers=[setTimeout(()=>cpuStep(1),700),setTimeout(()=>cpuStep(2),950),setTimeout(()=>cpuStep(3),1200)];
+}
+function endGame(){
+  if(ended)return;
+  ended=true;started=false;
+  clearInterval(ticker);
+  cpuTimers.forEach(clearTimeout);cpuTimers=[];
+  document.querySelectorAll(".answer").forEach(b=>b.disabled=true);
+  $("timerBox").classList.remove("running");
+  $("timerBox").classList.add("finished");
+  $("timeNum").textContent="0s";
+  $("question").textContent="TEMPO ESGOTADO!";
+  $("answers").innerHTML="";
+  setTimeout(showResults,500);
+}
+function showResults(){
+  const sorted=[...racers].sort((a,b)=>b.score-a.score);
+  const groups={};sorted.forEach(r=>{(groups[r.score]??=[]).push(r.name)});
+  let place=1,prev=null,seen=0;
+  const html=sorted.map((r,idx)=>{
+    if(prev===null||r.score!==prev)place=idx+1;
+    const tied=groups[r.score].length>1;
+    prev=r.score;
+    return '<div class="result-row"><span>'+(tied?place+'º (empate) ':place+'º ')+r.name+'</span><span>'+r.score+' acertos</span></div>';
+  }).join('');
+  $("results").innerHTML=html;
+  $("endOverlay").classList.remove("hidden");
+}
+$("startBtn").onclick=startGame;
+$("againBtn").onclick=startGame;
+</script>
+</body>
+</html>
