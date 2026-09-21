@@ -44,6 +44,11 @@ button,input{font:inherit}
 .phase.placeholder{display:flex;align-items:center;justify-content:center;text-align:center;border-style:dashed;background:linear-gradient(135deg,#f5faff,#edf6ff);color:#6c88aa}
 .phase.placeholder .phase-title{font-size:22px;color:#6c88aa}
 .phase.placeholder .phase-desc{font-size:12px}
+.lobby{display:grid;grid-template-columns:1fr auto;gap:6px;margin-bottom:7px}
+.room-input{min-width:0;border:2px solid #9fd2ff;border-radius:11px;padding:7px 9px;font-weight:1000;color:#174f9c;background:#f7fbff;text-transform:uppercase}
+.join-btn{border:0;border-radius:11px;padding:7px 10px;background:linear-gradient(135deg,#236cff,#39c7ff);color:#fff;font-weight:1000;cursor:pointer}
+.room-line{grid-column:1/-1;display:flex;justify-content:space-between;gap:7px;align-items:center;font-size:10px;font-weight:1000;color:#6481a5}
+.room-count{color:#174f9c}
 .teams{display:grid;gap:5px}
 .team{display:grid;grid-template-columns:16px 1fr auto;gap:7px;align-items:center;padding:7px 9px;border-radius:11px;font-size:12px;background:#f8fbff;border:1px solid #d7e9fb;font-weight:1000}
 .dot{width:14px;height:14px;border-radius:50%;box-shadow:0 0 0 3px #ffffff,0 0 0 4px #d7e9fb}
@@ -205,7 +210,7 @@ body{font-size:20.8px}
     <h2 id="phaseTitle">FASE 1</h2>
     <p id="phaseMsg">Vocabulary Match</p>
     <div class="count" id="count">3</div>
-    <button class="btn primary" id="closePhaseBtn">ENTENDI — FECHAR TESTE</button>
+    <button class="btn primary" id="closePhaseBtn">INICIANDO FASE...</button>
   </div>
 </div>
 
@@ -272,7 +277,17 @@ function showPhaseIntro(){
   document.getElementById('phaseMsg').textContent=p.title;
   phaseOverlay.classList.remove('hidden');
   let n=3;count.textContent=n;clearInterval(timer);
-  timer=setInterval(()=>{n--;count.textContent=n>0?n:'GO!';if(n<=0)clearInterval(timer)},800);
+  timer=setInterval(()=>{
+    n--;
+    count.textContent=n>0?n:'GO!';
+    if(n<=0){
+      clearInterval(timer);
+      if(currentPhase===0){
+        const room=cleanRoom(roomInput.value);
+        setTimeout(()=>{location.href='vocabulary-match.html?sala='+encodeURIComponent(room)+'&v=phase1a'},650);
+      }
+    }
+  },800);
 }
 function showRank(){
   const demo=[['🥇','EQUIPE VERDE',218],['🥈','EQUIPE AZUL',205],['🥉','EQUIPE VERMELHA',181],['4º','EQUIPE AMARELA',174]];
@@ -300,6 +315,15 @@ function paintPresence(rows){
   else if(isHost){startBtn.disabled=false;startBtn.textContent='▶ INICIAR CAMPEONATO';}
   else{startBtn.disabled=true;startBtn.textContent='✓ 4/4 — AGUARDANDO HOST';}
 }
+function paintScores(scores){
+  const rows=[
+    ['blue','AZUL'],['yellow','AMARELA'],['green','VERDE'],['red','VERMELHA']
+  ].map(([color,name])=>({color,name,pts:Number(scores?.[color]||0)}))
+   .sort((a,b)=>b.pts-a.pts);
+  document.getElementById('scoreboard').innerHTML=rows.map((r,i)=>
+    '<div class="score-row"><span>'+(i+1)+'º</span><span>'+r.name+'</span><span class="pts">'+r.pts+' pts</span></div>'
+  ).join('');
+}
 async function refreshLobby(){
   if(!sb||!joined)return;
   const room=cleanRoom(roomInput.value);
@@ -314,7 +338,8 @@ async function refreshLobby(){
     isHost=state.host_device===deviceId;
     currentPhase=Math.max(0,Math.min(5,(state.current_phase||1)-1));
     renderPhaseQueue();
-    if(state.status==='started'&&lastRoomStatus!=='started') showPhaseIntro();
+    paintScores(state.scores||{});
+    if(state.status==='started'&&lastRoomStatus!=='started'&&currentPhase===0) showPhaseIntro();
     lastRoomStatus=state.status;
   }
 }
