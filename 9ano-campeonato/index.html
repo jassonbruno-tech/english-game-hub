@@ -6,6 +6,8 @@
 <meta name="theme-color" content="#165DFF">
 <title>English Championship — 9º Ano</title>
 <meta name="description" content="Campeonato de Inglês do 9º ano — Escola Delfina de Jesus Amorim — Professor Jasson Bruno.">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../jogos-em-equipe/supabase-config.js?v=9ano1"></script>
 <style>
 *{box-sizing:border-box}
 html,body{margin:0;width:100%;height:100%;font-family:Arial,Helvetica,sans-serif;background:#eaf7ff;color:#12325b;overflow:hidden}
@@ -46,7 +48,9 @@ button,input{font:inherit}
 .team{display:grid;grid-template-columns:16px 1fr auto;gap:7px;align-items:center;padding:7px 9px;border-radius:11px;font-size:12px;background:#f8fbff;border:1px solid #d7e9fb;font-weight:1000}
 .dot{width:14px;height:14px;border-radius:50%;box-shadow:0 0 0 3px #ffffff,0 0 0 4px #d7e9fb}
 .blue{background:#2674ff}.yellow{background:#ffd52a}.green{background:#20c77a}.red{background:#ff4e61}
-.connected{color:#1b9b62;font-size:11px}
+.connected{color:#8297b2;font-size:11px}
+.connected.ready{color:#1b9b62}
+.connected.me{color:#236cff}
 .rules{margin-top:8px;padding:8px;border-radius:12px;background:#eef8ff;color:#42678f;font-size:10px;line-height:1.3;font-weight:800}
 .score-box{margin-top:8px}
 .score-row{display:grid;grid-template-columns:30px 1fr auto;gap:6px;align-items:center;padding:6px 8px;margin-top:4px;border-radius:10px;font-size:11px;background:#f7fbff;border:1px solid #d5eaff;font-weight:1000}
@@ -112,7 +116,7 @@ button,input{font:inherit}
       <h2>🗺️ Jornada do Campeonato</h2>
       <div class="phases" id="phases"></div>
       <div class="actions">
-        <button class="btn primary" id="startBtn">▶ INICIAR CAMPEONATO</button>
+        <button class="btn primary" id="startBtn" disabled>▶ AGUARDANDO 4 EQUIPES</button>
         <button class="btn secondary" id="demoRankBtn">🏆 TESTAR RANKING PARCIAL</button>
         <button class="btn secondary" id="advanceBtn">⏭ TESTAR PRÓXIMA FASE</button>
       </div>
@@ -120,11 +124,16 @@ button,input{font:inherit}
 
     <aside class="panel">
       <h2>🎮 Equipes</h2>
+      <div class="lobby">
+        <input id="roomInput" class="room-input" value="901" maxlength="12" aria-label="Código da sala">
+        <button id="joinBtn" class="join-btn" type="button">ENTRAR NA SALA</button>
+        <div class="room-line"><span id="myTeam">Você ainda não entrou.</span><span id="roomCount" class="room-count">0/4 conectadas</span></div>
+      </div>
       <div class="teams">
-        <div class="team"><span class="dot blue"></span><span>EQUIPE AZUL</span><span class="connected">● PRONTA</span></div>
-        <div class="team"><span class="dot yellow"></span><span>EQUIPE AMARELA</span><span class="connected">● PRONTA</span></div>
-        <div class="team"><span class="dot green"></span><span>EQUIPE VERDE</span><span class="connected">● PRONTA</span></div>
-        <div class="team"><span class="dot red"></span><span>EQUIPE VERMELHA</span><span class="connected">● PRONTA</span></div>
+        <div class="team" data-color="blue"><span class="dot blue"></span><span>EQUIPE AZUL</span><span class="connected" id="team-blue">AGUARDANDO</span></div>
+        <div class="team" data-color="yellow"><span class="dot yellow"></span><span>EQUIPE AMARELA</span><span class="connected" id="team-yellow">AGUARDANDO</span></div>
+        <div class="team" data-color="green"><span class="dot green"></span><span>EQUIPE VERDE</span><span class="connected" id="team-green">AGUARDANDO</span></div>
+        <div class="team" data-color="red"><span class="dot red"></span><span>EQUIPE VERMELHA</span><span class="connected" id="team-red">AGUARDANDO</span></div>
       </div>
 
       <div class="rules">
@@ -176,75 +185,135 @@ const PHASES=[
   {title:'Opinions & Suggestions',desc:"I think • In my opinion • I agree • I'm not sure • You should • Maybe you can"},
   {title:'Corrida Maluca — FINAL',desc:'90 segundos • ampulheta • banco grande de questões • vence quem acumular mais acertos'}
 ];
-let currentPhase=0;
+const TEAM_NAMES={blue:'AZUL',yellow:'AMARELA',green:'VERDE',red:'VERMELHA'};
+let currentPhase=0,timer=null,pollTimer=null,pingTimer=null,joined=false,myColor=null,isHost=false,lastRoomStatus='lobby';
 const phasesBox=document.getElementById('phases');
 const phaseOverlay=document.getElementById('phaseOverlay');
 const rankOverlay=document.getElementById('rankOverlay');
 const count=document.getElementById('count');
-let timer=null;
+const roomInput=document.getElementById('roomInput');
+const roomCount=document.getElementById('roomCount');
+const myTeam=document.getElementById('myTeam');
+const startBtn=document.getElementById('startBtn');
+const joinBtn=document.getElementById('joinBtn');
+const cfg=window.TUG_SUPABASE_CONFIG||{};
+const sb=(cfg.url&&cfg.key&&window.supabase?.createClient)?window.supabase.createClient(cfg.url,cfg.key):null;
+const deviceKey='championship9DeviceId';
+const deviceId=localStorage.getItem(deviceKey)||('pc_'+crypto.getRandomValues(new Uint32Array(4)).join('_'));
+localStorage.setItem(deviceKey,deviceId);
+const qs=new URLSearchParams(location.search);
+if(qs.get('sala')) roomInput.value=qs.get('sala').toUpperCase();
 
+function cleanRoom(v){return (v||'901').replace(/[^a-zA-Z0-9_-]/g,'').toUpperCase().slice(0,12)||'901'}
 function renderPhaseQueue(){
   phasesBox.innerHTML='';
-  const current=PHASES[currentPhase];
-  const next=PHASES[currentPhase+1];
-
+  const current=PHASES[currentPhase],next=PHASES[currentPhase+1];
   if(current){
-    const a=document.createElement('div');
-    a.className='phase current p'+(currentPhase+1);
+    const a=document.createElement('div');a.className='phase current p'+(currentPhase+1);
     a.innerHTML='<div class="num">'+(currentPhase+1)+'</div><div><div class="phase-title">'+current.title+'</div><div class="phase-desc">'+current.desc+'</div></div><span class="status">FASE ATUAL</span>';
     phasesBox.appendChild(a);
   }
-
   if(next){
-    const b=document.createElement('div');
-    b.className='phase locked p'+(currentPhase+2);
+    const b=document.createElement('div');b.className='phase locked p'+(currentPhase+2);
     b.innerHTML='<div class="num">'+(currentPhase+2)+'</div><div><div class="phase-title">'+next.title+'</div><div class="phase-desc">'+next.desc+'</div></div><span class="status">🔒 PRÓXIMA</span>';
     phasesBox.appendChild(b);
   }
-
-  const p=document.createElement('div');
-  p.className='phase placeholder';
-  if(currentPhase+2<PHASES.length){
-    p.innerHTML='<div><div class="phase-title">➜ FASE SEGUINTE</div><div class="phase-desc">Será revelada quando a próxima fase for desbloqueada.</div></div>';
-  }else{
-    p.innerHTML='<div><div class="phase-title">🏁 FINAL DO CAMPEONATO</div><div class="phase-desc">Depois desta etapa, será exibido o pódio geral.</div></div>';
-  }
+  const p=document.createElement('div');p.className='phase placeholder';
+  p.innerHTML=currentPhase+2<PHASES.length?'<div><div class="phase-title">➜ FASE SEGUINTE</div><div class="phase-desc">Será revelada quando a próxima fase for desbloqueada.</div></div>':'<div><div class="phase-title">🏁 FINAL DO CAMPEONATO</div><div class="phase-desc">Depois desta etapa, será exibido o pódio geral.</div></div>';
   phasesBox.appendChild(p);
 }
-
 function showPhaseIntro(){
   const p=PHASES[currentPhase];
   document.getElementById('phaseTitle').textContent='FASE '+(currentPhase+1);
   document.getElementById('phaseMsg').textContent=p.title;
   phaseOverlay.classList.remove('hidden');
-  let n=3; count.textContent=n;
-  clearInterval(timer);
+  let n=3;count.textContent=n;clearInterval(timer);
   timer=setInterval(()=>{n--;count.textContent=n>0?n:'GO!';if(n<=0)clearInterval(timer)},800);
 }
 function showRank(){
-  const demo=[
-    ['🥇','EQUIPE VERDE',218],
-    ['🥈','EQUIPE AZUL',205],
-    ['🥉','EQUIPE VERMELHA',181],
-    ['4º','EQUIPE AMARELA',174]
-  ];
+  const demo=[['🥇','EQUIPE VERDE',218],['🥈','EQUIPE AZUL',205],['🥉','EQUIPE VERMELHA',181],['4º','EQUIPE AMARELA',174]];
   document.getElementById('rankList').innerHTML=demo.map(r=>'<div class="rank"><span>'+r[0]+'</span><span>'+r[1]+'</span><span>'+r[2]+' pts</span></div>').join('');
   const next=PHASES[Math.min(currentPhase+1,PHASES.length-1)];
   document.querySelector('.next').innerHTML=currentPhase<PHASES.length-1?'PRÓXIMA FASE: <b>'+next.title.toUpperCase()+'</b>':'<b>CAMPEONATO ENCERRADO</b>';
   rankOverlay.classList.remove('hidden');
 }
-function advancePhase(){
-  if(currentPhase<PHASES.length-1){
-    currentPhase++;
+function advancePhase(){if(currentPhase<PHASES.length-1){currentPhase++;renderPhaseQueue()}}
+
+function paintPresence(rows){
+  const fresh=(rows||[]).filter(r=>Date.now()-new Date(r.last_seen).getTime()<9000);
+  const byColor=new Map(fresh.map(r=>[r.color,r]));
+  ['blue','yellow','green','red'].forEach(color=>{
+    const el=document.getElementById('team-'+color),row=byColor.get(color);
+    el.className='connected';
+    if(row){
+      el.textContent=row.device_id===deviceId?'● VOCÊ':'● PRONTA';
+      el.classList.add(row.device_id===deviceId?'me':'ready');
+    }else el.textContent='AGUARDANDO';
+  });
+  roomCount.textContent=fresh.length+'/4 conectadas';
+  if(!joined){startBtn.disabled=true;startBtn.textContent='▶ ENTRE NA SALA';return}
+  if(fresh.length<4){startBtn.disabled=true;startBtn.textContent='▶ AGUARDANDO '+(4-fresh.length)+' EQUIPE'+(4-fresh.length>1?'S':'');}
+  else if(isHost){startBtn.disabled=false;startBtn.textContent='▶ INICIAR CAMPEONATO';}
+  else{startBtn.disabled=true;startBtn.textContent='✓ 4/4 — AGUARDANDO HOST';}
+}
+async function refreshLobby(){
+  if(!sb||!joined)return;
+  const room=cleanRoom(roomInput.value);
+  const cutoff=new Date(Date.now()-9000).toISOString();
+  const [{data:rows},{data:roomRows}]=await Promise.all([
+    sb.from('championship_presence').select('color,device_id,last_seen').eq('room_code',room).gte('last_seen',cutoff),
+    sb.from('championship_rooms').select('status,current_phase,host_device,scores').eq('room_code',room).limit(1)
+  ]);
+  paintPresence(rows||[]);
+  const state=roomRows?.[0];
+  if(state){
+    isHost=state.host_device===deviceId;
+    currentPhase=Math.max(0,Math.min(5,(state.current_phase||1)-1));
     renderPhaseQueue();
+    if(state.status==='started'&&lastRoomStatus!=='started') showPhaseIntro();
+    lastRoomStatus=state.status;
   }
 }
-document.getElementById('startBtn').addEventListener('click',showPhaseIntro);
+async function joinRoom(){
+  if(!sb){myTeam.textContent='Supabase não carregou. Atualize a página.';return}
+  const room=cleanRoom(roomInput.value);roomInput.value=room;
+  joinBtn.disabled=true;joinBtn.textContent='CONECTANDO...';
+  try{
+    const {data,error}=await sb.rpc('championship_claim_team',{p_room:room,p_device:deviceId});
+    if(error)throw error;
+    if(!data?.color){myTeam.textContent='Sala cheia. As 4 equipes já estão ocupadas.';return}
+    myColor=data.color;isHost=!!data.is_host;joined=true;
+    myTeam.textContent='Você é a EQUIPE '+TEAM_NAMES[myColor]+(isHost?' • HOST':'');
+    roomInput.disabled=true;joinBtn.textContent='CONECTADA';joinBtn.disabled=true;
+    history.replaceState(null,'',location.pathname+'?sala='+encodeURIComponent(room));
+    await refreshLobby();
+    clearInterval(pollTimer);clearInterval(pingTimer);
+    pollTimer=setInterval(()=>refreshLobby().catch(()=>{}),1200);
+    pingTimer=setInterval(()=>sb.rpc('championship_ping',{p_room:room,p_device:deviceId}),2200);
+  }catch(e){
+    myTeam.textContent='Erro ao conectar: '+e.message;
+    joinBtn.disabled=false;joinBtn.textContent='ENTRAR NA SALA';
+  }
+}
+async function startChampionship(){
+  if(!sb||!joined||!isHost)return;
+  startBtn.disabled=true;startBtn.textContent='INICIANDO...';
+  const room=cleanRoom(roomInput.value);
+  const {data,error}=await sb.rpc('championship_start',{p_room:room,p_device:deviceId});
+  if(error||!data){startBtn.disabled=false;startBtn.textContent='▶ VERIFICAR EQUIPES';await refreshLobby();return}
+  await refreshLobby();
+}
+
+joinBtn.addEventListener('click',joinRoom);
+startBtn.addEventListener('click',startChampionship);
 document.getElementById('demoRankBtn').addEventListener('click',showRank);
 document.getElementById('advanceBtn').addEventListener('click',advancePhase);
 document.getElementById('closePhaseBtn').addEventListener('click',()=>phaseOverlay.classList.add('hidden'));
 document.getElementById('closeRankBtn').addEventListener('click',()=>rankOverlay.classList.add('hidden'));
+window.addEventListener('pagehide',()=>{if(sb&&joined)sb.rpc('championship_leave',{p_room:cleanRoom(roomInput.value),p_device:deviceId})});
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&joined)refreshLobby().catch(()=>{})});
 renderPhaseQueue();
+paintPresence([]);
 </script>
 </body>
 </html>
