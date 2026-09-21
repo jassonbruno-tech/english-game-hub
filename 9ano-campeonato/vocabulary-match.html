@@ -15,6 +15,11 @@ button{font:inherit}.app{height:100%;width:min(1280px,100%);margin:auto;padding:
 .game{display:grid;grid-template-columns:1fr 1fr;gap:10px;min-height:0}.col{background:rgba(255,255,255,.9);border:2px solid #afdfff;border-radius:20px;padding:10px;display:grid;grid-template-rows:auto repeat(10,1fr);gap:5px;min-height:0}.col h2{margin:0;text-align:center;color:#1857a3;font-size:18px}
 .word{border:2px solid #c2dcf5;border-radius:11px;background:#f8fcff;color:#163d70;font-weight:1000;font-size:clamp(13px,1.25vw,18px);line-height:1.05;padding:5px 8px;cursor:pointer;min-height:0;display:flex;align-items:center;justify-content:center;text-align:center}.word:hover{border-color:#5ca8ff}.word.sel{background:#fff0a8;border-color:#ffc400;color:#684c00}.word.matched{background:#c8f7dc;border-color:#24c879;color:#11693f;opacity:.72}.word.wrong{animation:shake .22s 2;background:#ffd6dd;border-color:#ff647c}@keyframes shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
 .bottom{display:flex;justify-content:space-between;align-items:center;gap:8px;background:#fff;border:2px solid #b5dcff;border-radius:16px;padding:7px 11px;font-weight:900}.hint{color:#53769d;font-size:12px}.progress{color:#1659a8;font-size:13px}.overlay{position:fixed;inset:0;z-index:20;display:grid;place-items:center;background:#12355cbb;backdrop-filter:blur(5px);padding:16px}.hidden{display:none}.modal{width:min(650px,94vw);background:#fff;border:3px solid #9bdcff;border-radius:24px;padding:22px;text-align:center;box-shadow:0 24px 70px #174b8438}.modal h2{margin:0;color:#1858a4;font-size:clamp(28px,5vw,48px)}.modal p{color:#52749b;font-weight:800;line-height:1.35}.btn{border:0;border-radius:13px;padding:11px 15px;background:linear-gradient(135deg,#236cff,#42c9ff);color:#fff;font-weight:1000;cursor:pointer}.rank-list{max-width:520px;margin:12px auto}.rank{display:grid;grid-template-columns:44px 1fr auto;gap:8px;align-items:center;padding:10px 12px;margin:6px 0;border-radius:12px;font-weight:1000;text-align:left}.rank:nth-child(1){background:#ffe66d}.rank:nth-child(2){background:#e5edf4}.rank:nth-child(3){background:#efb27f}.rank:nth-child(4){background:#edf6ff}.waiting{font-size:18px;color:#1b5cac;font-weight:1000}
+.effect{margin:12px auto 4px;padding:11px 14px;border-radius:14px;background:linear-gradient(135deg,#e7f7ff,#fff5b8);color:#174f9c;font-size:18px;font-weight:1000}
+.general-title{margin:14px 0 5px;color:#174f9c;font-size:18px;font-weight:1000}
+.release{margin-top:12px;background:linear-gradient(135deg,#ffb52e,#ff5fa3)}
+.next-count{font-size:88px;font-weight:1000;color:#236cff;margin:8px 0;text-shadow:0 4px 0 #bcd8ff}
+.next-name{font-size:clamp(28px,5vw,48px);font-weight:1000;color:#174f9c;margin-top:4px}
 @media(max-height:720px){.app{padding:6px 9px;gap:5px}.top{padding:6px 12px}.top h1{font-size:32px}.top p{font-size:11px}.team-badge{padding:7px 10px}.hud{gap:5px}.pill{padding:4px 7px;font-size:10px}.pill b{font-size:14px}.game{gap:6px}.col{padding:6px;gap:3px;border-radius:15px}.col h2{font-size:14px}.word{font-size:11px;padding:3px 5px;border-radius:8px}.bottom{padding:4px 8px}.hint,.progress{font-size:10px}}
 </style></head><body>
 <main class="app">
@@ -33,14 +38,30 @@ button{font:inherit}.app{height:100%;width:min(1280px,100%);margin:auto;padding:
  <section class="bottom"><span class="hint">Selecione uma palavra em inglês e depois o significado correspondente.</span><span class="progress" id="status">Preparando a mesma rodada para as 4 equipes...</span></section>
 </main>
 <div class="overlay" id="loading"><div class="modal"><h2>FASE 1</h2><p id="loadText">Sincronizando as 40 combinações da sala...</p></div></div>
-<div class="overlay hidden" id="finish"><div class="modal"><h2>✅ SUA EQUIPE TERMINOU</h2><p id="finishSummary"></p><div class="waiting" id="waiting">Aguardando as outras equipes...</div><div class="rank-list" id="rankList"></div><button class="btn hidden" id="backBtn">VOLTAR AO CAMPEONATO</button></div></div>
+<div class="overlay hidden" id="finish"><div class="modal">
+  <h2>✅ SUA EQUIPE TERMINOU</h2>
+  <p id="finishSummary"></p>
+  <div class="waiting" id="waiting">Aguardando as outras equipes...</div>
+  <div class="rank-list" id="rankList"></div>
+  <div class="effect hidden" id="effectPhrase"></div>
+  <div class="general-title hidden" id="generalTitle">📊 PLACAR GERAL ATUALIZADO</div>
+  <div class="rank-list" id="generalRank"></div>
+  <button class="btn release hidden" id="releaseBtn">🔓 LIBERAR FASE 2</button>
+</div></div>
+<div class="overlay hidden" id="nextOverlay"><div class="modal">
+  <div style="font-size:58px">⚡</div>
+  <div class="next-name">FASE 2 — WORD CHALLENGE</div>
+  <div class="effect" id="nextPhrase">A liderança é temporária. O campeonato continua!</div>
+  <div class="next-count" id="nextCount">3</div>
+  <p>Preparem-se!</p>
+</div></div>
 <script>
 const BANK=[["I","eu"],["you","você / vocês"],["he","ele"],["she","ela"],["it","ele/ela para coisa ou animal"],["we","nós"],["they","eles / elas"],["my","meu / minha"],["your","seu / sua"],["his","dele"],["her","dela"],["our","nosso / nossa"],["their","deles / delas"],["am","sou / estou"],["is","é / está"],["are","são / estão"],["do","auxiliar de I/you/we/they"],["does","auxiliar de he/she/it"],["don't","forma negativa de do"],["doesn't","forma negativa de does"],["can","pode / consegue"],["can't","não pode / não consegue"],["should","deveria"],["shouldn't","não deveria"],["must","deve / obrigação forte"],["mustn't","não deve / é proibido"],["have to","ter que / precisar"],["don't have to","não precisar"],["may","pode / permissão formal"],["might","talvez / possibilidade"],["rule","regra"],["duty","dever"],["responsibility","responsabilidade"],["behavior","comportamento"],["respect","respeito / respeitar"],["honesty","honestidade"],["friendship","amizade"],["homework","tarefa de casa"],["permission","permissão"],["obligation","obrigação"],["classmate","colega de turma"],["teacher","professor(a)"],["student","aluno(a)"],["school staff","funcionários da escola"],["school rules","regras da escola"],["chores","tarefas domésticas"],["uniform","uniforme"],["test","prova"],["classroom","sala de aula"],["follow the rules","seguir as regras"],["arrive on time","chegar no horário"],["ask for permission","pedir permissão"],["do your homework","fazer sua tarefa"],["respect classmates","respeitar os colegas"],["keep the classroom clean","manter a sala limpa"],["help at home","ajudar em casa"],["wear a uniform","usar uniforme"],["take care of","cuidar de"],["ask for help","pedir ajuda"],["share ideas","compartilhar ideias"],["work in groups","trabalhar em grupos"],["leave home earlier","sair de casa mais cedo"],["use your phone","usar o celular"],["cheat in tests","colar nas provas"],["be responsible","ser responsável"],["I think","eu acho que"],["In my opinion","na minha opinião"],["I believe","eu acredito"],["I feel","eu sinto / acho"],["I agree","eu concordo"],["I disagree","eu discordo"],["I'm not sure","não tenho certeza"],["Maybe you can","talvez você possa"],["You should","você deveria"],["You could","você poderia"],["What do you think?","o que você acha?"],["What's your opinion?","qual é a sua opinião?"],["Do you have any advice?","você tem algum conselho?"],["That's a good idea","essa é uma boa ideia"],["That makes sense","isso faz sentido"],["You're right","você está certo(a)"],["Maybe not","talvez não"],["I see your point","eu entendo seu ponto"],["Good idea!","boa ideia!"],["I think so, too","eu também acho"],["study","estudar"],["learn","aprender"],["read","ler"],["write","escrever"],["listen","ouvir"],["speak","falar"],["ask","perguntar"],["answer","responder"],["help","ajudar"],["follow","seguir"],["arrive","chegar"],["leave","sair"],["bring","trazer"],["wear","vestir / usar"],["clean","limpar"],["share","compartilhar"],["practice","praticar"],["prepare","preparar"],["talk","conversar"],["think","pensar / achar"],["feel","sentir"],["agree","concordar"],["disagree","discordar"],["need","precisar"],["want","querer"],["like","gostar"],["know","saber / conhecer"],["work","trabalhar"],["play","jogar / brincar"],["kind","gentil"],["honest","honesto(a)"],["responsible","responsável"],["respectful","respeitoso(a)"],["rude","grosseiro(a)"],["nervous","nervoso(a)"],["confident","confiante"],["uncomfortable","desconfortável"],["calm","calmo(a)"],["important","importante"],["necessary","necessário"],["possible","possível"],["polite","educado(a)"],["late","atrasado(a)"],["early","cedo"],["quiet","silencioso(a)"],["noisy","barulhento(a)"],["friendly","amigável"],["helpful","prestativo(a)"],["careful","cuidadoso(a)"],["family","família"],["friend","amigo(a)"],["relationship","relacionamento"],["problem","problema"],["solution","solução"],["advice","conselho"],["suggestion","sugestão"],["opinion","opinião"],["idea","ideia"],["question","pergunta"],["message","mensagem"],["conversation","conversa"],["presentation","apresentação"],["group","grupo"],["book","livro"],["phone","celular"],["library","biblioteca"],["hallway","corredor"],["trash","lixo"],["neighbor","vizinho(a)"],["meeting","reunião"],["space","espaço"],["noise","barulho"],["gate","portão"],["always","sempre"],["usually","geralmente"],["sometimes","às vezes"],["never","nunca"],["today","hoje"],["tomorrow","amanhã"],["yesterday","ontem"],["before","antes"],["after","depois"],["now","agora"],["every day","todos os dias"],["during","durante"],["because","porque"],["but","mas"],["and","e"],["or","ou"],["with","com"],["without","sem"],["more","mais"],["less","menos"],["Who?","quem?"],["What?","o quê?"],["Where?","onde?"],["When?","quando?"],["Why?","por quê?"],["How?","como?"],["Which?","qual?"],["How many?","quantos?"],["How much?","quanto?"],["How often?","com que frequência?"],["Yes, I do.","sim, eu faço / gosto"],["No, I don't.","não, eu não faço / não gosto"],["Yes, she does.","sim, ela faz / gosta"],["No, he doesn't.","não, ele não faz / não gosta"],["Yes, we should.","sim, nós deveríamos"],["No, we shouldn't.","não, nós não deveríamos"],["Yes, they can.","sim, eles podem"],["No, they can't.","não, eles não podem"]];
 const cfg=window.TUG_SUPABASE_CONFIG||{},sb=(cfg.url&&cfg.key&&window.supabase?.createClient)?window.supabase.createClient(cfg.url,cfg.key):null;
 const qs=new URLSearchParams(location.search),room=(qs.get('sala')||'901').replace(/[^a-zA-Z0-9_-]/g,'').toUpperCase();
 const deviceId=localStorage.getItem('championship9DeviceId');
 const TEAM={blue:'EQUIPE AZUL',yellow:'EQUIPE AMARELA',green:'EQUIPE VERDE',red:'EQUIPE VERMELHA'};
-let myColor=null,order=[],round=0,correct=0,wrong=0,matched=0,selectedLeft=null,selectedRight=null,locked=false,finished=false,poll=null;
+let myColor=null,order=[],round=0,correct=0,wrong=0,matched=0,selectedLeft=null,selectedRight=null,locked=false,finished=false,poll=null,transitionPoll=null,isHost=false,releaseShown=false;
 const $=id=>document.getElementById(id);
 function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function candidateOrder(){return shuffle(BANK.map((_,i)=>i)).slice(0,40)}
@@ -86,15 +107,84 @@ async function finishGame(){
  poll=setInterval(checkResults,1000);checkResults();
 }
 async function checkResults(){
- const {data,error}=await sb.from('championship_phase_scores').select('color,correct,wrong,raw_points,bonus,total_points,submitted_at').eq('room_code',room).eq('phase',1);
- if(error)return;
+ const [{data,error},{data:rooms,error:roomErr}]=await Promise.all([
+   sb.from('championship_phase_scores').select('color,correct,wrong,raw_points,bonus,total_points,submitted_at').eq('room_code',room).eq('phase',1),
+   sb.from('championship_rooms').select('host_device,current_phase,scores,transition_message').eq('room_code',room).limit(1)
+ ]);
+ if(error||roomErr)return;
  if((data||[]).length<4){$('waiting').textContent='Aguardando as outras equipes... '+(data||[]).length+'/4 concluíram.';return}
- clearInterval(poll);
+
+ const state=rooms?.[0]||{};
+ isHost=state.host_device===deviceId;
  const arr=[...data].sort((a,b)=>b.total_points-a.total_points||new Date(a.submitted_at)-new Date(b.submitted_at));
- $('waiting').textContent='FASE 1 ENCERRADA — ranking oficial';
+ $('waiting').textContent='🏁 FASE 1 ENCERRADA — MINI RANKING';
  $('rankList').innerHTML=arr.map((r,i)=>'<div class="rank"><span>'+(i===0?'🥇':i===1?'🥈':i===2?'🥉':'4º')+'</span><span>'+TEAM[r.color]+'<small style="display:block;font-weight:800;color:#678">'+r.correct+' acertos • '+r.wrong+' erros • bônus +'+r.bonus+'</small></span><span>'+r.total_points+' pts</span></div>').join('');
- $('backBtn').classList.remove('hidden');
+
+ $('effectPhrase').textContent=state.transition_message||'Nada está decidido. A próxima fase pode mudar tudo!';
+ $('effectPhrase').classList.remove('hidden');
+ $('generalTitle').classList.remove('hidden');
+
+ const general=['blue','yellow','green','red'].map(color=>({color,pts:Number(state.scores?.[color]||0)})).sort((a,b)=>b.pts-a.pts);
+ $('generalRank').innerHTML=general.map((r,i)=>'<div class="rank"><span>'+(i===0?'🥇':i===1?'🥈':i===2?'🥉':'4º')+'</span><span>'+TEAM[r.color]+'</span><span>'+r.pts+' pts</span></div>').join('');
+
+ if(Number(state.current_phase)>1){
+   beginNextPhase(state.transition_message);
+   return;
+ }
+
+ if(isHost){
+   $('releaseBtn').classList.remove('hidden');
+   $('waiting').textContent='🏁 FASE 1 ENCERRADA — confira o ranking e libere a próxima fase.';
+ }else{
+   $('releaseBtn').classList.add('hidden');
+   $('waiting').textContent='⏳ Aguardando o HOST liberar a próxima fase...';
+ }
+
+ if(!transitionPoll){
+   transitionPoll=setInterval(watchNextPhase,900);
+ }
 }
-$('backBtn').onclick=()=>location.href='./?sala='+encodeURIComponent(room)+'&v=apos-vocab1';
+
+async function releaseNextPhase(){
+ if(!isHost)return;
+ $('releaseBtn').disabled=true;
+ $('releaseBtn').textContent='LIBERANDO...';
+ const {data,error}=await sb.rpc('championship_release_next_phase',{p_room:room,p_device:deviceId});
+ if(error||!data?.ok){
+   $('releaseBtn').disabled=false;
+   $('releaseBtn').textContent='🔓 LIBERAR FASE 2';
+   return;
+ }
+ await watchNextPhase();
+}
+
+async function watchNextPhase(){
+ const {data,error}=await sb.from('championship_rooms').select('current_phase,transition_message').eq('room_code',room).limit(1);
+ if(error)return;
+ const state=data?.[0];
+ if(state&&Number(state.current_phase)>=2){
+   beginNextPhase(state.transition_message);
+ }
+}
+
+let nextStarted=false;
+function beginNextPhase(message){
+ if(nextStarted)return;
+ nextStarted=true;
+ clearInterval(poll);clearInterval(transitionPoll);
+ $('nextPhrase').textContent=message||'A liderança é temporária. O campeonato continua!';
+ $('nextOverlay').classList.remove('hidden');
+ let n=3;$('nextCount').textContent=n;
+ const t=setInterval(()=>{
+   n--;
+   $('nextCount').textContent=n>0?n:'GO!';
+   if(n<=0){
+     clearInterval(t);
+     setTimeout(()=>{location.href='./?sala='+encodeURIComponent(room)+'&v=phase2-unlocked'},700);
+   }
+ },850);
+}
+
+$('releaseBtn').onclick=releaseNextPhase;
 init();
 </script></body></html>
