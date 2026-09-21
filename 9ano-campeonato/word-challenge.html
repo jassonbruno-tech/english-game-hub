@@ -65,7 +65,7 @@ button,input{font:inherit}.app{width:min(1280px,100%);height:100%;margin:auto;pa
 <script>
 const BANK=[["RESPONSIBILITY","responsabilidade"],["BEHAVIOR","comportamento"],["HONESTY","honestidade"],["FRIENDSHIP","amizade"],["HOMEWORK","tarefa de casa"],["PERMISSION","permissão"],["OBLIGATION","obrigação"],["CLASSMATE","colega de turma"],["TEACHER","professor(a)"],["STUDENT","aluno(a)"],["UNIFORM","uniforme"],["CLASSROOM","sala de aula"],["LIBRARY","biblioteca"],["HALLWAY","corredor"],["NEIGHBOR","vizinho(a)"],["RESPECT","respeitar / respeito"],["FOLLOW","seguir"],["ARRIVE","chegar"],["LEAVE","sair"],["BRING","trazer"],["WEAR","vestir / usar"],["CLEAN","limpar"],["SHARE","compartilhar"],["PRACTICE","praticar"],["PREPARE","preparar"],["DISCUSS","discutir / conversar"],["THINK","pensar / achar"],["AGREE","concordar"],["DISAGREE","discordar"],["NEED","precisar"],["RESPONSIBLE","responsável"],["RESPECTFUL","respeitoso(a)"],["POLITE","educado(a)"],["NERVOUS","nervoso(a)"],["CONFIDENT","confiante"],["UNCOMFORTABLE","desconfortável"],["IMPORTANT","importante"],["NECESSARY","necessário"],["POSSIBLE","possível"],["CAREFUL","cuidadoso(a)"],["HELPFUL","prestativo(a)"],["FRIENDLY","amigável"],["NOISY","barulhento(a)"],["QUIET","silencioso(a)"],["HONEST","honesto(a)"],["SHOULD","deveria"],["SHOULDN'T","não deveria"],["MUST","deve / obrigação forte"],["MUSTN'T","é proibido / não deve"],["MIGHT","talvez / possibilidade"],["MAY","pode / permissão formal"],["CAN","pode / consegue"],["CAN'T","não pode / não consegue"],["DOES","auxiliar de he/she/it"],["DOESN'T","forma negativa de does"],["DON'T","forma negativa de do"],["OPINION","opinião"],["SUGGESTION","sugestão"],["ADVICE","conselho"],["QUESTION","pergunta"],["ANSWER","resposta"],["MESSAGE","mensagem"],["CONVERSATION","conversa"],["PRESENTATION","apresentação"],["RELATIONSHIP","relacionamento"],["SOLUTION","solução"],["PROBLEM","problema"],["IDEA","ideia"],["MEETING","reunião"],["SPACE","espaço"],["NOISE","barulho"],["ALWAYS","sempre"],["USUALLY","geralmente"],["SOMETIMES","às vezes"],["NEVER","nunca"],["TODAY","hoje"],["TOMORROW","amanhã"],["YESTERDAY","ontem"],["BEFORE","antes"],["AFTER","depois"],["DURING","durante"],["WITHOUT","sem"],["BECAUSE","porque"],["WHO","quem"],["WHAT","o que"],["WHERE","onde"],["WHEN","quando"],["WHY","por quê"],["HOW","como"],["WHICH","qual"],["MANY","muitos"],["MUCH","muito"],["MORE","mais"],["LESS","menos"],["FAMILY","família"],["FRIEND","amigo(a)"],["BOOK","livro"],["PHONE","celular"],["GROUP","grupo"],["RULE","regra"],["DUTY","dever"],["TEST","prova"],["GATE","portão"],["TRASH","lixo"],["STUDY","estudar"],["LEARN","aprender"],["READ","ler"],["WRITE","escrever"],["LISTEN","ouvir"],["SPEAK","falar"],["ASK","perguntar"],["HELP","ajudar"],["WORK","trabalhar"],["PLAY","jogar / brincar"],["EARLY","cedo"],["LATE","atrasado(a)"],["KIND","gentil"],["RUDE","grosseiro(a)"],["CALM","calmo(a)"],["SAFE","seguro(a)"],["READY","pronto(a)"],["RIGHT","certo(a)"],["WRONG","errado(a)"],["BETTER","melhor"],["WORSE","pior"],["FOLLOW RULES","seguir as regras"],["ARRIVE ON TIME","chegar no horário"],["ASK PERMISSION","pedir permissão"],["DO HOMEWORK","fazer tarefa de casa"],["RESPECT OTHERS","respeitar os outros"],["HELP AT HOME","ajudar em casa"],["WEAR UNIFORM","usar uniforme"],["ASK FOR HELP","pedir ajuda"],["SHARE IDEAS","compartilhar ideias"],["WORK IN GROUPS","trabalhar em grupos"],["BE RESPONSIBLE","ser responsável"],["LEAVE EARLIER","sair mais cedo"],["USE YOUR PHONE","usar o celular"],["KEEP CLEAN","manter limpo"],["SCHOOL RULES","regras da escola"]];
 const cfg=window.TUG_SUPABASE_CONFIG||{},sb=(cfg.url&&cfg.key&&window.supabase?.createClient)?window.supabase.createClient(cfg.url,cfg.key):null;
-const qs=new URLSearchParams(location.search),room=(qs.get('sala')||'901').replace(/[^a-zA-Z0-9_-]/g,'').toUpperCase();
+const qs=new URLSearchParams(location.search),demo=qs.get('demo')==='1',room=(qs.get('sala')||'901').replace(/[^a-zA-Z0-9_-]/g,'').toUpperCase();
 const deviceId=localStorage.getItem('championship9DeviceId');
 const TEAM={blue:'EQUIPE AZUL',yellow:'EQUIPE AMARELA',green:'EQUIPE VERDE',red:'EQUIPE VERMELHA'};
 let myColor=null,order=[],idx=0,correct=0,wrong=0,revealed=new Set(),mistakes=0,tickTimer=null,seconds=20,finished=false,poll=null,transitionPoll=null,isHost=false,nextStarted=false;
@@ -112,6 +112,9 @@ function guessWord(){
  if(val===norm(w))successWord();else{wrong+=3;mistakes=Math.min(6,mistakes+2);renderParts();updateHud();$('feedback').className='feedback no';$('feedback').textContent='Palavra incorreta: −3';$('guessInput').value='';if(mistakes>=6)failWord('❌ LIMITE DE ERROS')}
 }
 async function init(){
+ if(demo){
+   myColor='blue';order=candidateOrder();$('teamBadge').textContent='MODO TESTE';$('loading').classList.add('hidden');loadWord();return;
+ }
  if(!sb||!deviceId){$('loadText').textContent='Volte ao campeonato e entre na sala antes de jogar.';return}
  const {data,error}=await sb.rpc('championship_phase2_get_or_create',{p_room:room,p_device:deviceId,p_order:candidateOrder()});
  if(error||!data?.ok){$('loadText').textContent='Não foi possível abrir a fase: '+(error?.message||data?.error||'erro');return}
@@ -122,6 +125,12 @@ async function init(){
 async function finishGame(){
  if(finished)return;finished=true;clearInterval(tickTimer);$('finish').classList.remove('hidden');
  $('finishSummary').textContent=correct+' palavras resolvidas • '+wrong+' erros • '+rawPoints()+' pontos antes do bônus.';
+ if(demo){
+   $('waiting').textContent='MODO TESTE — resultado local da sua partida.';
+   $('effectPhrase').textContent='Teste concluído! No campeonato real, aqui aparecerá o mini ranking das 4 equipes.';
+   $('effectPhrase').classList.remove('hidden');
+   $('generalTitle').classList.add('hidden');$('generalRank').innerHTML='';$('releaseBtn').classList.add('hidden');return;
+ }
  const {error}=await sb.rpc('championship_phase2_submit',{p_room:room,p_device:deviceId,p_correct:correct,p_wrong:wrong,p_raw:rawPoints()});
  if(error){$('waiting').textContent='Erro ao enviar resultado: '+error.message;return}
  poll=setInterval(checkResults,1000);checkResults();
