@@ -58,7 +58,7 @@ button{font:inherit}.app{height:100%;width:min(1280px,100%);margin:auto;padding:
 <script>
 const BANK=[["I","eu"],["you","você / vocês"],["he","ele"],["she","ela"],["it","ele/ela para coisa ou animal"],["we","nós"],["they","eles / elas"],["my","meu / minha"],["your","seu / sua"],["his","dele"],["her","dela"],["our","nosso / nossa"],["their","deles / delas"],["am","sou / estou"],["is","é / está"],["are","são / estão"],["do","auxiliar de I/you/we/they"],["does","auxiliar de he/she/it"],["don't","forma negativa de do"],["doesn't","forma negativa de does"],["can","pode / consegue"],["can't","não pode / não consegue"],["should","deveria"],["shouldn't","não deveria"],["must","deve / obrigação forte"],["mustn't","não deve / é proibido"],["have to","ter que / precisar"],["don't have to","não precisar"],["may","pode / permissão formal"],["might","talvez / possibilidade"],["rule","regra"],["duty","dever"],["responsibility","responsabilidade"],["behavior","comportamento"],["respect","respeito / respeitar"],["honesty","honestidade"],["friendship","amizade"],["homework","tarefa de casa"],["permission","permissão"],["obligation","obrigação"],["classmate","colega de turma"],["teacher","professor(a)"],["student","aluno(a)"],["school staff","funcionários da escola"],["school rules","regras da escola"],["chores","tarefas domésticas"],["uniform","uniforme"],["test","prova"],["classroom","sala de aula"],["follow the rules","seguir as regras"],["arrive on time","chegar no horário"],["ask for permission","pedir permissão"],["do your homework","fazer sua tarefa"],["respect classmates","respeitar os colegas"],["keep the classroom clean","manter a sala limpa"],["help at home","ajudar em casa"],["wear a uniform","usar uniforme"],["take care of","cuidar de"],["ask for help","pedir ajuda"],["share ideas","compartilhar ideias"],["work in groups","trabalhar em grupos"],["leave home earlier","sair de casa mais cedo"],["use your phone","usar o celular"],["cheat in tests","colar nas provas"],["be responsible","ser responsável"],["I think","eu acho que"],["In my opinion","na minha opinião"],["I believe","eu acredito"],["I feel","eu sinto / acho"],["I agree","eu concordo"],["I disagree","eu discordo"],["I'm not sure","não tenho certeza"],["Maybe you can","talvez você possa"],["You should","você deveria"],["You could","você poderia"],["What do you think?","o que você acha?"],["What's your opinion?","qual é a sua opinião?"],["Do you have any advice?","você tem algum conselho?"],["That's a good idea","essa é uma boa ideia"],["That makes sense","isso faz sentido"],["You're right","você está certo(a)"],["Maybe not","talvez não"],["I see your point","eu entendo seu ponto"],["Good idea!","boa ideia!"],["I think so, too","eu também acho"],["study","estudar"],["learn","aprender"],["read","ler"],["write","escrever"],["listen","ouvir"],["speak","falar"],["ask","perguntar"],["answer","responder"],["help","ajudar"],["follow","seguir"],["arrive","chegar"],["leave","sair"],["bring","trazer"],["wear","vestir / usar"],["clean","limpar"],["share","compartilhar"],["practice","praticar"],["prepare","preparar"],["talk","conversar"],["think","pensar / achar"],["feel","sentir"],["agree","concordar"],["disagree","discordar"],["need","precisar"],["want","querer"],["like","gostar"],["know","saber / conhecer"],["work","trabalhar"],["play","jogar / brincar"],["kind","gentil"],["honest","honesto(a)"],["responsible","responsável"],["respectful","respeitoso(a)"],["rude","grosseiro(a)"],["nervous","nervoso(a)"],["confident","confiante"],["uncomfortable","desconfortável"],["calm","calmo(a)"],["important","importante"],["necessary","necessário"],["possible","possível"],["polite","educado(a)"],["late","atrasado(a)"],["early","cedo"],["quiet","silencioso(a)"],["noisy","barulhento(a)"],["friendly","amigável"],["helpful","prestativo(a)"],["careful","cuidadoso(a)"],["family","família"],["friend","amigo(a)"],["relationship","relacionamento"],["problem","problema"],["solution","solução"],["advice","conselho"],["suggestion","sugestão"],["opinion","opinião"],["idea","ideia"],["question","pergunta"],["message","mensagem"],["conversation","conversa"],["presentation","apresentação"],["group","grupo"],["book","livro"],["phone","celular"],["library","biblioteca"],["hallway","corredor"],["trash","lixo"],["neighbor","vizinho(a)"],["meeting","reunião"],["space","espaço"],["noise","barulho"],["gate","portão"],["always","sempre"],["usually","geralmente"],["sometimes","às vezes"],["never","nunca"],["today","hoje"],["tomorrow","amanhã"],["yesterday","ontem"],["before","antes"],["after","depois"],["now","agora"],["every day","todos os dias"],["during","durante"],["because","porque"],["but","mas"],["and","e"],["or","ou"],["with","com"],["without","sem"],["more","mais"],["less","menos"],["Who?","quem?"],["What?","o quê?"],["Where?","onde?"],["When?","quando?"],["Why?","por quê?"],["How?","como?"],["Which?","qual?"],["How many?","quantos?"],["How much?","quanto?"],["How often?","com que frequência?"],["Yes, I do.","sim, eu faço / gosto"],["No, I don't.","não, eu não faço / não gosto"],["Yes, she does.","sim, ela faz / gosta"],["No, he doesn't.","não, ele não faz / não gosta"],["Yes, we should.","sim, nós deveríamos"],["No, we shouldn't.","não, nós não deveríamos"],["Yes, they can.","sim, eles podem"],["No, they can't.","não, eles não podem"]];
 const cfg=window.TUG_SUPABASE_CONFIG||{},sb=(cfg.url&&cfg.key&&window.supabase?.createClient)?window.supabase.createClient(cfg.url,cfg.key):null;
-const qs=new URLSearchParams(location.search),room=(qs.get('sala')||'901').replace(/[^a-zA-Z0-9_-]/g,'').toUpperCase();
+const qs=new URLSearchParams(location.search),demo=qs.get('demo')==='1',room=(qs.get('sala')||'901').replace(/[^a-zA-Z0-9_-]/g,'').toUpperCase();
 const deviceId=localStorage.getItem('championship9DeviceId');
 const TEAM={blue:'EQUIPE AZUL',yellow:'EQUIPE AMARELA',green:'EQUIPE VERDE',red:'EQUIPE VERMELHA'};
 let myColor=null,order=[],round=0,correct=0,wrong=0,matched=0,selectedLeft=null,selectedRight=null,locked=false,finished=false,poll=null,transitionPoll=null,isHost=false,releaseShown=false;
@@ -92,6 +92,14 @@ function checkPair(){
  }
 }
 async function init(){
+ if(demo){
+   myColor='blue';
+   order=candidateOrder();
+   $('teamBadge').textContent='MODO TESTE';
+   $('loading').classList.add('hidden');
+   renderRound();
+   return;
+ }
  if(!sb||!deviceId){$('loadText').textContent='Volte ao campeonato e entre na sala antes de jogar.';return}
  const {data,error}=await sb.rpc('championship_phase1_get_or_create',{p_room:room,p_device:deviceId,p_order:candidateOrder()});
  if(error||!data?.ok){$('loadText').textContent='Não foi possível abrir a fase: '+(error?.message||data?.error||'erro');return}
@@ -102,6 +110,15 @@ async function init(){
 async function finishGame(){
  if(finished)return;finished=true;$('finish').classList.remove('hidden');$('finishSummary').textContent=correct+' acertos • '+wrong+' erros • '+rawPoints()+' pontos antes do bônus.';
  document.querySelectorAll('.word').forEach(b=>b.disabled=true);
+ if(demo){
+   $('waiting').textContent='MODO TESTE — resultado local da sua partida.';
+   $('effectPhrase').textContent='Teste concluído! No campeonato real, aqui aparecerá o mini ranking das 4 equipes.';
+   $('effectPhrase').classList.remove('hidden');
+   $('generalTitle').classList.add('hidden');
+   $('generalRank').innerHTML='';
+   $('releaseBtn').classList.add('hidden');
+   return;
+ }
  const {data,error}=await sb.rpc('championship_phase1_submit',{p_room:room,p_device:deviceId,p_correct:correct,p_wrong:wrong,p_raw:rawPoints()});
  if(error){$('waiting').textContent='Erro ao enviar resultado: '+error.message;return}
  poll=setInterval(checkResults,1000);checkResults();
