@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Fase 1 — Vocabulary Match</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../jogos-em-equipe/supabase-config.js?v=9ano1"></script>
+<style>
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:Arial,Helvetica,sans-serif;background:#dff5ff;color:#12335d}
+body{background:radial-gradient(circle at 15% 0,#fff3a4 0,transparent 27%),radial-gradient(circle at 90% 5%,#ffb7df 0,transparent 25%),linear-gradient(180deg,#9fe4ff,#eefaff)}
+button{font:inherit}.app{height:100%;width:min(1280px,100%);margin:auto;padding:10px 12px;display:grid;grid-template-rows:auto auto minmax(0,1fr) auto;gap:8px}
+.top{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;background:linear-gradient(135deg,#226cff,#45cdf5 60%,#62e2c3);color:white;border-radius:20px;padding:10px 16px;border:3px solid #fff;box-shadow:0 10px 28px #2466a733}
+.top h1{margin:0;font-size:clamp(28px,4vw,48px);font-weight:1000;text-shadow:0 3px 0 #124eae}.top p{margin:3px 0 0;font-weight:900;font-size:14px}.team-badge{background:#fff;color:#1a5bb7;border-radius:999px;padding:10px 14px;font-weight:1000}
+.hud{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}.pill{background:#fff;border:2px solid #a9d9ff;border-radius:13px;padding:7px 10px;text-align:center;font-weight:1000;font-size:13px}.pill b{display:block;font-size:18px;color:#1760b9;margin-top:2px}
+.game{display:grid;grid-template-columns:1fr 1fr;gap:10px;min-height:0}.col{background:rgba(255,255,255,.9);border:2px solid #afdfff;border-radius:20px;padding:10px;display:grid;grid-template-rows:auto repeat(10,1fr);gap:5px;min-height:0}.col h2{margin:0;text-align:center;color:#1857a3;font-size:18px}
+.word{border:2px solid #c2dcf5;border-radius:11px;background:#f8fcff;color:#163d70;font-weight:1000;font-size:clamp(13px,1.25vw,18px);line-height:1.05;padding:5px 8px;cursor:pointer;min-height:0;display:flex;align-items:center;justify-content:center;text-align:center}.word:hover{border-color:#5ca8ff}.word.sel{background:#fff0a8;border-color:#ffc400;color:#684c00}.word.matched{background:#c8f7dc;border-color:#24c879;color:#11693f;opacity:.72}.word.wrong{animation:shake .22s 2;background:#ffd6dd;border-color:#ff647c}@keyframes shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.bottom{display:flex;justify-content:space-between;align-items:center;gap:8px;background:#fff;border:2px solid #b5dcff;border-radius:16px;padding:7px 11px;font-weight:900}.hint{color:#53769d;font-size:12px}.progress{color:#1659a8;font-size:13px}.overlay{position:fixed;inset:0;z-index:20;display:grid;place-items:center;background:#12355cbb;backdrop-filter:blur(5px);padding:16px}.hidden{display:none}.modal{width:min(650px,94vw);background:#fff;border:3px solid #9bdcff;border-radius:24px;padding:22px;text-align:center;box-shadow:0 24px 70px #174b8438}.modal h2{margin:0;color:#1858a4;font-size:clamp(28px,5vw,48px)}.modal p{color:#52749b;font-weight:800;line-height:1.35}.btn{border:0;border-radius:13px;padding:11px 15px;background:linear-gradient(135deg,#236cff,#42c9ff);color:#fff;font-weight:1000;cursor:pointer}.rank-list{max-width:520px;margin:12px auto}.rank{display:grid;grid-template-columns:44px 1fr auto;gap:8px;align-items:center;padding:10px 12px;margin:6px 0;border-radius:12px;font-weight:1000;text-align:left}.rank:nth-child(1){background:#ffe66d}.rank:nth-child(2){background:#e5edf4}.rank:nth-child(3){background:#efb27f}.rank:nth-child(4){background:#edf6ff}.waiting{font-size:18px;color:#1b5cac;font-weight:1000}
+@media(max-height:720px){.app{padding:6px 9px;gap:5px}.top{padding:6px 12px}.top h1{font-size:32px}.top p{font-size:11px}.team-badge{padding:7px 10px}.hud{gap:5px}.pill{padding:4px 7px;font-size:10px}.pill b{font-size:14px}.game{gap:6px}.col{padding:6px;gap:3px;border-radius:15px}.col h2{font-size:14px}.word{font-size:11px;padding:3px 5px;border-radius:8px}.bottom{padding:4px 8px}.hint,.progress{font-size:10px}}
+</style></head><body>
+<main class="app">
+ <section class="top"><div><h1>🧩 VOCABULARY MATCH</h1><p>FASE 1 • 40 combinações • +5 acerto • −2 erro • bônus: 40 / 25 / 15 / 5</p></div><div class="team-badge" id="teamBadge">CONECTANDO...</div></section>
+ <section class="hud">
+  <div class="pill">RODADA<b id="roundHud">1/4</b></div>
+  <div class="pill">ACERTOS<b id="correctHud">0</b></div>
+  <div class="pill">ERROS<b id="wrongHud">0</b></div>
+  <div class="pill">PONTOS<b id="pointsHud">0</b></div>
+  <div class="pill">COMBINAÇÕES<b id="matchedHud">0/40</b></div>
+ </section>
+ <section class="game">
+  <div class="col"><h2>🇬🇧 ENGLISH</h2><div id="left"></div></div>
+  <div class="col"><h2>🇧🇷 SIGNIFICADO</h2><div id="right"></div></div>
+ </section>
+ <section class="bottom"><span class="hint">Selecione uma palavra em inglês e depois o significado correspondente.</span><span class="progress" id="status">Preparando a mesma rodada para as 4 equipes...</span></section>
+</main>
+<div class="overlay" id="loading"><div class="modal"><h2>FASE 1</h2><p id="loadText">Sincronizando as 40 combinações da sala...</p></div></div>
+<div class="overlay hidden" id="finish"><div class="modal"><h2>✅ SUA EQUIPE TERMINOU</h2><p id="finishSummary"></p><div class="waiting" id="waiting">Aguardando as outras equipes...</div><div class="rank-list" id="rankList"></div><button class="btn hidden" id="backBtn">VOLTAR AO CAMPEONATO</button></div></div>
+<script>
+const BANK=[["I","eu"],["you","você / vocês"],["he","ele"],["she","ela"],["it","ele/ela para coisa ou animal"],["we","nós"],["they","eles / elas"],["my","meu / minha"],["your","seu / sua"],["his","dele"],["her","dela"],["our","nosso / nossa"],["their","deles / delas"],["am","sou / estou"],["is","é / está"],["are","são / estão"],["do","auxiliar de I/you/we/they"],["does","auxiliar de he/she/it"],["don't","forma negativa de do"],["doesn't","forma negativa de does"],["can","pode / consegue"],["can't","não pode / não consegue"],["should","deveria"],["shouldn't","não deveria"],["must","deve / obrigação forte"],["mustn't","não deve / é proibido"],["have to","ter que / precisar"],["don't have to","não precisar"],["may","pode / permissão formal"],["might","talvez / possibilidade"],["rule","regra"],["duty","dever"],["responsibility","responsabilidade"],["behavior","comportamento"],["respect","respeito / respeitar"],["honesty","honestidade"],["friendship","amizade"],["homework","tarefa de casa"],["permission","permissão"],["obligation","obrigação"],["classmate","colega de turma"],["teacher","professor(a)"],["student","aluno(a)"],["school staff","funcionários da escola"],["school rules","regras da escola"],["chores","tarefas domésticas"],["uniform","uniforme"],["test","prova"],["classroom","sala de aula"],["follow the rules","seguir as regras"],["arrive on time","chegar no horário"],["ask for permission","pedir permissão"],["do your homework","fazer sua tarefa"],["respect classmates","respeitar os colegas"],["keep the classroom clean","manter a sala limpa"],["help at home","ajudar em casa"],["wear a uniform","usar uniforme"],["take care of","cuidar de"],["ask for help","pedir ajuda"],["share ideas","compartilhar ideias"],["work in groups","trabalhar em grupos"],["leave home earlier","sair de casa mais cedo"],["use your phone","usar o celular"],["cheat in tests","colar nas provas"],["be responsible","ser responsável"],["I think","eu acho que"],["In my opinion","na minha opinião"],["I believe","eu acredito"],["I feel","eu sinto / acho"],["I agree","eu concordo"],["I disagree","eu discordo"],["I'm not sure","não tenho certeza"],["Maybe you can","talvez você possa"],["You should","você deveria"],["You could","você poderia"],["What do you think?","o que você acha?"],["What's your opinion?","qual é a sua opinião?"],["Do you have any advice?","você tem algum conselho?"],["That's a good idea","essa é uma boa ideia"],["That makes sense","isso faz sentido"],["You're right","você está certo(a)"],["Maybe not","talvez não"],["I see your point","eu entendo seu ponto"],["Good idea!","boa ideia!"],["I think so, too","eu também acho"],["study","estudar"],["learn","aprender"],["read","ler"],["write","escrever"],["listen","ouvir"],["speak","falar"],["ask","perguntar"],["answer","responder"],["help","ajudar"],["follow","seguir"],["arrive","chegar"],["leave","sair"],["bring","trazer"],["wear","vestir / usar"],["clean","limpar"],["share","compartilhar"],["practice","praticar"],["prepare","preparar"],["talk","conversar"],["think","pensar / achar"],["feel","sentir"],["agree","concordar"],["disagree","discordar"],["need","precisar"],["want","querer"],["like","gostar"],["know","saber / conhecer"],["work","trabalhar"],["play","jogar / brincar"],["kind","gentil"],["honest","honesto(a)"],["responsible","responsável"],["respectful","respeitoso(a)"],["rude","grosseiro(a)"],["nervous","nervoso(a)"],["confident","confiante"],["uncomfortable","desconfortável"],["calm","calmo(a)"],["important","importante"],["necessary","necessário"],["possible","possível"],["polite","educado(a)"],["late","atrasado(a)"],["early","cedo"],["quiet","silencioso(a)"],["noisy","barulhento(a)"],["friendly","amigável"],["helpful","prestativo(a)"],["careful","cuidadoso(a)"],["family","família"],["friend","amigo(a)"],["relationship","relacionamento"],["problem","problema"],["solution","solução"],["advice","conselho"],["suggestion","sugestão"],["opinion","opinião"],["idea","ideia"],["question","pergunta"],["message","mensagem"],["conversation","conversa"],["presentation","apresentação"],["group","grupo"],["book","livro"],["phone","celular"],["library","biblioteca"],["hallway","corredor"],["trash","lixo"],["neighbor","vizinho(a)"],["meeting","reunião"],["space","espaço"],["noise","barulho"],["gate","portão"],["always","sempre"],["usually","geralmente"],["sometimes","às vezes"],["never","nunca"],["today","hoje"],["tomorrow","amanhã"],["yesterday","ontem"],["before","antes"],["after","depois"],["now","agora"],["every day","todos os dias"],["during","durante"],["because","porque"],["but","mas"],["and","e"],["or","ou"],["with","com"],["without","sem"],["more","mais"],["less","menos"],["Who?","quem?"],["What?","o quê?"],["Where?","onde?"],["When?","quando?"],["Why?","por quê?"],["How?","como?"],["Which?","qual?"],["How many?","quantos?"],["How much?","quanto?"],["How often?","com que frequência?"],["Yes, I do.","sim, eu faço / gosto"],["No, I don't.","não, eu não faço / não gosto"],["Yes, she does.","sim, ela faz / gosta"],["No, he doesn't.","não, ele não faz / não gosta"],["Yes, we should.","sim, nós deveríamos"],["No, we shouldn't.","não, nós não deveríamos"],["Yes, they can.","sim, eles podem"],["No, they can't.","não, eles não podem"]];
+const cfg=window.TUG_SUPABASE_CONFIG||{},sb=(cfg.url&&cfg.key&&window.supabase?.createClient)?window.supabase.createClient(cfg.url,cfg.key):null;
+const qs=new URLSearchParams(location.search),room=(qs.get('sala')||'901').replace(/[^a-zA-Z0-9_-]/g,'').toUpperCase();
+const deviceId=localStorage.getItem('championship9DeviceId');
+const TEAM={blue:'EQUIPE AZUL',yellow:'EQUIPE AMARELA',green:'EQUIPE VERDE',red:'EQUIPE VERMELHA'};
+let myColor=null,order=[],round=0,correct=0,wrong=0,matched=0,selectedLeft=null,selectedRight=null,locked=false,finished=false,poll=null;
+const $=id=>document.getElementById(id);
+function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function candidateOrder(){return shuffle(BANK.map((_,i)=>i)).slice(0,40)}
+function rawPoints(){return Math.max(0,correct*5-wrong*2)}
+function paintHud(){$('correctHud').textContent=correct;$('wrongHud').textContent=wrong;$('pointsHud').textContent=rawPoints();$('matchedHud').textContent=matched+'/40';$('roundHud').textContent=Math.min(round+1,4)+'/4'}
+function renderRound(){
+ const ids=order.slice(round*10,round*10+10),pairs=ids.map((idx,pos)=>({idx,pos,en:BANK[idx][0],pt:BANK[idx][1]}));
+ const left=shuffle(pairs),right=shuffle(pairs);$('left').innerHTML='';$('right').innerHTML='';selectedLeft=selectedRight=null;locked=false;
+ left.forEach(p=>{const b=document.createElement('button');b.className='word';b.dataset.pos=p.pos;b.textContent=p.en;b.onclick=()=>choose('left',b,p);$('left').appendChild(b)});
+ right.forEach(p=>{const b=document.createElement('button');b.className='word';b.dataset.pos=p.pos;b.textContent=p.pt;b.onclick=()=>choose('right',b,p);$('right').appendChild(b)});
+ $('status').textContent='Rodada '+(round+1)+' de 4 • combine os 10 pares.';paintHud();
+}
+function choose(side,b,p){
+ if(locked||b.classList.contains('matched'))return;
+ const container=side==='left'?$('left'):$('right');container.querySelectorAll('.word:not(.matched)').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');
+ if(side==='left')selectedLeft={b,p};else selectedRight={b,p};
+ if(selectedLeft&&selectedRight)checkPair();
+}
+function checkPair(){
+ locked=true;const ok=selectedLeft.p.pos===selectedRight.p.pos;
+ if(ok){
+   correct++;matched++;selectedLeft.b.classList.remove('sel');selectedRight.b.classList.remove('sel');selectedLeft.b.classList.add('matched');selectedRight.b.classList.add('matched');
+   selectedLeft=selectedRight=null;locked=false;paintHud();
+   if(matched%10===0)setTimeout(()=>{if(matched===40)finishGame();else{round++;renderRound()}},420);
+ }else{
+   wrong++;selectedLeft.b.classList.add('wrong');selectedRight.b.classList.add('wrong');paintHud();
+   setTimeout(()=>{selectedLeft?.b.classList.remove('sel','wrong');selectedRight?.b.classList.remove('sel','wrong');selectedLeft=selectedRight=null;locked=false},430);
+ }
+}
+async function init(){
+ if(!sb||!deviceId){$('loadText').textContent='Volte ao campeonato e entre na sala antes de jogar.';return}
+ const {data,error}=await sb.rpc('championship_phase1_get_or_create',{p_room:room,p_device:deviceId,p_order:candidateOrder()});
+ if(error||!data?.ok){$('loadText').textContent='Não foi possível abrir a fase: '+(error?.message||data?.error||'erro');return}
+ myColor=data.color;order=Array.isArray(data.item_order)?data.item_order:[];$('teamBadge').textContent=TEAM[myColor]||myColor;
+ if(order.length<40){$('loadText').textContent='A rodada sincronizada não contém 40 itens.';return}
+ $('loading').classList.add('hidden');renderRound();
+}
+async function finishGame(){
+ if(finished)return;finished=true;$('finish').classList.remove('hidden');$('finishSummary').textContent=correct+' acertos • '+wrong+' erros • '+rawPoints()+' pontos antes do bônus.';
+ document.querySelectorAll('.word').forEach(b=>b.disabled=true);
+ const {data,error}=await sb.rpc('championship_phase1_submit',{p_room:room,p_device:deviceId,p_correct:correct,p_wrong:wrong,p_raw:rawPoints()});
+ if(error){$('waiting').textContent='Erro ao enviar resultado: '+error.message;return}
+ poll=setInterval(checkResults,1000);checkResults();
+}
+async function checkResults(){
+ const {data,error}=await sb.from('championship_phase_scores').select('color,correct,wrong,raw_points,bonus,total_points,submitted_at').eq('room_code',room).eq('phase',1);
+ if(error)return;
+ if((data||[]).length<4){$('waiting').textContent='Aguardando as outras equipes... '+(data||[]).length+'/4 concluíram.';return}
+ clearInterval(poll);
+ const arr=[...data].sort((a,b)=>b.total_points-a.total_points||new Date(a.submitted_at)-new Date(b.submitted_at));
+ $('waiting').textContent='FASE 1 ENCERRADA — ranking oficial';
+ $('rankList').innerHTML=arr.map((r,i)=>'<div class="rank"><span>'+(i===0?'🥇':i===1?'🥈':i===2?'🥉':'4º')+'</span><span>'+TEAM[r.color]+'<small style="display:block;font-weight:800;color:#678">'+r.correct+' acertos • '+r.wrong+' erros • bônus +'+r.bonus+'</small></span><span>'+r.total_points+' pts</span></div>').join('');
+ $('backBtn').classList.remove('hidden');
+}
+$('backBtn').onclick=()=>location.href='./?sala='+encodeURIComponent(room)+'&v=apos-vocab1';
+init();
+</script></body></html>
