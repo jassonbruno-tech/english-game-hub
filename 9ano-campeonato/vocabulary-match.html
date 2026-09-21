@@ -23,9 +23,9 @@ button{font:inherit}
 .board-title{text-align:center;margin:0 0 4px;color:#fff7c2;font-size:clamp(17px,3vw,23px);font-weight:1000}
 .status{text-align:center;color:var(--gold);font-weight:900;min-height:18px;font-size:12px;margin-bottom:5px}
 .board{display:grid;grid-template-columns:1fr 1fr;gap:6px;flex:1;min-height:0}
-.col{display:grid;grid-template-rows:auto repeat(10,1fr);gap:5px;min-height:0}
+.col{display:grid;grid-template-rows:auto repeat(6,1fr);gap:8px;min-height:0}
 .col h2{margin:0;text-align:center;color:#dbeafe;font-size:12px}
-.word{min-height:0;border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:5px;background:linear-gradient(180deg,rgba(26,65,135,.72),rgba(12,29,81,.8));color:#fff;font-weight:900;font-size:clamp(10px,1.75vw,14px);line-height:1.1;cursor:pointer;box-shadow:0 4px 10px rgba(0,0,0,.16);transition:transform .12s,filter .12s,box-shadow .12s;display:flex;align-items:center;justify-content:center;text-align:center}
+.word{min-height:0;border:1px solid rgba(255,255,255,.18);border-radius:15px;padding:9px 10px;background:linear-gradient(180deg,rgba(26,65,135,.72),rgba(12,29,81,.8));color:#fff;font-weight:1000;font-size:clamp(16px,2.4vw,22px);line-height:1.15;cursor:pointer;box-shadow:0 4px 10px rgba(0,0,0,.16);transition:transform .12s,filter .12s,box-shadow .12s;display:flex;align-items:center;justify-content:center;text-align:center}
 #right .word{background:linear-gradient(180deg,rgba(115,48,190,.65),rgba(57,22,117,.82))}
 .word:active{transform:scale(.97)}
 .word.sel{outline:3px solid var(--gold);filter:brightness(1.22);box-shadow:0 0 18px rgba(255,230,109,.62)}
@@ -46,20 +46,20 @@ button{font:inherit}
 .modal h2{margin:0;color:var(--gold);font-size:30px}.modal p{line-height:1.4;font-weight:850;color:#e5edff}.btn{width:100%;padding:13px;border:0;border-radius:15px;background:linear-gradient(135deg,var(--gold),#22c55e);font-weight:1000;font-size:15px;cursor:pointer;color:#10203a}
 .rank-list{display:grid;gap:6px;margin:10px 0}.rank{display:grid;grid-template-columns:38px 1fr auto;gap:6px;background:#fff;color:#172033;border-radius:12px;padding:8px;align-items:center;text-align:left;font-weight:1000}.rank:nth-child(1){background:linear-gradient(135deg,#ffe66d,#fff7c2)}.rank:nth-child(2){background:linear-gradient(135deg,#dfe7ef,#fff)}.rank:nth-child(3){background:linear-gradient(135deg,#e7a76c,#ffd6b0)}
 .waiting{font-size:17px;color:#fff7c2;font-weight:1000}.effect{margin:12px auto 4px;padding:11px 14px;border-radius:14px;background:linear-gradient(135deg,#e7f7ff,#fff5b8);color:#174f9c;font-size:17px;font-weight:1000}.general-title{margin:14px 0 5px;color:#fff7c2;font-size:18px;font-weight:1000}.release{margin-top:12px;background:linear-gradient(135deg,#ffb52e,#ff5fa3);color:#fff}.next-count{font-size:88px;font-weight:1000;color:var(--gold);margin:8px 0;text-shadow:0 4px 0 #7c3aed}.next-name{font-size:clamp(28px,5vw,48px);font-weight:1000;color:var(--gold);margin-top:4px}
-@media(max-height:720px){.app{padding:5px;gap:5px}.top{padding:6px 9px}.top h1{font-size:26px}.top p{font-size:9px}.team-badge{padding:6px 8px;font-size:10px}.pill{padding:4px 2px;font-size:8px}.pill b{font-size:13px}.game{padding:6px}.word{font-size:9.5px;padding:3px}.bottom{padding:4px 7px;font-size:8.5px}}
-@media(max-width:560px){.app{width:100%;padding:5px}.top h1{font-size:22px}.top p{font-size:9px}.word{font-size:10px}.board{gap:5px}.col{gap:4px}}
+@media(max-height:720px){.app{padding:5px;gap:5px}.top{padding:6px 9px}.top h1{font-size:26px}.top p{font-size:9px}.team-badge{padding:6px 8px;font-size:10px}.pill{padding:4px 2px;font-size:8px}.pill b{font-size:13px}.game{padding:6px}.word{font-size:15px;padding:6px 8px}.bottom{padding:4px 7px;font-size:8.5px}}
+@media(max-width:560px){.app{width:100%;padding:5px}.top h1{font-size:22px}.top p{font-size:9px}.word{font-size:15px;padding:7px}.board{gap:6px}.col{gap:6px}}
 </style></head><body>
 <main class="app">
  <section class="top"><div><h1>🧩 VOCABULARY MATCH</h1><p>FASE 1 • 40 combinações • +5 acerto • −2 erro • bônus por colocação</p></div><div class="team-badge" id="teamBadge">CONECTANDO...</div></section>
  <section class="hud">
-  <div class="pill">RODADA<b id="roundHud">1/4</b></div>
+  <div class="pill">NA TELA<b id="roundHud">6 pares</b></div>
   <div class="pill">ACERTOS<b id="correctHud">0</b></div>
   <div class="pill">ERROS<b id="wrongHud">0</b></div>
   <div class="pill">PONTOS<b id="pointsHud">0</b></div>
   <div class="pill">PROGRESSO<b id="matchedHud">0/40</b></div>
  </section>
  <section class="game">
-  <h2 class="board-title" id="boardTitle">Rodada 1 — encontre os pares</h2>
+  <h2 class="board-title" id="boardTitle">Encontre os pares</h2>
   <div class="status" id="status">Escolha um item em inglês e encontre o significado.</div>
   <div class="board">
    <div class="col" id="left"><h2>🇬🇧 ENGLISH</h2></div>
@@ -97,21 +97,28 @@ const cfg=window.TUG_SUPABASE_CONFIG||{},sb=(cfg.url&&cfg.key&&window.supabase?.
 const qs=new URLSearchParams(location.search),demo=qs.get('demo')==='1',room=(qs.get('sala')||'901').replace(/[^a-zA-Z0-9_-]/g,'').toUpperCase();
 const deviceId=localStorage.getItem('championship9DeviceId');
 const TEAM={blue:'EQUIPE AZUL',yellow:'EQUIPE AMARELA',green:'EQUIPE VERDE',red:'EQUIPE VERMELHA'};
-let myColor=null,order=[],round=0,correct=0,wrong=0,matched=0,selectedLeft=null,selectedRight=null,locked=false,finished=false,poll=null,transitionPoll=null,isHost=false,releaseShown=false;
+let myColor=null,order=[],correct=0,wrong=0,matched=0,nextIndex=0,visible=[],selectedLeft=null,selectedRight=null,locked=false,finished=false,poll=null,transitionPoll=null,isHost=false,releaseShown=false;
 const $=id=>document.getElementById(id);
 function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function candidateOrder(){return shuffle(BANK.map((_,i)=>i)).slice(0,40)}
 function rawPoints(){return Math.max(0,correct*5-wrong*2)}
-function paintHud(){$('correctHud').textContent=correct;$('wrongHud').textContent=wrong;$('pointsHud').textContent=rawPoints();$('matchedHud').textContent=matched+'/40';$('roundHud').textContent=Math.min(round+1,4)+'/4'}
-function renderRound(){
- const ids=order.slice(round*10,round*10+10),pairs=ids.map((idx,pos)=>({idx,pos,en:BANK[idx][0],pt:BANK[idx][1]}));
- const left=shuffle(pairs),right=shuffle(pairs);
- $('left').innerHTML='<h2>🇬🇧 ENGLISH</h2>';$('right').innerHTML='<h2>🇧🇷 PORTUGUÊS</h2>';
- selectedLeft=selectedRight=null;locked=false;
- left.forEach(p=>{const b=document.createElement('button');b.className='word';b.dataset.pos=p.pos;b.textContent=p.en;b.onclick=()=>choose('left',b,p);$('left').appendChild(b)});
- right.forEach(p=>{const b=document.createElement('button');b.className='word';b.dataset.pos=p.pos;b.textContent=p.pt;b.onclick=()=>choose('right',b,p);$('right').appendChild(b)});
- $('boardTitle').textContent='Rodada '+(round+1)+' de 4 — encontre os pares';
- $('status').textContent='Escolha um item em inglês e encontre o significado.';paintHud();
+function paintHud(){$('correctHud').textContent=correct;$('wrongHud').textContent=wrong;$('pointsHud').textContent=rawPoints();$('matchedHud').textContent=matched+'/40';$('roundHud').textContent=Math.min(visible.length,6)+' pares'}
+function refillVisible(){
+  while(visible.length<6 && nextIndex<order.length){
+    const idx=order[nextIndex++];
+    visible.push({idx,key:'k'+nextIndex,en:BANK[idx][0],pt:BANK[idx][1]});
+  }
+}
+function renderBoard(){
+  refillVisible();
+  const left=shuffle(visible),right=shuffle(visible);
+  $('left').innerHTML='<h2>🇬🇧 ENGLISH</h2>';$('right').innerHTML='<h2>🇧🇷 PORTUGUÊS</h2>';
+  selectedLeft=selectedRight=null;locked=false;
+  left.forEach(p=>{const b=document.createElement('button');b.className='word';b.dataset.key=p.key;b.textContent=p.en;b.onclick=()=>choose('left',b,p);$('left').appendChild(b)});
+  right.forEach(p=>{const b=document.createElement('button');b.className='word';b.dataset.key=p.key;b.textContent=p.pt;b.onclick=()=>choose('right',b,p);$('right').appendChild(b)});
+  $('boardTitle').textContent='Encontre os pares — '+matched+' de 40 concluídos';
+  $('status').textContent=nextIndex<order.length?'Acertou? O par sai e uma nova combinação entra automaticamente.':'Últimas combinações! Termine os pares que restam.';
+  paintHud();
 }
 function choose(side,b,p){
  if(locked||b.classList.contains('matched'))return;
@@ -127,17 +134,18 @@ function celebrate(btn){
  if(navigator.vibrate)navigator.vibrate([35,25,55]);
 }
 function checkPair(){
- locked=true;const ok=selectedLeft.p.pos===selectedRight.p.pos;
+ locked=true;const ok=selectedLeft.p.key===selectedRight.p.key;
  if(ok){
    correct++;matched++;
-   const lb=selectedLeft.b,rb=selectedRight.b;
+   const lb=selectedLeft.b,rb=selectedRight.b,key=selectedLeft.p.key;
    lb.classList.remove('sel');rb.classList.remove('sel');lb.classList.add('matched');rb.classList.add('matched');
-   $('status').textContent=matched%3===0?'🔥 COMBO! Excelente!':'✅ Par correto! Muito bem!';
+   $('status').textContent=matched%3===0?'🔥 COMBO! Excelente!':'✅ Par correto! Nova combinação entrando...';
    celebrate(rb);play(matched%3===0?'sndCombo':'sndOk',.72);paintHud();
    selectedLeft=selectedRight=null;
    setTimeout(()=>{
-     lb.style.visibility='hidden';rb.style.visibility='hidden';locked=false;
-     if(matched%10===0){if(matched===40)finishGame();else{round++;renderRound()}}
+     visible=visible.filter(x=>x.key!==key);
+     if(matched>=40){finishGame();return}
+     renderBoard();
    },620);
  }else{
    wrong++;
@@ -153,8 +161,9 @@ async function init(){
    myColor='blue';
    order=candidateOrder();
    $('teamBadge').textContent='MODO TESTE';
+   nextIndex=0;visible=[];
    $('loading').classList.add('hidden');
-   renderRound();
+   renderBoard();
    return;
  }
  if(!sb||!deviceId){$('loadText').textContent='Volte ao campeonato e entre na sala antes de jogar.';return}
@@ -162,7 +171,7 @@ async function init(){
  if(error||!data?.ok){$('loadText').textContent='Não foi possível abrir a fase: '+(error?.message||data?.error||'erro');return}
  myColor=data.color;order=Array.isArray(data.item_order)?data.item_order:[];$('teamBadge').textContent=TEAM[myColor]||myColor;
  if(order.length<40){$('loadText').textContent='A rodada sincronizada não contém 40 itens.';return}
- $('loading').classList.add('hidden');renderRound();
+ nextIndex=0;visible=[];$('loading').classList.add('hidden');renderBoard();
 }
 async function finishGame(){
  if(finished)return;finished=true;play('sndWin',.55);$('finish').classList.remove('hidden');$('finishSummary').textContent=correct+' acertos • '+wrong+' erros • '+rawPoints()+' pontos antes do bônus.';
