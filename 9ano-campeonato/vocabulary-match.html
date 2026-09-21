@@ -180,7 +180,7 @@ function beginNextPhase(message){
    $('nextCount').textContent=n>0?n:'GO!';
    if(n<=0){
      clearInterval(t);
-     setTimeout(()=>{location.href='./?sala='+encodeURIComponent(room)+'&v=phase2-unlocked'},700);
+     setTimeout(()=>{location.href='word-challenge.html?sala='+encodeURIComponent(room)+'&v=phase2a'},700);
    }
  },850);
 }
