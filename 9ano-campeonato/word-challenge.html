@@ -17,10 +17,10 @@ button,input{font:inherit}.app{width:min(1280px,100%);height:100%;margin:auto;pa
 </style></head>
 <body>
 <main class="app">
-  <section class="top"><div><h1>🔤 WORD CHALLENGE</h1><p>FASE 2 • 15 palavras • 20 segundos por palavra • +10 palavra resolvida • −1 erro de letra</p></div><div class="team" id="teamBadge">CONECTANDO...</div></section>
+  <section class="top"><div><h1>🔤 WORD CHALLENGE</h1><p>FASE 2 • 15 palavras • 30 segundos por palavra • +10 palavra resolvida • −1 erro de letra</p></div><div class="team" id="teamBadge">CONECTANDO...</div></section>
   <section class="hud">
     <div class="pill">PALAVRA<b id="wordHud">1/15</b></div>
-    <div class="pill">TEMPO<b id="timeHud">20s</b></div>
+    <div class="pill">TEMPO<b id="timeHud">30s</b></div>
     <div class="pill">ACERTOS<b id="correctHud">0</b></div>
     <div class="pill">ERROS<b id="wrongHud">0</b></div>
     <div class="pill">PONTOS<b id="pointsHud">0</b></div>
@@ -68,7 +68,7 @@ const cfg=window.TUG_SUPABASE_CONFIG||{},sb=(cfg.url&&cfg.key&&window.supabase?.
 const qs=new URLSearchParams(location.search),demo=qs.get('demo')==='1',room=(qs.get('sala')||'901').replace(/[^a-zA-Z0-9_-]/g,'').toUpperCase();
 const deviceId=localStorage.getItem('championship9DeviceId');
 const TEAM={blue:'EQUIPE AZUL',yellow:'EQUIPE AMARELA',green:'EQUIPE VERDE',red:'EQUIPE VERMELHA'};
-let myColor=null,order=[],idx=0,correct=0,wrong=0,revealed=new Set(),mistakes=0,tickTimer=null,seconds=20,finished=false,poll=null,transitionPoll=null,isHost=false,nextStarted=false;
+let myColor=null,order=[],idx=0,correct=0,wrong=0,revealed=new Set(),mistakes=0,tickTimer=null,seconds=30,finished=false,poll=null,transitionPoll=null,isHost=false,nextStarted=false;
 const $=id=>document.getElementById(id);
 function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function norm(s){return String(s||'').toUpperCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^A-Z ]/g,'').replace(/s+/g,' ').trim()}
@@ -98,7 +98,7 @@ function renderParts(){for(let i=0;i<6;i++)$('p'+i).classList.toggle('on',i<mist
 function buildKeys(){
  $('keys').innerHTML='';'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').forEach(ch=>{const b=document.createElement('button');b.className='key';b.textContent=ch;b.onclick=()=>pickLetter(ch,b);$('keys').appendChild(b)})
 }
-function resetTimer(){clearInterval(tickTimer);seconds=20;updateHud();tickTimer=setInterval(()=>{seconds--;updateHud();if(seconds<=0){clearInterval(tickTimer);failWord('⏰ TEMPO ESGOTADO')}} ,1000)}
+function resetTimer(){clearInterval(tickTimer);seconds=30;updateHud();tickTimer=setInterval(()=>{seconds--;updateHud();if(seconds<=0){clearInterval(tickTimer);failWord('⏰ TEMPO ESGOTADO')}} ,1000)}
 function loadWord(){
  if(idx>=15){finishGame();return}
  revealed=new Set();mistakes=0;renderParts();buildKeys();$('feedback').className='feedback';$('feedback').textContent='';$('guessInput').value='';renderWord();resetTimer();$('status').textContent='Palavra '+(idx+1)+' de 15';
