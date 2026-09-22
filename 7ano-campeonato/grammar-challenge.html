@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Fase 3 — Grammar Challenge</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../jogos-em-equipe/supabase-config.js?v=9ano1"></script>
+<style>
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:Arial,Helvetica,sans-serif;color:#fff;background:#07091b}
+body{background:radial-gradient(circle at 20% 20%,#ec489933,transparent 18%),radial-gradient(circle at 80% 15%,#3b82f633,transparent 20%),linear-gradient(180deg,#060818,#090b28 40%,#12013a)}
+.app{width:min(1200px,100%);height:100dvh;margin:auto;padding:8px;display:flex;flex-direction:column;gap:7px}
+header{background:linear-gradient(135deg,#1d4ed8,#7c3aed 48%,#e11d48);border-radius:18px;padding:8px 13px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 8px 22px #0006}
+header h1{margin:0;font-size:clamp(26px,3.7vw,44px);color:#fff7c2;text-shadow:0 3px 8px #0005}header p{margin:2px 0 0;font-size:11px;font-weight:900}.school-meta{margin-top:3px;font-size:10.5px;font-weight:900;color:#eaf2ff;opacity:.96}.school-meta{margin-top:3px;font-size:10.5px;font-weight:900;color:#eaf2ff;opacity:.96}.team{background:#fff;color:#1d4ed8;border-radius:999px;padding:8px 11px;font-weight:1000}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.stat{background:linear-gradient(180deg,#111845ee,#170938ee);border:1px solid #60a5fa66;border-radius:12px;padding:6px;text-align:center;font-size:9px;font-weight:1000}.stat b{display:block;font-size:18px;color:#ffe66d}
+.grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:9px;flex:1;min-height:0}.card{background:linear-gradient(180deg,#0b123eee,#0f0a2fee);border:1px solid #60a5fa44;border-radius:19px;padding:10px;min-height:0;box-shadow:0 10px 24px #0005}
+.wheel-card{display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden}.pointer{position:absolute;top:10px;left:50%;transform:translateX(-50%);z-index:5;border-left:17px solid transparent;border-right:17px solid transparent;border-top:40px solid #050816}.wheel{width:min(62vh,445px);height:min(62vh,445px);border-radius:50%;border:8px solid #fff;background:conic-gradient(#1da1f2 0 60deg,#22c55e 60deg 120deg,#f97316 120deg 180deg,#8b5cf6 180deg 240deg,#06b6d4 240deg 300deg,#f43f5e 300deg 360deg);position:relative;transition:transform 4.8s cubic-bezier(.08,.76,.12,1);box-shadow:0 0 0 4px #ec489933,0 16px 34px #0008}.wheel:after{content:attr(data-theme);position:absolute;inset:31%;border-radius:50%;background:#f8fafc;border:6px solid #e2e8f0;display:flex;align-items:center;justify-content:center;text-align:center;color:#1d4ed8;font-weight:1000;font-size:20px;padding:6px}.wheel-label{position:absolute;left:50%;top:50%;width:86px;margin-left:-43px;margin-top:-9px;transform:rotate(var(--r)) translateY(-158px) rotate(calc(-1*var(--r)));font-size:13px;line-height:1.02;text-align:center;font-weight:1000;text-shadow:0 2px 5px #000}.spin{margin-top:9px;border:0;border-radius:13px;padding:10px 34px;background:linear-gradient(135deg,#f43f5e,#ec4899);color:white;font-weight:1000;font-size:16px;cursor:pointer}.spin:disabled{opacity:.5}
+.wheel.spinning{filter:drop-shadow(0 0 18px rgba(255,255,255,.9)) drop-shadow(0 0 32px rgba(236,72,153,.7));animation:wheelGlow .65s ease-in-out infinite alternate}
+@keyframes wheelGlow{from{filter:drop-shadow(0 0 10px rgba(255,255,255,.65)) drop-shadow(0 0 20px rgba(59,130,246,.55))}to{filter:drop-shadow(0 0 24px rgba(255,230,109,.95)) drop-shadow(0 0 40px rgba(236,72,153,.85))}}
+.question{display:flex;flex-direction:column}.theme-chip{align-self:flex-start;background:#1d4ed844;border:1px solid #60a5fa88;color:#bfdbfe;border-radius:999px;padding:6px 10px;font-weight:1000;font-size:11px}.prompt{font-size:clamp(20px,2.25vw,29px);line-height:1.22;font-weight:1000;margin:10px 0}.options{display:grid;gap:8px}.option{position:relative;border:2px solid #60a5fa66;background:#050922c4;color:#fff;border-radius:13px;padding:12px 12px 12px 52px;text-align:left;font-size:17px;font-weight:1000;cursor:pointer}.option:before{position:absolute;left:11px;top:50%;transform:translateY(-50%);width:27px;height:27px;border-radius:50%;display:grid;place-items:center;color:#fff}.option:nth-child(1):before{content:"A";background:#16a34a}.option:nth-child(2):before{content:"B";background:#2563eb}.option:nth-child(3):before{content:"C";background:#d97706}.option:nth-child(4):before{content:"D";background:#db2777}.option.correct{background:#14532d88;border-color:#4ade80;box-shadow:0 0 24px #4ade8077}
+.option.correct.flash-correct{animation:correctFlash .45s ease-in-out 4}
+.option.wrong{background:#7f1d1d99;border-color:#ef4444;animation:shake .4s}
+@keyframes correctFlash{0%,100%{transform:scale(1);filter:brightness(1);box-shadow:0 0 18px #4ade8066}50%{transform:scale(1.025);filter:brightness(1.8);box-shadow:0 0 28px #86efac,0 0 48px #22c55e}}.feedback{margin-top:8px;border-radius:12px;padding:8px;font-weight:1000;min-height:38px}.feedback.ok{background:#14532d66;color:#dcfce7}.feedback.bad{background:#7f1d1d66;color:#fee2e2}
+.hint-box{margin-top:10px;padding:10px 12px;border-radius:14px;background:linear-gradient(135deg,#1e3a5fdd,#24134ddd);border:1px solid #ffe66d66;box-shadow:inset 0 0 18px #0003;color:#f8fafc;font-size:14px;line-height:1.3;font-weight:900}
+.hint-box b{color:#ffe66d}@keyframes shake{20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+.overlay{position:fixed;inset:0;z-index:20;display:grid;place-items:center;background:#05071de8;backdrop-filter:blur(5px);padding:16px}.hidden{display:none!important}.modal{width:min(650px,95vw);max-height:94vh;overflow:auto;background:linear-gradient(160deg,#101d5a,#421060);border:2px solid #ffe66d88;border-radius:25px;padding:22px;text-align:center}.modal h2{margin:0;color:#ffe66d;font-size:34px}.rank-list{display:grid;gap:6px;margin:10px 0}.rank{display:grid;grid-template-columns:40px 1fr auto;gap:7px;background:#fff;color:#172033;border-radius:12px;padding:8px;text-align:left;align-items:center;font-weight:1000}.effect{margin:10px 0;padding:10px;border-radius:12px;background:linear-gradient(135deg,#e7f7ff,#fff5b8);color:#174f9c;font-weight:1000}.btn{border:0;border-radius:13px;padding:11px 14px;background:linear-gradient(135deg,#ffe66d,#ff9f1c,#ff4d9e);font-weight:1000;cursor:pointer}.next-count{font-size:86px;font-weight:1000;color:#ffe66d}
+@media(max-height:720px){header{padding:5px 10px}header h1{font-size:29px}.wheel{width:340px;height:340px}.wheel-label{transform:rotate(var(--r)) translateY(-121px) rotate(calc(-1*var(--r)));font-size:10.5px}.prompt{font-size:18px}.option{font-size:14px;padding:9px 9px 9px 45px}.stats .stat{padding:4px}.stat b{font-size:14px}}
+</style></head>
+<body>
+<main class="app">
+<header><div><h1>🎡 GRAMMAR CHALLENGE 🇺🇸 🇬🇧</h1><p>FASE 3 • visual e mecânica inspirados na Roleta da 703 • 20 desafios</p><div class="school-meta">Turmas 701 e 702 • Escola Delfina de Jesus Amorim • Professor Jasson Bruno</div><div class="school-meta">Turmas 701 e 702 • Escola Delfina de Jesus Amorim • Professor Jasson Bruno</div></div><div class="team" id="teamBadge">MODO TESTE</div></header>
+<section class="stats"><div class="stat">DESAFIO<b id="roundHud">1/20</b></div><div class="stat">ACERTOS<b id="correctHud">0</b></div><div class="stat">ERROS<b id="wrongHud">0</b></div><div class="stat">PONTOS<b id="pointsHud">0</b></div></section>
+<section class="grid">
+<div class="card wheel-card"><div class="pointer"></div><div class="wheel" id="wheel" data-theme="GIRE!">
+<span class="wheel-label" style="--r:30deg">Do / Does</span><span class="wheel-label" style="--r:90deg">Negatives</span><span class="wheel-label" style="--r:150deg">Base Verb</span><span class="wheel-label" style="--r:210deg">Modal Grammar</span><span class="wheel-label" style="--r:270deg">Context</span><span class="wheel-label" style="--r:330deg">Error Hunt</span></div><button class="spin" id="spinBtn">GIRAR ROLETA 🎯</button></div>
+<div class="card question"><div class="theme-chip" id="themeChip">Aguardando a roleta...</div><div class="prompt" id="prompt">Gire a roleta para receber o primeiro desafio.</div><div class="options" id="options"></div><div class="feedback" id="feedback"></div><div class="hint-box" id="hintBox">💡 DICA: Gire a roleta para receber uma pista em português.</div></div>
+</section></main>
+<div class="overlay hidden" id="loading"><div class="modal"><h2>FASE 3</h2><p id="loadText">Sincronizando os desafios...</p></div></div>
+<div class="overlay hidden" id="finish"><div class="modal"><h2>🏁 FASE 3 ENCERRADA</h2><p id="finishSummary"></p><div id="waiting">Aguardando as outras equipes...</div><div class="rank-list" id="rankList"></div><div class="effect hidden" id="effectPhrase"></div><h3 id="generalTitle" class="hidden">📊 PLACAR GERAL</h3><div class="rank-list" id="generalRank"></div><button class="btn hidden" id="releaseBtn">🔓 LIBERAR FASE 4</button></div></div>
+<div class="overlay hidden" id="nextOverlay"><div class="modal"><h2>FASE 4 — MODAL CHALLENGE</h2><div class="effect" id="nextPhrase">Concentração total. A disputa está apertando!</div><div class="next-count" id="nextCount">3</div></div></div>
+<script>
+const QUESTIONS=[{"t":"Do / Does","q":"_____ your friend study English every day?","o":["Do","Does","Is","Are"],"a":1,"e":"Com 'your friend' (he/she), usamos DOES."},{"t":"Do / Does","q":"_____ they follow the school rules?","o":["Do","Does","Is","Has"],"a":0,"e":"Com THEY, usamos DO."},{"t":"Do / Does","q":"_____ she arrive on time?","o":["Do","Does","Are","Can to"],"a":1,"e":"Com SHE, a pergunta usa DOES."},{"t":"Do / Does","q":"_____ you agree with this rule?","o":["Does","Do","Is","Has"],"a":1,"e":"Com YOU, usamos DO."},{"t":"Do / Does","q":"_____ he respect his classmates?","o":["Does","Do","Are","Am"],"a":0,"e":"Com HE, usamos DOES."},{"t":"Negatives","q":"She _____ use her phone during the test.","o":["don't","doesn't","isn't","aren't"],"a":1,"e":"Com SHE, a negativa no Simple Present é DOESN'T."},{"t":"Negatives","q":"They _____ arrive late for class.","o":["doesn't","don't","isn't","hasn't"],"a":1,"e":"Com THEY, usamos DON'T."},{"t":"Negatives","q":"I _____ think this is a good idea.","o":["doesn't","don't","am not to","isn't"],"a":1,"e":"Com I, usamos DON'T."},{"t":"Negatives","q":"Pedro _____ like noisy places.","o":["don't","doesn't","isn't","aren't"],"a":1,"e":"Pedro = HE, então usamos DOESN'T."},{"t":"Negatives","q":"We _____ have to wear a uniform today.","o":["doesn't","don't","isn't","hasn't"],"a":1,"e":"Com WE, usamos DON'T."},{"t":"Base Verb","q":"Does Maria _____ her homework every day?","o":["does","do","doing","did"],"a":1,"e":"Depois de DOES, o verbo volta para a forma base: DO."},{"t":"Base Verb","q":"He doesn't _____ the rules.","o":["follows","follow","following","followed"],"a":1,"e":"Depois de DOESN'T, usamos o verbo na forma base."},{"t":"Base Verb","q":"Does your brother _____ at home?","o":["helps","help","helping","helped"],"a":1,"e":"Depois de DOES, usamos HELP, sem -s."},{"t":"Base Verb","q":"She doesn't _____ late.","o":["arrives","arrive","arriving","arrived"],"a":1,"e":"Depois de DOESN'T, o verbo fica na forma base: ARRIVE."},{"t":"Base Verb","q":"Does he _____ permission first?","o":["asks","ask","asking","asked"],"a":1,"e":"Depois de DOES, usamos ASK."},{"t":"Sentence Check","q":"Qual frase está correta?","o":["Does she studies English?","Does she study English?","Do she study English?","She does study English?"],"a":1,"e":"A estrutura correta é Does + subject + base verb."},{"t":"Sentence Check","q":"Qual frase está correta?","o":["He doesn't likes rules.","He don't like rules.","He doesn't like rules.","He not like rules."],"a":2,"e":"Doesn't + verbo na forma base: like."},{"t":"Sentence Check","q":"Qual pergunta está correta?","o":["Do they respect the teacher?","Does they respect the teacher?","They do respect the teacher?","Are they respect the teacher?"],"a":0,"e":"Com THEY, usamos DO."},{"t":"Sentence Check","q":"Qual frase negativa está correta?","o":["Maria don't arrive late.","Maria doesn't arrives late.","Maria doesn't arrive late.","Maria not arrives late."],"a":2,"e":"Maria = she; usamos doesn't + arrive."},{"t":"Sentence Check","q":"Qual frase está correta?","o":["Do you agrees?","Does you agree?","Do you agree?","Are you agree?"],"a":2,"e":"Com YOU: Do you agree?"},{"t":"Context","q":"Lucas sempre ajuda em casa. Qual pergunta combina com a resposta 'Yes, he does'?","o":["Do Lucas help at home?","Does Lucas help at home?","Is Lucas help at home?","Does Lucas helps at home?"],"a":1,"e":"Yes, he does responde a uma pergunta com DOES."},{"t":"Context","q":"Ana não usa o celular durante a aula. Complete: Ana _____ use her phone in class.","o":["don't","doesn't","isn't","do not to"],"a":1,"e":"Ana = she, portanto DOESN'T."},{"t":"Context","q":"Os alunos seguem as regras? Complete: _____ the students follow the rules?","o":["Does","Do","Are","Has"],"a":1,"e":"Students = they, então usamos DO."},{"t":"Context","q":"João chega cedo todos os dias. Pergunte corretamente:","o":["Does João arrive early?","Do João arrives early?","Does João arrives early?","Is João arrive early?"],"a":0,"e":"Does + João + arrive."},{"t":"Context","q":"Nós não concordamos com essa ideia. Complete: We _____ agree with this idea.","o":["doesn't","don't","aren't","haven't"],"a":1,"e":"Com WE, usamos DON'T."},{"t":"Short Answers","q":"Do you respect your classmates? — _____","o":["Yes, I do.","Yes, I does.","Yes, I am.","Yes, I can to."],"a":0,"e":"Pergunta com DO → resposta curta Yes, I do."},{"t":"Short Answers","q":"Does she do her homework? — _____","o":["No, she don't.","No, she doesn't.","No, she isn't.","No, she not."],"a":1,"e":"Pergunta com DOES → resposta curta No, she doesn't."},{"t":"Short Answers","q":"Do they arrive on time? — _____","o":["Yes, they do.","Yes, they does.","Yes, they are.","Yes, they dids."],"a":0,"e":"Com DO, a resposta curta é Yes, they do."},{"t":"Short Answers","q":"Does he follow the rules? — _____","o":["Yes, he do.","Yes, he does.","Yes, he is.","Yes, he follows."],"a":1,"e":"Com DOES, a resposta curta é Yes, he does."},{"t":"Error Hunt","q":"Encontre a correção: 'Does Marina has to wear a uniform?'","o":["Does Marina have to wear a uniform?","Do Marina has to wear a uniform?","Does Marina having to wear a uniform?","Marina does has to wear a uniform?"],"a":0,"e":"Depois de DOES, usamos HAVE, não HAS."},{"t":"Error Hunt","q":"Encontre a correção: 'Pedro doesn't has to arrive early.'","o":["Pedro don't has to arrive early.","Pedro doesn't have to arrive early.","Pedro doesn't having to arrive early.","Pedro not have to arrive early."],"a":1,"e":"Depois de DOESN'T, usamos HAVE."},{"t":"Error Hunt","q":"Encontre a correção: 'Does she likes the rule?'","o":["Does she like the rule?","Do she likes the rule?","Does she liking the rule?","She does likes the rule?"],"a":0,"e":"Depois de DOES, o verbo fica na forma base."},{"t":"Error Hunt","q":"Encontre a correção: 'He don't respect the teacher.'","o":["He doesn't respect the teacher.","He don't respects the teacher.","He isn't respect the teacher.","He not respect the teacher."],"a":0,"e":"Com HE, usamos DOESN'T."},{"t":"Mixed Grammar","q":"Complete: _____ your parents work on Saturdays?","o":["Does","Do","Is","Has"],"a":1,"e":"Parents = they; usamos DO."},{"t":"Mixed Grammar","q":"Complete: My sister _____ like loud music.","o":["don't","doesn't","aren't","do"],"a":1,"e":"My sister = she; usamos DOESN'T."},{"t":"Mixed Grammar","q":"Complete: Does the teacher _____ homework every day?","o":["gives","give","giving","gave"],"a":1,"e":"Depois de DOES: GIVE."},{"t":"Mixed Grammar","q":"Complete: We _____ study on Sundays.","o":["doesn't","don't","isn't","does"],"a":1,"e":"Com WE: DON'T."},{"t":"Mixed Grammar","q":"Complete: _____ he ask permission before leaving?","o":["Do","Does","Is","Are"],"a":1,"e":"Com HE: DOES."},{"t":"Mixed Grammar","q":"Complete: They _____ follow that rule.","o":["doesn't","don't","isn't","hasn't"],"a":1,"e":"Com THEY: DON'T."},{"t":"Mixed Grammar","q":"Complete: Does your mother _____ at home?","o":["works","work","working","worked"],"a":1,"e":"Depois de DOES: WORK."},
+{t:"Modal Grammar",q:"Complete: Students _____ respect their classmates.",o:["must","must to","musts","are must"],a:0,e:"Depois de MUST, usamos o verbo na forma base, sem TO e sem -S."},
+{t:"Modal Grammar",q:"Complete: You _____ use your phone during the test.",o:["mustn't","don't have to","should","might"],a:0,e:"MUSTN'T indica proibição."},
+{t:"Modal Grammar",q:"Complete: You _____ study more for the next test.",o:["should","mustn't","can to","have"],a:0,e:"SHOULD é usado para conselho."},
+{t:"Modal Grammar",q:"Complete: We _____ wear a uniform at this school.",o:["have to","have","has to","must to"],a:0,e:"HAVE TO indica obrigação; com WE usamos HAVE TO."},
+{t:"Modal Grammar",q:"Complete: She _____ arrive early tomorrow.",o:["has to","have to","musts","shoulds"],a:0,e:"Com SHE, usamos HAS TO."},
+{t:"Modal Grammar",q:"Qual frase está correta?",o:["She should studies more.","She should study more.","She should to study more.","She should studying more."],a:1,e:"Modal + verbo na forma base: should study."},
+{t:"Modal Grammar",q:"Qual frase está correta?",o:["Students must to respect the rules.","Students must respects the rules.","Students must respect the rules.","Students must respecting the rules."],a:2,e:"Depois de MUST, usamos o verbo base sem TO."},
+{t:"Modal Grammar",q:"Qual frase está correta?",o:["He can speaks English.","He can speak English.","He can to speak English.","He can speaking English."],a:1,e:"CAN + verbo na forma base."},
+{t:"Modal Grammar",q:"Qual frase está correta?",o:["They might arrive late.","They might arrives late.","They might to arrive late.","They might arriving late."],a:0,e:"MIGHT + verbo na forma base."},
+{t:"Modal Grammar",q:"Complete: You _____ bring food tomorrow. It is optional.",o:["don't have to","mustn't","must","has to"],a:0,e:"DON'T HAVE TO significa ausência de necessidade."},
+{t:"Modal Grammar",q:"Complete: You _____ enter this room. It is prohibited.",o:["mustn't","don't have to","might","should"],a:0,e:"MUSTN'T indica proibição."},
+{t:"Modal Grammar",q:"Complete: _____ I use your pen?",o:["May","Must to","Should to","Have"],a:0,e:"MAY pode ser usado para pedir permissão de forma mais formal."},
+{t:"Modal Grammar",q:"Complete: It _____ rain later.",o:["might","must to","shoulds","has"],a:0,e:"MIGHT indica possibilidade."},
+{t:"Modal Grammar",q:"Complete: Students _____ ask questions in class.",o:["can","can to","cans","are can"],a:0,e:"CAN + verbo base."},
+{t:"Modal Grammar",q:"Qual é a diferença correta?",o:["mustn't = proibição; don't have to = não é necessário","mustn't = conselho; don't have to = obrigação","mustn't = possibilidade; don't have to = permissão","As duas significam exatamente a mesma coisa"],a:0,e:"MUSTN'T proíbe; DON'T HAVE TO indica que não é obrigatório."},
+{t:"Error Hunt",q:"Corrija: 'She should arrives earlier.'",o:["She should arrive earlier.","She should to arrive earlier.","She should arriving earlier.","She should arrives early."],a:0,e:"Depois de SHOULD, usamos ARRIVE na forma base."},
+{t:"Error Hunt",q:"Corrija: 'Students must to respect the teacher.'",o:["Students must respect the teacher.","Students must respects the teacher.","Students must respecting the teacher.","Students must respected the teacher."],a:0,e:"Depois de MUST, não usamos TO."},
+{t:"Error Hunt",q:"Corrija: 'He can speaks English.'",o:["He can speak English.","He can to speak English.","He cans speak English.","He can speaking English."],a:0,e:"Depois de CAN, o verbo fica na forma base."},
+{t:"Error Hunt",q:"Corrija: 'She might goes to the meeting.'",o:["She might go to the meeting.","She might to go to the meeting.","She might going to the meeting.","She might goes meeting."],a:0,e:"Depois de MIGHT, usamos GO na forma base."},
+{t:"Error Hunt",q:"Corrija: 'He have to wear a uniform.'",o:["He has to wear a uniform.","He have to wears a uniform.","He has wear a uniform.","He musts wear a uniform."],a:0,e:"Com HE, usamos HAS TO."}];
+const THEMES=["Do / Does","Negatives","Base Verb","Modal Grammar","Context","Error Hunt"];
+const cfg=window.TUG_SUPABASE_CONFIG||{},sb=(cfg.url&&cfg.key&&window.supabase?.createClient)?window.supabase.createClient(cfg.url,cfg.key):null;
+const qs=new URLSearchParams(location.search),demo=qs.get('demo')==='1',room=(qs.get('sala')||'701').replace(/[^a-zA-Z0-9_-]/g,'').toUpperCase();
+const deviceId=localStorage.getItem('championship9DeviceId'),TEAM={blue:'EQUIPE AZUL',yellow:'EQUIPE AMARELA',green:'EQUIPE VERDE',red:'EQUIPE VERMELHA'};
+let order=[],idx=0,correct=0,wrong=0,answered=false,spinning=false,rotation=0,myColor='blue',finished=false,poll=null,transitionPoll=null,isHost=false,nextStarted=false,activeQuestion=null;
+const $=id=>document.getElementById(id);
+function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function candidateOrder(){return shuffle(QUESTIONS.map((_,i)=>i)).slice(0,20)}
+function rawPoints(){return Math.max(0,correct*8-wrong*2)}
+function hud(){$('roundHud').textContent=Math.min(idx+1,20)+'/20';$('correctHud').textContent=correct;$('wrongHud').textContent=wrong;$('pointsHud').textContent=rawPoints()}
+function current(){return QUESTIONS[order[idx]]}
+function randomizedQuestion(q){
+  const packed=q.o.map((text,i)=>({text,correct:i===q.a}));
+  const shuffled=shuffle(packed);
+  return {
+    ...q,
+    o:shuffled.map(x=>x.text),
+    a:shuffled.findIndex(x=>x.correct)
+  };
+}
+function spinWheel(){
+ if(spinning||answered||idx>=20)return;
+ spinning=true;$('spinBtn').disabled=true;$('options').innerHTML='';$('feedback').textContent='';$('prompt').textContent='A roleta está escolhendo o desafio...';
+ const q=current(),ti=Math.max(0,THEMES.indexOf(q.t)),segment=60,target=360-(ti*segment+30);
+ const currentMod=((rotation%360)+360)%360;
+ const delta=(target-currentMod+360)%360;
+ const extraTurns=5+Math.floor(Math.random()*3);
+ rotation+=extraTurns*360+delta;
+ $('wheel').classList.add('spinning');
+ $('wheel').style.transform='rotate('+rotation+'deg)';
+ setTimeout(()=>{$('wheel').classList.remove('spinning');spinning=false;showQuestion()},4850)
+}
+function hintFor(q){
+ if(q.t==='Do / Does') return '💡 DICA: Observe o sujeito. Com <b>he, she, it</b> ou uma pessoa no singular, pense em <b>does</b>; com <b>I, you, we, they</b>, pense em <b>do</b>.';
+ if(q.t==='Negatives') return '💡 DICA: Na negativa do Simple Present, observe o sujeito para escolher entre <b>don’t</b> e <b>doesn’t</b>.';
+ if(q.t==='Base Verb') return '💡 DICA: Depois de <b>do, does, don’t e doesn’t</b>, o verbo principal fica na <b>forma base</b>, sem -s.';
+ if(q.t==='Modal Grammar') return '💡 DICA: Depois de <b>can, may, might, must, should</b>, normalmente usamos o verbo na <b>forma base</b>, sem “to” e sem “-s”.';
+ if(q.t==='Error Hunt') return '💡 DICA: Procure primeiro o <b>auxiliar ou modal</b>; depois confira se o verbo principal está na forma correta.';
+ if(q.t==='Context') return '💡 DICA: Leia a situação inteira e identifique <b>quem pratica a ação</b> e se a frase é pergunta, negativa ou afirmativa.';
+ return '💡 DICA: Observe o sujeito, o auxiliar e a forma do verbo antes de escolher.';
+}
+function showQuestion(){
+ const q=randomizedQuestion(current());activeQuestion=q;$('wheel').dataset.theme=q.t;$('themeChip').textContent=q.t;$('prompt').textContent=q.q;$('options').innerHTML='';$('hintBox').innerHTML=hintFor(q);answered=false;
+ q.o.forEach((txt,i)=>{const b=document.createElement('button');b.className='option';b.textContent=txt;b.onclick=()=>answer(i,b);$('options').appendChild(b)});
+}
+function answer(i,b){
+ if(answered)return;answered=true;const q=activeQuestion||current(),buttons=[...document.querySelectorAll('.option')];
+ if(i===q.a){correct++;b.classList.add('correct');$('feedback').className='feedback ok';$('feedback').textContent='✅ CORRETO! '+q.e}
+ else{wrong++;b.classList.add('wrong');buttons[q.a]?.classList.add('correct');$('feedback').className='feedback bad';$('feedback').textContent='❌ '+q.e}
+ const correctBtn=buttons[q.a];
+ if(correctBtn){correctBtn.classList.add('flash-correct')}
+ hud();setTimeout(()=>{idx++;if(idx>=20)finishGame();else{$('wheel').dataset.theme='GIRE!';$('themeChip').textContent='Próximo desafio';$('prompt').textContent='Gire a roleta novamente.';$('options').innerHTML='';$('feedback').className='feedback';$('feedback').textContent='';$('hintBox').innerHTML='💡 DICA: Gire a roleta para receber uma nova pista em português.';$('spinBtn').disabled=false;answered=false;hud()}},1300)
+}
+async function init(){
+ order=candidateOrder();hud();
+ if(demo){$('teamBadge').textContent='MODO TESTE';return}
+ $('loading').classList.remove('hidden');
+ if(!sb||!deviceId){$('loadText').textContent='Entre primeiro pelo lobby do campeonato.';return}
+ const {data,error}=await sb.rpc('championship_phase3_get_or_create',{p_room:room,p_device:deviceId,p_order:order});
+ if(error||!data?.ok){$('loadText').textContent='Não foi possível abrir a fase.';return}
+ order=data.item_order;myColor=data.color;$('teamBadge').textContent=TEAM[myColor];$('loading').classList.add('hidden');
+}
+async function finishGame(){
+ if(finished)return;finished=true;$('finish').classList.remove('hidden');$('finishSummary').textContent=correct+' acertos • '+wrong+' erros • '+rawPoints()+' pontos antes do bônus.';
+ if(demo){$('waiting').textContent='MODO TESTE — no campeonato real, aqui aparece o mini ranking das 4 equipes.';return}
+ const {error}=await sb.rpc('championship_phase3_submit',{p_room:room,p_device:deviceId,p_correct:correct,p_wrong:wrong,p_raw:rawPoints()});
+ if(error){$('waiting').textContent='Erro ao enviar resultado.';return}poll=setInterval(checkResults,1000);checkResults();
+}
+async function checkResults(){
+ const [{data},{data:rooms}]=await Promise.all([
+  sb.from('championship_phase_scores').select('color,correct,wrong,bonus,total_points,submitted_at').eq('room_code',room).eq('phase',3),
+  sb.from('championship_rooms').select('host_device,current_phase,scores,transition_message').eq('room_code',room).limit(1)
+ ]);
+ if((data||[]).length<4){$('waiting').textContent='Aguardando as outras equipes... '+(data||[]).length+'/4 concluíram.';return}
+ const state=rooms?.[0]||{};isHost=state.host_device===deviceId;
+ const arr=[...data].sort((a,b)=>b.total_points-a.total_points||new Date(a.submitted_at)-new Date(b.submitted_at));
+ $('waiting').textContent=isHost?'Confira o ranking e libere a próxima fase.':'Aguardando o HOST liberar a próxima fase...';
+ $('rankList').innerHTML=arr.map((r,i)=>'<div class="rank"><span>'+(i===0?'🥇':i===1?'🥈':i===2?'🥉':'4º')+'</span><span>'+TEAM[r.color]+'</span><span>'+r.total_points+' pts</span></div>').join('');
+ $('effectPhrase').textContent=state.transition_message||'Concentração total. A disputa está apertando!';$('effectPhrase').classList.remove('hidden');$('generalTitle').classList.remove('hidden');
+ const general=['blue','yellow','green','red'].map(color=>({color,pts:Number(state.scores?.[color]||0)})).sort((a,b)=>b.pts-a.pts);
+ $('generalRank').innerHTML=general.map((r,i)=>'<div class="rank"><span>'+(i===0?'🥇':i===1?'🥈':i===2?'🥉':'4º')+'</span><span>'+TEAM[r.color]+'</span><span>'+r.pts+' pts</span></div>').join('');
+ if(Number(state.current_phase)>3){beginNext(state.transition_message);return}if(isHost)$('releaseBtn').classList.remove('hidden');if(!transitionPoll)transitionPoll=setInterval(watchNext,900);
+}
+async function releaseNext(){const {data}=await sb.rpc('championship_release_next_phase',{p_room:room,p_device:deviceId});if(data?.ok)watchNext()}
+async function watchNext(){const {data}=await sb.from('championship_rooms').select('current_phase,transition_message').eq('room_code',room).limit(1);if(data?.[0]&&Number(data[0].current_phase)>=4)beginNext(data[0].transition_message)}
+function beginNext(message){if(nextStarted)return;nextStarted=true;clearInterval(poll);clearInterval(transitionPoll);$('nextPhrase').textContent=message||'Concentração total. A disputa está apertando!';$('nextOverlay').classList.remove('hidden');let n=3;$('nextCount').textContent=n;const t=setInterval(()=>{n--;$('nextCount').textContent=n>0?n:'GO!';if(n<=0){clearInterval(t);setTimeout(()=>location.href='modal-challenge.html?sala='+encodeURIComponent(room)+'&v=phase4a',700)}},850)}
+$('spinBtn').onclick=spinWheel;$('releaseBtn').onclick=releaseNext;init();
+</script></body></html>
