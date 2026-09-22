@@ -58,13 +58,22 @@ const THEMES=["Do / Does","Negatives","Base Verb","Modal Grammar","Context","Err
 const cfg=window.TUG_SUPABASE_CONFIG||{},sb=(cfg.url&&cfg.key&&window.supabase?.createClient)?window.supabase.createClient(cfg.url,cfg.key):null;
 const qs=new URLSearchParams(location.search),demo=qs.get('demo')==='1',room=(qs.get('sala')||'901').replace(/[^a-zA-Z0-9_-]/g,'').toUpperCase();
 const deviceId=localStorage.getItem('championship9DeviceId'),TEAM={blue:'EQUIPE AZUL',yellow:'EQUIPE AMARELA',green:'EQUIPE VERDE',red:'EQUIPE VERMELHA'};
-let order=[],idx=0,correct=0,wrong=0,answered=false,spinning=false,rotation=0,myColor='blue',finished=false,poll=null,transitionPoll=null,isHost=false,nextStarted=false;
+let order=[],idx=0,correct=0,wrong=0,answered=false,spinning=false,rotation=0,myColor='blue',finished=false,poll=null,transitionPoll=null,isHost=false,nextStarted=false,activeQuestion=null;
 const $=id=>document.getElementById(id);
 function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function candidateOrder(){return shuffle(QUESTIONS.map((_,i)=>i)).slice(0,20)}
 function rawPoints(){return Math.max(0,correct*8-wrong*2)}
 function hud(){$('roundHud').textContent=Math.min(idx+1,20)+'/20';$('correctHud').textContent=correct;$('wrongHud').textContent=wrong;$('pointsHud').textContent=rawPoints()}
 function current(){return QUESTIONS[order[idx]]}
+function randomizedQuestion(q){
+  const packed=q.o.map((text,i)=>({text,correct:i===q.a}));
+  const shuffled=shuffle(packed);
+  return {
+    ...q,
+    o:shuffled.map(x=>x.text),
+    a:shuffled.findIndex(x=>x.correct)
+  };
+}
 function spinWheel(){
  if(spinning||answered||idx>=20)return;
  spinning=true;$('spinBtn').disabled=true;$('options').innerHTML='';$('feedback').textContent='';$('prompt').textContent='A roleta está escolhendo o desafio...';
@@ -87,11 +96,11 @@ function hintFor(q){
  return '💡 DICA: Observe o sujeito, o auxiliar e a forma do verbo antes de escolher.';
 }
 function showQuestion(){
- const q=current();$('wheel').dataset.theme=q.t;$('themeChip').textContent=q.t;$('prompt').textContent=q.q;$('options').innerHTML='';$('hintBox').innerHTML=hintFor(q);answered=false;
+ const q=randomizedQuestion(current());activeQuestion=q;$('wheel').dataset.theme=q.t;$('themeChip').textContent=q.t;$('prompt').textContent=q.q;$('options').innerHTML='';$('hintBox').innerHTML=hintFor(q);answered=false;
  q.o.forEach((txt,i)=>{const b=document.createElement('button');b.className='option';b.textContent=txt;b.onclick=()=>answer(i,b);$('options').appendChild(b)});
 }
 function answer(i,b){
- if(answered)return;answered=true;const q=current(),buttons=[...document.querySelectorAll('.option')];
+ if(answered)return;answered=true;const q=activeQuestion||current(),buttons=[...document.querySelectorAll('.option')];
  if(i===q.a){correct++;b.classList.add('correct');$('feedback').className='feedback ok';$('feedback').textContent='✅ CORRETO! '+q.e}
  else{wrong++;b.classList.add('wrong');buttons[q.a]?.classList.add('correct');$('feedback').className='feedback bad';$('feedback').textContent='❌ '+q.e}
  hud();setTimeout(()=>{idx++;if(idx>=20)finishGame();else{$('wheel').dataset.theme='GIRE!';$('themeChip').textContent='Próximo desafio';$('prompt').textContent='Gire a roleta novamente.';$('options').innerHTML='';$('feedback').className='feedback';$('feedback').textContent='';$('hintBox').innerHTML='💡 DICA: Gire a roleta para receber uma nova pista em português.';$('spinBtn').disabled=false;answered=false;hud()}},1300)
