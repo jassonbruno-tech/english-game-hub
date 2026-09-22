@@ -189,7 +189,7 @@ async function watchNextPhase(){
 }
 function beginNextPhase(message){
  if(nextStarted)return;nextStarted=true;clearInterval(poll);clearInterval(transitionPoll);$('nextPhrase').textContent=message||'Cada ponto agora pode mudar o ranking.';$('nextOverlay').classList.remove('hidden');
- let n=3;$('nextCount').textContent=n;const t=setInterval(()=>{n--;$('nextCount').textContent=n>0?n:'GO!';if(n<=0){clearInterval(t);setTimeout(()=>{location.href='./?sala='+encodeURIComponent(room)+'&v=phase3-unlocked'},700)}},850);
+ let n=3;$('nextCount').textContent=n;const t=setInterval(()=>{n--;$('nextCount').textContent=n>0?n:'GO!';if(n<=0){clearInterval(t);setTimeout(()=>{location.href='grammar-challenge.html?sala='+encodeURIComponent(room)+'&v=phase3a'},700)}},850);
 }
 $('guessBtn').onclick=guessWord;$('guessInput').addEventListener('keydown',e=>{if(e.key==='Enter')guessWord()});$('releaseBtn').onclick=releaseNextPhase;init();
 </script></body></html>
