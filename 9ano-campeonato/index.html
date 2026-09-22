@@ -327,7 +327,7 @@ function paintScores(scores){
 async function refreshLobby(){
   if(!sb||!joined)return;
   const room=cleanRoom(roomInput.value);
-  const cutoff=new Date(Date.now()-9000).toISOString();
+  const cutoff=new Date(Date.now()-45000).toISOString();
   const [{data:rows},{data:roomRows}]=await Promise.all([
     sb.from('championship_presence').select('color,device_id,last_seen').eq('room_code',room).gte('last_seen',cutoff),
     sb.from('championship_rooms').select('status,current_phase,host_device,scores').eq('room_code',room).limit(1)
