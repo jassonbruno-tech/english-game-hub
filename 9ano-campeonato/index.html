@@ -232,7 +232,7 @@ const PHASES=[
   {title:'Grammar Challenge',desc:"Do / Does / Don't / Doesn't • estrutura verbal • correção de erros"},
   {title:'Modal Challenge',desc:'Should • Must • Have to • Can • May / Might • sentido e uso em contexto'},
   {title:'Opinions & Suggestions',desc:"I think • In my opinion • I agree • I'm not sure • You should • Maybe you can"},
-  {title:'Corrida Maluca — FINAL',desc:'90 segundos • ampulheta • banco grande de questões • vence quem acumular mais acertos'}
+  {title:'Corrida Maluca — FINAL',desc:'300 segundos (5 minutos) • ampulheta • banco grande de questões • vence quem acumular mais acertos'}
 ];
 const TEAM_NAMES={blue:'AZUL',yellow:'AMARELA',green:'VERDE',red:'VERMELHA'};
 let currentPhase=0,timer=null,pollTimer=null,pingTimer=null,joined=false,myColor=null,isHost=false,lastRoomStatus='lobby';
@@ -379,7 +379,7 @@ document.getElementById('demoRankBtn').addEventListener('click',showRank);
 document.getElementById('advanceBtn').addEventListener('click',advancePhase);
 document.getElementById('closePhaseBtn').addEventListener('click',()=>phaseOverlay.classList.add('hidden'));
 document.getElementById('closeRankBtn').addEventListener('click',()=>rankOverlay.classList.add('hidden'));
-window.addEventListener('pagehide',()=>{if(sb&&joined)sb.rpc('championship_leave',{p_room:cleanRoom(roomInput.value),p_device:deviceId})});
+/* A presença expira automaticamente; não removemos a equipe ao navegar para a próxima fase. */
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&joined)refreshLobby().catch(()=>{})});
 renderPhaseQueue();
 paintPresence([]);
