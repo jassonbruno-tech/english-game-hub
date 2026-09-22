@@ -142,6 +142,6 @@ async function checkResults(){
 }
 async function releaseNext(){const {data}=await sb.rpc('championship_release_next_phase',{p_room:room,p_device:deviceId});if(data?.ok)watchNext()}
 async function watchNext(){const {data}=await sb.from('championship_rooms').select('current_phase,transition_message').eq('room_code',room).limit(1);if(data?.[0]&&Number(data[0].current_phase)>=4)beginNext(data[0].transition_message)}
-function beginNext(message){if(nextStarted)return;nextStarted=true;clearInterval(poll);clearInterval(transitionPoll);$('nextPhrase').textContent=message||'Concentração total. A disputa está apertando!';$('nextOverlay').classList.remove('hidden');let n=3;$('nextCount').textContent=n;const t=setInterval(()=>{n--;$('nextCount').textContent=n>0?n:'GO!';if(n<=0){clearInterval(t);setTimeout(()=>location.href='./?sala='+encodeURIComponent(room)+'&v=phase4-unlocked',700)}},850)}
+function beginNext(message){if(nextStarted)return;nextStarted=true;clearInterval(poll);clearInterval(transitionPoll);$('nextPhrase').textContent=message||'Concentração total. A disputa está apertando!';$('nextOverlay').classList.remove('hidden');let n=3;$('nextCount').textContent=n;const t=setInterval(()=>{n--;$('nextCount').textContent=n>0?n:'GO!';if(n<=0){clearInterval(t);setTimeout(()=>location.href='modal-challenge.html?sala='+encodeURIComponent(room)+'&v=phase4a',700)}},850)}
 $('spinBtn').onclick=spinWheel;$('releaseBtn').onclick=releaseNext;init();
 </script></body></html>
