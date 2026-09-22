@@ -78,15 +78,17 @@ function updateHud(){$('wordHud').textContent=Math.min(idx+1,15)+'/15';$('correc
 function current(){return BANK[order[idx]]}
 function buildHint(w,pt){
   const clean=norm(w), words=clean.split(' ').filter(Boolean), letters=clean.replace(/ /g,'').length;
-  let context='Palavra usada no conteúdo de inglês do 9º ano.';
-  if(['SHOULD','SHOULDN\'T','MUST','MUSTN\'T','MAY','MIGHT','CAN','CAN\'T'].includes(clean)) context='É um verbo modal usado para expressar conselho, obrigação, permissão ou possibilidade.';
-  else if(['WHO','WHAT','WHERE','WHEN','WHY','HOW','WHICH'].includes(clean)) context='É uma palavra interrogativa usada para formar perguntas.';
-  else if(['ALWAYS','USUALLY','SOMETIMES','NEVER'].includes(clean)) context='É um advérbio de frequência usado para dizer com que frequência algo acontece.';
-  else if(words.length>1) context='É uma expressão trabalhada nas situações de regras, responsabilidades e convivência.';
-  else if(['RESPONSIBILITY','BEHAVIOR','HONESTY','FRIENDSHIP','PERMISSION','OBLIGATION','CLASSMATE','UNIFORM','LIBRARY','HALLWAY','NEIGHBOR'].includes(clean)) context='É um substantivo muito usado em situações de escola, convivência, deveres e responsabilidades.';
-  else if(['RESPONSIBLE','RESPECTFUL','POLITE','NERVOUS','CONFIDENT','UNCOMFORTABLE','IMPORTANT','NECESSARY','POSSIBLE','CAREFUL','HELPFUL','FRIENDLY','NOISY','QUIET','HONEST'].includes(clean)) context='É um adjetivo usado para descrever pessoas, situações ou comportamentos.';
-  else if(['RESPECT','FOLLOW','ARRIVE','LEAVE','BRING','WEAR','SHARE','PRACTICE','PREPARE','AGREE','DISAGREE','STUDY','LEARN','READ','WRITE','LISTEN','SPEAK','ASK','HELP','WORK','PLAY'].includes(clean)) context='É um verbo usado para indicar uma ação.';
-  return '<strong>'+context+'</strong><small>Significado: '+pt+' • '+letters+' letras'+(words.length>1?' • '+words.length+' palavras':'')+' • começa com <b>'+clean[0]+'</b> e termina com <b>'+clean[clean.length-1]+'</b>.</small>';
+  let category='vocabulário do 9º ano';
+  if(['SHOULD','SHOULDN\'T','MUST','MUSTN\'T','MAY','MIGHT','CAN','CAN\'T'].includes(clean)) category='verbo modal';
+  else if(['WHO','WHAT','WHERE','WHEN','WHY','HOW','WHICH'].includes(clean)) category='palavra interrogativa';
+  else if(['ALWAYS','USUALLY','SOMETIMES','NEVER'].includes(clean)) category='advérbio de frequência';
+  else if(words.length>1) category='expressão';
+  else if(['RESPONSIBILITY','BEHAVIOR','HONESTY','FRIENDSHIP','PERMISSION','OBLIGATION','CLASSMATE','UNIFORM','LIBRARY','HALLWAY','NEIGHBOR','OPINION','SUGGESTION','ADVICE','QUESTION','ANSWER','MESSAGE','CONVERSATION','PRESENTATION','RELATIONSHIP','SOLUTION','PROBLEM','IDEA','MEETING','SPACE','NOISE'].includes(clean)) category='substantivo';
+  else if(['RESPONSIBLE','RESPECTFUL','POLITE','NERVOUS','CONFIDENT','UNCOMFORTABLE','IMPORTANT','NECESSARY','POSSIBLE','CAREFUL','HELPFUL','FRIENDLY','NOISY','QUIET','HONEST','EARLY','LATE','KIND','RUDE','CALM','SAFE','READY','RIGHT','WRONG','BETTER','WORSE'].includes(clean)) category='adjetivo';
+  else if(['RESPECT','FOLLOW','ARRIVE','LEAVE','BRING','WEAR','SHARE','PRACTICE','PREPARE','AGREE','DISAGREE','STUDY','LEARN','READ','WRITE','LISTEN','SPEAK','ASK','HELP','WORK','PLAY'].includes(clean)) category='verbo';
+
+  const label=words.length>1?'expressão':'palavra';
+  return '<strong>É a '+label+' “'+pt+'” em inglês.</strong><small>Categoria: '+category+' • '+letters+' letras'+(words.length>1?' • '+words.length+' palavras':'')+' • começa com <b>'+clean[0]+'</b> e termina com <b>'+clean[clean.length-1]+'</b>.</small>';
 }
 function renderWord(){
   const [w,h]=current();$('word').innerHTML='';[...w].forEach(ch=>{const d=document.createElement('div');if(ch===' '){d.className='space'}else{d.className='letter';d.textContent=revealed.has(ch)?ch:''}$('word').appendChild(d)});
