@@ -35,7 +35,16 @@ const TEAM={blue:'EQUIPE AZUL',yellow:'EQUIPE AMARELA',green:'EQUIPE VERDE',red:
 let order=[],idx=0,correct=0,wrong=0,seconds=20,timer=null,answered=false,active=null,myColor='blue',finished=false,isHost=false,poll=null,transitionPoll=null,nextStarted=false,skipLeft=2,fiftyUsed=false,tipUsed=false;
 const $=id=>document.getElementById(id);
 function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
-function candidateOrder(){return shuffle(QUESTIONS.map((_,i)=>i)).slice(0,20)}
+function candidateOrder(){
+ const pick=(type,n)=>shuffle(QUESTIONS.map((q,i)=>q.t===type?i:null).filter(i=>i!==null)).slice(0,n);
+ return shuffle([
+  ...pick('Some / Any',4),
+  ...pick('Many / Much',4),
+  ...pick('Countable / Uncountable',4),
+  ...pick('Other Quantifiers',4),
+  ...pick('Error Hunt',4)
+ ]);
+}
 function rawPoints(){return Math.max(0,correct*8-wrong*2)}
 function randomQ(q){const z=shuffle(q.o.map((text,i)=>({text,ok:i===q.a})));return {...q,o:z.map(x=>x.text),a:z.findIndex(x=>x.ok)}}
 function hud(){$('roundHud').textContent=Math.min(idx+1,20)+'/20';$('correctHud').textContent=correct;$('wrongHud').textContent=wrong;$('pointsHud').textContent=rawPoints();$('timeHud').textContent=seconds+'s'}
