@@ -4,7 +4,7 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Fase 2 — Word Challenge</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="../jogos-em-equipe/supabase-config.js?v=9ano1"></script>
+<script src="../jogos-em-equipe/supabase-config.js?v=7ano1"></script>
 <style>
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:Arial,Helvetica,sans-serif;background:#0b1637;color:#fff}
 body{background:radial-gradient(circle at 12% 0,#ffd86455,transparent 28%),radial-gradient(circle at 90% 0,#ff54b255,transparent 26%),linear-gradient(160deg,#0a1c46,#32165d 62%,#5a1b63)}
@@ -18,13 +18,20 @@ button,input{font:inherit}.app{width:min(1280px,100%);height:100%;margin:auto;pa
 @keyframes wordPulse{0%,100%{filter:brightness(1)}45%{filter:brightness(1.5)}}
 .challenge{display:flex;flex-direction:column;min-height:0}.label{display:flex;justify-content:space-between;gap:10px;padding:7px 9px;border-radius:12px;background:linear-gradient(90deg,#ffe66d22,#7c3aed33,#ff4d9e22);font-weight:1000;color:#fff5bd}.hint{margin:8px 0 6px;padding:10px 12px;border-left:4px solid #ffe66d;border-radius:11px;background:#ffffff0c;font-size:17px;font-weight:900;line-height:1.32}.hint strong{color:#ffe66d}.hint small{display:block;margin-top:5px;color:#dbeafe;font-size:13px;font-weight:800}.keys{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;flex:1;align-content:center}.key{min-height:42px;border-radius:9px;border:1px solid #82baff;background:linear-gradient(#fff,#e8f2ff);color:#193d72;font-size:17px;font-weight:1000;cursor:pointer}.key.ok{background:#cdf6dc;color:#116736;border-color:#2bd17a}.key.no{background:#ffd4dc;color:#8d1e35;border-color:#ff6b83}.key:disabled{opacity:.58}.guess{display:grid;grid-template-columns:1fr auto;gap:6px;margin-top:6px}.guess input{min-width:0;border:0;border-radius:10px;padding:9px 10px;font-weight:900}.btn{border:0;border-radius:12px;padding:10px 13px;background:linear-gradient(135deg,#ffe66d,#ff9f1c,#ff4d9e);color:#172033;font-weight:1000;cursor:pointer}.feedback{min-height:30px;margin-top:6px;padding:6px 8px;border-radius:10px;font-weight:1000}.feedback.ok{background:#cdf6dc;color:#116736}.feedback.no{background:#ffd4dc;color:#8d1e35}.bottom{display:flex;justify-content:space-between;gap:8px;align-items:center;border-radius:14px;background:#ffffff10;border:1px solid #ffffff2e;padding:6px 9px;font-size:11px;font-weight:900;color:#e7efff}.overlay{position:fixed;inset:0;z-index:30;display:grid;place-items:center;background:#06112ddd;backdrop-filter:blur(5px);padding:16px}.hidden{display:none}.modal{width:min(680px,95vw);max-height:95vh;overflow:auto;text-align:center;background:#fff;color:#173b70;border:3px solid #9edcff;border-radius:24px;padding:22px;box-shadow:0 24px 70px #0005}.modal h2{margin:0;color:#174f9d;font-size:clamp(28px,5vw,48px)}.modal p{font-weight:800;color:#5a789d}.rank-list{max-width:540px;margin:10px auto}.rank{display:grid;grid-template-columns:44px 1fr auto;gap:8px;align-items:center;padding:10px 12px;margin:6px 0;border-radius:12px;font-weight:1000;text-align:left}.rank:nth-child(1){background:#ffe66d}.rank:nth-child(2){background:#e5edf4}.rank:nth-child(3){background:#efb27f}.rank:nth-child(4){background:#edf6ff}.effect{margin:11px auto;padding:10px 13px;border-radius:14px;background:linear-gradient(135deg,#e8f7ff,#fff4b0);font-size:18px;font-weight:1000}.release{background:linear-gradient(135deg,#ffb52e,#ff5fa3);color:#fff}.next-count{font-size:88px;font-weight:1000;color:#236cff;text-shadow:0 4px 0 #c9dcff}.waiting{font-size:18px;font-weight:1000;color:#1a5aa7}
 @media(max-height:720px){.app{padding:5px 8px;gap:5px}.top{padding:6px 11px}.top h1{font-size:31px}.top p{font-size:10px}.team{padding:6px 9px}.pill{padding:4px;font-size:9px}.pill b{font-size:14px}.main{gap:6px}.card{padding:6px}.gallow{width:180px;height:180px}.letter{width:28px;height:33px;font-size:17px}.hint{font-size:14px;padding:6px 8px}.key{min-height:32px;font-size:13px}.bottom{font-size:9px;padding:4px 7px}}
+
+.flags{display:inline-flex;gap:.14em;align-items:center;vertical-align:.08em;margin-left:.12em}
+.flag{display:inline-block;width:1.35em;height:.82em;border-radius:.08em;box-shadow:0 0 0 1px #ffffff88;position:relative;overflow:hidden;flex:none}
+.flag-us{background:repeating-linear-gradient(to bottom,#b22234 0 7.69%,#fff 7.69% 15.38%)}
+.flag-us:before{content:"";position:absolute;left:0;top:0;width:42%;height:54%;background:#3c3b6e}
+.flag-uk{background:linear-gradient(33deg,transparent 43%,#fff 43% 57%,transparent 57%),linear-gradient(-33deg,transparent 43%,#fff 43% 57%,transparent 57%),linear-gradient(90deg,transparent 39%,#fff 39% 61%,transparent 61%),linear-gradient(0deg,transparent 35%,#fff 35% 65%,transparent 65%),#012169}
+.flag-uk:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 44%,#c8102e 44% 56%,transparent 56%),linear-gradient(0deg,transparent 41%,#c8102e 41% 59%,transparent 59%)}
 </style></head>
 <body>
 <main class="app">
-  <section class="top"><div><h1>🔤 WORD CHALLENGE 🇺🇸 🇬🇧</h1><p>FASE 2 • 15 palavras • 30 segundos por palavra • +10 palavra resolvida • −1 erro de letra</p><div class="school-meta">Turmas 701 e 702 • Escola Delfina de Jesus Amorim • Professor Jasson Bruno</div><div class="school-meta">Turmas 701 e 702 • Escola Delfina de Jesus Amorim • Professor Jasson Bruno</div></div><div class="team" id="teamBadge">CONECTANDO...</div></section>
+  <section class="top"><div><h1>🔤 WORD CHALLENGE <span class="flags" aria-label="Estados Unidos e Reino Unido"><span class="flag flag-us"></span><span class="flag flag-uk"></span></span></h1><p>FASE 2 • Actions, Places e Family Life • 15 palavras • 60 segundos por palavra</p><div class="school-meta">Turmas 701 e 702 • Escola Delfina de Jesus Amorim • Professor Jasson Bruno</div><div class="school-meta">Turmas 701 e 702 • Escola Delfina de Jesus Amorim • Professor Jasson Bruno</div></div><div class="team" id="teamBadge">CONECTANDO...</div></section>
   <section class="hud">
     <div class="pill">PALAVRA<b id="wordHud">1/15</b></div>
-    <div class="pill">TEMPO<b id="timeHud">30s</b></div>
+    <div class="pill">TEMPO<b id="timeHud">60s</b></div>
     <div class="pill">ACERTOS<b id="correctHud">0</b></div>
     <div class="pill">ERROS<b id="wrongHud">0</b></div>
     <div class="pill">PONTOS<b id="pointsHud">0</b></div>
@@ -61,18 +68,18 @@ button,input{font:inherit}.app{width:min(1280px,100%);height:100%;margin:auto;pa
   <button class="btn release hidden" id="releaseBtn">🔓 LIBERAR FASE 3</button>
 </div></div>
 <div class="overlay hidden" id="nextOverlay"><div class="modal">
-  <div style="font-size:58px">⚡</div><h2>FASE 3 — GRAMMAR CHALLENGE</h2>
+  <div style="font-size:58px">⚡</div><h2>FASE 3 — PRESENT CONTINUOUS</h2>
   <div class="effect" id="nextPhrase">Cada ponto agora pode mudar o ranking.</div>
   <div class="next-count" id="nextCount">3</div><p>Preparem-se!</p>
 </div></div>
 
 <script>
-const BANK=[["RESPONSIBILITY","responsabilidade"],["BEHAVIOR","comportamento"],["HONESTY","honestidade"],["FRIENDSHIP","amizade"],["HOMEWORK","tarefa de casa"],["PERMISSION","permissão"],["OBLIGATION","obrigação"],["CLASSMATE","colega de turma"],["TEACHER","professor(a)"],["STUDENT","aluno(a)"],["UNIFORM","uniforme"],["CLASSROOM","sala de aula"],["LIBRARY","biblioteca"],["HALLWAY","corredor"],["NEIGHBOR","vizinho(a)"],["RESPECT","respeitar / respeito"],["FOLLOW","seguir"],["ARRIVE","chegar"],["LEAVE","sair"],["BRING","trazer"],["WEAR","vestir / usar"],["CLEAN","limpar"],["SHARE","compartilhar"],["PRACTICE","praticar"],["PREPARE","preparar"],["DISCUSS","discutir / conversar"],["THINK","pensar / achar"],["AGREE","concordar"],["DISAGREE","discordar"],["NEED","precisar"],["RESPONSIBLE","responsável"],["RESPECTFUL","respeitoso(a)"],["POLITE","educado(a)"],["NERVOUS","nervoso(a)"],["CONFIDENT","confiante"],["UNCOMFORTABLE","desconfortável"],["IMPORTANT","importante"],["NECESSARY","necessário"],["POSSIBLE","possível"],["CAREFUL","cuidadoso(a)"],["HELPFUL","prestativo(a)"],["FRIENDLY","amigável"],["NOISY","barulhento(a)"],["QUIET","silencioso(a)"],["HONEST","honesto(a)"],["SHOULD","deveria"],["SHOULDN'T","não deveria"],["MUST","deve / obrigação forte"],["MUSTN'T","é proibido / não deve"],["MIGHT","talvez / possibilidade"],["MAY","pode / permissão formal"],["CAN","pode / consegue"],["CAN'T","não pode / não consegue"],["DOES","auxiliar de he/she/it"],["DOESN'T","forma negativa de does"],["DON'T","forma negativa de do"],["OPINION","opinião"],["SUGGESTION","sugestão"],["ADVICE","conselho"],["QUESTION","pergunta"],["ANSWER","resposta"],["MESSAGE","mensagem"],["CONVERSATION","conversa"],["PRESENTATION","apresentação"],["RELATIONSHIP","relacionamento"],["SOLUTION","solução"],["PROBLEM","problema"],["IDEA","ideia"],["MEETING","reunião"],["SPACE","espaço"],["NOISE","barulho"],["ALWAYS","sempre"],["USUALLY","geralmente"],["SOMETIMES","às vezes"],["NEVER","nunca"],["TODAY","hoje"],["TOMORROW","amanhã"],["YESTERDAY","ontem"],["BEFORE","antes"],["AFTER","depois"],["DURING","durante"],["WITHOUT","sem"],["BECAUSE","porque"],["WHO","quem"],["WHAT","o que"],["WHERE","onde"],["WHEN","quando"],["WHY","por quê"],["HOW","como"],["WHICH","qual"],["MANY","muitos"],["MUCH","muito"],["MORE","mais"],["LESS","menos"],["FAMILY","família"],["FRIEND","amigo(a)"],["BOOK","livro"],["PHONE","celular"],["GROUP","grupo"],["RULE","regra"],["DUTY","dever"],["TEST","prova"],["GATE","portão"],["TRASH","lixo"],["STUDY","estudar"],["LEARN","aprender"],["READ","ler"],["WRITE","escrever"],["LISTEN","ouvir"],["SPEAK","falar"],["ASK","perguntar"],["HELP","ajudar"],["WORK","trabalhar"],["PLAY","jogar / brincar"],["EARLY","cedo"],["LATE","atrasado(a)"],["KIND","gentil"],["RUDE","grosseiro(a)"],["CALM","calmo(a)"],["SAFE","seguro(a)"],["READY","pronto(a)"],["RIGHT","certo(a)"],["WRONG","errado(a)"],["BETTER","melhor"],["WORSE","pior"],["FOLLOW RULES","seguir as regras"],["ARRIVE ON TIME","chegar no horário"],["ASK PERMISSION","pedir permissão"],["DO HOMEWORK","fazer tarefa de casa"],["RESPECT OTHERS","respeitar os outros"],["HELP AT HOME","ajudar em casa"],["WEAR UNIFORM","usar uniforme"],["ASK FOR HELP","pedir ajuda"],["SHARE IDEAS","compartilhar ideias"],["WORK IN GROUPS","trabalhar em grupos"],["BE RESPONSIBLE","ser responsável"],["LEAVE EARLIER","sair mais cedo"],["USE YOUR PHONE","usar o celular"],["KEEP CLEAN","manter limpo"],["SCHOOL RULES","regras da escola"]];
+const BANK=[["STUDY","estudar"],["READ","ler"],["WRITE","escrever"],["LISTEN","ouvir"],["SPEAK","falar"],["COOK","cozinhar"],["PLAY","jogar / brincar"],["WATCH","assistir"],["HELP","ajudar"],["EAT","comer"],["SLEEP","dormir"],["WASH","lavar"],["DANCE","dançar"],["RUN","correr"],["SWIM","nadar"],["STUDYING","estudando"],["READING","lendo"],["WRITING","escrevendo"],["LISTENING","ouvindo"],["SPEAKING","falando"],["COOKING","cozinhando"],["PLAYING","jogando / brincando"],["WATCHING","assistindo"],["HELPING","ajudando"],["EATING","comendo"],["HOME","casa"],["SCHOOL","escola"],["CLASSROOM","sala de aula"],["KITCHEN","cozinha"],["LIVING ROOM","sala de estar"],["BEDROOM","quarto"],["FAMILY","família"],["PARENTS","pais"],["SIBLINGS","irmãos / irmãs"],["GRANDPARENTS","avós"],["COUSIN","primo / prima"],["STEPFATHER","padrasto"],["STEPMOTHER","madrasta"],["STEPBROTHER","meio-irmão"],["STEPSISTER","meia-irmã"],["MOTHER IN LAW","sogra"],["FATHER IN LAW","sogro"],["BROTHER IN LAW","cunhado"],["SISTER IN LAW","cunhada"],["NEPHEW","sobrinho"],["NIECE","sobrinha"],["HUSBAND","marido"],["WIFE","esposa"],["NOW","agora"],["TODAY","hoje"],["WHAT","o que"],["WHERE","onde"],["WHO","quem"],["AM","sou / estou"],["IS","é / está"],["ARE","são / estão"],["NOT","não"],["DOING","fazendo"],["WATCHING TV","assistindo TV"],["DOING HOMEWORK","fazendo a tarefa"]];
 const cfg=window.TUG_SUPABASE_CONFIG||{},sb=(cfg.url&&cfg.key&&window.supabase?.createClient)?window.supabase.createClient(cfg.url,cfg.key):null;
 const qs=new URLSearchParams(location.search),demo=qs.get('demo')==='1',room=(qs.get('sala')||'701').replace(/[^a-zA-Z0-9_-]/g,'').toUpperCase();
-const deviceId=localStorage.getItem('championship9DeviceId');
+const deviceId=localStorage.getItem('championship7DeviceId');
 const TEAM={blue:'EQUIPE AZUL',yellow:'EQUIPE AMARELA',green:'EQUIPE VERDE',red:'EQUIPE VERMELHA'};
-let myColor=null,order=[],idx=0,correct=0,wrong=0,revealed=new Set(),mistakes=0,tickTimer=null,seconds=30,finished=false,poll=null,transitionPoll=null,isHost=false,nextStarted=false;
+let myColor=null,order=[],idx=0,correct=0,wrong=0,revealed=new Set(),mistakes=0,tickTimer=null,seconds=60,finished=false,poll=null,transitionPoll=null,isHost=false,nextStarted=false;
 const $=id=>document.getElementById(id);
 function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function norm(s){return String(s||'').toUpperCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^A-Z ]/g,'').replace(/s+/g,' ').trim()}
@@ -81,28 +88,16 @@ function rawPoints(){return Math.max(0,correct*10-wrong)}
 function updateHud(){$('wordHud').textContent=Math.min(idx+1,15)+'/15';$('correctHud').textContent=correct;$('wrongHud').textContent=wrong;$('pointsHud').textContent=rawPoints();$('timeHud').textContent=seconds+'s'}
 function current(){return BANK[order[idx]]}
 function buildHint(w,pt){
-  const clean=norm(w), words=clean.split(' ').filter(Boolean), letters=clean.replace(/ /g,'').length;
+  const clean=norm(w),words=clean.split(' ').filter(Boolean),letters=clean.replace(/ /g,'').length;
   let category='vocabulário do 7º ano';
-  if(['SHOULD','SHOULDN\'T','MUST','MUSTN\'T','MAY','MIGHT','CAN','CAN\'T'].includes(clean)) category='verbo modal';
-  else if(['WHO','WHAT','WHERE','WHEN','WHY','HOW','WHICH'].includes(clean)) category='palavra interrogativa';
-  else if(['ALWAYS','USUALLY','SOMETIMES','NEVER'].includes(clean)) category='advérbio de frequência';
+  if(['WHAT','WHERE','WHO'].includes(clean)) category='question word';
+  else if(['AM','IS','ARE'].includes(clean)) category='verbo to be';
+  else if(clean.endsWith('ING')) category='ação no Present Continuous';
+  else if(['HOME','SCHOOL','CLASSROOM','KITCHEN','LIVING ROOM','BEDROOM'].includes(clean)) category='lugar';
   else if(words.length>1) category='expressão';
-  else if(['RESPONSIBILITY','BEHAVIOR','HONESTY','FRIENDSHIP','PERMISSION','OBLIGATION','CLASSMATE','UNIFORM','LIBRARY','HALLWAY','NEIGHBOR','OPINION','SUGGESTION','ADVICE','QUESTION','ANSWER','MESSAGE','CONVERSATION','PRESENTATION','RELATIONSHIP','SOLUTION','PROBLEM','IDEA','MEETING','SPACE','NOISE'].includes(clean)) category='substantivo';
-  else if(['RESPONSIBLE','RESPECTFUL','POLITE','NERVOUS','CONFIDENT','UNCOMFORTABLE','IMPORTANT','NECESSARY','POSSIBLE','CAREFUL','HELPFUL','FRIENDLY','NOISY','QUIET','HONEST','EARLY','LATE','KIND','RUDE','CALM','SAFE','READY','RIGHT','WRONG','BETTER','WORSE'].includes(clean)) category='adjetivo';
-  else if(['RESPECT','FOLLOW','ARRIVE','LEAVE','BRING','WEAR','SHARE','PRACTICE','PREPARE','AGREE','DISAGREE','STUDY','LEARN','READ','WRITE','LISTEN','SPEAK','ASK','HELP','WORK','PLAY'].includes(clean)) category='verbo';
-
-  const label=words.length>1?'expressão':'palavra';
-  return '<strong>É a '+label+' “'+pt+'” em inglês.</strong><small>Categoria: '+category+' • '+letters+' letras'+(words.length>1?' • '+words.length+' palavras':'')+' • começa com <b>'+clean[0]+'</b> e termina com <b>'+clean[clean.length-1]+'</b>.</small>';
+  else if(['PARENTS','SIBLINGS','GRANDPARENTS','COUSIN','STEPFATHER','STEPMOTHER','STEPBROTHER','STEPSISTER','NEPHEW','NIECE','HUSBAND','WIFE'].includes(clean)) category='family member';
+  return '<b>Dica:</b> '+pt+' • '+category+' • '+letters+' letras'+(words.length>1?' (sem contar espaços)':'');
 }
-function renderWord(){
-  const [w,h]=current();$('word').innerHTML='';[...w].forEach(ch=>{const d=document.createElement('div');if(ch===' '){d.className='space'}else{d.className='letter';d.textContent=revealed.has(ch)?ch:''}$('word').appendChild(d)});
-  $('hint').innerHTML=buildHint(w,h);$('phaseLabel').textContent='Desafio '+(idx+1)+'/15';
-}
-function renderParts(){for(let i=0;i<6;i++)$('p'+i).classList.toggle('on',i<mistakes)}
-function buildKeys(){
- $('keys').innerHTML='';'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').forEach(ch=>{const b=document.createElement('button');b.className='key';b.textContent=ch;b.onclick=()=>pickLetter(ch,b);$('keys').appendChild(b)})
-}
-function resetTimer(){clearInterval(tickTimer);seconds=30;updateHud();tickTimer=setInterval(()=>{seconds--;updateHud();if(seconds<=0){clearInterval(tickTimer);failWord('⏰ TEMPO ESGOTADO')}} ,1000)}
 function loadWord(){
  if(idx>=15){finishGame();return}
  revealed=new Set();mistakes=0;renderParts();buildKeys();$('feedback').className='feedback';$('feedback').textContent='';$('guessInput').value='';renderWord();resetTimer();$('status').textContent='Palavra '+(idx+1)+' de 15';
