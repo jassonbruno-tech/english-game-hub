@@ -257,18 +257,21 @@ async function answer(i,b){
 function startPenalty(){
  if(ended)return;
  penaltyActive=true;
- const overlay=$('penaltyOverlay'),count=$('penaltyCount');
- overlay.classList.remove('hidden');
- let n=2;count.textContent=n;
+ const overlay=$('penaltyOverlay');
+ if(overlay)overlay.classList.add('hidden');
+ $('qtag').textContent='❌ RESPOSTA INCORRETA';
+ $('answers').innerHTML='';
+ let n=2;
+ const show=()=>{
+   $('question').innerHTML='⏳ PENALIDADE: <span style="color:#ffe66d;font-size:1.35em">'+n+'s</span><br><span style="font-size:.72em">A próxima pergunta será liberada após a penalidade.</span>';
+ };
+ show();
  const t=setInterval(()=>{
    n--;
-   count.textContent=Math.max(0,n);
-   if(n<=0){
-     clearInterval(t);
-     overlay.classList.add('hidden');
-     penaltyActive=false;
-     if(!ended)renderQuestion();
-   }
+   if(n>0){show();return}
+   clearInterval(t);
+   penaltyActive=false;
+   if(!ended)renderQuestion();
  },1000);
 }
 function tick(){const left=Math.max(0,DURATION-(performance.now()-startAt)/1000);$('timeNum').textContent=Math.ceil(left)+'s';if(left<=0)endGame()}
