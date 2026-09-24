@@ -90,18 +90,24 @@ const BANK=(()=>{
   ["Qual expressão mostra posse/relação corretamente?",["Julia's grandmother","Julia grandmother","Julias grandmother","grandmother Julia"]]
  ]; gen.forEach(x=>add("Genitive Case",x[0],x[1]));
  const pl=[
-  ["Plural de BOOK:",["books","bookes","bookies","book"]],
-  ["Plural de CHAIR:",["chairs","chaires","chairies","chair"]],
-  ["Plural de BOX:",["boxes","boxs","boxies","box"]],
-  ["Plural de BUS:",["buses","buss","busies","bus"]],
-  ["Plural de CLASS:",["classes","classs","classies","class"]],
-  ["Plural de FAMILY:",["families","familys","familyes","family"]],
-  ["Plural de CITY:",["cities","citys","cityes","city"]],
-  ["Plural de BABY:",["babies","babys","babyes","baby"]],
-  ["Plural de TOY:",["toys","toies","toyes","toy"]],
-  ["Plural de KEY:",["keys","keies","keyes","key"]],
-  ["Plural de HOUSE:",["houses","housees","housies","house"]],
-  ["Plural de WINDOW:",["windows","windowes","windowies","window"]]
+  ["Pedro escreveu “bookes”. Qual é a correção?",["books","bookes","bookies","bookses"]],
+  ["Ana escreveu “chairies”. Qual é a correção?",["chairs","chairies","chaires","chairses"]],
+  ["João escreveu “boxs”. Qual é a correção?",["boxes","boxs","boxies","boxeses"]],
+  ["Maria escreveu “buss”. Qual é a correção?",["buses","buss","busies","busseses"]],
+  ["Lucas escreveu “classs”. Qual é a correção?",["classes","classs","classies","class"]],
+  ["Carla escreveu “familys”. Qual é a correção?",["families","familys","familyes","familis"]],
+  ["Bia escreveu “citys”. Qual é a correção?",["cities","citys","cityes","citis"]],
+  ["Rafael escreveu “babys”. Qual é a correção?",["babies","babys","babyes","babis"]],
+  ["A forma “toies” está errada. Corrija:",["toys","toies","toyes","toyies"]],
+  ["A forma “keies” está errada. Corrija:",["keys","keies","keyes","keyies"]],
+  ["A forma “housees” está errada. Corrija:",["houses","housees","housies","houss"]],
+  ["A forma “windowes” está errada. Corrija:",["windows","windowes","windowies","windowses"]],
+  ["Corrija a expressão: “two boxs”.",["two boxes","two boxs","two boxies","two box"]],
+  ["Corrija a expressão: “three familys”.",["three families","three familys","three familyes","three family"]],
+  ["Corrija: “There are two chair in the kitchen.”",["There are two chairs in the kitchen.","There is two chairs in the kitchen.","There are two chair in the kitchen.","There is two chair in the kitchen."]],
+  ["Corrija: “There are three boxs in the room.”",["There are three boxes in the room.","There is three boxes in the room.","There are three box in the room.","There are three boxs in the room."]],
+  ["Corrija: “There are two familys here.”",["There are two families here.","There is two families here.","There are two familys here.","There are two family here."]],
+  ["Corrija: “There are three flower in the garden.”",["There are three flowers in the garden.","There is three flowers in the garden.","There are three flower in the garden.","There is three flower in the garden."]]
  ]; pl.forEach(x=>add("Plural of Nouns",x[0],x[1]));
  const th=[
   ["Complete: _____ a bed in the bedroom.",["There is","There are","Are there","There"]],
