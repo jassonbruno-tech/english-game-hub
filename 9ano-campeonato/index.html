@@ -299,7 +299,7 @@ function showRank(){
 function advancePhase(){if(currentPhase<PHASES.length-1){currentPhase++;renderPhaseQueue()}}
 
 function paintPresence(rows){
-  const fresh=(rows||[]).filter(r=>Date.now()-new Date(r.last_seen).getTime()<9000);
+  const fresh=(rows||[]).filter(r=>Date.now()-new Date(r.last_seen).getTime()<30000);
   const byColor=new Map(fresh.map(r=>[r.color,r]));
   ['blue','yellow','green','red'].forEach(color=>{
     const el=document.getElementById('team-'+color),row=byColor.get(color);
@@ -327,10 +327,14 @@ function paintScores(scores){
 async function refreshLobby(){
   if(!sb||!joined)return;
   const room=cleanRoom(roomInput.value);
-  const [{data:rows},{data:roomRows}]=await Promise.all([
+  const [{data:rows,error:presenceError},{data:roomRows,error:roomError}]=await Promise.all([
     sb.from('championship_presence').select('color,device_id,last_seen').eq('room_code',room),
     sb.from('championship_rooms').select('status,current_phase,host_device,scores').eq('room_code',room).limit(1)
   ]);
+  if(presenceError||roomError){
+    roomCount.textContent='RECONECTANDO...';
+    return;
+  }
   paintPresence(rows||[]);
   const state=roomRows?.[0];
   if(state){
@@ -356,8 +360,8 @@ async function joinRoom(){
     history.replaceState(null,'',location.pathname+'?sala='+encodeURIComponent(room));
     await refreshLobby();
     clearInterval(pollTimer);clearInterval(pingTimer);
-    pollTimer=setInterval(()=>refreshLobby().catch(()=>{}),1200);
-    pingTimer=setInterval(()=>sb.rpc('championship_ping',{p_room:room,p_device:deviceId}),2200);
+    pollTimer=setInterval(()=>refreshLobby().catch(()=>{roomCount.textContent='RECONECTANDO...'}),1500);
+    pingTimer=setInterval(()=>sb.rpc('championship_ping',{p_room:room,p_device:deviceId}).then(({error})=>{if(error)roomCount.textContent='RECONECTANDO...'}).catch(()=>{roomCount.textContent='RECONECTANDO...'}),5000);
   }catch(e){
     myTeam.textContent='Erro ao conectar: '+e.message;
     joinBtn.disabled=false;joinBtn.textContent='ENTRAR NA SALA';
