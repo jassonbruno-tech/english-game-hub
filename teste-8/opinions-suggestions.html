@@ -109,6 +109,17 @@ function advance(){idx++;if(idx>=3){show();return}
  else trafficTransition(idx,show)
 }
 async function init(){order=candidateOrder();document.body.classList.add('traffic-red-bg');if(demo){$('teamBadge').textContent='MODO TESTE';show();return}$('loading').classList.remove('hidden');if(!sb||!deviceId){$('loadText').textContent='Entre primeiro pelo lobby do campeonato.';return}const {data,error}=await sb.rpc('championship_phase5_get_or_create',{p_room:room,p_device:deviceId,p_order:order});if(error||!data?.ok){$('loadText').textContent='Não foi possível abrir a fase.';return}order=data.item_order;myColor=data.color;$('teamBadge').textContent=TEAM[myColor];$('loading').classList.add('hidden');show()}
+let submitRetryTimer=null;
+async function submitResultWithRetry(){
+  try{
+    $('waiting').textContent='Enviando resultado...';
+    await submitResultWithRetry();
+  }catch(e){
+    $('waiting').textContent='Conexão instável. Tentando enviar novamente automaticamente...';
+    clearTimeout(submitRetryTimer);
+    submitRetryTimer=setTimeout(submitResultWithRetry,1500);
+  }
+}
 async function finishGame(){if(finished)return;finished=true;$('bar').style.width='100%';$('finish').classList.remove('hidden');$('finishSummary').textContent=correct+' acertos • '+wrong+' erros • '+rawPoints()+' pontos antes do bônus.';if(demo){$('waiting').textContent='MODO TESTE — no campeonato real, aqui aparece o mini ranking das 4 equipes.';return}const {error}=await sb.rpc('championship_phase5_submit',{p_room:room,p_device:deviceId,p_correct:correct,p_wrong:wrong,p_raw:rawPoints()});if(error){$('waiting').textContent='Erro ao enviar resultado.';return}poll=setInterval(checkResults,1000);checkResults()}
 async function checkResults(){const [{data},{data:rooms}]=await Promise.all([sb.from('championship_phase_scores').select('color,correct,wrong,bonus,total_points,submitted_at').eq('room_code',room).eq('phase',5),sb.from('championship_rooms').select('host_device,current_phase,scores,transition_message').eq('room_code',room).limit(1)]);if((data||[]).length<4){$('waiting').textContent='Aguardando as outras equipes... '+(data||[]).length+'/4 concluíram.';return}const state=rooms?.[0]||{};isHost=state.host_device===deviceId;const arr=[...data].sort((a,b)=>b.total_points-a.total_points||new Date(a.submitted_at)-new Date(b.submitted_at));$('waiting').textContent=isHost?'Confira o ranking e libere a FINAL.':'Aguardando o HOST liberar a FINAL...';$('rankList').innerHTML=arr.map((r,i)=>'<div class="rank"><span>'+(i===0?'🥇':i===1?'🥈':i===2?'🥉':'4º')+'</span><span>'+TEAM[r.color]+'</span><span>'+r.total_points+' pts</span></div>').join('');$('effectPhrase').textContent=state.transition_message||'É hora da final. Tudo pode acontecer!';$('effectPhrase').classList.remove('hidden');$('generalTitle').classList.remove('hidden');const general=['blue','yellow','green','red'].map(color=>({color,pts:Number(state.scores?.[color]||0)})).sort((a,b)=>b.pts-a.pts);$('generalRank').innerHTML=general.map((r,i)=>'<div class="rank"><span>'+(i===0?'🥇':i===1?'🥈':i===2?'🥉':'4º')+'</span><span>'+TEAM[r.color]+'</span><span>'+r.pts+' pts</span></div>').join('');if(Number(state.current_phase)>5){beginNext(state.transition_message);return}if(isHost)$('releaseBtn').classList.remove('hidden');if(!transitionPoll)transitionPoll=setInterval(watchNext,900)}
 async function releaseNext(){const {data}=await sb.rpc('championship_release_next_phase',{p_room:room,p_device:deviceId});if(data?.ok)watchNext()}
