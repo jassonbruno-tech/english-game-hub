@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Fase 1 — Vocabulary Match</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../jogos-em-equipe/supabase-config.js?v=6ano1"></script>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{--cyan:#00eaff;--purple:#7c3aed;--gold:#ffe66d;--green:#22c55e;--red:#ef4444}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:Arial,Helvetica,sans-serif;color:#fff;background:radial-gradient(circle at 50% 0,#164897,#07142f 48%,#17042e)}
+body{display:flex;justify-content:center}
+button{font:inherit}
+.app{width:min(100%,720px);height:100dvh;padding:8px;display:flex;flex-direction:column;gap:7px}
+.top{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;background:linear-gradient(135deg,#1d4ed8,#7c3aed 52%,#e11d48);border-radius:18px;padding:9px 12px;border:1px solid rgba(255,255,255,.22);box-shadow:0 8px 22px #0006}
+.top h1{margin:0;font-size:clamp(24px,4vw,36px);font-weight:1000;text-shadow:0 2px 0 #102c7d}
+.top p{margin:3px 0 0;font-size:12px;font-weight:900;color:#fff7c2}.school-meta{margin-top:3px;font-size:10.5px;font-weight:900;color:#eaf2ff;opacity:.96}.school-meta{margin-top:3px;font-size:10.5px;font-weight:900;color:#eaf2ff;opacity:.96}
+.team-badge{background:#fff;color:#1d4ed8;border-radius:999px;padding:8px 11px;font-weight:1000;font-size:12px;white-space:nowrap}
+.hud{display:grid;grid-template-columns:repeat(5,1fr);gap:5px}
+.pill{background:linear-gradient(180deg,rgba(23,48,117,.98),rgba(14,21,65,.98));border:1px solid rgba(255,230,109,.35);padding:6px 3px;border-radius:12px;text-align:center;font-size:10px;font-weight:1000;box-shadow:0 5px 15px rgba(0,0,0,.18)}
+.pill b{display:block;color:var(--gold);font-size:16px;margin-top:2px}
+.game{min-height:0;flex:1;background:linear-gradient(180deg,rgba(8,18,52,.94),rgba(18,8,54,.94));border:1px solid rgba(255,255,255,.15);border-radius:18px;padding:8px;box-shadow:0 14px 38px rgba(0,0,0,.32);display:flex;flex-direction:column}
+.board-title{text-align:center;margin:0 0 4px;color:#fff7c2;font-size:clamp(17px,3vw,23px);font-weight:1000}
+.status{text-align:center;color:var(--gold);font-weight:900;min-height:18px;font-size:12px;margin-bottom:5px}
+.board{display:grid;grid-template-columns:1fr 1fr;gap:6px;flex:1;min-height:0}
+.col{display:grid;grid-template-rows:auto repeat(6,1fr);gap:8px;min-height:0}
+.col h2{margin:0;text-align:center;color:#dbeafe;font-size:12px}
+.word{min-height:0;border:1px solid rgba(255,255,255,.18);border-radius:15px;padding:9px 10px;background:linear-gradient(180deg,rgba(26,65,135,.72),rgba(12,29,81,.8));color:#fff;font-weight:1000;font-size:clamp(16px,2.4vw,22px);line-height:1.15;cursor:pointer;box-shadow:0 4px 10px rgba(0,0,0,.16);transition:transform .12s,filter .12s,box-shadow .12s;display:flex;align-items:center;justify-content:center;text-align:center}
+#right .word{background:linear-gradient(180deg,rgba(115,48,190,.65),rgba(57,22,117,.82))}
+.word:active{transform:scale(.97)}
+.word.sel{outline:3px solid var(--gold);filter:brightness(1.22);box-shadow:0 0 18px rgba(255,230,109,.62)}
+.word.matched{background:linear-gradient(135deg,#16a34a,#4ade80)!important;color:#052e16;animation:correctCard .56s ease;box-shadow:0 0 30px rgba(74,222,128,.98);border-color:#86efac}
+.word.wrong{background:linear-gradient(135deg,#991b1b,#ef4444)!important;color:#fff;animation:shake .4s ease;box-shadow:0 0 18px rgba(239,68,68,.7);border-color:#fecaca}
+@keyframes correctCard{0%{transform:scale(1)}35%{transform:scale(1.09) rotate(-1deg);filter:brightness(1.5)}70%{transform:scale(1.04) rotate(1deg)}100%{transform:scale(1)}}
+@keyframes shake{20%{transform:translateX(-7px)}40%{transform:translateX(7px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
+.bottom{display:flex;justify-content:space-between;gap:8px;align-items:center;background:linear-gradient(180deg,rgba(23,48,117,.98),rgba(14,21,65,.98));border:1px solid rgba(255,230,109,.25);border-radius:12px;padding:6px 9px;font-size:10px;font-weight:900;color:#dbeafe}
+.progress{color:#fff7c2}
+#flash{position:fixed;inset:0;pointer-events:none;opacity:0;z-index:80;background:radial-gradient(circle,#fff 0,#7dffce 20%,rgba(0,234,255,.78) 48%,rgba(124,58,237,.56) 72%,transparent 100%)}
+#flash.go{animation:flash .68s ease-out}
+@keyframes flash{0%{opacity:0}16%{opacity:.94}36%{opacity:.18}53%{opacity:.72}100%{opacity:0}}
+.spark{position:fixed;z-index:81;pointer-events:none;font-size:22px;animation:sparkFly .8s ease-out forwards}
+@keyframes sparkFly{from{transform:translate(0,0) scale(.5) rotate(0);opacity:1}to{transform:translate(var(--x),var(--y)) scale(1.35) rotate(260deg);opacity:0}}
+.overlay{position:fixed;inset:0;z-index:90;display:grid;place-items:center;background:rgba(0,0,0,.78);backdrop-filter:blur(8px);padding:18px}
+.hidden{display:none!important}
+.modal{width:min(100%,520px);max-height:94vh;overflow:auto;text-align:center;border-radius:28px;padding:24px;background:linear-gradient(160deg,#101d5a,#421060);border:1px solid rgba(255,255,255,.2);box-shadow:0 0 60px rgba(0,234,255,.28);color:#fff}
+.modal h2{margin:0;color:var(--gold);font-size:30px}.modal p{line-height:1.4;font-weight:850;color:#e5edff}.btn{width:100%;padding:13px;border:0;border-radius:15px;background:linear-gradient(135deg,var(--gold),#22c55e);font-weight:1000;font-size:15px;cursor:pointer;color:#10203a}
+.rank-list{display:grid;gap:6px;margin:10px 0}.rank{display:grid;grid-template-columns:38px 1fr auto;gap:6px;background:#fff;color:#172033;border-radius:12px;padding:8px;align-items:center;text-align:left;font-weight:1000}.rank:nth-child(1){background:linear-gradient(135deg,#ffe66d,#fff7c2)}.rank:nth-child(2){background:linear-gradient(135deg,#dfe7ef,#fff)}.rank:nth-child(3){background:linear-gradient(135deg,#e7a76c,#ffd6b0)}
+.waiting{font-size:17px;color:#fff7c2;font-weight:1000}.effect{margin:12px auto 4px;padding:11px 14px;border-radius:14px;background:linear-gradient(135deg,#e7f7ff,#fff5b8);color:#174f9c;font-size:17px;font-weight:1000}.general-title{margin:14px 0 5px;color:#fff7c2;font-size:18px;font-weight:1000}.release{margin-top:12px;background:linear-gradient(135deg,#ffb52e,#ff5fa3);color:#fff}.next-count{font-size:88px;font-weight:1000;color:var(--gold);margin:8px 0;text-shadow:0 4px 0 #7c3aed}.next-name{font-size:clamp(28px,5vw,48px);font-weight:1000;color:var(--gold);margin-top:4px}
+@media(max-height:720px){.app{padding:5px;gap:5px}.top{padding:6px 9px}.top h1{font-size:26px}.top p{font-size:9px}.team-badge{padding:6px 8px;font-size:10px}.pill{padding:4px 2px;font-size:8px}.pill b{font-size:13px}.game{padding:6px}.word{font-size:15px;padding:6px 8px}.bottom{padding:4px 7px;font-size:8.5px}}
+@media(max-width:560px){.app{width:100%;padding:5px}.top h1{font-size:22px}.top p{font-size:9px}.word{font-size:15px;padding:7px}.board{gap:6px}.col{gap:6px}}
+
+.flags{display:inline-flex;gap:.14em;align-items:center;vertical-align:.08em;margin-left:.12em}
+.flag{display:inline-block;width:1.35em;height:.82em;border-radius:.08em;box-shadow:0 0 0 1px #ffffff88;position:relative;overflow:hidden;flex:none}
+.flag-us{background:repeating-linear-gradient(to bottom,#b22234 0 7.69%,#fff 7.69% 15.38%)}
+.flag-us:before{content:"";position:absolute;left:0;top:0;width:42%;height:54%;background:#3c3b6e}
+.flag-uk{background:linear-gradient(33deg,transparent 43%,#fff 43% 57%,transparent 57%),linear-gradient(-33deg,transparent 43%,#fff 43% 57%,transparent 57%),linear-gradient(90deg,transparent 39%,#fff 39% 61%,transparent 61%),linear-gradient(0deg,transparent 35%,#fff 35% 65%,transparent 65%),#012169}
+.flag-uk:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 44%,#c8102e 44% 56%,transparent 56%),linear-gradient(0deg,transparent 41%,#c8102e 41% 59%,transparent 59%)}
+</style></head><body>
+<main class="app">
+ <section class="top"><div><h1>🧩 VOCABULARY MATCH <span class="flags" aria-label="Estados Unidos e Reino Unido"><span class="flag flag-us"></span><span class="flag flag-uk"></span></span></h1><p>FASE 1 • Family Members + Parts of the House • 40 combinações</p><div class="school-meta">Turmas 601 e 602 • Escola Delfina de Jesus Amorim • Professor Jasson Bruno</div><div class="school-meta">Turmas 601 e 602 • Escola Delfina de Jesus Amorim • Professor Jasson Bruno</div></div><div class="team-badge" id="teamBadge">CONECTANDO...</div></section>
+ <section class="hud">
+  <div class="pill">NA TELA<b id="roundHud">6 pares</b></div>
+  <div class="pill">ACERTOS<b id="correctHud">0</b></div>
+  <div class="pill">ERROS<b id="wrongHud">0</b></div>
+  <div class="pill">PONTOS<b id="pointsHud">0</b></div>
+  <div class="pill">PROGRESSO<b id="matchedHud">0/40</b></div>
+ </section>
+ <section class="game">
+  <h2 class="board-title" id="boardTitle">Encontre os pares</h2>
+  <div class="status" id="status">Escolha um item em inglês e encontre o significado.</div>
+  <div class="board">
+   <div class="col" id="left"><h2><span class="flag flag-uk" aria-label="Reino Unido"></span> ENGLISH</h2></div>
+   <div class="col" id="right"><h2>🇧🇷 PORTUGUÊS</h2></div>
+  </div>
+ </section>
+ <section class="bottom"><span>Selecione um item de cada lado.</span><span class="progress">Mesma sequência para as 4 equipes.</span></section>
+</main>
+<div id="flash"></div>
+<audio id="sndOk" src="../success.wav" preload="auto"></audio>
+<audio id="sndCombo" src="../combo.wav" preload="auto"></audio>
+<audio id="sndBad" src="../error.wav" preload="auto"></audio>
+<audio id="sndWin" src="../victory.wav" preload="auto"></audio>
+<div class="overlay" id="loading"><div class="modal"><h2>FASE 1</h2><p id="loadText">Sincronizando as 40 combinações da sala...</p></div></div>
+<div class="overlay hidden" id="finish"><div class="modal">
+  <h2>✅ SUA EQUIPE TERMINOU</h2>
+  <p id="finishSummary"></p>
+  <div class="waiting" id="waiting">Aguardando as outras equipes...</div>
+  <div class="rank-list" id="rankList"></div>
+  <div class="effect hidden" id="effectPhrase"></div>
+  <div class="general-title hidden" id="generalTitle">📊 PLACAR GERAL ATUALIZADO</div>
+  <div class="rank-list" id="generalRank"></div>
+  <button class="btn release hidden" id="releaseBtn">🔓 LIBERAR FASE 2</button>
+</div></div>
+<div class="overlay hidden" id="nextOverlay"><div class="modal">
+  <div style="font-size:58px">⚡</div>
+  <div class="next-name">FASE 2 — WORD CHALLENGE</div>
+  <div class="effect" id="nextPhrase">A liderança é temporária. O campeonato continua!</div>
+  <div class="next-count" id="nextCount">3</div>
+  <p>Preparem-se!</p>
+</div></div>
+<script>
+const BANK=[
+["mother","mãe"],["father","pai"],["sister","irmã"],["brother","irmão"],["grandmother","avó"],["grandfather","avô"],["aunt","tia"],["uncle","tio"],["cousin","primo / prima"],
+["living room","sala de estar"],["bedroom","quarto"],["bathroom","banheiro"],["kitchen","cozinha"],["dining room","sala de jantar"],["laundry room","lavanderia"],["hallway","corredor"],["front yard","área da frente"],["backyard","quintal dos fundos"],["garden","jardim"],["garage","garagem"],["gate","portão"],["roof","telhado"],["wall","parede / muro"],["balcony","varanda"],
+["sofa","sofá"],["bed","cama"],["table","mesa"],["chair","cadeira"],["fridge","geladeira"],["stove","fogão"],["sink","pia"],["shower","chuveiro"],["window","janela"],["door","porta"],["desk","escrivaninha"],["lamp","lâmpada / abajur"],
+["house","casa"],["room","cômodo / quarto"],["family","família"],["home","lar / casa"]
+];
+const cfg=const cfg=window.TUG_SUPABASE_CONFIG||{},sb=(cfg.url&&cfg.key&&window.supabase?.createClient)?window.supabase.createClient(cfg.url,cfg.key):null;
+const qs=new URLSearchParams(location.search),demo=qs.get('demo')==='1',room=(qs.get('sala')||'601').replace(/[^a-zA-Z0-9_-]/g,'').toUpperCase();
+const deviceId=localStorage.getItem('championship6DeviceId');
+const TEAM={blue:'EQUIPE AZUL',yellow:'EQUIPE AMARELA',green:'EQUIPE VERDE',red:'EQUIPE VERMELHA'};
+let myColor=null,order=[],correct=0,wrong=0,matched=0,nextIndex=0,visible=[],selectedLeft=null,selectedRight=null,locked=false,finished=false,poll=null,transitionPoll=null,isHost=false,releaseShown=false;
+const $=id=>document.getElementById(id);
+function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function candidateOrder(){return shuffle(BANK.map((_,i)=>i)).slice(0,40)}
+function rawPoints(){return Math.max(0,correct*5-wrong*2)}
+function paintHud(){$('correctHud').textContent=correct;$('wrongHud').textContent=wrong;$('pointsHud').textContent=rawPoints();$('matchedHud').textContent=matched+'/40';$('roundHud').textContent=Math.min(visible.length,6)+' pares'}
+function refillVisible(){
+  while(visible.length<6 && nextIndex<order.length){
+    const idx=order[nextIndex++];
+    visible.push({idx,key:'k'+nextIndex,en:BANK[idx][0],pt:BANK[idx][1]});
+  }
+}
+function renderBoard(){
+  refillVisible();
+  const left=shuffle(visible),right=shuffle(visible);
+  $('left').innerHTML='<h2><span class="flag flag-uk" aria-label="Reino Unido"></span> ENGLISH</h2>';$('right').innerHTML='<h2>🇧🇷 PORTUGUÊS</h2>';
+  selectedLeft=selectedRight=null;locked=false;
+  left.forEach(p=>{const b=document.createElement('button');b.className='word';b.dataset.key=p.key;b.textContent=p.en;b.onclick=()=>choose('left',b,p);$('left').appendChild(b)});
+  right.forEach(p=>{const b=document.createElement('button');b.className='word';b.dataset.key=p.key;b.textContent=p.pt;b.onclick=()=>choose('right',b,p);$('right').appendChild(b)});
+  $('boardTitle').textContent='Encontre os pares — '+matched+' de 40 concluídos';
+  $('status').textContent=nextIndex<order.length?'Acertou? O par sai e uma nova combinação entra automaticamente.':'Últimas combinações! Termine os pares que restam.';
+  paintHud();
+}
+function choose(side,b,p){
+ if(locked||b.classList.contains('matched'))return;
+ const container=side==='left'?$('left'):$('right');container.querySelectorAll('.word:not(.matched)').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');
+ if(side==='left')selectedLeft={b,p};else selectedRight={b,p};
+ if(selectedLeft&&selectedRight)checkPair();
+}
+function play(id,vol=.65){try{const a=$(id);a.pause();a.currentTime=0;a.volume=vol;a.play().catch(()=>{})}catch(e){}}
+function celebrate(btn){
+ const f=$('flash');f.classList.remove('go');void f.offsetWidth;f.classList.add('go');
+ const r=btn.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,icons=['✨','⭐','💫','🎉','✅'];
+ for(let i=0;i<12;i++){const s=document.createElement('span');s.className='spark';s.textContent=icons[i%icons.length];s.style.left=cx+'px';s.style.top=cy+'px';s.style.setProperty('--x',(Math.random()*220-110)+'px');s.style.setProperty('--y',(Math.random()*-220-35)+'px');document.body.appendChild(s);setTimeout(()=>s.remove(),850)}
+ if(navigator.vibrate)navigator.vibrate([35,25,55]);
+}
+function checkPair(){
+ locked=true;const ok=selectedLeft.p.key===selectedRight.p.key;
+ if(ok){
+   correct++;matched++;
+   const lb=selectedLeft.b,rb=selectedRight.b,key=selectedLeft.p.key;
+   lb.classList.remove('sel');rb.classList.remove('sel');lb.classList.add('matched');rb.classList.add('matched');
+   $('status').textContent=matched%3===0?'🔥 COMBO! Excelente!':'✅ Par correto! Nova combinação entrando...';
+   celebrate(rb);play(matched%3===0?'sndCombo':'sndOk',.72);paintHud();
+   selectedLeft=selectedRight=null;
+   setTimeout(()=>{
+     visible=visible.filter(x=>x.key!==key);
+     if(matched>=40){finishGame();return}
+     renderBoard();
+   },620);
+ }else{
+   wrong++;
+   const lb=selectedLeft.b,rb=selectedRight.b;
+   lb.classList.add('wrong');rb.classList.add('wrong');
+   $('status').textContent='❌ Não combina. Tente novamente.';
+   play('sndBad',.45);paintHud();
+   setTimeout(()=>{lb.classList.remove('sel','wrong');rb.classList.remove('sel','wrong');selectedLeft=selectedRight=null;locked=false},430);
+ }
+}
+async function init(){
+ if(demo){
+   myColor='blue';
+   order=candidateOrder();
+   $('teamBadge').textContent='MODO TESTE';
+   nextIndex=0;visible=[];
+   $('loading').classList.add('hidden');
+   renderBoard();
+   return;
+ }
+ if(!sb||!deviceId){$('loadText').textContent='Volte ao campeonato e entre na sala antes de jogar.';return}
+ const {data,error}=await sb.rpc('championship_phase1_get_or_create',{p_room:room,p_device:deviceId,p_order:candidateOrder()});
+ if(error||!data?.ok){$('loadText').textContent='Não foi possível abrir a fase: '+(error?.message||data?.error||'erro');return}
+ myColor=data.color;order=Array.isArray(data.item_order)?data.item_order:[];$('teamBadge').textContent=TEAM[myColor]||myColor;
+ if(order.length<40){$('loadText').textContent='A rodada sincronizada não contém 40 itens.';return}
+ nextIndex=0;visible=[];$('loading').classList.add('hidden');renderBoard();
+}
+async function finishGame(){
+ if(finished)return;finished=true;play('sndWin',.55);$('finish').classList.remove('hidden');$('finishSummary').textContent=correct+' acertos • '+wrong+' erros • '+rawPoints()+' pontos antes do bônus.';
+ document.querySelectorAll('.word').forEach(b=>b.disabled=true);
+ if(demo){
+   $('waiting').textContent='MODO TESTE — resultado local da sua partida.';
+   $('effectPhrase').textContent='Teste concluído! No campeonato real, aqui aparecerá o mini ranking das 4 equipes.';
+   $('effectPhrase').classList.remove('hidden');
+   $('generalTitle').classList.add('hidden');
+   $('generalRank').innerHTML='';
+   $('releaseBtn').classList.add('hidden');
+   return;
+ }
+ const {data,error}=await sb.rpc('championship_phase1_submit',{p_room:room,p_device:deviceId,p_correct:correct,p_wrong:wrong,p_raw:rawPoints()});
+ if(error){$('waiting').textContent='Erro ao enviar resultado: '+error.message;return}
+ poll=setInterval(checkResults,1000);checkResults();
+}
+async function checkResults(){
+ const [{data,error},{data:rooms,error:roomErr}]=await Promise.all([
+   sb.from('championship_phase_scores').select('color,correct,wrong,raw_points,bonus,total_points,submitted_at').eq('room_code',room).eq('phase',1),
+   sb.from('championship_rooms').select('host_device,current_phase,scores,transition_message').eq('room_code',room).limit(1)
+ ]);
+ if(error||roomErr)return;
+ if((data||[]).length<4){$('waiting').textContent='Aguardando as outras equipes... '+(data||[]).length+'/4 concluíram.';return}
+
+ const state=rooms?.[0]||{};
+ isHost=state.host_device===deviceId;
+ const arr=[...data].sort((a,b)=>b.total_points-a.total_points||new Date(a.submitted_at)-new Date(b.submitted_at));
+ $('waiting').textContent='🏁 FASE 1 ENCERRADA — MINI RANKING';
+ $('rankList').innerHTML=arr.map((r,i)=>'<div class="rank"><span>'+(i===0?'🥇':i===1?'🥈':i===2?'🥉':'4º')+'</span><span>'+TEAM[r.color]+'<small style="display:block;font-weight:800;color:#678">'+r.correct+' acertos • '+r.wrong+' erros • bônus +'+r.bonus+'</small></span><span>'+r.total_points+' pts</span></div>').join('');
+
+ $('effectPhrase').textContent=state.transition_message||'Nada está decidido. A próxima fase pode mudar tudo!';
+ $('effectPhrase').classList.remove('hidden');
+ $('generalTitle').classList.remove('hidden');
+
+ const general=['blue','yellow','green','red'].map(color=>({color,pts:Number(state.scores?.[color]||0)})).sort((a,b)=>b.pts-a.pts);
+ $('generalRank').innerHTML=general.map((r,i)=>'<div class="rank"><span>'+(i===0?'🥇':i===1?'🥈':i===2?'🥉':'4º')+'</span><span>'+TEAM[r.color]+'</span><span>'+r.pts+' pts</span></div>').join('');
+
+ if(Number(state.current_phase)>1){
+   beginNextPhase(state.transition_message);
+   return;
+ }
+
+ if(isHost){
+   $('releaseBtn').classList.remove('hidden');
+   $('waiting').textContent='🏁 FASE 1 ENCERRADA — confira o ranking e libere a próxima fase.';
+ }else{
+   $('releaseBtn').classList.add('hidden');
+   $('waiting').textContent='⏳ Aguardando o HOST liberar a próxima fase...';
+ }
+
+ if(!transitionPoll){
+   transitionPoll=setInterval(watchNextPhase,900);
+ }
+}
+
+async function releaseNextPhase(){
+ if(!isHost)return;
+ $('releaseBtn').disabled=true;
+ $('releaseBtn').textContent='LIBERANDO...';
+ const {data,error}=await sb.rpc('championship_release_next_phase',{p_room:room,p_device:deviceId});
+ if(error||!data?.ok){
+   $('releaseBtn').disabled=false;
+   $('releaseBtn').textContent='🔓 LIBERAR FASE 2';
+   return;
+ }
+ await watchNextPhase();
+}
+
+async function watchNextPhase(){
+ const {data,error}=await sb.from('championship_rooms').select('current_phase,transition_message').eq('room_code',room).limit(1);
+ if(error)return;
+ const state=data?.[0];
+ if(state&&Number(state.current_phase)>=2){
+   beginNextPhase(state.transition_message);
+ }
+}
+
+let nextStarted=false;
+function beginNextPhase(message){
+ if(nextStarted)return;
+ nextStarted=true;
+ clearInterval(poll);clearInterval(transitionPoll);
+ $('nextPhrase').textContent=message||'A liderança é temporária. O campeonato continua!';
+ $('nextOverlay').classList.remove('hidden');
+ let n=3;$('nextCount').textContent=n;
+ const t=setInterval(()=>{
+   n--;
+   $('nextCount').textContent=n>0?n:'GO!';
+   if(n<=0){
+     clearInterval(t);
+     setTimeout(()=>{location.href='word-challenge.html?sala='+encodeURIComponent(room)+'&v=phase2a'},700);
+   }
+ },850);
+}
+
+$('releaseBtn').onclick=releaseNextPhase;
+init();
+</script></body></html>
