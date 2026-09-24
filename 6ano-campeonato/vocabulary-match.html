@@ -105,7 +105,7 @@ const BANK=[
 ["sofa","sofá"],["bed","cama"],["table","mesa"],["chair","cadeira"],["fridge","geladeira"],["stove","fogão"],["sink","pia"],["shower","chuveiro"],["window","janela"],["door","porta"],["desk","escrivaninha"],["lamp","lâmpada / abajur"],
 ["house","casa"],["room","cômodo / quarto"],["family","família"],["home","lar / casa"]
 ];
-const cfg=const cfg=window.TUG_SUPABASE_CONFIG||{},sb=(cfg.url&&cfg.key&&window.supabase?.createClient)?window.supabase.createClient(cfg.url,cfg.key):null;
+const cfg=window.TUG_SUPABASE_CONFIG||{},sb=(cfg.url&&cfg.key&&window.supabase?.createClient)?window.supabase.createClient(cfg.url,cfg.key):null;
 const qs=new URLSearchParams(location.search),demo=qs.get('demo')==='1',room=(qs.get('sala')||'601').replace(/[^a-zA-Z0-9_-]/g,'').toUpperCase();
 const deviceId=localStorage.getItem('championship6DeviceId');
 const TEAM={blue:'EQUIPE AZUL',yellow:'EQUIPE AMARELA',green:'EQUIPE VERDE',red:'EQUIPE VERMELHA'};
