@@ -180,6 +180,21 @@ async function init(){
  if(order.length<40){$('loadText').textContent='A rodada sincronizada não contém 40 itens.';return}
  nextIndex=0;visible=[];$('loading').classList.add('hidden');renderBoard();
 }
+let submitRetryTimer=null;
+async function submitResultWithRetry(){
+  try{
+    $('waiting').textContent='Enviando resultado...';
+    const {error}=await sb.rpc('championship_phase1_submit',{p_room:room,p_device:deviceId,p_correct:correct,p_wrong:wrong,p_raw:rawPoints()});
+    if(error)throw error;
+    clearTimeout(submitRetryTimer);
+    poll=setInterval(checkResults,1000);
+    checkResults();
+  }catch(e){
+    $('waiting').textContent='Conexão instável. Tentando enviar novamente automaticamente...';
+    clearTimeout(submitRetryTimer);
+    submitRetryTimer=setTimeout(submitResultWithRetry,1500);
+  }
+}
 async function finishGame(){
  if(finished)return;finished=true;play('sndWin',.55);$('finish').classList.remove('hidden');$('finishSummary').textContent=correct+' acertos • '+wrong+' erros • '+rawPoints()+' pontos antes do bônus.';
  document.querySelectorAll('.word').forEach(b=>b.disabled=true);
@@ -192,9 +207,7 @@ async function finishGame(){
    $('releaseBtn').classList.add('hidden');
    return;
  }
- const {data,error}=await sb.rpc('championship_phase1_submit',{p_room:room,p_device:deviceId,p_correct:correct,p_wrong:wrong,p_raw:rawPoints()});
- if(error){$('waiting').textContent='Erro ao enviar resultado: '+error.message;return}
- poll=setInterval(checkResults,1000);checkResults();
+ await submitResultWithRetry();
 }
 async function checkResults(){
  const [{data,error},{data:rooms,error:roomErr}]=await Promise.all([
