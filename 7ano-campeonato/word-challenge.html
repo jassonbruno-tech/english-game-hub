@@ -98,6 +98,35 @@ function buildHint(w,pt){
   else if(['PARENTS','SIBLINGS','GRANDPARENTS','COUSIN','STEPFATHER','STEPMOTHER','STEPBROTHER','STEPSISTER','NEPHEW','NIECE','HUSBAND','WIFE'].includes(clean)) category='family member';
   return '<b>Dica:</b> '+pt+' • '+category+' • '+letters+' letras'+(words.length>1?' (sem contar espaços)':'');
 }
+function renderWord(){
+  const [w,h]=current();$('word').innerHTML='';
+  [...w].forEach(ch=>{
+    const d=document.createElement('div');
+    if(ch===' '){d.className='space'}
+    else{d.className='letter';d.textContent=revealed.has(ch)?ch:''}
+    $('word').appendChild(d);
+  });
+  $('hint').innerHTML=buildHint(w,h);
+  $('phaseLabel').textContent='Desafio '+(idx+1)+'/15';
+}
+function renderParts(){
+  for(let i=0;i<6;i++)$('p'+i).classList.toggle('on',i<mistakes);
+}
+function buildKeys(){
+  $('keys').innerHTML='';
+  'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').forEach(ch=>{
+    const b=document.createElement('button');
+    b.className='key';b.textContent=ch;b.onclick=()=>pickLetter(ch,b);
+    $('keys').appendChild(b);
+  });
+}
+function resetTimer(){
+  clearInterval(tickTimer);seconds=60;updateHud();
+  tickTimer=setInterval(()=>{
+    seconds--;updateHud();
+    if(seconds<=0){clearInterval(tickTimer);failWord('⏰ TEMPO ESGOTADO')}
+  },1000);
+}
 function loadWord(){
  if(idx>=15){finishGame();return}
  revealed=new Set();mistakes=0;renderParts();buildKeys();$('feedback').className='feedback';$('feedback').textContent='';$('guessInput').value='';renderWord();resetTimer();$('status').textContent='Palavra '+(idx+1)+' de 15';
