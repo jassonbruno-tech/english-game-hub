@@ -171,6 +171,17 @@ async function init(){
  if(order.length<3){$('loadText').textContent='A sequência sincronizada não contém 3 palavras.';return}
  $('loading').classList.add('hidden');loadWord();
 }
+let submitRetryTimer=null;
+async function submitResultWithRetry(){
+  try{
+    $('waiting').textContent='Enviando resultado...';
+    await submitResultWithRetry();
+  }catch(e){
+    $('waiting').textContent='Conexão instável. Tentando enviar novamente automaticamente...';
+    clearTimeout(submitRetryTimer);
+    submitRetryTimer=setTimeout(submitResultWithRetry,1500);
+  }
+}
 async function finishGame(){
  if(finished)return;finished=true;clearInterval(tickTimer);$('finish').classList.remove('hidden');
  $('finishSummary').textContent=correct+' palavras resolvidas • '+wrong+' erros • '+rawPoints()+' pontos antes do bônus.';
