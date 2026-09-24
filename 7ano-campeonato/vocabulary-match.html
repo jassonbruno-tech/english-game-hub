@@ -4,7 +4,7 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Fase 1 — Vocabulary Match</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="../jogos-em-equipe/supabase-config.js?v=9ano1"></script>
+<script src="../jogos-em-equipe/supabase-config.js?v=7ano1"></script>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{--cyan:#00eaff;--purple:#7c3aed;--gold:#ffe66d;--green:#22c55e;--red:#ef4444}
@@ -48,9 +48,16 @@ button{font:inherit}
 .waiting{font-size:17px;color:#fff7c2;font-weight:1000}.effect{margin:12px auto 4px;padding:11px 14px;border-radius:14px;background:linear-gradient(135deg,#e7f7ff,#fff5b8);color:#174f9c;font-size:17px;font-weight:1000}.general-title{margin:14px 0 5px;color:#fff7c2;font-size:18px;font-weight:1000}.release{margin-top:12px;background:linear-gradient(135deg,#ffb52e,#ff5fa3);color:#fff}.next-count{font-size:88px;font-weight:1000;color:var(--gold);margin:8px 0;text-shadow:0 4px 0 #7c3aed}.next-name{font-size:clamp(28px,5vw,48px);font-weight:1000;color:var(--gold);margin-top:4px}
 @media(max-height:720px){.app{padding:5px;gap:5px}.top{padding:6px 9px}.top h1{font-size:26px}.top p{font-size:9px}.team-badge{padding:6px 8px;font-size:10px}.pill{padding:4px 2px;font-size:8px}.pill b{font-size:13px}.game{padding:6px}.word{font-size:15px;padding:6px 8px}.bottom{padding:4px 7px;font-size:8.5px}}
 @media(max-width:560px){.app{width:100%;padding:5px}.top h1{font-size:22px}.top p{font-size:9px}.word{font-size:15px;padding:7px}.board{gap:6px}.col{gap:6px}}
+
+.flags{display:inline-flex;gap:.14em;align-items:center;vertical-align:.08em;margin-left:.12em}
+.flag{display:inline-block;width:1.35em;height:.82em;border-radius:.08em;box-shadow:0 0 0 1px #ffffff88;position:relative;overflow:hidden;flex:none}
+.flag-us{background:repeating-linear-gradient(to bottom,#b22234 0 7.69%,#fff 7.69% 15.38%)}
+.flag-us:before{content:"";position:absolute;left:0;top:0;width:42%;height:54%;background:#3c3b6e}
+.flag-uk{background:linear-gradient(33deg,transparent 43%,#fff 43% 57%,transparent 57%),linear-gradient(-33deg,transparent 43%,#fff 43% 57%,transparent 57%),linear-gradient(90deg,transparent 39%,#fff 39% 61%,transparent 61%),linear-gradient(0deg,transparent 35%,#fff 35% 65%,transparent 65%),#012169}
+.flag-uk:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 44%,#c8102e 44% 56%,transparent 56%),linear-gradient(0deg,transparent 41%,#c8102e 41% 59%,transparent 59%)}
 </style></head><body>
 <main class="app">
- <section class="top"><div><h1>🧩 VOCABULARY MATCH 🇺🇸 🇬🇧</h1><p>FASE 1 • 40 combinações • +5 acerto • −2 erro • bônus por colocação</p><div class="school-meta">Turmas 701 e 702 • Escola Delfina de Jesus Amorim • Professor Jasson Bruno</div><div class="school-meta">Turmas 701 e 702 • Escola Delfina de Jesus Amorim • Professor Jasson Bruno</div></div><div class="team-badge" id="teamBadge">CONECTANDO...</div></section>
+ <section class="top"><div><h1>🧩 VOCABULARY MATCH <span class="flags" aria-label="Estados Unidos e Reino Unido"><span class="flag flag-us"></span><span class="flag flag-uk"></span></span></h1><p>FASE 1 • Adjectives + Comparatives + Family Members • 40 combinações</p><div class="school-meta">Turmas 701 e 702 • Escola Delfina de Jesus Amorim • Professor Jasson Bruno</div><div class="school-meta">Turmas 701 e 702 • Escola Delfina de Jesus Amorim • Professor Jasson Bruno</div></div><div class="team-badge" id="teamBadge">CONECTANDO...</div></section>
  <section class="hud">
   <div class="pill">NA TELA<b id="roundHud">6 pares</b></div>
   <div class="pill">ACERTOS<b id="correctHud">0</b></div>
@@ -62,7 +69,7 @@ button{font:inherit}
   <h2 class="board-title" id="boardTitle">Encontre os pares</h2>
   <div class="status" id="status">Escolha um item em inglês e encontre o significado.</div>
   <div class="board">
-   <div class="col" id="left"><h2>🇬🇧 ENGLISH</h2></div>
+   <div class="col" id="left"><h2><span class="flag flag-uk" aria-label="Reino Unido"></span> ENGLISH</h2></div>
    <div class="col" id="right"><h2>🇧🇷 PORTUGUÊS</h2></div>
   </div>
  </section>
@@ -86,16 +93,16 @@ button{font:inherit}
 </div></div>
 <div class="overlay hidden" id="nextOverlay"><div class="modal">
   <div style="font-size:58px">⚡</div>
-  <div class="next-name">FASE 2 — WORD CHALLENGE</div>
+  <div class="next-name">FASE 2 — ACTIONS & FAMILY LIFE</div>
   <div class="effect" id="nextPhrase">A liderança é temporária. O campeonato continua!</div>
   <div class="next-count" id="nextCount">3</div>
   <p>Preparem-se!</p>
 </div></div>
 <script>
-const BANK=[["I","eu"],["you","você / vocês"],["he","ele"],["she","ela"],["it","ele/ela para coisa ou animal"],["we","nós"],["they","eles / elas"],["my","meu / minha"],["your","seu / sua"],["his","dele"],["her","dela"],["our","nosso / nossa"],["their","deles / delas"],["am","sou / estou"],["is","é / está"],["are","são / estão"],["do","auxiliar de I/you/we/they"],["does","auxiliar de he/she/it"],["don't","forma negativa de do"],["doesn't","forma negativa de does"],["can","pode / consegue"],["can't","não pode / não consegue"],["should","deveria"],["shouldn't","não deveria"],["must","deve / obrigação forte"],["mustn't","não deve / é proibido"],["have to","ter que / precisar"],["don't have to","não precisar"],["may","pode / permissão formal"],["might","talvez / possibilidade"],["rule","regra"],["duty","dever"],["responsibility","responsabilidade"],["behavior","comportamento"],["respect","respeito / respeitar"],["honesty","honestidade"],["friendship","amizade"],["homework","tarefa de casa"],["permission","permissão"],["obligation","obrigação"],["classmate","colega de turma"],["teacher","professor(a)"],["student","aluno(a)"],["school staff","funcionários da escola"],["school rules","regras da escola"],["chores","tarefas domésticas"],["uniform","uniforme"],["test","prova"],["classroom","sala de aula"],["follow the rules","seguir as regras"],["arrive on time","chegar no horário"],["ask for permission","pedir permissão"],["do your homework","fazer sua tarefa"],["respect classmates","respeitar os colegas"],["keep the classroom clean","manter a sala limpa"],["help at home","ajudar em casa"],["wear a uniform","usar uniforme"],["take care of","cuidar de"],["ask for help","pedir ajuda"],["share ideas","compartilhar ideias"],["work in groups","trabalhar em grupos"],["leave home earlier","sair de casa mais cedo"],["use your phone","usar o celular"],["cheat in tests","colar nas provas"],["be responsible","ser responsável"],["I think","eu acho que"],["In my opinion","na minha opinião"],["I believe","eu acredito"],["I feel","eu sinto / acho"],["I agree","eu concordo"],["I disagree","eu discordo"],["I'm not sure","não tenho certeza"],["Maybe you can","talvez você possa"],["You should","você deveria"],["You could","você poderia"],["What do you think?","o que você acha?"],["What's your opinion?","qual é a sua opinião?"],["Do you have any advice?","você tem algum conselho?"],["That's a good idea","essa é uma boa ideia"],["That makes sense","isso faz sentido"],["You're right","você está certo(a)"],["Maybe not","talvez não"],["I see your point","eu entendo seu ponto"],["Good idea!","boa ideia!"],["I think so, too","eu também acho"],["study","estudar"],["learn","aprender"],["read","ler"],["write","escrever"],["listen","ouvir"],["speak","falar"],["ask","perguntar"],["answer","responder"],["help","ajudar"],["follow","seguir"],["arrive","chegar"],["leave","sair"],["bring","trazer"],["wear","vestir / usar"],["clean","limpar"],["share","compartilhar"],["practice","praticar"],["prepare","preparar"],["talk","conversar"],["think","pensar / achar"],["feel","sentir"],["agree","concordar"],["disagree","discordar"],["need","precisar"],["want","querer"],["like","gostar"],["know","saber / conhecer"],["work","trabalhar"],["play","jogar / brincar"],["kind","gentil"],["honest","honesto(a)"],["responsible","responsável"],["respectful","respeitoso(a)"],["rude","grosseiro(a)"],["nervous","nervoso(a)"],["confident","confiante"],["uncomfortable","desconfortável"],["calm","calmo(a)"],["important","importante"],["necessary","necessário"],["possible","possível"],["polite","educado(a)"],["late","atrasado(a)"],["early","cedo"],["quiet","silencioso(a)"],["noisy","barulhento(a)"],["friendly","amigável"],["helpful","prestativo(a)"],["careful","cuidadoso(a)"],["family","família"],["friend","amigo(a)"],["relationship","relacionamento"],["problem","problema"],["solution","solução"],["advice","conselho"],["suggestion","sugestão"],["opinion","opinião"],["idea","ideia"],["question","pergunta"],["message","mensagem"],["conversation","conversa"],["presentation","apresentação"],["group","grupo"],["book","livro"],["phone","celular"],["library","biblioteca"],["hallway","corredor"],["trash","lixo"],["neighbor","vizinho(a)"],["meeting","reunião"],["space","espaço"],["noise","barulho"],["gate","portão"],["always","sempre"],["usually","geralmente"],["sometimes","às vezes"],["never","nunca"],["today","hoje"],["tomorrow","amanhã"],["yesterday","ontem"],["before","antes"],["after","depois"],["now","agora"],["every day","todos os dias"],["during","durante"],["because","porque"],["but","mas"],["and","e"],["or","ou"],["with","com"],["without","sem"],["more","mais"],["less","menos"],["Who?","quem?"],["What?","o quê?"],["Where?","onde?"],["When?","quando?"],["Why?","por quê?"],["How?","como?"],["Which?","qual?"],["How many?","quantos?"],["How much?","quanto?"],["How often?","com que frequência?"],["Yes, I do.","sim, eu faço / gosto"],["No, I don't.","não, eu não faço / não gosto"],["Yes, she does.","sim, ela faz / gosta"],["No, he doesn't.","não, ele não faz / não gosta"],["Yes, we should.","sim, nós deveríamos"],["No, we shouldn't.","não, nós não deveríamos"],["Yes, they can.","sim, eles podem"],["No, they can't.","não, eles não podem"]];
+const BANK=[["big","grande"],["bigger","maior"],["small","pequeno"],["smaller","menor"],["old","velho / de idade"],["older","mais velho"],["young","jovem"],["younger","mais jovem"],["tall","alto"],["taller","mais alto"],["short","baixo / curto"],["shorter","mais baixo / mais curto"],["fast","rápido"],["faster","mais rápido"],["happy","feliz"],["happier","mais feliz"],["interesting","interessante"],["more interesting","mais interessante"],["difficult","difícil"],["more difficult","mais difícil"],["good","bom"],["better","melhor"],["than","do que / que"],["more","mais (adjetivo longo)"],["stepfather","padrasto"],["stepmother","madrasta"],["stepbrother","meio-irmão"],["stepsister","meia-irmã"],["mother-in-law","sogra"],["father-in-law","sogro"],["brother-in-law","cunhado"],["sister-in-law","cunhada"],["parents","pais"],["siblings","irmãos / irmãs"],["grandparents","avós"],["aunt","tia"],["uncle","tio"],["cousin","primo / prima"],["nephew","sobrinho"],["niece","sobrinha"]];
 const cfg=window.TUG_SUPABASE_CONFIG||{},sb=(cfg.url&&cfg.key&&window.supabase?.createClient)?window.supabase.createClient(cfg.url,cfg.key):null;
 const qs=new URLSearchParams(location.search),demo=qs.get('demo')==='1',room=(qs.get('sala')||'701').replace(/[^a-zA-Z0-9_-]/g,'').toUpperCase();
-const deviceId=localStorage.getItem('championship9DeviceId');
+const deviceId=localStorage.getItem('championship7DeviceId');
 const TEAM={blue:'EQUIPE AZUL',yellow:'EQUIPE AMARELA',green:'EQUIPE VERDE',red:'EQUIPE VERMELHA'};
 let myColor=null,order=[],correct=0,wrong=0,matched=0,nextIndex=0,visible=[],selectedLeft=null,selectedRight=null,locked=false,finished=false,poll=null,transitionPoll=null,isHost=false,releaseShown=false;
 const $=id=>document.getElementById(id);
@@ -112,7 +119,7 @@ function refillVisible(){
 function renderBoard(){
   refillVisible();
   const left=shuffle(visible),right=shuffle(visible);
-  $('left').innerHTML='<h2>🇬🇧 ENGLISH</h2>';$('right').innerHTML='<h2>🇧🇷 PORTUGUÊS</h2>';
+  $('left').innerHTML='<h2><span class="flag flag-uk" aria-label="Reino Unido"></span> ENGLISH</h2>';$('right').innerHTML='<h2>🇧🇷 PORTUGUÊS</h2>';
   selectedLeft=selectedRight=null;locked=false;
   left.forEach(p=>{const b=document.createElement('button');b.className='word';b.dataset.key=p.key;b.textContent=p.en;b.onclick=()=>choose('left',b,p);$('left').appendChild(b)});
   right.forEach(p=>{const b=document.createElement('button');b.className='word';b.dataset.key=p.key;b.textContent=p.pt;b.onclick=()=>choose('right',b,p);$('right').appendChild(b)});
