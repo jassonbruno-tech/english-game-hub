@@ -177,7 +177,7 @@ async function init(){
  const {data,error}=await sb.rpc('championship_phase1_get_or_create',{p_room:room,p_device:deviceId,p_order:candidateOrder()});
  if(error||!data?.ok){$('loadText').textContent='Não foi possível abrir a fase: '+(error?.message||data?.error||'erro');return}
  myColor=data.color;order=Array.isArray(data.item_order)?data.item_order:[];$('teamBadge').textContent=TEAM[myColor]||myColor;
- if(order.length<40){$('loadText').textContent='A rodada sincronizada não contém 40 itens.';return}
+ if(order.length<3){$('loadText').textContent='A rodada sincronizada não contém 3 itens.';return}
  nextIndex=0;visible=[];$('loading').classList.add('hidden');renderBoard();
 }
 async function finishGame(){
