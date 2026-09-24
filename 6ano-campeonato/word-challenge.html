@@ -83,7 +83,7 @@ const BANK=[
 ["AM","sou / estou"],["IS","é / está"],["ARE","são / estão"],["THERE","há / existe"],["MY","meu / minha"],["HE","ele"],["SHE","ela"],
 ["BOOKS","livros"],["BOXES","caixas"],["CITIES","cidades"],["FAMILIES","famílias"],["CHAIRS","cadeiras"],["WINDOWS","janelas"],["HOUSES","casas"],["ROOMS","quartos"],["BABIES","bebês"]
 ];
-const cfg=const cfg=window.TUG_SUPABASE_CONFIG||{},sb=(cfg.url&&cfg.key&&window.supabase?.createClient)?window.supabase.createClient(cfg.url,cfg.key):null;
+const cfg=window.TUG_SUPABASE_CONFIG||{},sb=(cfg.url&&cfg.key&&window.supabase?.createClient)?window.supabase.createClient(cfg.url,cfg.key):null;
 const qs=new URLSearchParams(location.search),demo=qs.get('demo')==='1',room=(qs.get('sala')||'601').replace(/[^a-zA-Z0-9_-]/g,'').toUpperCase();
 const deviceId=localStorage.getItem('championship6DeviceId');
 const TEAM={blue:'EQUIPE AZUL',yellow:'EQUIPE AMARELA',green:'EQUIPE VERDE',red:'EQUIPE VERMELHA'};
