@@ -299,7 +299,7 @@ function showRank(){
 function advancePhase(){if(currentPhase<PHASES.length-1){currentPhase++;renderPhaseQueue()}}
 
 function paintPresence(rows){
-  const fresh=(rows||[]).filter(r=>Date.now()-new Date(r.last_seen).getTime()<30000);
+  const fresh=(rows||[]).filter(r=>Date.now()-new Date(r.last_seen).getTime()<120000);
   const byColor=new Map(fresh.map(r=>[r.color,r]));
   ['blue','yellow','green','red'].forEach(color=>{
     const el=document.getElementById('team-'+color),row=byColor.get(color);
