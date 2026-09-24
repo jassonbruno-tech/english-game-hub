@@ -189,14 +189,27 @@ const BANK=(()=>{
  }));
  return b;
 })();
-const DURATION=300,COLORS=['blue','yellow','green','red'],TEAM={blue:'EQUIPE AZUL',yellow:'EQUIPE AMARELA',green:'EQUIPE VERDE',red:'EQUIPE VERMELHA'};
+const DURATION=300,FINISH_HITS=40,COLORS=['blue','yellow','green','red'],TEAM={blue:'EQUIPE AZUL',yellow:'EQUIPE AMARELA',green:'EQUIPE VERDE',red:'EQUIPE VERMELHA'};
 const cfg=window.TUG_SUPABASE_CONFIG||{},sb=(cfg.url&&cfg.key&&window.supabase?.createClient)?window.supabase.createClient(cfg.url,cfg.key):null;
 const qs=new URLSearchParams(location.search),demo=qs.get('demo')==='1',room=(qs.get('sala')||'901').replace(/[^a-zA-Z0-9_-]/g,'').toUpperCase(),deviceId=localStorage.getItem('championship9DeviceId');
 const $=id=>document.getElementById(id);let order=[],items=[],idx=0,correct=0,wrong=0,currentA=0,started=false,ended=false,startAt=0,ticker=null,myColor='blue',liveTimer=null,submitPoll=null,demoScores={blue:0,yellow:0,green:0,red:0},liveScores={blue:0,yellow:0,green:0,red:0},cpuTimers=[],victoryScheduled=false;
 function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function candidateOrder(){let out=[],base=BANK.map((_,i)=>i),last=-1;while(out.length<240){let batch=shuffle(base);if(batch[0]===last&&batch.length>1)[batch[0],batch[1]]=[batch[1],batch[0]];out.push(...batch);last=out[out.length-1]}return out.slice(0,240)}
 function buildItems(){items=order.map(i=>{const [t,q,o,a]=BANK[i],ans=o[a],mix=shuffle(o);return {t,q,o:mix,a:mix.indexOf(ans)}})}
-function updateCars(scores){COLORS.forEach(color=>{const n=Number(scores[color]||0),pct=3+Math.min(n,40)/40*91;$('c'+color).style.left=pct+'%';$('s'+color).textContent=n+' acertos'});if($('myHits'))$('myHits').textContent=correct}
+function updateCars(scores){
+ COLORS.forEach(color=>{
+   const n=Number(scores[color]||0),pct=3+Math.min(n,FINISH_HITS)/FINISH_HITS*91;
+   $('c'+color).style.left=pct+'%';
+   $('s'+color).textContent=n+' acertos';
+ });
+ if($('myHits'))$('myHits').textContent=correct;
+ if(started&&!ended&&!demo){
+   const finishedTeams=COLORS.filter(color=>Number(scores[color]||0)>=FINISH_HITS);
+   if(finishedTeams.length>=3){
+     endGame('PODIUM_COMPLETE');
+   }
+ }
+}
 function renderQuestion(){if(!started||ended)return;if(idx>=items.length){$('question').textContent='Você concluiu todos os desafios disponíveis. Aguarde a ampulheta terminar.';$('answers').innerHTML='';return}const x=items[idx];currentA=x.a;$('qtag').textContent='DESAFIO '+(idx+1)+' • '+x.t;$('question').textContent=x.q;$('answers').innerHTML='';x.o.forEach((t,i)=>{const b=document.createElement('button');b.className='answer';b.textContent=String.fromCharCode(65+i)+') '+t;b.onclick=()=>answer(i,b);$('answers').appendChild(b)})}
 async function answer(i,b){
  if(!started||ended)return;
@@ -243,7 +256,19 @@ async function init(){order=candidateOrder();if(demo){buildItems();$('myTeam').t
  if(error||!data?.ok){$('startText').textContent='Não foi possível abrir a final.';return}
  order=data.item_order;myColor=data.color;buildItems();$('myTeam').textContent=TEAM[myColor];liveScores[myColor]=0;updateCars(liveScores);liveTimer=setInterval(waitReady,600);waitReady()
 }
-async function endGame(){if(ended)return;ended=true;started=false;clearInterval(ticker);clearInterval(liveTimer);cpuTimers.forEach(clearTimeout);$('timerBox').classList.remove('running');$('timerBox').classList.add('finished');$('timeNum').textContent='0s';document.querySelectorAll('.answer').forEach(b=>b.disabled=true);$('question').textContent='TEMPO ESGOTADO!';$('answers').innerHTML='';$('endOverlay').classList.remove('hidden');
+async function endGame(reason='TIME'){
+ if(ended)return;
+ ended=true;started=false;clearInterval(ticker);clearInterval(liveTimer);cpuTimers.forEach(clearTimeout);
+ $('timerBox').classList.remove('running');$('timerBox').classList.add('finished');
+ if(reason==='PODIUM_COMPLETE'){
+   $('question').textContent='🏁 AS 3 PRIMEIRAS EQUIPES CHEGARAM!';
+ }else{
+   $('timeNum').textContent='0s';
+   $('question').textContent='TEMPO ESGOTADO!';
+ }
+ $('answers').innerHTML='';
+ document.querySelectorAll('.answer').forEach(b=>b.disabled=true);
+ $('endOverlay').classList.remove('hidden');
  if(demo){showDemoResult();return}
  const raw=Math.min(220,correct*3);await sb.rpc('championship_phase6_submit',{p_room:room,p_device:deviceId,p_correct:correct,p_wrong:wrong,p_raw:raw});submitPoll=setInterval(checkFinal,900);checkFinal()
 }
