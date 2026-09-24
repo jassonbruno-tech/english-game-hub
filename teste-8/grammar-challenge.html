@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Fase 3 — There is / There are</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../jogos-em-equipe/supabase-config.js?v=8ano1"></script>
+<style>
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:Arial,Helvetica,sans-serif;color:#fff;background:#07091b}
+body{background:radial-gradient(circle at 20% 20%,#ec489933,transparent 18%),radial-gradient(circle at 80% 15%,#3b82f633,transparent 20%),linear-gradient(180deg,#060818,#090b28 40%,#12013a)}
+.app{width:min(1200px,100%);height:100dvh;margin:auto;padding:8px;display:flex;flex-direction:column;gap:7px}
+header{background:linear-gradient(135deg,#1d4ed8,#7c3aed 48%,#e11d48);border-radius:18px;padding:8px 13px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 8px 22px #0006}
+header h1{margin:0;font-size:clamp(26px,3.7vw,44px);color:#fff7c2;text-shadow:0 3px 8px #0005}header p{margin:2px 0 0;font-size:11px;font-weight:900}.school-meta{margin-top:3px;font-size:10.5px;font-weight:900;color:#eaf2ff;opacity:.96}.school-meta{margin-top:3px;font-size:10.5px;font-weight:900;color:#eaf2ff;opacity:.96}.team{background:#fff;color:#1d4ed8;border-radius:999px;padding:8px 11px;font-weight:1000}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.stat{background:linear-gradient(180deg,#111845ee,#170938ee);border:1px solid #60a5fa66;border-radius:12px;padding:6px;text-align:center;font-size:9px;font-weight:1000}.stat b{display:block;font-size:18px;color:#ffe66d}
+.grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:9px;flex:1;min-height:0}.card{background:linear-gradient(180deg,#0b123eee,#0f0a2fee);border:1px solid #60a5fa44;border-radius:19px;padding:10px;min-height:0;box-shadow:0 10px 24px #0005}
+.wheel-card{display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden}.pointer{position:absolute;top:10px;left:50%;transform:translateX(-50%);z-index:5;border-left:17px solid transparent;border-right:17px solid transparent;border-top:40px solid #050816}.wheel{width:min(62vh,445px);height:min(62vh,445px);border-radius:50%;border:8px solid #fff;background:conic-gradient(#1da1f2 0 72deg,#22c55e 72deg 144deg,#f97316 144deg 216deg,#8b5cf6 216deg 288deg,#f43f5e 288deg 360deg);position:relative;transition:transform 4.8s cubic-bezier(.08,.76,.12,1);box-shadow:0 0 0 4px #ec489933,0 16px 34px #0008}.wheel:after{content:attr(data-theme);position:absolute;inset:31%;border-radius:50%;background:#f8fafc;border:6px solid #e2e8f0;display:flex;align-items:center;justify-content:center;text-align:center;color:#1d4ed8;font-weight:1000;font-size:20px;padding:6px}.wheel-label{position:absolute;left:50%;top:50%;width:86px;margin-left:-43px;margin-top:-9px;transform:rotate(var(--r)) translateY(-158px) rotate(calc(-1*var(--r)));font-size:13px;line-height:1.02;text-align:center;font-weight:1000;text-shadow:0 2px 5px #000}.spin{margin-top:9px;border:0;border-radius:13px;padding:10px 34px;background:linear-gradient(135deg,#f43f5e,#ec4899);color:white;font-weight:1000;font-size:16px;cursor:pointer}.spin:disabled{opacity:.5}
+.wheel.spinning{filter:drop-shadow(0 0 18px rgba(255,255,255,.9)) drop-shadow(0 0 32px rgba(236,72,153,.7));animation:wheelGlow .65s ease-in-out infinite alternate}
+@keyframes wheelGlow{from{filter:drop-shadow(0 0 10px rgba(255,255,255,.65)) drop-shadow(0 0 20px rgba(59,130,246,.55))}to{filter:drop-shadow(0 0 24px rgba(255,230,109,.95)) drop-shadow(0 0 40px rgba(236,72,153,.85))}}
+.question{display:flex;flex-direction:column}.theme-chip{align-self:flex-start;background:#1d4ed844;border:1px solid #60a5fa88;color:#bfdbfe;border-radius:999px;padding:6px 10px;font-weight:1000;font-size:11px}.prompt{font-size:clamp(20px,2.25vw,29px);line-height:1.22;font-weight:1000;margin:10px 0}.options{display:grid;gap:8px}.option{position:relative;border:2px solid #60a5fa66;background:#050922c4;color:#fff;border-radius:13px;padding:12px 12px 12px 52px;text-align:left;font-size:17px;font-weight:1000;cursor:pointer}.option:before{position:absolute;left:11px;top:50%;transform:translateY(-50%);width:27px;height:27px;border-radius:50%;display:grid;place-items:center;color:#fff}.option:nth-child(1):before{content:"A";background:#16a34a}.option:nth-child(2):before{content:"B";background:#2563eb}.option:nth-child(3):before{content:"C";background:#d97706}.option:nth-child(4):before{content:"D";background:#db2777}.option.correct{background:#14532d88;border-color:#4ade80;box-shadow:0 0 24px #4ade8077}
+.option.correct.flash-correct{animation:correctFlash .45s ease-in-out 4}
+.option.wrong{background:#7f1d1d99;border-color:#ef4444;animation:shake .4s}
+@keyframes correctFlash{0%,100%{transform:scale(1);filter:brightness(1);box-shadow:0 0 18px #4ade8066}50%{transform:scale(1.025);filter:brightness(1.8);box-shadow:0 0 28px #86efac,0 0 48px #22c55e}}.feedback{margin-top:8px;border-radius:12px;padding:8px;font-weight:1000;min-height:38px}.feedback.ok{background:#14532d66;color:#dcfce7}.feedback.bad{background:#7f1d1d66;color:#fee2e2}
+.hint-box{margin-top:10px;padding:10px 12px;border-radius:14px;background:linear-gradient(135deg,#1e3a5fdd,#24134ddd);border:1px solid #ffe66d66;box-shadow:inset 0 0 18px #0003;color:#f8fafc;font-size:14px;line-height:1.3;font-weight:900}
+.hint-box b{color:#ffe66d}@keyframes shake{20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+.overlay{position:fixed;inset:0;z-index:20;display:grid;place-items:center;background:#05071de8;backdrop-filter:blur(5px);padding:16px}.hidden{display:none!important}.modal{width:min(650px,95vw);max-height:94vh;overflow:auto;background:linear-gradient(160deg,#101d5a,#421060);border:2px solid #ffe66d88;border-radius:25px;padding:22px;text-align:center}.modal h2{margin:0;color:#ffe66d;font-size:34px}.rank-list{display:grid;gap:6px;margin:10px 0}.rank{display:grid;grid-template-columns:40px 1fr auto;gap:7px;background:#fff;color:#172033;border-radius:12px;padding:8px;text-align:left;align-items:center;font-weight:1000}.effect{margin:10px 0;padding:10px;border-radius:12px;background:linear-gradient(135deg,#e7f7ff,#fff5b8);color:#174f9c;font-weight:1000}.btn{border:0;border-radius:13px;padding:11px 14px;background:linear-gradient(135deg,#ffe66d,#ff9f1c,#ff4d9e);font-weight:1000;cursor:pointer}.next-count{font-size:86px;font-weight:1000;color:#ffe66d}
+@media(max-height:720px){header{padding:5px 10px}header h1{font-size:29px}.wheel{width:340px;height:340px}.wheel-label{transform:rotate(var(--r)) translateY(-121px) rotate(calc(-1*var(--r)));font-size:10.5px}.prompt{font-size:18px}.option{font-size:14px;padding:9px 9px 9px 45px}.stats .stat{padding:4px}.stat b{font-size:14px}}
+
+.flags{display:inline-flex;gap:.14em;align-items:center;vertical-align:.08em;margin-left:.12em}
+.flag{display:inline-block;width:1.35em;height:.82em;border-radius:.08em;box-shadow:0 0 0 1px #ffffff88;position:relative;overflow:hidden;flex:none}
+.flag-us{background:repeating-linear-gradient(to bottom,#b22234 0 7.69%,#fff 7.69% 15.38%)}
+.flag-us:before{content:"";position:absolute;left:0;top:0;width:42%;height:54%;background:#3c3b6e}
+.flag-uk{background:linear-gradient(33deg,transparent 43%,#fff 43% 57%,transparent 57%),linear-gradient(-33deg,transparent 43%,#fff 43% 57%,transparent 57%),linear-gradient(90deg,transparent 39%,#fff 39% 61%,transparent 61%),linear-gradient(0deg,transparent 35%,#fff 35% 65%,transparent 65%),#012169}
+.flag-uk:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 44%,#c8102e 44% 56%,transparent 56%),linear-gradient(0deg,transparent 41%,#c8102e 41% 59%,transparent 59%)}
+</style></head>
+<body>
+<main class="app">
+<header><div><h1>🎡 THERE IS / THERE ARE <span class="flags" aria-label="Estados Unidos e Reino Unido"><span class="flag flag-us"></span><span class="flag flag-uk"></span></span></h1><p>FASE 3 • afirmativa, negativa, interrogativa, respostas curtas e There × Have • 3 desafios</p><div class="school-meta">Turmas 801 e 802 • Escola Delfina de Jesus Amorim • Professor Jasson Bruno</div><div class="school-meta">Turmas 801 e 802 • Escola Delfina de Jesus Amorim • Professor Jasson Bruno</div></div><div class="team" id="teamBadge">MODO TESTE</div></header>
+<section class="stats"><div class="stat">DESAFIO<b id="roundHud">1/3</b></div><div class="stat">ACERTOS<b id="correctHud">0</b></div><div class="stat">ERROS<b id="wrongHud">0</b></div><div class="stat">PONTOS<b id="pointsHud">0</b></div></section>
+<section class="grid">
+<div class="card wheel-card"><div class="pointer"></div><div class="wheel" id="wheel" data-theme="GIRE!">
+<span class="wheel-label" style="--r:36deg">Affirmative</span><span class="wheel-label" style="--r:108deg">Negative</span><span class="wheel-label" style="--r:180deg">Questions</span><span class="wheel-label" style="--r:252deg">Short answers</span><span class="wheel-label" style="--r:324deg">There × Have</span></div><button class="spin" id="spinBtn">GIRAR ROLETA 🎯</button></div>
+<div class="card question"><div class="theme-chip" id="themeChip">Aguardando a roleta...</div><div class="prompt" id="prompt">Gire a roleta para receber o primeiro desafio.</div><div class="options" id="options"></div><div class="feedback" id="feedback"></div><div class="hint-box" id="hintBox">💡 DICA: Gire a roleta para receber uma pista em português.</div></div>
+</section></main>
+<div class="overlay hidden" id="loading"><div class="modal"><h2>FASE 3</h2><p id="loadText">Sincronizando os desafios...</p></div></div>
+<div class="overlay hidden" id="finish"><div class="modal"><h2>🏁 FASE 3 ENCERRADA</h2><p id="finishSummary"></p><div id="waiting">Aguardando as outras equipes...</div><div class="rank-list" id="rankList"></div><div class="effect hidden" id="effectPhrase"></div><h3 id="generalTitle" class="hidden">📊 PLACAR GERAL</h3><div class="rank-list" id="generalRank"></div><button class="btn hidden" id="releaseBtn">🔓 LIBERAR FASE 4</button></div></div>
+<div class="overlay hidden" id="nextOverlay"><div class="modal"><h2>FASE 4 — QUANTIFIERS</h2><div class="effect" id="nextPhrase">Concentração total. A disputa está apertando!</div><div class="next-count" id="nextCount">3</div></div></div>
+<script>
+const QUESTIONS=[{"t":"Affirmative","q":"Complete: _____ a hospital near the school.","o":["There is","There are","Have","Has"],"a":0,"e":"Um hospital: THERE IS."},{"t":"Affirmative","q":"Complete: _____ two parks in my neighborhood.","o":["There are","There is","Have","Has"],"a":0,"e":"Dois parques: THERE ARE."},{"t":"Affirmative","q":"Qual frase significa “Há uma farmácia perto daqui”?","o":["There is a pharmacy near here.","Have a pharmacy near here.","There are a pharmacy near here.","Has a pharmacy near here."],"a":0,"e":"Para indicar existência no singular, usamos THERE IS."},{"t":"Affirmative","q":"Qual frase significa “Há três escolas nesta área”?","o":["There are three schools in this area.","There is three schools in this area.","Have three schools in this area.","Has three schools in this area."],"a":0,"e":"Plural: THERE ARE."},{"t":"Affirmative","q":"Corrija: “There is two restaurants on this street.”","o":["There are two restaurants on this street.","There is two restaurants on this street.","There are two restaurant on this street.","Have two restaurants on this street."],"a":0,"e":"TWO RESTAURANTS pede THERE ARE."},{"t":"Affirmative","q":"Corrija: “There are a bank near the square.”","o":["There is a bank near the square.","There are a bank near the square.","There is banks near the square.","Has a bank near the square."],"a":0,"e":"A BANK é singular: THERE IS."},{"t":"Negative","q":"Passe para a negativa: There is a hospital near here.","o":["There isn't a hospital near here.","There aren't a hospital near here.","There doesn't have a hospital near here.","There not is a hospital near here."],"a":0,"e":"Singular negativo: THERE ISN'T."},{"t":"Negative","q":"Passe para a negativa: There are parks near the school.","o":["There aren't any parks near the school.","There isn't any parks near the school.","There don't have parks near the school.","There are not a park near the school."],"a":0,"e":"Plural negativo: THERE AREN'T; ANY aparece com frequência nas negativas."},{"t":"Negative","q":"Complete: There _____ any hospitals in this neighborhood.","o":["aren't","isn't","doesn't","hasn't"],"a":0,"e":"HOSPITALS é plural: AREN'T."},{"t":"Negative","q":"Complete: There _____ a bank on this street.","o":["isn't","aren't","don't","haven't"],"a":0,"e":"A BANK é singular: ISN'T."},{"t":"Negative","q":"Corrija: “There isn't any supermarkets here.”","o":["There aren't any supermarkets here.","There isn't any supermarket here are.","There don't have any supermarkets here.","There aren't some supermarkets here."],"a":0,"e":"SUPERMARKETS é plural: AREN'T."},{"t":"Negative","q":"Qual frase está correta?","o":["There aren't any bus stops here.","There isn't any bus stops here.","There haven't any bus stops here.","There aren't some bus stop here."],"a":0,"e":"Plural negativo + ANY."},{"t":"Interrogative","q":"Transforme em pergunta: There is a bank near here.","o":["Is there a bank near here?","Are there a bank near here?","Does there have a bank near here?","There is a bank near here?"],"a":0,"e":"Singular: IS THERE...?"},{"t":"Interrogative","q":"Transforme em pergunta: There are two parks nearby.","o":["Are there two parks nearby?","Is there two parks nearby?","Do there have two parks nearby?","There are two parks nearby?"],"a":0,"e":"Plural: ARE THERE...?"},{"t":"Interrogative","q":"Complete: _____ any restaurants near the square?","o":["Are there","Is there","Do there","Have there"],"a":0,"e":"RESTAURANTS é plural: ARE THERE. ANY é comum em perguntas."},{"t":"Interrogative","q":"Complete: _____ a pharmacy next to the hospital?","o":["Is there","Are there","Does there","Has there"],"a":0,"e":"A PHARMACY é singular: IS THERE."},{"t":"Interrogative","q":"Corrija: “Is there two schools in your neighborhood?”","o":["Are there two schools in your neighborhood?","Is there two schools in your neighborhood?","Do there have two schools in your neighborhood?","Are there a two schools in your neighborhood?"],"a":0,"e":"TWO SCHOOLS é plural: ARE THERE."},{"t":"Interrogative","q":"Qual pergunta está correta?","o":["Are there any parks near your house?","Is there any parks near your house?","Do there any parks near your house?","Are there some park near your house?"],"a":0,"e":"Plural + pergunta: ARE THERE + ANY + plural."},{"t":"Short Answers","q":"Is there a school near your house? Resposta afirmativa:","o":["Yes, there is.","Yes, there are.","Yes, it have.","Yes, there has."],"a":0,"e":"IS THERE...? → YES, THERE IS."},{"t":"Short Answers","q":"Is there a hospital here? Resposta negativa:","o":["No, there isn't.","No, there aren't.","No, it doesn't.","No, there hasn't."],"a":0,"e":"IS THERE...? → NO, THERE ISN'T."},{"t":"Short Answers","q":"Are there any parks nearby? Resposta afirmativa:","o":["Yes, there are.","Yes, there is.","Yes, they have.","Yes, there have."],"a":0,"e":"ARE THERE...? → YES, THERE ARE."},{"t":"Short Answers","q":"Are there any pharmacies here? Resposta negativa:","o":["No, there aren't.","No, there isn't.","No, they don't.","No, there haven't."],"a":0,"e":"ARE THERE...? → NO, THERE AREN'T."},{"t":"Short Answers","q":"Qual par está correto?","o":["Is there...? → Yes, there is.","Is there...? → Yes, there are.","Are there...? → Yes, there is.","Are there...? → No, there isn't."],"a":0,"e":"IS THERE combina com THERE IS."},{"t":"Short Answers","q":"Qual par está correto?","o":["Are there...? → No, there aren't.","Are there...? → No, there isn't.","Is there...? → No, there aren't.","Are there...? → No, they don't."],"a":0,"e":"ARE THERE combina com THERE AREN'T."},{"t":"There vs Have","q":"Em “Tem uma caneta na mesa”, no sentido de EXISTE uma caneta, qual estrutura usamos?","o":["There is","Have","Has","There have"],"a":0,"e":"Existência = THERE IS / THERE ARE."},{"t":"There vs Have","q":"Para dizer “Eu tenho uma caneta”, qual estrutura é correta?","o":["I have a pen.","There is my pen.","I there a pen.","I has a pen."],"a":0,"e":"Posse = HAVE/HAS."},{"t":"There vs Have","q":"Para dizer “Há uma caneta na mesa”, qual está correta?","o":["There is a pen on the table.","Have a pen on the table.","Has a pen on the table.","There have a pen on the table."],"a":0,"e":"Existência no singular = THERE IS."},{"t":"There vs Have","q":"Para dizer “Ela tem dois livros”, qual está correta?","o":["She has two books.","There are two books she.","She have two books.","There is two books with she."],"a":0,"e":"Posse com SHE = HAS."},{"t":"There vs Have","q":"Corrija: “Have a supermarket near my house.”","o":["There is a supermarket near my house.","There are a supermarket near my house.","Has a supermarket near my house.","I have a supermarket near my house."],"a":0,"e":"Aqui o sentido é “há/existe”, então usamos THERE IS."},{"t":"There vs Have","q":"Corrija: “There have two parks in my neighborhood.”","o":["There are two parks in my neighborhood.","There is two parks in my neighborhood.","Have two parks in my neighborhood.","There has two parks in my neighborhood."],"a":0,"e":"Existência no plural = THERE ARE."}];
+const THEMES=['Affirmative','Negative','Interrogative','Short Answers','There vs Have'];
+const cfg=window.TUG_SUPABASE_CONFIG||{},sb=(cfg.url&&cfg.key&&window.supabase?.createClient)?window.supabase.createClient(cfg.url,cfg.key):null;
+const qs=new URLSearchParams(location.search),demo=qs.get('demo')==='1',room=(qs.get('sala')||'TESTE8').replace(/[^a-zA-Z0-9_-]/g,'').toUpperCase();
+const deviceId=localStorage.getItem('championship8TestDeviceId'),TEAM={blue:'EQUIPE AZUL',yellow:'EQUIPE AMARELA',green:'EQUIPE VERDE',red:'EQUIPE VERMELHA'};
+let order=[],idx=0,correct=0,wrong=0,answered=false,spinning=false,rotation=0,myColor='blue',finished=false,poll=null,transitionPoll=null,isHost=false,nextStarted=false,activeQuestion=null;
+const $=id=>document.getElementById(id);
+function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function candidateOrder(){return shuffle(QUESTIONS.map((_,i)=>i)).slice(0,3)}
+function rawPoints(){return Math.max(0,correct*8-wrong*2)}
+function hud(){$('roundHud').textContent=Math.min(idx+1,3)+'/3';$('correctHud').textContent=correct;$('wrongHud').textContent=wrong;$('pointsHud').textContent=rawPoints()}
+function current(){return QUESTIONS[order[idx]]}
+function randomizedQuestion(q){
+  const packed=q.o.map((text,i)=>({text,correct:i===q.a}));
+  const shuffled=shuffle(packed);
+  return {
+    ...q,
+    o:shuffled.map(x=>x.text),
+    a:shuffled.findIndex(x=>x.correct)
+  };
+}
+function spinWheel(){
+ if(spinning||answered||idx>=3)return;
+ spinning=true;$('spinBtn').disabled=true;$('options').innerHTML='';$('feedback').textContent='';$('prompt').textContent='A roleta está escolhendo o desafio...';
+ const q=current(),ti=Math.max(0,THEMES.indexOf(q.t)),segment=72,target=360-(ti*segment+36);
+ const currentMod=((rotation%360)+360)%360;
+ const delta=(target-currentMod+360)%360;
+ const extraTurns=5+Math.floor(Math.random()*3);
+ rotation+=extraTurns*360+delta;
+ $('wheel').classList.add('spinning');
+ $('wheel').style.transform='rotate('+rotation+'deg)';
+ setTimeout(()=>{$('wheel').classList.remove('spinning');spinning=false;showQuestion()},4850)
+}
+function hintFor(q){
+ if(q.t==='Affirmative') return '💡 DICA: <b>There is</b> = há/existe (singular); <b>There are</b> = há/existem (plural).';
+ if(q.t==='Negative') return '💡 DICA: negativa: <b>There isn\'t / There aren\'t</b>. Em muitas negativas aparece <b>any</b>.';
+ if(q.t==='Interrogative') return '💡 DICA: pergunta: <b>Is there...?</b> no singular e <b>Are there...?</b> no plural.';
+ if(q.t==='Short Answers') return '💡 DICA: Is there? → there is/isn\'t. Are there? → there are/aren\'t.';
+ return '💡 DICA: <b>There is/are</b> indica existência. <b>Have/has</b> indica posse.';
+}
+function showQuestion(){
+ const q=randomizedQuestion(current());activeQuestion=q;$('wheel').dataset.theme=q.t;$('themeChip').textContent=q.t;$('prompt').textContent=q.q;$('options').innerHTML='';$('hintBox').innerHTML=hintFor(q);answered=false;
+ q.o.forEach((txt,i)=>{const b=document.createElement('button');b.className='option';b.textContent=txt;b.onclick=()=>answer(i,b);$('options').appendChild(b)});
+}
+function answer(i,b){
+ if(answered)return;answered=true;const q=activeQuestion||current(),buttons=[...document.querySelectorAll('.option')];
+ if(i===q.a){correct++;b.classList.add('correct');$('feedback').className='feedback ok';$('feedback').textContent='✅ CORRETO! '+q.e}
+ else{wrong++;b.classList.add('wrong');buttons[q.a]?.classList.add('correct');$('feedback').className='feedback bad';$('feedback').textContent='❌ '+q.e}
+ const correctBtn=buttons[q.a];
+ if(correctBtn){correctBtn.classList.add('flash-correct')}
+ hud();setTimeout(()=>{idx++;if(idx>=3)finishGame();else{$('wheel').dataset.theme='GIRE!';$('themeChip').textContent='Próximo desafio';$('prompt').textContent='Gire a roleta novamente.';$('options').innerHTML='';$('feedback').className='feedback';$('feedback').textContent='';$('hintBox').innerHTML='💡 DICA: Gire a roleta para receber uma nova pista em português.';$('spinBtn').disabled=false;answered=false;hud()}},1300)
+}
+async function init(){
+ order=candidateOrder();hud();
+ if(demo){$('teamBadge').textContent='MODO TESTE';return}
+ $('loading').classList.remove('hidden');
+ if(!sb||!deviceId){$('loadText').textContent='Entre primeiro pelo lobby do campeonato.';return}
+ const {data,error}=await sb.rpc('championship_phase3_get_or_create',{p_room:room,p_device:deviceId,p_order:order});
+ if(error||!data?.ok){$('loadText').textContent='Não foi possível abrir a fase.';return}
+ order=data.item_order;myColor=data.color;$('teamBadge').textContent=TEAM[myColor];$('loading').classList.add('hidden');
+}
+async function finishGame(){
+ if(finished)return;finished=true;$('finish').classList.remove('hidden');$('finishSummary').textContent=correct+' acertos • '+wrong+' erros • '+rawPoints()+' pontos antes do bônus.';
+ if(demo){$('waiting').textContent='MODO TESTE — no campeonato real, aqui aparece o mini ranking das 4 equipes.';return}
+ const {error}=await sb.rpc('championship_phase3_submit',{p_room:room,p_device:deviceId,p_correct:correct,p_wrong:wrong,p_raw:rawPoints()});
+ if(error){$('waiting').textContent='Erro ao enviar resultado.';return}poll=setInterval(checkResults,1000);checkResults();
+}
+async function checkResults(){
+ const [{data},{data:rooms}]=await Promise.all([
+  sb.from('championship_phase_scores').select('color,correct,wrong,bonus,total_points,submitted_at').eq('room_code',room).eq('phase',3),
+  sb.from('championship_rooms').select('host_device,current_phase,scores,transition_message').eq('room_code',room).limit(1)
+ ]);
+ if((data||[]).length<4){$('waiting').textContent='Aguardando as outras equipes... '+(data||[]).length+'/4 concluíram.';return}
+ const state=rooms?.[0]||{};isHost=state.host_device===deviceId;
+ const arr=[...data].sort((a,b)=>b.total_points-a.total_points||new Date(a.submitted_at)-new Date(b.submitted_at));
+ $('waiting').textContent=isHost?'Confira o ranking e libere a próxima fase.':'Aguardando o HOST liberar a próxima fase...';
+ $('rankList').innerHTML=arr.map((r,i)=>'<div class="rank"><span>'+(i===0?'🥇':i===1?'🥈':i===2?'🥉':'4º')+'</span><span>'+TEAM[r.color]+'</span><span>'+r.total_points+' pts</span></div>').join('');
+ $('effectPhrase').textContent=state.transition_message||'Concentração total. A disputa está apertando!';$('effectPhrase').classList.remove('hidden');$('generalTitle').classList.remove('hidden');
+ const general=['blue','yellow','green','red'].map(color=>({color,pts:Number(state.scores?.[color]||0)})).sort((a,b)=>b.pts-a.pts);
+ $('generalRank').innerHTML=general.map((r,i)=>'<div class="rank"><span>'+(i===0?'🥇':i===1?'🥈':i===2?'🥉':'4º')+'</span><span>'+TEAM[r.color]+'</span><span>'+r.pts+' pts</span></div>').join('');
+ if(Number(state.current_phase)>3){beginNext(state.transition_message);return}if(isHost)$('releaseBtn').classList.remove('hidden');if(!transitionPoll)transitionPoll=setInterval(watchNext,900);
+}
+async function releaseNext(){const {data}=await sb.rpc('championship_release_next_phase',{p_room:room,p_device:deviceId});if(data?.ok)watchNext()}
+async function watchNext(){const {data}=await sb.from('championship_rooms').select('current_phase,transition_message').eq('room_code',room).limit(1);if(data?.[0]&&Number(data[0].current_phase)>=4)beginNext(data[0].transition_message)}
+function beginNext(message){if(nextStarted)return;nextStarted=true;clearInterval(poll);clearInterval(transitionPoll);$('nextPhrase').textContent=message||'Concentração total. A disputa está apertando!';$('nextOverlay').classList.remove('hidden');let n=3;$('nextCount').textContent=n;const t=setInterval(()=>{n--;$('nextCount').textContent=n>0?n:'GO!';if(n<=0){clearInterval(t);setTimeout(()=>location.href='modal-challenge.html?sala='+encodeURIComponent(room)+'&v=phase4a',700)}},850)}
+$('spinBtn').onclick=spinWheel;$('releaseBtn').onclick=releaseNext;init();
+</script></body></html>
