@@ -107,6 +107,17 @@ async function init(){
  if(error||!data?.ok){$('loadText').textContent='Não foi possível abrir a fase.';return}
  order=data.item_order;myColor=data.color;$('teamBadge').textContent=TEAM[myColor];$('loading').classList.add('hidden');
 }
+let submitRetryTimer=null;
+async function submitResultWithRetry(){
+  try{
+    $('waiting').textContent='Enviando resultado...';
+    await submitResultWithRetry();
+  }catch(e){
+    $('waiting').textContent='Conexão instável. Tentando enviar novamente automaticamente...';
+    clearTimeout(submitRetryTimer);
+    submitRetryTimer=setTimeout(submitResultWithRetry,1500);
+  }
+}
 async function finishGame(){
  if(finished)return;finished=true;$('finish').classList.remove('hidden');$('finishSummary').textContent=correct+' acertos • '+wrong+' erros • '+rawPoints()+' pontos antes do bônus.';
  if(demo){$('waiting').textContent='MODO TESTE — no campeonato real, aqui aparece o mini ranking das 4 equipes.';return}
