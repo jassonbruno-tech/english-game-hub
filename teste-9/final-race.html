@@ -1,0 +1,403 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Fase 6 — Corrida Maluca Final</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="../jogos-em-equipe/supabase-config.js?v=9ano1"></script>
+<style>
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:Arial,Helvetica,sans-serif;background:#08162e;color:#fff}:root{--cyan:#53e7ff;--pink:#ff63b8;--yellow:#ffe66d;--mint:#57e6c4}
+.viewport{position:fixed;inset:0;display:grid;place-items:center;background:radial-gradient(circle at top,#8677ff 0,#45c5ff 34%,#287fe6 66%,#0b438b 100%)}.stage{position:relative;width:min(100vw,177.78vh);height:min(56.25vw,100vh);overflow:hidden;background:linear-gradient(180deg,#8179ff 0%,#41bfff 36%,#2484e4 68%,#0e57aa 100%);box-shadow:0 0 42px #0006}.grid{position:absolute;inset:0;background:linear-gradient(#fff1 1px,transparent 1px),linear-gradient(90deg,#fff1 1px,transparent 1px);background-size:3.1% 6%;opacity:.22}
+.header{position:absolute;left:2%;right:2%;top:1.5%;z-index:4;display:flex;align-items:center;justify-content:space-between}.head-main{text-align:left}.title{font-size:clamp(28px,3.5vw,52px);font-weight:1000;color:#fff8a8;text-shadow:0 0 16px #ffd83d77}.sub{font-size:clamp(10px,1.05vw,15px);font-weight:1000}.meta{text-align:right;font-size:clamp(8px,.8vw,12px);font-weight:900;line-height:1.35;background:#ffffff22;border:1px solid #ffffff44;border-radius:13px;padding:7px 10px}
+.timer-box{position:absolute;left:50%;top:12%;transform:translateX(-50%);z-index:12;display:flex;align-items:center;gap:10px;background:#ffffff33;border:2px solid #d8f6ff;border-radius:18px;padding:8px 15px;backdrop-filter:blur(5px);box-shadow:0 0 24px #20d6ff44}.time-num{font-size:clamp(22px,2.2vw,32px);font-weight:1000;color:#fff2a8;min-width:70px;text-align:center}.timer-label{font-size:11px;font-weight:1000}
+.hourglass{position:relative;width:52px;height:72px;filter:drop-shadow(0 0 8px #ffd65a66)}.hourglass:before,.hourglass:after{content:"";position:absolute;left:3px;right:3px;height:6px;border-radius:5px;background:#fff}.hourglass:before{top:0}.hourglass:after{bottom:0}.glass{position:absolute;left:8px;right:8px;top:6px;bottom:6px;border-left:4px solid #d9f2ff;border-right:4px solid #d9f2ff;clip-path:polygon(0 0,100% 0,60% 48%,100% 100%,0 100%,40% 48%);background:#ffffff22}.sand-top,.sand-bottom{position:absolute;left:12px;right:12px;background:linear-gradient(#ffef9b,#ffd84e,#ffb800);overflow:hidden}.sand-top{top:10px;height:23px;clip-path:polygon(0 0,100% 0,60% 100%,40% 100%);transform-origin:top}.sand-bottom{bottom:10px;height:23px;clip-path:polygon(40% 0,60% 0,100% 100%,0 100%);transform-origin:bottom}.sand-stream{position:absolute;left:24px;top:31px;width:4px;height:14px;background:#ffe66d}.running .sand-top{animation:drain 300s linear forwards}.running .sand-bottom{animation:fill 300s linear forwards}.running .sand-stream{animation:pulse .4s infinite}.finished .sand-stream{display:none}@keyframes drain{to{transform:scaleY(0)}}@keyframes fill{from{transform:scaleY(0)}to{transform:scaleY(1)}}@keyframes pulse{50%{opacity:.45}}
+.track-wrap{position:absolute;left:3%;right:3%;top:26%;height:41%;border-radius:25px;background:linear-gradient(180deg,#568bd0,#376faf);border:2px solid #a6e9ff;overflow:hidden;box-shadow:inset 0 0 28px #0005}.lane-labels{position:absolute;left:1.4%;top:8%;width:12%;height:84%;display:grid;grid-template-rows:repeat(4,1fr);gap:4%}.team-label{display:flex;align-items:center;justify-content:center;border-radius:14px;font-size:clamp(9px,.95vw,14px);font-weight:1000;border:2px solid #ffffff44}.blue{background:linear-gradient(135deg,#20d6ff,#2563eb)}.yellow{background:linear-gradient(135deg,#ffe66d,#ffb703);color:#3a2a00}.green{background:linear-gradient(135deg,#57e6c4,#16a34a)}.red{background:linear-gradient(135deg,#ff668c,#e11d48)}
+.lanes{position:absolute;left:14.2%;right:2%;top:8%;height:84%;display:grid;grid-template-rows:repeat(4,1fr);gap:4%}.lane{position:relative;border-radius:14px;background:linear-gradient(180deg,#6a92c4,#496f9e);border:1px solid #ffffff33;overflow:hidden}.lane:before{content:"";position:absolute;left:2%;right:2%;top:50%;height:2px;background:repeating-linear-gradient(90deg,#ffffffbb 0 18px,transparent 18px 34px)}.finish{position:absolute;right:1%;top:0;bottom:0;width:3%;background:repeating-linear-gradient(180deg,#fff 0 9px,#243047 9px 18px)}.car{position:absolute;left:3%;top:50%;transform:translate(-50%,-50%) scaleX(-1);font-size:clamp(31px,3.6vw,52px);transition:left .42s cubic-bezier(.2,.9,.25,1);filter:drop-shadow(0 4px 5px #0008);z-index:3}.score{position:absolute;right:5%;top:8%;font-size:clamp(9px,.85vw,13px);font-weight:1000;background:#ffffffea;color:#123261;border-radius:999px;padding:4px 8px;z-index:4}
+.question-panel{position:absolute;left:3%;right:3%;bottom:2%;height:27%;display:grid;grid-template-columns:1.48fr .52fr;gap:12px}.card{background:linear-gradient(180deg,#ffffff33,#397cc6aa);border:2px solid #c7efff;border-radius:18px;padding:10px 14px;box-shadow:0 0 18px #20d6ff22}.qtag{display:inline-block;background:linear-gradient(135deg,#24d7ff,#7a5cff,#ff63b8);border-radius:999px;padding:5px 10px;font-size:10px;font-weight:1000}.q{font-size:clamp(13px,1.5vw,22px);font-weight:1000;line-height:1.12;margin:6px 0 8px}.answers{display:grid;grid-template-columns:1fr 1fr;gap:7px}.answer{border:2px solid #9ad7ff;border-radius:11px;background:linear-gradient(180deg,#fff,#dff1ff);color:#174a78;padding:8px 10px;font-size:clamp(9px,1vw,14px);font-weight:1000;text-align:left;min-height:36px;cursor:pointer}.answer.good{background:linear-gradient(#64f0a6,#20bd6b);border-color:#c7ffe0;color:#064c2a;box-shadow:0 0 18px #43e98b}.answer.bad{background:linear-gradient(#ff9bad,#ee526f);border-color:#ffd7df;color:#6b1021}.info{display:flex;flex-direction:column;justify-content:center;gap:7px;text-align:center}.info h3{margin:0;color:#fff4a2;font-size:clamp(15px,1.5vw,22px)}.info p{margin:0;font-size:clamp(8px,.78vw,12px);font-weight:900;line-height:1.15}.myteam{padding:5px 8px;border-radius:999px;background:#ffffffea;color:#173c74;font-weight:1000}
+.overlay{position:absolute;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;background:#050b18df;backdrop-filter:blur(6px)}.hidden{display:none!important}.modal{width:min(650px,78%);background:linear-gradient(145deg,#4e9feb,#6d4de9 55%,#c642a2);border:2px solid #d8f6ff;border-radius:26px;padding:24px;text-align:center;box-shadow:0 0 40px #20d6ff44}.modal h2{margin:0 0 10px;color:#fff3a3;font-size:clamp(28px,4vw,50px)}.modal p{font-weight:900;line-height:1.35}.btn{border:0;border-radius:14px;padding:12px 20px;font-size:16px;font-weight:1000;background:linear-gradient(135deg,#ffe66d,#57e6c4,#ff63b8);color:#172033;cursor:pointer}.result-list{margin:12px auto;max-width:480px;text-align:left}.result-row{display:flex;justify-content:space-between;gap:12px;padding:9px 12px;margin:6px 0;border-radius:12px;background:#ffffff18;font-weight:1000}.champion{background:linear-gradient(135deg,#ffd70055,#fff0a855);border:1px solid #ffe66d}.count{font-size:86px;font-weight:1000;color:#ffe66d}
+.victory-overlay{position:absolute;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;overflow:hidden;background:radial-gradient(circle at 50% 35%,rgba(255,240,140,.28),transparent 24%),linear-gradient(145deg,#110b35f2,#3b1475f4 48%,#0b6774f2);backdrop-filter:blur(8px)}
+.victory-card{position:relative;z-index:2;width:min(760px,84%);text-align:center;padding:28px 24px;border-radius:34px;background:linear-gradient(145deg,rgba(255,255,255,.17),rgba(255,255,255,.06));border:2px solid rgba(255,230,109,.75);box-shadow:0 0 50px rgba(255,230,109,.34),0 24px 70px rgba(0,0,0,.48)}
+.victory-kicker{font-size:clamp(28px,4.8vw,62px);font-weight:1000;color:#fff7b0;text-shadow:0 0 18px rgba(255,230,109,.55);letter-spacing:1px}
+.victory-team{margin-top:8px;font-size:clamp(26px,4vw,52px);font-weight:1000;color:#fff;text-shadow:0 4px 16px #0006}
+.big-trophy{font-size:clamp(110px,13vw,180px);line-height:1;margin:8px 0;animation:trophyBounce .9s ease-in-out infinite alternate;filter:drop-shadow(0 0 24px rgba(255,215,0,.72))}
+.victory-sub{font-size:clamp(15px,1.6vw,22px);font-weight:1000;color:#dffcff}
+@keyframes trophyBounce{from{transform:translateY(0) scale(1)}to{transform:translateY(-10px) scale(1.05)}}
+.fireworks{position:absolute;inset:0;pointer-events:none;overflow:hidden}.burst{position:absolute;width:6px;height:6px}.spark-fire{position:absolute;left:0;top:0;width:7px;height:7px;border-radius:50%;background:var(--c);box-shadow:0 0 10px var(--c);animation:explode 1.15s ease-out forwards}
+@keyframes explode{0%{transform:translate(0,0) scale(.5);opacity:1}75%{opacity:1}100%{transform:translate(var(--dx),var(--dy)) scale(.1);opacity:0}}
+@media(max-height:540px){.timer-box{top:10.5%;transform:translateX(-50%) scale(.85)}.track-wrap{top:24.5%;height:39%}.question-panel{height:32%}.q{font-size:clamp(11px,1.25vw,17px)}.answer{font-size:clamp(8px,.85vw,12px);padding:5px 7px;min-height:29px}}
+
+.flags{display:inline-flex;gap:.14em;align-items:center;vertical-align:.08em;margin-left:.12em}
+.flag{display:inline-block;width:1.35em;height:.82em;border-radius:.08em;box-shadow:0 0 0 1px #ffffff88;position:relative;overflow:hidden;flex:none}
+.flag-us{background:repeating-linear-gradient(to bottom,#b22234 0 7.69%,#fff 7.69% 15.38%)}
+.flag-us:before{content:"";position:absolute;left:0;top:0;width:42%;height:54%;background:#3c3b6e}
+.flag-uk{background:linear-gradient(33deg,transparent 43%,#fff 43% 57%,transparent 57%),linear-gradient(-33deg,transparent 43%,#fff 43% 57%,transparent 57%),linear-gradient(90deg,transparent 39%,#fff 39% 61%,transparent 61%),linear-gradient(0deg,transparent 35%,#fff 35% 65%,transparent 65%),#012169}
+.flag-uk:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 44%,#c8102e 44% 56%,transparent 56%),linear-gradient(0deg,transparent 41%,#c8102e 41% 59%,transparent 59%)}
+
+.penalty{position:absolute;inset:0;z-index:45;display:flex;align-items:center;justify-content:center;background:#5a0b18c7;backdrop-filter:blur(4px)}
+.penalty-box{text-align:center;background:#fff;color:#8d1e35;border:3px solid #ff8ca2;border-radius:24px;padding:20px 28px;box-shadow:0 18px 50px #0006}
+.penalty-box .big{font-size:clamp(38px,6vw,72px);font-weight:1000;line-height:1}
+.penalty-box p{margin:8px 0 0;font-weight:1000}
+</style></head><body><div class="viewport"><div class="stage">
+<div class="grid"></div><div class="header"><div class="head-main"><div class="title">🏁 CORRIDA MALUCA — FINAL <span class="flags" aria-label="Estados Unidos e Reino Unido"><span class="flag flag-us"></span><span class="flag flag-uk"></span></span></div><div class="sub">FASE 6 • 3 acertos até a chegada • cada acerto faz o carro avançar</div></div><div class="meta">Turma 901<br>Escola Delfina de Jesus Amorim<br>Professor Jasson Bruno</div></div>
+<div class="timer-box" id="timerBox"><div style="font-size:42px">🏁</div><div><div class="timer-label">LINHA DE CHEGADA</div><div class="time-num" id="timeNum">3 ACERTOS</div></div></div>
+<div class="track-wrap"><div class="lane-labels"><div class="team-label blue">EQUIPE AZUL</div><div class="team-label yellow">EQUIPE AMARELA</div><div class="team-label green">EQUIPE VERDE</div><div class="team-label red">EQUIPE VERMELHA</div></div><div class="lanes">
+<div class="lane"><span class="car" id="cblue">🏎️</span><span class="score" id="sblue">0 acertos</span><span class="finish"></span></div>
+<div class="lane"><span class="car" id="cyellow">🚕</span><span class="score" id="syellow">0 acertos</span><span class="finish"></span></div>
+<div class="lane"><span class="car" id="cgreen">🚙</span><span class="score" id="sgreen">0 acertos</span><span class="finish"></span></div>
+<div class="lane"><span class="car" id="cred">🚗</span><span class="score" id="sred">0 acertos</span><span class="finish"></span></div>
+</div></div>
+<div class="question-panel"><div class="card"><div class="qtag" id="qtag">DESAFIO FINAL</div><div class="q" id="question">Aguardando largada...</div><div class="answers" id="answers"></div></div><div class="card info"><h3>🏎️ SUA EQUIPE</h3><div class="myteam" id="myTeam">MODO TESTE</div><p>✅ Acerto = avança</p><p id="liveStatus">🎯 Seus acertos: <b id="myHits">0</b></p><p>❌ Erro = penalidade de 2s</p><p>🏁 Ao chegar a 3 acertos, sua equipe para e aguarda</p><p>🥇 +10 • 🥈 +7 • 🥉 +5</p></div></div>
+<div class="overlay" id="startOverlay"><div class="modal"><h2>🏁 FINAL DO CAMPEONATO</h2><p id="startText">Desafios contínuos misturando vocabulário, gramática, modais, opiniões e sugestões.</p><p><b>Todos largam juntos. Não há relógio: cada equipe corre até 3 acertos. Ao cruzar a linha, para de responder. A corrida termina quando 3 equipes chegarem.</b></p><p><b>Bônus da corrida: 1º +10 • 2º +7 • 3º +5.</b></p><button class="btn" id="startBtn">COMEÇAR TESTE</button></div></div>
+<div class="overlay hidden" id="countOverlay"><div class="modal"><h2>LARGADA!</h2><div class="count" id="countNum">3</div></div></div>
+<div class="overlay hidden" id="endOverlay"><div class="modal"><h2>🏆 CAMPEONATO CONCLUÍDO</h2><p id="endText">Calculando classificação...</p><div class="result-list" id="results"></div></div></div>
+<div class="penalty hidden" id="penaltyOverlay"><div class="penalty-box"><div class="big">⏳ <span id="penaltyCount">2</span>s</div><p>RESPOSTA INCORRETA • PENALIDADE</p></div></div>
+<div class="victory-overlay hidden" id="victoryOverlay"><div class="fireworks" id="fireworks"></div><div class="victory-card"><div class="victory-kicker">🎉 CONGRATULATIONS! 🎉</div><div class="big-trophy">🏆</div><div class="victory-team" id="victoryTeam">EQUIPE CAMPEÃ</div><div class="victory-sub">Campeã do English Championship • Turma 901<br>Escola Delfina de Jesus Amorim • Professor Jasson Bruno <span class="flags" aria-label="Estados Unidos e Reino Unido"><span class="flag flag-us"></span><span class="flag flag-uk"></span></span></div></div></div>
+</div></div>
+<script>
+const BANK=(()=>{
+ const b=[],add=(t,q,o,a=0)=>b.push([t,q,o,a]);
+ const vocab=[
+  ["respect","respeito","barulho","atraso","licença"],
+  ["rule","regra","rua","prova","grupo"],
+  ["neighbor","vizinho","professor","aluno","irmão"],
+  ["responsibility","responsabilidade","possibilidade","opinião","amizade"],
+  ["behavior","comportamento","biblioteca","trabalho","silêncio"],
+  ["honesty","honestidade","habilidade","atividade","pontualidade"],
+  ["permission","permissão","proibição","opinião","obrigação"],
+  ["advice","conselho","aviso","regra","tarefa"],
+  ["duty","dever","direito","opinião","escolha"],
+  ["community","comunidade","companhia","competição","conversa"],
+  ["arrive on time","chegar no horário","sair cedo","chegar atrasado","esperar fora"],
+  ["ask for help","pedir ajuda","dar conselho","pedir licença","dar opinião"],
+  ["follow the rules","seguir as regras","quebrar as regras","criar regras","esquecer regras"],
+  ["do homework","fazer a tarefa","fazer barulho","ir embora","pedir ajuda"],
+  ["turn the music down","baixar o volume","aumentar o volume","desligar a TV","ligar o rádio"],
+  ["keep clean","manter limpo","deixar aberto","falar alto","chegar cedo"],
+  ["work in pairs","trabalhar em duplas","trabalhar sozinho","sair da sala","fazer silêncio"],
+  ["be respectful","ser respeitoso","ser atrasado","ser barulhento","ser tímido"],
+  ["share ideas","compartilhar ideias","esconder ideias","copiar respostas","criar regras"],
+  ["wait your turn","esperar sua vez","falar primeiro","sair correndo","ignorar a fila"]
+ ];
+ vocab.forEach(v=>{
+   add("Vocabulário",`“${v[0]}” significa:`,[v[1],v[2],v[3],v[4]]);
+   add("Vocabulário",`Qual expressão em inglês corresponde a “${v[1]}”?`,[v[0],...v.slice(2).map((x,i)=>["make noise","arrive late","ask permission","leave early"][(i+v[0].length)%4])]);
+ });
+ const people=[
+  ["you","Do","don't"],["they","Do","don't"],["we","Do","don't"],["your friends","Do","don't"],
+  ["she","Does","doesn't"],["he","Does","doesn't"],["Maria","Does","doesn't"],["your brother","Does","doesn't"]
+ ];
+ const verbs=[
+  ["study English","study"],["follow the rules","follow"],["arrive on time","arrive"],["respect classmates","respect"],
+  ["do homework","do"],["ask for help","ask"],["like group work","like"],["work in pairs","work"],
+  ["keep the room clean","keep"],["share ideas","share"]
+ ];
+ people.forEach((p,pi)=>verbs.forEach((v,vi)=>{
+   if((pi+vi)%2===0) add("Do / Does",`Complete: _____ ${p[0]} ${v[0]}?`,[p[1],p[1]==="Do"?"Does":"Do","Is","Are"]);
+   else add("Negatives",`Complete: ${p[0][0].toUpperCase()+p[0].slice(1)} _____ ${v[0]}.`,[p[2],p[2]==="don't"?"doesn't":"don't","isn't","aren't"]);
+ }));
+ const modals=[
+  ["should","conselho","You should study more.","You mustn't study more.","You might study more.","You can to study more."],
+  ["mustn't","proibição","You mustn't use your phone here.","You should use your phone here.","You might use your phone here.","You can use your phone here."],
+  ["must","obrigação","Students must respect the rules.","Students might respect the rules.","Students can ignore the rules.","Students shouldn't respect the rules."],
+  ["have to","obrigação","We have to wear a uniform.","We might wear a uniform.","We shouldn't wear a uniform.","We can ignore the uniform."],
+  ["can","capacidade","She can speak English.","She must speak English.","She should speaking English.","She can to speak English."],
+  ["might","possibilidade","It might rain later.","It mustn't rain later.","It has to rain later.","It should to rain later."],
+  ["may","permissão","May I come in?","Must I come in?","Should I coming in?","May I to come in?"],
+  ["don't have to","não é necessário","You don't have to bring a book.","You mustn't bring a book.","You have to bring a book.","You should bring a book."]
+ ];
+ modals.forEach((m,i)=>{
+   add("Modal Grammar",`Qual forma usamos principalmente para indicar ${m[1]}?`,[m[0],...modals.filter((_,j)=>j!==i).slice(0,3).map(x=>x[0])]);
+   add("Modal Use",`Qual frase expressa ${m[1]} de forma correta?`,[m[2],m[3],m[4],m[5]]);
+ });
+ const situations=[
+  ["Seu amigo está cansado.","You should rest.","You mustn't rest.","You might tired.","You can to rest."],
+  ["É proibido usar celular na prova.","You mustn't use your phone.","You should use your phone.","You might use your phone.","You can use your phone."],
+  ["É obrigatório usar crachá.","You have to wear an ID badge.","You might wear an ID badge.","You shouldn't wear an ID badge.","You can ignore it."],
+  ["Talvez chova mais tarde.","It might rain later.","It mustn't rain later.","It should to rain later.","It has rain later."],
+  ["Você quer pedir permissão para entrar.","May I come in?","Must I come in?","Should I coming?","Can to I come?"],
+  ["Ela sabe nadar.","She can swim.","She must swim.","She might to swim.","She should swims."],
+  ["Amanhã não é necessário trazer livro.","You don't have to bring a book.","You mustn't bring a book.","You should bring a book.","You can to bring a book."],
+  ["Você precisa entregar o trabalho hoje.","You have to submit it today.","You might submit it today.","You shouldn't submit it.","You can forget it."],
+  ["Carlos pode estar em casa.","He might be at home.","He mustn't be home.","He should to be home.","He has be home."],
+  ["Seu amigo está nervoso antes da prova.","You should relax.","You must panic.","You mustn't relax.","You might nervous."]
+ ];
+ situations.forEach((s,i)=>{
+   add("Modal Use",s[0]+" Qual é a melhor frase?",s.slice(1));
+   add("Modal Use",`Situação ${i+1}: ${s[0]} Escolha a resposta correta.`,s.slice(1));
+ });
+ const opinions=[
+  ["In my opinion...","Na minha opinião..."],["I think so.","Eu acho que sim."],["I don't think so.","Eu acho que não."],
+  ["I believe that...","Eu acredito que..."],["I agree with you.","Eu concordo com você."],["You're right.","Você tem razão."],
+  ["Exactly!","Exatamente!"],["That makes sense.","Isso faz sentido."],["I understand, but I disagree.","Eu entendo, mas discordo."],
+  ["I see it differently.","Eu vejo isso de forma diferente."]
+ ];
+ opinions.forEach((x,i)=>{
+   const wrong=opinions.filter((_,j)=>j!==i).slice(0,3).map(y=>y[1]);
+   add(i<4?"Opinions":i<8?"Agreeing":"Disagreeing",`“${x[0]}” significa:`,[x[1],...wrong]);
+ });
+ const suggestions=[
+  ["Let's study together.","Vamos estudar juntos."],
+  ["How about studying together?","Que tal estudarmos juntos?"],
+  ["Why don't you ask for help?","Por que você não pede ajuda?"],
+  ["Maybe you could talk to the teacher.","Talvez você possa falar com o professor."],
+  ["Let's work in pairs.","Vamos trabalhar em duplas."],
+  ["How about taking a short break?","Que tal fazer uma pequena pausa?"],
+  ["Let's try again.","Vamos tentar novamente."],
+  ["Maybe we can speak more quietly.","Talvez possamos falar mais baixo."],
+  ["Why don't you practice every day?","Por que você não pratica todos os dias?"],
+  ["Let's organize the classroom.","Vamos organizar a sala."]
+ ];
+ suggestions.forEach((x,i)=>{
+   const wrong=suggestions.filter((_,j)=>j!==i).slice(0,3).map(y=>y[1]);
+   add("Suggestions",`“${x[0]}” significa:`,[x[1],...wrong]);
+   add("Suggestions",`Qual frase em inglês corresponde a “${x[1]}”?`,[x[0],...suggestions.filter((_,j)=>j!==i).slice(0,3).map(y=>y[0])]);
+ });
+ const dialogues=[
+  ["A: I think English is important. B: _____.","I agree.","You mustn't.","You have to.","Maybe no."],
+  ["A: I'm tired. B: _____.","You should rest.","I disagree.","You mustn't sleep.","May I?"],
+  ["A: Let's study after class. B: _____.","Good idea!","I mustn't.","No English.","You can to study."],
+  ["A: I don't like this rule. B: _____. (discordar educadamente)","I understand, but I disagree.","Exactly!","You're right.","Absolutely!"],
+  ["A: I need help. B: _____.","You can ask the teacher.","You mustn't ask.","I disagree.","No help."],
+  ["A: We should keep the room clean. B: _____.","Absolutely!","I disagree clean.","Mustn't clean.","May clean."],
+  ["A: What do you think? B: _____.","In my opinion, it's good.","You must good.","May I good?","I should to good."],
+  ["A: The music is loud. B: _____.","Let's turn it down.","We must loud.","I agree music.","May loud."],
+  ["A: Can you help me? B: _____.","Of course!","I mustn't.","I disagree.","You may no."],
+  ["A: Maybe we should work together. B: _____.","That's a good idea.","You mustn't together.","No work.","May I rule?"]
+ ];
+ dialogues.forEach((d,i)=>{
+   add("Mini Dialogue",d[0],d.slice(1));
+   add("Mini Dialogue",`Complete o diálogo ${i+1}: ${d[0]}`,d.slice(1));
+ });
+ const readings=[
+  ["Students must be respectful.","MUST indica:","obrigação","possibilidade","opinião","sugestão"],
+  ["You should rest.","SHOULD indica:","conselho","proibição","capacidade","obrigação"],
+  ["May I come in?","A pessoa está:","pedindo permissão","dando ordem","dando conselho","discordando"],
+  ["I think this is fair.","A frase expressa:","opinião","proibição","obrigação","permissão"],
+  ["Let's study together.","A frase expressa:","sugestão","proibição","obrigação","capacidade"],
+  ["You don't have to come.","A frase significa:","não é necessário vir","é proibido vir","é obrigatório vir","talvez venha"],
+  ["She can swim.","CAN indica:","capacidade","proibição","opinião","obrigação"],
+  ["It might rain.","MIGHT indica:","possibilidade","obrigação","conselho","capacidade"],
+  ["Students mustn't run here.","A frase indica:","proibição","conselho","possibilidade","opinião"],
+  ["I agree with you.","A frase indica:","concordância","obrigação","proibição","permissão"]
+ ];
+ readings.forEach((r,i)=>{
+   add("Reading",`Leia: “${r[0]}” ${r[1]}`,r.slice(2));
+   add("Reading",`Texto rápido ${i+1}: “${r[0]}” Qual é a ideia principal?`,r.slice(2));
+ });
+ // Add safe recombinations so each match can draw from a much larger pool.
+ const subjects=["Ana","Pedro","Julia","Marcos","The students","My friends","My brother","My teacher"];
+ const actions=[
+  ["study English","study"],["respect the rules","respect"],["arrive on time","arrive"],["ask for help","ask"],
+  ["do homework","do"],["work in pairs","work"],["share ideas","share"],["keep the room clean","keep"]
+ ];
+ subjects.forEach((s,si)=>actions.forEach((a,ai)=>{
+   const singular=!s.startsWith("The students")&&!s.startsWith("My friends");
+   const aux=singular?"Does":"Do";
+   add("Do / Does",`Complete: _____ ${s} ${a[0]}?`,[aux,aux==="Do"?"Does":"Do","Is","Are"]);
+   const neg=singular?"doesn't":"don't";
+   add("Negatives",`Complete: ${s} _____ ${a[0]}.`,[neg,neg==="don't"?"doesn't":"don't","isn't","aren't"]);
+ }));
+ return b;
+})();
+const FINISH_HITS=3,COLORS=['blue','yellow','green','red'],TEAM={blue:'EQUIPE AZUL',yellow:'EQUIPE AMARELA',green:'EQUIPE VERDE',red:'EQUIPE VERMELHA'};
+const cfg=window.TUG_SUPABASE_CONFIG||{},sb=(cfg.url&&cfg.key&&window.supabase?.createClient)?window.supabase.createClient(cfg.url,cfg.key):null;
+const qs=new URLSearchParams(location.search),demo=qs.get('demo')==='1',room=(qs.get('sala')||'TESTE9').replace(/[^a-zA-Z0-9_-]/g,'').toUpperCase(),deviceId=localStorage.getItem('championship9TestDeviceId');
+const $=id=>document.getElementById(id);let order=[],items=[],idx=0,correct=0,wrong=0,currentA=0,started=false,ended=false,ownFinished=false,ownPlace=null,myColor='blue',liveTimer=null,submitPoll=null,demoScores={blue:0,yellow:0,green:0,red:0},liveScores={blue:0,yellow:0,green:0,red:0},cpuTimers=[],demoFinishOrder=[],victoryScheduled=false,penaltyActive=false;
+function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function candidateOrder(){let out=[],base=BANK.map((_,i)=>i),last=-1;while(out.length<240){let batch=shuffle(base);if(batch[0]===last&&batch.length>1)[batch[0],batch[1]]=[batch[1],batch[0]];out.push(...batch);last=out[out.length-1]}return out.slice(0,240)}
+function buildItems(){items=order.map(i=>{const [t,q,o,a]=BANK[i],ans=o[a],mix=shuffle(o);return {t,q,o:mix,a:mix.indexOf(ans)}})}
+function updateCars(scores){
+ COLORS.forEach(color=>{
+   const n=Number(scores[color]||0),pct=3+Math.min(n,FINISH_HITS)/FINISH_HITS*91;
+   $('c'+color).style.left=pct+'%';
+   $('s'+color).textContent=n>=FINISH_HITS?'🏁 CHEGOU • '+n+' acertos':n+' acertos';
+ });
+ if($('myHits'))$('myHits').textContent=correct;
+ if(demo){
+   COLORS.forEach(color=>{
+     if(Number(scores[color]||0)>=FINISH_HITS&&!demoFinishOrder.includes(color))demoFinishOrder.push(color);
+   });
+   if(started&&!ended&&demoFinishOrder.length>=3)showDemoFinal();
+ }
+}
+function renderQuestion(){if(!started||ended||ownFinished)return;if(idx>=items.length){$('question').textContent='Você concluiu todos os desafios disponíveis. Aguarde a ampulheta terminar.';$('answers').innerHTML='';return}const x=items[idx];currentA=x.a;$('qtag').textContent='DESAFIO '+(idx+1)+' • '+x.t;$('question').textContent=x.q;$('answers').innerHTML='';x.o.forEach((t,i)=>{const b=document.createElement('button');b.className='answer';b.textContent=String.fromCharCode(65+i)+') '+t;b.onclick=()=>answer(i,b);$('answers').appendChild(b)})}
+async function answer(i,b){
+ if(!started||ended||ownFinished||penaltyActive)return;
+ const bs=[...document.querySelectorAll('.answer')];
+ bs.forEach(x=>x.disabled=true);
+ const isCorrect=i===currentA;
+ if(isCorrect){
+   correct++;
+   b.classList.add('good');
+ }else{
+   wrong++;
+   b.classList.add('bad');
+   bs[currentA]?.classList.add('good');
+ }
+ idx++;
+ if(demo){
+   demoScores.blue=correct;
+   updateCars(demoScores);
+   if(correct>=FINISH_HITS){finishOwnDemo();return}
+ }else{
+   liveScores[myColor]=correct;
+   updateCars(liveScores);
+   try{
+     const {data,error}=await sb.rpc('championship_phase6_progress',{p_room:room,p_device:deviceId,p_correct:correct,p_answered:correct+wrong});
+     if(error||!data?.ok){
+       if($('liveStatus'))$('liveStatus').innerHTML='⚠️ Sincronizando acertos... <b id="myHits">'+correct+'</b>';
+     }else if($('liveStatus')){
+       $('liveStatus').innerHTML='🎯 Seus acertos: <b id="myHits">'+correct+'</b>';
+     }
+   }catch(e){
+     if($('liveStatus'))$('liveStatus').innerHTML='⚠️ Reconectando... <b id="myHits">'+correct+'</b>';
+   }
+   if(correct>=FINISH_HITS){finishOwnRace();return}
+ }
+ if(isCorrect){
+   setTimeout(renderQuestion,330);
+ }else{
+   startPenalty();
+ }
+}
+async function finishOwnRace(){
+ if(ownFinished||ended)return;
+ ownFinished=true;penaltyActive=false;
+ $('answers').innerHTML='';
+ $('qtag').textContent='🏁 LINHA DE CHEGADA!';
+ $('question').textContent='Sua equipe chegou aos 3 acertos. Aguarde as outras equipes terminarem a corrida.';
+ if($('liveStatus'))$('liveStatus').innerHTML='🏁 CHEGAMOS! Registrando colocação...';
+ await submitOwnFinish();
+}
+async function submitOwnFinish(){
+ if(ended||demo)return;
+ try{
+   const {data,error}=await sb.rpc('championship9_phase6_finish',{p_room:room,p_device:deviceId,p_correct:correct,p_wrong:wrong});
+   if(error||!data?.ok){
+     if($('liveStatus'))$('liveStatus').textContent='⚠️ Registrando chegada... tentando novamente.';
+     setTimeout(submitOwnFinish,1200);
+     return;
+   }
+   ownPlace=Number(data.place||0);
+   const bonus=Number(data.bonus||0);
+   const medal=ownPlace===1?'🥇':ownPlace===2?'🥈':ownPlace===3?'🥉':'🏁';
+   if($('liveStatus'))$('liveStatus').textContent=medal+' '+ownPlace+'º lugar na corrida • '+correct+' acertos + '+bonus+' bônus. Aguardando...';
+   if(data.finalized)showFinalFromServer();
+ }catch(e){
+   if($('liveStatus'))$('liveStatus').textContent='⚠️ Conexão instável. Registrando chegada novamente...';
+   setTimeout(submitOwnFinish,1200);
+ }
+}
+function finishOwnDemo(){
+ if(ownFinished||ended)return;
+ ownFinished=true;penaltyActive=false;
+ if(!demoFinishOrder.includes('blue'))demoFinishOrder.push('blue');
+ $('answers').innerHTML='';
+ $('qtag').textContent='🏁 LINHA DE CHEGADA!';
+ $('question').textContent='Sua equipe chegou aos 3 acertos. Aguarde as outras equipes terminarem a corrida.';
+ const p=demoFinishOrder.indexOf('blue')+1,b=[10,7,5,0][p-1]||0;
+ if($('liveStatus'))$('liveStatus').textContent='🏁 '+p+'º lugar • 3 acertos + '+b+' bônus. Aguardando...';
+}
+function startPenalty(){
+ if(ended)return;
+ penaltyActive=true;
+ const overlay=$('penaltyOverlay');
+ if(overlay)overlay.classList.add('hidden');
+ $('qtag').textContent='❌ RESPOSTA INCORRETA';
+ $('answers').innerHTML='';
+ let n=2;
+ const show=()=>{
+   $('question').innerHTML='⏳ PENALIDADE: <span style="color:#ffe66d;font-size:1.35em">'+n+'s</span><br><span style="font-size:.72em">A próxima pergunta será liberada após a penalidade.</span>';
+ };
+ show();
+ const t=setInterval(()=>{
+   n--;
+   if(n>0){show();return}
+   clearInterval(t);
+   penaltyActive=false;
+   if(!ended&&!ownFinished)renderQuestion();
+ },1000);
+}
+function startRace(){if(started)return;started=true;$('countOverlay').classList.add('hidden');$('startOverlay').classList.add('hidden');renderQuestion();if(demo)startDemoCpus();else liveTimer=setInterval(pollLive,500)}
+function countdown(){let n=3;$('countOverlay').classList.remove('hidden');$('countNum').textContent=n;const t=setInterval(()=>{n--;$('countNum').textContent=n>0?n:'GO!';if(n<=0){clearInterval(t);setTimeout(startRace,650)}},800)}
+function startDemoCpus(){
+ const specs={yellow:[.66,950,1750],green:[.72,850,1600],red:[.78,780,1500]};
+ Object.entries(specs).forEach(([color,[acc,min,max]])=>{
+   const step=()=>{
+     if(ended||demoScores[color]>=FINISH_HITS)return;
+     if(Math.random()<acc)demoScores[color]=Math.min(FINISH_HITS,demoScores[color]+1);
+     updateCars(demoScores);
+     if(!ended&&demoScores[color]<FINISH_HITS)cpuTimers.push(setTimeout(step,min+Math.random()*(max-min)));
+   };
+   cpuTimers.push(setTimeout(step,700+Math.random()*500));
+ });
+}
+async function pollLive(){
+ const [{data,error},{data:rooms}]=await Promise.all([
+   sb.from('championship_phase6_live').select('color,correct').eq('room_code',room),
+   sb.from('championship_rooms').select('status').eq('room_code',room).limit(1)
+ ]);
+ if(!error){
+   const s={blue:0,yellow:0,green:0,red:0};
+   (data||[]).forEach(r=>s[r.color]=Number(r.correct||0));
+   s[myColor]=Math.max(Number(s[myColor]||0),correct);
+   liveScores=s;updateCars(liveScores);
+ }
+ if(rooms?.[0]?.status==='finished')showFinalFromServer();
+}
+async function waitReady(){const {data}=await sb.from('championship_phase6_live').select('color').eq('room_code',room);const n=(data||[]).length;$('startText').innerHTML='Equipes posicionadas na largada: <b>'+n+'/4</b><br>Assim que as quatro estiverem prontas, começa a contagem.<br><b>Chegada: 3 acertos • sem limite de tempo.</b>';if(n>=4){clearInterval(liveTimer);$('startOverlay').classList.add('hidden');countdown()}}
+async function init(){order=candidateOrder();if(demo){buildItems();$('myTeam').textContent='MODO TESTE • VOCÊ = EQUIPE AZUL';$('startBtn').onclick=()=>{$('startOverlay').classList.add('hidden');countdown()};return}
+ $('startBtn').classList.add('hidden');if(!sb||!deviceId){$('startText').textContent='Entre primeiro pelo lobby do campeonato.';return}
+ const {data,error}=await sb.rpc('championship_phase6_get_or_create',{p_room:room,p_device:deviceId,p_order:order});
+ if(error||!data?.ok){$('startText').textContent='Não foi possível abrir a final.';return}
+ order=data.item_order;myColor=data.color;buildItems();$('myTeam').textContent=TEAM[myColor];liveScores[myColor]=0;updateCars(liveScores);liveTimer=setInterval(waitReady,600);waitReady()
+}
+async function showFinalFromServer(){
+ if(ended)return;
+ ended=true;started=false;ownFinished=true;penaltyActive=false;
+ clearInterval(liveTimer);cpuTimers.forEach(clearTimeout);
+ $('answers').innerHTML='';document.querySelectorAll('.answer').forEach(b=>b.disabled=true);
+ $('question').textContent='🏁 AS 3 PRIMEIRAS EQUIPES CHEGARAM!';
+ $('endOverlay').classList.remove('hidden');
+ await checkFinal();
+}
+function showDemoFinal(){
+ if(ended)return;
+ ended=true;started=false;ownFinished=true;penaltyActive=false;
+ cpuTimers.forEach(clearTimeout);$('answers').innerHTML='';
+ $('question').textContent='🏁 AS 3 PRIMEIRAS EQUIPES CHEGARAM!';
+ $('endOverlay').classList.remove('hidden');
+ showDemoResult();
+}
+function launchFireworks(){const box=$('fireworks');box.innerHTML='';const colors=['#ffe66d','#ff5ca8','#5ef2e2','#60a5fa','#c084fc','#ffffff'];for(let b=0;b<12;b++){setTimeout(()=>{const burst=document.createElement('div');burst.className='burst';burst.style.left=(10+Math.random()*80)+'%';burst.style.top=(10+Math.random()*64)+'%';for(let i=0;i<26;i++){const s=document.createElement('i');s.className='spark-fire';const a=(Math.PI*2/26)*i+Math.random()*.18,d=55+Math.random()*115;s.style.setProperty('--dx',Math.cos(a)*d+'px');s.style.setProperty('--dy',Math.sin(a)*d+'px');s.style.setProperty('--c',colors[Math.floor(Math.random()*colors.length)]);burst.appendChild(s)}box.appendChild(burst);setTimeout(()=>burst.remove(),1300)},b*280)}}
+function showVictory(color){$('victoryTeam').textContent=TEAM[color];$('victoryOverlay').classList.remove('hidden');launchFireworks();setInterval(launchFireworks,3600)}
+function scheduleVictory(color){if(victoryScheduled)return;victoryScheduled=true;setTimeout(()=>showVictory(color),4500)}
+function showDemoResult(){
+ const order=[...demoFinishOrder];
+ COLORS.filter(c=>!order.includes(c)).forEach(c=>order.push(c));
+ $('endText').textContent='Resultado da corrida de teste • 1º +10 • 2º +7 • 3º +5.';
+ $('results').innerHTML=order.map((color,i)=>{
+   const bonus=[10,7,5,0][i]||0,score=Number(demoScores[color]||0);
+   return '<div class="result-row '+(i===0?'champion':'')+'"><span>'+(i===0?'🥇':i===1?'🥈':i===2?'🥉':'4º')+' '+TEAM[color]+'</span><span>'+score+' acertos + '+bonus+' bônus</span></div>';
+ }).join('');
+ scheduleVictory(order[0]);
+}
+async function checkFinal(){
+ const [{data:phase},{data:rooms}]=await Promise.all([
+   sb.from('championship_phase_scores').select('color,total_points,correct,bonus,submitted_at').eq('room_code',room).eq('phase',6),
+   sb.from('championship_rooms').select('status,scores').eq('room_code',room).limit(1)
+ ]);
+ const state=rooms?.[0]||{};
+ if(state.status!=='finished'){
+   $('endText').textContent='Aguardando a terceira equipe cruzar a linha de chegada...';
+   return;
+ }
+ clearInterval(submitPoll);
+ const race={};
+ (phase||[]).forEach(r=>race[r.color]={correct:Number(r.correct||0),bonus:Number(r.bonus||0)});
+ const arr=COLORS.map(color=>({color,pts:Number(state.scores?.[color]||0)})).sort((a,b)=>b.pts-a.pts);
+ $('endText').textContent='PLACAR FINAL — soma das 6 fases. Na corrida: 1º +10 • 2º +7 • 3º +5.';
+ $('results').innerHTML=arr.map((r,i)=>{
+   const rr=race[r.color]||{correct:0,bonus:0};
+   return '<div class="result-row '+(i===0?'champion':'')+'"><span>'+(i===0?'🏆 CAMPEÃ — ':i===1?'🥈 ':i===2?'🥉 ':'4º ')+TEAM[r.color]+'</span><span>'+r.pts+' pts <small>• corrida '+rr.correct+'+'+rr.bonus+'</small></span></div>';
+ }).join('');
+ scheduleVictory(arr[0].color);
+}
+init();
+</script></body></html>
