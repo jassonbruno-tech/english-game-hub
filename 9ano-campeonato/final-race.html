@@ -203,7 +203,7 @@ function updateCars(scores){
    $('s'+color).textContent=n+' acertos';
  });
  if($('myHits'))$('myHits').textContent=correct;
- if(started&&!ended&&!demo){
+ if(started&&!ended){
    const finishedTeams=COLORS.filter(color=>Number(scores[color]||0)>=FINISH_HITS);
    if(finishedTeams.length>=3){
      endGame('PODIUM_COMPLETE');
