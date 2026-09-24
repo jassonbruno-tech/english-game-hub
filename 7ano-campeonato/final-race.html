@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Fase 6 — Corrida Maluca Final</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="../jogos-em-equipe/supabase-config.js?v=9ano1"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="../jogos-em-equipe/supabase-config.js?v=7ano1"></script>
 <style>
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:Arial,Helvetica,sans-serif;background:#08162e;color:#fff}:root{--cyan:#53e7ff;--pink:#ff63b8;--yellow:#ffe66d;--mint:#57e6c4}
 .viewport{position:fixed;inset:0;display:grid;place-items:center;background:radial-gradient(circle at top,#8677ff 0,#45c5ff 34%,#287fe6 66%,#0b438b 100%)}.stage{position:relative;width:min(100vw,177.78vh);height:min(56.25vw,100vh);overflow:hidden;background:linear-gradient(180deg,#8179ff 0%,#41bfff 36%,#2484e4 68%,#0e57aa 100%);box-shadow:0 0 42px #0006}.grid{position:absolute;inset:0;background:linear-gradient(#fff1 1px,transparent 1px),linear-gradient(90deg,#fff1 1px,transparent 1px);background-size:3.1% 6%;opacity:.22}
@@ -21,197 +21,239 @@
 .fireworks{position:absolute;inset:0;pointer-events:none;overflow:hidden}.burst{position:absolute;width:6px;height:6px}.spark-fire{position:absolute;left:0;top:0;width:7px;height:7px;border-radius:50%;background:var(--c);box-shadow:0 0 10px var(--c);animation:explode 1.15s ease-out forwards}
 @keyframes explode{0%{transform:translate(0,0) scale(.5);opacity:1}75%{opacity:1}100%{transform:translate(var(--dx),var(--dy)) scale(.1);opacity:0}}
 @media(max-height:540px){.timer-box{top:10.5%;transform:translateX(-50%) scale(.85)}.track-wrap{top:24.5%;height:39%}.question-panel{height:32%}.q{font-size:clamp(11px,1.25vw,17px)}.answer{font-size:clamp(8px,.85vw,12px);padding:5px 7px;min-height:29px}}
+
+.flags{display:inline-flex;gap:.14em;align-items:center;vertical-align:.08em;margin-left:.12em}
+.flag{display:inline-block;width:1.35em;height:.82em;border-radius:.08em;box-shadow:0 0 0 1px #ffffff88;position:relative;overflow:hidden;flex:none}
+.flag-us{background:repeating-linear-gradient(to bottom,#b22234 0 7.69%,#fff 7.69% 15.38%)}
+.flag-us:before{content:"";position:absolute;left:0;top:0;width:42%;height:54%;background:#3c3b6e}
+.flag-uk{background:linear-gradient(33deg,transparent 43%,#fff 43% 57%,transparent 57%),linear-gradient(-33deg,transparent 43%,#fff 43% 57%,transparent 57%),linear-gradient(90deg,transparent 39%,#fff 39% 61%,transparent 61%),linear-gradient(0deg,transparent 35%,#fff 35% 65%,transparent 65%),#012169}
+.flag-uk:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 44%,#c8102e 44% 56%,transparent 56%),linear-gradient(0deg,transparent 41%,#c8102e 41% 59%,transparent 59%)}
+
+.penalty{position:absolute;inset:0;z-index:45;display:flex;align-items:center;justify-content:center;background:#5a0b18c7;backdrop-filter:blur(4px)}
+.penalty-box{text-align:center;background:#fff;color:#8d1e35;border:3px solid #ff8ca2;border-radius:24px;padding:20px 28px;box-shadow:0 18px 50px #0006}
+.penalty-box .big{font-size:clamp(38px,6vw,72px);font-weight:1000;line-height:1}
+.penalty-box p{margin:8px 0 0;font-weight:1000}
 </style></head><body><div class="viewport"><div class="stage">
-<div class="grid"></div><div class="header"><div class="head-main"><div class="title">🏁 CORRIDA MALUCA — FINAL 🇺🇸 🇬🇧</div><div class="sub">FASE 6 • 300 segundos • desafios contínuos • cada acerto faz o carro avançar</div></div><div class="meta">Turmas 701 e 702<br>Escola Delfina de Jesus Amorim<br>Professor Jasson Bruno</div></div>
-<div class="timer-box" id="timerBox"><div class="hourglass"><div class="glass"></div><div class="sand-top"></div><div class="sand-stream"></div><div class="sand-bottom"></div></div><div><div class="timer-label">AMPULHETA FINAL</div><div class="time-num" id="timeNum">300s</div></div></div>
+<div class="grid"></div><div class="header"><div class="head-main"><div class="title">🏁 CORRIDA MALUCA — FINAL <span class="flags" aria-label="Estados Unidos e Reino Unido"><span class="flag flag-us"></span><span class="flag flag-uk"></span></span></div><div class="sub">FASE 6 • 40 acertos até a chegada • cada acerto faz o carro avançar</div></div><div class="meta">Turmas 701 e 702<br>Escola Delfina de Jesus Amorim<br>Professor Jasson Bruno</div></div>
+<div class="timer-box" id="timerBox"><div style="font-size:42px">🏁</div><div><div class="timer-label">LINHA DE CHEGADA</div><div class="time-num" id="timeNum">40 ACERTOS</div></div></div>
 <div class="track-wrap"><div class="lane-labels"><div class="team-label blue">EQUIPE AZUL</div><div class="team-label yellow">EQUIPE AMARELA</div><div class="team-label green">EQUIPE VERDE</div><div class="team-label red">EQUIPE VERMELHA</div></div><div class="lanes">
 <div class="lane"><span class="car" id="cblue">🏎️</span><span class="score" id="sblue">0 acertos</span><span class="finish"></span></div>
 <div class="lane"><span class="car" id="cyellow">🚕</span><span class="score" id="syellow">0 acertos</span><span class="finish"></span></div>
 <div class="lane"><span class="car" id="cgreen">🚙</span><span class="score" id="sgreen">0 acertos</span><span class="finish"></span></div>
 <div class="lane"><span class="car" id="cred">🚗</span><span class="score" id="sred">0 acertos</span><span class="finish"></span></div>
 </div></div>
-<div class="question-panel"><div class="card"><div class="qtag" id="qtag">DESAFIO FINAL</div><div class="q" id="question">Aguardando largada...</div><div class="answers" id="answers"></div></div><div class="card info"><h3>🏎️ SUA EQUIPE</h3><div class="myteam" id="myTeam">MODO TESTE</div><p>✅ Acerto = avança</p><p>❌ Erro = não avança</p><p>⌛ Fim = areia acaba</p></div></div>
-<div class="overlay" id="startOverlay"><div class="modal"><h2>🏁 FINAL DO CAMPEONATO</h2><p id="startText">Desafios contínuos misturando vocabulário, gramática, modais, opiniões e sugestões.</p><p><b>Todos largam juntos. O relógio é de 300 segundos (5 minutos).</b></p><button class="btn" id="startBtn">COMEÇAR TESTE</button></div></div>
+<div class="question-panel"><div class="card"><div class="qtag" id="qtag">DESAFIO FINAL</div><div class="q" id="question">Aguardando largada...</div><div class="answers" id="answers"></div></div><div class="card info"><h3>🏎️ SUA EQUIPE</h3><div class="myteam" id="myTeam">MODO TESTE</div><p>✅ Acerto = avança</p><p id="liveStatus">🎯 Seus acertos: <b id="myHits">0</b></p><p>❌ Erro = penalidade de 2s</p><p>🏁 Ao chegar a 40 acertos, sua equipe para e aguarda</p><p>🥇 +10 • 🥈 +7 • 🥉 +5</p></div></div>
+<div class="overlay" id="startOverlay"><div class="modal"><h2>🏁 FINAL DO CAMPEONATO</h2><p id="startText">Desafios contínuos com Present Continuous, Comparatives, Quantifiers, Family Members, Actions e Places.</p><p><b>Todos largam juntos. Não há relógio: cada equipe corre até 40 acertos. Ao cruzar a linha, para de responder. A corrida termina quando 3 equipes chegarem.</b></p><p><b>Bônus da corrida: 1º +10 • 2º +7 • 3º +5.</b></p><button class="btn" id="startBtn">COMEÇAR TESTE</button></div></div>
 <div class="overlay hidden" id="countOverlay"><div class="modal"><h2>LARGADA!</h2><div class="count" id="countNum">3</div></div></div>
 <div class="overlay hidden" id="endOverlay"><div class="modal"><h2>🏆 CAMPEONATO CONCLUÍDO</h2><p id="endText">Calculando classificação...</p><div class="result-list" id="results"></div></div></div>
-<div class="victory-overlay hidden" id="victoryOverlay"><div class="fireworks" id="fireworks"></div><div class="victory-card"><div class="victory-kicker">🎉 CONGRATULATIONS! 🎉</div><div class="big-trophy">🏆</div><div class="victory-team" id="victoryTeam">EQUIPE CAMPEÃ</div><div class="victory-sub">Campeã do English Championship • Turmas 701 e 702<br>Escola Delfina de Jesus Amorim • Professor Jasson Bruno 🇺🇸 🇬🇧</div></div></div>
+<div class="penalty hidden" id="penaltyOverlay"><div class="penalty-box"><div class="big">⏳ <span id="penaltyCount">2</span>s</div><p>RESPOSTA INCORRETA • PENALIDADE</p></div></div>
+<div class="victory-overlay hidden" id="victoryOverlay"><div class="fireworks" id="fireworks"></div><div class="victory-card"><div class="victory-kicker">🎉 CONGRATULATIONS! 🎉</div><div class="big-trophy">🏆</div><div class="victory-team" id="victoryTeam">EQUIPE CAMPEÃ</div><div class="victory-sub">Campeã do English Championship • Turmas 701 e 702<br>Escola Delfina de Jesus Amorim • Professor Jasson Bruno <span class="flags" aria-label="Estados Unidos e Reino Unido"><span class="flag flag-us"></span><span class="flag flag-uk"></span></span></div></div></div>
 </div></div>
 <script>
-const BANK=(()=>{
- const b=[],add=(t,q,o,a=0)=>b.push([t,q,o,a]);
- const vocab=[
-  ["respect","respeito","barulho","atraso","licença"],
-  ["rule","regra","rua","prova","grupo"],
-  ["neighbor","vizinho","professor","aluno","irmão"],
-  ["responsibility","responsabilidade","possibilidade","opinião","amizade"],
-  ["behavior","comportamento","biblioteca","trabalho","silêncio"],
-  ["honesty","honestidade","habilidade","atividade","pontualidade"],
-  ["permission","permissão","proibição","opinião","obrigação"],
-  ["advice","conselho","aviso","regra","tarefa"],
-  ["duty","dever","direito","opinião","escolha"],
-  ["community","comunidade","companhia","competição","conversa"],
-  ["arrive on time","chegar no horário","sair cedo","chegar atrasado","esperar fora"],
-  ["ask for help","pedir ajuda","dar conselho","pedir licença","dar opinião"],
-  ["follow the rules","seguir as regras","quebrar as regras","criar regras","esquecer regras"],
-  ["do homework","fazer a tarefa","fazer barulho","ir embora","pedir ajuda"],
-  ["turn the music down","baixar o volume","aumentar o volume","desligar a TV","ligar o rádio"],
-  ["keep clean","manter limpo","deixar aberto","falar alto","chegar cedo"],
-  ["work in pairs","trabalhar em duplas","trabalhar sozinho","sair da sala","fazer silêncio"],
-  ["be respectful","ser respeitoso","ser atrasado","ser barulhento","ser tímido"],
-  ["share ideas","compartilhar ideias","esconder ideias","copiar respostas","criar regras"],
-  ["wait your turn","esperar sua vez","falar primeiro","sair correndo","ignorar a fila"]
- ];
- vocab.forEach(v=>{
-   add("Vocabulário",`“${v[0]}” significa:`,[v[1],v[2],v[3],v[4]]);
-   add("Vocabulário",`Qual expressão em inglês corresponde a “${v[1]}”?`,[v[0],...v.slice(2).map((x,i)=>["make noise","arrive late","ask permission","leave early"][(i+v[0].length)%4])]);
- });
- const people=[
-  ["you","Do","don't"],["they","Do","don't"],["we","Do","don't"],["your friends","Do","don't"],
-  ["she","Does","doesn't"],["he","Does","doesn't"],["Maria","Does","doesn't"],["your brother","Does","doesn't"]
- ];
- const verbs=[
-  ["study English","study"],["follow the rules","follow"],["arrive on time","arrive"],["respect classmates","respect"],
-  ["do homework","do"],["ask for help","ask"],["like group work","like"],["work in pairs","work"],
-  ["keep the room clean","keep"],["share ideas","share"]
- ];
- people.forEach((p,pi)=>verbs.forEach((v,vi)=>{
-   if((pi+vi)%2===0) add("Do / Does",`Complete: _____ ${p[0]} ${v[0]}?`,[p[1],p[1]==="Do"?"Does":"Do","Is","Are"]);
-   else add("Negatives",`Complete: ${p[0][0].toUpperCase()+p[0].slice(1)} _____ ${v[0]}.`,[p[2],p[2]==="don't"?"doesn't":"don't","isn't","aren't"]);
- }));
- const modals=[
-  ["should","conselho","You should study more.","You mustn't study more.","You might study more.","You can to study more."],
-  ["mustn't","proibição","You mustn't use your phone here.","You should use your phone here.","You might use your phone here.","You can use your phone here."],
-  ["must","obrigação","Students must respect the rules.","Students might respect the rules.","Students can ignore the rules.","Students shouldn't respect the rules."],
-  ["have to","obrigação","We have to wear a uniform.","We might wear a uniform.","We shouldn't wear a uniform.","We can ignore the uniform."],
-  ["can","capacidade","She can speak English.","She must speak English.","She should speaking English.","She can to speak English."],
-  ["might","possibilidade","It might rain later.","It mustn't rain later.","It has to rain later.","It should to rain later."],
-  ["may","permissão","May I come in?","Must I come in?","Should I coming in?","May I to come in?"],
-  ["don't have to","não é necessário","You don't have to bring a book.","You mustn't bring a book.","You have to bring a book.","You should bring a book."]
- ];
- modals.forEach((m,i)=>{
-   add("Modal Grammar",`Qual forma usamos principalmente para indicar ${m[1]}?`,[m[0],...modals.filter((_,j)=>j!==i).slice(0,3).map(x=>x[0])]);
-   add("Modal Use",`Qual frase expressa ${m[1]} de forma correta?`,[m[2],m[3],m[4],m[5]]);
- });
- const situations=[
-  ["Seu amigo está cansado.","You should rest.","You mustn't rest.","You might tired.","You can to rest."],
-  ["É proibido usar celular na prova.","You mustn't use your phone.","You should use your phone.","You might use your phone.","You can use your phone."],
-  ["É obrigatório usar crachá.","You have to wear an ID badge.","You might wear an ID badge.","You shouldn't wear an ID badge.","You can ignore it."],
-  ["Talvez chova mais tarde.","It might rain later.","It mustn't rain later.","It should to rain later.","It has rain later."],
-  ["Você quer pedir permissão para entrar.","May I come in?","Must I come in?","Should I coming?","Can to I come?"],
-  ["Ela sabe nadar.","She can swim.","She must swim.","She might to swim.","She should swims."],
-  ["Amanhã não é necessário trazer livro.","You don't have to bring a book.","You mustn't bring a book.","You should bring a book.","You can to bring a book."],
-  ["Você precisa entregar o trabalho hoje.","You have to submit it today.","You might submit it today.","You shouldn't submit it.","You can forget it."],
-  ["Carlos pode estar em casa.","He might be at home.","He mustn't be home.","He should to be home.","He has be home."],
-  ["Seu amigo está nervoso antes da prova.","You should relax.","You must panic.","You mustn't relax.","You might nervous."]
- ];
- situations.forEach((s,i)=>{
-   add("Modal Use",s[0]+" Qual é a melhor frase?",s.slice(1));
-   add("Modal Use",`Situação ${i+1}: ${s[0]} Escolha a resposta correta.`,s.slice(1));
- });
- const opinions=[
-  ["In my opinion...","Na minha opinião..."],["I think so.","Eu acho que sim."],["I don't think so.","Eu acho que não."],
-  ["I believe that...","Eu acredito que..."],["I agree with you.","Eu concordo com você."],["You're right.","Você tem razão."],
-  ["Exactly!","Exatamente!"],["That makes sense.","Isso faz sentido."],["I understand, but I disagree.","Eu entendo, mas discordo."],
-  ["I see it differently.","Eu vejo isso de forma diferente."]
- ];
- opinions.forEach((x,i)=>{
-   const wrong=opinions.filter((_,j)=>j!==i).slice(0,3).map(y=>y[1]);
-   add(i<4?"Opinions":i<8?"Agreeing":"Disagreeing",`“${x[0]}” significa:`,[x[1],...wrong]);
- });
- const suggestions=[
-  ["Let's study together.","Vamos estudar juntos."],
-  ["How about studying together?","Que tal estudarmos juntos?"],
-  ["Why don't you ask for help?","Por que você não pede ajuda?"],
-  ["Maybe you could talk to the teacher.","Talvez você possa falar com o professor."],
-  ["Let's work in pairs.","Vamos trabalhar em duplas."],
-  ["How about taking a short break?","Que tal fazer uma pequena pausa?"],
-  ["Let's try again.","Vamos tentar novamente."],
-  ["Maybe we can speak more quietly.","Talvez possamos falar mais baixo."],
-  ["Why don't you practice every day?","Por que você não pratica todos os dias?"],
-  ["Let's organize the classroom.","Vamos organizar a sala."]
- ];
- suggestions.forEach((x,i)=>{
-   const wrong=suggestions.filter((_,j)=>j!==i).slice(0,3).map(y=>y[1]);
-   add("Suggestions",`“${x[0]}” significa:`,[x[1],...wrong]);
-   add("Suggestions",`Qual frase em inglês corresponde a “${x[1]}”?`,[x[0],...suggestions.filter((_,j)=>j!==i).slice(0,3).map(y=>y[0])]);
- });
- const dialogues=[
-  ["A: I think English is important. B: _____.","I agree.","You mustn't.","You have to.","Maybe no."],
-  ["A: I'm tired. B: _____.","You should rest.","I disagree.","You mustn't sleep.","May I?"],
-  ["A: Let's study after class. B: _____.","Good idea!","I mustn't.","No English.","You can to study."],
-  ["A: I don't like this rule. B: _____. (discordar educadamente)","I understand, but I disagree.","Exactly!","You're right.","Absolutely!"],
-  ["A: I need help. B: _____.","You can ask the teacher.","You mustn't ask.","I disagree.","No help."],
-  ["A: We should keep the room clean. B: _____.","Absolutely!","I disagree clean.","Mustn't clean.","May clean."],
-  ["A: What do you think? B: _____.","In my opinion, it's good.","You must good.","May I good?","I should to good."],
-  ["A: The music is loud. B: _____.","Let's turn it down.","We must loud.","I agree music.","May loud."],
-  ["A: Can you help me? B: _____.","Of course!","I mustn't.","I disagree.","You may no."],
-  ["A: Maybe we should work together. B: _____.","That's a good idea.","You mustn't together.","No work.","May I rule?"]
- ];
- dialogues.forEach((d,i)=>{
-   add("Mini Dialogue",d[0],d.slice(1));
-   add("Mini Dialogue",`Complete o diálogo ${i+1}: ${d[0]}`,d.slice(1));
- });
- const readings=[
-  ["Students must be respectful.","MUST indica:","obrigação","possibilidade","opinião","sugestão"],
-  ["You should rest.","SHOULD indica:","conselho","proibição","capacidade","obrigação"],
-  ["May I come in?","A pessoa está:","pedindo permissão","dando ordem","dando conselho","discordando"],
-  ["I think this is fair.","A frase expressa:","opinião","proibição","obrigação","permissão"],
-  ["Let's study together.","A frase expressa:","sugestão","proibição","obrigação","capacidade"],
-  ["You don't have to come.","A frase significa:","não é necessário vir","é proibido vir","é obrigatório vir","talvez venha"],
-  ["She can swim.","CAN indica:","capacidade","proibição","opinião","obrigação"],
-  ["It might rain.","MIGHT indica:","possibilidade","obrigação","conselho","capacidade"],
-  ["Students mustn't run here.","A frase indica:","proibição","conselho","possibilidade","opinião"],
-  ["I agree with you.","A frase indica:","concordância","obrigação","proibição","permissão"]
- ];
- readings.forEach((r,i)=>{
-   add("Reading",`Leia: “${r[0]}” ${r[1]}`,r.slice(2));
-   add("Reading",`Texto rápido ${i+1}: “${r[0]}” Qual é a ideia principal?`,r.slice(2));
- });
- // Add safe recombinations so each match can draw from a much larger pool.
- const subjects=["Ana","Pedro","Julia","Marcos","The students","My friends","My brother","My teacher"];
- const actions=[
-  ["study English","study"],["respect the rules","respect"],["arrive on time","arrive"],["ask for help","ask"],
-  ["do homework","do"],["work in pairs","work"],["share ideas","share"],["keep the room clean","keep"]
- ];
- subjects.forEach((s,si)=>actions.forEach((a,ai)=>{
-   const singular=!s.startsWith("The students")&&!s.startsWith("My friends");
-   const aux=singular?"Does":"Do";
-   add("Do / Does",`Complete: _____ ${s} ${a[0]}?`,[aux,aux==="Do"?"Does":"Do","Is","Are"]);
-   const neg=singular?"doesn't":"don't";
-   add("Negatives",`Complete: ${s} _____ ${a[0]}.`,[neg,neg==="don't"?"doesn't":"don't","isn't","aren't"]);
- }));
- return b;
-})();
-const DURATION=300,COLORS=['blue','yellow','green','red'],TEAM={blue:'EQUIPE AZUL',yellow:'EQUIPE AMARELA',green:'EQUIPE VERDE',red:'EQUIPE VERMELHA'};
+const BANK=[["Present Continuous","Complete: I _____ studying now.",["am","is","are","do"],0],["Present Continuous","Complete: She _____ cooking dinner.",["is","am","are","does"],0],["Present Continuous","Complete: They _____ playing soccer.",["are","is","am","does"],0],["Present Continuous","Complete: He is _____ a book.",["reading","read","reads","reader"],0],["Present Continuous","Complete: We are _____ TV.",["watching","watch","watches","watched"],0],["Present Continuous","Corrija: “She reading now.”",["She is reading now.","She are reading now.","She reads now.","She is read now."],0],["Present Continuous","Corrija: “They are play soccer.”",["They are playing soccer.","They playing soccer.","They is playing soccer.","They are plays soccer."],0],["Present Continuous","Corrija: “He is write a message.”",["He is writing a message.","He writing a message.","He is writes a message.","He are writing a message."],0],["Present Continuous","Passe para a negativa: She is studying.",["She is not studying.","She not is studying.","She doesn't studying.","She is study not."],0],["Present Continuous","Qual negativa está correta?",["They are not sleeping.","They not are sleeping.","They don't sleeping.","They are sleep not."],0],["Present Continuous","Corrija: “He not is playing.”",["He is not playing.","He doesn't playing.","He not playing is.","He is play not."],0],["Present Continuous","Complete: I _____ listening now. (negativa)",["am not","is not","are not","do not"],0],["Present Continuous","Transforme em pergunta: She is cooking.",["Is she cooking?","Does she cooking?","She is cooking?","Are she cooking?"],0],["Present Continuous","Transforme em pergunta: They are reading.",["Are they reading?","Do they reading?","They are reading?","Is they reading?"],0],["Present Continuous","Complete: What _____ he doing?",["is","are","am","does"],0],["Present Continuous","Complete: Where _____ they going?",["are","is","am","do"],0],["Present Continuous","Qual estrutura afirmativa está correta?",["subject + am/is/are + verb-ing","subject + do/does + verb","am/is/are + subject + verb-ing","subject + verb-ing"],0],["Present Continuous","Qual estrutura negativa está correta?",["subject + am/is/are + not + verb-ing","subject + not + verb-ing","do/does + not + verb-ing","not + subject + verb-ing"],0],["Present Continuous","Qual estrutura interrogativa está correta?",["Am/Is/Are + subject + verb-ing?","Subject + am/is/are + verb-ing?","Do/Does + subject + verb-ing?","Subject + do/does + verb-ing?"],0],["Present Continuous","Qual frase está correta?",["Are your cousins playing now?","Do your cousins playing now?","Is your cousins playing now?","Your cousins are playing now?"],0],["Present Continuous","Qual frase está correta?",["My mother is cooking now.","My mother cooking now.","My mother is cook now.","My mother are cooking now."],0],["Comparatives","BIG →",["bigger","more big","biger","biggest"],0],["Comparatives","SMALL →",["smaller","more small","smallier","smallest"],0],["Comparatives","OLD →",["older","more old","oldier","oldest"],0],["Comparatives","YOUNG →",["younger","more young","youngier","youngest"],0],["Comparatives","HAPPY →",["happier","happyer","more happy","happiest"],0],["Comparatives","INTERESTING →",["more interesting","interestinger","interestingest","more interestinger"],0],["Comparatives","DIFFICULT →",["more difficult","difficulter","difficultest","more difficulter"],0],["Comparatives","Complete: Lucas is older _____ Pedro.",["than","then","more","that"],0],["Comparatives","THAN significa:",["do que / que","mais","menos","muito"],0],["Comparatives","Corrija: “House A is more big than House B.”",["House A is bigger than House B.","House A is more bigger than House B.","House A is big than House B.","House A bigger House B."],0],["Comparatives","Corrija: “This book is interestinger than that one.”",["This book is more interesting than that one.","This book is interesting than that one.","This book is more interestinger than that one.","This book interestinger than that one."],0],["Comparatives","Corrija: “Maria is older Ana.”",["Maria is older than Ana.","Maria is more older than Ana.","Maria older than Ana.","Maria is old than Ana."],0],["Comparatives","Complete: My house is _____ than yours. (big)",["bigger","more big","big","biggest"],0],["Comparatives","Complete: Science is _____ than Math. (interesting)",["more interesting","interestinger","interesting","most interesting"],0],["Comparatives","Qual regra combina com adjetivo curto?",["adjective + -er + than","more + adjective + than","adjective + -ing + than","most + adjective"],0],["Comparatives","Qual regra combina com adjetivo longo?",["more + adjective + than","adjective + -er + than","adjective + -est","more + adjective + -er"],0],["Comparatives","Qual frase está correta?",["The red backpack is smaller than the blue backpack.","The red backpack is more small than the blue backpack.","The red backpack is small than the blue backpack.","The red backpack smaller the blue backpack."],0],["Comparatives","Qual frase está correta?",["Carlos is older than Pedro.","Carlos is more old than Pedro.","Carlos is old than Pedro.","Carlos older Pedro."],0],["Quantifiers","30 de 30 participaram. Complete: _____ students participated.",["All","Most","A few","Some"],0],["Quantifiers","25 de 30 participaram. A melhor opção é:",["Most","All","A few","Not many"],0],["Quantifiers","Apenas 3 faltaram. Complete: _____ students were absent.",["A few","All","Most","Many"],0],["Quantifiers","“alguns / algumas” =",["some","all","most","not many"],0],["Quantifiers","“não muitos” =",["not many","many","all","most"],0],["Quantifiers","Corrija: “A lot students like English.”",["A lot of students like English.","A lot students like English.","A lots students like English.","A lot of student likes English."],0],["Quantifiers","Qual par indica grande quantidade?",["many / a lot of","a few / not many","some / a few","all / not many"],0],["Quantifiers","26 de 30 gostam de música. Complete: _____ students like music.",["Most","A few","Not many","All"],0],["Quantifiers","Qual frase está correta?",["Some students like English.","Some students likes English.","Some student like English.","Some of students like English."],0],["Family Members","STEPFATHER significa:",["padrasto","sogro","cunhado","tio"],0],["Family Members","STEPMOTHER significa:",["madrasta","sogra","cunhada","tia"],0],["Family Members","MOTHER-IN-LAW significa:",["sogra","madrasta","avó","cunhada"],0],["Family Members","BROTHER-IN-LAW significa:",["cunhado","meio-irmão","primo","sobrinho"],0],["Family Members","STEPSISTER significa:",["meia-irmã","cunhada","prima","sobrinha"],0],["Family Members","NEPHEW significa:",["sobrinho","cunhado","tio","primo"],0],["Actions & Places","STUDYING significa:",["estudando","lendo","escrevendo","ouvindo"],0],["Actions & Places","COOKING significa:",["cozinhando","comendo","ajudando","lavando"],0],["Actions & Places","WATCHING TV significa:",["assistindo TV","jogando","lendo","dormindo"],0],["Actions & Places","IN THE KITCHEN significa:",["na cozinha","na sala","no quarto","na escola"],0],["Actions & Places","IN THE LIVING ROOM significa:",["na sala de estar","na cozinha","no quarto","na sala de aula"],0],["Actions & Places","AT SCHOOL significa:",["na escola","em casa","na cozinha","no quarto"],0]];
+const FINISH_HITS=40,COLORS=['blue','yellow','green','red'],TEAM={blue:'EQUIPE AZUL',yellow:'EQUIPE AMARELA',green:'EQUIPE VERDE',red:'EQUIPE VERMELHA'};
 const cfg=window.TUG_SUPABASE_CONFIG||{},sb=(cfg.url&&cfg.key&&window.supabase?.createClient)?window.supabase.createClient(cfg.url,cfg.key):null;
-const qs=new URLSearchParams(location.search),demo=qs.get('demo')==='1',room=(qs.get('sala')||'701').replace(/[^a-zA-Z0-9_-]/g,'').toUpperCase(),deviceId=localStorage.getItem('championship9DeviceId');
-const $=id=>document.getElementById(id);let order=[],items=[],idx=0,correct=0,wrong=0,currentA=0,started=false,ended=false,startAt=0,ticker=null,myColor='blue',liveTimer=null,submitPoll=null,demoScores={blue:0,yellow:0,green:0,red:0},cpuTimers=[],victoryScheduled=false;
+const qs=new URLSearchParams(location.search),demo=qs.get('demo')==='1',room=(qs.get('sala')||'701').replace(/[^a-zA-Z0-9_-]/g,'').toUpperCase(),deviceId=localStorage.getItem('championship7DeviceId');
+const $=id=>document.getElementById(id);let order=[],items=[],idx=0,correct=0,wrong=0,currentA=0,started=false,ended=false,ownFinished=false,ownPlace=null,myColor='blue',liveTimer=null,submitPoll=null,demoScores={blue:0,yellow:0,green:0,red:0},liveScores={blue:0,yellow:0,green:0,red:0},cpuTimers=[],demoFinishOrder=[],victoryScheduled=false,penaltyActive=false;
 function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function candidateOrder(){let out=[],base=BANK.map((_,i)=>i),last=-1;while(out.length<240){let batch=shuffle(base);if(batch[0]===last&&batch.length>1)[batch[0],batch[1]]=[batch[1],batch[0]];out.push(...batch);last=out[out.length-1]}return out.slice(0,240)}
 function buildItems(){items=order.map(i=>{const [t,q,o,a]=BANK[i],ans=o[a],mix=shuffle(o);return {t,q,o:mix,a:mix.indexOf(ans)}})}
-function updateCars(scores){COLORS.forEach(color=>{const n=Number(scores[color]||0),pct=3+Math.min(n,100)/100*91;$('c'+color).style.left=pct+'%';$('s'+color).textContent=n+' acertos'})}
-function renderQuestion(){if(!started||ended)return;if(idx>=items.length){$('question').textContent='Você concluiu todos os desafios disponíveis. Aguarde a ampulheta terminar.';$('answers').innerHTML='';return}const x=items[idx];currentA=x.a;$('qtag').textContent='DESAFIO '+(idx+1)+' • '+x.t;$('question').textContent=x.q;$('answers').innerHTML='';x.o.forEach((t,i)=>{const b=document.createElement('button');b.className='answer';b.textContent=String.fromCharCode(65+i)+') '+t;b.onclick=()=>answer(i,b);$('answers').appendChild(b)})}
-function answer(i,b){if(!started||ended)return;const bs=[...document.querySelectorAll('.answer')];bs.forEach(x=>x.disabled=true);if(i===currentA){correct++;b.classList.add('good')}else{wrong++;b.classList.add('bad');bs[currentA]?.classList.add('good')}idx++;if(demo){demoScores.blue=correct;updateCars(demoScores)}else{sb.rpc('championship_phase6_progress',{p_room:room,p_device:deviceId,p_correct:correct,p_answered:correct+wrong})}setTimeout(renderQuestion,330)}
-function tick(){const left=Math.max(0,DURATION-(performance.now()-startAt)/1000);$('timeNum').textContent=Math.ceil(left)+'s';if(left<=0)endGame()}
-function startRace(){if(started)return;started=true;$('countOverlay').classList.add('hidden');$('startOverlay').classList.add('hidden');$('timerBox').classList.remove('finished');void $('timerBox').offsetWidth;$('timerBox').classList.add('running');startAt=performance.now();renderQuestion();ticker=setInterval(tick,100);if(demo)startDemoCpus();else liveTimer=setInterval(pollLive,500)}
+function updateCars(scores){
+ COLORS.forEach(color=>{
+   const n=Number(scores[color]||0),pct=3+Math.min(n,FINISH_HITS)/FINISH_HITS*91;
+   $('c'+color).style.left=pct+'%';
+   $('s'+color).textContent=n>=FINISH_HITS?'🏁 CHEGOU • '+n+' acertos':n+' acertos';
+ });
+ if($('myHits'))$('myHits').textContent=correct;
+ if(demo){
+   COLORS.forEach(color=>{
+     if(Number(scores[color]||0)>=FINISH_HITS&&!demoFinishOrder.includes(color))demoFinishOrder.push(color);
+   });
+   if(started&&!ended&&demoFinishOrder.length>=3)showDemoFinal();
+ }
+}
+function renderQuestion(){if(!started||ended||ownFinished)return;if(idx>=items.length){$('question').textContent='Você concluiu todos os desafios disponíveis. Aguarde a ampulheta terminar.';$('answers').innerHTML='';return}const x=items[idx];currentA=x.a;$('qtag').textContent='DESAFIO '+(idx+1)+' • '+x.t;$('question').textContent=x.q;$('answers').innerHTML='';x.o.forEach((t,i)=>{const b=document.createElement('button');b.className='answer';b.textContent=String.fromCharCode(65+i)+') '+t;b.onclick=()=>answer(i,b);$('answers').appendChild(b)})}
+async function answer(i,b){
+ if(!started||ended||ownFinished||penaltyActive)return;
+ const bs=[...document.querySelectorAll('.answer')];
+ bs.forEach(x=>x.disabled=true);
+ const isCorrect=i===currentA;
+ if(isCorrect){
+   correct++;
+   b.classList.add('good');
+ }else{
+   wrong++;
+   b.classList.add('bad');
+   bs[currentA]?.classList.add('good');
+ }
+ idx++;
+ if(demo){
+   demoScores.blue=correct;
+   updateCars(demoScores);
+   if(correct>=FINISH_HITS){finishOwnDemo();return}
+ }else{
+   liveScores[myColor]=correct;
+   updateCars(liveScores);
+   try{
+     const {data,error}=await sb.rpc('championship_phase6_progress',{p_room:room,p_device:deviceId,p_correct:correct,p_answered:correct+wrong});
+     if(error||!data?.ok){
+       if($('liveStatus'))$('liveStatus').innerHTML='⚠️ Sincronizando acertos... <b id="myHits">'+correct+'</b>';
+     }else if($('liveStatus')){
+       $('liveStatus').innerHTML='🎯 Seus acertos: <b id="myHits">'+correct+'</b>';
+     }
+   }catch(e){
+     if($('liveStatus'))$('liveStatus').innerHTML='⚠️ Reconectando... <b id="myHits">'+correct+'</b>';
+   }
+   if(correct>=FINISH_HITS){finishOwnRace();return}
+ }
+ if(isCorrect){
+   setTimeout(renderQuestion,330);
+ }else{
+   startPenalty();
+ }
+}
+async function finishOwnRace(){
+ if(ownFinished||ended)return;
+ ownFinished=true;penaltyActive=false;
+ $('answers').innerHTML='';
+ $('qtag').textContent='🏁 LINHA DE CHEGADA!';
+ $('question').textContent='Sua equipe chegou aos 40 acertos. Aguarde as outras equipes terminarem a corrida.';
+ if($('liveStatus'))$('liveStatus').innerHTML='🏁 CHEGAMOS! Registrando colocação...';
+ await submitOwnFinish();
+}
+async function submitOwnFinish(){
+ if(ended||demo)return;
+ try{
+   const {data,error}=await sb.rpc('championship7_phase6_finish',{p_room:room,p_device:deviceId,p_correct:correct,p_wrong:wrong});
+   if(error||!data?.ok){
+     if($('liveStatus'))$('liveStatus').textContent='⚠️ Registrando chegada... tentando novamente.';
+     setTimeout(submitOwnFinish,1200);
+     return;
+   }
+   ownPlace=Number(data.place||0);
+   const bonus=Number(data.bonus||0);
+   const medal=ownPlace===1?'🥇':ownPlace===2?'🥈':ownPlace===3?'🥉':'🏁';
+   if($('liveStatus'))$('liveStatus').textContent=medal+' '+ownPlace+'º lugar na corrida • '+correct+' acertos + '+bonus+' bônus. Aguardando...';
+   if(data.finalized)showFinalFromServer();
+ }catch(e){
+   if($('liveStatus'))$('liveStatus').textContent='⚠️ Conexão instável. Registrando chegada novamente...';
+   setTimeout(submitOwnFinish,1200);
+ }
+}
+function finishOwnDemo(){
+ if(ownFinished||ended)return;
+ ownFinished=true;penaltyActive=false;
+ if(!demoFinishOrder.includes('blue'))demoFinishOrder.push('blue');
+ $('answers').innerHTML='';
+ $('qtag').textContent='🏁 LINHA DE CHEGADA!';
+ $('question').textContent='Sua equipe chegou aos 40 acertos. Aguarde as outras equipes terminarem a corrida.';
+ const p=demoFinishOrder.indexOf('blue')+1,b=[10,7,5,0][p-1]||0;
+ if($('liveStatus'))$('liveStatus').textContent='🏁 '+p+'º lugar • 40 acertos + '+b+' bônus. Aguardando...';
+}
+function startPenalty(){
+ if(ended)return;
+ penaltyActive=true;
+ const overlay=$('penaltyOverlay');
+ if(overlay)overlay.classList.add('hidden');
+ $('qtag').textContent='❌ RESPOSTA INCORRETA';
+ $('answers').innerHTML='';
+ let n=2;
+ const show=()=>{
+   $('question').innerHTML='⏳ PENALIDADE: <span style="color:#ffe66d;font-size:1.35em">'+n+'s</span><br><span style="font-size:.72em">A próxima pergunta será liberada após a penalidade.</span>';
+ };
+ show();
+ const t=setInterval(()=>{
+   n--;
+   if(n>0){show();return}
+   clearInterval(t);
+   penaltyActive=false;
+   if(!ended&&!ownFinished)renderQuestion();
+ },1000);
+}
+function startRace(){if(started)return;started=true;$('countOverlay').classList.add('hidden');$('startOverlay').classList.add('hidden');renderQuestion();if(demo)startDemoCpus();else liveTimer=setInterval(pollLive,500)}
 function countdown(){let n=3;$('countOverlay').classList.remove('hidden');$('countNum').textContent=n;const t=setInterval(()=>{n--;$('countNum').textContent=n>0?n:'GO!';if(n<=0){clearInterval(t);setTimeout(startRace,650)}},800)}
-function startDemoCpus(){const specs={yellow:[.66,950,1750],green:[.72,850,1600],red:[.78,780,1500]};Object.entries(specs).forEach(([color,[acc,min,max]])=>{const step=()=>{if(ended)return;if(Math.random()<acc)demoScores[color]++;updateCars(demoScores);cpuTimers.push(setTimeout(step,min+Math.random()*(max-min)))};cpuTimers.push(setTimeout(step,700+Math.random()*500))})}
-async function pollLive(){const {data}=await sb.from('championship_phase6_live').select('color,correct').eq('room_code',room);const s={blue:0,yellow:0,green:0,red:0};(data||[]).forEach(r=>s[r.color]=r.correct);updateCars(s)}
-async function waitReady(){const {data}=await sb.from('championship_phase6_live').select('color').eq('room_code',room);const n=(data||[]).length;$('startText').innerHTML='Equipes posicionadas na largada: <b>'+n+'/4</b><br>Assim que as quatro estiverem prontas, começa a contagem.';if(n>=4){clearInterval(liveTimer);$('startOverlay').classList.add('hidden');countdown()}}
+function startDemoCpus(){
+ const specs={yellow:[.66,950,1750],green:[.72,850,1600],red:[.78,780,1500]};
+ Object.entries(specs).forEach(([color,[acc,min,max]])=>{
+   const step=()=>{
+     if(ended||demoScores[color]>=FINISH_HITS)return;
+     if(Math.random()<acc)demoScores[color]=Math.min(FINISH_HITS,demoScores[color]+1);
+     updateCars(demoScores);
+     if(!ended&&demoScores[color]<FINISH_HITS)cpuTimers.push(setTimeout(step,min+Math.random()*(max-min)));
+   };
+   cpuTimers.push(setTimeout(step,700+Math.random()*500));
+ });
+}
+async function pollLive(){
+ const [{data,error},{data:rooms}]=await Promise.all([
+   sb.from('championship_phase6_live').select('color,correct').eq('room_code',room),
+   sb.from('championship_rooms').select('status').eq('room_code',room).limit(1)
+ ]);
+ if(!error){
+   const s={blue:0,yellow:0,green:0,red:0};
+   (data||[]).forEach(r=>s[r.color]=Number(r.correct||0));
+   s[myColor]=Math.max(Number(s[myColor]||0),correct);
+   liveScores=s;updateCars(liveScores);
+ }
+ if(rooms?.[0]?.status==='finished')showFinalFromServer();
+}
+async function waitReady(){const {data}=await sb.from('championship_phase6_live').select('color').eq('room_code',room);const n=(data||[]).length;$('startText').innerHTML='Equipes posicionadas na largada: <b>'+n+'/4</b><br>Assim que as quatro estiverem prontas, começa a contagem.<br><b>Chegada: 40 acertos • sem limite de tempo.</b>';if(n>=4){clearInterval(liveTimer);$('startOverlay').classList.add('hidden');countdown()}}
 async function init(){order=candidateOrder();if(demo){buildItems();$('myTeam').textContent='MODO TESTE • VOCÊ = EQUIPE AZUL';$('startBtn').onclick=()=>{$('startOverlay').classList.add('hidden');countdown()};return}
  $('startBtn').classList.add('hidden');if(!sb||!deviceId){$('startText').textContent='Entre primeiro pelo lobby do campeonato.';return}
  const {data,error}=await sb.rpc('championship_phase6_get_or_create',{p_room:room,p_device:deviceId,p_order:order});
  if(error||!data?.ok){$('startText').textContent='Não foi possível abrir a final.';return}
- order=data.item_order;myColor=data.color;buildItems();$('myTeam').textContent=TEAM[myColor];liveTimer=setInterval(waitReady,600);waitReady()
+ order=data.item_order;myColor=data.color;buildItems();$('myTeam').textContent=TEAM[myColor];liveScores[myColor]=0;updateCars(liveScores);liveTimer=setInterval(waitReady,600);waitReady()
 }
-async function endGame(){if(ended)return;ended=true;started=false;clearInterval(ticker);clearInterval(liveTimer);cpuTimers.forEach(clearTimeout);$('timerBox').classList.remove('running');$('timerBox').classList.add('finished');$('timeNum').textContent='0s';document.querySelectorAll('.answer').forEach(b=>b.disabled=true);$('question').textContent='TEMPO ESGOTADO!';$('answers').innerHTML='';$('endOverlay').classList.remove('hidden');
- if(demo){showDemoResult();return}
- const raw=Math.min(220,correct*3);await sb.rpc('championship_phase6_submit',{p_room:room,p_device:deviceId,p_correct:correct,p_wrong:wrong,p_raw:raw});submitPoll=setInterval(checkFinal,900);checkFinal()
+async function showFinalFromServer(){
+ if(ended)return;
+ ended=true;started=false;ownFinished=true;penaltyActive=false;
+ clearInterval(liveTimer);cpuTimers.forEach(clearTimeout);
+ $('answers').innerHTML='';document.querySelectorAll('.answer').forEach(b=>b.disabled=true);
+ $('question').textContent='🏁 AS 3 PRIMEIRAS EQUIPES CHEGARAM!';
+ $('endOverlay').classList.remove('hidden');
+ await checkFinal();
+}
+function showDemoFinal(){
+ if(ended)return;
+ ended=true;started=false;ownFinished=true;penaltyActive=false;
+ cpuTimers.forEach(clearTimeout);$('answers').innerHTML='';
+ $('question').textContent='🏁 AS 3 PRIMEIRAS EQUIPES CHEGARAM!';
+ $('endOverlay').classList.remove('hidden');
+ showDemoResult();
 }
 function launchFireworks(){const box=$('fireworks');box.innerHTML='';const colors=['#ffe66d','#ff5ca8','#5ef2e2','#60a5fa','#c084fc','#ffffff'];for(let b=0;b<12;b++){setTimeout(()=>{const burst=document.createElement('div');burst.className='burst';burst.style.left=(10+Math.random()*80)+'%';burst.style.top=(10+Math.random()*64)+'%';for(let i=0;i<26;i++){const s=document.createElement('i');s.className='spark-fire';const a=(Math.PI*2/26)*i+Math.random()*.18,d=55+Math.random()*115;s.style.setProperty('--dx',Math.cos(a)*d+'px');s.style.setProperty('--dy',Math.sin(a)*d+'px');s.style.setProperty('--c',colors[Math.floor(Math.random()*colors.length)]);burst.appendChild(s)}box.appendChild(burst);setTimeout(()=>burst.remove(),1300)},b*280)}}
 function showVictory(color){$('victoryTeam').textContent=TEAM[color];$('victoryOverlay').classList.remove('hidden');launchFireworks();setInterval(launchFireworks,3600)}
 function scheduleVictory(color){if(victoryScheduled)return;victoryScheduled=true;setTimeout(()=>showVictory(color),4500)}
-function showDemoResult(){const arr=COLORS.map(color=>({color,score:demoScores[color]})).sort((a,b)=>b.score-a.score);$('endText').textContent='Resultado da corrida de teste. No campeonato real, abaixo aparece o placar acumulado das 6 fases.';$('results').innerHTML=arr.map((r,i)=>'<div class="result-row '+(i===0?'champion':'')+'"><span>'+(i===0?'🥇':i===1?'🥈':i===2?'🥉':'4º')+' '+TEAM[r.color]+'</span><span>'+r.score+' acertos</span></div>').join('');scheduleVictory(arr[0].color)}
-async function checkFinal(){const [{data:phase},{data:rooms}]=await Promise.all([sb.from('championship_phase_scores').select('color,total_points,correct').eq('room_code',room).eq('phase',6),sb.from('championship_rooms').select('status,scores').eq('room_code',room).limit(1)]);if((phase||[]).length<4){$('endText').textContent='Aguardando as outras equipes terminarem... '+(phase||[]).length+'/4';return}const state=rooms?.[0]||{};if(state.status!=='finished')return;clearInterval(submitPoll);const arr=COLORS.map(color=>({color,pts:Number(state.scores?.[color]||0)})).sort((a,b)=>b.pts-a.pts);$('endText').textContent='PLACAR FINAL — soma das 6 fases do campeonato.';$('results').innerHTML=arr.map((r,i)=>'<div class="result-row '+(i===0?'champion':'')+'"><span>'+(i===0?'🏆 CAMPEÃ — ':i===1?'🥈 ':i===2?'🥉 ':'4º ')+TEAM[r.color]+'</span><span>'+r.pts+' pts</span></div>').join('');scheduleVictory(arr[0].color)}
+function showDemoResult(){
+ const order=[...demoFinishOrder];
+ COLORS.filter(c=>!order.includes(c)).forEach(c=>order.push(c));
+ $('endText').textContent='Resultado da corrida de teste • 1º +10 • 2º +7 • 3º +5.';
+ $('results').innerHTML=order.map((color,i)=>{
+   const bonus=[10,7,5,0][i]||0,score=Number(demoScores[color]||0);
+   return '<div class="result-row '+(i===0?'champion':'')+'"><span>'+(i===0?'🥇':i===1?'🥈':i===2?'🥉':'4º')+' '+TEAM[color]+'</span><span>'+score+' acertos + '+bonus+' bônus</span></div>';
+ }).join('');
+ scheduleVictory(order[0]);
+}
+async function checkFinal(){
+ const [{data:phase},{data:rooms}]=await Promise.all([
+   sb.from('championship_phase_scores').select('color,total_points,correct,bonus,submitted_at').eq('room_code',room).eq('phase',6),
+   sb.from('championship_rooms').select('status,scores').eq('room_code',room).limit(1)
+ ]);
+ const state=rooms?.[0]||{};
+ if(state.status!=='finished'){
+   $('endText').textContent='Aguardando a terceira equipe cruzar a linha de chegada...';
+   return;
+ }
+ clearInterval(submitPoll);
+ const race={};
+ (phase||[]).forEach(r=>race[r.color]={correct:Number(r.correct||0),bonus:Number(r.bonus||0)});
+ const arr=COLORS.map(color=>({color,pts:Number(state.scores?.[color]||0)})).sort((a,b)=>b.pts-a.pts);
+ $('endText').textContent='PLACAR FINAL — soma das 6 fases. Na corrida: 1º +10 • 2º +7 • 3º +5.';
+ $('results').innerHTML=arr.map((r,i)=>{
+   const rr=race[r.color]||{correct:0,bonus:0};
+   return '<div class="result-row '+(i===0?'champion':'')+'"><span>'+(i===0?'🏆 CAMPEÃ — ':i===1?'🥈 ':i===2?'🥉 ':'4º ')+TEAM[r.color]+'</span><span>'+r.pts+' pts <small>• corrida '+rr.correct+'+'+rr.bonus+'</small></span></div>';
+ }).join('');
+ scheduleVictory(arr[0].color);
+}
 init();
 </script></body></html>
