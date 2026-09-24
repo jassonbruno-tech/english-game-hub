@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#165DFF">
+<title>English Championship — 9º Ano</title>
+<meta name="description" content="Campeonato de Inglês do 6º ano — Escola Delfina de Jesus Amorim — Professor Jasson Bruno.">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../jogos-em-equipe/supabase-config.js?v=6ano1"></script>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;font-family:Arial,Helvetica,sans-serif;background:#eaf7ff;color:#12325b;overflow:hidden}
+body{background:
+radial-gradient(circle at 12% 0%,rgba(255,229,94,.55),transparent 28%),
+radial-gradient(circle at 88% 5%,rgba(255,90,181,.30),transparent 30%),
+linear-gradient(180deg,#bcecff 0,#eaf7ff 42%,#f8fbff 100%)}
+button,input{font:inherit}
+.app{width:min(1180px,100%);height:100vh;margin:auto;padding:10px 14px 12px;display:flex;flex-direction:column;overflow:hidden}
+.hero{position:relative;overflow:hidden;border-radius:22px;padding:14px 18px;background:linear-gradient(135deg,#236cff,#42c9ff 55%,#60e4cf);color:#fff;border:3px solid rgba(255,255,255,.8);box-shadow:0 18px 50px rgba(34,100,190,.22)}
+.hero:before{content:"";position:absolute;inset:-40% auto auto -8%;width:260px;height:260px;border-radius:50%;background:#ffe55c55}
+.hero h1{position:relative;margin:0;font-size:clamp(28px,4.3vw,50px);font-weight:1000;letter-spacing:.5px;text-shadow:0 3px 0 #1250b8}
+.hero p{position:relative;margin:4px 0 0;font-size:clamp(11px,1.35vw,16px);font-weight:900}
+.badges{position:relative;display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.badge{background:#fff;color:#1954b8;border-radius:999px;padding:5px 9px;font-size:10px;font-weight:1000}
+.layout{display:grid;grid-template-columns:1.55fr .8fr;gap:10px;margin-top:10px;flex:1;min-height:0}
+.panel{background:rgba(255,255,255,.92);border:2px solid #b6dcff;border-radius:18px;padding:10px;overflow:hidden;box-shadow:0 12px 30px rgba(30,90,150,.12)}
+.panel h2{margin:0 0 7px;color:#174f9c;font-size:18px}
+.phases{display:grid;grid-template-rows:1fr 1fr .72fr;gap:10px;min-height:0}
+.phase{display:grid;grid-template-columns:58px 1fr auto;gap:12px;align-items:center;padding:13px 14px;border-radius:18px;background:linear-gradient(135deg,#f8fcff,#e9f5ff);border:2px solid #c9e6ff;transition:.2s}
+.phase.current{border-color:#4b8fff;background:linear-gradient(135deg,#e8f3ff,#dffaff);box-shadow:0 0 0 4px #4b8fff18}
+.phase.locked{opacity:.68}
+.phase.done{border-color:#50d890;background:#effff6}
+.num{width:50px;height:50px;border-radius:16px;display:grid;place-items:center;background:#1f6cff;color:#fff;font-weight:1000;font-size:22px;box-shadow:0 5px 0 #124cae}
+.phase.p2 .num{background:#8d5cff;box-shadow:0 5px 0 #5d31bb}
+.phase.p3 .num{background:#ff8a3d;box-shadow:0 5px 0 #c55b15}
+.phase.p4 .num{background:#16b978;box-shadow:0 5px 0 #0d7d52}
+.phase.p5 .num{background:#ff4f9f;box-shadow:0 5px 0 #ba246b}
+.phase.p6 .num{background:#f4c21f;color:#28354d;box-shadow:0 5px 0 #b88d00}
+.phase-title{font-weight:1000;font-size:17px;color:#173d72}
+.phase-desc{margin-top:3px;font-size:12px;color:#607da4;font-weight:800;line-height:1.25}
+.status{font-size:10px;font-weight:1000;border-radius:999px;padding:6px 9px;background:#d9eaff;color:#23579a;white-space:nowrap}
+.current .status{background:#1f6cff;color:#fff}.done .status{background:#1ebd73;color:#fff}
+.phase.placeholder{display:flex;align-items:center;justify-content:center;text-align:center;border-style:dashed;background:linear-gradient(135deg,#f5faff,#edf6ff);color:#6c88aa}
+.phase.placeholder .phase-title{font-size:22px;color:#6c88aa}
+.phase.placeholder .phase-desc{font-size:12px}
+.lobby{display:grid;grid-template-columns:1fr auto;gap:6px;margin-bottom:7px}
+.room-input{min-width:0;border:2px solid #9fd2ff;border-radius:11px;padding:7px 9px;font-weight:1000;color:#174f9c;background:#f7fbff;text-transform:uppercase}
+.join-btn{border:0;border-radius:11px;padding:7px 10px;background:linear-gradient(135deg,#236cff,#39c7ff);color:#fff;font-weight:1000;cursor:pointer}
+.room-line{grid-column:1/-1;display:flex;justify-content:space-between;gap:7px;align-items:center;font-size:10px;font-weight:1000;color:#6481a5}
+.room-count{color:#174f9c}
+.teams{display:grid;gap:5px}
+.team{display:grid;grid-template-columns:16px 1fr auto;gap:7px;align-items:center;padding:7px 9px;border-radius:11px;font-size:12px;background:#f8fbff;border:1px solid #d7e9fb;font-weight:1000}
+.dot{width:14px;height:14px;border-radius:50%;box-shadow:0 0 0 3px #ffffff,0 0 0 4px #d7e9fb}
+.blue{background:#2674ff}.yellow{background:#ffd52a}.green{background:#20c77a}.red{background:#ff4e61}
+.connected{color:#8297b2;font-size:11px}
+.connected.ready{color:#1b9b62}
+.connected.me{color:#236cff}
+.rules{margin-top:6px;padding:6px 8px;border-radius:12px;background:#eef8ff;color:#42678f;font-size:10px;line-height:1.18;font-weight:800}
+.score-box{margin-top:5px}
+.score-row{display:grid;grid-template-columns:30px 1fr auto;gap:6px;align-items:center;padding:5px 8px;margin-top:3px;border-radius:10px;font-size:11px;background:#f7fbff;border:1px solid #d5eaff;font-weight:1000}
+.score-row .pts{color:#e43c72}
+.actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px}
+.btn{border:0;border-radius:11px;padding:9px 12px;font-weight:1000;font-size:12px;cursor:pointer;box-shadow:0 4px 0 rgba(24,67,126,.20)}
+.btn.primary{background:linear-gradient(135deg,#236cff,#39c7ff);color:#fff}
+.btn.secondary{background:#fff;color:#1c5ca9;border:2px solid #90caff}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.footer{text-align:center;margin-top:6px;color:#6481a5;font-size:9px;font-weight:800;flex:0 0 auto}
+.overlay{position:fixed;inset:0;z-index:40;display:grid;place-items:center;background:rgba(20,55,100,.58);backdrop-filter:blur(5px);padding:18px}
+.overlay.hidden{display:none}
+.modal{width:min(650px,95vw);background:#fff;border-radius:26px;border:3px solid #9edcff;padding:22px;text-align:center;box-shadow:0 24px 70px rgba(14,62,117,.3)}
+.modal h2{margin:0;color:#164f9f;font-size:clamp(28px,5vw,48px)}
+.modal p{color:#53769d;font-weight:800;line-height:1.4}
+.count{font-size:72px;font-weight:1000;color:#236cff;margin:8px}
+.rank-list{margin:14px auto;max-width:500px;text-align:left}
+.rank{display:grid;grid-template-columns:44px 1fr auto;gap:8px;align-items:center;padding:11px 12px;margin:7px 0;border-radius:14px;font-weight:1000}
+.rank:nth-child(1){background:linear-gradient(135deg,#ffe35d,#fff4b6)}
+.rank:nth-child(2){background:linear-gradient(135deg,#dfe7ef,#ffffff)}
+.rank:nth-child(3){background:linear-gradient(135deg,#e7a76c,#ffd6b0)}
+.rank:nth-child(4){background:#edf5ff}
+.next{margin-top:13px;padding:11px;border-radius:14px;background:#e9f7ff;color:#174f9c;font-weight:1000}
+@media(max-height:720px) and (min-width:821px){
+  .hero{padding:7px 14px}
+  .hero h1{font-size:36px}
+  .hero p{font-size:11px}
+  .badge{padding:4px 8px;font-size:9px}
+  .layout{margin-top:6px;gap:9px}
+  .panel{padding:9px}
+  .panel h2{font-size:18px;margin-bottom:5px}
+  .phases{grid-template-rows:104px 94px 70px;gap:7px}
+  .phase{padding:9px 11px;grid-template-columns:52px 1fr auto}
+  .num{width:46px;height:46px;font-size:20px}
+  .phase-title{font-size:17px}
+  .phase-desc{font-size:10px}
+  .status{font-size:9px;padding:5px 8px}
+  .team{padding:5px 8px;font-size:11px}
+  .rules{font-size:10px;padding:6px 8px;margin-top:5px}
+  .score-row{padding:5px 8px;font-size:10px}
+  .actions{margin-top:5px;min-height:36px}
+  .btn{padding:8px 10px;font-size:10px}
+  .footer{display:none}
+}
+@media(max-width:820px){.layout{grid-template-columns:1fr}.hero{padding:19px}.phase{grid-template-columns:50px 1fr}.phase .status{grid-column:2;justify-self:start}.num{width:44px;height:44px;font-size:19px}}
+
+/* AUMENTO GERAL DE TIPOGRAFIA — +30% */
+body{font-size:20.8px}
+.hero h1{font-size:clamp(36.4px,5.59vw,65px)}
+.hero p{font-size:clamp(14.3px,1.76vw,20.8px)}
+.badge{font-size:13px}
+.panel h2{font-size:23.4px}
+.num{font-size:28.6px}
+.phase-title{font-size:22.1px}
+.phase-desc{font-size:15.6px}
+.status{font-size:13px}
+.phase.placeholder .phase-title{font-size:28.6px}
+.phase.placeholder .phase-desc{font-size:15.6px}
+.team{font-size:15.6px}
+.connected{font-size:14.3px}
+.rules{font-size:13px;line-height:1.15}
+.score-row{font-size:14.3px;padding-top:4px;padding-bottom:4px;margin-top:2px}
+.btn{font-size:15.6px}
+.footer{font-size:11.7px}
+.modal h2{font-size:clamp(36.4px,6.5vw,62.4px)}
+.count{font-size:93.6px}
+.room-input,.join-btn{font-size:20.8px}
+.room-line{font-size:13px}
+.rank,.next,.modal p{font-size:20.8px}
+
+@media(max-height:720px) and (min-width:821px){
+  .hero h1{font-size:46.8px}
+  .hero p{font-size:14.3px}
+  .badge{font-size:11.7px}
+  .panel h2{font-size:23.4px}
+  .num{font-size:26px}
+  .phase-title{font-size:22.1px}
+  .phase-desc{font-size:13px}
+  .status{font-size:11.7px}
+  .team{font-size:14.3px}
+  .connected{font-size:13px}
+  .rules{font-size:13px}
+  .score-row{font-size:13px}
+  .btn{font-size:13px}
+  .room-input,.join-btn{font-size:16px}
+  .room-line{font-size:12px}
+  .footer{font-size:10px}
+}
+
+</style>
+</head>
+<body>
+<main class="app">
+  <section class="hero">
+    <h1>🏆 ENGLISH CHAMPIONSHIP</h1>
+    <p>6º ANO • TURMAS 601 E 602 • PROFESSOR JASSON BRUNO</p>
+    <div class="badges">
+      <span class="badge">6 FASES</span>
+      <span class="badge">4 EQUIPES</span>
+      <span class="badge">PLACAR ACUMULADO</span>
+      <span class="badge">FINAL: CORRIDA MALUCA</span>
+    </div>
+  </section>
+
+  <div class="layout">
+    <section class="panel">
+      <h2>🗺️ Jornada do Campeonato</h2>
+      <div class="phases" id="phases"></div>
+      <div class="actions">
+        <button class="btn primary" id="startBtn" disabled>▶ AGUARDANDO 4 EQUIPES</button>
+        <button class="btn secondary" id="demoRankBtn">🏆 TESTAR RANKING PARCIAL</button>
+        <button class="btn secondary" id="advanceBtn">⏭ TESTAR PRÓXIMA FASE</button>
+      </div>
+    </section>
+
+    <aside class="panel">
+      <h2>🎮 Equipes</h2>
+      <div class="lobby">
+        <input id="roomInput" class="room-input" value="601" maxlength="12" aria-label="Código da sala">
+        <button id="joinBtn" class="join-btn" type="button">ENTRAR NA SALA</button>
+        <div class="room-line"><span id="myTeam">Você ainda não entrou.</span><span id="roomCount" class="room-count">0/4 conectadas</span></div>
+      </div>
+      <div class="teams">
+        <div class="team" data-color="blue"><span class="dot blue"></span><span>EQUIPE AZUL</span><span class="connected" id="team-blue">AGUARDANDO</span></div>
+        <div class="team" data-color="yellow"><span class="dot yellow"></span><span>EQUIPE AMARELA</span><span class="connected" id="team-yellow">AGUARDANDO</span></div>
+        <div class="team" data-color="green"><span class="dot green"></span><span>EQUIPE VERDE</span><span class="connected" id="team-green">AGUARDANDO</span></div>
+        <div class="team" data-color="red"><span class="dot red"></span><span>EQUIPE VERMELHA</span><span class="connected" id="team-red">AGUARDANDO</span></div>
+      </div>
+
+      <div class="rules">
+        <b>REGRA GERAL</b><br>
+        Acertos somam, erros podem descontar e a colocação dá bônus. O campeão é definido após a 6ª fase.
+      </div>
+
+      <div class="score-box">
+        <h2 style="font-size:18px;margin-top:15px">📊 Placar Geral</h2>
+        <div id="scoreboard">
+          <div class="score-row"><span>1º</span><span>AZUL</span><span class="pts">0 pts</span></div>
+          <div class="score-row"><span>1º</span><span>AMARELA</span><span class="pts">0 pts</span></div>
+          <div class="score-row"><span>1º</span><span>VERDE</span><span class="pts">0 pts</span></div>
+          <div class="score-row"><span>1º</span><span>VERMELHA</span><span class="pts">0 pts</span></div>
+        </div>
+      </div>
+    </aside>
+  </div>
+  <div class="footer">Estrutura inicial do campeonato • Escola Delfina de Jesus Amorim • SEMED</div>
+</main>
+
+<div class="overlay hidden" id="phaseOverlay">
+  <div class="modal">
+    <div style="font-size:55px">🎯</div>
+    <h2 id="phaseTitle">FASE 1</h2>
+    <p id="phaseMsg">Vocabulary Match</p>
+    <div class="count" id="count">3</div>
+    <button class="btn primary" id="closePhaseBtn">INICIANDO FASE...</button>
+  </div>
+</div>
+
+<div class="overlay hidden" id="rankOverlay">
+  <div class="modal">
+    <div style="font-size:55px">🏆</div>
+    <h2>RANKING PARCIAL</h2>
+    <p>Exemplo da tela que aparecerá automaticamente entre as fases.</p>
+    <div class="rank-list" id="rankList"></div>
+    <div class="next">PRÓXIMA FASE: <b>WORD CHALLENGE</b></div>
+    <button class="btn primary" id="closeRankBtn">CONTINUAR</button>
+  </div>
+</div>
+
+<script>
+const PHASES=[
+  {title:'Vocabulary Match',desc:'Family Members + Parts of the House • reconhecimento rápido de vocabulário'},
+  {title:'Word Challenge',desc:'Ortografia de palavras curtas e familiares • 60 segundos por palavra'},
+  {title:'There is / There are Challenge',desc:'Singular e plural • There is / There are • Plural of Nouns'},
+  {title:'Present Continuous Challenge',desc:'Somente forma afirmativa • sujeito + am/is/are + verbo com -ing'},
+  {title:"Genitive Case Challenge",desc:"Relações familiares • nome + 's + membro da família"},
+  {title:'Corrida Maluca — FINAL',desc:'Revisão geral • maior peso para Present Continuous, Genitive Case e Plural of Nouns'}
+];
+const TEAM_NAMES={blue:'AZUL',yellow:'AMARELA',green:'VERDE',red:'VERMELHA'};
+let currentPhase=0,timer=null,pollTimer=null,pingTimer=null,joined=false,myColor=null,isHost=false,lastRoomStatus='lobby';
+const phasesBox=document.getElementById('phases');
+const phaseOverlay=document.getElementById('phaseOverlay');
+const rankOverlay=document.getElementById('rankOverlay');
+const count=document.getElementById('count');
+const roomInput=document.getElementById('roomInput');
+const roomCount=document.getElementById('roomCount');
+const myTeam=document.getElementById('myTeam');
+const startBtn=document.getElementById('startBtn');
+const joinBtn=document.getElementById('joinBtn');
+const cfg=window.TUG_SUPABASE_CONFIG||{};
+const sb=(cfg.url&&cfg.key&&window.supabase?.createClient)?window.supabase.createClient(cfg.url,cfg.key):null;
+const deviceKey='championship6DeviceId';
+const deviceId=localStorage.getItem(deviceKey)||('pc_'+crypto.getRandomValues(new Uint32Array(4)).join('_'));
+localStorage.setItem(deviceKey,deviceId);
+const qs=new URLSearchParams(location.search);
+if(qs.get('sala')) roomInput.value=qs.get('sala').toUpperCase();
+
+function cleanRoom(v){return (v||'601').replace(/[^a-zA-Z0-9_-]/g,'').toUpperCase().slice(0,12)||'601'}
+function renderPhaseQueue(){
+  phasesBox.innerHTML='';
+  const current=PHASES[currentPhase],next=PHASES[currentPhase+1];
+  if(current){
+    const a=document.createElement('div');a.className='phase current p'+(currentPhase+1);
+    a.innerHTML='<div class="num">'+(currentPhase+1)+'</div><div><div class="phase-title">'+current.title+'</div><div class="phase-desc">'+current.desc+'</div></div><span class="status">FASE ATUAL</span>';
+    phasesBox.appendChild(a);
+  }
+  if(next){
+    const b=document.createElement('div');b.className='phase locked p'+(currentPhase+2);
+    b.innerHTML='<div class="num">'+(currentPhase+2)+'</div><div><div class="phase-title">'+next.title+'</div><div class="phase-desc">'+next.desc+'</div></div><span class="status">🔒 PRÓXIMA</span>';
+    phasesBox.appendChild(b);
+  }
+  const p=document.createElement('div');p.className='phase placeholder';
+  p.innerHTML=currentPhase+2<PHASES.length?'<div><div class="phase-title">➜ FASE SEGUINTE</div><div class="phase-desc">Será revelada quando a próxima fase for desbloqueada.</div></div>':'<div><div class="phase-title">🏁 FINAL DO CAMPEONATO</div><div class="phase-desc">Depois desta etapa, será exibido o pódio geral.</div></div>';
+  phasesBox.appendChild(p);
+}
+function showPhaseIntro(){
+  const p=PHASES[currentPhase];
+  document.getElementById('phaseTitle').textContent='FASE '+(currentPhase+1);
+  document.getElementById('phaseMsg').textContent=p.title;
+  phaseOverlay.classList.remove('hidden');
+  let n=3;count.textContent=n;clearInterval(timer);
+  timer=setInterval(()=>{
+    n--;
+    count.textContent=n>0?n:'GO!';
+    if(n<=0){
+      clearInterval(timer);
+      if(currentPhase===0){
+        const room=cleanRoom(roomInput.value);
+        setTimeout(()=>{location.href='vocabulary-match.html?sala='+encodeURIComponent(room)+'&v=phase1a'},650);
+      }
+    }
+  },800);
+}
+function showRank(){
+  const demo=[['🥇','EQUIPE VERDE',218],['🥈','EQUIPE AZUL',205],['🥉','EQUIPE VERMELHA',181],['4º','EQUIPE AMARELA',174]];
+  document.getElementById('rankList').innerHTML=demo.map(r=>'<div class="rank"><span>'+r[0]+'</span><span>'+r[1]+'</span><span>'+r[2]+' pts</span></div>').join('');
+  const next=PHASES[Math.min(currentPhase+1,PHASES.length-1)];
+  document.querySelector('.next').innerHTML=currentPhase<PHASES.length-1?'PRÓXIMA FASE: <b>'+next.title.toUpperCase()+'</b>':'<b>CAMPEONATO ENCERRADO</b>';
+  rankOverlay.classList.remove('hidden');
+}
+function advancePhase(){if(currentPhase<PHASES.length-1){currentPhase++;renderPhaseQueue()}}
+
+function paintPresence(rows){
+  const fresh=(rows||[]).filter(r=>Date.now()-new Date(r.last_seen).getTime()<120000);
+  const byColor=new Map(fresh.map(r=>[r.color,r]));
+  ['blue','yellow','green','red'].forEach(color=>{
+    const el=document.getElementById('team-'+color),row=byColor.get(color);
+    el.className='connected';
+    if(row){
+      el.textContent=row.device_id===deviceId?'● VOCÊ':'● PRONTA';
+      el.classList.add(row.device_id===deviceId?'me':'ready');
+    }else el.textContent='AGUARDANDO';
+  });
+  roomCount.textContent=fresh.length+'/4 conectadas';
+  if(!joined){startBtn.disabled=true;startBtn.textContent='▶ ENTRE NA SALA';return}
+  if(fresh.length<4){startBtn.disabled=true;startBtn.textContent='▶ AGUARDANDO '+(4-fresh.length)+' EQUIPE'+(4-fresh.length>1?'S':'');}
+  else if(isHost){startBtn.disabled=false;startBtn.textContent='▶ INICIAR CAMPEONATO';}
+  else{startBtn.disabled=true;startBtn.textContent='✓ 4/4 — AGUARDANDO HOST';}
+}
+function paintScores(scores){
+  const rows=[
+    ['blue','AZUL'],['yellow','AMARELA'],['green','VERDE'],['red','VERMELHA']
+  ].map(([color,name])=>({color,name,pts:Number(scores?.[color]||0)}))
+   .sort((a,b)=>b.pts-a.pts);
+  document.getElementById('scoreboard').innerHTML=rows.map((r,i)=>
+    '<div class="score-row"><span>'+(i+1)+'º</span><span>'+r.name+'</span><span class="pts">'+r.pts+' pts</span></div>'
+  ).join('');
+}
+async function refreshLobby(){
+  if(!sb||!joined)return;
+  const room=cleanRoom(roomInput.value);
+  const [{data:rows,error:presenceError},{data:roomRows,error:roomError}]=await Promise.all([
+    sb.from('championship_presence').select('color,device_id,last_seen').eq('room_code',room),
+    sb.from('championship_rooms').select('status,current_phase,host_device,scores').eq('room_code',room).limit(1)
+  ]);
+  if(presenceError||roomError){
+    roomCount.textContent='RECONECTANDO...';
+    return;
+  }
+  paintPresence(rows||[]);
+  const state=roomRows?.[0];
+  if(state){
+    isHost=state.host_device===deviceId;
+    currentPhase=Math.max(0,Math.min(5,(state.current_phase||1)-1));
+    renderPhaseQueue();
+    paintScores(state.scores||{});
+    if(state.status==='started'&&lastRoomStatus!=='started'&&currentPhase===0) showPhaseIntro();
+    lastRoomStatus=state.status;
+  }
+}
+async function joinRoom(){
+  if(!sb){myTeam.textContent='Supabase não carregou. Atualize a página.';return}
+  const room=cleanRoom(roomInput.value);roomInput.value=room;
+  joinBtn.disabled=true;joinBtn.textContent='CONECTANDO...';
+  try{
+    const {data,error}=await sb.rpc('championship_claim_team',{p_room:room,p_device:deviceId});
+    if(error)throw error;
+    if(!data?.color){myTeam.textContent='Sala cheia. As 4 equipes já estão ocupadas.';return}
+    myColor=data.color;isHost=!!data.is_host;joined=true;
+    myTeam.textContent='Você é a EQUIPE '+TEAM_NAMES[myColor]+(isHost?' • HOST':'');
+    roomInput.disabled=true;joinBtn.textContent='CONECTADA';joinBtn.disabled=true;
+    history.replaceState(null,'',location.pathname+'?sala='+encodeURIComponent(room));
+    await refreshLobby();
+    clearInterval(pollTimer);clearInterval(pingTimer);
+    pollTimer=setInterval(()=>refreshLobby().catch(()=>{roomCount.textContent='RECONECTANDO...'}),1500);
+    pingTimer=setInterval(()=>sb.rpc('championship_ping',{p_room:room,p_device:deviceId}).then(({error})=>{if(error)roomCount.textContent='RECONECTANDO...'}).catch(()=>{roomCount.textContent='RECONECTANDO...'}),5000);
+  }catch(e){
+    myTeam.textContent='Erro ao conectar: '+e.message;
+    joinBtn.disabled=false;joinBtn.textContent='ENTRAR NA SALA';
+  }
+}
+async function startChampionship(){
+  if(!sb||!joined||!isHost)return;
+  startBtn.disabled=true;startBtn.textContent='INICIANDO...';
+  const room=cleanRoom(roomInput.value);
+  const {data,error}=await sb.rpc('championship_start',{p_room:room,p_device:deviceId});
+  if(error||!data){startBtn.disabled=false;startBtn.textContent='▶ VERIFICAR EQUIPES';await refreshLobby();return}
+  await refreshLobby();
+}
+
+joinBtn.addEventListener('click',joinRoom);
+startBtn.addEventListener('click',startChampionship);
+document.getElementById('demoRankBtn').addEventListener('click',showRank);
+document.getElementById('advanceBtn').addEventListener('click',advancePhase);
+document.getElementById('closePhaseBtn').addEventListener('click',()=>phaseOverlay.classList.add('hidden'));
+document.getElementById('closeRankBtn').addEventListener('click',()=>rankOverlay.classList.add('hidden'));
+/* A presença expira automaticamente; não removemos a equipe ao navegar para a próxima fase. */
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&joined)refreshLobby().catch(()=>{})});
+renderPhaseQueue();
+paintPresence([]);
+</script>
+</body>
+</html>
