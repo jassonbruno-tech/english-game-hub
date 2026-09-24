@@ -34,16 +34,16 @@
 .penalty-box .big{font-size:clamp(38px,6vw,72px);font-weight:1000;line-height:1}
 .penalty-box p{margin:8px 0 0;font-weight:1000}
 </style></head><body><div class="viewport"><div class="stage">
-<div class="grid"></div><div class="header"><div class="head-main"><div class="title">🏁 CORRIDA MALUCA — FINAL <span class="flags" aria-label="Estados Unidos e Reino Unido"><span class="flag flag-us"></span><span class="flag flag-uk"></span></span></div><div class="sub">FASE 6 • 300 segundos • desafios contínuos • cada acerto faz o carro avançar</div></div><div class="meta">Turma 901<br>Escola Delfina de Jesus Amorim<br>Professor Jasson Bruno</div></div>
-<div class="timer-box" id="timerBox"><div class="hourglass"><div class="glass"></div><div class="sand-top"></div><div class="sand-stream"></div><div class="sand-bottom"></div></div><div><div class="timer-label">AMPULHETA FINAL</div><div class="time-num" id="timeNum">300s</div></div></div>
+<div class="grid"></div><div class="header"><div class="head-main"><div class="title">🏁 CORRIDA MALUCA — FINAL <span class="flags" aria-label="Estados Unidos e Reino Unido"><span class="flag flag-us"></span><span class="flag flag-uk"></span></span></div><div class="sub">FASE 6 • 40 acertos até a chegada • cada acerto faz o carro avançar</div></div><div class="meta">Turma 901<br>Escola Delfina de Jesus Amorim<br>Professor Jasson Bruno</div></div>
+<div class="timer-box" id="timerBox"><div style="font-size:42px">🏁</div><div><div class="timer-label">LINHA DE CHEGADA</div><div class="time-num" id="timeNum">40 ACERTOS</div></div></div>
 <div class="track-wrap"><div class="lane-labels"><div class="team-label blue">EQUIPE AZUL</div><div class="team-label yellow">EQUIPE AMARELA</div><div class="team-label green">EQUIPE VERDE</div><div class="team-label red">EQUIPE VERMELHA</div></div><div class="lanes">
 <div class="lane"><span class="car" id="cblue">🏎️</span><span class="score" id="sblue">0 acertos</span><span class="finish"></span></div>
 <div class="lane"><span class="car" id="cyellow">🚕</span><span class="score" id="syellow">0 acertos</span><span class="finish"></span></div>
 <div class="lane"><span class="car" id="cgreen">🚙</span><span class="score" id="sgreen">0 acertos</span><span class="finish"></span></div>
 <div class="lane"><span class="car" id="cred">🚗</span><span class="score" id="sred">0 acertos</span><span class="finish"></span></div>
 </div></div>
-<div class="question-panel"><div class="card"><div class="qtag" id="qtag">DESAFIO FINAL</div><div class="q" id="question">Aguardando largada...</div><div class="answers" id="answers"></div></div><div class="card info"><h3>🏎️ SUA EQUIPE</h3><div class="myteam" id="myTeam">MODO TESTE</div><p>✅ Acerto = avança</p><p id="liveStatus">🎯 Seus acertos: <b id="myHits">0</b></p><p>❌ Erro = não avança</p><p>⌛ Fim = areia acaba</p></div></div>
-<div class="overlay" id="startOverlay"><div class="modal"><h2>🏁 FINAL DO CAMPEONATO</h2><p id="startText">Desafios contínuos misturando vocabulário, gramática, modais, opiniões e sugestões.</p><p><b>Todos largam juntos. O relógio é de 300 segundos (5 minutos).</b></p><button class="btn" id="startBtn">COMEÇAR TESTE</button></div></div>
+<div class="question-panel"><div class="card"><div class="qtag" id="qtag">DESAFIO FINAL</div><div class="q" id="question">Aguardando largada...</div><div class="answers" id="answers"></div></div><div class="card info"><h3>🏎️ SUA EQUIPE</h3><div class="myteam" id="myTeam">MODO TESTE</div><p>✅ Acerto = avança</p><p id="liveStatus">🎯 Seus acertos: <b id="myHits">0</b></p><p>❌ Erro = penalidade de 2s</p><p>🏁 Ao chegar a 40 acertos, sua equipe para e aguarda</p><p>🥇 +10 • 🥈 +7 • 🥉 +5</p></div></div>
+<div class="overlay" id="startOverlay"><div class="modal"><h2>🏁 FINAL DO CAMPEONATO</h2><p id="startText">Desafios contínuos misturando vocabulário, gramática, modais, opiniões e sugestões.</p><p><b>Todos largam juntos. Não há relógio: cada equipe corre até 40 acertos. Ao cruzar a linha, para de responder. A corrida termina quando 3 equipes chegarem.</b></p><p><b>Bônus da corrida: 1º +10 • 2º +7 • 3º +5.</b></p><button class="btn" id="startBtn">COMEÇAR TESTE</button></div></div>
 <div class="overlay hidden" id="countOverlay"><div class="modal"><h2>LARGADA!</h2><div class="count" id="countNum">3</div></div></div>
 <div class="overlay hidden" id="endOverlay"><div class="modal"><h2>🏆 CAMPEONATO CONCLUÍDO</h2><p id="endText">Calculando classificação...</p><div class="result-list" id="results"></div></div></div>
 <div class="penalty hidden" id="penaltyOverlay"><div class="penalty-box"><div class="big">⏳ <span id="penaltyCount">2</span>s</div><p>RESPOSTA INCORRETA • PENALIDADE</p></div></div>
@@ -195,10 +195,10 @@ const BANK=(()=>{
  }));
  return b;
 })();
-const DURATION=300,FINISH_HITS=40,COLORS=['blue','yellow','green','red'],TEAM={blue:'EQUIPE AZUL',yellow:'EQUIPE AMARELA',green:'EQUIPE VERDE',red:'EQUIPE VERMELHA'};
+const FINISH_HITS=40,COLORS=['blue','yellow','green','red'],TEAM={blue:'EQUIPE AZUL',yellow:'EQUIPE AMARELA',green:'EQUIPE VERDE',red:'EQUIPE VERMELHA'};
 const cfg=window.TUG_SUPABASE_CONFIG||{},sb=(cfg.url&&cfg.key&&window.supabase?.createClient)?window.supabase.createClient(cfg.url,cfg.key):null;
 const qs=new URLSearchParams(location.search),demo=qs.get('demo')==='1',room=(qs.get('sala')||'901').replace(/[^a-zA-Z0-9_-]/g,'').toUpperCase(),deviceId=localStorage.getItem('championship9DeviceId');
-const $=id=>document.getElementById(id);let order=[],items=[],idx=0,correct=0,wrong=0,currentA=0,started=false,ended=false,startAt=0,ticker=null,myColor='blue',liveTimer=null,submitPoll=null,demoScores={blue:0,yellow:0,green:0,red:0},liveScores={blue:0,yellow:0,green:0,red:0},cpuTimers=[],victoryScheduled=false,penaltyActive=false;
+const $=id=>document.getElementById(id);let order=[],items=[],idx=0,correct=0,wrong=0,currentA=0,started=false,ended=false,ownFinished=false,ownPlace=null,myColor='blue',liveTimer=null,submitPoll=null,demoScores={blue:0,yellow:0,green:0,red:0},liveScores={blue:0,yellow:0,green:0,red:0},cpuTimers=[],demoFinishOrder=[],victoryScheduled=false,penaltyActive=false;
 function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function candidateOrder(){let out=[],base=BANK.map((_,i)=>i),last=-1;while(out.length<240){let batch=shuffle(base);if(batch[0]===last&&batch.length>1)[batch[0],batch[1]]=[batch[1],batch[0]];out.push(...batch);last=out[out.length-1]}return out.slice(0,240)}
 function buildItems(){items=order.map(i=>{const [t,q,o,a]=BANK[i],ans=o[a],mix=shuffle(o);return {t,q,o:mix,a:mix.indexOf(ans)}})}
@@ -206,19 +206,19 @@ function updateCars(scores){
  COLORS.forEach(color=>{
    const n=Number(scores[color]||0),pct=3+Math.min(n,FINISH_HITS)/FINISH_HITS*91;
    $('c'+color).style.left=pct+'%';
-   $('s'+color).textContent=n+' acertos';
+   $('s'+color).textContent=n>=FINISH_HITS?'🏁 CHEGOU • '+n+' acertos':n+' acertos';
  });
  if($('myHits'))$('myHits').textContent=correct;
- if(started&&!ended){
-   const finishedTeams=COLORS.filter(color=>Number(scores[color]||0)>=FINISH_HITS);
-   if(finishedTeams.length>=3){
-     endGame('PODIUM_COMPLETE');
-   }
+ if(demo){
+   COLORS.forEach(color=>{
+     if(Number(scores[color]||0)>=FINISH_HITS&&!demoFinishOrder.includes(color))demoFinishOrder.push(color);
+   });
+   if(started&&!ended&&demoFinishOrder.length>=3)showDemoFinal();
  }
 }
-function renderQuestion(){if(!started||ended)return;if(idx>=items.length){$('question').textContent='Você concluiu todos os desafios disponíveis. Aguarde a ampulheta terminar.';$('answers').innerHTML='';return}const x=items[idx];currentA=x.a;$('qtag').textContent='DESAFIO '+(idx+1)+' • '+x.t;$('question').textContent=x.q;$('answers').innerHTML='';x.o.forEach((t,i)=>{const b=document.createElement('button');b.className='answer';b.textContent=String.fromCharCode(65+i)+') '+t;b.onclick=()=>answer(i,b);$('answers').appendChild(b)})}
+function renderQuestion(){if(!started||ended||ownFinished)return;if(idx>=items.length){$('question').textContent='Você concluiu todos os desafios disponíveis. Aguarde a ampulheta terminar.';$('answers').innerHTML='';return}const x=items[idx];currentA=x.a;$('qtag').textContent='DESAFIO '+(idx+1)+' • '+x.t;$('question').textContent=x.q;$('answers').innerHTML='';x.o.forEach((t,i)=>{const b=document.createElement('button');b.className='answer';b.textContent=String.fromCharCode(65+i)+') '+t;b.onclick=()=>answer(i,b);$('answers').appendChild(b)})}
 async function answer(i,b){
- if(!started||ended||penaltyActive)return;
+ if(!started||ended||ownFinished||penaltyActive)return;
  const bs=[...document.querySelectorAll('.answer')];
  bs.forEach(x=>x.disabled=true);
  const isCorrect=i===currentA;
@@ -234,6 +234,7 @@ async function answer(i,b){
  if(demo){
    demoScores.blue=correct;
    updateCars(demoScores);
+   if(correct>=FINISH_HITS){finishOwnDemo();return}
  }else{
    liveScores[myColor]=correct;
    updateCars(liveScores);
@@ -247,12 +248,51 @@ async function answer(i,b){
    }catch(e){
      if($('liveStatus'))$('liveStatus').innerHTML='⚠️ Reconectando... <b id="myHits">'+correct+'</b>';
    }
+   if(correct>=FINISH_HITS){finishOwnRace();return}
  }
  if(isCorrect){
    setTimeout(renderQuestion,330);
  }else{
    startPenalty();
  }
+}
+async function finishOwnRace(){
+ if(ownFinished||ended)return;
+ ownFinished=true;penaltyActive=false;
+ $('answers').innerHTML='';
+ $('qtag').textContent='🏁 LINHA DE CHEGADA!';
+ $('question').textContent='Sua equipe chegou aos 40 acertos. Aguarde as outras equipes terminarem a corrida.';
+ if($('liveStatus'))$('liveStatus').innerHTML='🏁 CHEGAMOS! Registrando colocação...';
+ await submitOwnFinish();
+}
+async function submitOwnFinish(){
+ if(ended||demo)return;
+ try{
+   const {data,error}=await sb.rpc('championship9_phase6_finish',{p_room:room,p_device:deviceId,p_correct:correct,p_wrong:wrong});
+   if(error||!data?.ok){
+     if($('liveStatus'))$('liveStatus').textContent='⚠️ Registrando chegada... tentando novamente.';
+     setTimeout(submitOwnFinish,1200);
+     return;
+   }
+   ownPlace=Number(data.place||0);
+   const bonus=Number(data.bonus||0);
+   const medal=ownPlace===1?'🥇':ownPlace===2?'🥈':ownPlace===3?'🥉':'🏁';
+   if($('liveStatus'))$('liveStatus').textContent=medal+' '+ownPlace+'º lugar na corrida • '+correct+' acertos + '+bonus+' bônus. Aguardando...';
+   if(data.finalized)showFinalFromServer();
+ }catch(e){
+   if($('liveStatus'))$('liveStatus').textContent='⚠️ Conexão instável. Registrando chegada novamente...';
+   setTimeout(submitOwnFinish,1200);
+ }
+}
+function finishOwnDemo(){
+ if(ownFinished||ended)return;
+ ownFinished=true;penaltyActive=false;
+ if(!demoFinishOrder.includes('blue'))demoFinishOrder.push('blue');
+ $('answers').innerHTML='';
+ $('qtag').textContent='🏁 LINHA DE CHEGADA!';
+ $('question').textContent='Sua equipe chegou aos 40 acertos. Aguarde as outras equipes terminarem a corrida.';
+ const p=demoFinishOrder.indexOf('blue')+1,b=[10,7,5,0][p-1]||0;
+ if($('liveStatus'))$('liveStatus').textContent='🏁 '+p+'º lugar • 40 acertos + '+b+' bônus. Aguardando...';
 }
 function startPenalty(){
  if(ended)return;
@@ -271,49 +311,93 @@ function startPenalty(){
    if(n>0){show();return}
    clearInterval(t);
    penaltyActive=false;
-   if(!ended)renderQuestion();
+   if(!ended&&!ownFinished)renderQuestion();
  },1000);
 }
-function tick(){const left=Math.max(0,DURATION-(performance.now()-startAt)/1000);$('timeNum').textContent=Math.ceil(left)+'s';if(left<=0)endGame()}
-function startRace(){if(started)return;started=true;$('countOverlay').classList.add('hidden');$('startOverlay').classList.add('hidden');$('timerBox').classList.remove('finished');void $('timerBox').offsetWidth;$('timerBox').classList.add('running');startAt=performance.now();renderQuestion();ticker=setInterval(tick,100);if(demo)startDemoCpus();else liveTimer=setInterval(pollLive,500)}
+function startRace(){if(started)return;started=true;$('countOverlay').classList.add('hidden');$('startOverlay').classList.add('hidden');renderQuestion();if(demo)startDemoCpus();else liveTimer=setInterval(pollLive,500)}
 function countdown(){let n=3;$('countOverlay').classList.remove('hidden');$('countNum').textContent=n;const t=setInterval(()=>{n--;$('countNum').textContent=n>0?n:'GO!';if(n<=0){clearInterval(t);setTimeout(startRace,650)}},800)}
-function startDemoCpus(){const specs={yellow:[.66,950,1750],green:[.72,850,1600],red:[.78,780,1500]};Object.entries(specs).forEach(([color,[acc,min,max]])=>{const step=()=>{if(ended)return;if(Math.random()<acc)demoScores[color]++;updateCars(demoScores);cpuTimers.push(setTimeout(step,min+Math.random()*(max-min)))};cpuTimers.push(setTimeout(step,700+Math.random()*500))})}
-async function pollLive(){
- const {data,error}=await sb.from('championship_phase6_live').select('color,correct').eq('room_code',room);
- if(error)return;
- const s={blue:0,yellow:0,green:0,red:0};
- (data||[]).forEach(r=>s[r.color]=Number(r.correct||0));
- s[myColor]=Math.max(Number(s[myColor]||0),correct);
- liveScores=s;
- updateCars(liveScores);
+function startDemoCpus(){
+ const specs={yellow:[.66,950,1750],green:[.72,850,1600],red:[.78,780,1500]};
+ Object.entries(specs).forEach(([color,[acc,min,max]])=>{
+   const step=()=>{
+     if(ended||demoScores[color]>=FINISH_HITS)return;
+     if(Math.random()<acc)demoScores[color]=Math.min(FINISH_HITS,demoScores[color]+1);
+     updateCars(demoScores);
+     if(!ended&&demoScores[color]<FINISH_HITS)cpuTimers.push(setTimeout(step,min+Math.random()*(max-min)));
+   };
+   cpuTimers.push(setTimeout(step,700+Math.random()*500));
+ });
 }
-async function waitReady(){const {data}=await sb.from('championship_phase6_live').select('color').eq('room_code',room);const n=(data||[]).length;$('startText').innerHTML='Equipes posicionadas na largada: <b>'+n+'/4</b><br>Assim que as quatro estiverem prontas, começa a contagem.';if(n>=4){clearInterval(liveTimer);$('startOverlay').classList.add('hidden');countdown()}}
+async function pollLive(){
+ const [{data,error},{data:rooms}]=await Promise.all([
+   sb.from('championship_phase6_live').select('color,correct').eq('room_code',room),
+   sb.from('championship_rooms').select('status').eq('room_code',room).limit(1)
+ ]);
+ if(!error){
+   const s={blue:0,yellow:0,green:0,red:0};
+   (data||[]).forEach(r=>s[r.color]=Number(r.correct||0));
+   s[myColor]=Math.max(Number(s[myColor]||0),correct);
+   liveScores=s;updateCars(liveScores);
+ }
+ if(rooms?.[0]?.status==='finished')showFinalFromServer();
+}
+async function waitReady(){const {data}=await sb.from('championship_phase6_live').select('color').eq('room_code',room);const n=(data||[]).length;$('startText').innerHTML='Equipes posicionadas na largada: <b>'+n+'/4</b><br>Assim que as quatro estiverem prontas, começa a contagem.<br><b>Chegada: 40 acertos • sem limite de tempo.</b>';if(n>=4){clearInterval(liveTimer);$('startOverlay').classList.add('hidden');countdown()}}
 async function init(){order=candidateOrder();if(demo){buildItems();$('myTeam').textContent='MODO TESTE • VOCÊ = EQUIPE AZUL';$('startBtn').onclick=()=>{$('startOverlay').classList.add('hidden');countdown()};return}
  $('startBtn').classList.add('hidden');if(!sb||!deviceId){$('startText').textContent='Entre primeiro pelo lobby do campeonato.';return}
  const {data,error}=await sb.rpc('championship_phase6_get_or_create',{p_room:room,p_device:deviceId,p_order:order});
  if(error||!data?.ok){$('startText').textContent='Não foi possível abrir a final.';return}
  order=data.item_order;myColor=data.color;buildItems();$('myTeam').textContent=TEAM[myColor];liveScores[myColor]=0;updateCars(liveScores);liveTimer=setInterval(waitReady,600);waitReady()
 }
-async function endGame(reason='TIME'){
+async function showFinalFromServer(){
  if(ended)return;
- ended=true;started=false;clearInterval(ticker);clearInterval(liveTimer);cpuTimers.forEach(clearTimeout);
- $('timerBox').classList.remove('running');$('timerBox').classList.add('finished');
- if(reason==='PODIUM_COMPLETE'){
-   $('question').textContent='🏁 AS 3 PRIMEIRAS EQUIPES CHEGARAM!';
- }else{
-   $('timeNum').textContent='0s';
-   $('question').textContent='TEMPO ESGOTADO!';
- }
- $('answers').innerHTML='';
- document.querySelectorAll('.answer').forEach(b=>b.disabled=true);
+ ended=true;started=false;ownFinished=true;penaltyActive=false;
+ clearInterval(liveTimer);cpuTimers.forEach(clearTimeout);
+ $('answers').innerHTML='';document.querySelectorAll('.answer').forEach(b=>b.disabled=true);
+ $('question').textContent='🏁 AS 3 PRIMEIRAS EQUIPES CHEGARAM!';
  $('endOverlay').classList.remove('hidden');
- if(demo){showDemoResult();return}
- const raw=Math.min(220,correct*3);await sb.rpc('championship_phase6_submit',{p_room:room,p_device:deviceId,p_correct:correct,p_wrong:wrong,p_raw:raw});submitPoll=setInterval(checkFinal,900);checkFinal()
+ await checkFinal();
+}
+function showDemoFinal(){
+ if(ended)return;
+ ended=true;started=false;ownFinished=true;penaltyActive=false;
+ cpuTimers.forEach(clearTimeout);$('answers').innerHTML='';
+ $('question').textContent='🏁 AS 3 PRIMEIRAS EQUIPES CHEGARAM!';
+ $('endOverlay').classList.remove('hidden');
+ showDemoResult();
 }
 function launchFireworks(){const box=$('fireworks');box.innerHTML='';const colors=['#ffe66d','#ff5ca8','#5ef2e2','#60a5fa','#c084fc','#ffffff'];for(let b=0;b<12;b++){setTimeout(()=>{const burst=document.createElement('div');burst.className='burst';burst.style.left=(10+Math.random()*80)+'%';burst.style.top=(10+Math.random()*64)+'%';for(let i=0;i<26;i++){const s=document.createElement('i');s.className='spark-fire';const a=(Math.PI*2/26)*i+Math.random()*.18,d=55+Math.random()*115;s.style.setProperty('--dx',Math.cos(a)*d+'px');s.style.setProperty('--dy',Math.sin(a)*d+'px');s.style.setProperty('--c',colors[Math.floor(Math.random()*colors.length)]);burst.appendChild(s)}box.appendChild(burst);setTimeout(()=>burst.remove(),1300)},b*280)}}
 function showVictory(color){$('victoryTeam').textContent=TEAM[color];$('victoryOverlay').classList.remove('hidden');launchFireworks();setInterval(launchFireworks,3600)}
 function scheduleVictory(color){if(victoryScheduled)return;victoryScheduled=true;setTimeout(()=>showVictory(color),4500)}
-function showDemoResult(){const arr=COLORS.map(color=>({color,score:demoScores[color]})).sort((a,b)=>b.score-a.score);$('endText').textContent='Resultado da corrida de teste. No campeonato real, abaixo aparece o placar acumulado das 6 fases.';$('results').innerHTML=arr.map((r,i)=>'<div class="result-row '+(i===0?'champion':'')+'"><span>'+(i===0?'🥇':i===1?'🥈':i===2?'🥉':'4º')+' '+TEAM[r.color]+'</span><span>'+r.score+' acertos</span></div>').join('');scheduleVictory(arr[0].color)}
-async function checkFinal(){const [{data:phase},{data:rooms}]=await Promise.all([sb.from('championship_phase_scores').select('color,total_points,correct').eq('room_code',room).eq('phase',6),sb.from('championship_rooms').select('status,scores').eq('room_code',room).limit(1)]);if((phase||[]).length<4){$('endText').textContent='Aguardando as outras equipes terminarem... '+(phase||[]).length+'/4';return}const state=rooms?.[0]||{};if(state.status!=='finished')return;clearInterval(submitPoll);const arr=COLORS.map(color=>({color,pts:Number(state.scores?.[color]||0)})).sort((a,b)=>b.pts-a.pts);$('endText').textContent='PLACAR FINAL — soma das 6 fases do campeonato.';$('results').innerHTML=arr.map((r,i)=>'<div class="result-row '+(i===0?'champion':'')+'"><span>'+(i===0?'🏆 CAMPEÃ — ':i===1?'🥈 ':i===2?'🥉 ':'4º ')+TEAM[r.color]+'</span><span>'+r.pts+' pts</span></div>').join('');scheduleVictory(arr[0].color)}
+function showDemoResult(){
+ const order=[...demoFinishOrder];
+ COLORS.filter(c=>!order.includes(c)).forEach(c=>order.push(c));
+ $('endText').textContent='Resultado da corrida de teste • 1º +10 • 2º +7 • 3º +5.';
+ $('results').innerHTML=order.map((color,i)=>{
+   const bonus=[10,7,5,0][i]||0,score=Number(demoScores[color]||0);
+   return '<div class="result-row '+(i===0?'champion':'')+'"><span>'+(i===0?'🥇':i===1?'🥈':i===2?'🥉':'4º')+' '+TEAM[color]+'</span><span>'+score+' acertos + '+bonus+' bônus</span></div>';
+ }).join('');
+ scheduleVictory(order[0]);
+}
+async function checkFinal(){
+ const [{data:phase},{data:rooms}]=await Promise.all([
+   sb.from('championship_phase_scores').select('color,total_points,correct,bonus,submitted_at').eq('room_code',room).eq('phase',6),
+   sb.from('championship_rooms').select('status,scores').eq('room_code',room).limit(1)
+ ]);
+ const state=rooms?.[0]||{};
+ if(state.status!=='finished'){
+   $('endText').textContent='Aguardando a terceira equipe cruzar a linha de chegada...';
+   return;
+ }
+ clearInterval(submitPoll);
+ const race={};
+ (phase||[]).forEach(r=>race[r.color]={correct:Number(r.correct||0),bonus:Number(r.bonus||0)});
+ const arr=COLORS.map(color=>({color,pts:Number(state.scores?.[color]||0)})).sort((a,b)=>b.pts-a.pts);
+ $('endText').textContent='PLACAR FINAL — soma das 6 fases. Na corrida: 1º +10 • 2º +7 • 3º +5.';
+ $('results').innerHTML=arr.map((r,i)=>{
+   const rr=race[r.color]||{correct:0,bonus:0};
+   return '<div class="result-row '+(i===0?'champion':'')+'"><span>'+(i===0?'🏆 CAMPEÃ — ':i===1?'🥈 ':i===2?'🥉 ':'4º ')+TEAM[r.color]+'</span><span>'+r.pts+' pts <small>• corrida '+rr.correct+'+'+rr.bonus+'</small></span></div>';
+ }).join('');
+ scheduleVictory(arr[0].color);
+}
 init();
 </script></body></html>
