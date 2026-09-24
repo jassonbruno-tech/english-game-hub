@@ -28,6 +28,11 @@
 .flag-us:before{content:"";position:absolute;left:0;top:0;width:42%;height:54%;background:#3c3b6e}
 .flag-uk{background:linear-gradient(33deg,transparent 43%,#fff 43% 57%,transparent 57%),linear-gradient(-33deg,transparent 43%,#fff 43% 57%,transparent 57%),linear-gradient(90deg,transparent 39%,#fff 39% 61%,transparent 61%),linear-gradient(0deg,transparent 35%,#fff 35% 65%,transparent 65%),#012169}
 .flag-uk:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 44%,#c8102e 44% 56%,transparent 56%),linear-gradient(0deg,transparent 41%,#c8102e 41% 59%,transparent 59%)}
+
+.penalty{position:absolute;inset:0;z-index:45;display:flex;align-items:center;justify-content:center;background:#5a0b18c7;backdrop-filter:blur(4px)}
+.penalty-box{text-align:center;background:#fff;color:#8d1e35;border:3px solid #ff8ca2;border-radius:24px;padding:20px 28px;box-shadow:0 18px 50px #0006}
+.penalty-box .big{font-size:clamp(38px,6vw,72px);font-weight:1000;line-height:1}
+.penalty-box p{margin:8px 0 0;font-weight:1000}
 </style></head><body><div class="viewport"><div class="stage">
 <div class="grid"></div><div class="header"><div class="head-main"><div class="title">🏁 CORRIDA MALUCA — FINAL <span class="flags" aria-label="Estados Unidos e Reino Unido"><span class="flag flag-us"></span><span class="flag flag-uk"></span></span></div><div class="sub">FASE 6 • 300 segundos • desafios contínuos • cada acerto faz o carro avançar</div></div><div class="meta">Turma 901<br>Escola Delfina de Jesus Amorim<br>Professor Jasson Bruno</div></div>
 <div class="timer-box" id="timerBox"><div class="hourglass"><div class="glass"></div><div class="sand-top"></div><div class="sand-stream"></div><div class="sand-bottom"></div></div><div><div class="timer-label">AMPULHETA FINAL</div><div class="time-num" id="timeNum">300s</div></div></div>
@@ -41,6 +46,7 @@
 <div class="overlay" id="startOverlay"><div class="modal"><h2>🏁 FINAL DO CAMPEONATO</h2><p id="startText">Desafios contínuos misturando vocabulário, gramática, modais, opiniões e sugestões.</p><p><b>Todos largam juntos. O relógio é de 300 segundos (5 minutos).</b></p><button class="btn" id="startBtn">COMEÇAR TESTE</button></div></div>
 <div class="overlay hidden" id="countOverlay"><div class="modal"><h2>LARGADA!</h2><div class="count" id="countNum">3</div></div></div>
 <div class="overlay hidden" id="endOverlay"><div class="modal"><h2>🏆 CAMPEONATO CONCLUÍDO</h2><p id="endText">Calculando classificação...</p><div class="result-list" id="results"></div></div></div>
+<div class="penalty hidden" id="penaltyOverlay"><div class="penalty-box"><div class="big">⏳ <span id="penaltyCount">2</span>s</div><p>RESPOSTA INCORRETA • PENALIDADE</p></div></div>
 <div class="victory-overlay hidden" id="victoryOverlay"><div class="fireworks" id="fireworks"></div><div class="victory-card"><div class="victory-kicker">🎉 CONGRATULATIONS! 🎉</div><div class="big-trophy">🏆</div><div class="victory-team" id="victoryTeam">EQUIPE CAMPEÃ</div><div class="victory-sub">Campeã do English Championship • Turma 901<br>Escola Delfina de Jesus Amorim • Professor Jasson Bruno <span class="flags" aria-label="Estados Unidos e Reino Unido"><span class="flag flag-us"></span><span class="flag flag-uk"></span></span></div></div></div>
 </div></div>
 <script>
@@ -192,7 +198,7 @@ const BANK=(()=>{
 const DURATION=300,FINISH_HITS=40,COLORS=['blue','yellow','green','red'],TEAM={blue:'EQUIPE AZUL',yellow:'EQUIPE AMARELA',green:'EQUIPE VERDE',red:'EQUIPE VERMELHA'};
 const cfg=window.TUG_SUPABASE_CONFIG||{},sb=(cfg.url&&cfg.key&&window.supabase?.createClient)?window.supabase.createClient(cfg.url,cfg.key):null;
 const qs=new URLSearchParams(location.search),demo=qs.get('demo')==='1',room=(qs.get('sala')||'901').replace(/[^a-zA-Z0-9_-]/g,'').toUpperCase(),deviceId=localStorage.getItem('championship9DeviceId');
-const $=id=>document.getElementById(id);let order=[],items=[],idx=0,correct=0,wrong=0,currentA=0,started=false,ended=false,startAt=0,ticker=null,myColor='blue',liveTimer=null,submitPoll=null,demoScores={blue:0,yellow:0,green:0,red:0},liveScores={blue:0,yellow:0,green:0,red:0},cpuTimers=[],victoryScheduled=false;
+const $=id=>document.getElementById(id);let order=[],items=[],idx=0,correct=0,wrong=0,currentA=0,started=false,ended=false,startAt=0,ticker=null,myColor='blue',liveTimer=null,submitPoll=null,demoScores={blue:0,yellow:0,green:0,red:0},liveScores={blue:0,yellow:0,green:0,red:0},cpuTimers=[],victoryScheduled=false,penaltyActive=false;
 function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function candidateOrder(){let out=[],base=BANK.map((_,i)=>i),last=-1;while(out.length<240){let batch=shuffle(base);if(batch[0]===last&&batch.length>1)[batch[0],batch[1]]=[batch[1],batch[0]];out.push(...batch);last=out[out.length-1]}return out.slice(0,240)}
 function buildItems(){items=order.map(i=>{const [t,q,o,a]=BANK[i],ans=o[a],mix=shuffle(o);return {t,q,o:mix,a:mix.indexOf(ans)}})}
@@ -212,10 +218,18 @@ function updateCars(scores){
 }
 function renderQuestion(){if(!started||ended)return;if(idx>=items.length){$('question').textContent='Você concluiu todos os desafios disponíveis. Aguarde a ampulheta terminar.';$('answers').innerHTML='';return}const x=items[idx];currentA=x.a;$('qtag').textContent='DESAFIO '+(idx+1)+' • '+x.t;$('question').textContent=x.q;$('answers').innerHTML='';x.o.forEach((t,i)=>{const b=document.createElement('button');b.className='answer';b.textContent=String.fromCharCode(65+i)+') '+t;b.onclick=()=>answer(i,b);$('answers').appendChild(b)})}
 async function answer(i,b){
- if(!started||ended)return;
+ if(!started||ended||penaltyActive)return;
  const bs=[...document.querySelectorAll('.answer')];
  bs.forEach(x=>x.disabled=true);
- if(i===currentA){correct++;b.classList.add('good')}else{wrong++;b.classList.add('bad');bs[currentA]?.classList.add('good')}
+ const isCorrect=i===currentA;
+ if(isCorrect){
+   correct++;
+   b.classList.add('good');
+ }else{
+   wrong++;
+   b.classList.add('bad');
+   bs[currentA]?.classList.add('good');
+ }
  idx++;
  if(demo){
    demoScores.blue=correct;
@@ -234,7 +248,28 @@ async function answer(i,b){
      if($('liveStatus'))$('liveStatus').innerHTML='⚠️ Reconectando... <b id="myHits">'+correct+'</b>';
    }
  }
- setTimeout(renderQuestion,330);
+ if(isCorrect){
+   setTimeout(renderQuestion,330);
+ }else{
+   startPenalty();
+ }
+}
+function startPenalty(){
+ if(ended)return;
+ penaltyActive=true;
+ const overlay=$('penaltyOverlay'),count=$('penaltyCount');
+ overlay.classList.remove('hidden');
+ let n=2;count.textContent=n;
+ const t=setInterval(()=>{
+   n--;
+   count.textContent=Math.max(0,n);
+   if(n<=0){
+     clearInterval(t);
+     overlay.classList.add('hidden');
+     penaltyActive=false;
+     if(!ended)renderQuestion();
+   }
+ },1000);
 }
 function tick(){const left=Math.max(0,DURATION-(performance.now()-startAt)/1000);$('timeNum').textContent=Math.ceil(left)+'s';if(left<=0)endGame()}
 function startRace(){if(started)return;started=true;$('countOverlay').classList.add('hidden');$('startOverlay').classList.add('hidden');$('timerBox').classList.remove('finished');void $('timerBox').offsetWidth;$('timerBox').classList.add('running');startAt=performance.now();renderQuestion();ticker=setInterval(tick,100);if(demo)startDemoCpus();else liveTimer=setInterval(pollLive,500)}
