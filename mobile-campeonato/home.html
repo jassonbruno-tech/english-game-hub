@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#1265e8">
+<title>Meu campeonato</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase-config.js"></script>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100svh;font-family:Arial,Helvetica,sans-serif;background:#eef7ff;color:#17385f}.hero{padding:22px 18px 28px;background:linear-gradient(135deg,#216dff,#35c8ff 58%,#7654ed);color:#fff;border-radius:0 0 30px 30px;box-shadow:0 12px 32px #174f9c33}.wrap{width:min(540px,100%);margin:auto}.hello{font-size:13px;font-weight:900;opacity:.9}.hero h1{margin:5px 0 2px;font-size:28px}.hero p{margin:0;font-size:12px;font-weight:800}.content{padding:16px}.mode{display:grid;grid-template-columns:1fr 1fr;gap:10px}.btn{border:0;border-radius:20px;padding:18px 10px;min-height:112px;font-weight:1000;font-size:15px;box-shadow:0 8px 20px #1a4d8c1f;cursor:pointer}.solo{background:linear-gradient(145deg,#fff6b4,#ffd84d);color:#594200}.versus{background:linear-gradient(145deg,#f5dcff,#a85cff);color:#35145b}.emoji{display:block;font-size:36px;margin-bottom:6px}.panel{margin-top:15px;background:#fff;border-radius:24px;padding:16px;box-shadow:0 8px 25px #1a4d8c16}.panel h2{margin:0 0 10px;font-size:18px;color:#174f9c}.rank{display:grid;grid-template-columns:34px 1fr auto;gap:8px;align-items:center;padding:10px 8px;border-bottom:1px solid #e7f0fa;font-size:12px}.rank:last-child{border-bottom:0}.pos{font-size:18px;font-weight:1000}.who{font-weight:1000}.who small{display:block;margin-top:2px;color:#7890aa;font-weight:700}.pts{text-align:right;font-weight:1000;color:#e83c75}.empty{text-align:center;color:#7d94ad;font-weight:800;font-size:12px;padding:18px 6px}.tip{margin:14px 0 0;padding:12px;border-radius:16px;background:#eaf5ff;color:#35658f;font-size:12px;font-weight:900;text-align:center}.disabled{opacity:.55;filter:grayscale(.2)}.back{text-align:center;padding:4px 0 22px}.back a{color:#34618f;text-decoration:none;font-size:12px;font-weight:900}
+</style></head>
+<body><div class="wrap">
+<header class="hero"><div class="hello">ENGLISH CHAMPIONSHIP MOBILE</div><h1 id="title">Olá!</h1><p id="profile"></p></header>
+<main class="content">
+  <div class="mode">
+    <button class="btn solo disabled" id="soloBtn"><span class="emoji">🎮</span>JOGAR SOZINHO<small style="display:block;margin-top:5px">em preparação</small></button>
+    <button class="btn versus disabled" id="versusBtn"><span class="emoji">⚔️</span>DESAFIAR UM AMIGO<small style="display:block;margin-top:5px">em preparação</small></button>
+  </div>
+  <section class="panel"><h2 id="rankTitle">🏆 Ranking da série</h2><div id="ranking"><div class="empty">Carregando ranking...</div></div><div class="tip">🚀 Continue jogando para acumular pontos e subir no ranking!</div></section>
+</main>
+<div class="back"><a href="index.html">← Escolher outra série</a></div>
+</div>
+<script>
+const grade=Math.max(6,Math.min(9,Number(new URLSearchParams(location.search).get('serie')||6)));
+const cfg=window.MOBILE_SUPABASE_CONFIG||{},sb=window.supabase?.createClient(cfg.url,cfg.key);
+const token=localStorage.getItem('english_mobile_profile_'+grade);
+rankTitle.textContent='🏆 Ranking do '+grade+'º ano';
+const medal=i=>i===1?'🥇':i===2?'🥈':i===3?'🥉':i+'º';
+async function init(){
+ if(!sb||!token){location.href='player.html?serie='+grade;return}
+ const {data:p}=await sb.rpc('mobile_get_profile',{p_profile_token:token});
+ if(!p?.ok||Number(p.grade)!==grade){location.href='player.html?serie='+grade;return}
+ title.textContent='Olá, '+p.name.split(' ')[0]+'!';
+ profile.textContent=p.class_name+' • '+p.school;
+ const {data,error}=await sb.rpc('mobile_grade_leaderboard',{p_grade:grade,p_limit:20});
+ if(error){ranking.innerHTML='<div class="empty">Não foi possível carregar o ranking.</div>';return}
+ if(!data?.length){ranking.innerHTML='<div class="empty">O ranking ainda está vazio. As partidas concluídas aparecerão aqui.</div>';return}
+ ranking.innerHTML=data.map(r=>'<div class="rank"><div class="pos">'+medal(Number(r.rank_position))+'</div><div class="who">'+r.name+'<small>'+r.class_name+' • '+r.school+' • '+r.games+' partida'+(Number(r.games)===1?'':'s')+'</small></div><div class="pts">'+r.total_points+' pts</div></div>').join('');
+}
+init();
+</script></body></html>
