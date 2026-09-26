@@ -34,16 +34,16 @@
 .penalty-box .big{font-size:clamp(38px,6vw,72px);font-weight:1000;line-height:1}
 .penalty-box p{margin:8px 0 0;font-weight:1000}
 </style></head><body><div class="viewport"><div class="stage">
-<div class="grid"></div><div class="header"><div class="head-main"><div class="title">🏁 CORRIDA MALUCA — FINAL <span class="flags" aria-label="Estados Unidos e Reino Unido"><span class="flag flag-us"></span><span class="flag flag-uk"></span></span></div><div class="sub">FASE 6 • 40 acertos até a chegada • cada acerto faz o carro avançar</div></div><div class="meta">Turma 901<br>Escola Delfina de Jesus Amorim<br>Professor Jasson Bruno</div></div>
-<div class="timer-box" id="timerBox"><div style="font-size:42px">🏁</div><div><div class="timer-label">LINHA DE CHEGADA</div><div class="time-num" id="timeNum">40 ACERTOS</div></div></div>
+<div class="grid"></div><div class="header"><div class="head-main"><div class="title">🏁 CORRIDA MALUCA — FINAL <span class="flags" aria-label="Estados Unidos e Reino Unido"><span class="flag flag-us"></span><span class="flag flag-uk"></span></span></div><div class="sub">FASE 6 • 25 acertos até a chegada • cada acerto faz o carro avançar</div></div><div class="meta">Turma 901<br>Escola Delfina de Jesus Amorim<br>Professor Jasson Bruno</div></div>
+<div class="timer-box" id="timerBox"><div style="font-size:42px">🏁</div><div><div class="timer-label">LINHA DE CHEGADA</div><div class="time-num" id="timeNum">25 ACERTOS</div></div></div>
 <div class="track-wrap"><div class="lane-labels"><div class="team-label blue">EQUIPE AZUL</div><div class="team-label yellow">EQUIPE AMARELA</div><div class="team-label green">EQUIPE VERDE</div><div class="team-label red">EQUIPE VERMELHA</div></div><div class="lanes">
 <div class="lane"><span class="car" id="cblue">🏎️</span><span class="score" id="sblue">0 acertos</span><span class="finish"></span></div>
 <div class="lane"><span class="car" id="cyellow">🚕</span><span class="score" id="syellow">0 acertos</span><span class="finish"></span></div>
 <div class="lane"><span class="car" id="cgreen">🚙</span><span class="score" id="sgreen">0 acertos</span><span class="finish"></span></div>
 <div class="lane"><span class="car" id="cred">🚗</span><span class="score" id="sred">0 acertos</span><span class="finish"></span></div>
 </div></div>
-<div class="question-panel"><div class="card"><div class="qtag" id="qtag">DESAFIO FINAL</div><div class="q" id="question">Aguardando largada...</div><div class="answers" id="answers"></div></div><div class="card info"><h3>🏎️ SUA EQUIPE</h3><div class="myteam" id="myTeam">MODO TESTE</div><p>✅ Acerto = avança</p><p id="liveStatus">🎯 Seus acertos: <b id="myHits">0</b></p><p>❌ Erro = penalidade de 2s</p><p>🏁 Ao chegar a 40 acertos, sua equipe para e aguarda</p><p>🥇 +10 • 🥈 +7 • 🥉 +5</p></div></div>
-<div class="overlay" id="startOverlay"><div class="modal"><h2>🏁 FINAL DO CAMPEONATO</h2><p id="startText">Desafios contínuos misturando vocabulário, gramática, modais, opiniões e sugestões.</p><p><b>Todos largam juntos. Não há relógio: cada equipe corre até 40 acertos. Ao cruzar a linha, para de responder. A corrida termina quando 3 equipes chegarem.</b></p><p><b>Bônus da corrida: 1º +10 • 2º +7 • 3º +5.</b></p><button class="btn" id="startBtn">COMEÇAR TESTE</button></div></div>
+<div class="question-panel"><div class="card"><div class="qtag" id="qtag">DESAFIO FINAL</div><div class="q" id="question">Aguardando largada...</div><div class="answers" id="answers"></div></div><div class="card info"><h3>🏎️ SUA EQUIPE</h3><div class="myteam" id="myTeam">MODO TESTE</div><p>✅ Acerto = avança</p><p id="liveStatus">🎯 Seus acertos: <b id="myHits">0</b></p><p>❌ Erro = penalidade de 2s</p><p>🏁 Ao chegar a 25 acertos, sua equipe para e aguarda</p><p>🥇 +10 • 🥈 +7 • 🥉 +5</p></div></div>
+<div class="overlay" id="startOverlay"><div class="modal"><h2>🏁 FINAL DO CAMPEONATO</h2><p id="startText">Desafios contínuos misturando vocabulário, gramática, modais, opiniões e sugestões.</p><p><b>Todos largam juntos. Não há relógio: cada equipe corre até 25 acertos. Ao cruzar a linha, para de responder. A corrida termina quando 3 equipes chegarem.</b></p><p><b>Bônus da corrida: 1º +10 • 2º +7 • 3º +5.</b></p><button class="btn" id="startBtn">COMEÇAR TESTE</button></div></div>
 <div class="overlay hidden" id="countOverlay"><div class="modal"><h2>LARGADA!</h2><div class="count" id="countNum">3</div></div></div>
 <div class="overlay hidden" id="endOverlay"><div class="modal"><h2>🏆 CAMPEONATO CONCLUÍDO</h2><p id="endText">Calculando classificação...</p><div class="result-list" id="results"></div></div></div>
 <div class="penalty hidden" id="penaltyOverlay"><div class="penalty-box"><div class="big">⏳ <span id="penaltyCount">2</span>s</div><p>RESPOSTA INCORRETA • PENALIDADE</p></div></div>
@@ -195,7 +195,7 @@ const BANK=(()=>{
  }));
  return b;
 })();
-const FINISH_HITS=40,COLORS=['blue','yellow','green','red'],TEAM={blue:'EQUIPE AZUL',yellow:'EQUIPE AMARELA',green:'EQUIPE VERDE',red:'EQUIPE VERMELHA'};
+const FINISH_HITS=25,COLORS=['blue','yellow','green','red'],TEAM={blue:'EQUIPE AZUL',yellow:'EQUIPE AMARELA',green:'EQUIPE VERDE',red:'EQUIPE VERMELHA'};
 const cfg=window.TUG_SUPABASE_CONFIG||{},sb=(cfg.url&&cfg.key&&window.supabase?.createClient)?window.supabase.createClient(cfg.url,cfg.key):null;
 const qs=new URLSearchParams(location.search),demo=qs.get('demo')==='1',room=(qs.get('sala')||'901').replace(/[^a-zA-Z0-9_-]/g,'').toUpperCase(),deviceId=localStorage.getItem('championship9DeviceId');
 const $=id=>document.getElementById(id);let order=[],items=[],idx=0,correct=0,wrong=0,currentA=0,started=false,ended=false,ownFinished=false,ownPlace=null,myColor='blue',liveTimer=null,submitPoll=null,demoScores={blue:0,yellow:0,green:0,red:0},liveScores={blue:0,yellow:0,green:0,red:0},cpuTimers=[],demoFinishOrder=[],victoryScheduled=false,penaltyActive=false;
@@ -261,7 +261,7 @@ async function finishOwnRace(){
  ownFinished=true;penaltyActive=false;
  $('answers').innerHTML='';
  $('qtag').textContent='🏁 LINHA DE CHEGADA!';
- $('question').textContent='Sua equipe chegou aos 40 acertos. Aguarde as outras equipes terminarem a corrida.';
+ $('question').textContent='Sua equipe chegou aos 25 acertos. Aguarde as outras equipes terminarem a corrida.';
  if($('liveStatus'))$('liveStatus').innerHTML='🏁 CHEGAMOS! Registrando colocação...';
  await submitOwnFinish();
 }
@@ -290,9 +290,9 @@ function finishOwnDemo(){
  if(!demoFinishOrder.includes('blue'))demoFinishOrder.push('blue');
  $('answers').innerHTML='';
  $('qtag').textContent='🏁 LINHA DE CHEGADA!';
- $('question').textContent='Sua equipe chegou aos 40 acertos. Aguarde as outras equipes terminarem a corrida.';
+ $('question').textContent='Sua equipe chegou aos 25 acertos. Aguarde as outras equipes terminarem a corrida.';
  const p=demoFinishOrder.indexOf('blue')+1,b=[10,7,5,0][p-1]||0;
- if($('liveStatus'))$('liveStatus').textContent='🏁 '+p+'º lugar • 40 acertos + '+b+' bônus. Aguardando...';
+ if($('liveStatus'))$('liveStatus').textContent='🏁 '+p+'º lugar • 25 acertos + '+b+' bônus. Aguardando...';
 }
 function startPenalty(){
  if(ended)return;
@@ -341,7 +341,7 @@ async function pollLive(){
  }
  if(rooms?.[0]?.status==='finished')showFinalFromServer();
 }
-async function waitReady(){const {data}=await sb.from('championship_phase6_live').select('color').eq('room_code',room);const n=(data||[]).length;$('startText').innerHTML='Equipes posicionadas na largada: <b>'+n+'/4</b><br>Assim que as quatro estiverem prontas, começa a contagem.<br><b>Chegada: 40 acertos • sem limite de tempo.</b>';if(n>=4){clearInterval(liveTimer);$('startOverlay').classList.add('hidden');countdown()}}
+async function waitReady(){const {data}=await sb.from('championship_phase6_live').select('color').eq('room_code',room);const n=(data||[]).length;$('startText').innerHTML='Equipes posicionadas na largada: <b>'+n+'/4</b><br>Assim que as quatro estiverem prontas, começa a contagem.<br><b>Chegada: 25 acertos • sem limite de tempo.</b>';if(n>=4){clearInterval(liveTimer);$('startOverlay').classList.add('hidden');countdown()}}
 async function init(){order=candidateOrder();if(demo){buildItems();$('myTeam').textContent='MODO TESTE • VOCÊ = EQUIPE AZUL';$('startBtn').onclick=()=>{$('startOverlay').classList.add('hidden');countdown()};return}
  $('startBtn').classList.add('hidden');if(!sb||!deviceId){$('startText').textContent='Entre primeiro pelo lobby do campeonato.';return}
  const {data,error}=await sb.rpc('championship_phase6_get_or_create',{p_room:room,p_device:deviceId,p_order:order});
