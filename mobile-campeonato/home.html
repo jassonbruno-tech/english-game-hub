@@ -10,7 +10,7 @@
 <header class="hero"><div class="hello">ENGLISH CHAMPIONSHIP MOBILE</div><h1 id="title">Olá!</h1><p id="profile"></p></header>
 <main class="content">
   <div class="mode">
-    <button class="btn solo disabled" id="soloBtn"><span class="emoji">🎮</span>JOGAR SOZINHO<small style="display:block;margin-top:5px">em preparação</small></button>
+    <button class="btn solo" id="soloBtn"><span class="emoji">🎮</span>JOGAR SOZINHO<small style="display:block;margin-top:5px">6 fases • até 600 pts</small></button>
     <button class="btn versus disabled" id="versusBtn"><span class="emoji">⚔️</span>DESAFIAR UM AMIGO<small style="display:block;margin-top:5px">em preparação</small></button>
   </div>
   <section class="panel"><h2 id="rankTitle">🏆 Ranking da série</h2><div id="ranking"><div class="empty">Carregando ranking...</div></div><div class="tip">🚀 Continue jogando para acumular pontos e subir no ranking!</div></section>
@@ -34,5 +34,7 @@ async function init(){
  if(!data?.length){ranking.innerHTML='<div class="empty">O ranking ainda está vazio. As partidas concluídas aparecerão aqui.</div>';return}
  ranking.innerHTML=data.map(r=>'<div class="rank"><div class="pos">'+medal(Number(r.rank_position))+'</div><div class="who">'+r.name+'<small>'+r.class_name+' • '+r.school+' • '+r.games+' partida'+(Number(r.games)===1?'':'s')+'</small></div><div class="pts">'+r.total_points+' pts</div></div>').join('');
 }
+soloBtn.onclick=()=>{if(grade===6)location.href='6ano/game.html';else alert('Esta série será liberada depois do modelo do 6º ano ser validado.');};
+versusBtn.onclick=()=>alert('O modo Desafiar um Amigo será a próxima etapa depois do teste do modo solo.');
 init();
 </script></body></html>
