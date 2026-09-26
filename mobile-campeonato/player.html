@@ -22,7 +22,7 @@
 <a class="back" href="index.html">← Voltar para escolher a série</a>
 </main>
 <script>
-const grade=Math.max(6,Math.min(9,Number(new URLSearchParams(location.search).get('serie')||6)));
+const params=new URLSearchParams(location.search),grade=Math.max(6,Math.min(9,Number(params.get('serie')||6))),challengeId=params.get('desafio');
 document.getElementById('seriesBadge').textContent=grade+'º ANO';
 const cfg=window.MOBILE_SUPABASE_CONFIG||{};
 const sb=window.supabase?.createClient(cfg.url,cfg.key);
@@ -47,7 +47,7 @@ enterBtn.onclick=async()=>{
   const {data,error}=await sb.rpc('mobile_register_player',{p_profile_token:token,p_name:n,p_class_name:c,p_school:s,p_grade:grade});
   if(error||!data?.ok){status.textContent='Não foi possível salvar seu perfil. Tente novamente.';enterBtn.disabled=false;enterBtn.textContent='ENTRAR NO CAMPEONATO';return}
   localStorage.setItem('english_mobile_active_grade',String(grade));
-  location.href='home.html?serie='+grade;
+  location.href=challengeId?('challenge.html?serie='+grade+'&id='+encodeURIComponent(challengeId)):('home.html?serie='+grade);
 };
 loadExisting();
 </script></body></html>
