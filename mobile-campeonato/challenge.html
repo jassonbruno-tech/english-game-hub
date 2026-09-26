@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#6d42e8">
+<title>Desafie um amigo</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase-config.js"></script>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100svh;font-family:Arial,Helvetica,sans-serif;background:radial-gradient(circle at 15% 0,#ffdf6580,transparent 28%),linear-gradient(180deg,#6e4de9,#2b68e8 55%,#153890);color:#fff;padding:18px}.wrap{width:min(520px,100%);margin:auto}.head{text-align:center;padding:18px 4px}.head .vs{font-size:64px}.head h1{margin:4px 0;font-size:30px}.head p{margin:0;color:#e9e6ff;font-weight:800}.card{background:#fff;color:#17385f;border-radius:28px;padding:20px;box-shadow:0 22px 65px #0b194e66}.code{text-align:center;background:#eef4ff;border-radius:18px;padding:12px;margin:12px 0}.code span{display:block;font-size:10px;font-weight:900;color:#7189a4}.code b{font-size:30px;letter-spacing:4px;color:#5a37d6}.players{display:grid;grid-template-columns:1fr 1fr;gap:10px}.player{padding:14px 10px;border-radius:18px;background:#f4f8ff;text-align:center;min-height:118px}.player .icon{font-size:32px}.player strong{display:block;margin-top:5px;font-size:14px}.player small{display:block;margin-top:3px;color:#748da8;font-weight:700;font-size:10px}.ready{color:#16965f;font-size:11px;font-weight:1000;margin-top:7px}.wait{color:#ad7c00}.btn{width:100%;border:0;border-radius:16px;padding:14px;margin-top:12px;font-size:15px;font-weight:1000;cursor:pointer}.share{background:linear-gradient(135deg,#ffda50,#ff8f42);color:#4e3300;box-shadow:0 5px 0 #bf7b17}.go{background:linear-gradient(135deg,#236cff,#39c9ff);color:#fff;box-shadow:0 5px 0 #174ba5}.go:disabled{opacity:.5}.status{text-align:center;margin-top:12px;color:#647f9e;font-size:12px;font-weight:900;line-height:1.4}.back{display:block;text-align:center;color:#fff;margin-top:18px;text-decoration:none;font-size:12px;font-weight:900}
+</style></head><body><main class="wrap"><section class="head"><div class="vs">⚔️</div><h1>Desafie um amigo</h1><p>Compartilhe o link e joguem o campeonato juntos.</p></section><section class="card">
+<div class="code"><span>CÓDIGO DO DESAFIO</span><b id="code">------</b></div>
+<div class="players"><div class="player"><div class="icon">🎮</div><strong id="meName">Você</strong><small id="meInfo"></small><div class="ready wait" id="meReady">NÃO PRONTO</div></div><div class="player"><div class="icon">👾</div><strong id="oppName">Aguardando...</strong><small id="oppInfo">Envie o link para seu colega</small><div class="ready wait" id="oppReady">AGUARDANDO</div></div></div>
+<button class="btn share" id="shareBtn">📲 COMPARTILHAR DESAFIO</button>
+<button class="btn go" id="readyBtn">✅ ESTOU PRONTO</button>
+<div class="status" id="status">Preparando desafio...</div>
+</section><a class="back" href="home.html?serie=6">← Voltar</a></main>
+<script>
+const cfg=window.MOBILE_SUPABASE_CONFIG||{},sb=window.supabase?.createClient(cfg.url,cfg.key);
+const qs=new URLSearchParams(location.search),grade=Math.max(6,Math.min(9,Number(qs.get('serie')||6)));
+let challengeId=qs.get('id'),token=localStorage.getItem('english_mobile_profile_'+grade),state=null,poll=null,myReady=false;
+if(!token){location.href='player.html?serie='+grade+(challengeId?'&desafio='+encodeURIComponent(challengeId):'')}
+async function createOrJoin(){
+ if(!sb||!token)return;
+ if(challengeId){
+   const {data,error}=await sb.rpc('mobile_join_challenge',{p_profile_token:token,p_challenge_id:challengeId});
+   if(error||!data?.ok){status.textContent='Este desafio não está mais disponível.';readyBtn.disabled=true;return}
+ }else{
+   const {data,error}=await sb.rpc('mobile_create_challenge',{p_profile_token:token,p_grade:grade});
+   if(error||!data?.ok){status.textContent='Não foi possível criar o desafio.';return}
+   challengeId=data.challenge_id;history.replaceState(null,'','challenge.html?serie='+grade+'&id='+challengeId);
+ }
+ await refresh();clearInterval(poll);poll=setInterval(refresh,1000);
+}
+async function refresh(){
+ const {data}=await sb.rpc('mobile_challenge_state',{p_profile_token:token,p_challenge_id:challengeId});
+ if(!data?.ok){status.textContent='Desafio indisponível.';return}
+ state=data;code.textContent=data.share_code||'------';meName.textContent=data.me?.name||'Você';meInfo.textContent=(data.me?.class_name||'')+' • '+(data.me?.school||'');
+ if(data.opponent){oppName.textContent=data.opponent.name;oppInfo.textContent=data.opponent.class_name+' • '+data.opponent.school}else{oppName.textContent='Aguardando...';oppInfo.textContent='Envie o link para seu colega'}
+ myReady=data.role==='host'?data.host_ready:data.guest_ready;const otherReady=data.role==='host'?data.guest_ready:data.host_ready;
+ meReady.textContent=myReady?'✓ PRONTO':'NÃO PRONTO';meReady.className='ready '+(myReady?'':'wait');
+ oppReady.textContent=data.opponent?(otherReady?'✓ PRONTO':'NÃO PRONTO'):'AGUARDANDO';oppReady.className='ready '+(otherReady?'':'wait');
+ readyBtn.textContent=myReady?'✓ VOCÊ ESTÁ PRONTO':'✅ ESTOU PRONTO';readyBtn.disabled=!data.opponent||data.status==='playing';
+ status.textContent=!data.opponent?'Aguardando seu colega entrar pelo link...':data.status==='playing'?'Os dois estão prontos. Preparando a largada...':'Quando os dois estiverem prontos, a partida começa.';
+ if(data.status==='playing'){clearInterval(poll);setTimeout(()=>location.href=(grade===6?'6ano/versus-game.html':'home.html')+'?desafio='+challengeId,700)}
+}
+readyBtn.onclick=async()=>{if(!challengeId||!state?.opponent)return;readyBtn.disabled=true;await sb.rpc('mobile_challenge_ready',{p_profile_token:token,p_challenge_id:challengeId,p_ready:true});await refresh()}
+shareBtn.onclick=async()=>{
+ if(!challengeId)return;const url=new URL(location.href);url.searchParams.set('id',challengeId);url.searchParams.set('serie',grade);
+ const data={title:'English Championship',text:'⚔️ Eu te desafio no English Championship! Clique no link para jogar comigo.',url:url.toString()};
+ try{if(navigator.share)await navigator.share(data);else{await navigator.clipboard.writeText(url.toString());status.textContent='Link copiado! Envie para seu colega.'}}catch(e){}
+};
+createOrJoin();
+</script></body></html>
