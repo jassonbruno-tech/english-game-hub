@@ -46,7 +46,7 @@
   .answer{padding:5px 7px;min-height:29px;font-size:clamp(8px,.85vw,12px);line-height:1.05}
   .info{gap:3px}.info h3{font-size:13px}.info p{font-size:8px;line-height:1.05}.myteam{padding:3px 6px;font-size:9px}
 }
-</style></head><body><div class="viewport"><div class="stage">
+</style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="../jogos-em-equipe/supabase-config.js"></script><script src="./ranking.js"></script></head><body><div class="viewport"><div class="stage">
 <div class="grid"></div><div class="header"><div class="head-main"><div class="title">🏁 CORRIDA MALUCA — FINAL <span class="flags" aria-label="Estados Unidos e Reino Unido"><span class="flag flag-us"></span><span class="flag flag-uk"></span></span></div><div class="sub">FASE 6 • 25 acertos até a chegada • cada acerto faz o carro avançar</div></div><div class="meta">Turmas 601 e 602<br>Escola Delfina de Jesus Amorim<br>Professor Jasson Bruno</div></div>
 <div class="timer-box" id="timerBox"><div style="font-size:42px">🏁</div><div><div class="timer-label">LINHA DE CHEGADA</div><div class="time-num" id="timeNum">25 ACERTOS</div></div></div>
 <div class="track-wrap"><div class="lane-labels"><div class="team-label blue">EQUIPE AZUL</div><div class="team-label yellow">EQUIPE AMARELA</div><div class="team-label green">EQUIPE VERDE</div><div class="team-label red">EQUIPE VERMELHA</div></div><div class="lanes">
@@ -56,7 +56,7 @@
 <div class="lane"><span class="car" id="cred">🚗</span><span class="score" id="sred">0 acertos</span><span class="finish"></span></div>
 </div></div>
 <div class="question-panel"><div class="card"><div class="qtag" id="qtag">DESAFIO FINAL</div><div class="q" id="question">Aguardando largada...</div><div class="answers" id="answers"></div></div><div class="card info"><h3>🏎️ SUA EQUIPE</h3><div class="myteam" id="myTeam">MODO TESTE</div><p>✅ Acerto = avança</p><p id="liveStatus">🎯 Seus acertos: <b id="myHits">0</b></p><p>❌ Erro = penalidade de 2s</p><p>🏁 Ao chegar a 25 acertos, sua equipe para e aguarda</p><p>🥇 +10 • 🥈 +7 • 🥉 +5</p></div></div>
-<div class="overlay" id="startOverlay"><div class="modal"><h2>🏁 FINAL DO CAMPEONATO</h2><p id="startText">Desafios contínuos com Family Members, Parts of the House, There is / There are, Plural of Nouns, Present Continuous e Genitive Case.</p><p><b>Todos largam juntos. Não há relógio: cada equipe corre até 25 acertos. Ao cruzar a linha, para de responder. A corrida termina quando 3 equipes chegarem.</b></p><p><b>Bônus da corrida: 1º +10 • 2º +7 • 3º +5.</b></p><button class="btn" id="startBtn">COMEÇAR TESTE</button></div></div>
+<div class="overlay" id="startOverlay"><div class="modal" style="display:flex;min-height:48%;flex-direction:column;align-items:center;justify-content:center"><h2 style="font-size:clamp(24px,4vw,46px)">📱 VIRE O CELULAR PARA O JOGO FUNCIONAR CORRETAMENTE</h2><p id="startText" style="margin:8px 0 18px">A corrida deve ser jogada com o celular na posição horizontal.</p><button class="btn" id="startBtn" style="font-size:20px;padding:15px 34px">🏁 INICIAR</button></div></div>
 <div class="overlay hidden" id="countOverlay"><div class="modal"><h2>LARGADA!</h2><div class="count" id="countNum">3</div></div></div>
 <div class="overlay hidden" id="endOverlay"><div class="modal"><h2>🏆 CAMPEONATO CONCLUÍDO</h2><p id="endText">Calculando classificação...</p><div class="result-list" id="results"></div></div></div>
 <div class="penalty hidden" id="penaltyOverlay"><div class="penalty-box"><div class="big">⏳ <span id="penaltyCount">2</span>s</div><p>RESPOSTA INCORRETA • PENALIDADE</p></div></div>
@@ -309,11 +309,16 @@ async function showFinalFromServer(){
 }
 function showDemoFinal(){
  if(ended)return;
- ended=true;started=false;ownFinished=true;penaltyActive=false;
+ ended=true;started=false;penaltyActive=false;
  cpuTimers.forEach(clearTimeout);$('answers').innerHTML='';
- $('question').textContent='🏁 AS 3 PRIMEIRAS EQUIPES CHEGARAM!';
- $('endOverlay').classList.remove('hidden');
- showDemoResult();
+ $('endOverlay').classList.add('hidden');
+ if(correct>=FINISH_HITS){
+   ownFinished=true;
+   if(window.SoloRank)SoloRank.complete('race',Math.max(0,correct*10-wrong*2),correct,wrong);
+ }else{
+   ownFinished=false;
+   if(window.SoloRank)SoloRank.retry('As três equipes chegaram antes de você. Tente novamente e alcance os 25 acertos!');
+ }
 }
 function launchFireworks(){const box=$('fireworks');box.innerHTML='';const colors=['#ffe66d','#ff5ca8','#5ef2e2','#60a5fa','#c084fc','#ffffff'];for(let b=0;b<12;b++){setTimeout(()=>{const burst=document.createElement('div');burst.className='burst';burst.style.left=(10+Math.random()*80)+'%';burst.style.top=(10+Math.random()*64)+'%';for(let i=0;i<26;i++){const s=document.createElement('i');s.className='spark-fire';const a=(Math.PI*2/26)*i+Math.random()*.18,d=55+Math.random()*115;s.style.setProperty('--dx',Math.cos(a)*d+'px');s.style.setProperty('--dy',Math.sin(a)*d+'px');s.style.setProperty('--c',colors[Math.floor(Math.random()*colors.length)]);burst.appendChild(s)}box.appendChild(burst);setTimeout(()=>burst.remove(),1300)},b*280)}}
 function showVictory(color){$('victoryTeam').textContent=TEAM[color];$('victoryOverlay').classList.remove('hidden');launchFireworks();setInterval(launchFireworks,3600)}
@@ -350,4 +355,4 @@ async function checkFinal(){
  scheduleVictory(arr[0].color);
 }
 init();
-</script><style>.soloBack{position:fixed;z-index:9999;left:8px;bottom:8px;padding:9px 12px;border-radius:999px;background:#07142fee;border:1px solid #ffffff55;color:#fff;text-decoration:none;font:900 12px Arial}.rotateTip{display:none;position:fixed;z-index:9998;left:50%;transform:translateX(-50%);bottom:56px;width:min(92vw,420px);padding:10px 12px;border-radius:14px;background:#07142ff2;border:1px solid #ffe66daa;color:#fff7c2;text-align:center;font:800 12px/1.35 Arial}@media(max-width:700px) and (orientation:portrait){.rotateTip{display:block}}</style><a class="soloBack" href="./index.html">← JOGOS</a><div class="rotateTip">📱 Se preferir mais espaço, gire o celular para a posição horizontal.</div></body></html>
+</script><style>.soloBack{position:fixed;z-index:9999;left:8px;bottom:8px;padding:9px 12px;border-radius:999px;background:#07142fee;border:1px solid #ffffff55;color:#fff;text-decoration:none;font:900 12px Arial}.rotateTip{display:none;position:fixed;z-index:9998;left:50%;transform:translateX(-50%);bottom:56px;width:min(92vw,420px);padding:10px 12px;border-radius:14px;background:#07142ff2;border:1px solid #ffe66daa;color:#fff7c2;text-align:center;font:800 12px/1.35 Arial}@media(max-width:700px) and (orientation:portrait){.rotateTip{display:block}}</style><a class="soloBack" href="./index.html">← JOGOS</a></body></html>
