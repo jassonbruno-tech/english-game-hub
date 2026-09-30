@@ -44,6 +44,40 @@ async function launch(){
   html=html.replace(/const CHALLENGES = \[[\s\S]*?\];\s*const KEYBOARD =/,'const CHALLENGES = '+JSON.stringify(CHALLENGES703.concat(EXTRA703))+';\nconst KEYBOARD =');
   html=html.replace(/function makeBag\(\)\{[\s\S]*?return bag\.slice\(0,TOTAL_ROUNDS\);\s*\}/,'function makeBag(){ return shuffle(CHALLENGES).slice(0,TOTAL_ROUNDS); }');
   html=html.replace(/function loseRound\(\)\{[\s\S]*?\n\}/,`function loseRound(){ state.combo=0; state.roundMistakes=MAX_LIVES; updateScarecrowParts(); playGameWrongAudio(); setTimeout(()=>nextRound(),900); }`);
+  html=html.replace(/<div class="stats">[\s\S]*?<\/div>\s*<div class="lives-card">/, `<div class="stats"><div class="stat"><b id="round">1/${TOTAL_ROUNDS}</b><span>Palavra</span></div><div class="stat"><b id="corrects">0</b><span>Acertos</span></div><div class="stat"><b id="errors">0</b><span>Erros</span></div></div><div class="lives-card">`);
+  html=html.replace(/function updateStats\(\)\{[\s\S]*?\n\}\n\n\nfunction getMemoryTip/, `function updateStats(){
+    const roundEl=el("round"), correctEl=el("corrects"), errorEl=el("errors");
+    if(roundEl) roundEl.textContent=state.round+"/"+TOTAL_ROUNDS;
+    if(correctEl) correctEl.textContent=state.corrects;
+    if(errorEl) errorEl.textContent=Math.max(0,(state.round-1)-state.corrects);
+    const mistakes=Math.max(0,Math.min(MAX_LIVES,Number(state.roundMistakes||0)));
+    const livesLeft=Math.max(0,MAX_LIVES-mistakes); state.lives=livesLeft;
+    if(el("lives")) el("lives").innerHTML="<span class='parts-left'>"+livesLeft+"</span>/6 partes restantes nesta palavra.";
+    ["partHead","partBody","partArmL","partArmR","partLegL","partLegR"].forEach((id,index)=>{const p=el(id);if(p)p.classList.toggle("show",index<mistakes)});
+  }
+
+
+function getMemoryTip`);
+  html=html.replace(/function loadChallenge\(\)\{[\s\S]*?\n\}\n\nfunction renderWord/, `function loadChallenge(){
+    stopFinalMusic();
+    state.current=state.bag[state.round-1];
+    resetScarecrowForNewWord();
+    state.guessed=new Set();
+    state.finishedRound=false;
+    const letters=normalizeText(state.current.word).replace(/ /g,"");
+    const unique=[...new Set(letters.split(""))];
+    const gifts=letters.length>=7?2:1;
+    unique.slice(0,gifts).forEach(ch=>state.guessed.add(ch));
+    el("theme").textContent="Palavra "+state.round+"/"+TOTAL_ROUNDS;
+    el("hint").innerHTML="🔎 DICA: "+state.current.hint;
+    el("memoryTip").textContent=gifts===2?"🎁 Duas letras já foram reveladas para ajudar você.":"🎁 Uma letra já foi revelada para ajudar você.";
+    el("guessInput").value="";
+    el("feedback").className="feedback"; el("feedback").innerHTML="";
+    renderWord(); renderKeyboard(); updateStats();
+    document.querySelectorAll(".key").forEach(btn=>{if(state.guessed.has(btn.textContent)) {btn.disabled=true;btn.classList.add("correct")}});
+  }
+
+function renderWord`);
   html=html.replace(/function finishGame\(completed\)\{[\s\S]*?\n\}\n\n\nfunction avaliarJogo/,`function finishGame(completed){
     try{ playFinalVictorySound(); }catch(e){}
     show("finalScreen");
