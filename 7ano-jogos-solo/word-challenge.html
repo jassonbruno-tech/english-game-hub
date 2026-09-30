@@ -171,7 +171,7 @@ function guessWord(){
 }
 async function init(){
  if(demo){
-   myColor='blue';order=candidateOrder();$('teamBadge').textContent='MODO TESTE';$('loading').classList.add('hidden');loadWord();return;
+   myColor='blue';order=candidateOrder();$('teamBadge').textContent='JOGO SOLO';$('loading').classList.add('hidden');loadWord();return;
  }
  if(!sb||!deviceId){$('loadText').textContent='Volte ao campeonato e entre na sala antes de jogar.';return}
  const {data,error}=await sb.rpc('championship_phase2_get_or_create',{p_room:room,p_device:deviceId,p_order:candidateOrder()});
