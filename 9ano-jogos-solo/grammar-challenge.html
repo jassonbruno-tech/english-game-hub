@@ -131,7 +131,7 @@ function stopSpinSound(){if(spinAudioTimer){clearInterval(spinAudioTimer);spinAu
 function spinWheel(){
  if(spinning||answered||idx>=20)return;
  spinning=true;startSpinSound();$('spinBtn').disabled=true;$('options').innerHTML='';$('feedback').textContent='';$('prompt').textContent='A roleta está escolhendo o desafio...';
- const q=current(),ti=Math.max(0,THEMES.indexOf(q.t)),segment=72,target=360-(ti*segment+36);
+ const q=current(),ti=Math.max(0,THEMES.indexOf(q.t)),segment=360/THEMES.length,target=360-(ti*segment+segment/2);
  const currentMod=((rotation%360)+360)%360;
  const delta=(target-currentMod+360)%360;
  const extraTurns=5+Math.floor(Math.random()*3);
