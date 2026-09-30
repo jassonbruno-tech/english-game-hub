@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Fase 3 — Present Continuous</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="../jogos-em-equipe/supabase-config.js?v=7ano1"></script>
+<title>Fase 3 — There is / There are</title>
+
+
 <style>
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:Arial,Helvetica,sans-serif;color:#fff;background:#07091b}
 body{background:radial-gradient(circle at 20% 20%,#ec489933,transparent 18%),radial-gradient(circle at 80% 15%,#3b82f633,transparent 20%),linear-gradient(180deg,#060818,#090b28 40%,#12013a)}
@@ -11,7 +11,7 @@ header{background:linear-gradient(135deg,#1d4ed8,#7c3aed 48%,#e11d48);border-rad
 header h1{margin:0;font-size:clamp(26px,3.7vw,44px);color:#fff7c2;text-shadow:0 3px 8px #0005}header p{margin:2px 0 0;font-size:11px;font-weight:900}.school-meta{margin-top:3px;font-size:10.5px;font-weight:900;color:#eaf2ff;opacity:.96}.school-meta{margin-top:3px;font-size:10.5px;font-weight:900;color:#eaf2ff;opacity:.96}.team{background:#fff;color:#1d4ed8;border-radius:999px;padding:8px 11px;font-weight:1000}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.stat{background:linear-gradient(180deg,#111845ee,#170938ee);border:1px solid #60a5fa66;border-radius:12px;padding:6px;text-align:center;font-size:9px;font-weight:1000}.stat b{display:block;font-size:18px;color:#ffe66d}
 .grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:9px;flex:1;min-height:0}.card{background:linear-gradient(180deg,#0b123eee,#0f0a2fee);border:1px solid #60a5fa44;border-radius:19px;padding:10px;min-height:0;box-shadow:0 10px 24px #0005}
-.wheel-card{display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden}.pointer{position:absolute;top:10px;left:50%;transform:translateX(-50%);z-index:5;border-left:17px solid transparent;border-right:17px solid transparent;border-top:40px solid #050816}.wheel{width:min(62vh,445px);height:min(62vh,445px);border-radius:50%;border:8px solid #fff;background:conic-gradient(#1da1f2 0 72deg,#22c55e 72deg 144deg,#f97316 144deg 216deg,#8b5cf6 216deg 288deg,#f43f5e 288deg 360deg);position:relative;transition:transform 4.8s cubic-bezier(.08,.76,.12,1);box-shadow:0 0 0 4px #ec489933,0 16px 34px #0008}.wheel:after{content:attr(data-theme);position:absolute;inset:31%;border-radius:50%;background:#f8fafc;border:6px solid #e2e8f0;display:flex;align-items:center;justify-content:center;text-align:center;color:#1d4ed8;font-weight:1000;font-size:20px;padding:6px}.wheel-label{position:absolute;left:50%;top:50%;width:86px;margin-left:-43px;margin-top:-9px;transform:rotate(var(--r)) translateY(-158px) rotate(calc(-1*var(--r)));font-size:13px;line-height:1.02;text-align:center;font-weight:1000;text-shadow:0 2px 5px #000}.spin{margin-top:9px;border:0;border-radius:13px;padding:10px 34px;background:linear-gradient(135deg,#f43f5e,#ec4899);color:white;font-weight:1000;font-size:16px;cursor:pointer}.spin:disabled{opacity:.5}
+.wheel-card{display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden}.pointer{position:absolute;top:10px;left:50%;transform:translateX(-50%);z-index:5;border-left:17px solid transparent;border-right:17px solid transparent;border-top:40px solid #050816}.wheel{width:min(62vh,445px);height:min(62vh,445px);border-radius:50%;border:8px solid #fff;background:conic-gradient(#1da1f2 0 72deg,#22c55e 72deg 144deg,#f97316 144deg 216deg,#8b5cf6 216deg 288deg,#f43f5e 288deg 360deg);position:relative;transition:transform 4.8s cubic-bezier(.08,.76,.12,1);box-shadow:0 0 0 4px #ec489933,0 16px 34px #0008}.wheel:after{content:attr(data-theme);position:absolute;inset:31%;border-radius:50%;background:#f8fafc;border:6px solid #e2e8f0;display:flex;align-items:center;justify-content:center;text-align:center;color:#1d4ed8;font-weight:1000;font-size:20px;padding:6px}.wheel-label{position:absolute;left:50%;top:50%;width:76px;margin-left:-38px;margin-top:-14px;transform:rotate(var(--r)) translateY(-132px) rotate(calc(-1*var(--r)));font-size:11px;line-height:1.05;text-align:center;font-weight:1000;text-shadow:0 2px 5px #000;overflow-wrap:anywhere}.spin{margin-top:9px;border:0;border-radius:13px;padding:10px 34px;background:linear-gradient(135deg,#f43f5e,#ec4899);color:white;font-weight:1000;font-size:16px;cursor:pointer}.spin:disabled{opacity:.5}
 .wheel.spinning{filter:drop-shadow(0 0 18px rgba(255,255,255,.9)) drop-shadow(0 0 32px rgba(236,72,153,.7));animation:wheelGlow .65s ease-in-out infinite alternate}
 @keyframes wheelGlow{from{filter:drop-shadow(0 0 10px rgba(255,255,255,.65)) drop-shadow(0 0 20px rgba(59,130,246,.55))}to{filter:drop-shadow(0 0 24px rgba(255,230,109,.95)) drop-shadow(0 0 40px rgba(236,72,153,.85))}}
 .question{display:flex;flex-direction:column}.theme-chip{align-self:flex-start;background:#1d4ed844;border:1px solid #60a5fa88;color:#bfdbfe;border-radius:999px;padding:6px 10px;font-weight:1000;font-size:11px}.prompt{font-size:clamp(20px,2.25vw,29px);line-height:1.22;font-weight:1000;margin:10px 0}.options{display:grid;gap:8px}.option{position:relative;border:2px solid #60a5fa66;background:#050922c4;color:#fff;border-radius:13px;padding:12px 12px 12px 52px;text-align:left;font-size:17px;font-weight:1000;cursor:pointer}.option:before{position:absolute;left:11px;top:50%;transform:translateY(-50%);width:27px;height:27px;border-radius:50%;display:grid;place-items:center;color:#fff}.option:nth-child(1):before{content:"A";background:#16a34a}.option:nth-child(2):before{content:"B";background:#2563eb}.option:nth-child(3):before{content:"C";background:#d97706}.option:nth-child(4):before{content:"D";background:#db2777}.option.correct{background:#14532d88;border-color:#4ade80;box-shadow:0 0 24px #4ade8077}
@@ -29,7 +29,29 @@ header h1{margin:0;font-size:clamp(26px,3.7vw,44px);color:#fff7c2;text-shadow:0 
 .flag-us:before{content:"";position:absolute;left:0;top:0;width:42%;height:54%;background:#3c3b6e}
 .flag-uk{background:linear-gradient(33deg,transparent 43%,#fff 43% 57%,transparent 57%),linear-gradient(-33deg,transparent 43%,#fff 43% 57%,transparent 57%),linear-gradient(90deg,transparent 39%,#fff 39% 61%,transparent 61%),linear-gradient(0deg,transparent 35%,#fff 35% 65%,transparent 65%),#012169}
 .flag-uk:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 44%,#c8102e 44% 56%,transparent 56%),linear-gradient(0deg,transparent 41%,#c8102e 41% 59%,transparent 59%)}
-</style><script src="./ranking.js"></script></head>
+
+@media(max-width:700px) and (orientation:portrait){
+  .app{height:100dvh;padding:6px;gap:5px}
+  header{display:none!important}
+  .stats{grid-template-columns:repeat(4,1fr);gap:4px}
+  .stat{padding:4px 2px;font-size:8px}.stat b{font-size:14px}
+  .grid{display:block;flex:1;min-height:0}
+  .wheel-card{height:100%;padding:8px;justify-content:center}
+  .wheel{width:min(82vw,390px);height:min(82vw,390px)}
+  .wheel-label{width:70px;margin-left:-35px;transform:rotate(var(--r)) translateY(-30vw) rotate(calc(-1*var(--r)));font-size:10px;line-height:1.03}
+  .spin{margin-top:14px;padding:13px 32px;font-size:17px}
+  .question{
+    position:fixed;inset:0;z-index:60;display:none!important;
+    background:rgba(5,7,29,.94);backdrop-filter:blur(7px);
+    padding:18px 12px;overflow:auto;justify-content:center
+  }
+  body.question-open .question{display:flex!important}
+  .question.card{border-radius:0}
+  .theme-chip{font-size:10px}.prompt{font-size:22px;margin:10px 0}
+  .options{gap:9px}.option{font-size:16px;padding:13px 11px 13px 50px}
+  .hint-box{font-size:13px;margin-top:9px}.feedback{font-size:14px}
+}
+</style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="../jogos-em-equipe/supabase-config.js"></script><script src="./ranking.js"></script></head>
 <body>
 <main class="app">
 <header><div><h1>🎡 PRESENT CONTINUOUS <span class="flags" aria-label="Estados Unidos e Reino Unido"><span class="flag flag-us"></span><span class="flag flag-uk"></span></span></h1><p>FASE 3 • afirmativa, negativa, interrogativa e correção de erros • 20 desafios</p><div class="school-meta">Turmas 701 e 702 • Escola Delfina de Jesus Amorim • Professor Jasson Bruno</div><div class="school-meta">Turmas 701 e 702 • Escola Delfina de Jesus Amorim • Professor Jasson Bruno</div></div><div class="team" id="teamBadge">MODO TESTE</div></header>
@@ -38,13 +60,13 @@ header h1{margin:0;font-size:clamp(26px,3.7vw,44px);color:#fff7c2;text-shadow:0 
 <div class="card wheel-card"><div class="pointer"></div><div class="wheel" id="wheel" data-theme="GIRE!">
 <span class="wheel-label" style="--r:36deg">Verb to be</span><span class="wheel-label" style="--r:108deg">-ING</span><span class="wheel-label" style="--r:180deg">Negative</span><span class="wheel-label" style="--r:252deg">Questions</span><span class="wheel-label" style="--r:324deg">Error Hunt</span></div><button class="spin" id="spinBtn">GIRAR ROLETA 🎯</button></div>
 <div class="card question"><div class="theme-chip" id="themeChip">Aguardando a roleta...</div><div class="prompt" id="prompt">Gire a roleta para receber o primeiro desafio.</div><div class="options" id="options"></div><div class="feedback" id="feedback"></div><div class="hint-box" id="hintBox">💡 DICA: Gire a roleta para receber uma pista em português.</div></div>
-</section></main>
+</section><div style="position:fixed;right:8px;bottom:8px;z-index:9998;color:#dbeafe;font:800 10px Arial;opacity:.9">Jogo idealizado pelo Prof. Jasson Bruno</div></main>
 <div class="overlay hidden" id="loading"><div class="modal"><h2>FASE 3</h2><p id="loadText">Sincronizando os desafios...</p></div></div>
 <div class="overlay hidden" id="finish"><div class="modal"><h2>🏁 FASE 3 ENCERRADA</h2><p id="finishSummary"></p><div id="waiting">Aguardando as outras equipes...</div><div class="rank-list" id="rankList"></div><div class="effect hidden" id="effectPhrase"></div><h3 id="generalTitle" class="hidden">📊 PLACAR GERAL</h3><div class="rank-list" id="generalRank"></div><button class="btn hidden" id="releaseBtn">🔓 LIBERAR FASE 4</button></div></div>
-<div class="overlay hidden" id="nextOverlay"><div class="modal"><h2>FASE 4 — QUANTIFIERS</h2><div class="effect" id="nextPhrase">Concentração total. A disputa está apertando!</div><div class="next-count" id="nextCount">3</div></div></div>
+<div class="overlay hidden" id="nextOverlay"><div class="modal"><h2>FASE 4 — PRESENT CONTINUOUS</h2><div class="effect" id="nextPhrase">Concentração total. A disputa está apertando!</div><div class="next-count" id="nextCount">3</div></div></div>
 <script>
 const QUESTIONS=[{"t":"Verb to be","q":"Complete: I _____ studying English now.","o":["am","is","are","do"],"a":0,"e":"Com I usamos AM."},{"t":"Verb to be","q":"Complete: She _____ reading a book.","o":["is","am","are","does"],"a":0,"e":"Com SHE usamos IS."},{"t":"Verb to be","q":"Complete: He _____ playing soccer.","o":["is","are","am","do"],"a":0,"e":"Com HE usamos IS."},{"t":"Verb to be","q":"Complete: They _____ watching TV.","o":["are","is","am","does"],"a":0,"e":"Com THEY usamos ARE."},{"t":"Verb to be","q":"Complete: We _____ doing the activity.","o":["are","is","am","does"],"a":0,"e":"Com WE usamos ARE."},{"t":"Verb to be","q":"Qual frase NÃO esqueceu o verbo to be?","o":["Lucas is doing his homework.","Lucas doing his homework.","Lucas do doing his homework.","Lucas does doing his homework."],"a":0,"e":"Present Continuous precisa de am/is/are."},{"t":"-ING form","q":"Complete: She is _____ dinner.","o":["cooking","cook","cooks","cooked"],"a":0,"e":"COOK → COOKING."},{"t":"-ING form","q":"Complete: They are _____ soccer.","o":["playing","play","plays","played"],"a":0,"e":"PLAY → PLAYING."},{"t":"-ING form","q":"Complete: He is _____ a magazine.","o":["reading","read","reads","reader"],"a":0,"e":"READ → READING."},{"t":"-ING form","q":"Complete: We are _____ TV.","o":["watching","watch","watches","watched"],"a":0,"e":"WATCH → WATCHING."},{"t":"-ING form","q":"Corrija: “She is write a message.”","o":["She is writing a message.","She writing a message.","She is writes a message.","She are writing a message."],"a":0,"e":"Depois de IS, o verbo principal vai para -ING."},{"t":"-ING form","q":"Corrija: “He is make dinner.”","o":["He is making dinner.","He making dinner.","He is makes dinner.","He are making dinner."],"a":0,"e":"MAKE → MAKING."},{"t":"Negative","q":"Passe para a negativa: She is studying now.","o":["She is not studying now.","She not is studying now.","She doesn't studying now.","She is studying not now."],"a":0,"e":"Negativa: sujeito + am/is/are + NOT + verbo-ing."},{"t":"Negative","q":"Qual negativa está correta?","o":["They are not playing now.","They not are playing now.","They don't playing now.","They are play not now."],"a":0,"e":"ARE + NOT + PLAYING."},{"t":"Negative","q":"Corrija: “He not is sleeping.”","o":["He is not sleeping.","He does not sleeping.","He not sleeping is.","He is sleeping not."],"a":0,"e":"O NOT vem depois de IS."},{"t":"Negative","q":"Complete: I _____ reading now.","o":["am not","is not","are not","do not"],"a":0,"e":"Com I: AM NOT."},{"t":"Negative","q":"Complete: My parents _____ working today.","o":["are not","is not","am not","does not"],"a":0,"e":"PARENTS é plural: ARE NOT."},{"t":"Negative","q":"Qual estrutura negativa está correta?","o":["subject + am/is/are + not + verb-ing","subject + not + verb-ing","do/does + not + verb-ing","am/is/are + subject + not"],"a":0,"e":"A negativa mantém o verbo to be antes de NOT."},{"t":"Interrogative","q":"Transforme em pergunta: She is cooking dinner.","o":["Is she cooking dinner?","Does she cooking dinner?","She is cooking dinner?","Is cooking she dinner?"],"a":0,"e":"Na pergunta, IS vai antes do sujeito."},{"t":"Interrogative","q":"Transforme em pergunta: They are studying now.","o":["Are they studying now?","Do they studying now?","They are studying now?","Are studying they now?"],"a":0,"e":"Na interrogativa, ARE vem antes de THEY."},{"t":"Interrogative","q":"Qual pergunta está correta?","o":["Is Pedro playing soccer now?","Does Pedro playing soccer now?","Pedro is playing soccer now?","Are Pedro playing soccer now?"],"a":0,"e":"PEDRO usa IS antes do sujeito."},{"t":"Interrogative","q":"Complete: _____ you reading?","o":["Are","Is","Am","Do"],"a":0,"e":"Com YOU usamos ARE."},{"t":"Interrogative","q":"Complete: What _____ she doing?","o":["is","are","am","does"],"a":0,"e":"WHAT + IS + SHE + DOING."},{"t":"Interrogative","q":"Qual estrutura interrogativa correta?","o":["Am/Is/Are + subject + verb-ing?","Subject + am/is/are + verb-ing?","Do/Does + subject + verb-ing?","Subject + do/does + verb-ing?"],"a":0,"e":"O verbo to be vem antes do sujeito."},{"t":"Error Hunt","q":"Corrija: “She cooking now.”","o":["She is cooking now.","She are cooking now.","She cooks now.","She is cook now."],"a":0,"e":"Faltava IS."},{"t":"Error Hunt","q":"Corrija: “They are play soccer.”","o":["They are playing soccer.","They playing soccer.","They is playing soccer.","They are plays soccer."],"a":0,"e":"O verbo principal precisa de -ING."},{"t":"Error Hunt","q":"Corrija: “He doesn't sleeping now.”","o":["He is not sleeping now.","He doesn't sleeping now.","He not is sleeping now.","He is sleep not now."],"a":0,"e":"A negativa usa IS NOT."},{"t":"Error Hunt","q":"Corrija: “Does she reading now?”","o":["Is she reading now?","Does she read now?","She is reading now?","Are she reading now?"],"a":0,"e":"A pergunta usa IS."},{"t":"Error Hunt","q":"Qual frase está totalmente correta?","o":["My mother is cooking now.","My mother cooking now.","My mother is cook now.","My mother are cooking now."],"a":0,"e":"IS + COOKING."},{"t":"Error Hunt","q":"Qual frase está totalmente correta?","o":["Are your cousins playing now?","Do your cousins playing now?","Your cousins are playing now?","Is your cousins playing now?"],"a":0,"e":"COUSINS é plural: ARE + sujeito + PLAYING."}];
-const THEMES=['Verb to be','-ING form','Negative','Interrogative','Error Hunt'];
+const THEMES=['There is / There are','Singular or Plural','Plural of Nouns','Sentence Check','House Context'];
 const cfg=window.TUG_SUPABASE_CONFIG||{},sb=(cfg.url&&cfg.key&&window.supabase?.createClient)?window.supabase.createClient(cfg.url,cfg.key):null;
 const qs=new URLSearchParams(location.search),demo=true,room=(qs.get('sala')||'701').replace(/[^a-zA-Z0-9_-]/g,'').toUpperCase();
 const deviceId=localStorage.getItem('championship7DeviceId'),TEAM={blue:'EQUIPE AZUL',yellow:'EQUIPE AMARELA',green:'EQUIPE VERDE',red:'EQUIPE VERMELHA'};
@@ -53,7 +75,13 @@ const $=id=>document.getElementById(id);
 function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function candidateOrder(){
  const pick=(type,n)=>shuffle(QUESTIONS.map((q,i)=>q.t===type?i:null).filter(i=>i!==null)).slice(0,n);
- return shuffle([...pick('Verb to be',4),...pick('-ING form',4),...pick('Negative',4),...pick('Interrogative',4),...pick('Error Hunt',4)]);
+ return shuffle([
+  ...pick('Plural of Nouns',8),
+  ...pick('There is / There are',4),
+  ...pick('Singular or Plural',2),
+  ...pick('Sentence Check',3),
+  ...pick('House Context',3)
+ ]);
 }
 function rawPoints(){return Math.max(0,correct*8-wrong*2)}
 function hud(){$('roundHud').textContent=Math.min(idx+1,20)+'/20';$('correctHud').textContent=correct;$('wrongHud').textContent=wrong;$('pointsHud').textContent=rawPoints()}
@@ -67,6 +95,28 @@ function randomizedQuestion(q){
     a:shuffled.findIndex(x=>x.correct)
   };
 }
+let spinAudioTimer=null,spinAudioCtx=null;
+function startSpinSound(){
+ try{
+  const A=window.AudioContext||window.webkitAudioContext;if(!A)return;
+  spinAudioCtx=spinAudioCtx||new A();
+  if(spinAudioCtx.state==='suspended')spinAudioCtx.resume();
+  stopSpinSound();
+  let step=0;
+  spinAudioTimer=setInterval(()=>{
+   try{
+    const o=spinAudioCtx.createOscillator(),g=spinAudioCtx.createGain();
+    o.type='triangle';o.frequency.value=240+(step%7)*28;
+    g.gain.setValueAtTime(.001,spinAudioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(.07,spinAudioCtx.currentTime+.01);
+    g.gain.exponentialRampToValueAtTime(.001,spinAudioCtx.currentTime+.075);
+    o.connect(g);g.connect(spinAudioCtx.destination);o.start();o.stop(spinAudioCtx.currentTime+.085);
+    step++;
+   }catch(e){}
+  },95);
+ }catch(e){}
+}
+function stopSpinSound(){if(spinAudioTimer){clearInterval(spinAudioTimer);spinAudioTimer=null}}
 function spinWheel(){
  if(spinning||answered||idx>=20)return;
  spinning=true;startSpinSound();$('spinBtn').disabled=true;$('options').innerHTML='';$('feedback').textContent='';$('prompt').textContent='A roleta está escolhendo o desafio...';
@@ -80,21 +130,26 @@ function spinWheel(){
  setTimeout(()=>{stopSpinSound();$('wheel').classList.remove('spinning');spinning=false;showQuestion()},4850)
 }
 function hintFor(q){
- if(q.t==='Verb to be') return '💡 DICA: Nunca esqueça o <b>am / is / are</b>.';
- if(q.t==='-ING form') return '💡 DICA: O verbo principal deve ficar com <b>-ing</b>.';
- if(q.t==='Negative') return '💡 DICA: sujeito + <b>am/is/are + not</b> + verbo-ing.';
- if(q.t==='Interrogative') return '💡 DICA: <b>Am/Is/Are + sujeito + verbo-ing?</b>';
- return '💡 DICA: Confira o verbo to be e o -ing.';
+ if(q.t==='There is / There are') return '💡 DICA: Use <b>There is</b> para uma coisa e <b>There are</b> para duas ou mais.';
+ if(q.t==='Singular or Plural') return '💡 DICA: Observe a quantidade. <b>One / a / an</b> indicam singular; números maiores e substantivos no plural pedem <b>are</b>.';
+ if(q.t==='Plural of Nouns') return '💡 DICA: Lembre das regras estudadas: normalmente <b>+s</b>; finais como s, x, sh podem receber <b>+es</b>; consoante + y pode virar <b>-ies</b>.';
+ if(q.t==='Sentence Check') return '💡 DICA: Confira duas coisas: <b>There is/are</b> e a forma correta do substantivo no singular ou plural.';
+ if(q.t==='House Context') return '💡 DICA: Leia a situação da casa e observe se aparece <b>uma coisa</b> ou <b>mais de uma</b>.';
+ return '💡 DICA: Observe a quantidade e a forma correta do substantivo.';
 }
 function showQuestion(){
  document.body.classList.add('question-open');
  const q=randomizedQuestion(current());activeQuestion=q;$('wheel').dataset.theme=q.t;$('themeChip').textContent=q.t;$('prompt').textContent=q.q;$('options').innerHTML='';$('hintBox').innerHTML=hintFor(q);answered=false;
  q.o.forEach((txt,i)=>{const b=document.createElement('button');b.className='option';b.textContent=txt;b.onclick=()=>answer(i,b);$('options').appendChild(b)});
 }
-function rouletteTone(ok){try{const A=window.AudioContext||window.webkitAudioContext;if(!A)return;const ctx=window.__eghRouletteAudio||(window.__eghRouletteAudio=new A());const p=(f,s,d,t='sine')=>{const o=ctx.createOscillator(),g=ctx.createGain();o.type=t;o.frequency.value=f;g.gain.setValueAtTime(.001,ctx.currentTime+s);g.gain.exponentialRampToValueAtTime(.17,ctx.currentTime+s+.02);g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+s+d);o.connect(g);g.connect(ctx.destination);o.start(ctx.currentTime+s);o.stop(ctx.currentTime+s+d+.03)};if(ok){p(660,0,.15);p(880,.12,.2);p(1047,.26,.28)}else{p(210,0,.18,'sawtooth');p(150,.16,.28,'sawtooth')}}catch(e){}}
-let spinAudioTimer=null,spinAudioCtx=null;
-function startSpinSound(){try{const A=window.AudioContext||window.webkitAudioContext;if(!A)return;spinAudioCtx=spinAudioCtx||new A();if(spinAudioCtx.state==='suspended')spinAudioCtx.resume();stopSpinSound();let step=0;spinAudioTimer=setInterval(()=>{try{const o=spinAudioCtx.createOscillator(),g=spinAudioCtx.createGain();o.type='triangle';o.frequency.value=240+(step%7)*28;g.gain.setValueAtTime(.001,spinAudioCtx.currentTime);g.gain.exponentialRampToValueAtTime(.07,spinAudioCtx.currentTime+.01);g.gain.exponentialRampToValueAtTime(.001,spinAudioCtx.currentTime+.075);o.connect(g);g.connect(spinAudioCtx.destination);o.start();o.stop(spinAudioCtx.currentTime+.085);step++}catch(e){}},95)}catch(e){}}
-function stopSpinSound(){if(spinAudioTimer){clearInterval(spinAudioTimer);spinAudioTimer=null}}
+function rouletteTone(ok){
+ try{
+  const A=window.AudioContext||window.webkitAudioContext;if(!A)return;
+  const ctx=window.__eghRouletteAudio||(window.__eghRouletteAudio=new A());
+  const play=(f,s,d,t='sine')=>{const o=ctx.createOscillator(),g=ctx.createGain();o.type=t;o.frequency.value=f;g.gain.setValueAtTime(.001,ctx.currentTime+s);g.gain.exponentialRampToValueAtTime(.17,ctx.currentTime+s+.02);g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+s+d);o.connect(g);g.connect(ctx.destination);o.start(ctx.currentTime+s);o.stop(ctx.currentTime+s+d+.03)};
+  if(ok){play(660,0,.15);play(880,.12,.2);play(1047,.26,.28)}else{play(210,0,.18,'sawtooth');play(150,.16,.28,'sawtooth')}
+ }catch(e){}
+}
 function answer(i,b){
  if(answered)return;answered=true;const q=activeQuestion||current(),buttons=[...document.querySelectorAll('.option')];
  if(i===q.a){rouletteTone(true);correct++;b.classList.add('correct');$('feedback').className='feedback ok';$('feedback').textContent='✅ CORRETO! '+q.e}
@@ -114,7 +169,7 @@ async function init(){
 }
 async function finishGame(){
  if(finished)return;finished=true;$('finish').classList.remove('hidden');$('finishSummary').textContent=correct+' acertos • '+wrong+' erros • '+rawPoints()+' pontos antes do bônus.';
- if(demo){if(window.SoloRank)SoloRank.complete('present_continuous',rawPoints(),correct,wrong);return}
+ if(demo){if(window.SoloRank)SoloRank.complete('roulette',rawPoints(),correct,wrong);return}
  const {error}=await sb.rpc('championship_phase3_submit',{p_room:room,p_device:deviceId,p_correct:correct,p_wrong:wrong,p_raw:rawPoints()});
  if(error){$('waiting').textContent='Erro ao enviar resultado.';return}poll=setInterval(checkResults,1000);checkResults();
 }
@@ -137,4 +192,4 @@ async function releaseNext(){const {data}=await sb.rpc('championship_release_nex
 async function watchNext(){const {data}=await sb.from('championship_rooms').select('current_phase,transition_message').eq('room_code',room).limit(1);if(data?.[0]&&Number(data[0].current_phase)>=4)beginNext(data[0].transition_message)}
 function beginNext(message){if(nextStarted)return;nextStarted=true;clearInterval(poll);clearInterval(transitionPoll);$('nextPhrase').textContent=message||'Concentração total. A disputa está apertando!';$('nextOverlay').classList.remove('hidden');let n=3;$('nextCount').textContent=n;const t=setInterval(()=>{n--;$('nextCount').textContent=n>0?n:'GO!';if(n<=0){clearInterval(t);setTimeout(()=>location.href='modal-challenge.html?sala='+encodeURIComponent(room)+'&v=phase4a',700)}},850)}
 $('spinBtn').onclick=spinWheel;$('releaseBtn').onclick=releaseNext;init();
-</script><div style="position:fixed;right:8px;bottom:8px;z-index:9998;color:#dbeafe;font:800 10px Arial;opacity:.9">Jogo idealizado pelo Prof. Jasson Bruno</div><style>.soloBack{position:fixed;z-index:9999;left:8px;bottom:8px;padding:9px 12px;border-radius:999px;background:#07142fee;border:1px solid #ffffff55;color:#fff;text-decoration:none;font:900 12px Arial}</style><a class="soloBack" href="./index.html">← JOGOS</a></body></html>
+</script><style>.soloBack{position:fixed;z-index:9999;left:8px;bottom:8px;padding:9px 12px;border-radius:999px;background:#07142fee;border:1px solid #ffffff55;color:#fff;text-decoration:none;font:900 12px Arial}.rotateTip{display:none;position:fixed;z-index:9998;left:50%;transform:translateX(-50%);bottom:56px;width:min(92vw,420px);padding:10px 12px;border-radius:14px;background:#07142ff2;border:1px solid #ffe66daa;color:#fff7c2;text-align:center;font:800 12px/1.35 Arial}@media(max-width:700px) and (orientation:portrait){.rotateTip{display:block}}</style><a class="soloBack" href="./index.html">← JOGOS</a></body></html>
