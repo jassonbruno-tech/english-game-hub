@@ -54,7 +54,7 @@ header h1{margin:0;font-size:clamp(26px,3.7vw,44px);color:#fff7c2;text-shadow:0 
 </style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="../jogos-em-equipe/supabase-config.js"></script><script src="./ranking.js"></script></head>
 <body>
 <main class="app">
-<header><div><h1>🎡 PRESENT CONTINUOUS <span class="flags" aria-label="Estados Unidos e Reino Unido"><span class="flag flag-us"></span><span class="flag flag-uk"></span></span></h1><p>FASE 3 • afirmativa, negativa, interrogativa e correção de erros • 20 desafios</p><div class="school-meta">Turmas 701 e 702 • Escola Delfina de Jesus Amorim • Professor Jasson Bruno</div><div class="school-meta">Turmas 701 e 702 • Escola Delfina de Jesus Amorim • Professor Jasson Bruno</div></div><div class="team" id="teamBadge">MODO TESTE</div></header>
+<header><div><h1>🎡 PRESENT CONTINUOUS <span class="flags" aria-label="Estados Unidos e Reino Unido"><span class="flag flag-us"></span><span class="flag flag-uk"></span></span></h1><p>FASE 3 • afirmativa, negativa, interrogativa e correção de erros • 20 desafios</p><div class="school-meta">Turmas 701 e 702 • Escola Delfina de Jesus Amorim • Professor Jasson Bruno</div><div class="school-meta">Turmas 701 e 702 • Escola Delfina de Jesus Amorim • Professor Jasson Bruno</div></div><div class="team" id="teamBadge">JOGO SOLO</div></header>
 <section class="stats"><div class="stat">DESAFIO<b id="roundHud">1/20</b></div><div class="stat">ACERTOS<b id="correctHud">0</b></div><div class="stat">ERROS<b id="wrongHud">0</b></div><div class="stat">PONTOS<b id="pointsHud">0</b></div></section>
 <section class="grid">
 <div class="card wheel-card"><div class="pointer"></div><div class="wheel" id="wheel" data-theme="GIRE!">
@@ -153,7 +153,7 @@ function answer(i,b){
 }
 async function init(){
  order=candidateOrder();hud();
- if(demo){$('teamBadge').textContent='MODO TESTE';return}
+ if(demo){$('teamBadge').textContent='JOGO SOLO';return}
  $('loading').classList.remove('hidden');
  if(!sb||!deviceId){$('loadText').textContent='Entre primeiro pelo lobby do campeonato.';return}
  const {data,error}=await sb.rpc('championship_phase3_get_or_create',{p_room:room,p_device:deviceId,p_order:order});
