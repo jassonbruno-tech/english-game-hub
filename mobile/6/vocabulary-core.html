@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Combinação de Vocabulário — English Game Hub Mobile</title>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{--cyan:#00eaff;--purple:#7c3aed;--gold:#ffe66d;--green:#22c55e;--red:#ef4444}
+html,body{margin:0;width:100%;min-height:100%;font-family:Arial,Helvetica,sans-serif;color:#fff;background:radial-gradient(circle at 50% 0,#164897,#07142f 48%,#17042e);overflow-x:hidden}
+body{min-height:100dvh;display:flex;justify-content:center;transition:filter .12s}
+.app{width:min(100%,560px);min-height:100dvh;padding:8px;display:flex;flex-direction:column;gap:7px}
+.hud{display:grid;grid-template-columns:1fr 1.2fr 1fr;gap:5px;position:sticky;top:0;z-index:5}
+.pill{background:linear-gradient(180deg,rgba(23,48,117,.98),rgba(14,21,65,.98));border:1px solid rgba(255,230,109,.35);padding:7px 3px;border-radius:12px;text-align:center;font-size:12px;font-weight:1000;box-shadow:0 5px 15px rgba(0,0,0,.18)}
+.card{background:linear-gradient(180deg,rgba(8,18,52,.94),rgba(18,8,54,.94));border:1px solid rgba(255,255,255,.15);border-radius:18px;padding:8px;box-shadow:0 14px 38px rgba(0,0,0,.32);flex:1}
+h2{text-align:center;margin:0 0 4px;color:#fff7c2;font-size:clamp(17px,4.8vw,23px)}.status{text-align:center;color:var(--gold);font-weight:900;min-height:19px;font-size:12px;margin-bottom:5px}
+.board{display:grid;grid-template-columns:1fr 1fr;gap:6px}.col{display:grid;gap:5px;align-content:start}
+.word{min-height:42px;border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:6px 5px;background:linear-gradient(180deg,rgba(26,65,135,.72),rgba(12,29,81,.8));color:#fff;font-weight:900;font-size:clamp(10px,2.8vw,13px);line-height:1.12;cursor:pointer;box-shadow:0 4px 10px rgba(0,0,0,.16);transition:transform .12s,filter .12s,box-shadow .12s}
+.word.pt{background:linear-gradient(180deg,rgba(115,48,190,.65),rgba(57,22,117,.82))}
+.word:active{transform:scale(.97)}.word.sel{outline:3px solid var(--gold);filter:brightness(1.2);box-shadow:0 0 18px rgba(255,230,109,.55)}
+.word.ok{background:linear-gradient(135deg,#16a34a,#4ade80)!important;color:#052e16;animation:correctCard .52s ease;box-shadow:0 0 28px rgba(74,222,128,.95)}
+.word.bad{background:linear-gradient(135deg,#991b1b,#ef4444)!important;animation:shake .4s ease}
+@keyframes correctCard{0%{transform:scale(1)}35%{transform:scale(1.09) rotate(-1deg)}70%{transform:scale(1.04) rotate(1deg)}100%{transform:scale(1)}}
+@keyframes shake{20%{transform:translateX(-7px)}40%{transform:translateX(7px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
+#flash{position:fixed;inset:0;pointer-events:none;opacity:0;z-index:80;background:radial-gradient(circle,#fff 0,#7dffce 20%,rgba(0,234,255,.78) 48%,rgba(124,58,237,.56) 72%,transparent 100%)}
+#flash.go{animation:flash .68s ease-out}
+@keyframes flash{0%{opacity:0}16%{opacity:.94}36%{opacity:.18}53%{opacity:.72}100%{opacity:0}}
+.spark{position:fixed;z-index:81;pointer-events:none;font-size:22px;animation:sparkFly .8s ease-out forwards}
+@keyframes sparkFly{from{transform:translate(0,0) scale(.5) rotate(0);opacity:1}to{transform:translate(var(--x),var(--y)) scale(1.35) rotate(260deg);opacity:0}}
+.overlay{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(0,0,0,.78);backdrop-filter:blur(8px);z-index:90}.overlay.show{display:flex}
+.modal{width:min(100%,420px);text-align:center;border-radius:28px;padding:24px;background:linear-gradient(160deg,#101d5a,#421060);border:1px solid rgba(255,255,255,.2);box-shadow:0 0 60px rgba(0,234,255,.28)}.big{font-size:65px}.modal h2{font-size:30px;color:var(--gold)}.modal p{line-height:1.4;font-weight:850}
+.btn{width:100%;padding:13px;border:0;border-radius:15px;background:linear-gradient(135deg,var(--gold),#22c55e);font-weight:1000;font-size:15px;cursor:pointer;color:#10203a;text-decoration:none;text-align:center;display:block}
+.end{display:none}.end.active{display:block}.game{display:none}.game.active{display:block}
+.rank{display:grid;gap:6px;margin:10px 0}.row{display:grid;grid-template-columns:38px 1fr auto;gap:6px;background:#fff;color:#172033;border-radius:12px;padding:8px;align-items:center}.row.you{outline:3px solid #00eaff}.row.top{background:linear-gradient(135deg,#ffe66d,#fff7c2)}
+.final-card{background:rgba(8,18,52,.94);border-radius:22px;padding:16px;margin-top:8px}.final-card h1{text-align:center;margin:0;color:var(--gold)}.sub{text-align:center;font-weight:800;color:#dbeafe}
+.wait{display:flex;align-items:center;justify-content:center;min-height:100dvh;text-align:center;font-weight:900;color:#dbeafe;padding:20px}
+@media(max-height:720px){.app{padding:5px}.word{min-height:35px;font-size:10px;padding:4px}.card{padding:6px}.pill{padding:5px 2px;font-size:10px}}
+</style>
+</head>
+<body>
+<div id="wait" class="wait">Preparando o desafio...</div>
+<main id="app" class="app" style="display:none">
+<section id="game" class="game">
+ <div class="hud"><div class="pill" id="phaseHud">🇺🇸 🇬🇧 ENGLISH</div><div class="pill" id="livesHud">❤️❤️❤️❤️❤️</div><div class="pill" id="progressHud">0/3</div></div>
+ <div class="card"><h2 id="phaseTitle">Combinação de Vocabulário</h2><div class="status" id="status">Escolha um item em inglês e encontre o par.</div><div class="board"><div class="col" id="enCol"></div><div class="col" id="ptCol"></div></div></div>
+</section>
+</main>
+<div id="flash"></div>
+<audio id="sndOk" src="success.wav" preload="auto"></audio><audio id="sndCombo" src="combo.wav" preload="auto"></audio><audio id="sndBad" src="error.wav" preload="auto"></audio><audio id="sndWin" src="victory.wav" preload="auto"></audio>
+<script>
+const GAME_NAME="mobile-6-vocabulary",MAX_LIVES=5,PAIRS_TO_WIN=3;
+const BANKS=[{"level":1,"title":"Combinação de Vocabulário","pairs":[{"id":"L1-01","en":"mother","pt":"mãe"},{"id":"L1-02","en":"father","pt":"pai"},{"id":"L1-03","en":"sister","pt":"irmã"}]}];
+let state={phase:0,lives:5,score:0,correct:0,selected:null,en:[],pt:[],player:null,phaseScore:0};
+const $=id=>document.getElementById(id);
+function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function play(id,vol=0.65){try{const a=$(id);a.pause();a.currentTime=0;a.volume=vol;a.play().catch(()=>{})}catch(e){}}
+function celebrate(btn){const f=$("flash");f.classList.remove("go");void f.offsetWidth;f.classList.add("go");const r=btn.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,icons=["✨","⭐","💫","🎉","✅"];for(let i=0;i<12;i++){const s=document.createElement("span");s.className="spark";s.textContent=icons[i%icons.length];s.style.left=cx+"px";s.style.top=cy+"px";s.style.setProperty("--x",(Math.random()*220-110)+"px");s.style.setProperty("--y",(Math.random()*-220-35)+"px");document.body.appendChild(s);setTimeout(()=>s.remove(),850)}if(navigator.vibrate)navigator.vibrate([35,25,55])}
+function startWithPlayer(name,school,klass){if(!String(name||"").trim()||!String(school||"").trim()||!String(klass||"").trim())return false;state={phase:0,lives:MAX_LIVES,score:0,correct:0,selected:null,en:[],pt:[],player:{name:String(name).trim(),school:String(school).trim(),klass:String(klass).trim()},phaseScore:0};$("wait").style.display="none";$("app").style.display="flex";startPhase();return true}
+window.startWithPlayer=startWithPlayer;
+function startGame(){return false} window.startGame=startGame;
+function startPhase(){state.lives=MAX_LIVES;state.phaseScore=0;const pairs=shuffle(BANKS[0].pairs).slice(0,PAIRS_TO_WIN);state.en=shuffle(pairs.map(x=>({...x,side:"en"})));state.pt=shuffle(pairs.map(x=>({...x,side:"pt"})));render();$("game").classList.add("active")}
+function render(){$("phaseHud").textContent="🇺🇸 🇬🇧 ENGLISH";$("livesHud").textContent="❤️".repeat(state.lives)+"🖤".repeat(MAX_LIVES-state.lives);$("progressHud").textContent=`${state.phaseScore}/${PAIRS_TO_WIN}`;$("phaseTitle").textContent="Combinação de Vocabulário";renderCol("enCol",state.en,"en");renderCol("ptCol",state.pt,"pt")}
+function renderCol(id,arr,side){const c=$(id);c.innerHTML="";arr.forEach(x=>{const b=document.createElement("button");b.className="word "+(side==="pt"?"pt":"");b.textContent=side==="en"?x.en:x.pt;b.onclick=()=>pick(x,b);c.appendChild(b)})}
+function pick(item,btn){if(!state.selected){state.selected={item,btn};btn.classList.add("sel");return}if(state.selected.item.side===item.side){state.selected.btn.classList.remove("sel");state.selected={item,btn};btn.classList.add("sel");return}const first=state.selected;state.selected=null;first.btn.classList.remove("sel");if(first.item.id===item.id){first.btn.classList.add("ok");btn.classList.add("ok");state.score+=10;state.correct++;state.phaseScore++;$("status").textContent=state.phaseScore%3===0?"🔥 COMBO! Excelente!":"✅ Par correto! Muito bem!";celebrate(btn);play(state.phaseScore%3===0?"sndCombo":"sndOk",.72);state.en=state.en.filter(x=>x.id!==item.id);state.pt=state.pt.filter(x=>x.id!==item.id);setTimeout(()=>{if(state.phaseScore>=PAIRS_TO_WIN)phaseWin();else render()},620)}else{state.lives--;first.btn.classList.add("bad");btn.classList.add("bad");$("status").textContent="❌ Não combina. Tente novamente.";play("sndBad",.45);setTimeout(()=>{if(state.lives<=0)phaseLose();else render()},430)}}
+function phaseWin(){play("sndWin",.55);finish()}
+function phaseLose(){state.lives=MAX_LIVES;state.selected=null;$("status").textContent="💪 Vidas renovadas. Continue tentando!";render()}
+function finish(){const points=Math.round((state.correct/PAIRS_TO_WIN)*100);parent.postMessage({type:"egh-phase-finish",phase:1,points,correct:state.correct,wrong:0},location.origin)}
+</script>
+</body></html>
