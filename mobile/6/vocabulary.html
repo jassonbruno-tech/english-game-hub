@@ -34,7 +34,7 @@ html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#07142f;fon
   <div class="msg" id="msg"></div>
  </div>
 </div>
-<iframe id="game" src="../../703-quanticompare-challenge-core.html?v=51" title="Combinação de Vocabulário"></iframe>
+<iframe id="game" src="./vocabulary-core.html?v=1" title="Combinação de Vocabulário"></iframe>
 <script>
 const BASE_W=941,BASE_H=1672,stage=document.getElementById('stage'),frame=document.getElementById('game');
 let ready=false,pending=false;
@@ -94,7 +94,7 @@ function configureShortVocabularyTest(){try{const w=frame.contentWindow,d=w.docu
  const oldPhaseWin=w.phaseWin;
  w.phaseWin=function(){if((w.state?.phase||0)===0){try{parent.postMessage({type:'egh-phase-finish',phase:1,correct:w.state?.correct||3,wrong:Math.max(0,(w.state?.lives??5)<5?5-(w.state?.lives??5):0),points:Math.max(0,Math.min(100,Math.round(((w.state?.correct||3)/3)*100)))},location.origin)}catch(e){};return}return oldPhaseWin&&oldPhaseWin.apply(this,arguments)};
  }catch(e){console.error('short vocab test',e)}}
-frame.addEventListener('load',()=>{ready=true;expandContentBank();configureShortVocabularyTest();optimizeGameLayout();if(pending)openGame()});
+frame.addEventListener('load',()=>{ready=true;optimizeGameLayout();if(pending)openGame()});
 function validate(){
  const ids=['n','s','c'];
  for(const id of ids){const el=document.getElementById(id);if(!el.value.trim()){document.getElementById('msg').textContent='Preencha os três campos para começar.';el.focus();return false}}
@@ -104,7 +104,7 @@ function resumeAudio(w){try{for(const key of ['audioCtx','_audioCtx','AudioCtx']
 function openGame(){
  if(!validate()){pending=false;return}
  if(!ready){pending=true;document.getElementById('msg').textContent='Carregando o jogo...';return}
- expandContentBank();optimizeGameLayout();
+ optimizeGameLayout();
  pending=false;
  const w=frame.contentWindow,d=w.document;
  resumeAudio(w);
