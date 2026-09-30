@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Fase 2 — Word Challenge</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="../jogos-em-equipe/supabase-config.js?v=7ano1"></script>
+
+
 <style>
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:Arial,Helvetica,sans-serif;background:#0b1637;color:#fff}
 body{background:radial-gradient(circle at 12% 0,#ffd86455,transparent 28%),radial-gradient(circle at 90% 0,#ff54b255,transparent 26%),linear-gradient(160deg,#0a1c46,#32165d 62%,#5a1b63)}
@@ -25,7 +25,29 @@ button,input{font:inherit}.app{width:min(1280px,100%);height:100%;margin:auto;pa
 .flag-us:before{content:"";position:absolute;left:0;top:0;width:42%;height:54%;background:#3c3b6e}
 .flag-uk{background:linear-gradient(33deg,transparent 43%,#fff 43% 57%,transparent 57%),linear-gradient(-33deg,transparent 43%,#fff 43% 57%,transparent 57%),linear-gradient(90deg,transparent 39%,#fff 39% 61%,transparent 61%),linear-gradient(0deg,transparent 35%,#fff 35% 65%,transparent 65%),#012169}
 .flag-uk:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 44%,#c8102e 44% 56%,transparent 56%),linear-gradient(0deg,transparent 41%,#c8102e 41% 59%,transparent 59%)}
-</style><script src="./ranking.js"></script></head>
+
+@media(max-width:700px) and (orientation:portrait){
+  html,body{overflow:hidden}
+  .app{height:100dvh;padding:5px;grid-template-rows:auto minmax(0,1fr);gap:5px}
+  .top,.bottom{display:none!important}
+  .hud{grid-template-columns:repeat(5,1fr);gap:4px}
+  .pill{padding:4px 2px;font-size:9px}.pill b{font-size:13px;margin-top:1px}
+  .main{display:grid;grid-template-columns:1fr;grid-template-rows:34% 66%;gap:5px;min-height:0}
+  .card{padding:5px;border-radius:14px}
+  .hang{gap:3px;justify-content:center}
+  .gallow{width:112px;height:112px;flex:0 0 112px}
+  .word{padding:4px;gap:3px;min-height:42px}
+  .letter{width:25px;height:30px;font-size:16px;border-radius:7px}.space{width:8px}
+  .challenge{justify-content:flex-start}
+  .label{padding:4px 6px;font-size:11px}
+  .hint{margin:4px 0;padding:7px 8px;font-size:14px;line-height:1.22}
+  .hint small{font-size:11.5px;margin-top:3px}
+  .keys{grid-template-columns:repeat(7,1fr);gap:5px;align-content:stretch;min-height:0}
+  .key{min-height:38px;font-size:15px;border-radius:8px}
+  .guess{margin-top:4px}.guess input{padding:7px}.btn{padding:8px 10px}
+  .feedback{margin-top:3px;min-height:27px;padding:4px 6px;font-size:11px}
+}
+</style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="../jogos-em-equipe/supabase-config.js"></script><script src="./ranking.js"></script></head>
 <body>
 <main class="app">
   <section class="top"><div><h1>🔤 WORD CHALLENGE <span class="flags" aria-label="Estados Unidos e Reino Unido"><span class="flag flag-us"></span><span class="flag flag-uk"></span></span></h1><p>FASE 2 • Actions, Places e Family Life • 15 palavras • 60 segundos por palavra</p><div class="school-meta">Turmas 701 e 702 • Escola Delfina de Jesus Amorim • Professor Jasson Bruno</div><div class="school-meta">Turmas 701 e 702 • Escola Delfina de Jesus Amorim • Professor Jasson Bruno</div></div><div class="team" id="teamBadge">CONECTANDO...</div></section>
@@ -58,7 +80,7 @@ button,input{font:inherit}.app{width:min(1280px,100%);height:100%;margin:auto;pa
     </div>
   </section>
   <section class="bottom"><span>Mesma sequência de 15 palavras para as 4 equipes.</span><span id="status">Sincronizando...</span></section>
-</main>
+<div style="position:fixed;right:8px;bottom:8px;z-index:9998;color:#dbeafe;font:800 10px Arial;opacity:.9">Jogo idealizado pelo Prof. Jasson Bruno</div></main>
 
 <div class="overlay" id="loading"><div class="modal"><h2>FASE 2</h2><p id="loadText">Sincronizando o Word Challenge da sala...</p></div></div>
 <div class="overlay hidden" id="finish"><div class="modal">
@@ -68,7 +90,7 @@ button,input{font:inherit}.app{width:min(1280px,100%);height:100%;margin:auto;pa
   <button class="btn release hidden" id="releaseBtn">🔓 LIBERAR FASE 3</button>
 </div></div>
 <div class="overlay hidden" id="nextOverlay"><div class="modal">
-  <div style="font-size:58px">⚡</div><h2>FASE 3 — PRESENT CONTINUOUS</h2>
+  <div style="font-size:58px">⚡</div><h2>FASE 3 — THERE IS / THERE ARE</h2>
   <div class="effect" id="nextPhrase">Cada ponto agora pode mudar o ranking.</div>
   <div class="next-count" id="nextCount">3</div><p>Preparem-se!</p>
 </div></div>
@@ -99,34 +121,14 @@ function buildHint(w,pt){
   return '<b>Dica:</b> '+pt+' • '+category+' • '+letters+' letras'+(words.length>1?' (sem contar espaços)':'');
 }
 function renderWord(){
-  const [w,h]=current();$('word').innerHTML='';
-  [...w].forEach(ch=>{
-    const d=document.createElement('div');
-    if(ch===' '){d.className='space'}
-    else{d.className='letter';d.textContent=revealed.has(ch)?ch:''}
-    $('word').appendChild(d);
-  });
-  $('hint').innerHTML=buildHint(w,h);
-  $('phaseLabel').textContent='Desafio '+(idx+1)+'/15';
+  const [w,h]=current();$('word').innerHTML='';[...w].forEach(ch=>{const d=document.createElement('div');if(ch===' '){d.className='space'}else{d.className='letter';d.textContent=revealed.has(ch)?ch:''}$('word').appendChild(d)});
+  $('hint').innerHTML=buildHint(w,h);$('phaseLabel').textContent='Desafio '+(idx+1)+'/15';
 }
-function renderParts(){
-  for(let i=0;i<6;i++)$('p'+i).classList.toggle('on',i<mistakes);
-}
+function renderParts(){for(let i=0;i<6;i++)$('p'+i).classList.toggle('on',i<mistakes)}
 function buildKeys(){
-  $('keys').innerHTML='';
-  'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').forEach(ch=>{
-    const b=document.createElement('button');
-    b.className='key';b.textContent=ch;b.onclick=()=>pickLetter(ch,b);
-    $('keys').appendChild(b);
-  });
+ $('keys').innerHTML='';'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').forEach(ch=>{const b=document.createElement('button');b.className='key';b.textContent=ch;b.onclick=()=>pickLetter(ch,b);$('keys').appendChild(b)})
 }
-function resetTimer(){
-  clearInterval(tickTimer);seconds=60;updateHud();
-  tickTimer=setInterval(()=>{
-    seconds--;updateHud();
-    if(seconds<=0){clearInterval(tickTimer);failWord('⏰ TEMPO ESGOTADO')}
-  },1000);
-}
+function resetTimer(){clearInterval(tickTimer);seconds=60;updateHud();tickTimer=setInterval(()=>{seconds--;updateHud();if(seconds<=0){clearInterval(tickTimer);failWord('⏰ TEMPO ESGOTADO')}} ,1000)}
 function loadWord(){
  if(idx>=15){finishGame();return}
  revealed=new Set();mistakes=0;renderParts();buildKeys();$('feedback').className='feedback';$('feedback').textContent='';$('guessInput').value='';renderWord();resetTimer();$('status').textContent='Palavra '+(idx+1)+' de 15';
@@ -140,7 +142,14 @@ function pickLetter(ch,b){
  if(target.includes(ch)){revealed.add(ch);b.classList.add('ok');renderWord();if(solveCheck())successWord()}
  else{wrong++;mistakes++;b.classList.add('no');renderParts();updateHud();if(mistakes>=6)failWord('❌ 6 ERROS')}
 }
-function wordWinTone(){try{const A=window.AudioContext||window.webkitAudioContext;if(!A)return;const ctx=window.__eghWordAudio||(window.__eghWordAudio=new A());const p=(f,s,d)=>{const o=ctx.createOscillator(),g=ctx.createGain();o.frequency.value=f;g.gain.setValueAtTime(.001,ctx.currentTime+s);g.gain.exponentialRampToValueAtTime(.18,ctx.currentTime+s+.02);g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+s+d);o.connect(g);g.connect(ctx.destination);o.start(ctx.currentTime+s);o.stop(ctx.currentTime+s+d+.03)};p(659,0,.16);p(784,.12,.18);p(988,.25,.24);p(1319,.42,.32)}catch(e){}}
+function wordWinTone(){
+ try{
+  const A=window.AudioContext||window.webkitAudioContext;if(!A)return;
+  const ctx=window.__eghWordAudio||(window.__eghWordAudio=new A());
+  const play=(f,s,d)=>{const o=ctx.createOscillator(),g=ctx.createGain();o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(.001,ctx.currentTime+s);g.gain.exponentialRampToValueAtTime(.18,ctx.currentTime+s+.02);g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+s+d);o.connect(g);g.connect(ctx.destination);o.start(ctx.currentTime+s);o.stop(ctx.currentTime+s+d+.03)};
+  play(659,0,.16);play(784,.12,.18);play(988,.25,.24);play(1319,.42,.32);
+ }catch(e){}
+}
 function successWord(){
  clearInterval(tickTimer);wordWinTone();
  const [w]=current();
@@ -212,4 +221,4 @@ function beginNextPhase(message){
  let n=3;$('nextCount').textContent=n;const t=setInterval(()=>{n--;$('nextCount').textContent=n>0?n:'GO!';if(n<=0){clearInterval(t);setTimeout(()=>{location.href='grammar-challenge.html?sala='+encodeURIComponent(room)+'&v=phase3a'},700)}},850);
 }
 $('guessBtn').onclick=guessWord;$('guessInput').addEventListener('keydown',e=>{if(e.key==='Enter')guessWord()});$('releaseBtn').onclick=releaseNextPhase;init();
-</script><div style="position:fixed;right:8px;bottom:8px;z-index:9998;color:#dbeafe;font:800 10px Arial;opacity:.9">Jogo idealizado pelo Prof. Jasson Bruno</div><style>.soloBack{position:fixed;z-index:9999;left:8px;bottom:8px;padding:9px 12px;border-radius:999px;background:#07142fee;border:1px solid #ffffff55;color:#fff;text-decoration:none;font:900 12px Arial}</style><a class="soloBack" href="./index.html">← JOGOS</a></body></html>
+</script><style>.soloBack{position:fixed;z-index:9999;left:8px;bottom:8px;padding:9px 12px;border-radius:999px;background:#07142fee;border:1px solid #ffffff55;color:#fff;text-decoration:none;font:900 12px Arial}.rotateTip{display:none;position:fixed;z-index:9998;left:50%;transform:translateX(-50%);bottom:56px;width:min(92vw,420px);padding:10px 12px;border-radius:14px;background:#07142ff2;border:1px solid #ffe66daa;color:#fff7c2;text-align:center;font:800 12px/1.35 Arial}@media(max-width:700px) and (orientation:portrait){.rotateTip{display:block}}</style><a class="soloBack" href="./index.html">← JOGOS</a></body></html>
