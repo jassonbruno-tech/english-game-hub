@@ -36,14 +36,15 @@
 
 @media(orientation:landscape){
   .header{display:none!important}
-  .timer-box{top:2.5%;transform:translateX(-50%) scale(.82)}
-  .track-wrap{top:14%;height:43%}
-  .question-panel{bottom:2%;height:39%;grid-template-columns:1.55fr .45fr;gap:8px}
-  .card{padding:7px 10px;border-radius:14px}
-  .q{font-size:clamp(12px,1.45vw,19px);margin:4px 0 6px}
-  .answers{gap:5px}
-  .answer{padding:6px 8px;min-height:32px;font-size:clamp(9px,.95vw,13px)}
-  .info{gap:4px}.info h3{font-size:15px}.info p{font-size:9px}
+  .timer-box{top:.8%;transform:translateX(-50%) scale(.72)}
+  .track-wrap{top:9%;height:36%}
+  .question-panel{bottom:1%;height:53%;grid-template-columns:1.62fr .38fr;gap:6px}
+  .card{padding:5px 8px;border-radius:12px}
+  .qtag{padding:3px 7px;font-size:8px}
+  .q{font-size:clamp(11px,1.25vw,17px);margin:3px 0 5px;line-height:1.06}
+  .answers{gap:4px;grid-template-columns:1fr 1fr}
+  .answer{padding:5px 7px;min-height:29px;font-size:clamp(8px,.85vw,12px);line-height:1.05}
+  .info{gap:3px}.info h3{font-size:13px}.info p{font-size:8px;line-height:1.05}.myteam{padding:3px 6px;font-size:9px}
 }
 </style></head><body><div class="viewport"><div class="stage">
 <div class="grid"></div><div class="header"><div class="head-main"><div class="title">🏁 CORRIDA MALUCA — FINAL <span class="flags" aria-label="Estados Unidos e Reino Unido"><span class="flag flag-us"></span><span class="flag flag-uk"></span></span></div><div class="sub">FASE 6 • 25 acertos até a chegada • cada acerto faz o carro avançar</div></div><div class="meta">Turmas 601 e 602<br>Escola Delfina de Jesus Amorim<br>Professor Jasson Bruno</div></div>
@@ -60,7 +61,7 @@
 <div class="overlay hidden" id="endOverlay"><div class="modal"><h2>🏆 CAMPEONATO CONCLUÍDO</h2><p id="endText">Calculando classificação...</p><div class="result-list" id="results"></div></div></div>
 <div class="penalty hidden" id="penaltyOverlay"><div class="penalty-box"><div class="big">⏳ <span id="penaltyCount">2</span>s</div><p>RESPOSTA INCORRETA • PENALIDADE</p></div></div>
 <div class="victory-overlay hidden" id="victoryOverlay"><div class="fireworks" id="fireworks"></div><div class="victory-card"><div class="victory-kicker">🎉 CONGRATULATIONS! 🎉</div><div class="big-trophy">🏆</div><div class="victory-team" id="victoryTeam">EQUIPE CAMPEÃ</div><div class="victory-sub">Campeã do English Championship • Turmas 601 e 602<br>Escola Delfina de Jesus Amorim • Professor Jasson Bruno <span class="flags" aria-label="Estados Unidos e Reino Unido"><span class="flag flag-us"></span><span class="flag flag-uk"></span></span></div></div></div>
-</div></div>
+<div style="position:absolute;right:1%;bottom:.3%;z-index:20;color:#eaf2ff;font:800 8px Arial;opacity:.9">Jogo idealizado pelo Prof. Jasson Bruno</div></div></div>
 <script>
 const BANK=(()=>{
  const b=[],add=(t,q,o,a=0)=>b.push([t,q,o,a]);
