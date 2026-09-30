@@ -41,11 +41,12 @@ async function launch(){
      .replaceAll('Voltar ao Turma 703','Voltar à Turma 703');
    const data=JSON.stringify({n,s,c});
    const auto=`<script>(function(){const p=${data};const labels=['Family<br>Members','Family<br>Life','WH-<br>Questions','Present<br>Continuous','Quantifiers','Comparatives'];function fixLabels(){const els=document.querySelectorAll('#wheel .wheel-label');if(els.length===6){els.forEach((el,i)=>el.innerHTML=labels[i]);return true}return false}function init(){try{const n=document.getElementById('playerName'),s=document.getElementById('playerSchool'),c=document.getElementById('playerClass');if(n)n.value=p.n;if(s)s.value=p.s;if(c)c.value=p.c;fixLabels();if(typeof goToPhases==='function')goToPhases();window.salvarPontuacaoFirebase=function(){try{parent.postMessage({type:'egh-phase-finish',phase:3,points:Math.max(0,Math.min(100,Math.round((state.corrects/TOTAL_ROUNDS)*100))),correct:state.corrects||0,wrong:Math.max(0,TOTAL_ROUNDS-(state.corrects||0))},location.origin)}catch(e){}};let tries=0;const t=setInterval(()=>{fixLabels();if(++tries>20)clearInterval(t)},100);}catch(e){console.error(e)}}setTimeout(init,120);})();<\/script>`;
-   html=html.replace('<script>(function(){const p=JSON.parse(sessionStorage.getItem('egh-mobile-player')||'null');if(!p){location.href='./';return}studentName.value=p.name;studentSchool.value=p.school;studentClass.value=p.studentClass;setTimeout(launch,120)})();</script></body>',auto+'</body>');
+   html=html.replace('</body>',auto+'</body>');
    document.open();document.write(html);document.close();
  }catch(e){console.error(e);loading.style.display='none';cover.style.display='block';msg.textContent='Não foi possível carregar a roleta. Atualize a página e tente novamente.'}
 }
 document.getElementById('startBtn').addEventListener('click',launch);document.getElementById('studentClass').addEventListener('keydown',e=>{if(e.key==='Enter')launch()});
 </script>
+<script>(function(){const p=JSON.parse(sessionStorage.getItem('egh-mobile-player')||'null');if(!p){location.href='./';return}document.getElementById('studentName').value=p.name;document.getElementById('studentSchool').value=p.school;document.getElementById('studentClass').value=p.studentClass;setTimeout(launch,120)})();</script>
 </body>
 </html>
