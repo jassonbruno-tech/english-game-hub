@@ -51,4 +51,5 @@ async function launch(){
 }
 startEl.addEventListener('click',launch);classEl.addEventListener('keydown',e=>{if(e.key==='Enter')launch()});
 </script>
+<script>(function(){const p=JSON.parse(sessionStorage.getItem('egh-mobile-player')||'null');if(!p){location.href='./';return}nameEl.value=p.name;schoolEl.value=p.school;classEl.value=p.studentClass;setTimeout(launch,120);})();</script>
 </body></html>
