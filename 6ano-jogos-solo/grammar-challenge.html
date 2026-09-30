@@ -95,9 +95,31 @@ function randomizedQuestion(q){
     a:shuffled.findIndex(x=>x.correct)
   };
 }
+let spinAudioTimer=null,spinAudioCtx=null;
+function startSpinSound(){
+ try{
+  const A=window.AudioContext||window.webkitAudioContext;if(!A)return;
+  spinAudioCtx=spinAudioCtx||new A();
+  if(spinAudioCtx.state==='suspended')spinAudioCtx.resume();
+  stopSpinSound();
+  let step=0;
+  spinAudioTimer=setInterval(()=>{
+   try{
+    const o=spinAudioCtx.createOscillator(),g=spinAudioCtx.createGain();
+    o.type='triangle';o.frequency.value=240+(step%7)*28;
+    g.gain.setValueAtTime(.001,spinAudioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(.07,spinAudioCtx.currentTime+.01);
+    g.gain.exponentialRampToValueAtTime(.001,spinAudioCtx.currentTime+.075);
+    o.connect(g);g.connect(spinAudioCtx.destination);o.start();o.stop(spinAudioCtx.currentTime+.085);
+    step++;
+   }catch(e){}
+  },95);
+ }catch(e){}
+}
+function stopSpinSound(){if(spinAudioTimer){clearInterval(spinAudioTimer);spinAudioTimer=null}}
 function spinWheel(){
  if(spinning||answered||idx>=20)return;
- spinning=true;$('spinBtn').disabled=true;$('options').innerHTML='';$('feedback').textContent='';$('prompt').textContent='A roleta está escolhendo o desafio...';
+ spinning=true;startSpinSound();$('spinBtn').disabled=true;$('options').innerHTML='';$('feedback').textContent='';$('prompt').textContent='A roleta está escolhendo o desafio...';
  const q=current(),ti=Math.max(0,THEMES.indexOf(q.t)),segment=72,target=360-(ti*segment+36);
  const currentMod=((rotation%360)+360)%360;
  const delta=(target-currentMod+360)%360;
@@ -105,7 +127,7 @@ function spinWheel(){
  rotation+=extraTurns*360+delta;
  $('wheel').classList.add('spinning');
  $('wheel').style.transform='rotate('+rotation+'deg)';
- setTimeout(()=>{$('wheel').classList.remove('spinning');spinning=false;showQuestion()},4850)
+ setTimeout(()=>{stopSpinSound();$('wheel').classList.remove('spinning');spinning=false;showQuestion()},4850)
 }
 function hintFor(q){
  if(q.t==='There is / There are') return '💡 DICA: Use <b>There is</b> para uma coisa e <b>There are</b> para duas ou mais.';
