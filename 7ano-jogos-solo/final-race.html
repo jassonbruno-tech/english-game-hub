@@ -55,7 +55,7 @@
 <div class="lane"><span class="car" id="cgreen">🚙</span><span class="score" id="sgreen">0 acertos</span><span class="finish"></span></div>
 <div class="lane"><span class="car" id="cred">🚗</span><span class="score" id="sred">0 acertos</span><span class="finish"></span></div>
 </div></div>
-<div class="question-panel"><div class="card"><div class="qtag" id="qtag">DESAFIO FINAL</div><div class="q" id="question">Aguardando largada...</div><div class="answers" id="answers"></div></div><div class="card info"><h3>🏎️ SUA EQUIPE</h3><div class="myteam" id="myTeam">MODO TESTE</div><p>✅ Acerto = avança</p><p id="liveStatus">🎯 Seus acertos: <b id="myHits">0</b></p><p>❌ Erro = penalidade de 2s</p><p>🏁 Ao chegar a 25 acertos, sua equipe para e aguarda</p><p>🥇 +10 • 🥈 +7 • 🥉 +5</p></div></div>
+<div class="question-panel"><div class="card"><div class="qtag" id="qtag">DESAFIO FINAL</div><div class="q" id="question">Aguardando largada...</div><div class="answers" id="answers"></div></div><div class="card info"><h3>🏎️ SUA EQUIPE</h3><div class="myteam" id="myTeam">JOGO SOLO</div><p>✅ Acerto = avança</p><p id="liveStatus">🎯 Seus acertos: <b id="myHits">0</b></p><p>❌ Erro = penalidade de 2s</p><p>🏁 Ao chegar a 25 acertos, sua equipe para e aguarda</p><p>🥇 +10 • 🥈 +7 • 🥉 +5</p></div></div>
 <div class="overlay" id="startOverlay"><div class="modal" style="display:flex;min-height:48%;flex-direction:column;align-items:center;justify-content:center"><h2 style="font-size:clamp(24px,4vw,46px)">📱 VIRE O CELULAR PARA O JOGO FUNCIONAR CORRETAMENTE</h2><p id="startText" style="margin:8px 0 18px">A corrida deve ser jogada com o celular na posição horizontal.</p><button class="btn" id="startBtn" style="font-size:20px;padding:15px 34px">🏁 INICIAR</button></div></div>
 <div class="overlay hidden" id="countOverlay"><div class="modal"><h2>LARGADA!</h2><div class="count" id="countNum">3</div></div></div>
 <div class="overlay hidden" id="endOverlay"><div class="modal"><h2>🏆 CAMPEONATO CONCLUÍDO</h2><p id="endText">Calculando classificação...</p><div class="result-list" id="results"></div></div></div>
@@ -235,7 +235,7 @@ async function pollLive(){
  if(rooms?.[0]?.status==='finished')showFinalFromServer();
 }
 async function waitReady(){const {data}=await sb.from('championship_phase6_live').select('color').eq('room_code',room);const n=(data||[]).length;$('startText').innerHTML='Equipes posicionadas na largada: <b>'+n+'/4</b><br>Assim que as quatro estiverem prontas, começa a contagem.<br><b>Chegada: 25 acertos • sem limite de tempo.</b>';if(n>=4){clearInterval(liveTimer);$('startOverlay').classList.add('hidden');countdown()}}
-async function init(){order=candidateOrder();if(demo){buildItems();$('myTeam').textContent='MODO TESTE • VOCÊ = EQUIPE AZUL';$('startBtn').onclick=()=>{$('startOverlay').classList.add('hidden');countdown()};return}
+async function init(){order=candidateOrder();if(demo){buildItems();$('myTeam').textContent='VOCÊ';$('startBtn').onclick=()=>{$('startOverlay').classList.add('hidden');countdown()};return}
  $('startBtn').classList.add('hidden');if(!sb||!deviceId){$('startText').textContent='Entre primeiro pelo lobby do campeonato.';return}
  const {data,error}=await sb.rpc('championship_phase6_get_or_create',{p_room:room,p_device:deviceId,p_order:order});
  if(error||!data?.ok){$('startText').textContent='Não foi possível abrir a final.';return}
