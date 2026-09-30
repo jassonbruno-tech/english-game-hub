@@ -55,7 +55,7 @@ button{font:inherit}
 .flag-us:before{content:"";position:absolute;left:0;top:0;width:42%;height:54%;background:#3c3b6e}
 .flag-uk{background:linear-gradient(33deg,transparent 43%,#fff 43% 57%,transparent 57%),linear-gradient(-33deg,transparent 43%,#fff 43% 57%,transparent 57%),linear-gradient(90deg,transparent 39%,#fff 39% 61%,transparent 61%),linear-gradient(0deg,transparent 35%,#fff 35% 65%,transparent 65%),#012169}
 .flag-uk:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 44%,#c8102e 44% 56%,transparent 56%),linear-gradient(0deg,transparent 41%,#c8102e 41% 59%,transparent 59%)}
-</style></head><body>
+</style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="../jogos-em-equipe/supabase-config.js"></script><script src="./ranking.js"></script></head><body>
 <main class="app">
  <section class="top"><div><h1>🧩 VOCABULARY MATCH <span class="flags" aria-label="Estados Unidos e Reino Unido"><span class="flag flag-us"></span><span class="flag flag-uk"></span></span></h1><p>FASE 1 • Family Members + Parts of the House • 40 combinações</p><div class="school-meta">Turmas 601 e 602 • Escola Delfina de Jesus Amorim • Professor Jasson Bruno</div><div class="school-meta">Turmas 601 e 602 • Escola Delfina de Jesus Amorim • Professor Jasson Bruno</div></div><div class="team-badge" id="teamBadge">CONECTANDO...</div></section>
  <section class="hud">
@@ -188,15 +188,7 @@ async function init(){
 async function finishGame(){
  if(finished)return;finished=true;play('sndWin',.55);$('finish').classList.remove('hidden');$('finishSummary').textContent=correct+' acertos • '+wrong+' erros • '+rawPoints()+' pontos antes do bônus.';
  document.querySelectorAll('.word').forEach(b=>b.disabled=true);
- if(demo){
-   $('waiting').textContent='MODO TESTE — resultado local da sua partida.';
-   $('effectPhrase').textContent='Teste concluído! No campeonato real, aqui aparecerá o mini ranking das 4 equipes.';
-   $('effectPhrase').classList.remove('hidden');
-   $('generalTitle').classList.add('hidden');
-   $('generalRank').innerHTML='';
-   $('releaseBtn').classList.add('hidden');
-   return;
- }
+ if(demo){if(window.SoloRank)SoloRank.complete('vocabulary',rawPoints(),correct,wrong);return}
  const {data,error}=await sb.rpc('championship_phase1_submit',{p_room:room,p_device:deviceId,p_correct:correct,p_wrong:wrong,p_raw:rawPoints()});
  if(error){$('waiting').textContent='Erro ao enviar resultado: '+error.message;return}
  poll=setInterval(checkResults,1000);checkResults();
