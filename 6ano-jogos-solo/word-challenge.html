@@ -40,10 +40,10 @@ button,input{font:inherit}.app{width:min(1280px,100%);height:100%;margin:auto;pa
   .letter{width:25px;height:30px;font-size:16px;border-radius:7px}.space{width:8px}
   .challenge{justify-content:flex-start}
   .label{padding:4px 6px;font-size:11px}
-  .hint{margin:4px 0;padding:5px 7px;font-size:12px;line-height:1.15}
-  .hint small{font-size:10px;margin-top:2px}
+  .hint{margin:4px 0;padding:7px 8px;font-size:14px;line-height:1.22}
+  .hint small{font-size:11.5px;margin-top:3px}
   .keys{grid-template-columns:repeat(7,1fr);gap:5px;align-content:stretch;min-height:0}
-  .key{min-height:42px;font-size:16px;border-radius:8px}
+  .key{min-height:38px;font-size:15px;border-radius:8px}
   .guess{margin-top:4px}.guess input{padding:7px}.btn{padding:8px 10px}
   .feedback{margin-top:3px;min-height:27px;padding:4px 6px;font-size:11px}
 }
@@ -80,7 +80,7 @@ button,input{font:inherit}.app{width:min(1280px,100%);height:100%;margin:auto;pa
     </div>
   </section>
   <section class="bottom"><span>Mesma sequência de 15 palavras para as 4 equipes.</span><span id="status">Sincronizando...</span></section>
-</main>
+<div style="position:fixed;right:8px;bottom:8px;z-index:9998;color:#dbeafe;font:800 10px Arial;opacity:.9">Jogo idealizado pelo Prof. Jasson Bruno</div></main>
 
 <div class="overlay" id="loading"><div class="modal"><h2>FASE 2</h2><p id="loadText">Sincronizando o Word Challenge da sala...</p></div></div>
 <div class="overlay hidden" id="finish"><div class="modal">
@@ -153,8 +153,16 @@ function pickLetter(ch,b){
  if(target.includes(ch)){revealed.add(ch);b.classList.add('ok');renderWord();if(solveCheck())successWord()}
  else{wrong++;mistakes++;b.classList.add('no');renderParts();updateHud();if(mistakes>=6)failWord('❌ 6 ERROS')}
 }
+function wordWinTone(){
+ try{
+  const A=window.AudioContext||window.webkitAudioContext;if(!A)return;
+  const ctx=window.__eghWordAudio||(window.__eghWordAudio=new A());
+  const play=(f,s,d)=>{const o=ctx.createOscillator(),g=ctx.createGain();o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(.001,ctx.currentTime+s);g.gain.exponentialRampToValueAtTime(.18,ctx.currentTime+s+.02);g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+s+d);o.connect(g);g.connect(ctx.destination);o.start(ctx.currentTime+s);o.stop(ctx.currentTime+s+d+.03)};
+  play(659,0,.16);play(784,.12,.18);play(988,.25,.24);play(1319,.42,.32);
+ }catch(e){}
+}
 function successWord(){
- clearInterval(tickTimer);
+ clearInterval(tickTimer);wordWinTone();
  const [w]=current();
  revealed=new Set([...norm(w).replace(/ /g,'')]);
  renderWord();
