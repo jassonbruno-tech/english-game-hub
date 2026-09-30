@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#07142f">
+<title>Desafio de Pronúncia — 6º Ano</title>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;background:#07142f;color:#fff}
+body{min-height:100dvh;background:radial-gradient(circle at 50% 0,#163d91 0,#07142f 48%,#030817 100%)}
+button{font:inherit}.screen{display:none;min-height:100dvh}.screen.active{display:flex}
+.game{padding:8px;align-items:center;justify-content:flex-start}
+.panel{width:min(100%,560px);min-height:calc(100dvh - 16px);display:flex;flex-direction:column;gap:9px;margin:auto}
+.top{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px}
+.pill{padding:8px 6px;border-radius:14px;background:#15255d;border:1px solid rgba(255,255,255,.17);font-size:12px;font-weight:900;text-align:center}
+.progress{height:11px;border-radius:999px;background:rgba(255,255,255,.12);overflow:hidden}
+.progress>div{height:100%;width:0;background:linear-gradient(90deg,#ffe66d,#4ade80,#60a5fa);transition:.25s}
+.card{background:linear-gradient(180deg,#fff,#eaf6ff);color:#101827;border:3px solid #ffe66d;border-radius:22px;padding:18px 14px;text-align:center;box-shadow:0 7px 0 #9c6f00;flex:1;display:flex;flex-direction:column;justify-content:center;min-height:260px}
+.topic{display:inline-block;align-self:center;padding:5px 9px;border-radius:999px;background:#312e81;color:#fff;font-size:11px;font-weight:900}
+.phrase{font-size:clamp(30px,9vw,46px);font-weight:1000;margin:18px 0 10px;line-height:1.08;overflow-wrap:anywhere}
+.pt{font-size:16px;font-weight:800;color:#334155}.tip{margin-top:12px;padding:9px;border-radius:13px;background:#fff7d6;color:#713f12;font-size:13px;font-weight:800}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:9px}.btn{border:0;border-radius:16px;padding:14px 10px;font-weight:1000;cursor:pointer;min-height:54px}
+.listen{background:linear-gradient(180deg,#60a5fa,#2563eb);color:#fff}.speak{background:linear-gradient(180deg,#fde047,#f59e0b);color:#422006}.next{background:linear-gradient(180deg,#c084fc,#7c3aed);color:#fff}.next:disabled{opacity:.45}
+.spoken{min-height:62px;padding:10px;border-radius:16px;border:2px dashed rgba(255,255,255,.22);background:rgba(255,255,255,.07);color:#e8f4ff;font-size:14px}
+.feedback{display:none;padding:10px;border-radius:15px;font-weight:900;text-align:center}.feedback.show{display:block}.feedback.ok{background:#dcfce7;color:#14532d}.feedback.bad{background:#fee2e2;color:#991b1b}.feedback.info{background:#dbeafe;color:#1e40af}
+.footer{text-align:center;font-size:11px;color:#cbd5e1;margin-top:auto;padding-top:2px}.back{display:block;text-align:center;color:#cbd5e1;text-decoration:none;font-size:12px;font-weight:900;padding:6px}
+.end{padding:16px;align-items:center;justify-content:center}.result{width:min(100%,520px);padding:22px;border-radius:24px;background:linear-gradient(180deg,#0f172a,#1e293b);border:2px solid rgba(255,255,255,.17);text-align:center}.result h1{color:#ffe66d}.result .big{font-size:38px;font-weight:1000}.result button,.result a{display:block;width:100%;margin-top:10px;border:0;border-radius:15px;padding:14px;text-decoration:none;font-weight:1000}.again{background:linear-gradient(180deg,#4ade80,#16a34a);color:#052e16}.hub{background:linear-gradient(180deg,#60a5fa,#2563eb);color:#fff}
+@media(max-height:700px){.game{padding:5px}.panel{min-height:calc(100dvh - 10px);gap:6px}.card{min-height:210px;padding:12px}.phrase{font-size:clamp(25px,7vw,36px);margin:10px 0 6px}.btn{min-height:48px;padding:10px}.spoken{min-height:50px}.pill{padding:6px 3px;font-size:10px}}
+</style>
+</head>
+<body>
+<section id="gameScreen" class="screen game active">
+<div class="panel">
+  <a class="back" href="./">← VOLTAR AOS JOGOS</a>
+  <div class="top">
+    <span id="itemPill" class="pill">Item 1/40</span>
+    <span id="scorePill" class="pill">Pontuação 0</span>
+    <span id="livesPill" class="pill">❤️❤️❤️❤️❤️</span>
+  </div>
+  <div class="progress"><div id="bar"></div></div>
+  <div class="card">
+    <span class="topic">PRONÚNCIA</span>
+    <div id="phrase" class="phrase">mother</div>
+    <div id="pt" class="pt">mãe</div>
+    <div class="tip">Ouça e repita em inglês.</div>
+  </div>
+  <div class="actions">
+    <button id="listenBtn" class="btn listen" type="button">🔊 OUVIR</button>
+    <button id="speakBtn" class="btn speak" type="button">🎤 FALAR</button>
+  </div>
+  <div class="spoken"><strong>Você disse:</strong><div id="spoken">Toque em FALAR e repita.</div></div>
+  <div id="feedback" class="feedback"></div>
+  <button id="nextBtn" class="btn next" type="button" disabled>PRÓXIMA ➜</button>
+  <div class="footer">English Game Hub • Professor Jasson Bruno</div>
+</div>
+</section>
+<section id="endScreen" class="screen end">
+<div class="result">
+  <h1>🎉 Desafio concluído!</h1>
+  <p id="resultName"></p>
+  <div id="finalScore" class="big">0/40</div>
+  <p>Você praticou a pronúncia do vocabulário do 6º ano.</p>
+  <button id="againBtn" class="again" type="button">🔁 JOGAR NOVAMENTE</button>
+  <a class="hub" href="./">← VOLTAR AOS JOGOS</a>
+</div>
+</section>
+<script>
+const BANK=[
+["mother","mãe"],["father","pai"],["sister","irmã"],["brother","irmão"],["grandmother","avó"],["grandfather","avô"],["aunt","tia"],["uncle","tio"],["cousin","primo / prima"],
+["living room","sala de estar"],["bedroom","quarto"],["bathroom","banheiro"],["kitchen","cozinha"],["dining room","sala de jantar"],["laundry room","lavanderia"],["hallway","corredor"],["front yard","área da frente"],["backyard","quintal dos fundos"],["garden","jardim"],["garage","garagem"],["gate","portão"],["roof","telhado"],["wall","parede / muro"],["balcony","varanda"],
+["sofa","sofá"],["bed","cama"],["table","mesa"],["chair","cadeira"],["fridge","geladeira"],["stove","fogão"],["sink","pia"],["shower","chuveiro"],["window","janela"],["door","porta"],["desk","escrivaninha"],["lamp","lâmpada / abajur"],["house","casa"],["room","cômodo / quarto"],["family","família"],["home","lar / casa"]
+];
+const $=id=>document.getElementById(id),gameScreen=$("gameScreen"),endScreen=$("endScreen");
+let session=[],index=0,score=0,lives=5,player=null;
+function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function normalize(t){return String(t||"").toLowerCase().replace(/[.,!?;:]/g,"").replace(/\s+/g," ").trim()}
+function show(el){[gameScreen,endScreen].forEach(x=>x.classList.remove("active"));el.classList.add("active")}
+function current(){return session[index]}
+function render(){const x=current();$("itemPill").textContent=`Item ${index+1}/${session.length}`;$("scorePill").textContent=`Pontuação ${score}`;$("livesPill").textContent="❤️".repeat(lives)+"🖤".repeat(5-lives);$("bar").style.width=`${(index/session.length)*100}%`;$("phrase").textContent=x[0];$("pt").textContent=x[1];$("spoken").textContent="Toque em FALAR e repita.";$("feedback").className="feedback";$("feedback").textContent="";$("nextBtn").disabled=true}
+function feedback(t,type){const f=$("feedback");f.textContent=t;f.className="feedback show "+type}
+function listen(){const x=current();if(!("speechSynthesis" in window)){feedback("Seu navegador não suporta áudio de voz.","bad");return}speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(x[0]);u.lang="en-US";u.rate=.82;speechSynthesis.speak(u)}
+function speak(){const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){$("spoken").textContent="Reconhecimento de voz indisponível neste navegador.";feedback("Você pode ouvir e repetir oralmente. Toque em PRÓXIMA para continuar.","info");$("nextBtn").disabled=false;return}const r=new SR();r.lang="en-US";r.interimResults=false;r.maxAlternatives=1;$("spoken").textContent="Ouvindo...";feedback("🎤 Pode falar agora!","info");r.onresult=e=>{const s=e.results[0][0].transcript;$("spoken").textContent=s;check(s)};r.onerror=()=>{feedback("Não consegui reconhecer. Tente novamente ou avance.","bad");$("nextBtn").disabled=false};r.onend=()=>{if($("spoken").textContent==="Ouvindo..."){$("spoken").textContent="Nenhuma fala reconhecida.";$("nextBtn").disabled=false}};try{r.start()}catch(e){$("nextBtn").disabled=false}}
+function check(spoken){const exp=normalize(current()[0]),got=normalize(spoken),words=exp.split(" "),matched=words.filter(w=>got.includes(w)).length,ok=got.includes(exp)||exp.includes(got)||matched/words.length>=.7;if(ok){score++;feedback("✅ Muito bom! Great job!","ok")}else{lives=Math.max(0,lives-1);feedback("❌ Tente novamente. Você perdeu 1 vida.","bad")} $("scorePill").textContent=`Pontuação ${score}`;$("livesPill").textContent="❤️".repeat(lives)+"🖤".repeat(5-lives);$("nextBtn").disabled=false}
+function next(){index++;if(index>=session.length){$("bar").style.width="100%";$("resultName").textContent=player?.name?player.name:"";$("finalScore").textContent=`${score}/${session.length}`;show(endScreen);return}if(lives===0)lives=5;render()}
+function start(){player=JSON.parse(sessionStorage.getItem("egh-mobile-player")||"null");if(!player){location.href="./";return}session=shuffle(BANK);index=0;score=0;lives=5;show(gameScreen);render()}
+$("listenBtn").addEventListener("click",listen);$("speakBtn").addEventListener("click",speak);$("nextBtn").addEventListener("click",next);$("againBtn").addEventListener("click",start);start();
+</script>
+</body>
+</html>
