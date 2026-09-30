@@ -46,7 +46,7 @@ h2{text-align:center;margin:0 0 4px;color:#fff7c2;font-size:clamp(17px,4.8vw,23p
 </section>
 </main>
 <div id="flash"></div>
-<audio id="sndOk" src="success.wav" preload="auto"></audio><audio id="sndCombo" src="combo.wav" preload="auto"></audio><audio id="sndBad" src="error.wav" preload="auto"></audio><audio id="sndWin" src="victory.wav" preload="auto"></audio>
+<audio id="sndOk" src="../../success.wav" preload="auto"></audio><audio id="sndCombo" src="../../combo.wav" preload="auto"></audio><audio id="sndBad" src="../../error.wav" preload="auto"></audio><audio id="sndWin" src="../../victory.wav" preload="auto"></audio>
 <script>
 const GAME_NAME="mobile-6-vocabulary",MAX_LIVES=5,PAIRS_TO_WIN=3;
 const BANKS=[{"level":1,"title":"Combinação de Vocabulário","pairs":[{"id":"L1-01","en":"mother","pt":"mãe"},{"id":"L1-02","en":"father","pt":"pai"},{"id":"L1-03","en":"sister","pt":"irmã"}]}];
@@ -64,6 +64,7 @@ function renderCol(id,arr,side){const c=$(id);c.innerHTML="";arr.forEach(x=>{con
 function pick(item,btn){if(!state.selected){state.selected={item,btn};btn.classList.add("sel");return}if(state.selected.item.side===item.side){state.selected.btn.classList.remove("sel");state.selected={item,btn};btn.classList.add("sel");return}const first=state.selected;state.selected=null;first.btn.classList.remove("sel");if(first.item.id===item.id){first.btn.classList.add("ok");btn.classList.add("ok");state.score+=10;state.correct++;state.phaseScore++;$("status").textContent=state.phaseScore%3===0?"🔥 COMBO! Excelente!":"✅ Par correto! Muito bem!";celebrate(btn);play(state.phaseScore%3===0?"sndCombo":"sndOk",.72);state.en=state.en.filter(x=>x.id!==item.id);state.pt=state.pt.filter(x=>x.id!==item.id);setTimeout(()=>{if(state.phaseScore>=PAIRS_TO_WIN)phaseWin();else render()},620)}else{state.lives--;first.btn.classList.add("bad");btn.classList.add("bad");$("status").textContent="❌ Não combina. Tente novamente.";play("sndBad",.45);setTimeout(()=>{if(state.lives<=0)phaseLose();else render()},430)}}
 function phaseWin(){play("sndWin",.55);finish()}
 function phaseLose(){state.lives=MAX_LIVES;state.selected=null;$("status").textContent="💪 Vidas renovadas. Continue tentando!";render()}
-function finish(){const points=Math.round((state.correct/PAIRS_TO_WIN)*100);parent.postMessage({type:"egh-phase-finish",phase:1,points,correct:state.correct,wrong:0},location.origin)}
+let finished=false;
+function finish(){if(finished)return;finished=true;const points=Math.round((state.correct/PAIRS_TO_WIN)*100);const payload={type:"egh-phase-finish",phase:1,points,correct:state.correct,wrong:Math.max(0,MAX_LIVES-state.lives)};window.top.postMessage(payload,location.origin);parent.postMessage(payload,location.origin)}
 </script>
 </body></html>
