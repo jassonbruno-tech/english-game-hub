@@ -169,7 +169,7 @@ async function init(){
 }
 async function finishGame(){
  if(finished)return;finished=true;$('finish').classList.remove('hidden');$('finishSummary').textContent=correct+' acertos • '+wrong+' erros • '+rawPoints()+' pontos antes do bônus.';
- if(demo){if(window.SoloRank)SoloRank.complete('roulette',rawPoints(),correct,wrong);return}
+ if(demo){if(window.SoloRank)SoloRank.complete('present_continuous',rawPoints(),correct,wrong);return}
  const {error}=await sb.rpc('championship_phase3_submit',{p_room:room,p_device:deviceId,p_correct:correct,p_wrong:wrong,p_raw:rawPoints()});
  if(error){$('waiting').textContent='Erro ao enviar resultado.';return}poll=setInterval(checkResults,1000);checkResults();
 }
