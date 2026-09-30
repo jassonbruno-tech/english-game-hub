@@ -183,7 +183,31 @@ function startPenalty(){
    if(!ended&&!ownFinished)renderQuestion();
  },1000);
 }
-function startRace(){if(started)return;started=true;$('countOverlay').classList.add('hidden');$('startOverlay').classList.add('hidden');renderQuestion();if(demo)startDemoCpus();else liveTimer=setInterval(pollLive,500)}
+let raceMusicCtx=null,raceMusicTimer=null,raceMusicStep=0;
+function startRaceMusic(){
+ try{
+  const A=window.AudioContext||window.webkitAudioContext;if(!A)return;
+  raceMusicCtx=raceMusicCtx||new A();
+  if(raceMusicCtx.state==='suspended')raceMusicCtx.resume();
+  stopRaceMusic();
+  const notes=[392,440,523,440,659,523,440,494];
+  const beat=()=>{
+   try{
+    const f=notes[raceMusicStep%notes.length];
+    const o=raceMusicCtx.createOscillator(),g=raceMusicCtx.createGain();
+    o.type='square';o.frequency.value=f;
+    g.gain.setValueAtTime(.001,raceMusicCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(.035,raceMusicCtx.currentTime+.01);
+    g.gain.exponentialRampToValueAtTime(.001,raceMusicCtx.currentTime+.18);
+    o.connect(g);g.connect(raceMusicCtx.destination);o.start();o.stop(raceMusicCtx.currentTime+.2);
+    raceMusicStep++;
+   }catch(e){}
+  };
+  beat();raceMusicTimer=setInterval(beat,230);
+ }catch(e){}
+}
+function stopRaceMusic(){if(raceMusicTimer){clearInterval(raceMusicTimer);raceMusicTimer=null}}
+function startRace(){if(started)return;started=true;startRaceMusic();$('countOverlay').classList.add('hidden');$('startOverlay').classList.add('hidden');renderQuestion();if(demo)startDemoCpus();else liveTimer=setInterval(pollLive,500)}
 function countdown(){let n=3;$('countOverlay').classList.remove('hidden');$('countNum').textContent=n;const t=setInterval(()=>{n--;$('countNum').textContent=n>0?n:'GO!';if(n<=0){clearInterval(t);setTimeout(startRace,650)}},800)}
 function startDemoCpus(){
  const specs={yellow:[.66,950,1750],green:[.72,850,1600],red:[.78,780,1500]};
@@ -219,6 +243,7 @@ async function init(){order=candidateOrder();if(demo){buildItems();$('myTeam').t
 }
 async function showFinalFromServer(){
  if(ended)return;
+ stopRaceMusic();
  ended=true;started=false;ownFinished=true;penaltyActive=false;
  clearInterval(liveTimer);cpuTimers.forEach(clearTimeout);
  $('answers').innerHTML='';document.querySelectorAll('.answer').forEach(b=>b.disabled=true);
@@ -228,6 +253,7 @@ async function showFinalFromServer(){
 }
 function showDemoFinal(){
  if(ended)return;
+ stopRaceMusic();
  ended=true;started=false;penaltyActive=false;
  cpuTimers.forEach(clearTimeout);$('answers').innerHTML='';
  $('endOverlay').classList.add('hidden');
