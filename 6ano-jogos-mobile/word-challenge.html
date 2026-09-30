@@ -276,7 +276,7 @@ $('guessBtn').onclick=guessWord;$('guessInput').addEventListener('keydown',e=>{i
     document.getElementById("soloOrient").style.display="none";
   });
   cleanText(); simplifyFinish(); orient();
-  new MutationObserver(()=>{cleanText();simplifyFinish();orient()}).observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:["class"]});
+  
   addEventListener("resize",orient);addEventListener("orientationchange",orient);
 })();
 </script></body></html>
