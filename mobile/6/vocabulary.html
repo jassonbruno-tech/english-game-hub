@@ -83,7 +83,18 @@ function optimizeGameLayout(){
   `;
  }catch(e){}
 }
-frame.addEventListener('load',()=>{ready=true;expandContentBank();optimizeGameLayout();if(pending)openGame()});
+function configureShortVocabularyTest(){try{const w=frame.contentWindow,d=w.document;if(w.__eghSingleVocabulary)return;w.__eghSingleVocabulary=true;
+ const all=[];if(Array.isArray(w.BANKS))w.BANKS.forEach(b=>(b.pairs||[]).forEach(x=>all.push({...x})));
+ if(all.length<3)return;
+ const chosen=w.shuffle?w.shuffle(all).slice(0,3):all.sort(()=>Math.random()-.5).slice(0,3);
+ w.BANKS.splice(0,w.BANKS.length,{level:1,title:'Combinação de Vocabulário',pairs:chosen});
+ try{Object.defineProperty(w,'PAIRS_TO_WIN',{value:3,writable:false,configurable:true})}catch(e){}
+ const oldFinish=w.finish;
+ w.finish=function(){try{parent.postMessage({type:'egh-phase-finish',phase:1,correct:w.state?.correct||3,wrong:0,points:100},location.origin)}catch(e){};if(oldFinish)return oldFinish.apply(this,arguments)};
+ const oldPhaseWin=w.phaseWin;
+ w.phaseWin=function(){if((w.state?.phase||0)===0){try{parent.postMessage({type:'egh-phase-finish',phase:1,correct:w.state?.correct||3,wrong:Math.max(0,(w.state?.lives??5)<5?5-(w.state?.lives??5):0),points:Math.max(0,Math.min(100,Math.round(((w.state?.correct||3)/3)*100)))},location.origin)}catch(e){};return}return oldPhaseWin&&oldPhaseWin.apply(this,arguments)};
+ }catch(e){console.error('short vocab test',e)}}
+frame.addEventListener('load',()=>{ready=true;expandContentBank();configureShortVocabularyTest();optimizeGameLayout();if(pending)openGame()});
 function validate(){
  const ids=['n','s','c'];
  for(const id of ids){const el=document.getElementById(id);if(!el.value.trim()){document.getElementById('msg').textContent='Preencha os três campos para começar.';el.focus();return false}}
@@ -110,4 +121,4 @@ function openGame(){
 document.getElementById('startBtn').addEventListener('click',openGame);
 document.getElementById('c').addEventListener('keydown',e=>{if(e.key==='Enter')openGame()});
 </script>
-<script>(function(){const p=JSON.parse(sessionStorage.getItem('egh-mobile-player')||'null');if(!p){location.href='./';return}const fill=()=>{const n=document.getElementById('n'),s=document.getElementById('s'),c=document.getElementById('c');if(n)n.value=p.name;if(s)s.value=p.school;if(c)c.value=p.studentClass;if(typeof openGame==='function')openGame()};setTimeout(fill,500);const t=setInterval(()=>{try{const w=document.getElementById('gameFrame')?.contentWindow||document.querySelector('iframe')?.contentWindow;if(w&&w.state&&w.state.correct>=3){clearInterval(t);parent.postMessage({type:'egh-phase-finish',phase:1,correct:w.state.correct,wrong:Math.max(0,3-w.state.correct),points:Math.min(100,Math.round(w.state.correct/3*100))},location.origin)}}catch(e){}},500)})();</script></body></html>
+<script>(function(){const p=JSON.parse(sessionStorage.getItem('egh-mobile-player')||'null');if(!p){location.href='./';return}const fill=()=>{const n=document.getElementById('n'),s=document.getElementById('s'),c=document.getElementById('c');if(n)n.value=p.name;if(s)s.value=p.school;if(c)c.value=p.studentClass;if(typeof openGame==='function')openGame()};setTimeout(fill,500);})();</script></body></html>
