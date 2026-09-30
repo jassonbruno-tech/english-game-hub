@@ -47,7 +47,7 @@ button,input{font:inherit}.app{width:min(1280px,100%);height:100%;margin:auto;pa
   .guess{margin-top:4px}.guess input{padding:7px}.btn{padding:8px 10px}
   .feedback{margin-top:3px;min-height:27px;padding:4px 6px;font-size:11px}
 }
-</style></head>
+</style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="../jogos-em-equipe/supabase-config.js"></script><script src="./ranking.js"></script></head>
 <body>
 <main class="app">
   <section class="top"><div><h1>🔤 WORD CHALLENGE <span class="flags" aria-label="Estados Unidos e Reino Unido"><span class="flag flag-us"></span><span class="flag flag-uk"></span></span></h1><p>FASE 2 • 15 palavras • 60 segundos por palavra • vocabulário do 6º ano</p><div class="school-meta">Turmas 601 e 602 • Escola Delfina de Jesus Amorim • Professor Jasson Bruno</div><div class="school-meta">Turmas 601 e 602 • Escola Delfina de Jesus Amorim • Professor Jasson Bruno</div></div><div class="team" id="teamBadge">CONECTANDO...</div></section>
@@ -194,12 +194,7 @@ async function init(){
 async function finishGame(){
  if(finished)return;finished=true;clearInterval(tickTimer);$('finish').classList.remove('hidden');
  $('finishSummary').textContent=correct+' palavras resolvidas • '+wrong+' erros • '+rawPoints()+' pontos antes do bônus.';
- if(demo){
-   $('waiting').textContent='MODO TESTE — resultado local da sua partida.';
-   $('effectPhrase').textContent='Teste concluído! No campeonato real, aqui aparecerá o mini ranking das 4 equipes.';
-   $('effectPhrase').classList.remove('hidden');
-   $('generalTitle').classList.add('hidden');$('generalRank').innerHTML='';$('releaseBtn').classList.add('hidden');return;
- }
+ if(demo){if(window.SoloRank)SoloRank.complete('hangman',rawPoints(),correct,wrong);return}
  const {error}=await sb.rpc('championship_phase2_submit',{p_room:room,p_device:deviceId,p_correct:correct,p_wrong:wrong,p_raw:rawPoints()});
  if(error){$('waiting').textContent='Erro ao enviar resultado: '+error.message;return}
  poll=setInterval(checkResults,1000);checkResults();
