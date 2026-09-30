@@ -25,6 +25,28 @@ button,input{font:inherit}.app{width:min(1280px,100%);height:100%;margin:auto;pa
 .flag-us:before{content:"";position:absolute;left:0;top:0;width:42%;height:54%;background:#3c3b6e}
 .flag-uk{background:linear-gradient(33deg,transparent 43%,#fff 43% 57%,transparent 57%),linear-gradient(-33deg,transparent 43%,#fff 43% 57%,transparent 57%),linear-gradient(90deg,transparent 39%,#fff 39% 61%,transparent 61%),linear-gradient(0deg,transparent 35%,#fff 35% 65%,transparent 65%),#012169}
 .flag-uk:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 44%,#c8102e 44% 56%,transparent 56%),linear-gradient(0deg,transparent 41%,#c8102e 41% 59%,transparent 59%)}
+
+@media(max-width:700px) and (orientation:portrait){
+  html,body{overflow:hidden}
+  .app{height:100dvh;padding:5px;grid-template-rows:auto minmax(0,1fr);gap:5px}
+  .top,.bottom{display:none!important}
+  .hud{grid-template-columns:repeat(5,1fr);gap:4px}
+  .pill{padding:4px 2px;font-size:9px}.pill b{font-size:13px;margin-top:1px}
+  .main{display:grid;grid-template-columns:1fr;grid-template-rows:34% 66%;gap:5px;min-height:0}
+  .card{padding:5px;border-radius:14px}
+  .hang{gap:3px;justify-content:center}
+  .gallow{width:112px;height:112px;flex:0 0 112px}
+  .word{padding:4px;gap:3px;min-height:42px}
+  .letter{width:25px;height:30px;font-size:16px;border-radius:7px}.space{width:8px}
+  .challenge{justify-content:flex-start}
+  .label{padding:4px 6px;font-size:11px}
+  .hint{margin:4px 0;padding:5px 7px;font-size:12px;line-height:1.15}
+  .hint small{font-size:10px;margin-top:2px}
+  .keys{grid-template-columns:repeat(7,1fr);gap:5px;align-content:stretch;min-height:0}
+  .key{min-height:42px;font-size:16px;border-radius:8px}
+  .guess{margin-top:4px}.guess input{padding:7px}.btn{padding:8px 10px}
+  .feedback{margin-top:3px;min-height:27px;padding:4px 6px;font-size:11px}
+}
 </style></head>
 <body>
 <main class="app">
@@ -207,4 +229,4 @@ function beginNextPhase(message){
  let n=3;$('nextCount').textContent=n;const t=setInterval(()=>{n--;$('nextCount').textContent=n>0?n:'GO!';if(n<=0){clearInterval(t);setTimeout(()=>{location.href='grammar-challenge.html?sala='+encodeURIComponent(room)+'&v=phase3a'},700)}},850);
 }
 $('guessBtn').onclick=guessWord;$('guessInput').addEventListener('keydown',e=>{if(e.key==='Enter')guessWord()});$('releaseBtn').onclick=releaseNextPhase;init();
-</script><style>.soloBack{position:fixed;z-index:9999;left:8px;bottom:8px;padding:9px 12px;border-radius:999px;background:#07142fee;border:1px solid #ffffff55;color:#fff;text-decoration:none;font:900 12px Arial}.rotateTip{display:none;position:fixed;z-index:9998;left:50%;transform:translateX(-50%);bottom:56px;width:min(92vw,420px);padding:10px 12px;border-radius:14px;background:#07142ff2;border:1px solid #ffe66daa;color:#fff7c2;text-align:center;font:800 12px/1.35 Arial}@media(max-width:700px) and (orientation:portrait){.rotateTip{display:block}}</style><a class="soloBack" href="./index.html">← JOGOS</a><div class="rotateTip">📱 Se preferir mais espaço, gire o celular para a posição horizontal.</div></body></html>
+</script><style>.soloBack{position:fixed;z-index:9999;left:8px;bottom:8px;padding:9px 12px;border-radius:999px;background:#07142fee;border:1px solid #ffffff55;color:#fff;text-decoration:none;font:900 12px Arial}.rotateTip{display:none;position:fixed;z-index:9998;left:50%;transform:translateX(-50%);bottom:56px;width:min(92vw,420px);padding:10px 12px;border-radius:14px;background:#07142ff2;border:1px solid #ffe66daa;color:#fff7c2;text-align:center;font:800 12px/1.35 Arial}@media(max-width:700px) and (orientation:portrait){.rotateTip{display:block}}</style><a class="soloBack" href="./index.html">← JOGOS</a></body></html>
