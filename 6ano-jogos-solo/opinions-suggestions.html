@@ -48,6 +48,27 @@ body.question-shift{filter:brightness(1.18) saturate(1.12)}
 .flag-us:before{content:"";position:absolute;left:0;top:0;width:42%;height:54%;background:#3c3b6e}
 .flag-uk{background:linear-gradient(33deg,transparent 43%,#fff 43% 57%,transparent 57%),linear-gradient(-33deg,transparent 43%,#fff 43% 57%,transparent 57%),linear-gradient(90deg,transparent 39%,#fff 39% 61%,transparent 61%),linear-gradient(0deg,transparent 35%,#fff 35% 65%,transparent 65%),#012169}
 .flag-uk:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 44%,#c8102e 44% 56%,transparent 56%),linear-gradient(0deg,transparent 41%,#c8102e 41% 59%,transparent 59%)}
+
+@media(max-width:700px) and (orientation:portrait){
+  html,body{overflow:hidden}
+  .app{height:100dvh;padding:5px;gap:5px}
+  .top{display:none!important}
+  .pills{grid-template-columns:repeat(4,1fr);gap:4px}
+  .pill{padding:5px 3px;font-size:9px}.pill b{font-size:14px}
+  .phase-map{order:-1;grid-template-columns:repeat(5,1fr);gap:4px}
+  .tile{min-height:42px;font-size:9px;border-radius:11px}.tile strong{font-size:14px}
+  .progress{height:6px}
+  .game{display:grid;grid-template-columns:1fr;grid-template-rows:26% 74%;gap:5px;min-height:0}
+  .scene{padding:7px;gap:4px;overflow:hidden}
+  .sceneIcon{display:none}.topic{font-size:9px;padding:4px 7px}
+  .traffic-box{padding:7px 9px;border-radius:13px}.traffic-box h3{font-size:14px;margin-bottom:3px}.traffic-box p{font-size:12px;line-height:1.18}
+  .tip{padding:5px 7px;margin-top:3px;font-size:10px}
+  .challenge{padding:8px;justify-content:flex-start;overflow:auto}
+  .question{font-size:18px;line-height:1.2;margin-bottom:7px}
+  .options{gap:7px}.option{padding:12px 10px 12px 50px;font-size:15px;border-radius:14px}.option:before{width:28px;height:28px}
+  .feedback{margin-top:6px;min-height:36px;padding:7px;font-size:12px}.combo{font-size:12px;margin-top:4px}
+  .intro-modal{max-height:92dvh;overflow:auto;padding:14px}.intro-modal h2{font-size:22px}.traffic-guide{gap:6px;margin:8px 0}.traffic-step{padding:7px;grid-template-columns:36px 1fr}.traffic-step .light{font-size:24px}.traffic-step b{font-size:15px}.traffic-step span{font-size:11px}
+}
 </style></head><body><main class="app">
 <div class="top"><div class="title"><h1>🚦 GENITIVE CASE CHALLENGE <span class="flags" aria-label="Estados Unidos e Reino Unido"><span class="flag flag-us"></span><span class="flag flag-uk"></span></span></h1><p>FASE 5 • nome + 's + membro da família • 20 desafios</p><div class="school-meta">Turmas 601 e 602 • Escola Delfina de Jesus Amorim • Professor Jasson Bruno</div></div><div class="team" id="teamBadge">MODO TESTE</div></div>
 <div class="pills"><div class="pill">ITEM <b id="itemHud">1/20</b></div><div class="pill">ACERTOS <b id="correctHud">0</b></div><div class="pill">ERROS <b id="wrongHud">0</b></div><div class="pill">PONTOS <b id="pointsHud">0</b></div></div>
@@ -103,7 +124,15 @@ function trafficTransition(nextIndex,callback){
  setTimeout(()=>{ov.classList.remove('show');document.body.classList.remove('question-shift');setTimeout(callback,170)},650);
 }
 function show(){if(idx>=20){finishGame();return}answered=false;active=randomQ(QUESTIONS[order[idx]]);renderMap();hud();$('topic').textContent=active.t;$('question').textContent=active.q;$('thinkText').textContent='Objetivo: '+PHASES[active.p]+'.';$('tip').textContent='💡 '+active.h;$('feedback').className='feedback';$('feedback').textContent='';$('combo').textContent=streak>=2?'🔥 Sequência atual: '+streak+' acertos':'';$('options').innerHTML='';active.o.forEach((x,i)=>{const b=document.createElement('button');b.className='option';b.textContent=x;b.onclick=()=>answer(i);$('options').appendChild(b)})}
-function answer(i){if(answered)return;answered=true;const bs=[...document.querySelectorAll('.option')];if(i===active.a){correct++;streak++;bs[i].classList.add('correct');$('feedback').className='feedback ok';$('feedback').textContent='✅ CORRETO! '+active.e}else{wrong++;streak=0;bs[i].classList.add('wrong');bs[active.a].classList.add('correct');$('feedback').className='feedback bad';$('feedback').textContent='❌ '+active.e}hud();setTimeout(()=>advance(),1450)}
+function feedbackTone(ok){
+ try{
+  const A=window.AudioContext||window.webkitAudioContext;if(!A)return;
+  const ctx=window.__eghAudio||(window.__eghAudio=new A());
+  const play=(freq,start,dur,type='sine')=>{const o=ctx.createOscillator(),g=ctx.createGain();o.type=type;o.frequency.value=freq;g.gain.setValueAtTime(.001,ctx.currentTime+start);g.gain.exponentialRampToValueAtTime(.16,ctx.currentTime+start+.02);g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+start+dur);o.connect(g);g.connect(ctx.destination);o.start(ctx.currentTime+start);o.stop(ctx.currentTime+start+dur+.03)};
+  if(ok){play(660,0,.18);play(880,.12,.22);play(1047,.25,.28)}else{play(220,0,.2,'sawtooth');play(165,.17,.28,'sawtooth')}
+ }catch(e){}
+}
+function answer(i){if(answered)return;answered=true;const bs=[...document.querySelectorAll('.option')];if(i===active.a){feedbackTone(true);correct++;streak++;bs[i].classList.add('correct');$('feedback').className='feedback ok';$('feedback').textContent='✅ CORRETO! '+active.e}else{feedbackTone(false);wrong++;streak=0;bs[i].classList.add('wrong');bs[active.a].classList.add('correct');$('feedback').className='feedback bad';$('feedback').textContent='❌ '+active.e}hud();setTimeout(()=>advance(),1450)}
 function advance(){idx++;if(idx>=20){show();return}
  if(idx>0&&idx%4===0){const p=Math.floor(idx/4);$('phaseSplashTitle').textContent='ETAPA '+p+' CONCLUÍDA!';$('phaseSplashText').textContent='Agora: '+PHASES[p];$('phaseSplash').classList.remove('hidden');setTimeout(()=>{$('phaseSplash').classList.add('hidden');trafficTransition(idx,show)},1100)}
  else trafficTransition(idx,show)
@@ -116,4 +145,4 @@ async function watchNext(){const {data}=await sb.from('championship_rooms').sele
 function beginNext(message){if(nextStarted)return;nextStarted=true;clearInterval(poll);clearInterval(transitionPoll);$('nextPhrase').textContent=message||'É hora da final. Tudo pode acontecer!';$('nextOverlay').classList.remove('hidden');let n=3;$('nextCount').textContent=n;const t=setInterval(()=>{n--;$('nextCount').textContent=n>0?n:'GO!';if(n<=0){clearInterval(t);setTimeout(()=>location.href='final-race.html?sala='+encodeURIComponent(room)+'&v=final6a',700)}},850)}
 $('releaseBtn').onclick=releaseNext;
 $('startTrafficBtn').onclick=()=>{$('introOverlay').classList.add('hidden');init()};
-</script><style>.soloBack{position:fixed;z-index:9999;left:8px;bottom:8px;padding:9px 12px;border-radius:999px;background:#07142fee;border:1px solid #ffffff55;color:#fff;text-decoration:none;font:900 12px Arial}.rotateTip{display:none;position:fixed;z-index:9998;left:50%;transform:translateX(-50%);bottom:56px;width:min(92vw,420px);padding:10px 12px;border-radius:14px;background:#07142ff2;border:1px solid #ffe66daa;color:#fff7c2;text-align:center;font:800 12px/1.35 Arial}@media(max-width:700px) and (orientation:portrait){.rotateTip{display:block}}</style><a class="soloBack" href="./index.html">← JOGOS</a><div class="rotateTip">📱 Se preferir mais espaço, gire o celular para a posição horizontal.</div></body></html>
+</script><style>.soloBack{position:fixed;z-index:9999;left:8px;bottom:8px;padding:9px 12px;border-radius:999px;background:#07142fee;border:1px solid #ffffff55;color:#fff;text-decoration:none;font:900 12px Arial}.rotateTip{display:none;position:fixed;z-index:9998;left:50%;transform:translateX(-50%);bottom:56px;width:min(92vw,420px);padding:10px 12px;border-radius:14px;background:#07142ff2;border:1px solid #ffe66daa;color:#fff7c2;text-align:center;font:800 12px/1.35 Arial}@media(max-width:700px) and (orientation:portrait){.rotateTip{display:block}}</style><a class="soloBack" href="./index.html">← JOGOS</a></body></html>
