@@ -24,27 +24,76 @@ const STEPS=[
 function kind(w){if(['JOHN','HE','SHE','IT'].includes(w))return'subject';if(['AM','IS','ARE'].includes(w))return'tobe';if(['NOT','DOESN’T'].includes(w))return'neg';if(w==='?')return'punct';return'action'}
 let BR={scene:null};
 class Scene extends Phaser.Scene{
- constructor(){super('scene');this.mode='meaning'}
- preload(){this.load.image('boy',BASE+'student-boy-sprite-v2.png')}
- create(){BR.scene=this;const w=this.scale.width,h=this.scale.height;
- this.add.rectangle(w/2,h*.22,w,h*.44,0x8fdcff);
- for(const cx of [w*.18,w*.72]){this.add.ellipse(cx,h*.13,90,36,0xffffff,.9);this.add.ellipse(cx+34,h*.12,70,40,0xffffff,.9)}
- this.add.rectangle(w/2,h*.53,w,h*.18,0xcfe7ff);let cs=[0xf8c977,0xffa0a0,0x93c7ff,0xb4e2a7];
- for(let i=0;i<7;i++){let bw=68+(i%3)*12,bh=72+(i%2)*24,bx=35+i*(w/6.5);this.add.rectangle(bx,h*.50,bw,bh,cs[i%cs.length]).setOrigin(.5,1)}
- this.add.rectangle(w/2,h*.79,w,h*.42,0x78ce75);this.add.ellipse(w*.5,h*.74,w*.74,88,0xe6d4b0);
- for(const tx of [w*.08,w*.9]){this.add.rectangle(tx,h*.62,20,82,0x95633c);this.add.circle(tx-18,h*.53,40,0x52aa5e);this.add.circle(tx+18,h*.51,45,0x62ba6b)}
- this.shadow=this.add.ellipse(w*.46,h*.79,145,32,0x26354f,.14);this.boy=this.add.image(w*.46,h*.63,'boy').setOrigin(.5,1).setScale(.22);
- this.tag=this.add.container(w*.46,h*.29);let r=this.add.rectangle(0,0,104,34,0xffffff,.94).setStrokeStyle(2,0x6c5ce7,.2),tt=this.add.text(0,0,'JOHN',{fontFamily:'Arial',fontStyle:'bold',fontSize:'16px',color:'#342f68'}).setOrigin(.5);this.tag.add([r,tt]);
- this.pet=this.add.container(w*.77,h*.69);this.dog(this.pet);this.pet.setVisible(false);
- this.info=this.add.text(w*.5,h*.93,'',{fontFamily:'Arial',fontSize:'14px',fontStyle:'bold',color:'#36506c',backgroundColor:'#ffffffcc',padding:{x:12,y:7}}).setOrigin(.5).setDepth(20).setVisible(false);
- this.tweens.add({targets:this.boy,y:h*.62,duration:310,yoyo:true,repeat:-1,ease:'Sine.easeInOut'});this.apply('meaning')}
- dog(c){let b=this.add.ellipse(0,0,94,64,0xd89f58),hd=this.add.circle(32,-34,37,0xe1ab66),m=this.add.ellipse(47,-27,40,25,0xf0c993),e1=this.add.ellipse(10,-50,21,41,0x8b5a38).setAngle(-24),e2=this.add.ellipse(52,-53,21,41,0x8b5a38).setAngle(24),ey1=this.add.circle(22,-41,4,0x222222),ey2=this.add.circle(42,-41,4,0x222222),n=this.add.circle(58,-29,6,0x222222),l1=this.add.rectangle(-23,27,15,41,0xd89f58).setOrigin(.5,0),l2=this.add.rectangle(18,27,15,41,0xd89f58).setOrigin(.5,0),tail=this.add.arc(-50,-7,31,220,80,false,0xd89f58).setStrokeStyle(10,0xd89f58),col=this.add.rectangle(25,-5,68,8,0x6c5ce7).setAngle(-4);c.add([tail,b,l1,l2,hd,e1,e2,m,ey1,ey2,n,col]);c.setScale(.8)}
- apply(mode){this.mode=mode;if(!this.boy)return;let pet=mode==='it';this.pet.setVisible(pet);this.boy.setVisible(!pet);this.shadow.setVisible(!pet);this.tag.setVisible(!pet);this.info.setVisible(false);this.boy.clearTint();
- if(mode==='negative'){this.boy.setTint(0xdadada);this.info.setText('John parou.').setVisible(true)}
- if(mode==='question')this.info.setText('Agora é uma pergunta.').setVisible(true);
- if(mode==='pronoun'){this.tag.setVisible(false);this.info.setText('John = HE').setVisible(true)}
- if(mode==='it'){this.info.setText('Bingo = IT').setVisible(true);this.tweens.killTweensOf(this.pet);this.tweens.add({targets:this.pet,y:this.pet.y-5,duration:300,yoyo:true,repeat:-1,ease:'Sine.easeInOut'})}}
- react(type){let x=this.mode==='it'?this.pet:this.boy;if(type==='bad'){this.cameras.main.shake(180,.006);this.tweens.add({targets:x,x:'+=10',duration:65,yoyo:true,repeat:3});this.info.setText(this.mode==='it'?'Bingo ficou confuso 😵':'John ficou confuso 😵').setVisible(true)}else{this.tweens.add({targets:x,scaleX:'*=1.1',scaleY:'*=1.1',duration:160,yoyo:true,repeat:1});this.info.setText(this.mode==='it'?'Bingo adorou! ⭐':'John comemorou! ⭐').setVisible(true);for(let i=0;i<12;i++){let st=this.add.text(x.x+(Math.random()*120-60),x.y-110+(Math.random()*60-30),'★',{fontSize:(13+Math.random()*15)+'px',color:['#ffd166','#ffffff','#7c6cff'][i%3]}).setDepth(30);this.tweens.add({targets:st,y:st.y-75,alpha:0,duration:700,onComplete:()=>st.destroy()})}}}
+ constructor(){super('scene');this.mode='meaning';this.runTweens=[];this.petTweens=[]}
+ preload(){}
+ create(){
+  BR.scene=this;const w=this.scale.width,h=this.scale.height;
+  this.add.rectangle(w/2,h*.22,w,h*.44,0x8fdcff);
+  for(const cx of [w*.18,w*.72]){this.add.ellipse(cx,h*.13,90,36,0xffffff,.9);this.add.ellipse(cx+34,h*.12,70,40,0xffffff,.9)}
+  this.add.rectangle(w/2,h*.53,w,h*.18,0xcfe7ff);let cs=[0xf8c977,0xffa0a0,0x93c7ff,0xb4e2a7];
+  for(let i=0;i<7;i++){let bw=68+(i%3)*12,bh=72+(i%2)*24,bx=35+i*(w/6.5);this.add.rectangle(bx,h*.50,bw,bh,cs[i%cs.length]).setOrigin(.5,1)}
+  this.add.rectangle(w/2,h*.79,w,h*.42,0x78ce75);this.add.ellipse(w*.5,h*.74,w*.74,88,0xe6d4b0);
+  for(const tx of [w*.08,w*.9]){this.add.rectangle(tx,h*.62,20,82,0x95633c);this.add.circle(tx-18,h*.53,40,0x52aa5e);this.add.circle(tx+18,h*.51,45,0x62ba6b)}
+  this.shadow=this.add.ellipse(w*.46,h*.79,130,28,0x26354f,.14);
+  this.boy=this.runner(w*.46,h*.69);
+  this.motion=[0,1,2].map(i=>this.add.arc(w*.35-i*12,h*.64+i*18,14+i*2,210,320,false,0xffffff,.72).setStrokeStyle(4,0xffffff,.72));
+  this.pet=this.add.container(w*.77,h*.69);this.dog(this.pet);this.pet.setVisible(false);
+  this.info=this.add.text(w*.5,h*.93,'',{fontFamily:'Arial',fontSize:'14px',fontStyle:'bold',color:'#36506c',backgroundColor:'#ffffffcc',padding:{x:12,y:7}}).setOrigin(.5).setDepth(20).setVisible(false);
+  this.apply('meaning')
+ }
+ runner(x,y){
+  const c=this.add.container(x,y);
+  const bag=this.add.ellipse(-14,-58,28,36,0xf6a623).setStrokeStyle(2,0xde8d10);
+  const legL=this.add.container(-9,-4), legR=this.add.container(9,-4);
+  const ul=this.add.rectangle(0,18,11,34,0x5163cd).setOrigin(.5,0), ur=this.add.rectangle(0,18,11,34,0x5163cd).setOrigin(.5,0);
+  const kneeL=this.add.container(0,30), kneeR=this.add.container(0,30);
+  const ll=this.add.rectangle(0,18,10,32,0xe7eefc).setOrigin(.5,0), lr=this.add.rectangle(0,18,10,32,0xe7eefc).setOrigin(.5,0);
+  const shoeL=this.add.ellipse(2,37,18,10,0xff4c4c),shoeR=this.add.ellipse(2,37,18,10,0xff4c4c);
+  kneeL.add([ll,shoeL]);kneeR.add([lr,shoeR]);legL.add([ul,kneeL]);legR.add([ur,kneeR]);
+  const torso=this.add.rectangle(0,-46,34,42,0x6174df).setStrokeStyle(2,0x4757ba);
+  const band=this.add.rectangle(0,-31,30,8,0xffffff,.95), shorts=this.add.rectangle(0,-14,30,16,0x7a688d);
+  const armL=this.add.container(-18,-57),armR=this.add.container(18,-57);
+  const uaL=this.add.rectangle(0,14,10,28,0xf2c6a0).setOrigin(.5,0),uaR=this.add.rectangle(0,14,10,28,0xf2c6a0).setOrigin(.5,0);
+  const foreL=this.add.container(0,26),foreR=this.add.container(0,26);
+  const laL=this.add.rectangle(0,12,9,24,0xf2c6a0).setOrigin(.5,0),laR=this.add.rectangle(0,12,9,24,0xf2c6a0).setOrigin(.5,0);
+  const book=this.add.rectangle(4,18,20,16,0xffd045).setStrokeStyle(2,0xe2b52c);
+  foreL.add(laL);foreR.add([laR,book]);armL.add([uaL,foreL]);armR.add([uaR,foreR]);
+  const neck=this.add.rectangle(0,-73,10,8,0xf2c6a0),head=this.add.circle(0,-92,19,0xf2c6a0).setStrokeStyle(2,0xe1af81);
+  const hair=this.add.ellipse(0,-102,34,18,0x6f3b1a),hairL=this.add.ellipse(-10,-96,12,20,0x6f3b1a).setAngle(-25),hairR=this.add.ellipse(10,-96,12,20,0x6f3b1a).setAngle(25);
+  const eye1=this.add.circle(-6,-93,2.3,0x2e2b2b),eye2=this.add.circle(6,-93,2.3,0x2e2b2b);
+  const mouth=this.add.arc(0,-87,7,20,160,false,0x9b4d3b).setStrokeStyle(2,0x9b4d3b);
+  c.add([bag,legL,legR,torso,band,shorts,neck,armL,armR,head,hair,hairL,hairR,eye1,eye2,mouth]);
+  this.rig={c,armL,armR,foreL,foreR,legL,legR,kneeL,kneeR,tint:[bag,torso,band,shorts,neck,head,hair,hairL,hairR,eye1,eye2,mouth,uaL,uaR,laL,laR,ul,ur,ll,lr,shoeL,shoeR,book]};
+  return c
+ }
+ dog(c){let b=this.add.ellipse(0,0,94,64,0xd89f58),hd=this.add.circle(32,-34,37,0xe1ab66),m=this.add.ellipse(47,-27,40,25,0xf0c993),e1=this.add.ellipse(10,-50,21,41,0x8b5a38).setAngle(-24),e2=this.add.ellipse(52,-53,21,41,0x8b5a38).setAngle(24),ey1=this.add.circle(22,-41,4,0x222222),ey2=this.add.circle(42,-41,4,0x222222),n=this.add.circle(58,-29,6,0x222222),l1=this.add.rectangle(-23,27,15,41,0xd89f58).setOrigin(.5,0),l2=this.add.rectangle(18,27,15,41,0xd89f58).setOrigin(.5,0),tail=this.add.arc(-50,-7,31,220,80,false,0xd89f58).setStrokeStyle(10,0xd89f58),col=this.add.rectangle(25,-5,68,8,0x6c5ce7).setAngle(-4);c.add([tail,b,l1,l2,hd,e1,e2,m,ey1,ey2,n,col]);c.setScale(.8);this.petRig={tail}}
+ clearRun(){this.runTweens.forEach(t=>t&&t.remove());this.runTweens=[]}
+ clearPet(){this.petTweens.forEach(t=>t&&t.remove());this.petTweens=[]}
+ gray(on){this.rig.tint.forEach(p=>p.setTint(on?0xd8dbe6:0xffffff))}
+ run(){
+  this.clearRun();const r=this.rig;this.gray(false);this.motion.forEach(m=>m.setVisible(true));this.shadow.setVisible(true);
+  r.armL.rotation=.65;r.armR.rotation=-.65;r.legL.rotation=-.75;r.legR.rotation=.75;r.kneeL.rotation=.7;r.kneeR.rotation=-.15;
+  this.runTweens.push(this.tweens.add({targets:r.c,y:r.c.y-6,duration:250,yoyo:true,repeat:-1,ease:'Sine.easeInOut'}));
+  this.runTweens.push(this.tweens.add({targets:r.c,x:r.c.x+12,duration:340,yoyo:true,repeat:-1,ease:'Sine.easeInOut'}));
+  this.runTweens.push(this.tweens.add({targets:this.shadow,scaleX:.82,duration:250,yoyo:true,repeat:-1,ease:'Sine.easeInOut'}));
+  this.runTweens.push(this.tweens.add({targets:r.armL,rotation:-.85,duration:240,yoyo:true,repeat:-1,ease:'Sine.easeInOut'}));
+  this.runTweens.push(this.tweens.add({targets:r.armR,rotation:.85,duration:240,yoyo:true,repeat:-1,ease:'Sine.easeInOut'}));
+  this.runTweens.push(this.tweens.add({targets:r.legL,rotation:.75,duration:240,yoyo:true,repeat:-1,ease:'Sine.easeInOut'}));
+  this.runTweens.push(this.tweens.add({targets:r.legR,rotation:-.75,duration:240,yoyo:true,repeat:-1,ease:'Sine.easeInOut'}));
+ }
+ stand(){
+  this.clearRun();const r=this.rig;r.c.x=this.scale.width*.46;r.c.y=this.scale.height*.69;
+  r.armL.rotation=.08;r.armR.rotation=-.08;r.foreL.rotation=0;r.foreR.rotation=0;r.legL.rotation=.02;r.legR.rotation=-.02;r.kneeL.rotation=0;r.kneeR.rotation=0;this.shadow.scaleX=1
+ }
+ petRun(){this.clearPet();this.petTweens.push(this.tweens.add({targets:this.pet,y:this.pet.y-5,duration:300,yoyo:true,repeat:-1,ease:'Sine.easeInOut'}));this.petTweens.push(this.tweens.add({targets:this.petRig.tail,rotation:.55,duration:180,yoyo:true,repeat:-1,ease:'Sine.easeInOut'}))}
+ apply(mode){
+  this.mode=mode;let pet=mode==='it';this.pet.setVisible(pet);this.boy.setVisible(!pet);this.shadow.setVisible(!pet);this.info.setVisible(false);
+  if(pet){this.stand();this.motion.forEach(m=>m.setVisible(false));this.petRun();this.info.setText('Bingo está correndo. Podemos usar IT.').setVisible(true);return}
+  this.clearPet();this.pet.y=this.scale.height*.69;this.petRig.tail.rotation=0;
+  if(mode==='negative'){this.stand();this.motion.forEach(m=>m.setVisible(false));this.gray(true);this.info.setText('John parou.').setVisible(true)}
+  else{this.run();if(mode==='question')this.info.setText('Agora é uma pergunta.').setVisible(true);if(mode==='pronoun')this.info.setText('John = HE').setVisible(true)}
+ }
+ react(type){let x=this.mode==='it'?this.pet:this.boy;if(type==='bad'){this.cameras.main.shake(180,.006);this.tweens.add({targets:x,x:'+=10',duration:65,yoyo:true,repeat:3});this.info.setText(this.mode==='it'?'Bingo ficou confuso 😵':'John ficou confuso 😵').setVisible(true)}else{this.tweens.add({targets:x,scaleX:'*=1.1',scaleY:'*=1.1',duration:160,yoyo:true,repeat:1});this.info.setText(this.mode==='it'?'Bingo adorou! ⭐':'John acertou! ⭐').setVisible(true);for(let i=0;i<12;i++){let st=this.add.text(x.x+(Math.random()*120-60),x.y-110+(Math.random()*60-30),'★',{fontSize:(13+Math.random()*15)+'px',color:['#ffd166','#ffffff','#7c6cff'][i%3]}).setDepth(30);this.tweens.add({targets:st,y:st.y-75,alpha:0,duration:700,onComplete:()=>st.destroy()})}}}
 }
 function App(){const[st,setSt]=React.useState(0),[built,setBuilt]=React.useState([]),[done,setDone]=React.useState(false),[fb,setFb]=React.useState({type:'info',icon:'💡',text:STEPS[0].hint});let c=STEPS[st];
  React.useEffect(()=>{if(!window._g)window._g=new Phaser.Game({type:Phaser.AUTO,parent:'game',width:900,height:500,scale:{mode:Phaser.Scale.RESIZE,autoCenter:Phaser.Scale.CENTER_BOTH},scene:[Scene],render:{antialias:true}})},[]);
