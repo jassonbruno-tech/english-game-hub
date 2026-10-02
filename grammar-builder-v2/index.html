@@ -39,7 +39,7 @@ class Scene extends Phaser.Scene{
   this.motion=[0,1,2].map(i=>this.add.arc(w*.35-i*12,h*.64+i*18,14+i*2,210,320,false,0xffffff,.72).setStrokeStyle(4,0xffffff,.72));
   this.pet=this.add.container(w*.77,h*.69);this.dog(this.pet);this.pet.setVisible(false);
   this.info=this.add.text(w*.5,h*.93,'',{fontFamily:'Arial',fontSize:'14px',fontStyle:'bold',color:'#36506c',backgroundColor:'#ffffffcc',padding:{x:12,y:7}}).setOrigin(.5).setDepth(20).setVisible(false);
-  this.apply('meaning')
+  try{this.apply('meaning')}catch(err){console.error('GrammarScene init:',err);this.info.setText('Cena carregada.').setVisible(true)}
  }
  runner(x,y){
   const c=this.add.container(x,y);
@@ -69,7 +69,7 @@ class Scene extends Phaser.Scene{
  dog(c){let b=this.add.ellipse(0,0,94,64,0xd89f58),hd=this.add.circle(32,-34,37,0xe1ab66),m=this.add.ellipse(47,-27,40,25,0xf0c993),e1=this.add.ellipse(10,-50,21,41,0x8b5a38).setAngle(-24),e2=this.add.ellipse(52,-53,21,41,0x8b5a38).setAngle(24),ey1=this.add.circle(22,-41,4,0x222222),ey2=this.add.circle(42,-41,4,0x222222),n=this.add.circle(58,-29,6,0x222222),l1=this.add.rectangle(-23,27,15,41,0xd89f58).setOrigin(.5,0),l2=this.add.rectangle(18,27,15,41,0xd89f58).setOrigin(.5,0),tail=this.add.arc(-50,-7,31,220,80,false,0xd89f58).setStrokeStyle(10,0xd89f58),col=this.add.rectangle(25,-5,68,8,0x6c5ce7).setAngle(-4);c.add([tail,b,l1,l2,hd,e1,e2,m,ey1,ey2,n,col]);c.setScale(.8);this.petRig={tail}}
  clearRun(){this.runTweens.forEach(t=>t&&t.remove());this.runTweens=[]}
  clearPet(){this.petTweens.forEach(t=>t&&t.remove());this.petTweens=[]}
- gray(on){this.rig.tint.forEach(p=>p.setTint(on?0xd8dbe6:0xffffff))}
+ gray(on){this.rig.tint.forEach(p=>{if(p&&typeof p.setAlpha==='function')p.setAlpha(on?.58:1)})}
  run(){
   this.clearRun();const r=this.rig;this.gray(false);this.motion.forEach(m=>m.setVisible(true));this.shadow.setVisible(true);
   r.armL.rotation=.65;r.armR.rotation=-.65;r.legL.rotation=-.75;r.legR.rotation=.75;r.kneeL.rotation=.7;r.kneeR.rotation=-.15;
@@ -97,7 +97,7 @@ class Scene extends Phaser.Scene{
 }
 function App(){const[st,setSt]=React.useState(0),[built,setBuilt]=React.useState([]),[done,setDone]=React.useState(false),[fb,setFb]=React.useState({type:'info',icon:'💡',text:STEPS[0].hint});let c=STEPS[st];
  React.useEffect(()=>{if(!window._g)window._g=new Phaser.Game({type:Phaser.AUTO,parent:'game',width:900,height:500,scale:{mode:Phaser.Scale.RESIZE,autoCenter:Phaser.Scale.CENTER_BOTH},scene:[Scene],render:{antialias:true}})},[]);
- React.useEffect(()=>{setBuilt([]);setDone(false);setFb({type:'info',icon:'💡',text:c.hint});setTimeout(()=>BR.scene&&BR.scene.apply(c.id),120)},[st]);
+ React.useEffect(()=>{setBuilt([]);setDone(false);setFb({type:'info',icon:'💡',text:c.hint});setTimeout(()=>{try{BR.scene&&BR.scene.apply(c.id)}catch(err){console.error('GrammarScene step:',err)}},120)},[st]);
  function add(w,i){if(done)return;let n=[...built,{w,i}],p=n.length-1;setBuilt(n);if(c.target[p]!==w){setFb({type:'bad',icon:'⚠️',text:'Quase! Essa palavra não funciona nessa posição. Tente outra ordem.'});BR.scene&&BR.scene.react('bad');setTimeout(()=>setBuilt(v=>v.slice(0,-1)),450);return}if(n.length===c.target.length){setDone(true);setFb({type:'good',icon:'⭐',text:c.ok});BR.scene&&BR.scene.react('good')}else setFb({type:'info',icon:'👉',text:'Boa! Agora escolha a próxima parte.'})}
  function reset(){setBuilt([]);setDone(false);setFb({type:'info',icon:'💡',text:c.hint})}
  function next(){if(st<STEPS.length-1)setSt(st+1);else setFb({type:'good',icon:'🏆',text:'Módulo concluído! Você montou, negou e perguntou no Present Continuous.'})}
