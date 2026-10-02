@@ -1,116 +1,231 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Grammar Builder — Present Continuous</title>
-<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/phaser@3.80.1/dist/phaser.min.js"></script>
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;background:linear-gradient(#f7f8ff,#e9eeff);color:#202445}.app{min-height:100vh;padding:14px}.shell{max-width:1180px;margin:auto;display:grid;gap:14px}.top,.scene,.panel,.pets{background:#fffffff0;border:1px solid #fff;border-radius:24px;box-shadow:0 16px 40px #33354d22}.top{display:flex;justify-content:space-between;align-items:center;padding:13px 16px}.brand{display:flex;gap:10px;align-items:center}.logo{width:46px;height:46px;border-radius:15px;background:linear-gradient(135deg,#6c5ce7,#46a9ff);color:#fff;display:grid;place-items:center;font-weight:900;font-size:22px}.brand b{display:block}.brand small{color:#747b95}.prog{width:330px}.bar{height:9px;background:#e5e7f0;border-radius:9px;overflow:hidden}.fill{height:100%;background:linear-gradient(90deg,#6c5ce7,#46a9ff);transition:.3s}.pt{font-size:12px;color:#747b95;text-align:right;font-weight:800;margin-bottom:5px}.grid{display:grid;grid-template-columns:1.45fr .55fr;gap:14px}.scene{overflow:hidden}.sceneHead{display:flex;justify-content:space-between;padding:14px 16px 8px;font-size:12px;color:#6f7691;font-weight:800}.pill{background:#f0edff;color:#5d51d1;padding:8px 11px;border-radius:999px}#gamewrap{height:460px;position:relative;overflow:hidden}#game{width:100%;height:100%}.bubble{position:absolute;left:18px;right:18px;bottom:15px;display:flex;justify-content:center;pointer-events:none}.bubble>div{background:#fffffff0;border-radius:18px;padding:12px 15px;box-shadow:0 8px 24px #26334c25;font-weight:800;text-align:center}.panel{padding:18px;display:flex;flex-direction:column}.eye{font-size:11px;font-weight:900;color:#6a5fe0;letter-spacing:1px}.panel h2{margin:6px 0 7px;font-size:25px}.sub{margin:0 0 13px;color:#727993;font-size:14px;line-height:1.45}.bridge{background:#f7f6ff;border:1px solid #e7e3ff;border-radius:18px;padding:11px;display:grid;gap:7px;margin-bottom:12px}.br{display:grid;grid-template-columns:1fr 24px 1fr;align-items:center;gap:5px}.box{background:#fff;border:1px solid #e5e7ef;border-radius:12px;padding:9px;text-align:center;font-weight:900;font-size:12px}.arr{text-align:center;color:#9297aa}.task{font-size:13px;font-weight:900;margin:3px 0 8px}.slots,.bank{display:flex;flex-wrap:wrap;gap:8px}.slots{min-height:62px;border:2px dashed #d9dbea;border-radius:17px;padding:8px;align-items:center}.slot{min-width:75px;height:44px;border:1px solid #e0e3ed;border-radius:12px;background:#fff;display:grid;place-items:center;font-weight:900;padding:0 8px;color:#a2a6b8}.slot.f{color:#202445}.w{border:0;border-radius:13px;padding:10px 12px;font-weight:900;cursor:pointer;box-shadow:0 5px 12px #33354d18}.subject{background:#ddf2ff;color:#1f79b7}.tobe{background:#e8e3ff;color:#5749cf}.action{background:#dcf6e6;color:#1b8b4e}.neg{background:#ffe3e8;color:#ca4059}.punct{background:#fff3ca;color:#94701a}.used{opacity:.3}.feedback{margin-top:11px;border-radius:15px;padding:10px 11px;min-height:49px;font-size:13px;display:flex;align-items:center;gap:9px}.info{background:#f3f4fa;color:#646b84}.good{background:#e8faef;color:#197b46}.bad{background:#fff0f3;color:#b7374e}.actions{display:flex;gap:8px;margin-top:10px}.actions button{border:0;border-radius:13px;padding:11px 13px;font-weight:900;cursor:pointer}.primary{flex:1;background:linear-gradient(135deg,#6c5ce7,#8d7df4);color:white}.secondary{background:#eceef6;color:#575d73}.primary:disabled{opacity:.4}.dots{display:flex;gap:6px;margin-top:auto;padding-top:15px}.dot{height:7px;flex:1;border-radius:8px;background:#e5e7ee}.dot.on{background:linear-gradient(90deg,#6c5ce7,#46a9ff)}.pets{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px}.pet{display:flex;align-items:center;gap:10px;background:#fff;border-radius:16px;padding:10px}.face{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-size:27px}.dog{background:#fff0c7}.cat{background:#efe7ff}.pet b{display:block;font-size:13px}.pet span{font-size:11px;color:#767c94}@media(max-width:900px){.grid{grid-template-columns:1fr}.prog{display:none}#gamewrap{height:380px}.panel{min-height:500px}}@media(max-width:560px){.app{padding:8px}.top,.scene,.panel,.pets{border-radius:20px}#gamewrap{height:325px}.panel{padding:15px}.panel h2{font-size:21px}.pets{grid-template-columns:1fr}.bubble>div{font-size:13px}.box{font-size:11px;padding:8px}}
+:root{
+  --ink:#26324a;--muted:#73809a;--purple:#6d5dfc;--purple2:#8a7cff;--blue:#4fa8ff;
+  --green:#38c172;--red:#ff6478;--gold:#ffcb57;--paper:#ffffff;--soft:#f5f7ff;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--ink);background:#eef2ff}
+body{background:
+  radial-gradient(circle at 10% -10%,#dcd5ff 0,transparent 31%),
+  radial-gradient(circle at 95% 0,#cfeaff 0,transparent 28%),
+  linear-gradient(#f9faff,#edf2ff)}
+button{font:inherit}
+.app{min-height:100vh;padding:18px}
+.shell{max-width:1220px;margin:auto;display:grid;gap:16px}
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;gap:20px;
+  padding:14px 18px;border-radius:24px;background:rgba(255,255,255,.82);
+  border:1px solid rgba(255,255,255,.95);box-shadow:0 12px 36px rgba(67,74,124,.12);backdrop-filter:blur(12px)
+}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{
+  width:50px;height:50px;border-radius:17px;display:grid;place-items:center;color:#fff;
+  font-size:26px;font-weight:950;background:linear-gradient(135deg,#6d5dfc,#4fa8ff);
+  box-shadow:0 9px 20px rgba(109,93,252,.28)
+}
+.brand h1{font-size:18px;margin:0;line-height:1}.brand small{display:block;margin-top:6px;color:var(--muted);font-weight:700}
+.progress{min-width:280px;max-width:390px;flex:1}.progressText{font-size:12px;color:var(--muted);font-weight:900;text-align:right;margin-bottom:7px}
+.track{height:10px;border-radius:999px;background:#e7eaf4;overflow:hidden}.fill{height:100%;border-radius:999px;background:linear-gradient(90deg,#6d5dfc,#4fa8ff);transition:.3s}
+.layout{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(330px,.65fr);gap:16px}
+.sceneCard,.lessonCard{border-radius:30px;background:rgba(255,255,255,.91);border:1px solid rgba(255,255,255,.96);box-shadow:0 20px 55px rgba(58,65,112,.16);overflow:hidden}
+.sceneHeader{display:flex;align-items:center;justify-content:space-between;padding:15px 18px 10px}
+.pill{font-size:12px;font-weight:950;color:#594aca;background:#efecff;padding:8px 12px;border-radius:999px}
+.status{font-size:12px;font-weight:850;color:#7b8499}
+.stage{position:relative;height:500px;overflow:hidden;background:linear-gradient(#9fe2ff 0 52%,#8cdb88 52% 100%)}
+.sceneSvg{position:absolute;inset:0;width:100%;height:100%}
+.sceneCaption{
+  position:absolute;left:22px;right:22px;bottom:18px;display:flex;justify-content:center;pointer-events:none
+}
+.sceneCaption>div{
+  max-width:680px;background:rgba(255,255,255,.94);border:1px solid rgba(255,255,255,.98);
+  padding:13px 17px;border-radius:18px;box-shadow:0 12px 28px rgba(30,45,70,.17);
+  font-size:15px;font-weight:850;text-align:center;backdrop-filter:blur(10px)
+}
+.lessonCard{padding:22px;display:flex;flex-direction:column}
+.eyebrow{font-size:12px;font-weight:950;letter-spacing:1.1px;color:#6d5dfc;margin-bottom:7px}
+.lessonCard h2{font-size:27px;line-height:1.08;margin:0 0 8px}
+.sub{font-size:14px;line-height:1.5;color:var(--muted);margin:0 0 15px}
+.bridge{
+  background:linear-gradient(180deg,#fbfbff,#f4f3ff);border:1px solid #e7e3ff;
+  padding:13px;border-radius:19px;display:grid;gap:8px;margin-bottom:14px
+}
+.br{display:grid;grid-template-columns:1fr 22px 1fr;gap:6px;align-items:center}
+.bx{padding:9px 8px;border-radius:12px;background:#fff;text-align:center;border:1px solid #e7e9f2;font-weight:900;font-size:12px}
+.bx.subject{box-shadow:inset 0 0 0 2px #cbeaff}.bx.tobe{box-shadow:inset 0 0 0 2px #ded8ff}.bx.action{box-shadow:inset 0 0 0 2px #cff0db}
+.arr{text-align:center;color:#9da3b5;font-weight:900}
+.task{font-size:14px;font-weight:950;margin:4px 0 9px}
+.slots{display:flex;gap:8px;flex-wrap:wrap;min-height:65px;padding:8px;border-radius:17px;background:#fafbfe;border:2px dashed #d9dce8;align-items:center}
+.slot{min-width:82px;height:46px;border-radius:13px;border:1px solid #e2e5ef;background:#fff;display:grid;place-items:center;padding:0 9px;color:#a5abba;font-weight:900}
+.slot.subject{background:#e8f7ff;color:#2076ad}.slot.tobe{background:#eeeaff;color:#5949d6}.slot.action{background:#e8f9ef;color:#21834d}.slot.negative{background:#ffe9ed;color:#cc4058}.slot.punct{background:#fff4d0;color:#917018}
+.bank{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.word{border:0;border-radius:13px;padding:10px 13px;font-weight:950;cursor:pointer;box-shadow:0 7px 16px rgba(47,52,86,.1);transition:.16s}
+.word:hover{transform:translateY(-2px)}
+.word.subject{background:#dff3ff;color:#1f78b3}.word.tobe{background:#e5e0ff;color:#5947d4}.word.action{background:#dcf6e5;color:#1d874c}.word.negative{background:#ffe1e6;color:#d1465f}.word.punct{background:#fff2c3;color:#947018}.word.used{opacity:.35;pointer-events:none}
+.feedback{margin-top:12px;padding:11px 12px;border-radius:15px;min-height:52px;display:flex;align-items:center;gap:10px;font-size:13px;line-height:1.35}
+.feedback.info{background:#f3f5fb;color:#656d84}.feedback.good{background:#e9fbef;color:#177b45}.feedback.bad{background:#fff0f3;color:#b7354c}
+.icon{width:32px;height:32px;border-radius:10px;background:#fff;display:grid;place-items:center;flex:0 0 auto}
+.actions{display:flex;gap:9px;margin-top:11px}.actions button{border:0;border-radius:13px;padding:11px 14px;font-weight:950;cursor:pointer}
+.secondary{background:#eef0f7;color:#596078}.primary{flex:1;color:#fff;background:linear-gradient(135deg,#6d5dfc,#8d7df5);box-shadow:0 9px 19px rgba(109,93,252,.25)}
+.primary:disabled{opacity:.42;cursor:default}
+.dots{display:flex;gap:7px;margin-top:auto;padding-top:18px}.dot{height:8px;flex:1;border-radius:999px;background:#e4e7ef}.dot.on{background:linear-gradient(90deg,#6d5dfc,#4fa8ff)}
+.mascots{display:grid;grid-template-columns:1fr 1fr;gap:10px}.mascot{background:#fff;border:1px solid #edf0f6;border-radius:18px;padding:11px 13px;display:flex;align-items:center;gap:10px}
+.pet{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;font-size:28px}.dog{background:#fff0c7}.cat{background:#eee7ff}.mascot b{display:block;font-size:13px}.mascot span{font-size:11px;color:var(--muted)}
+/* character animation */
+.runner{transform-origin:500px 365px}
+.run .runner{animation:bob .36s ease-in-out infinite alternate}
+.run .armL{animation:armL .36s ease-in-out infinite alternate;transform-origin:477px 300px}
+.run .armR{animation:armR .36s ease-in-out infinite alternate;transform-origin:523px 300px}
+.run .legL{animation:legL .36s ease-in-out infinite alternate;transform-origin:489px 355px}
+.run .legR{animation:legR .36s ease-in-out infinite alternate;transform-origin:511px 355px}
+.run .shadow{animation:shadow .36s ease-in-out infinite alternate}
+.run .speed1,.run .speed2,.run .speed3{animation:speed .65s linear infinite}
+.run .speed2{animation-delay:.18s}.run .speed3{animation-delay:.36s}
+.stop .runner{animation:none}.stop .speed1,.stop .speed2,.stop .speed3{display:none}.stop .runner{filter:saturate(.75)}
+.cheer .runner{animation:cheer .34s ease-in-out 4 alternate}
+.shake .runner{animation:shake .13s linear 4}
+.petRun .bingo{animation:bob .34s ease-in-out infinite alternate}
+@keyframes bob{to{transform:translateY(-7px)}}@keyframes armL{to{transform:rotate(55deg)}}@keyframes armR{to{transform:rotate(-55deg)}}@keyframes legL{to{transform:rotate(-35deg)}}@keyframes legR{to{transform:rotate(35deg)}}@keyframes shadow{to{transform:scaleX(.8);opacity:.11}}@keyframes speed{0%{opacity:0;transform:translateX(20px)}30%{opacity:.9}100%{opacity:0;transform:translateX(-90px)}}@keyframes cheer{to{transform:translateY(-15px) scale(1.05)}}@keyframes shake{25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+@media(max-width:900px){.layout{grid-template-columns:1fr}.progress{display:none}.stage{height:410px}.lessonCard{min-height:520px}}
+@media(max-width:560px){.app{padding:9px}.topbar{border-radius:19px}.sceneCard,.lessonCard{border-radius:23px}.stage{height:340px}.lessonCard{padding:16px}.lessonCard h2{font-size:22px}.sceneCaption>div{font-size:13px;padding:10px 12px}.mascots{grid-template-columns:1fr}.bx{font-size:11px}.slot{min-width:70px;height:43px;font-size:13px}.word{font-size:13px;padding:9px 11px}}
 </style>
 </head>
-<body><div id="root"></div>
+<body>
+<div class="app"><div class="shell">
+  <div class="topbar">
+    <div class="brand"><div class="logo">G</div><div><h1>Grammar Builder</h1><small>Present Continuous • Prof. Jasson Bruno</small></div></div>
+    <div class="progress"><div class="progressText" id="progressText"></div><div class="track"><div class="fill" id="fill"></div></div></div>
+  </div>
+  <div class="layout">
+    <section class="sceneCard">
+      <div class="sceneHeader"><span class="pill">🎬 CENA INTERATIVA</span><span class="status" id="status"></span></div>
+      <div class="stage" id="stage">
+        <svg class="sceneSvg" viewBox="0 0 1000 560" preserveAspectRatio="xMidYMid slice" aria-label="Cena animada">
+          <defs>
+            <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#8fdfff"/><stop offset="1" stop-color="#c7f2ff"/></linearGradient>
+            <linearGradient id="grass" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#83da7e"/><stop offset="1" stop-color="#66c869"/></linearGradient>
+            <linearGradient id="shirt" x1="0" x2="1"><stop stop-color="#6d7ff0"/><stop offset="1" stop-color="#5566d3"/></linearGradient>
+            <filter id="softshadow"><feDropShadow dx="0" dy="8" stdDeviation="9" flood-opacity=".16"/></filter>
+          </defs>
+          <rect width="1000" height="560" fill="url(#sky)"/>
+          <g opacity=".95">
+            <g fill="#fff"><ellipse cx="170" cy="94" rx="60" ry="24"/><ellipse cx="220" cy="92" rx="45" ry="30"/><ellipse cx="120" cy="98" rx="38" ry="20"/></g>
+            <g fill="#fff"><ellipse cx="765" cy="104" rx="62" ry="25"/><ellipse cx="814" cy="100" rx="43" ry="29"/><ellipse cx="716" cy="108" rx="36" ry="20"/></g>
+          </g>
+          <g opacity=".95">
+            <rect x="30" y="220" width="110" height="150" rx="6" fill="#ffc96f"/><rect x="156" y="185" width="100" height="185" rx="6" fill="#ff9da5"/>
+            <rect x="278" y="235" width="92" height="135" rx="6" fill="#8fc8ff"/><rect x="650" y="215" width="115" height="155" rx="6" fill="#ffcb72"/>
+            <rect x="790" y="180" width="105" height="190" rx="6" fill="#ff9da5"/><rect x="915" y="225" width="90" height="145" rx="6" fill="#8fc8ff"/>
+            <g fill="#ffffffaa">
+              <rect x="52" y="245" width="24" height="26" rx="3"/><rect x="92" y="245" width="24" height="26" rx="3"/>
+              <rect x="179" y="215" width="22" height="24" rx="3"/><rect x="215" y="215" width="22" height="24" rx="3"/>
+              <rect x="674" y="242" width="25" height="25" rx="3"/><rect x="715" y="242" width="25" height="25" rx="3"/>
+            </g>
+          </g>
+          <rect y="365" width="1000" height="195" fill="url(#grass)"/>
+          <path d="M145 520 C300 405 680 405 860 520" fill="#ecd8ad"/>
+          <path d="M220 520 C360 445 630 445 790 520" fill="#f6e8c9"/>
+          <g><rect x="72" y="300" width="24" height="125" fill="#91613d"/><circle cx="65" cy="294" r="53" fill="#55af62"/><circle cx="105" cy="294" r="49" fill="#68c473"/><circle cx="86" cy="255" r="48" fill="#6dca76"/></g>
+          <g><rect x="906" y="300" width="24" height="125" fill="#91613d"/><circle cx="898" cy="294" r="53" fill="#55af62"/><circle cx="938" cy="294" r="49" fill="#68c473"/><circle cx="919" cy="255" r="48" fill="#6dca76"/></g>
+          <ellipse class="shadow" cx="500" cy="453" rx="80" ry="15" fill="#3b4b5d" opacity=".15"/>
+          <g class="speed1" stroke="#ffffffcc" stroke-width="7" stroke-linecap="round"><path d="M365 335 h65"/></g>
+          <g class="speed2" stroke="#ffffffa8" stroke-width="6" stroke-linecap="round"><path d="M350 365 h55"/></g>
+          <g class="speed3" stroke="#ffffff80" stroke-width="5" stroke-linecap="round"><path d="M372 395 h42"/></g>
+          <g class="runner" filter="url(#softshadow)">
+            <g class="legL">
+              <rect x="480" y="360" width="19" height="62" rx="9" fill="#5063cc"/>
+              <rect x="482" y="410" width="15" height="48" rx="7" fill="#f4f7ff"/>
+              <ellipse cx="492" cy="461" rx="20" ry="10" fill="#ff4d55"/>
+            </g>
+            <g class="legR">
+              <rect x="501" y="360" width="19" height="62" rx="9" fill="#5063cc"/>
+              <rect x="503" y="410" width="15" height="48" rx="7" fill="#f4f7ff"/>
+              <ellipse cx="513" cy="461" rx="20" ry="10" fill="#ff4d55"/>
+            </g>
+            <ellipse cx="473" cy="321" rx="24" ry="34" fill="#f2a72b"/>
+            <rect x="474" y="315" width="52" height="70" rx="18" fill="url(#shirt)"/>
+            <rect x="478" y="354" width="44" height="13" rx="6" fill="#fff"/>
+            <rect x="479" y="368" width="42" height="24" rx="9" fill="#75698f"/>
+            <g class="armL"><rect x="464" y="318" width="16" height="54" rx="8" fill="#f2c39a"/><circle cx="469" cy="372" r="9" fill="#f2c39a"/></g>
+            <g class="armR"><rect x="520" y="318" width="16" height="54" rx="8" fill="#f2c39a"/><circle cx="531" cy="372" r="9" fill="#f2c39a"/><rect x="526" y="359" width="34" height="25" rx="5" fill="#ffd34e" stroke="#e1ae21" stroke-width="3"/></g>
+            <rect x="492" y="292" width="16" height="18" rx="7" fill="#f2c39a"/>
+            <circle cx="500" cy="266" r="34" fill="#f2c39a"/>
+            <path d="M468 258 Q474 222 500 229 Q526 219 533 254 Q520 244 511 244 Q504 233 492 244 Q483 238 468 258" fill="#6a3719"/>
+            <circle cx="487" cy="267" r="4" fill="#2b2b2b"/><circle cx="513" cy="267" r="4" fill="#2b2b2b"/>
+            <path d="M489 282 Q500 290 511 282" fill="none" stroke="#a55843" stroke-width="3" stroke-linecap="round"/>
+          </g>
+          <g class="bingo" style="display:none" filter="url(#softshadow)">
+            <ellipse cx="505" cy="391" rx="62" ry="42" fill="#d89f58"/>
+            <circle cx="548" cy="354" r="42" fill="#e2ac67"/>
+            <ellipse cx="565" cy="366" rx="32" ry="20" fill="#f2cc99"/>
+            <ellipse cx="526" cy="325" rx="17" ry="31" fill="#865535" transform="rotate(-25 526 325)"/>
+            <ellipse cx="570" cy="323" rx="17" ry="31" fill="#865535" transform="rotate(25 570 323)"/>
+            <circle cx="539" cy="350" r="4" fill="#222"/><circle cx="557" cy="350" r="4" fill="#222"/><circle cx="575" cy="365" r="7" fill="#222"/>
+            <rect x="530" y="379" width="56" height="8" rx="4" fill="#6d5dfc"/>
+            <rect x="470" y="414" width="17" height="43" rx="8" fill="#d89f58"/><rect x="518" y="414" width="17" height="43" rx="8" fill="#d89f58"/>
+            <path d="M446 378 Q420 358 432 341" fill="none" stroke="#d89f58" stroke-width="12" stroke-linecap="round"/>
+          </g>
+        </svg>
+        <div class="sceneCaption"><div id="speech"></div></div>
+      </div>
+    </section>
+    <aside class="lessonCard">
+      <div class="eyebrow" id="eyebrow"></div>
+      <h2 id="title"></h2>
+      <p class="sub" id="subtitle"></p>
+      <div id="bridge"></div>
+      <div class="task">Monte a frase:</div>
+      <div class="slots" id="slots"></div>
+      <div class="bank" id="bank"></div>
+      <div class="feedback info" id="feedback"><div class="icon" id="fbIcon">💡</div><div id="fbText"></div></div>
+      <div class="actions"><button class="secondary" id="reset">↺ Refazer</button><button class="primary" id="next" disabled>Próxima etapa →</button></div>
+      <div class="dots" id="dots"></div>
+    </aside>
+  </div>
+  <div class="mascots">
+    <div class="mascot"><div class="pet dog">🐶</div><div><b>Bingo</b><span>Ajuda a lembrar quando usamos IT.</span></div></div>
+    <div class="mascot"><div class="pet cat">🐱</div><div><b>Luna</b><span>Vai aparecer em novas situações e frases.</span></div></div>
+  </div>
+</div></div>
 <script>
-const E=React.createElement,BASE='https://raw.githubusercontent.com/jassonbruno-tech/english-game-hub/main/';
-const STEPS=[
-{id:'meaning',ey:'FAÇA A PONTE',t:'1. Entenda a cena',s:'Descubra o papel de cada parte da frase.',sp:'John está correndo agora. Em inglês, montamos a ideia em três partes.',target:['JOHN','IS','RUNNING'],bank:['JOHN','IS','RUNNING'],hint:'Toque nas três partes na ordem correta.',ok:'Muito bem! JOHN é quem faz a ação, IS acompanha JOHN e RUNNING mostra a ação acontecendo agora.',bridge:1},
-{id:'affirmative',ey:'SUA VEZ',t:'2. Monte a frase',s:'Agora monte sem olhar a tradução pronta.',sp:'Observe John. Como fica “John está correndo”?',target:['JOHN','IS','RUNNING'],bank:['RUNNING','AM','JOHN','IS','ARE'],hint:'Pense: quem? + TO BE + ação com -ING.',ok:'Perfeito! JOHN IS RUNNING.'},
-{id:'negative',ey:'TRANSFORME',t:'3. Faça a negativa',s:'Diga que John NÃO está correndo.',sp:'John parou. Agora diga: “John não está correndo.”',target:['JOHN','IS','NOT','RUNNING'],bank:['NOT','RUNNING','JOHN','IS','DOESN’T'],hint:'Na negativa, NOT entra depois do TO BE.',ok:'Isso! JOHN IS NOT RUNNING.'},
-{id:'question',ey:'VIRE A FRASE',t:'4. Faça uma pergunta',s:'Pergunte: “John está correndo?”',sp:'Agora queremos perguntar. O que vai para a frente?',target:['IS','JOHN','RUNNING','?'],bank:['JOHN','RUNNING','IS','DOES','?'],hint:'Na pergunta, o TO BE vem antes do sujeito.',ok:'Excelente! IS JOHN RUNNING?'},
-{id:'pronoun',ey:'NOME → PRONOME',t:'5. Troque o nome',s:'Substitua JOHN por um pronome.',sp:'John já apareceu. Qual pronome substitui JOHN?',target:['HE','IS','RUNNING'],bank:['SHE','HE','IT','IS','RUNNING'],hint:'John é uma pessoa do sexo masculino.',ok:'Certo! HE IS RUNNING.'},
-{id:'it',ey:'MASCOTES',t:'6. Conheça o IT',s:'Use IT com o mascote.',sp:'Bingo está correndo. Depois de apresentá-lo, podemos dizer “It is running.”',target:['IT','IS','RUNNING'],bank:['HE','IT','SHE','IS','RUNNING'],hint:'Agora reconheça o pronome IT.',ok:'Mandou bem! IT IS RUNNING.'}
+const steps=[
+{id:'meaning',ey:'FAÇA A PONTE',title:'1. Entenda a cena',sub:'Descubra o papel de cada parte da frase.',speech:'John está correndo agora. Em inglês, montamos a ideia em três partes.',target:['JOHN','IS','RUNNING'],bank:['JOHN','IS','RUNNING'],hint:'Toque nas três partes na ordem correta.',ok:'Muito bem! JOHN é quem faz a ação, IS acompanha JOHN e RUNNING mostra a ação acontecendo agora.',bridge:true},
+{id:'affirmative',ey:'SUA VEZ',title:'2. Monte a frase',sub:'Agora monte sem olhar a tradução pronta.',speech:'Observe John. Como fica “John está correndo”?',target:['JOHN','IS','RUNNING'],bank:['RUNNING','AM','JOHN','IS','ARE'],hint:'Pense: quem? + TO BE + ação com -ING.',ok:'Perfeito! JOHN IS RUNNING.'},
+{id:'negative',ey:'TRANSFORME',title:'3. Faça a negativa',sub:'Diga que John NÃO está correndo.',speech:'John parou. Agora diga: “John não está correndo.”',target:['JOHN','IS','NOT','RUNNING'],bank:['NOT','RUNNING','JOHN','IS','DOESN’T'],hint:'Na negativa, NOT entra depois do TO BE.',ok:'Isso! JOHN IS NOT RUNNING.'},
+{id:'question',ey:'VIRE A FRASE',title:'4. Faça uma pergunta',sub:'Pergunte: “John está correndo?”',speech:'Agora queremos perguntar. O que vai para a frente?',target:['IS','JOHN','RUNNING','?'],bank:['JOHN','RUNNING','IS','DOES','?'],hint:'Na pergunta, o TO BE vem antes do sujeito.',ok:'Excelente! IS JOHN RUNNING?'},
+{id:'pronoun',ey:'NOME → PRONOME',title:'5. Troque o nome',sub:'Substitua JOHN por um pronome.',speech:'John já apareceu. Qual pronome substitui JOHN?',target:['HE','IS','RUNNING'],bank:['SHE','HE','IT','IS','RUNNING'],hint:'John é uma pessoa do sexo masculino.',ok:'Certo! HE IS RUNNING.'},
+{id:'it',ey:'MASCOTES',title:'6. Conheça o IT',sub:'Use IT com o mascote.',speech:'Bingo está correndo. Depois de apresentá-lo, podemos dizer “It is running.”',target:['IT','IS','RUNNING'],bank:['HE','IT','SHE','IS','RUNNING'],hint:'Agora reconheça o pronome IT.',ok:'Mandou bem! IT IS RUNNING.'}
 ];
-function kind(w){if(['JOHN','HE','SHE','IT'].includes(w))return'subject';if(['AM','IS','ARE'].includes(w))return'tobe';if(['NOT','DOESN’T'].includes(w))return'neg';if(w==='?')return'punct';return'action'}
-let BR={scene:null};
-class Scene extends Phaser.Scene{
- constructor(){super('scene');this.mode='meaning';this.runTweens=[];this.petTweens=[]}
- preload(){}
- create(){
-  BR.scene=this;const w=this.scale.width,h=this.scale.height;
-  this.add.rectangle(w/2,h*.22,w,h*.44,0x8fdcff);
-  for(const cx of [w*.18,w*.72]){this.add.ellipse(cx,h*.13,90,36,0xffffff,.9);this.add.ellipse(cx+34,h*.12,70,40,0xffffff,.9)}
-  this.add.rectangle(w/2,h*.53,w,h*.18,0xcfe7ff);let cs=[0xf8c977,0xffa0a0,0x93c7ff,0xb4e2a7];
-  for(let i=0;i<7;i++){let bw=68+(i%3)*12,bh=72+(i%2)*24,bx=35+i*(w/6.5);this.add.rectangle(bx,h*.50,bw,bh,cs[i%cs.length]).setOrigin(.5,1)}
-  this.add.rectangle(w/2,h*.79,w,h*.42,0x78ce75);this.add.ellipse(w*.5,h*.74,w*.74,88,0xe6d4b0);
-  for(const tx of [w*.08,w*.9]){this.add.rectangle(tx,h*.62,20,82,0x95633c);this.add.circle(tx-18,h*.53,40,0x52aa5e);this.add.circle(tx+18,h*.51,45,0x62ba6b)}
-  this.shadow=this.add.ellipse(w*.46,h*.79,130,28,0x26354f,.14);
-  this.boy=this.runner(w*.46,h*.69);
-  this.motion=[0,1,2].map(i=>this.add.arc(w*.35-i*12,h*.64+i*18,14+i*2,210,320,false,0xffffff,.72).setStrokeStyle(4,0xffffff,.72));
-  this.pet=this.add.container(w*.77,h*.69);this.dog(this.pet);this.pet.setVisible(false);
-  this.info=this.add.text(w*.5,h*.93,'',{fontFamily:'Arial',fontSize:'14px',fontStyle:'bold',color:'#36506c',backgroundColor:'#ffffffcc',padding:{x:12,y:7}}).setOrigin(.5).setDepth(20).setVisible(false);
-  try{this.apply('meaning')}catch(err){console.error('GrammarScene init:',err);this.info.setText('Cena carregada.').setVisible(true)}
- }
- runner(x,y){
-  const c=this.add.container(x,y);
-  const bag=this.add.ellipse(-14,-58,28,36,0xf6a623).setStrokeStyle(2,0xde8d10);
-  const legL=this.add.container(-9,-4), legR=this.add.container(9,-4);
-  const ul=this.add.rectangle(0,18,11,34,0x5163cd).setOrigin(.5,0), ur=this.add.rectangle(0,18,11,34,0x5163cd).setOrigin(.5,0);
-  const kneeL=this.add.container(0,30), kneeR=this.add.container(0,30);
-  const ll=this.add.rectangle(0,18,10,32,0xe7eefc).setOrigin(.5,0), lr=this.add.rectangle(0,18,10,32,0xe7eefc).setOrigin(.5,0);
-  const shoeL=this.add.ellipse(2,37,18,10,0xff4c4c),shoeR=this.add.ellipse(2,37,18,10,0xff4c4c);
-  kneeL.add([ll,shoeL]);kneeR.add([lr,shoeR]);legL.add([ul,kneeL]);legR.add([ur,kneeR]);
-  const torso=this.add.rectangle(0,-46,34,42,0x6174df).setStrokeStyle(2,0x4757ba);
-  const band=this.add.rectangle(0,-31,30,8,0xffffff,.95), shorts=this.add.rectangle(0,-14,30,16,0x7a688d);
-  const armL=this.add.container(-18,-57),armR=this.add.container(18,-57);
-  const uaL=this.add.rectangle(0,14,10,28,0xf2c6a0).setOrigin(.5,0),uaR=this.add.rectangle(0,14,10,28,0xf2c6a0).setOrigin(.5,0);
-  const foreL=this.add.container(0,26),foreR=this.add.container(0,26);
-  const laL=this.add.rectangle(0,12,9,24,0xf2c6a0).setOrigin(.5,0),laR=this.add.rectangle(0,12,9,24,0xf2c6a0).setOrigin(.5,0);
-  const book=this.add.rectangle(4,18,20,16,0xffd045).setStrokeStyle(2,0xe2b52c);
-  foreL.add(laL);foreR.add([laR,book]);armL.add([uaL,foreL]);armR.add([uaR,foreR]);
-  const neck=this.add.rectangle(0,-73,10,8,0xf2c6a0),head=this.add.circle(0,-92,19,0xf2c6a0).setStrokeStyle(2,0xe1af81);
-  const hair=this.add.ellipse(0,-102,34,18,0x6f3b1a),hairL=this.add.ellipse(-10,-96,12,20,0x6f3b1a).setAngle(-25),hairR=this.add.ellipse(10,-96,12,20,0x6f3b1a).setAngle(25);
-  const eye1=this.add.circle(-6,-93,2.3,0x2e2b2b),eye2=this.add.circle(6,-93,2.3,0x2e2b2b);
-  const mouth=this.add.arc(0,-87,7,20,160,false,0x9b4d3b).setStrokeStyle(2,0x9b4d3b);
-  c.add([bag,legL,legR,torso,band,shorts,neck,armL,armR,head,hair,hairL,hairR,eye1,eye2,mouth]);
-  this.rig={c,armL,armR,foreL,foreR,legL,legR,kneeL,kneeR,tint:[bag,torso,band,shorts,neck,head,hair,hairL,hairR,eye1,eye2,mouth,uaL,uaR,laL,laR,ul,ur,ll,lr,shoeL,shoeR,book]};
-  return c
- }
- dog(c){let b=this.add.ellipse(0,0,94,64,0xd89f58),hd=this.add.circle(32,-34,37,0xe1ab66),m=this.add.ellipse(47,-27,40,25,0xf0c993),e1=this.add.ellipse(10,-50,21,41,0x8b5a38).setAngle(-24),e2=this.add.ellipse(52,-53,21,41,0x8b5a38).setAngle(24),ey1=this.add.circle(22,-41,4,0x222222),ey2=this.add.circle(42,-41,4,0x222222),n=this.add.circle(58,-29,6,0x222222),l1=this.add.rectangle(-23,27,15,41,0xd89f58).setOrigin(.5,0),l2=this.add.rectangle(18,27,15,41,0xd89f58).setOrigin(.5,0),tail=this.add.arc(-50,-7,31,220,80,false,0xd89f58).setStrokeStyle(10,0xd89f58),col=this.add.rectangle(25,-5,68,8,0x6c5ce7).setAngle(-4);c.add([tail,b,l1,l2,hd,e1,e2,m,ey1,ey2,n,col]);c.setScale(.8);this.petRig={tail}}
- clearRun(){this.runTweens.forEach(t=>t&&t.remove());this.runTweens=[]}
- clearPet(){this.petTweens.forEach(t=>t&&t.remove());this.petTweens=[]}
- gray(on){this.rig.tint.forEach(p=>{if(p&&typeof p.setAlpha==='function')p.setAlpha(on?.58:1)})}
- run(){
-  this.clearRun();const r=this.rig;this.gray(false);this.motion.forEach(m=>m.setVisible(true));this.shadow.setVisible(true);
-  r.armL.rotation=.65;r.armR.rotation=-.65;r.legL.rotation=-.75;r.legR.rotation=.75;r.kneeL.rotation=.7;r.kneeR.rotation=-.15;
-  this.runTweens.push(this.tweens.add({targets:r.c,y:r.c.y-6,duration:250,yoyo:true,repeat:-1,ease:'Sine.easeInOut'}));
-  this.runTweens.push(this.tweens.add({targets:r.c,x:r.c.x+12,duration:340,yoyo:true,repeat:-1,ease:'Sine.easeInOut'}));
-  this.runTweens.push(this.tweens.add({targets:this.shadow,scaleX:.82,duration:250,yoyo:true,repeat:-1,ease:'Sine.easeInOut'}));
-  this.runTweens.push(this.tweens.add({targets:r.armL,rotation:-.85,duration:240,yoyo:true,repeat:-1,ease:'Sine.easeInOut'}));
-  this.runTweens.push(this.tweens.add({targets:r.armR,rotation:.85,duration:240,yoyo:true,repeat:-1,ease:'Sine.easeInOut'}));
-  this.runTweens.push(this.tweens.add({targets:r.legL,rotation:.75,duration:240,yoyo:true,repeat:-1,ease:'Sine.easeInOut'}));
-  this.runTweens.push(this.tweens.add({targets:r.legR,rotation:-.75,duration:240,yoyo:true,repeat:-1,ease:'Sine.easeInOut'}));
- }
- stand(){
-  this.clearRun();const r=this.rig;r.c.x=this.scale.width*.46;r.c.y=this.scale.height*.69;
-  r.armL.rotation=.08;r.armR.rotation=-.08;r.foreL.rotation=0;r.foreR.rotation=0;r.legL.rotation=.02;r.legR.rotation=-.02;r.kneeL.rotation=0;r.kneeR.rotation=0;this.shadow.scaleX=1
- }
- petRun(){this.clearPet();this.petTweens.push(this.tweens.add({targets:this.pet,y:this.pet.y-5,duration:300,yoyo:true,repeat:-1,ease:'Sine.easeInOut'}));this.petTweens.push(this.tweens.add({targets:this.petRig.tail,rotation:.55,duration:180,yoyo:true,repeat:-1,ease:'Sine.easeInOut'}))}
- apply(mode){
-  this.mode=mode;let pet=mode==='it';this.pet.setVisible(pet);this.boy.setVisible(!pet);this.shadow.setVisible(!pet);this.info.setVisible(false);
-  if(pet){this.stand();this.motion.forEach(m=>m.setVisible(false));this.petRun();this.info.setText('Bingo está correndo. Podemos usar IT.').setVisible(true);return}
-  this.clearPet();this.pet.y=this.scale.height*.69;this.petRig.tail.rotation=0;
-  if(mode==='negative'){this.stand();this.motion.forEach(m=>m.setVisible(false));this.gray(true);this.info.setText('John parou.').setVisible(true)}
-  else{this.run();if(mode==='question')this.info.setText('Agora é uma pergunta.').setVisible(true);if(mode==='pronoun')this.info.setText('John = HE').setVisible(true)}
- }
- react(type){let x=this.mode==='it'?this.pet:this.boy;if(type==='bad'){this.cameras.main.shake(180,.006);this.tweens.add({targets:x,x:'+=10',duration:65,yoyo:true,repeat:3});this.info.setText(this.mode==='it'?'Bingo ficou confuso 😵':'John ficou confuso 😵').setVisible(true)}else{this.tweens.add({targets:x,scaleX:'*=1.1',scaleY:'*=1.1',duration:160,yoyo:true,repeat:1});this.info.setText(this.mode==='it'?'Bingo adorou! ⭐':'John acertou! ⭐').setVisible(true);for(let i=0;i<12;i++){let st=this.add.text(x.x+(Math.random()*120-60),x.y-110+(Math.random()*60-30),'★',{fontSize:(13+Math.random()*15)+'px',color:['#ffd166','#ffffff','#7c6cff'][i%3]}).setDepth(30);this.tweens.add({targets:st,y:st.y-75,alpha:0,duration:700,onComplete:()=>st.destroy()})}}}
+let step=0,built=[],complete=false;
+const $=s=>document.querySelector(s);
+const kind=w=>['JOHN','HE','SHE','IT'].includes(w)?'subject':['AM','IS','ARE'].includes(w)?'tobe':['NOT','DOESN’T'].includes(w)?'negative':w==='?'?'punct':'action';
+function feedback(type,icon,text){const f=$('#feedback');f.className='feedback '+type;$('#fbIcon').textContent=icon;$('#fbText').textContent=text}
+function react(type){const stage=$('#stage');stage.classList.remove('cheer','shake');void stage.offsetWidth;stage.classList.add(type==='good'?'cheer':'shake');setTimeout(()=>stage.classList.remove('cheer','shake'),900)}
+function render(){
+ const c=steps[step];built=[];complete=false;
+ $('#progressText').textContent='Etapa '+(step+1)+' de '+steps.length;$('#fill').style.width=((step+1)/steps.length*100)+'%';
+ $('#eyebrow').textContent=c.ey;$('#title').textContent=c.title;$('#subtitle').textContent=c.sub;$('#speech').textContent=c.speech;
+ $('#status').textContent=c.id==='negative'?'ação parada':c.id==='it'?'Bingo em ação':'ação acontecendo agora';
+ const stage=$('#stage');stage.classList.remove('run','stop','petRun','cheer','shake');
+ $('.runner').style.display=c.id==='it'?'none':'block';$('.shadow').style.display=c.id==='it'?'none':'block';
+ document.querySelectorAll('.speed1,.speed2,.speed3').forEach(x=>x.style.display=c.id==='it'?'none':'block');
+ $('.bingo').style.display=c.id==='it'?'block':'none';
+ if(c.id==='negative')stage.classList.add('stop');else if(c.id==='it')stage.classList.add('petRun');else stage.classList.add('run');
+ $('#bridge').innerHTML=c.bridge?'<div class="bridge"><div class="br"><div class="bx subject">JOHN</div><div class="arr">→</div><div class="bx subject">quem faz a ação</div></div><div class="br"><div class="bx tobe">IS</div><div class="arr">→</div><div class="bx tobe">está / TO BE</div></div><div class="br"><div class="bx action">RUNNING</div><div class="arr">→</div><div class="bx action">correndo agora</div></div></div>':'';
+ drawSlots();drawBank();feedback('info','💡',c.hint);$('#next').disabled=true;$('#next').textContent=step===steps.length-1?'Concluir módulo':'Próxima etapa →';
+ $('#dots').innerHTML=steps.map((_,i)=>'<div class="dot '+(i<=step?'on':'')+'"></div>').join('');
 }
-function App(){const[st,setSt]=React.useState(0),[built,setBuilt]=React.useState([]),[done,setDone]=React.useState(false),[fb,setFb]=React.useState({type:'info',icon:'💡',text:STEPS[0].hint});let c=STEPS[st];
- React.useEffect(()=>{if(!window._g)window._g=new Phaser.Game({type:Phaser.AUTO,parent:'game',width:900,height:500,scale:{mode:Phaser.Scale.RESIZE,autoCenter:Phaser.Scale.CENTER_BOTH},scene:[Scene],render:{antialias:true}})},[]);
- React.useEffect(()=>{setBuilt([]);setDone(false);setFb({type:'info',icon:'💡',text:c.hint});setTimeout(()=>{try{BR.scene&&BR.scene.apply(c.id)}catch(err){console.error('GrammarScene step:',err)}},120)},[st]);
- function add(w,i){if(done)return;let n=[...built,{w,i}],p=n.length-1;setBuilt(n);if(c.target[p]!==w){setFb({type:'bad',icon:'⚠️',text:'Quase! Essa palavra não funciona nessa posição. Tente outra ordem.'});BR.scene&&BR.scene.react('bad');setTimeout(()=>setBuilt(v=>v.slice(0,-1)),450);return}if(n.length===c.target.length){setDone(true);setFb({type:'good',icon:'⭐',text:c.ok});BR.scene&&BR.scene.react('good')}else setFb({type:'info',icon:'👉',text:'Boa! Agora escolha a próxima parte.'})}
- function reset(){setBuilt([]);setDone(false);setFb({type:'info',icon:'💡',text:c.hint})}
- function next(){if(st<STEPS.length-1)setSt(st+1);else setFb({type:'good',icon:'🏆',text:'Módulo concluído! Você montou, negou e perguntou no Present Continuous.'})}
- let used=new Set(built.map(x=>x.i));
- return E('div',{className:'app'},E('div',{className:'shell'},
- E('div',{className:'top'},E('div',{className:'brand'},E('div',{className:'logo'},'G'),E('div',null,E('b',null,'Grammar Builder'),E('small',null,'Present Continuous • Prof. Jasson Bruno'))),E('div',{className:'prog'},E('div',{className:'pt'},'Etapa '+(st+1)+' de '+STEPS.length),E('div',{className:'bar'},E('div',{className:'fill',style:{width:((st+1)/STEPS.length*100)+'%'}})))),
- E('div',{className:'grid'},
- E('section',{className:'scene'},E('div',{className:'sceneHead'},E('span',{className:'pill'},'🎬 CENA INTERATIVA'),E('span',null,c.id==='negative'?'ação parada':'ação acontecendo agora')),E('div',{id:'gamewrap'},E('div',{id:'game'}),E('div',{className:'bubble'},E('div',null,c.sp)))),
- E('aside',{className:'panel'},E('div',{className:'eye'},c.ey),E('h2',null,c.t),E('p',{className:'sub'},c.s),
- c.bridge&&E('div',{className:'bridge'},E('div',{className:'br'},E('div',{className:'box subject'},'JOHN'),E('div',{className:'arr'},'→'),E('div',{className:'box subject'},'quem faz a ação')),E('div',{className:'br'},E('div',{className:'box tobe'},'IS'),E('div',{className:'arr'},'→'),E('div',{className:'box tobe'},'está / TO BE')),E('div',{className:'br'},E('div',{className:'box action'},'RUNNING'),E('div',{className:'arr'},'→'),E('div',{className:'box action'},'correndo agora'))),
- E('div',{className:'task'},'Monte a frase:'),E('div',{className:'slots'},Array.from({length:c.target.length},(_,i)=>{let it=built[i];return E('div',{key:i,className:'slot '+(it?'f '+kind(it.w):'')},it?it.w:(i+1))})),
- E('div',{className:'bank'},c.bank.map((w,i)=>E('button',{key:w+i,className:'w '+kind(w)+(used.has(i)?' used':''),disabled:used.has(i)||done,onClick:()=>add(w,i)},w))),
- E('div',{className:'feedback '+fb.type},E('span',null,fb.icon),E('span',null,fb.text)),E('div',{className:'actions'},E('button',{className:'secondary',onClick:reset},'↺ Refazer'),E('button',{className:'primary',disabled:!done,onClick:next},st===STEPS.length-1?'Concluir módulo':'Próxima etapa →')),E('div',{className:'dots'},STEPS.map((_,i)=>E('div',{key:i,className:'dot '+(i<=st?'on':'')}))))),
- E('div',{className:'pets'},E('div',{className:'pet'},E('div',{className:'face dog'},'🐶'),E('div',null,E('b',null,'Bingo'),E('span',null,'Ajuda a lembrar o pronome IT.'))),E('div',{className:'pet'},E('div',{className:'face cat'},'🐱'),E('div',null,E('b',null,'Luna'),E('span',null,'Vai aparecer nas próximas situações.'))))
- ))}ReactDOM.createRoot(document.getElementById('root')).render(E(App));
-</script></body></html>
+function drawSlots(){const c=steps[step];$('#slots').innerHTML=c.target.map((_,i)=>{const v=built[i];return '<div class="slot '+(v?kind(v.w):'')+'">'+(v?v.w:(i+1))+'</div>'}).join('')}
+function drawBank(){const c=steps[step];$('#bank').innerHTML=c.bank.map((w,i)=>'<button class="word '+kind(w)+(built.some(b=>b.i===i)?' used':'')+'" data-i="'+i+'">'+w+'</button>').join('');document.querySelectorAll('.word').forEach(b=>b.onclick=()=>add(c.bank[+b.dataset.i],+b.dataset.i))}
+function add(w,i){if(complete)return;const c=steps[step];const p=built.length;built.push({w,i});drawSlots();drawBank();if(c.target[p]!==w){feedback('bad','⚠️','Quase! Essa palavra não funciona nessa posição. Tente outra ordem.');react('bad');setTimeout(()=>{built.pop();drawSlots();drawBank()},450);return}if(built.length===c.target.length){complete=true;feedback('good','⭐',c.ok);react('good');$('#next').disabled=false}else feedback('info','👉','Boa! Agora escolha a próxima parte.')}
+$('#reset').onclick=()=>render();
+$('#next').onclick=()=>{if(!complete)return;if(step<steps.length-1){step++;render()}else feedback('good','🏆','Módulo concluído! Você montou, negou e perguntou no Present Continuous.')};
+render();
+</script>
+</body>
+</html>
